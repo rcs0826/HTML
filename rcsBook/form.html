@@ -1,0 +1,124 @@
+<html>
+	<head>
+        <meta charset="UTF-8" />
+        <link type="text/css" rel="stylesheet" href="./css/rcsBook.css" />
+        <link type="text/css" rel="stylesheet" href="./css/page-style.css" />
+        <link type="text/css" rel="stylesheet" href="./css/fluig-style-guide-flat.min.css" />
+        <link type="text/css" rel="stylesheet" href="./css/fluig-style-guide-docs.min.css" />
+        <script type="text/javascript" src="./js/rcsBook.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/feriadosSP.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="./js/fluig-style-guide.min.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/fluig-style-guide-docs-components.min.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/fluig-style-guide-docs-chart.min.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/vkbeautify.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/htmlexpress.js" charset="utf-8"></script>
+        <script type="text/javascript">
+        	function convInerSql(){
+        		var entrada = document.getElementById("txtEntr").value;
+        		var saida = document.getElementById("txtSaid");
+        		//entrada = entrada.replace(/\t/g," ");
+        		var vet1 = entrada.split("\t");
+				var result = "(";
+				console.info("entrada",entrada);
+				console.info("vet1",vet1);
+
+				for (var i = 0; i < vet1.length; i++) {
+					if (i==0 || (i >= 3 && i <= 8) || i == 10 || i == 14) {
+						result += "'"+vet1[i]+"',";
+					}
+					else{
+						result += vet1[i]+",";
+					}					
+				}
+				result = result.substring(0,result.length-1) + ")";
+				/*
+
+				result += "('"+vet1[0]+"',";
+				var vet2 = (vet1[1]).split(" ");
+
+				for (var i = 0; i < vet2.length; i++) {
+					result += isNaN(vet2[i])?"'"+vet2[i]+"',":vet2[i]+",";
+				}
+				vet2 = (vet1[2]).split(" ");
+
+				for (var i = 0; i < vet2.length; i++) {
+					if (i == 6) {
+						result += "'";
+					}
+
+
+					if(i==0 || i == 3){
+						result += "'"+vet2[i]+"',";
+					}
+					else if (i == 1 || i == 4) {
+						result += "'"+vet2[i]+" ";
+					}					
+					else if (i == 2 || i == 5) {
+						result += vet2[i]+"',";
+					}
+					else{
+						result += vet2[i]+" ";
+					}
+
+					if (i == (vet2.length - 1)) {
+						result = result.trim() + "',";
+					}
+				}
+
+				vet2 = (vet1[3]).split(" ");
+
+				result += vet2[0]+",";
+				result += "'"+vet2[1]+" "+vet2[2]+"',";
+				result += vet2[3]+",";
+				result += vet2[4]+",";
+				result += vet2[5]+",";
+
+				result += "'"+vet1[4]+"')";				
+				*/
+				saida.value = result;
+
+        	}
+        	function teste111(){
+        		var teste = "https://hmlportal.santher.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD05MjQ5JnZlcj0xMDAwJmZpbGU9U0JCMDYtRmljaGErVCVDMyVBOWNuaWNhKzIwMTkucGRmJmNyYz0xNzQzNzA3OTU0JnNpemU9MC40NDUzODgmdUlkPTcmZlNJZD0xJnVTSWQ9MSZkPWZhbHNlJnRrbj0mcHVibGljVXJsPWZhbHNl.pdf";
+        		var element = document.createElement('a');                 
+                 
+                 element.setAttribute('href', teste);
+                 element.setAttribute('download', teste);
+              
+                 element.style.display = 'none';
+                 document.body.appendChild(element);
+              
+                 element.click();
+              
+                 document.body.removeChild(element);
+        	}
+        	
+        </script>
+	</head>
+	<body>
+        <div class="fluig-style-guide">            
+            <form name="form" role="form">
+				<div class="form-group row">
+					<div class="col-md-1">
+						<input type="button" class="btn btn-success" id="btEnte" name="btEnte" value="Teste Download" onclick="teste111()" />
+					</div>
+					<div class="col-md-1">
+						<input type="button" class="btn btn-warning" id="btCopi" name="btCopi" value="Copiar" title="Copiar" onclick="RCS.copyClipboard('txtSaid');" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-md-6">
+						<label for="txtEntr" >Entrada:</label>
+						<textarea class="form-control" rows="6" id="txtEntr" name="txtEntr" title="Entrada" oninput="convInerSql()" onfocus="this.value=''" ></textarea>
+					</div>
+					<div class="col-md-6">
+						<label for="txtSaid" >Saida:</label>
+						<textarea class="form-control" rows="6" id="txtSaid" name="txtSaid" title="Saida" ></textarea>
+					</div>
+				</div>
+			</form>
+            <!--Fluig Style Guide-->
+        </div>
+	</body>
+</html>

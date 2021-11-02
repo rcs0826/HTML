@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<!-- saved from url=(0030)http://html5demos.com/file-api -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=620">
+<title>Criador de cógigo HTML de arquivos</title>
+<!--=======================Mostra um icone no titulo===========================-->
+<link rel="stylesheet" href="http://html5demos.com/css/html5demos.css">
+<!--===========================================================================-->
+
+</head>
+<body>
+
+<section id="wrapper">
+    <header>
+      <h1 draggable="true">Criador de cógigo HTML de arquivos</h1>
+    </header>
+    
+
+
+<style>
+#holder { border: 10px dashed #ccc; width: 300px; height: 300px; margin: 20px auto;}
+#holder.hover { border: 10px dashed #333; }
+</style>
+
+<br>
+
+<div id="DeD" style="display:none">          
+    <article>
+    <div id="holder"></div> 
+</div>
+<center>
+Digite o Diretório: <input type="text" id="txtDiretorio" name="txtDiretorio"><br>
+<hr>
+<b>O que você quer capturar:</b><br>
+Nome do arquivo: <input type="radio" id="tNome" name="tNome" value="nome" checked="checked">
+Criar cógigo html do arquivo: <input type="radio" id="tNome" name="tNome" value="codigo">
+<hr>
+<br>
+<textarea id="txtSaida" name="txtSaida" readonly style="margin-bottom:15px;  width:400px; height:350px" ></textarea>
+<center>
+
+
+      <p id="status" class="success">Não suporta o Drag and Drop</p>
+
+<div id="Draedro" style="display:none"> 
+      <p>Arraste uma imagem do seu desktop para a zona de Drop acima para ver o navegador ler o conteúdo do arquivo e usá-lo como plano de fundo e criar o código!.</p>
+    </article>
+ </div>
+
+<script>
+//===============Verifica se o browse suporta o html5=======================
+
+if (window.File && window.FileReader && window.FileList && window.Blob){
+ 	Draedro.style.display = 'inline';
+	DeD.style.display = 'inline';
+}
+//===========================================================================
+
+
+var holder = document.getElementById('holder'),
+    state = document.getElementById('status');
+
+if (typeof window.FileReader === 'undefined') {
+  state.className = 'fail';
+} else {
+  state.className = 'success';
+  state.innerHTML = 'Suporta o Drag and Drop';
+}
+ 
+holder.ondragover = function () { this.className = 'hover'; return false; };
+holder.ondragend = function () { this.className = ''; return false; };
+//Função drop
+holder.ondrop = function (e) {
+  this.className = '';
+  e.preventDefault();
+  
+var allFiles = e.dataTransfer.files.length;
+ 	//alert('Total de arquivos enviados ' + allFiles);
+/*
+allFiles.name = Nome do arquivo
+allFiles.type = Tipo do arquivo
+*/
+//var ind = 0;
+var valor = '';
+var tipo, barra;
+var radio = document.getElementById("tNome");
+var diretorio = document.getElementById("txtDiretorio").value;
+for(i=0;i<allFiles;i++){	  
+	  //ind = ind + 1;
+//===================================Armazena na variável o evento=======================
+ var file = e.dataTransfer.files[i],
+ 	reader = new FileReader();
+//=======================================================================================
+//===================================Mostrar a imagem====================================		
+   reader.onload = function (event) {
+    	holder.style.background = 'url(' + event.target.result + ') no-repeat center';
+	};
+	
+	reader.readAsDataURL(file);
+//=======================================================================================	
+		//alert((i+1)+ '° Arquivo: ' + file.name + String.fromCharCode(13) + 'Tipo do arquivo: ' + file.type);	
+	tipo = file.type.split("/");
+  
+  if(diretorio != ""){barra = "/";}
+  
+///////////////////////////////////////////////////////////////////////////////////  
+var teste = "";
+
+for(var tst in file){
+        teste += tst + String.fromCharCode(13);
+}
+//alert(teste);
+alert(file.webkitRelativePath);
+///////////////////////////////////////////////////////////////////////////////////
+
+ 
+if(!radio.checked){	
+//===================================Criação de código================================
+ 	if(tipo[0] == 'image'){
+		valor=valor+'<img src="/'+diretorio+barra+file.name+'" border="0">'+' '+String.fromCharCode(13);
+	}
+	else
+	{
+		valor=valor+'<a href="/'+diretorio+barra+file.name+'" ></a>'+' '+String.fromCharCode(13);
+		}
+}		
+ //======================================================================================	
+else{
+      valor=valor+file.name+String.fromCharCode(13);
+}
+}
+document.getElementById("txtSaida").value = valor;
+if(allFiles == 0 ){
+	alert('Não foi detectado nenhum arquivo');
+}
+
+  return false;
+// Fim da função
+};
+
+
+	
+</script>
+<div id="resultado"></div>
+<hr>
+
+</body>
+</html>

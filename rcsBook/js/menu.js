@@ -1,0 +1,23 @@
+$(document).ready(function(){
+	$("#bthtmlexpress").click(function(){
+		$("#iframeindex").attr("src","HTML_Express.html");
+	});
+	$("#btformcreator").click(function(){
+		$("#iframeindex").attr("src","formCreate.html");
+	});
+	$("#btapoioform").click(function(){
+		$("#iframeindex").attr("src","Apoio_Form.html");
+	});
+	$("#btdatasetmanager").click(function(){
+		$("#iframeindex").attr("src","datasetManager.html");
+	});
+	$("#btprefsufx").click(function(){
+		$("#iframeindex").attr("src","prefSulf.html");
+	});
+	$("#btascii").click(function(){
+		$("#iframeindex").attr("src","ASCII.html");
+	});
+	$("#btidentcod").click(function(){
+		$("#iframeindex").attr("src","IdentCod.html");
+	});
+});

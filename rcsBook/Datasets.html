@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <title>
+            XMLRPC Mobile
+        </title>
+		<meta content="pt-br" http-equiv="Content-Language" />
+		<meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
+		<script language="javascript"> 
+			
+            function init(){  
+			
+				var filter = new Object();
+                filter["colleaguePK.colleagueId"] = "paulo"; 
+                var colleagues = getDatasetValues("colleague", filter);
+                if(colleagues.length > 0){       
+                    document.getElementById("colleagueName").value = colleagues[0].colleagueName;
+                    document.getElementById("login").value = colleagues[0].login;
+                }else{
+                    alert("Nenhum Usu�rio Encontrado");
+                }
+				
+				var c1 = DatasetFactory.createConstraint("cod_area", "2", "2", ConstraintType.MUST); 
+
+				var constraints = new Array(c1);
+
+				
+				var area = DatasetFactory.getDataset("areas", null, constraints, null);
+				
+				if(area.values.length){
+					document.getElementById("cod_area").value = area.values[0].cod_area;
+					document.getElementById("area").value = area.values[0].area;
+				}else{
+					alert("Area n�o encontrada") ;
+                }
+
+            }
+        </script>
+		<script src="http://189.89.38.209:8080/webdesk/vcXMLRPC-mobile.js"></script>
+		<script src="http://189.89.38.209:8080/portal/resources/js/jquery/jquery-1.7.2.js"></script>
+    </head>
+    <body onload="init()">
+	<div data-role="header" data-theme="c">
+		<h1>XMLRPC Mobile</h1>
+	</div>	
+    <form  class="ui-content" name="createFormComponents" method="post" action="">
+		<h3> Dataset Interno - Colaborador </h3>
+		<div class='mylabel'>Nome do Usu�rio: </div>
+			<input type="text" name="colleagueName" id="colleagueName" />
+        </div>
+		<div class='mylabel'>Login do Usu�rio: </div>
+			<input type="text" name="login" id="login" />
+        </div>
+		<div class='mylabel'>Selecione um colaborador: </div>
+			<select name="colleague" required="required" mobile="true" dataset="colleague" datasetvalue="colleagueName" datasetkey="colleagueId"></select>
+        </div>	
+		<h3> Dataset de Formul�rio </h3>
+		<div class='mylabel'>C�digo da �rea: </div>
+			<input type="text" name="cod_area" id="cod_area" />
+        </div>
+		<div class='mylabel'>Nome da �rea: </div>
+			<input type="text" name="area" id="area" />
+        </div>
+		<div class='mylabel'>Selecione as �reas dispon�veis: </div>
+			<select name="areas" required="required" mobile="true" dataset="areas" datasetvalue="area" datasetkey="cod_area"></select>
+        </div>	
+    </form>
+    </body>
+</html>
+		

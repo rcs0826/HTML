@@ -1,0 +1,134 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+         <title>TesSite</title>
+         
+         
+         <script type="text/javascript">  
+
+          var start;
+          
+          //Start:
+          function Comecar()
+          {
+          
+          var num = document.getElementById("num").value * 1000 
+            if(document.getElementById("num").value != "" && document.getElementById("url").value != "")
+            {
+              inativar(true);
+              
+              start = setInterval( function()
+              {
+                document.getElementById("iframe").src = document.getElementById("url").value;
+              },
+             num);
+            }
+            
+            
+          }
+          
+          //Stop:
+          function Pausar()
+          {
+            inativar(false);
+            clearInterval(start);
+          }
+          
+          function inativar(dis)
+          {
+              document.getElementById("url").disabled = dis;
+              document.getElementById("num").disabled = dis;
+              document.getElementById("btCom").disabled = dis;
+              
+              
+          }
+
+         </script>
+
+         <style>
+        
+          .objeto{
+              border: 3px solid #ccc;
+              width: 90%;
+              padding:25px 50px;
+              margin: 20px auto;
+              box-shadow: 10px 10px 5px #888888;
+              border-radius: 10px;
+              background-color: #FFF;
+          }
+          
+          .input
+          {
+            
+          }
+          #iframe
+          {
+            width:100%;
+            height:100%;
+          }
+          #fieldse1
+          {
+            width:15%;
+            float:left;
+            position:Fixed;
+            top:-1%;
+            left:76%;
+          }
+          #fieldse2
+          {
+            height:1000px;
+          }
+          
+          #circ{
+            border: 2px solid #000;
+            box-shadow: 10px 10px 5px #888888;
+            border-radius: 10px;
+            width:10px;
+            height:10px;
+          }
+          .on{
+              background-color: green;
+          }
+          .off{
+               background-color: red;
+          }
+             /*Tema Dark*/
+             /*
+.dark {
+  
+	border: 1px solid #0091d7 !important;
+	box-shadow: 5px 5px 5px #888888 !important;
+	border-radius: 5px !important;
+	/*background-color: #000 !important;
+	color: #0091d7 !important;
+	padding: 5px 10px !important;
+	font-family: Courier, "Lucida Console", monospace !important;
+	font-weight: bold !important;
+  
+}
+input.dark:hover{
+      background-color: #3c3c3c !important;
+}
+*/
+          </style> 
+  </head>
+  <body class="dark">         
+    <fieldset class="objeto dark" id="fieldse1">
+        <legend>Dados do teste
+        </legend>Segundos:<br />
+        <input type="number" id="num" value="10" placeholder="10" class="dark"/>
+        <p>
+        </p>URL: <br />
+        <input type="text" id="url" value="" placeholder="www.google.com.br" class="dark"/><br />
+        <input type="button" value="Começar" class="dark" onclick="Javascript:Comecar();" id="btCom"/>
+        <input type="button" value="Pausar"  class="dark" onclick="Javascript:Pausar();"/>          
+        <div id="circ" class="off"></div>
+    </fieldset>
+    
+    <fieldset class="objeto dark" id="fieldse2">
+        <legend>Site
+        </legend>
+        <iframe class="input dark" id="iframe" src="" scrolling="yes">
+        </iframe>
+    </fieldset>     
+</body>
+</html>

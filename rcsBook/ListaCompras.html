@@ -1,0 +1,289 @@
+<!-- Melhorias --------
+1) Divisão de pagamento em cartão (valor em um, restante em outro);
+2) Designe;
+3) Salvar lista de compras;
+4) Indicador de valor total 'a pagar;
+5) Parcelamento iguais de pagamento;
+6) Contador de item;
+7) Espaçamento na parte inferior;
+ -->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style type="text/css">
+			.divTotal{
+				width: 100%;
+				position:fixed; 
+				bottom: 0%;
+				background-color: #ccc; 
+				padding:5px 5px;
+				border-radius: 5px !important;
+			}
+			.nborder{
+				border: 0px solid #ccc;
+				background-color: #ccc; 
+				color:red;
+				width:80% !important;
+				border-radius: 5px !important;
+			}
+			.btIncluir{
+				border: 1px solid #ccc;
+				border-radius: 10px; 
+				background-color: #000;
+				color:white !important;
+				padding:5px 10px;
+			}
+			.title{
+				background-color: #BA1717; 
+			}
+			th{
+				color:white !important;
+				padding:10px 5px !important;	
+				border-radius: 5px !important;
+			}
+			td{
+				padding:15px 5px !important;
+				border-radius: 5px !important;
+			}
+			fieldset{
+				border-radius: 5px !important;
+
+			}
+			#refRow{
+				display: none;
+			}
+			table,input{
+				width:100%;
+			}
+			tr:nth-child(even) {
+			  background-color: #f2f2f2;
+			}
+
+
+			.btCinzaMobile, .btAzulMobile, .btVermelhoMobile, .btVerdeMobile {
+				color: #fff !important;
+				box-shadow: 5px 5px 5px #888888 !important;
+				border-radius: 50px !important;
+				width: 50px !important;
+				height: 50px !important;
+				z-index: 2 !important;
+				top: 85% !important;
+				float: right !important;
+				position: fixed !important;
+			}
+			.btVerdeMobile {
+				border: 1px solid #00ff00 !important;
+				background-color: #00ff00 !important;
+				right: 3% !important;
+			}
+
+			.total {
+				border: 1px solid #ccc !important;
+				font-weight: bold !important;
+				background-color: #ccc !important;
+				color: #000 !important;
+			}
+		</style>
+		<script type="text/javascript">
+			var cont = 0;
+			var RCS = {
+				maskMoney:function(id){
+        try{
+            var campo = document.getElementById(id);
+            var result="" ,
+                vet= "",
+                cont=0,
+                conteiner,
+                block = true,
+                temp=""
+                temp2="";
+             vet = campo.value.split( "");
+             for(var i = 0 ; i < vet.length ; i++){
+                 if(!isNaN(vet[i])){
+                      temp += vet[i];
+                 }   
+             } 
+             conteiner = temp.split("");
+             for(var j = conteiner.length ; j > 0  ; j--){   
+                 if(block && cont == 2){
+                     temp2 += "," + conteiner[j-1];
+                     block = false;
+                     cont = 1;
+                 }
+                 else if(cont == 3){
+                     temp2 += "." + conteiner[j-1];
+                     cont = 1;
+                 }
+                 else{
+                      temp2 += conteiner[j-1];
+                      cont++; 
+                 }
+             }    
+             conteiner = temp2.split("");
+             for(var x = conteiner.length ; x > 0  ; x--){
+                 result += conteiner[x-1];
+             }     
+             campo.value = result;
+        }
+        catch(e){
+           console.error( "Erro: " + e.message);
+        }
+      },
+      floatToMoney : function(val) {
+                var ret = 0;
+                var fl = parseFloat(val).toFixed(2);
+                var vet = fl.toString().split(".");
+                var vet2 = null;
+                var result = "", cont = 0, conteiner, block = true, temp = ""
+                  temp2 = "";
+                if (vet.length == 1) {
+                  ret = val + ",00";
+                } 
+                else {
+                  vet2 = vet[1].split("");
+                  if (vet2.length == 1) {
+                    ret = vet[0] + "," + vet[1] + "0";
+                  } else {
+                    ret = vet[0] + "," + vet[1];
+                  }
+                }
+                
+                vet = ret.split("");
+                for (var i = 0; i < vet.length; i++) {
+                  if (!isNaN(vet[i])) {
+                    temp += vet[i];
+                  }
+                }
+                conteiner = temp.split("");
+                for (var j = conteiner.length; j > 0; j--) {
+                  if (block && cont == 2) {
+                    temp2 += "," + conteiner[j - 1];
+                    block = false;
+                    cont = 1;
+                  } else if (cont == 3) {
+                    temp2 += "." + conteiner[j - 1];
+                    cont = 1;
+                  } else {
+                    temp2 += conteiner[j - 1];
+                    cont++;
+                  }
+                }
+                conteiner = temp2.split("");
+                for (var x = conteiner.length; x > 0; x--) {
+                  result += conteiner[x - 1];
+                }
+            
+                return result;
+              },
+                moneyToFloat:function(val){
+                      val = val.replace(/[\.]/g, "");
+                      val = val.replace(",","."); 
+                      val = parseFloat(val);
+                      return val; 
+                }
+			};
+			function calc(id){
+				var newId = id.split("_")[1];
+				var qtd = document.getElementById("txtQtd_"+newId).value;
+				var val = document.getElementById("txtValor_"+newId).value;
+				var valMult = document.getElementById("txtValMult_"+newId);
+
+				qtd = (qtd == "")?0:parseInt(qtd);
+				val = (val == "")?0:RCS.moneyToFloat(val);
+
+				valMult.value = RCS.floatToMoney(qtd*val);
+				calcTotal();
+			}
+			function addRow(){
+				cont++;
+				var rowTable = document.getElementById("rowTable");
+				var row = '<tr>'
+						+'<td><input type="checkbox" id="cbList_'+cont+'"></td>'
+						+'<td><input type="text" id="txtProd_'+cont+'"></td>'
+						+'<td><input type="number" id="txtQtd_'+cont+'" class="qtd" oninput="calc(this.id)"></td>'
+						+'<td><input type="tel" id="txtValor_'+cont+'" class="val" oninput="RCS.maskMoney(this.id);calc(this.id)"></td>'
+						+'<td><input type="text" id="txtValMult_'+cont+'" class="valM" readonly=""></td>'
+					+'</tr>';
+				//console.dir(rowTable);
+				rowTable.insertAdjacentHTML("afterbegin",row);
+				
+			}
+			function calcTotal(){
+				var valM = document.getElementsByClassName("valM");
+				var total = 0;
+				var val;
+
+				for(var i=0; i < valM.length;i++){
+					val = (valM[i].value == "")?0:RCS.moneyToFloat(valM[i].value);
+					total += (val);
+				}
+				document.getElementById("total").value = RCS.floatToMoney(total);
+			}
+			function template(){
+				var listPadr = [{prod:"Açúcar", qtd:"1"},
+								{prod:"Feijão", qtd:"2"},
+								{prod:"Arroz", qtd:"1"},
+								{prod:"Macarrão parafuso", qtd:"1"},
+								{prod:"Ovos", qtd:"1"},
+								{prod:"Batata", qtd:"1"},
+								{prod:"Batata Doce", qtd:"1"},
+								{prod:"Abobrinha", qtd:"1"},
+								{prod:"Cenoura", qtd:"1"},
+								{prod:"Carne para cozinhar (Miolo de acem)", qtd:"1"},
+								{prod:"Frango (Coxa e Sobre Coxa)", qtd:"1"},
+								{prod:"Linguiça", qtd:"1"},
+								{prod:"Bacon", qtd:"1"},
+								{prod:"Café", qtd:"1"},
+								{prod:"Bolachas", qtd:"1"},
+								{prod:"Pão de forma", qtd:"1"},
+								{prod:"Bisnaguinha", qtd:"1"},
+								{prod:"Margarina", qtd:"1"},
+								{prod:"Leite", qtd:"2"},
+								{prod:"Farelo de aveia", qtd:"1"},
+								{prod:"Azeite Pequeno", qtd:"1"},
+								{prod:"Catchup", qtd:"1"},
+								{prod:"Suco", qtd:"10"},
+								{prod:"Vinagre", qtd:"1"},
+								{prod:"Extrato de tomate", qtd:"1"},
+								{prod:"Queijinho", qtd:"1"},
+								{prod:"Yakult", qtd:"1"},
+								{prod:"Iogurte Natural", qtd:"1"},
+								{prod:"Papel Toalha", qtd:"1"},
+								{prod:"Detergente", qtd:"2"},
+								{prod:"Amaciante da Sara", qtd:"1"},
+								{prod:"Álcool", qtd:"1"}]; 
+		
+			for(var x=0; x < listPadr.length; x++){
+				addRow();
+				document.getElementById("txtProd_"+cont).value = listPadr[x].prod;
+				document.getElementById("txtQtd_"+cont).value = listPadr[x].qtd;
+			}
+		}
+		</script>
+	</head>
+	<body>
+		<fieldset id="lista">
+			<legend><a href="#" onclick="template()">Lista de Mercados </a>
+				<button class="btVerdeMobile" onclick="addRow()">+</button>
+			</legend>
+			<table>
+				<thead>
+					<tr class="title">
+						<th></th>
+						<th>Produto</th>
+						<th>Qtd</th>
+						<th>Valor</th>
+						<th>Val*Qtd</th>
+					</tr>
+				</thead>
+				<tbody id="rowTable">
+				</tbody>
+			</table>
+		</fieldset>
+		<div class="divTotal">
+			<label>Total:</label>
+			<input type="text" name="total" class="total" id="total" readonly />
+		</div>
+	</body>
+</html>

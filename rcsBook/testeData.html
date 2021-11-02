@@ -1,0 +1,192 @@
+<html>
+  <head>
+        <meta charset="UTF-8">        
+        <link type= "text/css" rel ="stylesheet" href="./rcsBook/rcsBook.min.css" charset="utf-8" >        
+        <script type= "text/javascript" src ="./rcsBook/rcsBook.js" charset="utf-8" ></script>
+
+        <meta charset="UTF-8">                 
+        <script type= "text/javascript" src ="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" charset="utf-8" ></script> 
+        <link type= "text/css" rel ="stylesheet" href="./jQueryTE/jquery-te-1.4.0.css" >                    
+        <script type= "text/javascript" src="./fluigStyleGuide/jquery.min.js" charset="utf-8" ></script>                                     
+        <link type="text/css" rel="stylesheet" href="./fluigStyleGuide/fluig-style-guide-flat.min.css"/>               
+        <script type="text/javascript" src="./fluigStyleGuide/fluig-style-guide.min.js" charset="utf-8"></script> 
+        <title>Chat Covid</title>
+  </head>
+  <body>
+          <!--Fluig Style Guide-->                                 
+        <div class="fluig-style-guide">                                    
+            <!--Fluig Style Guide-->                                            
+            <form name="form" role="form">
+              <dir id="tst"></dir>
+              <dir id="alert"></dir>
+
+
+             <!-- ========================================================================================================================= -->
+               <div class="bodyChat btn-default">
+                 <div class="imgChat">
+                  <img src="./img/Circle-icons-chat.svg" class="img-circle thumb-profile-sm-legacy" />
+                 </div>
+                 <span class="titleChat">Chat Bot</span>
+              </div>
+
+              <!-- ========================================================================================================================= -->
+              <div class="panel panel-info newclass" style="display: none;">
+                <div class="panel-heading">
+                    <span>
+                      <center>Chat Covid</center>
+                    </span>
+                </div>
+                <div class="panel-body">
+                    <iframe src="file:///home/rogerio/Documentos/Google%20Drive/TOTVS-Doc/Clientes/Santher/BotCovid/Santher_BotCovid19/Santher_BotCovid19.html" class="botChat" ></iframe>
+                    <div class="row left">
+                    <input type="button" id="btnredm"  class="btn btn-info"   value="Redimencionar" />
+                    <input type="button" id="btnclose" class="btn btn-danger" value="Fechar" />
+                </div> 
+                </div>
+              </div>
+
+            </form>
+        </div>
+<!-- ========================================================================================================================= 
+https://www.riosoft.com.br/wp-content/uploads/2019/04/post_chat.png
+-->
+          <script>
+                 //RCS.htmlCalendar("tst");
+                 //RCS.info('alert','ok');
+$(document).ready(function(){
+    hide(".newclass",true);
+
+    $(".bodyChat").on("click",function(){
+      hide(".newclass",false);
+    });
+
+    $("#btnredm").on("click",function(){
+      fullScreem(".newclass",".botChat");
+    });
+
+    $("#btnclose").on("click",function(){
+      hide(".newclass",true);
+    });
+});
+
+/*************************************************
+ * Faz a transição de uma tela a outra
+ * ***********************************************
+ * @parameter 
+  * id: Identificador da div;
+  * val: Permissão para exibir ou não uma div;
+ * 
+ * @return 
+  * Sem Retorno;
+
+
+            height: '0%',
+            width: '0%' , 
+ ************************************************/
+function hide(newId, val){
+  if(val){      
+      $(newId).animate({
+            top: '100%'
+        });
+      //$(newId).hide();
+    }
+    else{
+      $(newId).show();
+      $(newId).animate({
+            top:'5%'
+        });
+    }
+};
+
+var fs = true;
+function fullScreem(newId,idFS){
+     // hide(".panel-heading", fs);
+      if(fs){
+          $(newId).animate({
+            top: '0%',
+            height: '100%',
+            width: '100%',  
+          });
+          $(idFS).animate({
+            height: '90%',
+            width: '100%'
+          });          
+          $(".panel-heading").hide();
+      }
+      else{
+        // Volta para as configurações iniciais
+          $(newId).animate({
+            top:'12%',
+            width:'390px', 
+            height: '85%'
+          });
+          $(idFS).animate({
+            width: '360px',
+            height: '400px'
+          });
+          $(".panel-heading").show();
+      }
+
+      fs = (fs)?false:true;
+}
+
+          </script>
+          <style type="text/css">
+              /*Chat*/
+              .botChat{
+                  border:none !important;
+                  width:360px;
+                  height:400px;
+              }
+              .newclass{
+                  width: 390px ;
+                  z-index:1 !important;  
+                  box-shadow: 10px 10px 5px #888888 !important;
+                  right:1% !important; 
+                  position:fixed; 
+              }
+              .left{
+                  float:right;
+                  padding: 5px 15px;
+              }
+              /*Botão do Chat*/
+              .titleChat{
+                  display:inline-block; 
+                  position:relative; 
+                  right:7px; 
+                  top:-10px; 
+                  font-family: "Times New Roman", Times, serif;
+                  font-size: 17px; 
+                  font-weight: bold;
+              }
+              .imgChat img{
+                  width: 100%;
+                  height:100%; 
+                  position: relative; 
+              }
+              .imgChat{
+                  border: 3px solid #ccc;
+                  border-radius: 100px;
+                  width: 70px;
+                  height:70px;
+                  padding:5px 5px; 
+                  background-color: #ffffff;
+                  display:inline-block; 
+                  position: relative; 
+                  top:-42%;
+                  left:-5%;
+              }
+              .bodyChat{
+                  border: 3px solid #ccc;
+                  box-shadow: 10px 10px 5px #888888;
+                  border-radius: 100px;
+                  width: 150px;
+                  height:50px;
+                  background-color: #ffffff;
+                  position:fixed; 
+                  right:10%; 
+                  top:80%; 
+              }
+          </style>
+  </body>
+</html>

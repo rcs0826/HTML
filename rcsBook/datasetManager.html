@@ -1,0 +1,232 @@
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <link type="text/css" rel="stylesheet" href="./css/page-style.css" />
+        <link type="text/css" rel="stylesheet" href="./css/fluig-style-guide-flat.min.css" />
+        <link type="text/css" rel="stylesheet" href="./css/rcsBook.css" />
+        <link type="text/css" rel="stylesheet" href="./css/datasetManager.css" />
+        <script type="text/javascript" src="./js/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="./js/fluig-style-guide.min.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/rcsBook.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/datasetManager.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/datasetManager2.js" charset="utf-8"></script>
+
+        <title>Dataset Manager</title>
+    </head>
+    <body>
+        <div class="fluig-style-guide">
+            <form name="form" role="form">
+                <div class="form-group row">
+                    <div class="col-md-12 title" id="title">
+                        <center>
+                            <h3 id="title1">Dataset Manager</h3>
+                        </center>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <div class="col-md-12" >
+                        <ul class="nav nav-tabs clearfix" role="tablist" id="menuCroqui">
+                            <li id="menuView" class="active">
+                                <a href="#" onclick="menu('View');return false;">Visualizar Conteúdo</a>
+                            </li>
+                            <li id="menuCreate">
+                                <a href="#" onclick="menu('Create');return false;">Criar</a>
+                            </li>
+                            <li id="menuEdit">
+                                <a href="#" onclick="menu('Edit');return false;">Editar</a>
+                            </li>
+                            <li id="menuIES">
+                                <a href="#" onclick="menu('IES');return false;">Import/Export Server</a>
+                            </li>
+                            <li id="menuICSV">
+                                <a href="#" onclick="menu('ICSV');return false;">Import CSV</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-2" Edit Create>
+                        <label>Tipo de Visualiza&ccedil;&atilde;o: </label>
+                        <select class="form-control" id="selType" name="selType" onchange="tipoCodigo(this.value);">
+                            <option value="Tabela">Tabela</option>
+                            <option value="Codigo">C&oacute;digo </option>
+                        </select>
+                    </div>
+                    <div class="col-md-3" Edit View>
+                        <label>Datasets Customizados: </label>
+                        <select class="form-control" id="selDataset" name="selDataset" onchange="getCodDataset(this.value);"></select>
+                    </div>
+                    <div class="col-md-2" Create>
+                        <label for="selAddColums">Qtd Colunas: </label>
+                        <select class="form-control" id="selAddColums" name="selAddColums" onchange="addColumn(this.value,true);">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6" IES>
+                        <label for="txtURL">IP do 2º servidor Fluig: </label>
+                        <input type="text" class="form-control" id="txtURL" name="txtURL" placeholder="http://192.168.1.6:8080" value="http://192.168.1.6:8080" />
+                    </div>
+                    <div class="col-md-3" IES>
+                        <label for="txtLogin">Login Admin: </label>
+                        <input type="text" class="form-control" id="txtLogin" name="txtLogin" placeholder="fluig" value="rogerio.santana@totvs.com.br" />
+                    </div>
+                    <div class="col-md-3" IES>
+                        <label for="txtSenha">Senha: </label>
+                        <input type="password" class="form-control" id="txtSenha" name="txtSenha" placeholder="senha" value="Dccpmr0826@" />
+                    </div>
+
+                    <div class="col-md-3" ICSV>
+                        <label for="txtDelCol">Delimitador de Coluna: </label>
+                        <input type="text" class="form-control" id="txtDelCol" name="txtDelCol" placeholder=";" value=";" />
+                    </div>
+                    <div class="col-md-3" ICSV>
+                        <label for="txtDelLin">Delimitador de Linha: </label>
+                        <input type="text" class="form-control" id="txtDelLin" name="txtDelLin" placeholder="\n" value="\n" />
+                    </div>
+                    <div class="col-md-3" ICSV>
+                        <label for="arqCsvFile">Arquivo CSV: </label>     
+                        <span class="input-group">                           
+                            <input type="file" id="arqCsvFile" class="form-control" accept=".csv" />  
+                            <label class="input-group-addon" onclick="upload()">Ler Arquivo</label>             
+                        </span>     
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-1">
+                        <div Create Edit>
+                            <input type="button" class="btn btn-primary allspace" id="btAddRow" name="btAddRow" onclick="addRows(1);" value="AddRow" />
+                        </div>
+                        <div Create>
+                            <input type="button" class="btn btn-primary allspace" id="createDataset" name="createDataset" onclick="WebService.createDS();" value="Create" />
+                        </div>
+                        <div Create>
+                            <input type="button" class="btn btn-primary allspace" id="clearCodeTable" name="clearCodeTable" onclick="clearCT();" value="Limpar" />
+                        </div>
+                        <div Edit>
+                            <input type="button" class="btn btn-primary allspace" id="loadDataset" name="loadDataset" onclick="WebService.loadDS();" value="Load" />
+                        </div>
+                        <div Edit>
+                            <input type="button" class="btn btn-primary allspace" id="updateDataset" name="updateDataset" onclick="WebService.updateDS();" value="Update" />
+                        </div>
+                        <div Edit>
+                            <input type="button" class="btn btn-primary allspace" id="deleteDataset" name="deleteDataset" onclick="WebService.deleteDS();" value="Delete" />
+                        </div>
+                        <div IES>
+                            <input type="button" class="btn btn-primary allspace" id="btExport" name="btExport" onclick="" value=" Export >>" />
+                        </div>
+                        <div IES>
+                            <input type="button" class="btn btn-primary allspace" id="btImport" name="btImport" onclick="" value=" << Import" />
+                        </div>
+                        <div IES>
+                            <input type="button" class="btn btn-primary allspace" id="btServer2" name="btServer2" onclick="WebService.listDS();" value="Server 2" />
+                        </div>
+                        <div ICSV>
+                            <input type="button" class="btn btn-primary allspace" id="btImportCSV" name="btImportCSV" onclick="textToCSV();" value="Import CSV" />
+                        </div>
+                        <div ICSV>
+                            <input type="button" class="btn btn-primary allspace" id="btLimparCSV" name="btLimparCSV" onclick="$('#txtCSV').val('');" value="Limpar CSV" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-11">
+                        <!--======================== View ==================================================== -->
+                        <div View>
+                            <div class="form-group row">
+                                <div class="col-md-12" id="divTabView"></div>
+                            </div>
+                        </div>
+                        <!--======================== Create ==================================================== -->
+                        <div Create Edit>
+                            <dir Tabela>
+                                <h2 style="width: 100%;">
+                                    <label class="legend"> Tabela: &nbsp; ID:</label>
+                                    <input type="text" id="idTable" name="idTable" value=""  class="nameTable" />
+                                    <label class="legend"> Nome:</label>
+                                    <input type="text" id="nameTable" name="nameTable" value="" class="nameTable" />
+                                </h2>
+                                <hr />
+                                <div class="form-group row">
+                                    <div class="col-md-12" id="divTab"></div>
+                                </div>
+                            </dir>
+                            <dir Codigo>
+                                <h2 class="legend">C&oacute;digo</h2>
+                                <hr />
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <textarea class="form-control" rows="10" id="txtCodigo" name="txtCodigo"></textarea>
+                                    </div>
+                                </div>
+                            </dir>
+                        </div>
+
+                        <div ICSV>
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <textarea class="form-control" rows="10" id="txtCSV" name="txtCSV"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div IES>
+                            <div class="slot block5">
+                                <center>
+                                    <b class="legend">Servidor Atual</b>
+                                </center>
+                            </div>
+                            <div class="slot block5">
+                                <center>
+                                    <b class="legend">2º Servidor</b>
+                                </center>
+                            </div>
+                            <div class="slot block4" id="divAtual"></div>
+                            <div class="slot block4" id="divOutro"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--======================== block1 ==================================================== -->
+
+                <!--======================== block2 ==================================================== -->
+
+                <!--======================== block3 ==================================================== -->
+
+                <div id="divMSG"></div>
+            </form>
+        </div>
+    </body>
+</html>

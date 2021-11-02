@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+         <title>Consultas Dataset Fluig</title>
+         <link rel="shortcut icon" type="image/x-icon" href="http://192.168.0.38:8080/portal/resources/images/favicon.ico" />
+          <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+          
+          <script>
+                  function addDataFields(){
+                         var linha = 'Coluna: <input type="text" name="txtDataFields" value="" placeholder="active"/> Alias: <input type="text" name="txtAlias" value="" placeholder="Ativo"/> <hr>';
+                                                   
+                         $("#divDataFields").append(linha);
+                  }
+                  
+                  function urlEnter(){
+                         var URL = document.getElementById("URL");
+                         var Iframe = document.getElementById("Iframe"); 
+                         
+                         Iframe.src = URL.value; 
+                  }
+                  
+                  function consultaDataset(){
+                           var txtURL = document.getElementById("txtURL").value;
+                           var txtTitulo = document.getElementById("txtTitulo").value;
+                           var txtDatasetId = document.getElementById("txtDatasetId").value;
+                           
+                           var txtDataFields =  document.getElementsByName("txtDataFields");
+                           var txtAlias = document.getElementsByName("txtAlias");
+                           
+                           var txtLikeField = document.getElementById("txtLikeField").value;
+                           var txtLikeValue = document.getElementById("txtLikeValue").value;
+                           
+                           var URL = document.getElementById("URL");
+                           
+                           var Conteudo;
+                           
+                           Conteudo = txtURL + "webdesk/zoom.jsp?";
+                           Conteudo += "title=" + txtTitulo;
+                           Conteudo += "&datasetId=" + txtDatasetId; 
+                              
+                           Conteudo += "&dataFields=";
+                           
+                           for(i = 0; i < txtDataFields.length; i++){
+                                Conteudo += txtDataFields[i].value + "," + txtAlias[i].value;
+                                if(i != (txtDataFields.length-1)){
+                                     Conteudo += ",";
+                                }
+                           }
+                           
+                           Conteudo = Conteudo + "&resultFields=";
+                           
+                           for(i = 0; i < txtDataFields.length; i++){
+                                Conteudo += txtDataFields[i].value;
+                                if(i != (txtDataFields.length-1)){
+                                     Conteudo += ",";
+                                }
+                           }
+                           
+                           Conteudo += "&likeField=" + txtLikeField;
+                           Conteudo += "&likeValue=" + txtLikeValue;
+                           
+                           URL.value = Conteudo;
+                           
+                           urlEnter();                           
+                  }
+                  
+          </script>
+          
+          
+         <style>
+        
+          .objeto{
+              border: 3px solid #ccc;
+              width: 90%;
+              padding:25px 50px;
+              margin: 20px auto;
+              box-shadow: 10px 10px 5px #888888;
+              border-radius: 10px;
+              background-color: #FFF;
+          }
+         
+          #codigo{
+              position:fixed;
+              left:99%;
+              top:40%;
+              height:50%
+          }
+          #codigo:hover{
+              left:50%;
+          }
+         
+          #css{
+              position:fixed;
+              left:99%;
+              top:10%;
+              height:20%
+          }
+          #css:hover{
+              left:50%;
+          }
+         
+          #componente{
+              position:fixed;
+              top:1%;
+              right:99%;
+              width:40%;
+          }
+          #componente:hover{
+              right:55%;
+          }
+         
+          .div{
+              border: 3px solid #ccc;
+              padding:5px 5px;
+              width: 50px;
+              box-shadow: 10px 10px 5px #888888;
+              border-radius: 10px;
+              background-color: #FFF;
+              display:inline;
+             
+          }   
+          .textarea{
+              width: 50%;
+              height: 90%;
+              border-radius: 10px;
+              border: 1px solid #000;    
+          }
+
+          #idteste
+          {
+            top:-60%;
+            position:fixed;
+            height:50%;
+            width:80%;
+          }
+          #idteste:hover
+          {
+            top:-10%;
+          }
+          
+          .fieldset
+          {
+            border: 3px solid #ccc;
+            padding:10px 30px;
+            margin: 2px auto;
+            box-shadow: 10px 10px 5px #888888;
+            border-radius: 10px;
+            background-color: #FFF;
+            width:18%;
+            float:left;
+            font-size:15px;
+          }
+         
+         </style>
+  
+</head>   
+<body bgcolor="#E6F0E6">
+
+
+ <div id="title" class="objeto">
+          <center>        
+               <h1>Dataset Fluig</h1>        
+          </center>
+        </div>
+         
+        <div class="objeto">                                  
+            <b>URL:</b>        
+            <input type="text" id="URL" value="" placeholder="http://192.168.0.38:8080"/>        
+            <input type="button" value="Enter" onclick="Javascript:urlEnter();"/>        
+            <hr />        
+            <iframe src="" id="Iframe" width="100%" height="400px">
+            </iframe>                                             
+            <br />                 
+        </div>
+
+
+
+
+    <div id="componente" class="objeto">              
+        <b>Filtro:</b>                   
+        <hr />                             
+        URL Fluig:
+        <br /> 
+        <input type="text" value="http://192.168.0.38:8080/" id="txtURL" placeholder="http://192.168.0.38:8080/" />
+        <hr>
+        
+        Titulo:
+        <br /> 
+        <input type="text" value="Tabela de teste" id="txtTitulo" placeholder="Tabela" />
+        <hr>
+        
+        Dataset ID:
+        <br /> 
+        <input type="text" value="" id="txtDatasetId" placeholder="workflowProcess" />
+        <hr> 
+         
+        <fieldset>
+            <legend>Data Fields (Colunas):
+            </legend>
+            <input type="button" id="btDataFields" value="Adicionar" onclick="Javascript:addDataFields();" />            
+            <div id="divDataFields">
+            <hr>
+            </div>
+        </fieldset>        
+        <hr>
+        
+        Like Field (Coluna do Filtro):
+        <br /> 
+        <input type="text" value="" id="txtLikeField" placeholder="active" />
+        <hr>
+        
+        Like Value (Valor): 
+        <br />
+        <input type="text" value="" id="txtLikeValue" placeholder="true"/>
+        <hr>
+        
+        <input type="button" value="Pesquisar" onclick="Javascript:consultaDataset();"/>
+        
+    </div>              
+</body>
+</html>

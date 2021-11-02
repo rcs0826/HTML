@@ -1,0 +1,82 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link type="text/css" rel="stylesheet" href="https://style.fluig.com/css/fluig-style-guide-docs.min.css">
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/mustache/mustache.min.js"></script>
+	<script type="text/javascript" src="https://style.fluig.com/js/fluig-style-guide-docs-chart.min.js" charset="utf-8"></script>
+	<script src="../vcXMLRPC.js"></script> 
+</head>
+<body>
+<div class="fluig-style-guide">
+<form name="form" role="form">
+	<h2>Status de Usuários</h2>
+	<div id="MY_SELECTOR"></div>
+	<div id="ativo"></div>  Ativados
+	<div id="desativo"></div> Desativados
+	<input type="hidden" name="infisivel">
+</form>
+<script>
+	var user = DatasetFactory.getDataset("colleague", null, null, null);
+		
+	var activeT = 0
+	  , activeF = 0;
+	             
+	for(var i = 0; i < user.values.length; i++){ 
+	//console.log(user.values[i].active);
+		if(user.values[i].active == "true" ){	 
+		 	activeT ++;  
+		}
+		else{
+		    activeF ++;  
+		}
+	}
+	
+	var data = [
+		    {
+		        value: activeF,
+		        color:"#F7464A",
+		        highlight: "#FF5A5E",
+		        label: "Desativados"
+		    },
+		    {
+		        value: activeT,
+		        color: "#46BFBD",
+		        highlight: "#5AD3D1",
+		        label: "Ativados"
+		    }
+		];
+	var options = "segmentShowStroke";
+	var chart = FLUIGC.chart('#MY_SELECTOR', {
+							    id: 'set_an_id_for_my_chart',
+							    width: '100',
+							    height: '50',
+							    /* See the list of options */
+							});
+	// call the pie function
+	var pieChart = chart.pie(data, options);
+</script>
+<style>
+	#ativo{
+		width: 13px;
+		height:13px;
+		border: 1px solid #ccc;
+		background-color: #F7464A;
+		display:inline-block;
+	}
+	#desativo{
+		width: 13px;
+		height:13px;
+		border: 1px solid #ccc;
+		background-color: #46BFBD;
+		display:inline-block;
+	}
+	#MY_SELECTOR{
+		width: 20%;
+		height:20%;
+	}
+</style>
+</div>
+</body>
+</html>
