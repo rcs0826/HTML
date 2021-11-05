@@ -37,8 +37,14 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
     var vetTitle = txtTitle.split(";");   
 
     try {
-        if (txtTitle != null && txtTitle != "" && vetTitle.length == 2) {
-            table += (vetTitle[0] == "f")?'<fieldset><legend>':'<div class="panel panel-primary"><div class="panel-heading"><center><h2 class="fs-no-margin">';
+        if (txtTitle != null && txtTitle != "" && vetTitle.length >= 2) {
+            if(vetTitle[0] == "p" && vetTitle.length == 3 && vetTitle[2] != ""){
+                nclass = getMessageClass(vetTitle[2]);
+            }
+            else{
+                nclass = "primary";
+            }
+            table += (vetTitle[0] == "f")?'<fieldset><legend>':'<div class="panel panel-'+nclass+'"><div class="panel-heading"><center><h2 class="fs-no-margin">';
             table += vetTitle[1];
             table += (vetTitle[0] == "f")?'</legend>':'</h2></center></div><div class="panel-body" >';
         }
@@ -145,26 +151,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                 else {
                     nclass = objType == "button" ? "btn btn-" : "form-control";
                     if(objType == "button"){
-                        switch (objValue) {
-                                case "p":
-                                    nclass += "primary"
-                                    break;
-                                case "i":
-                                    nclass += "info";
-                                    break;
-                                case "d":
-                                    nclass += "danger";
-                                    break;
-                                case "w":
-                                    nclass += "warning";
-                                    break;
-                                case "s":
-                                    nclass += "success";
-                                    break;
-                                default:
-                                    nclass += "default";
-                                    break;
-                            }
+                        nclass += getMessageClass(objValue);
                     }
                     var typedef = '';
                     if(objType == "date" || objType == "time"){
@@ -247,8 +234,8 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
     } catch (e) {
         alert("Erro: " + e.message);
     }
-}    
-function getDivMensage(tp,tt,bd){
+} 
+function getMessageClass(tp){
     switch (tp) {
             case "p":
                 tp =  "primary"
@@ -270,6 +257,10 @@ function getDivMensage(tp,tt,bd){
                 tp = "default";
                 break;
         }
+        return tp;
+}
+function getDivMensage(tp,tt,bd){
+    tp = getMessageClass(tp);
     return '<div class="hideLastTD">'
         +'<div class="alert alert-'+tp+'" role="alert">'
         +'<center>'
@@ -281,7 +272,6 @@ function getDivMensage(tp,tt,bd){
         +'</center>'
         +'</div>'
         +'</div>';
-
 }
 /***************************************************************************
  * Limpa uma String 

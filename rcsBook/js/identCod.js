@@ -91,6 +91,7 @@ function cabecalho(val){
 	for (var i = 0; i < vet.length; i++) {
 		if (RCS.contains(vet[i],"function ") || RCS.contains(vet[i],":function")) {
 			if(i==0 || !RCS.contains(vet[i-1],"*******/")){
+			    //objCab[guia].return = false;
 				guia++;
 				obj.params = getCabecalho(vet[i]);
 				obj.return = false;
@@ -110,7 +111,7 @@ function cabecalho(val){
 	for (var i = 0; i < objCab.length; i++) {
 		insert = objCab[i].params;
 		insert += "* @return";		
-		insert += (objCab[i].return)?": \n":" Sem retorno;\n";
+		insert += (objCab[i].return)?": ;\n":" Sem retorno;\n";
 		insert += "**************************************************************************/\n";
 		vet[objCab[i].row] = insert + vet[objCab[i].row];
 	}
@@ -151,7 +152,7 @@ function getCabecalho(val){
 
 	if (params != 0) {
 		for (var i = 0; i < params.length; i++) {
-			ret += "* @param "+(params[i]).trim()+": \n";			
+			ret += "* @param "+(params[i]).trim()+": ;\n";			
 		}
 	}
 	else{
