@@ -1,34 +1,181 @@
-<!DOCTYPE html>
 <html>
-<head>
-    <title>OK</title>          
-        <meta charset="UTF-8">	         
-        <link type="text/css" rel="stylesheet" href="rcsBook.css"/>   	         
-        <script type="text/javascript" src="jquery-1.9.1.js"></script>   	         
-        <script type="text/javascript" src="rcsBook.js"></script>   	         
-        <script type="text/javascript" src="functions.js"></script>
-</head>
-<body class="dark">
-    <h1>Dados</h1>
-    <p>
-        Saldo: 
-        <input class="dark" id="txtSaldo" type="text" value="" readonly /> 
-    </p>
-    <p>
-        Investido: 
-        <input class="dark" id="txtInvestido" type="text" value="" readonly /> 
-    </p>
-    <p>
-        Lucro: 
-        <input class="dark" id="txtLucro" type="text" value="" readonly /> 
-    </p>
-    <p>
-    	Regua: 
-        <input class="dark" id="txtRegua" type="text" value="" readonly /> 
-    </p>
-    <textarea class="dark" id="txtlog"></textarea> 
-    <!--<input type="button" id="btBt" class="dark" value="Enter" onclick="" />-->
-    <div id="divhtml"></div>
-
-</body>
+    <head>
+        <title>Fluig</title>
+        <meta charset="UTF-8">
+            <link type="text/css" rel="stylesheet" href="rcsBook.css"/>
+            <link type="text/css" rel="stylesheet" href="style.css"/>
+            <link type="text/css" rel="stylesheet" href="fluig-style-guide.min.css" />
+            <script type="text/javascript" src="jquery-1.9.1.js"></script>
+            <script type="text/javascript" src="fluig-style-guide.min.js" charset="utf-8"></script>
+            <script type="text/javascript" src="fluig-style-guide.min-flat.js" charset="utf-8"></script>
+            <script type="text/javascript" src="rcsBook.js"></script>
+            <script type="text/javascript" src="functions.js"></script>
+        </head>
+        <body class="extension">
+            <textarea id="tempClipboard" style="width:0px;height:0px"></textarea>
+            <div class="fluig-style-guide" >
+                <form name="form" role="form" >
+                <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <center>
+                        <h2 class="fs-no-margin">Fluig Helper</h2>
+                    </center>
+                </div>
+                <div class="panel-body" >
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="collapse-icon up" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                        Atalhos
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">                                             
+                                            <div class="btn-group">
+                                                <button class="btn btn-primary" id="btLog">Download Log Completo</button>
+                                                <button class="btn btn-primary" id="btBP">Consultar Solicitações</button>
+                                            </div>
+                                            <div class="btn-group">
+                                                <button class="btn btn-primary" id="btUsu">Usuários</button>
+                                                <button class="btn btn-primary" id="btGrp">Grupos</button>
+                                                <button class="btn btn-primary" id="btRol">Papéis</button>
+                                                <button class="btn btn-primary" id="btApp">Centro de Aplicativos</button>
+                                            </div>                                            
+                                            <div class="btn-group">
+                                                <button class="btn btn-primary" id="btAPI">Doc API Rest</button>
+                                                <button class="btn btn-primary" id="btWSDL">Doc Services WSDL</button>
+                                            </div>
+                                        </div>
+                                    </div>                                   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="collapse-icon" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                        Busca Processos
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="form-group row">
+                                        <div class="col-xs-12">
+                                            <label>Instance Process:</label>
+                                            <div class="input-group">
+                                                <input class="form-control" id="txtInstance" type="text" value="" />
+                                                <span class="input-group-addon" id="btPesq">
+                                                    <a href="#">Pesquisar</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="collapse-icon" id="dsPage" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                        Pesquisa de Datasets
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="btn-group">
+                                        <input class="btn btn-default" type="button" value="Go Page Sync" id="btDSync"/>
+                                        <input class="btn btn-info" type="button" value="Sincronizar" id="btDSincronizar" />
+                                        <input class="btn btn-primary" type="button" value="Download CSV" id="btDownloadCSV" />
+                                        <input class="btn btn-danger" type="button" value="Limpar" />
+                                        <button class="btn btn-warning" id="code">&lt; &gt;</button>
+                                    </div>
+                                    <hr />
+                                    <fieldset>
+                                        <legend>Filtros </legend>
+                                        <div class="form-group row">
+                                            <div class="col-xs-4">
+                                                <label for="txtSqlLimit">SQL Limit:</label>
+                                                <input type="number" class="form-control" id="txtSqlLimit" name="txtSqlLimit" value="10" title="SQL Limit" />
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label for="slTipoCons" >Tipo de Consulta:</label>
+                                                <select class="form-control" id="slTipoCons" name="slTipoCons" title="Tipo de Consulta" >
+                                                    <option value="MUST">Igual</option>
+                                                    <option value="SHOULD">Contêm</option>
+                                                    <option value="MUST_NOT">Não Contêm</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-xs-2">
+                                                <label for="cbLike" >Like:</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <input type="checkbox" id="cbLike" name="cbLike" value="Sim" title="Like" />
+                                                    </span>
+                                                    <label class="form-control">Sim</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-xs-6">
+                                                <label for="txtDataset">Código Dataset:</label>
+                                                <input type="text" class="form-control" id="txtDataset" name="txtDataset" title="Código do Dataset" />
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <label for="txtColuFilt">Colunas para Filtro:</label>
+                                                <input type="text" class="form-control" id="txtColuFilt" name="txtColuFilt" title="Colunas para Filtro" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-xs-12">
+                                                <label for="slTabe">Dataset:</label>
+                                                <div class="input-group ">
+                                                    <select class="form-control" id="dataset" name="dataset" data-getTabDat></select>
+                                                    <span class="input-group-addon fs-cursor-pointer">
+                                                        <a href="#"  id="btPesqDat" name="btPesqDat" data-getTabDatPesq >Pesquisa </a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-xs-7">
+                                                <label for="slColuFilt">Colunas para Filtro:</label>
+                                                <select class="form-control" id="slColuFilt" name="slColuFilt" title="Colunas para Filtro"></select>
+                                            </div>
+                                            <div class="col-xs-5">
+                                                <label for="txtValoPesq">Valor a ser Pesquisado:</label>
+                                                <div class="input-group ">
+                                                    <input type="text" class="form-control" id="txtValoPesq" name="txtValoPesq" title="Valor a ser Pesquisado" />
+                                                    <span class="input-group-addon fs-cursor-pointer">
+                                                        <a href="#"  id="btAddFil" name="btAddFil" data-setFilter >Adicionar </a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-xs-12">
+                                                <label for="txtListFilt">Lista de Filtro:</label>
+                                                <div  id="txtListFilt" name="txtListFilt" title="Lista de Filtro"></div>
+                                                <hr />
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <div class="form-group row">
+                                        <div class="col-xs-12" id="result"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+            </form>
+        </div>
+        <div id="infoUser" style="font-size: 12px;"></div>
+    </body>
 </html>
