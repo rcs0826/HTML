@@ -15,6 +15,7 @@
         <script type="text/javascript" src="./js/vkbeautify.js" charset="utf-8"></script>
         <script type="text/javascript" src="./js/getValidEnable.js" charset="utf-8"></script>
         <script type="text/javascript" src="./js/formCreate.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/clibrary.js" charset="utf-8"></script>
     </head>
     <body >
         <div class="fluig-style-guide" >
@@ -23,7 +24,7 @@
                 <div class="form-group row">
                     <div class="col-md-12 title" id="title">
                         <center>
-                            <h3 id="title1">Form Creator RCS Version 1.0</h3>
+                            <h3 id="title1">Form Creator for FLUIG 4.0</h3>
                         </center>
                     </div>
                 </div> 
@@ -38,42 +39,92 @@
                     <div class="col-md-12">
                         <div class="form-group row">
                             <div class="col-md-12">
-                                <label for="txtTituForm" class="legend">(p = Panel / f = fieldset);Título do Formulário;(cores se for Panel)</label>
+                                <label for="txtTituForm" class="legend">
+                                    (p = Panel / f = Fieldset);Título do Formulário;(cores se for Panel)
+                                    <input type="button" class="btn btn-danger" id="btLimpForm" name="btLimpForm" value="Limpar Formulário" title="Limpar Formulário" />
+                                </label>
                                 <input type="text" class="form-control" id="txtTituForm" placeholder="Digite o Título do Formulário aqui!" title="Título do Formulário" />
                             </div>
                         </div>
                         <div class="form-group row">
-                            <div class="col-md-10">
-                              <label for="txtInst" class="legend">Instrução:
+                            <div class="col-md-8">
+                              <label for="txtInst" class="legend"><b>Instruções:</b><hr />
                                 <small>
                                     Nome; Type; ID/Name; Value; Placeholder (c = Copia o Title); Readonly (1); Obrigatorio(1); Tamanho
                                     <br />
-                                    <small>[ Tipo Button, as cores são trocadas no value (p,i,d,w,s) ]</small>
+                                    <small>[ <b>Tipo Button</b>, as cores são trocadas no value (p,i,d,w,s) ]</small>
                                     <br />
-                                    <small>[ Aviso (msg), as cores são trocadas no 'ID/Name' (p,i,d,w,s), Título em 'Nome' e a Mensagem no 'value']
+                                    <small>[ <b>Aviso (msg)</b>, as cores são trocadas no 'ID/Name' (p,i,d,w,s), Título em 'Nome' e a Mensagem no 'value']
                                     </small>
                                 </small>
                               </label>
-                              <textarea class="form-control" rows="6" id="txtInst" placeholder="Digite o Instrução aqui!" title="Instrução" oninput="createInputs(this.value,'divForm','txtCodCreator',document.getElementById('txtTituForm').value);"></textarea>
+                              <textarea class="form-control" rows="6" id="txtInst" placeholder="Digite o Instrução aqui!" title="Instrução" ></textarea>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-4">
                               <label for="txtInst" class="legend">Tipos de objetos personalizados</label>  
                               <div>
                                 <hr />                                
-                                Type: <br />
-                                <small>email, kg, msg, money, placa </small><br /><br />
-                                Por nome: <br />
-                                <small>CPF, CNPJ, CEP, RG</small>
+                                <p><b>Type:</b><br />
+                                <small>email, kg, msg, money, placa </small></p>
+                                <p><b>Por nome: </b><br />
+                                <small>CPF, CNPJ, CEP, RG</small></p>
+                                <p><b>Botão ALT GR </b><br />adiciona ";;;;;;;"</p>
                               </div>
                             </div>
                         </div>
-                        <div id="divForm"></div>
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                              <label for="txtCódi" class="legend">Código: 
-                                <input type="button" class="btn btn-warning" id="btCopi" value="Copiar" />
-                              </label>
-                              <textarea class="form-control" rows="6" id="txtCodCreator" placeholder="Digite o Código aqui!" title="Código" oninput="document.getElementById('divForm').innerHTML = this.value;" ></textarea>
+                        <ul class="nav nav-tabs clearfix" role="tablist">
+                            <li class="active" navcontaner="abaForm" group="formCreate"><a href="#">Formulário</a></li>
+                            <li><a href="#" navcontaner="abaCod" group="formCreate">Código</a></li>
+                            <li><a href="#" navcontaner="abaCSS" group="formCreate">CSS</a></li>
+                            <li><a href="#" navcontaner="abaEvVarForm" group="formCreate">Evento - validateForm</a></li>
+                            <li><a href="#" navcontaner="abaEvEnField" group="formCreate">Evento - enableFields</a></li>
+                        </ul>
+                        <div class="navgroup" id="formCreate" >
+                            <hr />
+                            <div id="abaForm">
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <div id="divForm" ></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row" id="abaCod" style="display: none;">
+                                <div class="col-md-12">
+                                  <label for="txtCódi" class="legend">
+                                    <input type="button" class="btn btn-warning" id="btCopi" value="Copiar Código" />
+                                  </label>
+                                  <textarea class="form-control" rows="6" id="txtCodCreator" placeholder="Digite o Código aqui!" title="Código" oninput="document.getElementById('divForm').innerHTML = this.value;" ></textarea>
+                                </div>
+                            </div>  
+                            <div id="abaCSS" style="display: none;">
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <label for="divFormCss" class="legend"> 
+                                            <input type="button" class="btn btn-warning" id="btCopiCss" value="Copiar CSS" />
+                                        </label>
+                                        <textarea class="form-control" rows="6" id="divFormCss" name="divFormCss" title="CSS" ></textarea>
+                                    </div>
+                                </div>
+                            </div>                          
+                            <div id="abaEvVarForm" style="display: none;">
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <label for="txtValiForm" class="legend"> 
+                                            <input type="button" class="btn btn-warning" id="btCopiVF" value="Copiar ValidateForm" />
+                                        </label>
+                                        <textarea class="form-control" rows="6" id="txtValiForm" name="txtValiForm" title="ValidateForm" ></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="abaEvEnField" style="display: none;">
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <label for="txtEnabFiel" class="legend"> 
+                                            <input type="button" class="btn btn-warning" id="btCopiEF" value="Copiar EnableField" />
+                                        </label>
+                                        <textarea class="form-control" rows="6" id="txtEnabFiel" name="txtEnabFiel" title="EnableField" ></textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

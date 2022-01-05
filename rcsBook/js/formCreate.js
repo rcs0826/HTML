@@ -1,8 +1,40 @@
-$(document).ready(function(){    
+$(document).ready(function(){
     $("#btCopi").click(function(){
         RCS.copyClipboard("txtCodCreator");
     });
+    $("#btCopiCss").click(function(){
+        RCS.copyClipboard("divFormCss");
+    });
+    $("#btCopiVF").click(function(){
+        RCS.copyClipboard("txtValiForm");
+    });
+    $("#btCopiEF").click(function(){
+        RCS.copyClipboard("txtEnabFiel");
+    });
+    $("#btLimpForm").click(function(){
+        $('#txtTituForm').val("");
+        $('#txtInst').val("");
+        $('#divFormCss').val("");
+        $('#txtCodCreator').val("");
+        $('#txtValiForm').val("");
+        $('#txtEnabFiel').val("");
+        $('#divForm').html("");
+    });
+
+    $("#txtInst").on("keydown input",function(event){
+        if(event.keyCode == 225){
+            this.value = this.value+";;;;;;;";  
+        }      
+        createInputs(this.value,'divForm','txtCodCreator',document.getElementById('txtTituForm').value);
+        $('#txtValiForm').val(vkbeautify.css(codValidate(1)));
+        $('#txtEnabFiel').val(vkbeautify.css(codValidate(2)));
+    });
+    $("#txtCodCreator").on("keydown input",function(event){
+        $('#txtValiForm').val(vkbeautify.css(codValidate(1)));
+        $('#txtEnabFiel').val(vkbeautify.css(codValidate(2)));
+    });
 });
+//p;Controle de Downloads - NOTFIS;i
 /***************************************************************************
  * Criador de Formulário
  * *************************************************************************
@@ -79,7 +111,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                 idName = objIDName != "" ? objIDName : nameSugeri(objType, objNome.trim());
                 titName = clearString(objNome.trim());
                 obr = "";
-                obr += objReadonly != 1 && objObrigatorio == 1 ? " req" : "";
+                obr += objReadonly != 1 && objObrigatorio == 1 ? "req" : "";
 
                 if (obr != "") {
                     isObr = true;
@@ -154,7 +186,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                         nclass += getMessageClass(objValue);
                     }
                     var typedef = '';
-                    if(objType == "date" || objType == "time"){
+                    if(objType == "data" || objType == "time"){
                         table += '<div class="input-group enable-calendar">';  
                     }
                     else if(objType == "placa"){
@@ -176,7 +208,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                     typedef = (typedef != '')?typedef:objType;
                     table += '<input type="' + typedef + '" class="' + nclass + '" id="' + idName + '" name="' + idName + '"' + attr + ' title="' + titName + '" />';
                     
-                    if(objType == "date"){
+                    if(objType == "data"){
                         table += '<span class="input-group-addon fs-cursor-pointer"> <span class="fluigicon fluigicon-calendar"></span></span></div>';  
                     }
                     else if(objType == "time"){
@@ -197,37 +229,37 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                 sum = 0;
             }
         }
-        if (txtTitle != null && txtTitle != "" && vetTitle.length == 2) {
+        if (txtTitle != null && txtTitle != "" && vetTitle.length >= 2) {
             table += (vetTitle[0] == "f")?'</fieldset>':'</div></div>';
         }
 
         //table += "</form></div>";
-
-        if (isObr || isSelect || vetTitle.length == 2 && vetTitle[0] == "f") {
-            table += "<style>";
-        }
+        var css = "";
+        //if (isObr || isSelect || vetTitle.length == 2 && vetTitle[0] == "f") {
+        //    table += "<style>";
+        //}
         if (isObr) {
-            table += "[req]:after {";
-            table += '  content: " *" !important;';
-            table += "  color: red !important;";
-            table += "}";
+            css += "[req]:after {";
+            css += '  content: " *" !important;';
+            css += "  color: red !important;";
+            css += "}";
         }
         if (isSelect) {
-            table += "select [readonly]{";
-            table += "  display: none;";
-            table += "}";
+            css += "select [readonly]{";
+            css += "  display: none;";
+            css += "}";
         }
 
         if (vetTitle.length == 2 && vetTitle[0] == "f") {
-            table += "legend{";
-            table += "  color: #CB4921 !important;";
-            table += "}";
+            css += "legend{";
+            css += "  color: #CB4921 !important;";
+            css += "}";
         }
-
+        document.getElementById("divFormCss").value = vkbeautify.css(css);
         //if (obr != "" || isSelect || vetTitle.length == 2 && vetTitle[0] == "f") {
-        if (isObr || isSelect || vetTitle.length == 2 && vetTitle[0] == "f") {
-            table += "</style>";
-        }
+        //if (isObr || isSelect || vetTitle.length == 2 && vetTitle[0] == "f") {
+        //    table += "</style>";
+        //}
         
         document.getElementById(divRet).innerHTML = table;
         document.getElementById(txtRet).value = vkbeautify.xml(table);
@@ -315,6 +347,7 @@ function nameSugeri(type, name) {
             newName = "sl";
             break;
         case "date":
+        case "data":
             newName = "dt";
             break;
         case "radio":

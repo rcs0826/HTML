@@ -9,310 +9,185 @@
         <style>[req]:after {  content: " *" !important;  color: red !important;}legend{  color: #CB4921 !important;}</style>
     </head>
     <body onclick="setLocal()">
-        <div class="form-group row">
-            <div class="form-group row">
-                <div class="col-md-2">
-                    <label for="txtWidt" >Width:</label>
-                    <input type="text" class="form-control" id="txtWidt" name="txtWidt" title="Width" />
-                </div>
-                <div class="col-md-2">
-                    <label for="txtHein" >Heingth:</label>
-                    <input type="text" class="form-control" id="txtHein" name="txtHein" title="Heingth" />
-                </div>
+
+    
+    <!-- ========================================================================================================================= -->
+    <div class="bodyChat btn-default" >
+        <div class="imgChat">
+            <img src="file:///home/rogerio/Imagens/atendimento2.jpeg" class="img-circle thumb-profile-sm-legacy" />
+        </div>
+        <span class="titleChat">Posso Ajudar?</span>
+    </div>
+    
+    <div class="panel panel-info newclass" style="display: none;">
+        <div class="panel-heading">
+            <span>
+                <center>Posso Ajudar?</center>
+            </span>
+        </div>
+        <div class="panel-body">
+            <iframe id=botChat class="botChat" ></iframe>
+            <div class="row left">
+                <!--<input type="button" id="btnredm" class="btn btn-info" value="Redimencionar" />
+                <input type="button" id="btnclose" class="btn btn-danger" value="Fechar" />-->
             </div>
-            <div class="form-group row">
-                <div class="col-md-5">
-                    <label for="txtClic" >Clicks:</label>
-                    <textarea class="form-control" rows="6" id="txtClic" name="txtClic" title="Clicks" ></textarea>
-                </div>
-            </div>
-            <!--
-        <input type="hidden" name="checkSuspIPI" id="checkSuspIPI" value="false">
-        <input type="checkbox" id="_checkSuspIPI" name="_checkSuspIPI" checked="true" title="Suspensão IPI" >Suspensão IPI
-        <br />
-        <input type="button" name="btTeste" id="btTeste" value="Teste" onclick="getCheck('_checkSuspIPI')">
-    -->
+        </div>
+    </div>
         <script type="text/javascript">
-            document.getElementById("txtClic").value = "";
-            document.getElementById("txtWidt").value = "";
-            document.getElementById("txtHein").value = "";
-            function getCheck(id){
-                var ret = "";
-                if (document.getElementById(id).type == "hidden") {
-                    ret = (document.getElementById(id).value == "true")?true:false;
-                } 
-                else if (document.getElementById(id).type == "checkbox"){
-                    ret = document.getElementById(id).checked;
-                }
-                
-                return ret;
-            }
-            function getLocal(e){
-                document.getElementById("txtWidt").value = this.width;
-                document.getElementById("txtHein").value = this.height;
-            }
-            function setLocal(){
-                document.getElementById("txtClic").value += "width: "
-                + document.getElementById("txtWidt").value 
-                + " | height: "
-                + document.getElementById("txtHein").value
-                + "\n";
-            }
-            document.querySelector('body').addEventListener('mousemove', function(event) {
-              var posX = event.clientX,
-                  posY = event.clientY;
-                  document.getElementById("txtWidt").value = posX;
-                document.getElementById("txtHein").value = posY;
+            var urlChat = 'https://sac-santher.ascbrazil.com.br/Chat/id/SACProfessional';
+            var close = false;
+            $(document).ready(function() {
+                hideCT(".newclass", true);  
+                $(".panel-heading").hide();
+
+                setTimeout(function(){
+                    $(".botChat").attr('src',urlChat);
+                },800); 
+
+                $(".bodyChat").on("click", function() {
+                    hideCT(".newclass", close);
+                     close = (close) ? false : true;
+
+                });
+
+                $("#btnredm").on("click", function() {
+                    fullScreem(".newclass", ".botChat");
+                });
+
+                $("#btnclose").on("click", function() {
+                });
             });
-            /**************************************************************************
-*   Eveto Workflow - Depois da Tarefa a ser Criada
-* *************************************************************************
-* 
-* @param colleagueId: ID do usuário;
-* @return: Sem retorno;
-**************************************************************************/
-function afterTaskCreate(colleagueId){
-    //var act = parseInt(getValue('WKNumState'));
-    //var ns = getValue("WKNextState");
-    console.info("===>> ------------------------------");
-    //console.info("===>> act afterTaskCreate: "+act);
-    //console.info("===>> ns afterTaskCreate: "+ns);
-    console.info("===>> ------------------------------");
-    //var act = parseInt(getValue('WKNextState'));
-    var act = 1;
-    if(act != 0){
-        //var colleagueId = getValue("WKUser");
-        //var processo   = getValue("WKNumProces");
-        //var numEmpresa = getValue("WKCompany");
-        //var inputDate  = (hAPI.getCardValue("dtIniSolic") != "")?(hAPI.getCardValue("dtIniSolic")).split("-"):null;
-        var dtIniSolic = (new Date());//(inputDate == null)?(new Date()):(new Date(inputDate[0],(parseInt(inputDate[1])-1),inputDate[2]));
-        customLog("dtIniSolic",dtIniSolic);     
-        
-        //var dsConf = actMap(act);
-        var tipo = 0;//parseInt(dsConf.getValue(0,"tipo"));
-        var confHour = "17:00";//dsConf.getValue(0,"horas");
 
-        customLog("tipo",tipo); 
-        customLog("act",act);           
-        
-        var dtSLA = diaUtil(tipo,dtIniSolic);
-        customLog("dtSLA",dtSLA);       
+            /*******************************************************************************
+             * Faz a transição de uma tela a outra
+             * ***********************************************
+             * 
+             * @parameter id: Identificador da div; val: Permissão para exibir ou não uma
+             *            div;
+             * 
+             * @return Sem Retorno;
+             * 
+             * 
+             * height: '0%', width: '0%' ,
+             ******************************************************************************/
+            function hideCT(newId, val) {
+                if (val) {
+                    //$(newId).animate({
+                    //  position:'absolute',
+                    //  top:'1000px'
+                    //});
+                    $(newId).hide();
+                } else {
+                    $(newId).show();
+                    $(newId).animate({
+                        bottom : window.innerHeight/5
+                    });
+                    $(".botChat").attr('src',urlChat);
+                }
+            };
 
-        var hora = confHour.split(":");
-        var thora = (hora[0] == "00")?0:parseInt(retZeroEsq(hora[0]));
-        var tminuto = (hora[1] == "00")?0:parseInt(retZeroEsq(hora[1]));
-    
-        
-        //var obj = hAPI.calculateDeadLineHours(dtSLA, 0, java.lang.Integer(1), "Fechamento Contábil");
-        var dt  = "";//obj[0];
-        //var segundos = obj[1];
-        var segundos = ((thora*60)*60)+(tminuto*60);
-
-        customLog("dt",dt);
-        customLog("segundos",segundos);
-        /* =====- Parâmetros -==========================
-         * data: data inicial (tipo Date);
-         * segundos: quantidade de segundos após a meia noite ;
-         * prazo: prazo que será aplicado em horas (tipo int);
-         * periodId: código de expediente.
-         * */
-        /** ------------- Altera o prazo do processo ---------------------------**/
-        //var ret = hAPI.setDueDate(processo,hAPI.getActualThread(numEmpresa, processo, ns),colleagueId, dt, segundos);
-        /* =====- Parâmetros -==========================
-         * numProcesso: número da solicitação;
-         * numThread: número da thread (normalmente 0, quando não se utiliza atividades paralelas );
-         * userId: o usuário responsável pela tarefa;
-         * dataConclusao: a nova data de conclusão;
-         * tempoSeg: tempo que representa a nova hora de conclusão, calculado em segundos após a meia- noite.
-         * */   
-    }
-}
-/** ************************************************************************************************
- *              Traz o último dia útil do mês
- * ************************************************************************************************
- * @param tipo: Dias úteis;
- * @param today: Dia a ser calculado;
- * @return: último dia útil do mês
- * ************************************************************************************************/
-function diaUtil(tipo,today){   
-    customLog("today",today);
-    customLog("tipo == 0",tipo == 0);
-    var year = today.getFullYear();
-    var month = today.getMonth()+1;   
-    //var day  = today.getDate();
-    var now,dia=1,ret,cont=0;
-            
-    // Último dia útil
-    if(tipo == 0){
-        var ultimoDia = (new Date(year, month, 0)).getDate();
-        now = (new Date(year, month, 0)).getDay();
-        customLog("now",now);
-        customLog("ultimoDia",ultimoDia);
-        if(now == 0){
-            ultimoDia = ultimoDia - 2;
-        }
-        else if(now == 6){
-            ultimoDia = ultimoDia - 1;      
-        }
-        return (new Date(year, month-1, ultimoDia));
-    }   
-    else{
-        // Dia útil
-        customLog("else","else");
-        for(var t=0;t<tipo;t++){
-            ret = check(year, month, dia);
-            dia = ret.getDate();
-            customLog("check",ret);
-            customLog("dia",dia);
-            //if(feriado(ret)){
-            //    //cont++;
-            //    dia++;
-            //}
-            dia++;
-        }
-        // Pula os feriados
-        //for(var i=0;i<cont;i++){
-        //  ret = check(year, month, dia);
-        //  dia = ret.getDate();            
-        //}
-        
-        customLog("ret",parseDT(ret));
-        return ret;
-    } 
-}
-/**************************************************************************
-*   Creca e traz um dia útil;
-* *************************************************************************
-* 
-* @param year: Ano;
-* @param month: Mẽs;
-* @param dia: Dia;
-* @return: Nova data;
-**************************************************************************/
-function check(year, month, day){
-    //dia++;
-    customLog("year",year);
-    customLog("month",month);
-    customLog("day",day);
-    var sem = (new Date(year, month, day)).getDay();
-    var ret = day;
-    if(sem == 0){
-        ret = day + 1;
-    }
-    else if(sem == 6){
-        ret = day + 2;
-    }
-
-    return (new Date(year, month, ret));
-} 
-/**************************************************************************
-*   Retorna se o dia é um feriado (Verifica o cadastro do Fluig)
-* *************************************************************************
-* 
-* @param today: Data;
-* @return: Retorno Booleado (true/false);
-**************************************************************************/
-function feriado(today){
-    var year = today.getFullYear();
-    var month = today.getMonth() + 1 < 10 ? '0' + (today.getMonth() + 1) : (today.getMonth() + 1);
-    var day = today.getDate() < 10 ? '0' + today.getDate() : today.getDate();
-    var dtFormat = (day + '-' + month + '-' + year);     
-       
-    var c = [DatasetFactory.createConstraint("dayFormatted",dtFormat,dtFormat,ConstraintType.MUST)];
-    var ds = DatasetFactory.getDataset("globalCalendar",null,c,null);
-    
-    if(ds.rowsCont == 0){
-        return false;
-    }
-    else{
-        return true;
-    }   
-}
-
-/**************************************************************************
-*   Converte a data em formato Pt-Br
-* *************************************************************************
-* 
-* @param today: Data;
-* @return: Data formatada;
-**************************************************************************/
-function parseDT(today){
-    var year = today.getFullYear();
-    var month = today.getMonth() + 1 < 10 ? '0' + (today.getMonth() + 1) : (today.getMonth() + 1);
-    var day = today.getDate() < 10 ? '0' + today.getDate() : today.getDate();
-    var dtFormat = (day + '/' + month + '/' + year);
-    return dtFormat;
-}
-
-/**************************************************************************
-*   Mapeamento das Tarefas e os Dias Úteis para o SLA
-* *************************************************************************
-* 
-* @param act: ID da tarefa;
-* @return: Retorna os dias úteis em formato inteiro;
-**************************************************************************/
-function actMap(act){   
-    var c = [DatasetFactory.createConstraint("act",act,act,ConstraintType.MUST)];
-    var ds = DatasetFactory.getDataset("checkListFechCont",null,c,null);
-
-    return ds;
-}
-/**************************************************************************
-*   Log de customizado
-* *************************************************************************
-* 
-* @param name: Titulo;
-* @param func: Objeto;
-* @return: Sem retorno;
-**************************************************************************/
-function customLog(name, func) {
-    console.info("===>>ini " + name +" | "+func);
-    if (func != null) {
-        //console.dir(func);
-        //console.info("......................");
-        for (x in func) {
-            //console.info(x);
-        }
-    }
-    //console.info("===>>fim " + name);
-}
-/** ***********************************************************************
- *                      Log de erro customizado
- * ************************************************************************
- * @params  e (Object) = Objeto de erro
- * @return Não há retorno
- **************************************************************************/
-function customErro(e) {
-    console.error("===>>ini ");
-    console.error("Erro: " + e.message);
-    console.error("Linha: " + e.lineNumber);
-    console.error("Erro Rhino: " + e.rhinoException);
-    console.error("Filename: " + e.fileName);
-    console.error("Stack: " + e.stack);
-
-    console.info("===>>fim ");
-}
-/**************************************************************************
-*   Retira os zeros a esquerda
-* *************************************************************************
-* 
-* @param val: Valor a ser tratado;
-* @return: Valor tratado;
-**************************************************************************/
-function retZeroEsq(val){
-     var vet = val.split("") ,result = "" ,nzero = false;
-     for(var i = 0; i<vet.length; i++){
-         if(nzero){
-             result += vet[i];
-        }
-         else if(parseInt(vet[i]) != 0){
-             result += vet[i];
-             nzero = true;
-        }
-    }
-     return result;
-}
-afterTaskCreate(0);
+            var fs = true;
+            function fullScreem(newId, idFS) {
+                // hide(".panel-heading", fs);
+                if (fs) {
+                    $(newId).animate({
+                        top : '11%',
+                        width : '92%',
+                        height : '90%'
+                    });
+                    $(idFS).animate({
+                        width : '100%',
+                        height : '400px',
+                        scrollTop: '100%'
+                    });
+                    $(".panel-heading").hide();
+                } else {
+                    // Volta para as configurações iniciais
+                    $(newId).animate({
+                        bottom : '11%',
+                        width : '430px'
+                    });
+                    $(newId).css("height","");
+                    $(idFS).animate({
+                        width : '430px',
+                        height : '400px',
+                        scrollTop: '100%'
+                    });
+                    $(".panel-heading").show();
+                }
+                fs = (fs) ? false : true;
+            }
         </script>
+        <style type="text/css">
+            /*Chat*/
+            .newclass {
+               width: 430px;
+                z-index: 100 !important;
+                box-shadow: 10px 10px 5px #888888 !important;
+                right: 1% !important;
+                position: fixed;
+            }
+            .botChat {
+               border: none !important;
+                width: 100%;
+                height: 430;
+                border-radius: 10px;
+                bottom: 1%;
+            }
+
+            .left {
+                float: right;
+                padding: 5px 15px;
+            }
+
+            .panel-heading{
+                color:black !important;
+                font-weight: bold !important; 
+            }
+            /*Botão do Chat*/
+            .titleChat {
+                position: relative;
+                right: 7px;
+                top: -48px;
+                font-family: "Times New Roman", Times, serif;
+                font-size: 20px;
+                font-weight: bold;
+                color: white;
+            }
+
+            .imgChat img {
+                width: 70px;
+                height: 70px;
+                position: relative;
+                background-color: #ffffff;
+                border-radius: 100px;
+            }
+
+            .imgChat {
+                border: 1px solid #fff;
+                border-radius: 100px;
+                width: 70px;
+                height: 70px;
+                padding: 5px 5px;
+                background-color: #00c08d;
+                display: inline-block;
+                position: relative;
+                top: -42%;
+                left: -5%;
+            }
+
+            .bodyChat {
+                border: 1px solid #fff;
+                box-shadow: 5px 5px 20px #888888;
+                border-radius: 100px;
+                padding-right: 15px;
+                height: 50px;
+                background-color: #00c08d;
+                position: fixed;
+                right: 5%;
+                top: 85%;
+            }
+        </style>
+<!-- ========================================================================================================================= -->        
     </body>
 </html>
