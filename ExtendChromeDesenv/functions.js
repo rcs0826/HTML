@@ -2,9 +2,9 @@ $(document).ready(function(){
 	chrome.tabs.query({ "active": true, "lastFocusedWindow": true }, function (tabs) {
 		//$("#head").attr('src',getUrl(tabs[0].url)+'/webdesk/vcXMLRPC.js');
 		var cod = '$("#logged-user-name").html();';
-		getValue(cod,"#infoUser","html");
-		
+		getValue(cod,"#infoUser","html");		
             
+	     /*Atalhos*/
 	     $("#btPesq").click(function(){
 	     	var id = document.getElementById("txtInstance").value;
 			goLink("ProcessInstanceID",id);	     	
@@ -13,23 +13,22 @@ $(document).ready(function(){
 	     	var ds = ($("#txtDataset").val() == "")?RCS.getValueSelect("dataset"):$("#txtDataset").val();
 			goLink("DsSync",ds);
 	     });
-
 	     $("#btBP").click(function(){goLink("pageProcessPes","X");});
 	     $("#btUsu").click(function(){goLink("pageUsu","X");});
 		 $("#btGrp").click(function(){goLink("pageGrp","X");});
 		 $("#btRol").click(function(){goLink("pageRol","X");});
 		 $("#btApp").click(function(){goLink("pageApp","X");});
 		 $("#btAPI").click(function(){goLink("pageAPI","X");});
-		 $("#btWSDL").click(function(){goLink("pageWSDL","X");});
+		 $("#btWSDL").click(function(){goLink("pageWSDL","X");});	     
+	     $("#btLog").click(function(){goLink("Log","X");});
 
-	     
-	     $("#btLog").click(function(){
-			getLog();	     	
-	     });	 
+	     $("#dsPage").click(function(){});
+	     /* Importador em Massa*/
+	     $("#btGrup").click(function(){importador(this.id);});
+	     $("#btPape").click(function(){importador(this.id);});
+	     $("#btLimp").click(function(){$("#txtCodiDesc").val(""); });
 
-	     $("#dsPage").click(function(){
-	     });	 
-
+	     /* Dataset View */
     	 var that = WDataset;  	
          $('#dataset').on('change',function(){
          	that.getTabDat();
@@ -55,6 +54,29 @@ $(document).ready(function(){
 	     that.init();
 	 });
 });
+
+function importador(id){
+	alert(id);
+	let txt = $("#txtCodiDesc").val();
+	let row = txt.split("\n");
+	try{
+		for (var i = 0; i < row.length; i++) {		
+			let col = (row[i]).split(";");
+			if (col.length == 2) {
+				if(id == "btGrup"){
+					FLUIG.groupCreate(col[0],col[1]);
+				}
+				else{
+					FLUIG.roleCreate(col[0],col[1]);
+				}
+			}
+		}
+		alert("Cadastrado efetuado");
+	}
+	catch(e){
+		throw e.message;
+	}
+}
 /**************************************************************************
 * 	Abre uma nova aba no workFlow
 * *************************************************************************
@@ -77,6 +99,7 @@ function goLink(link,param){
 			case "pageProcessPes": url = "/pageprocesssearch"; break;	
 			case "pageAPI": url = "/api"; typeUrl=0; break;
 			case "pageWSDL": url = "/services"; typeUrl=0; break;
+			case "Log": url = "/portal/api/rest/wcm/service/userlog/downloadServerLog"; typeUrl=0; break;
 		}
 		chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
 			url = getUrl(typeUrl,tabs[0].url) + url;
@@ -117,6 +140,7 @@ function getUrl(type,url){
 }	
 
 /// Lixo
+/*
 function regua(){
 	var rep = setInterval(function(){
 		var id = "#txtRegua";
@@ -140,7 +164,7 @@ function saldo(){
 	var cod = '$(".deals-controller__item_balance > .deals-controller__cash > .amount").html();';
 	getValue(cod,id);
 }
-
+*/
 
 
 
@@ -525,6 +549,7 @@ var WDataset = {
 	        }); 
         });
     },
+
     /***************************************************************************
      * Toast - Menssagem de informação, erro ou aviso
      * *************************************************************************
@@ -561,5 +586,87 @@ var WDataset = {
 	        message: msgText,
 	        type: msgType
 	    });
+	}
+};
+var FLUIG = {
+	//Cadastra um novo papél no Fluig
+	roleCreate:function(code, description){		
+		chrome.tabs.query({ "active": true, "lastFocusedWindow": true }, function (tabs) {
+			var urlpost = getUrl(0,tabs[0].url)+"/portal/api/rest/wcm/service/role/create";
+			var param = {
+				"formData": {
+					"editCode": "",
+					"addUsers": "",
+					"data": "",
+					"code": code,
+					"description": description,
+					"selectedItens": []
+				},
+				"config": {
+					"validateFields": [
+						{
+							"key": "description"
+						}
+					]
+				}
+			};
+	        				
+	        $.ajax({
+	        	type : "POST",
+	        	url : urlpost,
+	        	contentType : "application/json",
+	        	dataType : "JSON",
+	        	data : JSON.stringify(param),	
+	        	success : function(res) {
+	        		return res;
+	        	},
+	        	error : function(res) {
+	        		alert("Erro " + res);
+	        	}
+	        });
+        });
+	},
+	//Cadastra um novo grupo no Fluig
+	groupCreate:function(code, description){	
+		chrome.tabs.query({ "active": true, "lastFocusedWindow": true }, function (tabs) {	
+			var urlpost = getUrl(0,tabs[0].url)+"/portal/api/rest/wcm/service/group/create";
+			var param = {
+					"formData": {
+						"addUsers": "",
+						"remUsers": "",
+						"addRoles": "",
+						"remRoles": "",
+						"addChildGroups": "",
+						"remChildGroups": "",
+						"data": "",
+						"groupCode": code,
+						"groupDescription": description
+					},
+					"config": {
+						"validateFields": [
+							{
+								"key": "groupCode"
+							},
+							{
+								"key": "groupDescription"
+							}
+						]
+					}
+				};
+	        				
+	        $.ajax({
+	        	type : "POST",
+	        	url : urlpost,
+	        	contentType : "application/json",
+	        	dataType : "JSON",
+	        	data : JSON.stringify(param),	
+	        	success : function(res) {
+	        		return res;
+	        	},
+	        	error : function(res) {
+	        		alert("Erro " + res);
+	        	}
+	        });
+        });
 	}
 };
