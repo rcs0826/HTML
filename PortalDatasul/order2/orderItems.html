@@ -1,0 +1,611 @@
+<div ng-controller="salesorder.order2.orderitems.Controller as itemsGridController" totvs-custom-element="orderItems">
+	<div class="row">
+		<div style="border:0; padding: 15px;">
+			<div class="row">
+				<div class="col-xs-12">
+					<!-- TODO - DESENVOLVER O DETALHE DE ITENS COMPLETO -->
+					<!-- <button class="btn btn-default" ng-show="itemsGridController.orderDisabled" ng-click="itemsGridController.openItemModal()"
+						ng-disabled="!itemsGridController.itemsGridSelectedItem">
+						<span class="glyphicon glyphicon-file"></span>
+						<span class="hidden-xs ng-binding">{{ :: 'l-detail' | i18n : [] : 'dts/mpd' }}</span>
+					</button>--> 
+
+					<div>
+						<!-- TODO - LIBERAR ESSA PARTE PARA INCLUSÃO RÁPIDA E DE ITENS FILHOS -->
+						<div
+							ng-class="{
+								'btn-group': itemsGridController.itemsGridSelectedItem
+								&& itemsGridController.itemsGridSelectedItem['ind-componen'] >= 2
+							}"
+							style="display: inline-block;"
+						>
+							<button
+								ng-show="!itemsGridController.orderDisabled"
+								class="btn btn-default"
+								ng-click="itemsGridController.openAddItemModal()"
+							>
+								<span class="glyphicon glyphicon-plus"></span>
+								<span class="hidden-xs ng-binding">&nbsp;&nbsp;{{ :: 'l-add' | i18n : [] : 'dts/mpd' }}</span>
+							</button>
+							<!--<button ng-if="itemsGridController.itemsGridSelectedItem && itemsGridController.itemsGridSelectedItem['ind-componen'] >= 2"
+								type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu">
+								<li><a ng-click="itemsGridController.fastAddItemModal()"><span class="glyphicon glyphicon-flash"></span>&nbsp;&nbsp;
+									{{ :: 'l-fast-addition' | i18n : [] : 'dts/mpd' }}
+								</a></li>
+								<li ng-if="itemsGridController.itemsGridSelectedItem && itemsGridController.itemsGridSelectedItem['ind-componen'] >= 2">
+									<a ng-click="itemsGridController.openAddChildItemModal()"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;&nbsp;
+										{{ :: 'l-add-child-item' | i18n : [] : 'dts/mpd' }}
+									</a>
+								</li>
+							</ul>-->
+						</div> 
+
+						<div ng-show="!itemsGridController.orderDisabled" class="btn-group" style="display: inline-block;">
+							<button
+								class="btn btn-default"
+								ng-click="itemsGridController.openItemModal()"
+								ng-disabled="!itemsGridController.itemsGridSelectedItem"
+								ng-if="itemsGridController.itemsGridSelectedItem['cod-sit-item'] != 6"
+							>
+								<span class="glyphicon glyphicon-pencil"></span>
+								<span class="hidden-xs ng-binding">{{ :: 'l-edit' | i18n : [] : 'dts/mpd' }}</span>
+							</button>
+
+							<button
+								type="button"
+								class="btn btn-default dropdown-toggle"
+								data-toggle="dropdown"
+								aria-haspopup="true"
+								aria-expanded="false"
+							>
+								<span class="caret"></span>
+							</button>
+
+							<ul class="dropdown-menu" ng-show="itemsGridController.orderItens.length > 0">
+								<li>
+									<a ng-click="itemsGridController.inlineEdit()">
+										<span class="glyphicon glyphicon-th"></span>&nbsp;&nbsp;
+										{{ :: 'l-edit-grid' | i18n : [] : 'dts/mpd' }}
+									</a>
+								</li>
+							</ul>
+						</div>
+
+						<div ng-show="!itemsGridController.orderDisabled" class="btn-group" ng-if="itemsGridController.inlineEditActive">
+							<button
+								class="btn btn-default"
+								ng-click="itemsGridController.inlineEditSave()"
+								ng-disabled="itemsGridController.itemGridDirtyItems.length < 1"
+							>
+								<span class="glyphicon glyphicon-save"></span>
+								<span class="hidden-xs ng-binding">&nbsp;&nbsp;{{ :: 'l-save-change' | i18n : [] : 'dts/mpd' }}</span>
+							</button>
+
+							<button
+								class="btn btn-default"
+								ng-click="itemsGridController.inlineEditCancel()"
+								ng-disabled="itemsGridController.itemGridDirtyItems.length < 1"
+							>
+								<span class="glyphicon glyphicon-refresh"></span>
+								<span class="hidden-xs ng-binding">&nbsp;&nbsp;{{ :: 'l-back-change-operagions-rule' | i18n : [] : 'dts/mpd' }}</span>
+							</button>
+						</div>
+
+						<div ng-show="!itemsGridController.orderDisabled" class="btn-group" style="display: inline-block;">
+							<button
+								class="btn btn-default"
+								ng-click="itemsGridController.removeOrderItem()"
+								ng-if="itemsGridController.itemsGridSelectedItems.length > 0"
+							>
+								<span class="glyphicon glyphicon-remove"></span>
+								<span class="hidden-xs ng-binding">{{ :: 'l-remove' | i18n : [] : 'dts/mpd' }}</span>
+							</button>
+							<button
+								class="btn btn-default"
+								ng-click="itemsGridController.openCancelModal()"
+								ng-disabled="!itemsGridController.itemsGridSelectedItem"
+								ng-if="itemsGridController.itemsGridSelectedItem['cod-sit-item'] != 6 && itemsGridController.showCancelButtom"
+							>
+								<span class="glyphicon glyphicon-ban-circle"></span>
+								<span class="hidden-xs ng-binding">{{ :: 'l-cancel' | i18n : [] : 'dts/mpd' }}</span>
+							</button>
+
+							<button
+								class="btn btn-primary"
+								ng-click="itemsGridController.configProduct(itemsGridController.itemsGridSelectedItems[0])"
+								ng-if="
+									itemsGridController.itemsGridSelectedItems.length == 1
+									&& !itemsGridController.orderDisabled
+									&& itemsGridController.itemsGridSelectedItem['char-2'].substr(89, 3) == 'yes'
+									&& itemsGridController.itemsGridSelectedItem['cod-refer'] == ''
+									&& itemsGridController.itemsGridSelectedItem['cod-sit-item'] != 6
+								"
+							>
+								<span class="glyphicon glyphicon-cog"></span>
+								<span class="hidden-xs ng-binding">{{ :: 'l-config' | i18n : [] : 'dts/mpd' }}</span>
+							</button>
+
+							<button
+								class="btn btn-primary"
+								ng-click="
+									itemsGridController.configProductCostVariable(
+										itemsGridController.itemsGridSelectedItems[0]['it-codigo'],
+										itemsGridController.itemsGridSelectedItems[0]['cod-refer']
+									)
+								"
+								ng-if="
+									itemsGridController.itemsGridSelectedItems.length == 1
+									&& !itemsGridController.orderDisabled
+									&& itemsGridController.itemsGridSelectedItem['char-2'].substr(89, 3) == 'yes'
+									&& itemsGridController.itemsGridSelectedItem['cod-refer'] != ''
+									&& itemsGridController.itemsGridSelectedItem['cod-sit-item'] != 6
+								"
+							>
+							<span class="glyphicon glyphicon-cog"></span>
+							<span class="hidden-xs ng-binding">{{ :: 'l-update-cost-variables' | i18n : [] : 'dts/mpd' }}</span>
+						</button>
+
+						</div>
+						<div class="pull-right" style="display: inline-block;">
+							<div class="checkbox" style="margin-top: 0px; margin-bottom: 0px;">
+								<label>
+									<input
+										type="checkbox"
+										ng-change="itemsGridController.setQuickFilterShowChildren(); itemsGridController.setUserPreferences();"
+										ng-model="itemsGridController.showChild"
+									>
+									{{ :: 'l-order-show-child-item' | i18n : [] : 'dts/mpd' }}
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<span class="col-md-12" style="color:#337ab7; font-size: 14px;" ng-show="itemsGridController.inlineEditActive">
+			{{ :: 'l-grid-in-edit-mode' | i18n : [] : 'dts/mpd' }}
+		</span>
+
+		<div ng-show="itemsGridController.orderItens.length <= 0" class="col-md-12">
+			<div style="margin-bottom: 0px;" class=" alert alert-info">
+				<strong>{{ 'msg-add-items-to-order' | i18n }}!</strong>
+			</div>
+		</div>
+
+		<div ng-show="itemsGridController.orderItens.length > 0  && itemsGridController.userPreferenceLoaded" class="col-md-12">
+			<totvs-grid 
+				grid-data="itemsGridController.orderItens"
+				grid="itemsGridController.itemsGrid"
+				grid-height="350"
+				auto-resize-content="true"
+				navigatable="true"
+				editable="true"
+				resizable="true"
+				sortable="true"
+				groupable="false"
+				reorderable="true"
+				selectable="multiple,row"
+				add-select-column
+				show-header-edit-icon="itemsGridController.showEdit"
+				grid-selected-item="itemsGridController.itemsGridSelectedItem"
+				grid-selected-items="itemsGridController.itemsGridSelectedItems"
+				grid-dirty-items="itemsGridController.itemGridDirtyItems"
+				on-edit="itemsGridController.itemsGridEdit(event, column)"
+				on-save="itemsGridController.itemsGridSave(event, column, value, original, currentIndex)"
+				on-data="itemsGridController.customItemsGrid()"
+			>
+				<totvs-grid-column editable="true" field="nr-sequencia" class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#" width="50">
+					{{ :: 'l-sequencia' | i18n : [] : 'dts/mpd' }}
+				</totvs-grid-column>
+				<totvs-grid-column editable="true" field="it-codigo" class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#" width="160">
+					{{ :: 'l-cod-item' | i18n : [] : 'dts/mpd' }}
+				</totvs-grid-column>
+				<totvs-grid-column editable="true" field="desc-item" class="#= data['cod-sit-item'] == 6 ? 'cancelled text-nowrap' : 'text-nowrap'#" width="350">
+					{{ :: 'l-descricao' | i18n : [] : 'dts/mpd' }}
+				</totvs-grid-column>
+				<% _.forEach(data, function(field) { %>
+					<% if (field.fieldName == "cod-refer") { %>
+						<totvs-grid-column
+							editable="true"
+							field="cod-refer"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="160"
+							style="text-align: right;"
+						>
+							<template>
+								{{ data['cod-refer'] }} 
+
+								<a 
+									ng-if="data['char-2'].substr(89, 3) == 'yes' && data['cod-refer'] != '' && data['cod-sit-item'] != 6 && !itemsGridController.orderDisabled"
+									class="btn btn-default btn-sm"
+									role="button"
+									style="padding: 0px 10px;"
+									ng-click="itemsGridController.openConfigNarrative(data['it-codigo'], data['cod-refer'])"
+								>
+									<span class="glyphicon glyphicon-list-alt"></span>
+								</a>
+							</template>
+
+							{{ :: 'l-cod-refer' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "cod-sit-item") { %>
+						<totvs-grid-column 
+							editable="true"
+							field="cod-sit-item"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="160"
+						>
+							{{ :: 'l-situacao' | i18n : [] : 'dts/mpd' }}
+
+							<option id="1">{{ :: 'l-cod-sit-item-1' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="2">{{ :: 'l-cod-sit-item-2' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="3">{{ :: 'l-cod-sit-item-3' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="4">{{ :: 'l-cod-sit-item-4' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="5">{{ :: 'l-cod-sit-item-5' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="6">{{ :: 'l-cod-sit-item-6' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="7">{{ :: 'l-cod-sit-item-7' | i18n : [] : 'dts/mpd' }}</option>
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "qtd-disponivel") { %>
+						<totvs-grid-column
+							editable="true"
+							field="qtd-disponivel"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="150"
+							filter="number : 4"
+							style="text-align: right;"
+						>
+							{{ :: 'l-inventory' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "qt-un-fat") { %>
+						<totvs-grid-column
+							editable="true"
+							field="qt-un-fat"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="160"
+							oldeditable="<%= field.fieldEnabled %>"
+							filter="number : 4"
+							style="text-align: right;"
+						>
+							{{ :: 'l-requested-quantity-um' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "des-un-medida") { %>
+						<totvs-grid-column
+							editable="true"
+							field="des-un-medida"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="120"
+							oldeditable="<%= field.fieldEnabled %>"
+							select-id="un"
+							select-service="mcc.tab-unidade.zoom"
+						>
+							{{ :: 'l-UM-invoicing' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "qt-pedida") { %>
+						<totvs-grid-column
+							editable="true"
+							field="qt-pedida"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="110"
+							filter="number : 4"
+							style="text-align: right;"
+						>
+							{{ :: 'l-requested-quantity' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "cod-un") { %>
+							<totvs-grid-column
+							editable="true"
+							field="cod-un"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="50"
+						>
+							{{ :: 'l-unit-measure' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "log-usa-tabela-desconto") { %>
+						<totvs-grid-column
+							editable="true"
+							field="log-usa-tabela-desconto"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="110"
+							filter="booleanI18N"
+							oldeditable="<%= field.fieldEnabled %>"
+						>
+							{{ :: 'l-log-usa-tabela-desconto' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "nr-tabpre") { %>
+						<totvs-grid-column
+							editable="true"
+							field="nr-tabpre"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="120"
+							oldeditable="<%= field.fieldEnabled %>"
+							select-id="nr-tabpre"
+							select-service="mpd.tb-preco-inter.gridselect"
+						>
+							{{ :: 'l-cod-tab-preco' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "vl-preuni") { %>
+						<totvs-grid-column
+							editable="true"
+							field="vl-preuni"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							filter="number : 5"
+							style="text-align: right;"
+						>
+							{{ :: 'l-vl-preuni' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "vl-preori") { %>
+						<totvs-grid-column
+							editable="true"
+							field="vl-preori"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							filter="number : 5"
+							style="text-align: right;"
+						>
+							{{ :: 'l-original-price' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "vl-preori-un-fat") { %>
+						<totvs-grid-column
+							editable="true"
+							field="vl-preori-un-fat"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							filter="number : 5"
+							style="text-align: right;"
+						>
+							{{ :: 'l-original-price-invoice-UM' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "vl-tot-it") { %>
+						<totvs-grid-column
+							editable="true"
+							field="vl-tot-it"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							filter="number : 5"
+							style="text-align: right;"
+						>
+							{{ :: 'l-vl-tot-it' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "val-desconto-inform") { %>
+						<totvs-grid-column
+							editable="true"
+							field="val-desconto-inform"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+						>
+							{{ :: 'l-val-desconto-inform' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "des-pct-desconto-inform") { %>				
+						<totvs-grid-column
+							editable="true"
+							field="des-pct-desconto-inform"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="100"
+							oldeditable="<%= field.fieldEnabled %>"
+							style="text-align: center;"
+						>
+							{{ :: 'l-des-pct-desconto-inform' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "val-pct-desconto-tab-preco") { %>
+						<totvs-grid-column
+							editable="true"
+							field="val-pct-desconto-tab-preco"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="100"
+							oldeditable="<%= field.fieldEnabled %>"
+							filter="number : 2"
+							style="text-align: right;"
+						>
+							{{ :: 'l-val-pct-desconto-tab-preco' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "ct-codigo") { %>
+						<totvs-grid-column
+							editable="true"
+							field="ct-codigo"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							select-id="cod_cta_ctbl"
+							select-init="itemsGridController.integrationAccountInit"
+							select-service="utb.cta-ctbl-integr.zoom"
+						>
+							{{ :: 'l-accounting-account' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "sc-codigo") { %>
+						<totvs-grid-column
+							editable="true"
+							field="sc-codigo"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							select-id="cod_ccusto"
+							select-init="itemsGridController.costCenterInit"
+							select-service="utb.ccusto.zoom"
+						>
+							{{ :: 'l-cost-center' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "custo-contabil") { %>
+						<totvs-grid-column
+							editable="true"
+							field="custo-contabil"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							filter="number : 5"
+						>
+							{{ :: 'l-accounting-cost' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "cod-class-fis") { %>
+						<totvs-grid-column
+							editable="true"
+							field="classificacao-fiscal"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							select-id="class-fiscal"
+							select-service="mpd.classif-fisc.zoom"
+						>
+							{{ :: 'l-tax-classification' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "aliquota-ipi") { %>
+						<totvs-grid-column
+							editable="false"
+							field="aliquota-ipi"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="90"
+							
+							filter="number : 4"
+							style="text-align: right;"
+						>
+						{{ :: 'l-aliquota-ipi' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "val-ipi") { %>
+						<totvs-grid-column
+							editable="false"
+							field="val-ipi"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="90"
+							filter="number : 4"
+							style="text-align: right;"
+						>
+						{{ :: 'l-val-ipi' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "nat-operacao") { %>
+						<totvs-grid-column
+							editable="true"
+							field="nat-operacao"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							select-id="nat-operacao"
+							select-service="mpd.natur-oper.zoom"
+						>
+							{{ :: 'l-natur-oper' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "tipo-atend") { %>
+						<totvs-grid-column
+							editable="true"
+							field="tipo-atend"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+						>
+							{{ :: 'l-tipo-atend' | i18n : [] : 'dts/mpd' }}
+							
+							<option id="1">{{ :: 'l-order-tipo-atend-1' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="2">{{ :: 'l-order-tipo-atend-2' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="3">{{ :: 'l-order-tipo-atend-3' | i18n : [] : 'dts/mpd' }}</option>
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "estab-atend-item") { %>
+						<totvs-grid-column
+							editable="true"
+							field="estab-atend-item"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							select-id="cod-estabel"
+							select-service="mpd.estabelecSE.zoom"
+						>
+							{{ :: 'l-estab-atend-item' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "cod-entrega") { %>
+						<totvs-grid-column
+							editable="true"
+							field="cod-entrega"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							select-id="cod-entrega"
+							select-init="itemsGridController.order['nome-abrev']"
+							select-service="mpd.loc-entr.gridselect"
+						>
+							{{ :: 'l-cod-entrega' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "dt-entrega") { %>
+						<totvs-grid-column
+							editable="true"
+							field="dt-entrega"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							filter="date : dd/MM/yyyy"
+						>
+							{{ :: 'l-dt-entrega' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "qt-alocada") { %>
+						<totvs-grid-column
+							editable="true"
+							field="qt-alocada"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="110"
+							filter="number : 4"
+							style="text-align: right;"
+						>
+							{{ :: 'l-allocated-qty' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "qt-log-aloca") { %>
+						<totvs-grid-column
+							editable="true"
+							field="qt-log-aloca"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="110"
+							filter="number : 4"
+							style="text-align: right;"
+						>
+							{{ :: 'l-qty-to-allocate' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+					<% if (field.fieldName == "observacao") { %>
+						<totvs-grid-column
+							field="observacao"
+							editable="true"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled text-nowrap' : 'text-nowrap'#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+						>
+							{{ :: 'l-observacoes' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+				<% } )%>
+			</totvs-grid>
+		</div>
+	</div>
+</div>

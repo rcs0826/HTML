@@ -1,0 +1,59 @@
+<div class="row">
+    <div style="border:0; padding: 15px;">
+
+        <div class="row" style="border:0; padding: 0px 0px 15px 0px;">
+
+            <field type="input" class="col-lg-6 col-md-6 col-sm-7 col-xs-10" style="padding-right: 0px;"
+                ng-model="controller.quickSearchTemplateItems" canclean ng-change="controller.searchTemplateItems()"
+                required ng-required="true" autocomplete="off" id="searchModelItemField"
+                placeholder="{{ 'l-fast-search-item-model' | i18n : [] : 'dts/mpd' }}">
+            </field>
+
+            <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12" style="padding-top: 5px;">
+                <button class="btn btn-primary" ng-click="controller.addModelItemsWithTimeOut()" tabindex="-1">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span class="hidden-xs ng-binding">&nbsp;&nbsp;{{:: 'l-add-items' | i18n : [] : 'dts/mpd'}}</span>
+                </button>
+            </div>
+        </div>
+
+        <totvs-list-item ng-repeat="item in controller.modelItemsFiltered" totvs-custom-element="customListItem">
+            <totvs-list-item-content>
+
+                <div class="col-xs-12 col-sm-12 col-md-9" style="padding: 0;  margin-top: 15px;">
+
+                    <totvs-list-item-info title="{{ 'l-cod-item' | i18n }}" class="col-xs col-sm-6 col-md-3">
+                        {{item['it-codigo']}}</totvs-list-item-info>
+                    <totvs-list-item-info title="{{ 'l-cod-refer' | i18n }}" class="col-xs col-sm-6 col-md-3">
+                        {{item['cod-refer']}}</totvs-list-item-info>
+                    <totvs-list-item-info title="{{ 'l-descricao' | i18n }}" class="col-xs col-sm-12 col-md-6">
+                        {{item['desc-item']}}</totvs-list-item-info>
+                    <totvs-list-item-info title="{{ 'l-vl-preuni' | i18n }}" class="col-xs col-sm-6 col-md-3">
+                        {{item['vl-preuni'] | currency}}</totvs-list-item-info>
+                    <totvs-list-item-info 
+                        ng-if="!controller.isRepresentative"
+                        title="{{ 'l-inventory' | i18n }}" class="col-xs col-sm-6 col-md-3">
+                        {{item.hasBalance ? 'Dispon&iacute;vel' : 'Indispon&iacute;vel'}}
+                    </totvs-list-item-info>
+                    <totvs-list-item-info
+                        ng-if="controller.isRepresentative"
+                        title="{{ 'l-inventory' | i18n }}" class="col-xs col-sm-6 col-md-3">
+                        {{item['qtd-disponivel']  | number : 4}}
+                    </totvs-list-item-info
+                    >
+                    <totvs-list-item-info title="{{ 'l-un' | i18n }}" class="col-xs col-sm-6 col-md-3">
+                        {{item['cod-un']}}
+                    </totvs-list-item-info>
+                </div>
+
+                <field type="decimal" ng-model="item['qt-un-fat']" class="col-xs col-sm-12 col-md-3"
+                    style="margin-bottom: 15px;" onClick="this.setSelectionRange ? this.setSelectionRange(0, 999) : ''"
+                    ng-change="controller.leaveModelItemField(item, 'qt-un-fat')" autocomplete="off">
+                    <label>{{ 'l-quantity' | i18n }}</label>
+                </field>
+            </totvs-list-item-content>
+        </totvs-list-item>
+
+    </div>
+
+</div>

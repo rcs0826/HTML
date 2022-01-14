@@ -1,0 +1,333 @@
+<div ng-controller="salesorder.order2.searchItems.Controller as searchController" totvs-custom-element="itemsearch">
+
+	<div id="loading-screen" class="overlay ng-scope" ng-if="searchController.customLoading == true">
+		<img src="assets/img/loading.gif">
+		<p class="text-center text-muted ng-binding">{{:: 'l-loading' | i18n : [] : 'dts/mpd'}}</p>
+	</div>
+
+	<div class="row">
+		<div style="border:0; padding: 15px;">
+
+			<div class="row">
+
+				<div class="col-lg-6 col-md-6 col-sm-7 col-xs-10" style="padding-right: 0px">
+					<form ng-submit="searchController.searchButton()">
+
+						<div class="input-group">
+
+							<span class="input-group-btn" style="width: 120px">
+								<select class="form-control" style="border-radius: 4px 0px 0px 4px; border-right: 0px;"
+									ng-change="searchController.setPreference('salesorder.portal.simpleSearchType', searchController.simpleSearchType)"
+									ng-model="searchController.simpleSearchType">
+									<option value="1">{{:: 'l-code' | i18n : [] : 'dts/mpd'}}</option>
+									<option value="2">{{:: 'l-descricao' | i18n : [] : 'dts/mpd'}}</option>
+									<option value="3">{{:: 'l-both' | i18n : [] : 'dts/mpd'}}</option>
+								</select>
+							</span>
+
+							<input autocomplete="off" ng-click="searchController.applySelectRange($event);" type="text"
+								placeholder="{{:: 'l-search-items-portal' | i18n : [] : 'dts/mpd'}}..."
+								class="form-control" ng-model="searchController.quickSearchText" id="searchitemField">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button"
+									ng-click="searchController.quickSearchText = ''" tabindex="-1">
+									<span class="glyphicon glyphicon-remove"></span>
+								</button>
+								<button class="btn btn-default" type="submit" tabindex="-1">
+									<span class="glyphicon glyphicon-search" aria-hidden="true"></span>  {{:: 'l-search' | i18n : [] : 'dts/mpd'}}
+								</button>
+							</span>
+						</div>
+					</form>
+				</div>
+
+				<div class="col-lg-6 col-md-6 col-sm-5 col-xs-12">
+					<button class="btn btn-primary" style="margin-right: 15px;" role="button" ng-click="searchController.addItensWithTimeOut(false)"
+						tabindex="-1">
+						<span class="glyphicon glyphicon-plus"></span>
+						<span class="hidden-xs ng-binding">&nbsp;&nbsp;{{:: 'l-add-items' | i18n : [] : 'dts/mpd'}}</span>
+					</button>
+
+					<a ng-if="searchController.isRepresentative" class="btn btn-default pull-right" role="button"
+						ng-click="searchController.consigSearchItens()" tabindex="-1">
+						<span class="glyphicon glyphicon-cog"></span>
+						<span class="hidden-xs ng-binding">&nbsp;&nbsp;{{:: 'l-parametros' | i18n : [] : 'dts/mpd'}}</span>
+					</a>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+	<div class="row">
+
+		<div class="col-sm-12" id="divSearchItemsGrid">
+			<totvs-grid grid-data="searchController.listResult" grid="searchController.searchItemsGrid"
+				grid-height="250" 
+				navigatable="true" 
+				editable="true" 
+				selectable="row" 
+				reorderable="true"
+				resizable="true"
+				grid-options="searchController.gridOptions" 
+				on-edit="searchController.itemsGridEdit(event, column)"
+				on-save="searchController.itemsGridSave(event, column, value, original, currentIndex)"
+				grid-selected-item="searchController.selectedSearchItem"
+				show-header-edit-icon="searchController.showEdit" on-data="searchController.customItemsGrid()">
+				
+			
+				<% _.forEach(data, function(field) { %>
+
+				<% if (field.fieldName == "it-codigo") { %>
+					<totvs-grid-column field="it-codigo" editable="true" width="160">{{:: 'l-cod-item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<% } %>	
+
+				<% if (field.fieldName == "cod-refer") { %>
+					<totvs-grid-column field="cod-refer" editable="true" width="160">{{:: 'l-cod-refer' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<% } %>					
+
+				<% if (field.fieldName == "desc-item") { %>
+					<totvs-grid-column field="desc-item" editable="true" class="text-nowrap" width="350">{{:: 'l-descricao' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<% } %>
+
+				<% if (field.fieldName == "nr-tabpre") { %>
+				<totvs-grid-column ng-show="!searchController.isRepresentative"  field="nr-tabpre" editable="true" width="120" oldeditable="<%= field.fieldEnabled %>"
+					select-id="nr-tabpre" select-service="mpd.tb-preco-inter.gridselect">{{:: 'l-cod-tab-preco' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<% } %>
+
+
+				<% if (field.fieldName == "des-pct-desconto-inform") { %>
+				<totvs-grid-column ng-show="!searchController.isRepresentative" field="des-pct-desconto-inform" editable="true" width="100"
+					oldeditable="<%= field.fieldEnabled %>" style="text-align: center;">
+				{{:: 'l-des-pct-desconto-inform' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<% } %>
+
+				<% if (field.fieldName == "vl-preori") { %>
+				<totvs-grid-column field="vl-preori" editable="true" width="180" oldeditable="<%= field.fieldEnabled %>"
+					filter="number : 5" style="text-align: right;">{{:: 'l-original-price' | i18n : [] : 'dts/mpd'}}
+				</totvs-grid-column>
+				<% } %>
+				
+				<% if (field.fieldName == "vl-preori-un-fat") { %>
+				<totvs-grid-column  field="vl-preori-un-fat" editable="true" width="180" filter="number : 5"
+					style="text-align: right;">{{:: 'l-original-price-invoice-UM' | i18n : [] : 'dts/mpd'}}
+				</totvs-grid-column>
+				<% } %>
+
+
+				<% if (field.fieldName == "val-desconto-inform") { %>
+				<totvs-grid-column ng-show="!searchController.isRepresentative" field="val-desconto-inform" editable="true" width="180"
+					oldeditable="<%= field.fieldEnabled %>">{{:: 'l-val-desconto-inform' | i18n : [] : 'dts/mpd'}}
+				</totvs-grid-column>
+				<% } %>
+
+				
+				<% if (field.fieldName == "qt-un-fat") { %>
+					<totvs-grid-column field="qt-un-fat" editable="true" width="160" oldeditable="<%= field.fieldEnabled %>"
+						filter="number : 4" style="text-align: right;">{{:: 'l-requested-quantity-um' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+					<% } %>
+
+
+				<% if (field.fieldName == "qt-pedida") { %>
+					<totvs-grid-column field="qt-pedida" editable="true" width="110" filter="number : 4"
+						style="text-align: right;">{{:: 'l-requested-quantity' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<% } %>
+
+				<% if (field.fieldName == "qtd-disponivel") { %>
+				<totvs-grid-column field="qtd-disponivel" editable="true" width="200" filter="number : 4"
+					style="text-align: right;">
+					<template>
+						{{dataItem['qtd-disponivel'] | number : 4}}
+						<a ng-if="searchController.isRepresentative" class="btn btn-default btn-sm" role="button" ng-click="searchController.itemStock(dataItem)">
+							<span class="glyphicon glyphicon-book"></span>
+						</a>
+					</template>
+					{{:: 'l-inventory' | i18n : [] : 'dts/mpd'}}
+				</totvs-grid-column>
+				<% } %>
+
+				<!-- ADICIONAR NO CONFIGURADOR DE CAMPOS DO PERFIL -->
+				<% if (field.fieldName == "des-un-medida") { %>
+				<totvs-grid-column field="des-un-medida" editable="true" width="120"
+					oldeditable="<%= field.fieldEnabled %>" editor="searchController.editorUM">
+					{{:: 'l-UM-invoicing' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<% } %>
+				
+				<!-- ADICIONAR NO CONFIGURADOR DE CAMPOS DO PERFIL - NO MODELO ANTIGO ERA cod-unid-med -->
+				<% if (field.fieldName == "cod-un") { %>
+				<totvs-grid-column field="cod-un" editable="true" width="50">{{:: 'l-unit-measure' | i18n : [] : 'dts/mpd'}}
+				</totvs-grid-column>
+				<% } %>
+				
+				
+				<% })%>
+				<!--<totvs-grid-detail size="table">
+						<div class="row" style="margin: 0;" ng-init="master = model">
+							<totvs-tabset style="padding: 0;">
+								<totvs-tab heading="{{:: 'l-required-products' | i18n : [] : 'dts/mpd'}}" select="orderController.select()" ng-if="dataItem.ttOrderItemSearchObrigatorio">
+									<div class="row" style="margin: 0;">
+										<div class="col-xs-12" style="padding: 5px 0 0;">
+											<totvs-grid grid-data="dataItem.ttOrderItemSearchObrigatorio"
+												grid-height="250"
+												navigatable="true"
+												editable="!orderController.orderDisabled"
+												selectable="row">
+												<totvs-grid-column field="cod-obrig" width="160">{{:: 'l-cod-item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="desc-item" class="text-nowrap" width="350">{{:: 'l-description' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="cod-refer" width="160">{{:: 'l-cod-refer' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="qtd-disponivel" width="150" filter="number : 4" style="text-align: right;">{{:: 'l-available-quantity' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="qt-un-fat" width="160" filter="number : 4" style="text-align: right;">{{:: 'l-quantity-ordered-billing' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="des-un-medida" width="120">{{:: 'l-UM-invoicing' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="qt-pedida" width="110" filter="number : 4" style="text-align: right;">{{:: 'l-quantity-ordered' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="cod-un" width="50">{{:: 'l-unit-measure' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="vl-preori" width="180" filter="number : 5" style="text-align: right;">{{:: 'l-original-price' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="vl-preori-un-fat" width="180" filter="number : 5" style="text-align: right;">{{:: 'l-original-price-invoice-UM' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											</totvs-grid>
+										</div>
+									</div>
+								</totvs-tab>
+								<totvs-tab heading="{{:: 'l-equivalent-products' | i18n : [] : 'dts/mpd'}}" select="orderController.select()" ng-if="dataItem.ttOrderItemSearchEquivalente">
+									<div class="row" style="margin: 0;">
+										<div class="col-xs-12" style="padding: 5px 0 0;">
+											<totvs-grid grid-data="dataItem.ttOrderItemSearchEquivalente"
+												grid-height="250"
+												navigatable="true"
+												editable="!orderController.orderDisabled"
+												on-save="searchController.relatedItemsGridSave(column, value, currentIndex, master, 'ttOrderItemSearchEquivalente')"
+												selectable="row">
+												<totvs-grid-column field="cod-equiv" width="160">{{:: 'l-cod-item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="desc-item" class="text-nowrap" width="350">{{:: 'l-description' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="cod-refer" width="160">{{:: 'l-cod-refer' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="qtd-disponivel" width="150" filter="number : 4" style="text-align: right;">{{:: 'l-available-quantity' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column width="40">
+													<template>
+														<a class="btn btn-default btn-xs" role="button"
+															ng-click="searchController.copyQtd(dataItem, 'ttOrderItemSearchEquivalente', master)">
+															<span class="glyphicon glyphicon-menu-right"></span>
+														</a>
+													</template>
+												</totvs-grid-column>
+												<totvs-grid-column field="qt-un-fat" width="160" editable="true" filter="number : 4" style="text-align: right;">{{:: 'l-quantity-ordered-billing' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="des-un-medida" width="120">{{:: 'l-UM-invoicing' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="qt-pedida" width="110" filter="number : 4" style="text-align: right;">{{:: 'l-quantity-ordered' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="cod-un" width="50">{{:: 'l-unit-measure' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="vl-preori" width="180" filter="number : 5" style="text-align: right;">{{:: 'l-original-price' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="vl-preori-un-fat" width="180" filter="number : 5" style="text-align: right;">{{:: 'l-original-price-invoice-UM' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											</totvs-grid>
+										</div>
+									</div>
+								</totvs-tab>
+								<totvs-tab heading="{{:: 'l-cross-selling-products' | i18n : [] : 'dts/mpd'}}" select="orderController.select()" ng-if="dataItem.ttOrderItemSearchCrossSelling">
+									<div class="row" style="margin: 0;">
+										<div class="col-xs-12" style="padding: 5px 0 0;">
+											<totvs-grid grid-data="dataItem.ttOrderItemSearchCrossSelling"
+												grid-height="250"
+												navigatable="true"
+												editable="!orderController.orderDisabled"
+												on-save="searchController.relatedItemsGridSave(column, value, currentIndex, master, 'ttOrderItemSearchCrossSelling')"
+												selectable="row">
+												<totvs-grid-column field="cod-cross-selling" width="160">{{:: 'l-cod-item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="desc-item" class="text-nowrap" width="350">{{:: 'l-description' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="cod-refer" width="160">{{:: 'l-cod-refer' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="qtd-disponivel" width="150" filter="number : 4" style="text-align: right;">{{:: 'l-available-quantity' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column width="40">
+													<template>
+														<a class="btn btn-default btn-xs" role="button"
+															ng-click="searchController.copyQtd(dataItem, 'ttOrderItemSearchCrossSelling', master)">
+															<span class="glyphicon glyphicon-menu-right"></span>
+														</a>
+													</template>
+												</totvs-grid-column>
+												<totvs-grid-column field="qt-un-fat" width="160" editable="true" filter="number : 4" style="text-align: right;">{{:: 'l-quantity-ordered-billing' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="des-un-medida" width="120">{{:: 'l-UM-invoicing' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="qt-pedida" width="110" filter="number : 4" style="text-align: right;">{{:: 'l-quantity-ordered' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="cod-un" width="50">{{:: 'l-unit-measure' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="vl-preori" width="180" filter="number : 5" style="text-align: right;">{{:: 'l-original-price' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="vl-preori-un-fat" width="180" filter="number : 5" style="text-align: right;">{{:: 'l-original-price-invoice-UM' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											</totvs-grid>
+										</div>
+									</div>
+								</totvs-tab>
+								<totvs-tab heading="{{:: 'l-up-selling-products' | i18n : [] : 'dts/mpd'}}" select="orderController.select()" ng-if="dataItem.ttOrderItemSearchUpSelling">
+									<div class="row" style="margin: 0;">
+										<div class="col-xs-12" style="padding: 5px 0 0;">
+											<totvs-grid grid-data="dataItem.ttOrderItemSearchUpSelling"
+												grid-height="250"
+												navigatable="true"
+												editable="!orderController.orderDisabled"
+												on-save="searchController.relatedItemsGridSave(column, value, currentIndex, master, 'ttOrderItemSearchUpSelling')"
+												selectable="row">
+												<totvs-grid-column field="cod-up-selling" width="160">{{:: 'l-cod-item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="desc-item" class="text-nowrap" width="350">{{:: 'l-description' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="cod-refer" width="160">{{:: 'l-cod-refer' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="qtd-disponivel" width="150" filter="number : 4" style="text-align: right;">{{:: 'l-available-quantity' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column width="40">
+													<template>
+														<a class="btn btn-default btn-xs" role="button"
+															ng-click="searchController.copyQtd(dataItem, 'ttOrderItemSearchUpSelling', master)">
+															<span class="glyphicon glyphicon-menu-right"></span>
+														</a>
+													</template>
+												</totvs-grid-column>
+												<totvs-grid-column field="qt-un-fat" width="160" editable="true" filter="number : 4" style="text-align: right;">{{:: 'l-quantity-ordered-billing' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="des-un-medida" width="120">{{:: 'l-UM-invoicing' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="qt-pedida" width="110" filter="number : 4" style="text-align: right;">{{:: 'l-quantity-ordered' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="cod-un" width="50">{{:: 'l-unit-measure' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="vl-preori" width="180" filter="number : 5" style="text-align: right;">{{:: 'l-original-price' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="vl-preori-un-fat" width="180" filter="number : 5" style="text-align: right;">{{:: 'l-original-price-invoice-UM' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											</totvs-grid>
+										</div>
+									</div>
+								</totvs-tab>
+								<totvs-tab heading="{{:: 'l-other-prices-units' | i18n : [] : 'dts/mpd'}}" select="orderController.select()" ng-if="dataItem.ttOrderItemSearchUM">
+									<div class="row" style="margin: 0;">
+										<div class="col-xs-12" style="padding: 5px 0 0;">
+											<totvs-grid grid-data="dataItem.ttOrderItemSearchUM"
+												grid-height="250"
+												navigatable="true"
+												selectable="row">
+												<totvs-grid-column width="15">
+													<template>
+														<a class="btn btn-default btn-xs" role="button"
+															ng-click="searchController.copyPriceSelected(dataItem, master)">
+															<span class="glyphicon glyphicon-menu-up"></span>
+														</a>
+													</template>
+												</totvs-grid-column>
+												<totvs-grid-column field="cod-unid-med" width="120">{{:: 'l-unit-measure' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="preco-venda" width="180" filter="number : 5" style="text-align: right;">{{:: 'l-preco-venda' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="quant-min" width="110" filter="number : 4" style="text-align: right;">{{:: 'l-quant-min' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											</totvs-grid>
+										</div>
+									</div>
+								</totvs-tab>
+								<totvs-tab heading="{{:: 'l-child-item' | i18n : [] : 'dts/mpd'}}" select="orderController.select()" ng-if="dataItem.ttOrderItemSearchComposto">
+									<div class="row" style="margin: 0;">
+										<div class="col-xs-12" style="padding: 5px 0 0;">
+											<totvs-grid grid-data="dataItem.ttOrderItemSearchComposto"
+												grid-height="250"
+												navigatable="true"
+												selectable="row">
+												<totvs-grid-column field="it-filho" width="160">{{:: 'l-cod-item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="descricao" class="text-nowrap" width="350">{{:: 'l-description' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="cod-refer" width="160">{{:: 'l-cod-refer' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="quantidade" width="150" filter="number : 4" style="text-align: right;">{{:: 'l-child-quantity' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											</totvs-grid>
+										</div>
+									</div>
+								</totvs-tab>
+							</totvs-tabset>
+						</div>
+					</totvs-grid-detail> -->
+			</totvs-grid>
+		</div>
+
+		<div class="col-sm-12">
+			<totvs-list-pagination ng-if="searchController.hasMore" ng-click="searchController.loadMore();">
+			</totvs-list-pagination>
+		</div>
+
+	</div>
+
+</div>

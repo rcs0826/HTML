@@ -1,0 +1,134 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{:: 'l-item-stock' | i18n : [] : 'dts/mpd' }}
+        <a class="pull-right clickable"
+            ng-click="modalStockController.openParameters()">
+            <span class="glyphicon glyphicon-cog"></span>
+        </a>        
+    </h3>    
+</div>
+<div class="modal-body">
+    
+    <div class="row">
+        <totvs-page-detail-info-group>{{:: 'l-cod-item' | i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>        
+        <totvs-page-detail-info title="{{:: 'l-cod-item' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+            {{modalStockController.ttItemEstoque['it-codigo']}} - {{modalStockController.ttItemEstoque['desc-item']}}
+        </totvs-page-detail-info>
+        <totvs-page-detail-info title="{{:: 'l-cod-refer' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+            {{modalStockController.ttItemEstoque['cod-refer']}}
+        </totvs-page-detail-info>
+        <totvs-page-detail-info title="{{:: 'l-unid-med-cli' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+            {{modalStockController.ttItemEstoque['un']}}
+        </totvs-page-detail-info>
+
+        <totvs-page-detail-info-group>{{:: 'l-stock-summary' | i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>        
+        <totvs-page-detail-info title="{{:: 'l-stock-balance' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-6 col-md-6 detail-span">
+            {{modalStockController.ttItemEstoque['de-saldo-est'] | number : 2}}
+        </totvs-page-detail-info>
+        <totvs-page-detail-info title="{{:: 'l-allocated-quantity' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-6 col-md-6 detail-span">
+            {{modalStockController.ttItemEstoque['de-qt-alocada'] | number : 2}}
+        </totvs-page-detail-info>
+        <totvs-page-detail-info title="{{:: 'l-security-amount' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-6 col-md-6 detail-span">
+            {{modalStockController.ttItemEstoque['de-quant-segur'] | number : 2}}
+        </totvs-page-detail-info>
+        <totvs-page-detail-info title="{{:: 'l-opening-balance' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-6 col-md-6 detail-span">
+            {{modalStockController.ttItemEstoque['de-saldo-inic'] | number : 2}}
+        </totvs-page-detail-info>
+
+		<totvs-list-item-content-detail open="modalStockController.loadSimulation()">
+            <div class="col-xs-12" style="padding-top: 10px;">
+                <div class="row" style="margin: 0;">
+                    <div class="col-xs-12">
+                        <totvs-grid grid-data="modalStockController.ttItemEstoqueSimulacao"
+                            grid-height="300" 
+                            navigatable="true">
+                            <totvs-grid-column field="data-saldo" width="100">{{:: 'l-date' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                            <totvs-grid-column field="pedidos" width="160" filter="number : 2" style="text-align: right;">{{:: 'l-sales-order' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                            <totvs-grid-column field="producao" width="160" filter="number : 2" style="text-align: right;">{{:: 'l-production' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                            <totvs-grid-column field="reservas" width="160" filter="number : 4" style="text-align: right;">{{:: 'l-reserve' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                            <totvs-grid-column field="compras" width="160" filter="number : 2" style="text-align: right;">{{:: 'l-purchase-order' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                            <totvs-grid-column field="disponivel" width="160" filter="number : 2" style="text-align: right;">{{:: 'l-available' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                            <totvs-grid-detail size="table">
+                                <div class="row" style="margin: 0;" ng-init="modalStockController.loadSalesOrders(dataItem)">
+                                    <totvs-tabset style="padding: 0;">
+                                        <totvs-tab heading="{{:: 'l-orders' | i18n : [] : 'dts/mpd'}}">
+                                            <div class="row" style="margin: 0;">
+                                                <div class="col-xs-12" style="padding: 5px 0 0;">
+                                                    <totvs-grid grid-data="dataItem.ttItemEstoqueSimulacaoSalesOrder"
+                                                        grid-height="150" 
+                                                        navigatable="true">
+                                                        <totvs-grid-column field="dt-entrega" width="80" filter="date : dd/MM/yyyy">{{:: 'l-cod-entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                        <totvs-grid-column field="nr-pedcli" width="120">{{:: 'l-nr-pedcli' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                        <totvs-grid-column field="nome-abrev" width="140">{{:: 'l-customer' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                        <totvs-grid-column field="cod-sit-ent" width="150">{{:: 'l-ind-ativid' | i18n : [] : 'dts/mpd'}}
+                                                            <option id="1">{{:: 'l-cod-sit-item-1' | i18n : [] : 'dts/mpd'}}</option>
+                                                            <option id="2">{{:: 'l-cod-sit-item-2' | i18n : [] : 'dts/mpd'}}</option>
+                                                            <option id="3">{{:: 'l-cod-sit-item-3' | i18n : [] : 'dts/mpd'}}</option>
+                                                            <option id="4">{{:: 'l-cod-sit-item-4' | i18n : [] : 'dts/mpd'}}</option>
+                                                            <option id="5">{{:: 'l-cod-sit-item-5' | i18n : [] : 'dts/mpd'}}</option>
+                                                            <option id="6">{{:: 'l-cod-sit-item-6' | i18n : [] : 'dts/mpd'}}</option>
+                                                            <option id="7">{{:: 'l-cod-sit-item-7' | i18n : [] : 'dts/mpd'}}</option>                                    
+                                                        </totvs-grid-column>
+                                                        <totvs-grid-column field="saldo" width="200" filter="number : 4" style="text-align: right;">{{:: 'l-balance-amount' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                    </totvs-grid>        
+                                                </div>
+                                            </div>
+                                        </totvs-tab>
+                                        <totvs-tab heading="{{:: 'l-production-order' | i18n : [] : 'dts/mpd'}}" select="modalStockController.loadProdOrders(dataItem)">
+                                            <div class="row" style="margin: 0;">
+                                                <div class="col-xs-12" style="padding: 5px 0 0;">
+                                                    <totvs-grid grid-data="dataItem.ttItemEstoqueSimulacaoProdOrder"
+                                                        grid-height="150" 
+                                                        navigatable="true">
+                                                        <totvs-grid-column field="dt-termino" width="80" filter="date : dd/MM/yyyy">{{:: 'l-conclusion' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                        <totvs-grid-column field="nr-ord-produ" width="80">{{:: 'l-order-number' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                        <totvs-grid-column field="qt-ordem" width="200" filter="number : 4" style="text-align: right;">{{:: 'l-order-amount' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                        <totvs-grid-column field="qt-produzida" width="200" filter="number : 4" style="text-align: right;">{{:: 'l-production-amount' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                        <totvs-grid-column field="estado" width="200">{{:: 'l-estado-desc' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                    </totvs-grid>        
+                                                </div>
+                                            </div>
+                                        </totvs-tab>
+                                        <totvs-tab heading="{{:: 'l-reserves' | i18n : [] : 'dts/mpd'}}" select="modalStockController.loadReserve(dataItem)">
+                                            <div class="row" style="margin: 0;">
+                                                <div class="col-xs-12" style="padding: 5px 0 0;">
+                                                    <totvs-grid grid-data="dataItem.ttItemEstoqueSimulacaoReserve"
+                                                        grid-height="150" 
+                                                        navigatable="true">
+                                                        <totvs-grid-column field="dt-reserva" width="80" filter="date : dd/MM/yyyy">{{:: 'l-reserve' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                        <totvs-grid-column field="nr-ord-produ" width="150">{{:: 'l-order-number' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                        <totvs-grid-column field="quant-orig" width="200" filter="number : 4" style="text-align: right;">{{:: 'l-order-amount' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                        <totvs-grid-column field="quant-atend" width="200" filter="number : 4" style="text-align: right;">{{:: 'l-quantity-served' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                    </totvs-grid>        
+                                                </div>
+                                            </div>
+                                        </totvs-tab>
+                                        <totvs-tab heading="{{:: 'l-purchases' | i18n : [] : 'dts/mpd'}}" select="modalStockController.loadPurchOrders(dataItem)">
+                                            <div class="row" style="margin: 0;">
+                                                <div class="col-xs-12" style="padding: 5px 0 0;">
+                                                    <totvs-grid grid-data="dataItem.ttItemEstoqueSimulacaoPurchOrder"
+                                                        grid-height="150" 
+                                                        navigatable="true">
+                                                        <totvs-grid-column field="data-entrega" width="80" filter="date : shortDate">{{:: 'l-cod-entrega-loc-entr' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                        <totvs-grid-column field="numero-ordem" width="120">{{:: 'l-order-number' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                        <totvs-grid-column field="parcela" width="80">{{:: 'l-cod-parcela' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                        <totvs-grid-column field="num-pedido" width="120">{{:: 'l-nr-pedido' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                        <totvs-grid-column field="quantidade" width="160" filter="number : 4" style="text-align: right;">{{:: 'l-order-amount' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                        <totvs-grid-column field="quant-saldo" width="160" filter="number : 4" style="text-align: right;">{{:: 'l-balance-amount' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                                    </totvs-grid>        
+                                                </div>
+                                            </div>
+                                        </totvs-tab>
+                                    </totvs-tabset>
+                                </div>
+                            </totvs-grid-detail>
+                        </totvs-grid>
+                    </div>
+                </div>
+            </div>
+		</totvs-list-item-content-detail>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" ng-click="modalStockController.close()">{{:: 'l-close' | i18n : [] : 'dts/mpd' }}</button>
+</div>
+

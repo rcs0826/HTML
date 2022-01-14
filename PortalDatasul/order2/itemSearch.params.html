@@ -1,0 +1,55 @@
+<div class="modal-header">
+        <h3 class="modal-title">{{:: 'l-item-search-parameters' | i18n : [] : 'dts/mpd' }}</h3>
+    </div>
+    <div class="modal-body">
+        
+        <div class="row">
+            <div class="checkbox col-sm-12"><label><input type="checkbox" ng-model="searchItemParamController.searchParams['SoItemCli']"> {{:: 'l-customer-products' | i18n : [] : 'dts/mpd' }}</label></div>
+            <div class="checkbox col-sm-12"><label><input type="checkbox" ng-model="searchItemParamController.searchParams['ConsideraFamilia']"> {{:: 'l-considers-commercial-family' | i18n : [] : 'dts/mpd' }}</label></div>
+            <div class="checkbox col-sm-12"><label><input type="checkbox" ng-model="searchItemParamController.searchParams['ConsideraGrupo']"> {{:: 'l-considers-stock-group' | i18n : [] : 'dts/mpd' }}</label></div>
+    
+            <totvs-field totvs-select
+                    label="{{:: 'l-fm-cod-com' | i18n : [] : 'dts/mpd'}}"
+                    class="col-sm-12"
+                    ng-model="searchItemParamController.searchParams.FamilyBusiness"
+                    canclean
+                    select-id="fm-cod-com"
+                    select-description="descricao"
+                    select-service="mpd.fam-comerc.zoom"
+                    zoom-service="mpd.fam-comerc.zoom">
+            </totvs-field>
+    
+            <totvs-field totvs-select
+                    label="{{:: 'l-ge-codigo' | i18n : [] : 'dts/mpd'}}"
+                    class="col-sm-12"
+                    ng-model="searchItemParamController.searchParams.GroupStocks"
+                    canclean
+                    select-id="ge-codigo"
+                    select-description="descricao"
+                    select-service="mpd.grup-estoque.zoom"
+                    zoom-service="mpd.grup-estoque.zoom">
+            </totvs-field>
+            
+            <div class="checkbox col-sm-12"><label><input ng-change="searchItemParamController.changeOnlyOrderPriceTable()" type="checkbox" ng-model="searchItemParamController.searchParams['SoItemTabPrecoPedido']"> {{:: 'l-order-price-table-only' | i18n : [] : 'dts/mpd' }}</label></div>
+                    
+            <totvs-field totvs-select
+                label="{{:: 'l-tab-preco' | i18n : [] : 'dts/mpd'}}"
+                class="col-sm-12"
+                ng-model="searchItemParamController.searchParams.NrTabPre"
+                ng-disabled="searchItemParamController.searchParams['SoItemTabPrecoPedido']"
+                canclean
+                select-id="nr-tabpre"
+                select-description="descricao"
+                select-service="mpd.tb-preco-inter.zoom"
+                zoom-service="mpd.tb-preco-inter.zoom">
+            </totvs-field>        
+    
+        </div>
+        
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="searchItemParamController.confirm()">{{:: 'btn-apply-save' | i18n : [] : 'dts/mpd' }}</button>  
+        <button class="btn btn-default" ng-click="searchItemParamController.close()">{{:: 'l-apply' | i18n : [] : 'dts/mpd' }}</button>
+        <button class="btn btn-default" ng-click="searchItemParamController.cancel()">{{:: 'l-cancel' | i18n : [] : 'dts/mpd' }}</button>
+    </div>
+    

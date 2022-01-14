@@ -1,0 +1,1077 @@
+<style>
+	.notFoundItem {
+		font-family: 'Arial'; 
+		margin-bottom: 5px;
+		font-weight: 200;
+		font-size: 12px;
+		color: red
+	}
+</style>
+
+<div totvs-custom-element="pd4000itemfields">
+	<% 
+		var quantityInformation = false;
+		var priceInformation = false;
+		var fiscalInformation = false;
+		var attendInformation = false;
+		var otherInformation = false;
+		var dicountsInformation = false;
+		var dicountsInformation2 = false;
+
+		_.forEach(data, function(field) {
+
+			if (field.fieldName == "qt-un-fat") quantityInformation = true;
+			if (field.fieldName == "qt-pedida") quantityInformation = true;
+			if (field.fieldName == "des-un-medida") quantityInformation = true;
+			if (field.fieldName == "cod-un") quantityInformation = true;
+			if (field.fieldName == "qtd-disponivel") quantityInformation = true;
+			if (field.fieldName == "qtd-disponivel-cotas") quantityInformation = true;
+			if (field.fieldName == "qt-log-aloca") quantityInformation = true;
+
+			if (field.fieldName == "vl-preori") priceInformation = true;
+			if (field.fieldName == "vl-preori-un-fat") priceInformation = true;
+			if (field.fieldName == "vl-pretab") priceInformation = true;
+			if (field.fieldName == "vl-preuni") priceInformation = true;
+			if (field.fieldName == "nr-tabpre") priceInformation = true;
+			if (field.fieldName == "val-pct-desconto-tab-preco") dicountsInformation = true;
+			if (field.fieldName == "log-usa-tabela-desconto") dicountsInformation = true;
+			if (field.fieldName == "val-desconto-inform") dicountsInformation = true;
+			if (field.fieldName == "des-pct-desconto-inform") dicountsInformation = true;
+
+			if (field.fieldName == "nat-operacao") fiscalInformation = true;
+			if (field.fieldName == "cod-class-fis") fiscalInformation = true;
+			if (field.fieldName == "ind-icm-ret") fiscalInformation = true;
+			if (field.fieldName == "per-des-icms") fiscalInformation = true;
+			if (field.fieldName == "aliquota-ipi") fiscalInformation = true;
+			if (field.fieldName == "aliquota-iss") fiscalInformation = true;
+			if (field.fieldName == "cod-servico-iss") fiscalInformation = true;
+
+			if (field.fieldName == "tipo-atend") attendInformation = true;
+			if (field.fieldName == "ind-fat-qtfam") attendInformation = true;
+			if (field.fieldName == "dt-min-fat") attendInformation = true;
+			if (field.fieldName == "dt-max-fat") attendInformation = true;
+			if (field.fieldName == "per-minfat") attendInformation = true;
+			if (field.fieldName == "dt-entrega") attendInformation = true;
+			if (field.fieldName == "log-canc-saldo") attendInformation = true;
+
+			if (field.fieldName == "dt-entorig") attendInformation = true;
+			if (field.fieldName == "cod-entrega") attendInformation = true;
+			
+			if (field.fieldName == "cod-ord-compra") otherInformation = true;
+			if (field.fieldName == "parcela") otherInformation = true;
+			if (field.fieldName == "cod-unid-negoc") otherInformation = true;
+			if (field.fieldName == "num-id-campanha-crm") otherInformation = true;
+			if (field.fieldName == "estab-atend-item") otherInformation = true;
+			if (field.fieldName == "ct-codigo") otherInformation = true;
+			if (field.fieldName == "sc-codigo") otherInformation = true;
+			if (field.fieldName == "custo-contabil") otherInformation = true;
+			if (field.fieldName == "observacao") otherInformation = true;
+			if (field.fieldName == "nr-config") otherInformation = true;
+			if (field.fieldName == "nr-ord-produ") otherInformation = true;	
+			if (field.fieldName == "nr-progcli") otherInformation = true;
+			if (field.fieldName == "nr-programa") otherInformation = true;
+			if (field.fieldName == "nr-versao") otherInformation = true;	
+
+			if (field.fieldName == "val-pct-desconto-periodo") dicountsInformation2 = true;
+			if (field.fieldName == "val-pct-desconto-prazo") dicountsInformation2 = true;
+			if (field.fieldName == "log-concede-bonif-qtd") dicountsInformation2 = true;
+			if (field.fieldName == "val-desconto[1]") dicountsInformation2 = true;
+			if (field.fieldName == "val-desconto[2]") dicountsInformation2 = true;
+			if (field.fieldName == "val-desconto[3]") dicountsInformation2 = true;
+			if (field.fieldName == "val-desconto[4]") dicountsInformation2 = true;
+			if (field.fieldName == "val-desconto[5]") dicountsInformation2 = true;
+			
+		});
+	%>
+
+	<totvs-page-detail-info-group>
+		{{:: 'l-order-item-identification' | i18n : [] : 'dts/mpd' }}
+	</totvs-page-detail-info-group>
+		
+	<field 
+		type="input"
+		ng-model="itemController.item['nr-sequencia']" 
+		ng-disabled="!itemController.newSequence"
+		class="col-xs-12 col-sm-12 col-md-2">
+		<label>{{:: 'l-sequencia' | i18n : [] : 'dts/mpd' }}</label>
+	</field>
+
+	<form ng-submit="">	
+		<div style="margin-top: 5px;" class="col-sm-12 col-md-10">
+			<div class="input-group">
+				<label style="font-family: 'Arial'; margin-bottom: 5px; font-weight: 200; font-size: 12px; line-height: 1; color: #333;">
+					<b>{{:: 'l-it-codigo' | i18n : [] : 'dts/mpd' }}</b>
+				</label>
+				
+				<input 
+					id="idItCodigo"
+					type="text" 
+					autocomplete="off"
+					ng-model="itemController.valueItemSelected"
+					class="form-control"
+					ng-disabled="!itemController.newItem"
+					ng-blur="itemController.blurItem();"
+					ng-click="itemController.applySelectRange($event)">
+
+				<input
+					type="hidden"
+					ng-model="itemController.item['it-codigo']"
+					class="form-control"						   
+					ng-disabled="!itemController.newItem">
+																		
+				<span class="input-group-btn">
+					<button
+						ng-disabled="!itemController.newItem"
+						style="margin-top: 20px;"
+						ng-click="itemController.cleanItem(itemController.valueItemSelected);"
+						class="btn btn-default"
+						type="button">
+						<span class="glyphicon glyphicon-remove"></span>
+					</button>
+					<button
+						ng-disabled="!itemController.newItem"
+						style="margin-top: 20px;"
+						ng-click="itemController.openItemZoom();"
+						class="btn btn-default"
+						type="button">
+						<span class="glyphicon glyphicon-search"></span>
+					</button>
+				</span>
+			</div>
+
+			<span class="notFoundItem" ng-show="!itemController.foundItem">
+				{{"l-item-not-found" | i18n}}
+			</span>
+		</div>
+	</form>
+
+	<div class="col-md-12 row" style="margin: 0; padding: 0;">
+		<% _.forEach(data, function(field) { %>        
+			<% if (field.fieldName == "cod-refer") { %>
+				<totvs-field 						
+					totvs-select
+					class="col-xs col-sm-12 col-md-6"
+					ng-model="itemController.item['cod-refer']"
+					label="{{:: 'l-cod-refer' | i18n : [] : 'dts/mpd'}}"
+					ng-disabled="<%= field.fieldEnabled ? '!itemController.newItemRef' : 'true' %>"
+					ng-change="itemController.applyLeaveItem('cod-refer')"
+					select-id="cod-refer"
+					select-description="descricao"
+					select-init="itemController.item['it-codigo']"
+					select-service="mpd.referencia.Zoom"
+					zoom-service="mpd.referencia.Zoom"				
+					canclean
+					zoom-init="itemController.item['it-codigo']">
+				</totvs-field>
+			<% } %>
+
+			<% if (field.fieldName == "num-sequencia-bonif") { %>
+				<field
+					type="input"
+					ng-model="itemController.item['num-sequencia-bonif']" 
+					ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+					class="col-xs col-sm-12 col-md-6">
+					<label>{{:: 'l-seq-bonus' | i18n : [] : 'dts/mpd' }}</label>
+				</field>
+			<% } %>
+		<% } )%>
+	</div>
+
+	<% if (quantityInformation) { %>
+		<totvs-page-detail-info-group>
+			{{:: 'l-quantities' | i18n : [] : 'dts/mpd' }}
+		</totvs-page-detail-info-group>
+	<% } %>
+
+	<% _.forEach(data, function(field) { %>        
+		<% if (field.fieldName == "qt-un-fat") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['qt-un-fat']"
+				ng-model-options="{ updateOn: 'blur' }"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				ng-change="itemController.applyLeaveItem('qt-un-fat')"
+				ng-click="itemController.applySelectRange($event)"
+				data-v-max="9999999.9999"
+				data-m-dec="4">
+				<label>{{:: 'l-invoice-UM-quantity' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "qt-pedida") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['qt-pedida']"
+				disabled="true"
+				data-m-dec="4"
+			>
+				<label>{{:: 'l-requested-quantity' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "des-un-medida") { %>
+			<totvs-field
+				totvs-select
+				class="col-xs-12 col-sm-12 col-md-6"
+				label="{{:: 'l-invoicing-UM' | i18n : [] : 'dts/mpd' }}"
+				ng-model="itemController.item['des-un-medida']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.getEnabledField(\'des-un-medida\')' : 'true' %>"
+				ng-change="itemController.applyLeaveItem('des-un-medida')"
+				select-id="un"
+				select-description="descricao"
+				select-service="mcc.tab-unidade.zoom"
+				zoom-service="mcc.tab-unidade.zoom">
+			</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "cod-un") { %>
+			<field 
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="input"
+				ng-model="itemController.item['cod-un']"
+				ng-disabled="true">
+				<label>{{:: 'l-un' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "qtd-disponivel") { %>
+			<div class="col-xs-12 col-md-4 field">
+				<div class="field-container">
+					<label class="field-label">
+						{{:: 'l-available-quantity' | i18n : [] : 'dts/mpd' }}
+					</label>
+					<div class="field-input">
+						<div class="input-group no-block">
+							<input
+								class="form-control"
+								ng-model="itemController.item['qtd-disponivel']"
+								disabled="true"
+								type="text"
+								autonumeric
+								data-a-dec=","
+								data-a-sep="."
+								data-m-dec="4">
+
+							<span class="input-group-btn">
+								<button
+									type="button"
+									class="btn btn-default"
+									ng-click="itemController.itemStock()">
+									<span class="glyphicon glyphicon-book"></span>
+								</button>
+							</span>					
+						</div>
+					</div>
+				</div>
+			</div>
+		<% } %>
+
+		<% if (field.fieldName == "qtd-disponivel-cotas") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['qtd-disponivel-cotas']"
+				disabled="true"
+				data-m-dec="4">
+				<label>{{:: 'l-available-quantity-quotas' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "qt-log-aloca") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['qt-log-aloca']"
+				ng-model-options="{ updateOn: 'blur' }"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.getEnabledField(\'qt-log-aloca\')' : 'true' %>"
+				ng-click="itemController.applySelectRange($event)"
+				data-v-max="9999999.9999"
+				data-m-dec="4">
+				<label>{{:: 'l-qty-to-allocate' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+	<% } )%>
+
+	<% if (priceInformation) { %>
+		<totvs-page-detail-info-group>
+			{{:: 'l-prices' | i18n : [] : 'dts/mpd' }}
+		</totvs-page-detail-info-group>
+	<% } %>
+
+	<% _.forEach(data, function(field) { %>        
+		<% if (field.fieldName == "vl-preori") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['vl-preori']"
+				ng-model-options="{ updateOn: 'blur' }"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.getEnabledField(\'vl-preori\')' : 'true' %>"
+				ng-click="itemController.applySelectRange($event)"
+				data-v-max="999999999.9999"
+				data-m-dec="4">
+				<label>{{:: 'l-original-price' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "vl-preori-un-fat") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['vl-preori-un-fat']"
+				ng-disabled="true"
+				data-m-dec="4">
+				<label>{{:: 'l-original-price-invoice-UM' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "vl-pretab") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['vl-pretab']"
+				ng-disabled="true"
+				data-m-dec="4">
+				<label>{{:: 'l-table-price' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "vl-preuni") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['vl-preuni']"
+				ng-disabled="true"
+				data-m-dec="4">
+				<label>{{:: 'l-net-price' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "nr-tabpre") { %>
+			<totvs-field
+				totvs-select
+				class="col-xs-12 col-sm-12 col-md-6"
+				ng-model="itemController.item['nr-tabpre']"
+				ng-change="itemController.applyLeaveItem('des-un-medida')"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				canclean							
+				label="{{:: 'l-tab-preco' | i18n : [] : 'dts/mpd' }}"
+				select-id="nr-tabpre"
+				select-description="descricao"
+				select-service="mpd.tb-preco-pv.zoom"
+				zoom-init="{setDefaultValue: false}"
+				zoom-service="mpd.tb-preco-pv.zoom">
+			</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "val-pct-desconto-tab-preco") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['val-pct-desconto-tab-preco']"
+				ng-model-options="{ updateOn: 'blur' }"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				ng-click="itemController.applySelectRange($event)"
+				data-v-max="99.99999"  
+				data-m-dec="5">
+				<label>{{:: 'l-val-pct-desconto-tab-preco' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "log-usa-tabela-desconto") { %>
+			<field
+				ng-if="itemController.enabledUseTabDes"
+				class="col-xs-12 col-sm-12 col-md-6"
+				style="margin-bottom: 5px;"
+				type="checkbox"
+				ng-model="itemController.item['log-usa-tabela-desconto']"
+				ng-change="itemController.applyLeaveItem('log-usa-tabela-desconto')">
+				<label>{{:: 'l-log-usa-tabela-desconto' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		
+			<field
+				ng-if="!itemController.enabledUseTabDes"
+				class="col-xs-12 col-sm-12 col-md-6"
+				style="margin-bottom: 5px;"
+				type="checkbox"
+				ng-model="itemController.item['log-usa-tabela-desconto']"
+				ng-change="itemController.applyLeaveItem('log-usa-tabela-desconto')"
+				ng-disabled="<%= field.fieldEnabled ? '!itemController.newItem' : 'true' %>">
+				<label>{{:: 'l-log-usa-tabela-desconto' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+		
+		<% if (field.fieldName == "val-desconto-inform") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['val-desconto-inform']"
+				ng-model-options="{ updateOn: 'blur' }"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				ng-click="itemController.applySelectRange($event)"
+				data-v-max="999999999.99"   
+				data-m-dec="2">
+				<label>{{:: 'l-val-pct-desconto-inform' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "des-pct-desconto-inform") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="input"
+				ng-model="itemController.item['des-pct-desconto-inform']"
+				maxlength="50" 
+				ng-click="itemController.applySelectRange($event)"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>">
+				<label>{{:: 'l-des-pct-desconto-inform' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+	<% } )%>
+
+	<% if (fiscalInformation) { %>
+		<totvs-page-detail-info-group>
+			{{:: 'l-fiscal-data' | i18n : [] : 'dts/mpd' }}
+		</totvs-page-detail-info-group>
+	<% } %>
+		
+	<% _.forEach(data, function(field) { %>        
+		<% if (field.fieldName == "nat-operacao") { %>
+			<totvs-field
+				totvs-select
+				class="col-xs-12 col-sm-12 col-md-6"
+				ng-model="itemController.item['nat-operacao']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				ng-change="itemController.applyLeaveItem('nat-operacao')"
+				label="{{:: 'l-natur-oper' | i18n : [] : 'dts/mpd' }}"			
+				select-id="nat-operacao"
+				select-description="denominacao"
+				select-service="mpd.natur-oper.zoom"
+				zoom-service="mpd.natur-oper.zoom"
+				required
+				canclean>
+				<validator key="required">
+					{{$fieldLabel}} {{:: 'l-required' | i18n : [] : 'dts/mpd' }}
+				</validator>
+			</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "cod-class-fis") { %>
+			<totvs-field
+				totvs-select
+				class="col-xs-12 col-sm-12 col-md-6"
+				ng-model="itemController.item['cod-class-fis']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.getEnabledField(\'cod-class-fis\')' : 'true' %>"
+				label="{{:: 'l-classificacao-fiscal' | i18n : [] : 'dts/mpd' }}"
+				select-id="class-fiscal"
+				select-description="descricao"
+				select-service="mpd.classif-fisc.zoom"
+				zoom-service="mpd.classif-fisc.zoom">
+			</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "ind-icm-ret") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				style="margin-bottom: 5px;"
+				type="checkbox"
+				ng-model="itemController.item['ind-icm-ret']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>">
+				<label>{{:: 'l-ind-icm-ret' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "per-des-icms") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['per-des-icms']"
+				ng-model-options="{ updateOn: 'blur' }"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				ng-click="itemController.applySelectRange($event)"
+				data-v-max="99.99999"  
+				data-m-dec="5">
+				<label>{{:: 'l-per-des-icms' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "aliquota-ipi") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['aliquota-ipi']"
+				ng-model-options="{ updateOn: 'blur' }"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.getEnabledField(\'aliquota-ipi\')' : 'true' %>"
+				data-v-max="999.99"
+				data-m-dec="2">
+				<label>{{:: 'l-val-aliq-ipi' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "aliquota-iss") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['dec-2']"
+				ng-model-options="{ updateOn: 'blur' }"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.getEnabledField(\'aliquota-iss\')' : 'true' %>"
+				data-v-max="999.99"    
+				data-m-dec="2">
+				<label>{{:: 'l-val-aliq-iss' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "cod-servico-iss") { %>
+			<totvs-field
+				totvs-select
+				class="col-xs-12 col-sm-12 col-md-6"
+				ng-model="itemController.item['cod-servico-iss']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.getEnabledField(\'cod-servico-iss\')' : 'true' %>"
+				label="{{:: 'l-codigo-servico-iss' | i18n : [] : 'dts/mpd' }}"
+				select-id="cod-servico"
+				select-description="descricao"
+				select-service="mpd.tab-codser.zoom"
+				zoom-service="mpd.tab-codser.zoom">
+			</totvs-field>
+		<% } %>
+	<% } )%>
+
+	<% if (attendInformation) { %>
+		<totvs-page-detail-info-group>
+			{{:: 'l-attend-information' | i18n : [] : 'dts/mpd' }}
+		</totvs-page-detail-info-group>
+	<% } %>
+
+	<% _.forEach(data, function(field) { %>        
+		<% if (field.fieldName == "tipo-atend") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="combo"
+				ng-model="itemController.item['tipo-atend']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				ng-options="aitem.id as aitem.desc for aitem in itemController.tipoAtend">
+				<label>{{:: 'l-tipo-atend' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "ind-fat-qtfam") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="combo"
+				ng-model="itemController.item['ind-fat-qtfam-aux']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				ng-options="iitem.id as iitem.desc for iitem in itemController.indFatQtfam">
+				<label>{{:: 'l-invoice-unit' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "dt-min-fat") { %>
+		<totvs-field
+			class="col-xs-12 col-sm-12 col-md-6"
+			totvs-datepicker ng-model="itemController.item['dt-min-fat']"
+			ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+			label="{{:: 'l-dt-minfat' | i18n : [] : 'dts/mpd' }}">
+		</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "dt-max-fat") { %>
+			<totvs-field
+				class="col-xs-12 col-sm-12 col-md-6"
+				totvs-datepicker ng-model="itemController.item['dt-max-fat']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				label="{{:: 'l-dt-lim-fat' | i18n : [] : 'dts/mpd' }}">
+			</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "per-minfat") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['per-minfat']"
+				ng-model-options="{ updateOn: 'blur' }"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				ng-click="itemController.applySelectRange($event)"
+				data-v-max="99.99"
+				data-m-dec="2">
+				<label>{{:: 'l-per-minfat' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "dt-entrega") { %>
+			<totvs-field
+				totvs-datepicker
+				class="col-xs-12 col-sm-12 col-md-6"
+				ng-model="itemController.item['dt-entrega']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				ng-change="itemController.applyLeaveItem('dt-entrega')"
+				label="{{:: 'l-dt-entrega-prim' | i18n : [] : 'dts/mpd' }}">
+			</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "log-canc-saldo") { %>
+			<field
+				type="checkbox"
+				ng-model="itemController.item['log-canc-saldo']"
+				ng-disabled=
+					<% if (!field.fieldEnabled) { %> 
+						"true"
+					<% }else{ %>
+						"itemController.itemDisabled"
+					<% } %>>
+				<label>{{ 'l-log-canc-saldo' | i18n }}</label>
+			</field>
+			<% } %>
+
+		<% if (field.fieldName == "dt-entorig") { %>
+			<totvs-field
+				totvs-datepicker	
+				class="col-xs-12 col-sm-12 col-md-6"
+				ng-model="itemController.item['dt-entorig']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				label="{{:: 'l-dt-entorig' | i18n : [] : 'dts/mpd' }}">
+			</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "cod-entrega") { %>
+			<totvs-field 
+				totvs-select
+				class="col-xs-12 col-sm-12 col-md-6"
+				label="{{:: 'l-local-entrega' | i18n : [] : 'dts/mpd'}}"
+				ng-model="itemController.item['cod-entrega']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				canclean="0"
+				select-id="cod-entrega" 
+				select-match='[{"field":"cod-entrega"}]' 
+				select-init="itemController.order['nome-abrev']"
+				select-service="mpd.loc-entr.zoom"
+				zoom-service="mpd.loc-entr.zoom" 
+				zoom-init="itemController.order['nome-abrev']">
+			</totvs-field>
+		<% } %>
+	<% } )%>
+
+	<% if (otherInformation) { %>
+		<totvs-page-detail-info-group>
+			{{:: 'l-other-information' | i18n : [] : 'dts/mpd' }}
+		</totvs-page-detail-info-group>
+	<% } %>
+
+	<% _.forEach(data, function(field) { %>        
+		<% if (field.fieldName == "cod-ord-compra") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="input"
+				ng-model="itemController.item['cod-ord-compra']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				maxlength="15">
+				<label>{{:: 'l-nr-ordem' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "parcela") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="input"
+				ng-model="itemController.item.parcela"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				maxlength="6"
+				numbers-only>
+				<label>{{:: 'l-cod-parcela' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "cod-unid-negoc") { %>
+			<totvs-field
+				totvs-select
+				class="col-xs-12 col-sm-12 col-md-6"
+				ng-model="itemController.item['cod-unid-negoc']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				label="{{:: 'l-unidade-negocio' | i18n : [] : 'dts/mpd' }}"
+				select-id="cod-unid-negoc"
+				select-description="des-unid-negoc"
+				select-service="mpd.unid-negoc.zoom"
+				zoom-service="mpd.unid-negoc.zoom">
+			</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "num-id-campanha-crm") { %>
+			<totvs-field
+				totvs-select
+				class="col-xs-12 col-sm-12 col-md-6"
+				ng-model="itemController.item['num-id-campanha-crm']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				label="{{:: 'l-campanh-crm' | i18n : [] : 'dts/mpd' }}"
+				select-id="num_id"
+				select-description="nom_campanha"
+				select-service="mpd.campanha.zoom"
+				zoom-service="mpd.campanha.zoom">
+			</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "estab-atend-item") { %>
+			<totvs-field
+				totvs-select
+				class="col-xs-12 col-sm-12 col-md-6"
+				ng-model="itemController.item['estab-atend-item']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				label="{{:: 'l-estabel-atend' | i18n : [] : 'dts/mpd' }}"
+				select-init="{'selected-sites': itemController.estabelecFilter}"
+				select-id="cod-estabel"
+				select-description="nome"
+				select-service="mpd.estabelecSE.select"
+				ng-change="itemController.applyLeaveEstabAtend('estab-atend-item')"
+				zoom-service="mpd.estabelecSE.zoom"
+				zoom-init="{'selected-sites': itemController.estabelecFilter}"
+				required
+				canclean>
+				<validator key="required">
+					{{$fieldLabel}} {{:: 'l-required' | i18n : [] : 'dts/mpd' }}
+				</validator>
+			</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "ct-codigo") { %>
+			<totvs-field
+				totvs-select
+				class="col-xs-12 col-sm-12 col-md-6"
+				ng-model="itemController.item['ct-codigo']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.getEnabledField(\'ct-codigo\')' : 'true' %>"
+				label="{{:: 'l-accounting-account' | i18n : [] : 'dts/mpd' }}"
+				select-id="cod_cta_ctbl"
+				select-description="des_cta_ctbl"
+				select-init="itemController.integrationAccountInit"
+				select-service="utb.cta-ctbl-integr.zoom"
+				zoom-service="utb.cta-ctbl-integr.zoom">
+			</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "sc-codigo") { %>
+			<totvs-field
+				totvs-select
+				class="col-xs-12 col-sm-12 col-md-6"
+				ng-model="itemController.item['sc-codigo']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.getEnabledField(\'sc-codigo\')' : 'true' %>"
+				label="{{:: 'l-cost-center' | i18n : [] : 'dts/mpd' }}"
+				select-id="cod_ccusto"
+				select-description="des_tit_ctbl"
+				select-init="itemController.costCenterInit"
+				select-service="utb.ccusto.zoom"
+				zoom-service="utb.ccusto.zoom">
+			</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "custo-contabil") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['custo-contabil']"
+				ng-model-options="{ updateOn: 'blur' }"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.getEnabledField(\'custo-contabil\')' : 'true' %>"
+				data-m-dec="4"
+				data-v-max="9999999.9999">
+				<label>{{:: 'l-accounting-cost' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+		
+
+		<% if (field.fieldName == "observacao") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-12"
+				type="textarea"
+				ng-model="itemController.item.observacao"
+				class="col-xs col-sm-12 col-md-12"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>">
+				<label>{{:: 'l-observacoes' | i18n : [] : 'dts/mpd' }}</label>
+			</field> 
+		<% } %>
+
+		<% if (field.fieldName == "nr-config") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="input"
+				ng-model="itemController.item['nr-config']"
+				ng-disabled=
+					<% if (!field.fieldEnabled) { %> 
+						"true"
+					<% }else{ %>
+						"itemController.itemDisabled"
+					<% } %>>
+				<label>{{ 'l-nr-config' | i18n }}</label>
+			</field> 
+		<% } %>
+
+
+		<% if (field.fieldName == "nr-ord-produ") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="input"
+				ng-model="itemController.item['nr-ord-produ']"
+				ng-disabled=
+					<% if (!field.fieldEnabled) { %> 
+						"true"
+					<% }else{ %>
+						"field.itemDisabled"
+					<% } %>>
+				<label>{{ 'l-nr-ord-produ' | i18n }}</label>
+			</field>
+		<% } %>	
+
+		<% if (field.fieldName == "nr-progcli") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="input"
+				ng-model="itemController.item['nr-progcli']"
+				ng-disabled=
+					<% if (!field.fieldEnabled) { %> 
+						"true"
+					<% }else{ %>
+						"field.itemDisabled"
+					<% } %>>
+				<label>{{ 'l-nr-progcli' | i18n }}</label>
+			</field>
+		<% } %>	
+
+		<% if (field.fieldName == "nr-programa") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="input"
+				ng-model="itemController.item['nr-programa']"
+				ng-disabled=
+					<% if (!field.fieldEnabled) { %> 
+						"true"
+					<% }else{ %>
+						"field.itemDisabled"
+					<% } %>>
+				<label>{{ 'l-nr-programa' | i18n }}</label>
+			</field>
+		<% } %>		
+
+		<% if (field.fieldName == "nr-versao") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="input"
+				ng-model="itemController.item['nr-programa']"
+				ng-disabled=
+					<% if (!field.fieldEnabled) { %> 
+						"true"
+					<% }else{ %>
+						"field.itemDisabled"
+					<% } %>>
+				<label>{{ 'l-nr-versao' | i18n }}</label>
+			</field>
+		<% } %>	
+	<% } )%>
+
+	<% if (dicountsInformation2) { %>
+		<totvs-page-detail-info-group>
+			{{:: 'l-discounts' | i18n : [] : 'dts/mpd' }}
+		</totvs-page-detail-info-group>
+	<% } %>
+
+	<% _.forEach(data, function(field) { %>
+		<% if (field.fieldName == "val-pct-desconto-periodo") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['val-pct-desconto-periodo']"
+				ng-model-options="{ updateOn: 'blur' }"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				data-m-dec="2">
+				<label>{{:: 'l-val-pct-desconto-periodo' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "val-pct-desconto-prazo") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				type="decimal"
+				ng-model="itemController.item['val-pct-desconto-prazo']"
+				ng-model-options="{ updateOn: 'blur' }"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>"
+				data-m-dec="2">
+				<label>{{:: 'l-val-pct-desconto-prazo' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "log-concede-bonif-qtd") { %>
+			<field
+				class="col-xs-12 col-sm-12 col-md-6"
+				style="margin-bottom: 5px;"
+				type="checkbox"
+				ng-model="itemController.item['log-concede-bonif-qtd']"
+				ng-disabled="<%= field.fieldEnabled ? 'itemController.itemDisabled' : 'true' %>">
+				<label>{{:: 'log-concede-bonif-qtd' | i18n : [] : 'dts/mpd' }}</label>
+			</field>
+		<% } %>
+
+		<% if (field.fieldName == "val-desconto[1]") { %>
+			<totvs-field
+				totvs-decimal
+				ng-model="itemController.item['val-desconto'][0]"
+				label="{{ itemController.ttParamBonif[0].labelDiscount_1 }}"
+				ng-disabled="true"
+				class="col-xs-12 col-sm-12 col-md-6"
+				m-dec="5"
+				v-max="14">
+			</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "val-desconto[2]") { %>
+			<totvs-field
+				totvs-decimal
+				ng-model="itemController.item['val-desconto'][1]"
+				label="{{ itemController.ttParamBonif[0].labelDiscount_2 }}"
+				ng-disabled="true"
+				class="col-xs-12 col-sm-12 col-md-6"
+				m-dec="5"
+				v-max="14">
+			</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "val-desconto[3]") { %>
+			<totvs-field
+				totvs-decimal
+				ng-model="itemController.item['val-desconto'][2]"
+				label="{{ itemController.ttParamBonif[0].labelDiscount_3 }}"
+				ng-disabled="true"
+				class="col-xs-12 col-sm-12 col-md-6"
+				m-dec="5"
+				v-max="14">
+			</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "val-desconto[4]") { %>
+			<totvs-field
+				totvs-decimal
+				ng-model="itemController.item['val-desconto'][3]"
+				label="{{ itemController.ttParamBonif[0].labelDiscount_4 }}"
+				ng-disabled="true"
+				class="col-xs-12 col-sm-12 col-md-6"
+				m-dec="5"
+				v-max="14">
+			</totvs-field>
+		<% } %>
+
+		<% if (field.fieldName == "val-desconto[5]") { %>
+			<totvs-field
+				totvs-decimal
+				ng-model="itemController.item['val-desconto'][4]"
+				label="{{ itemController.ttParamBonif[0].labelDiscount_5 }}"
+				ng-disabled="true"
+				class="col-xs-12 col-sm-12 col-md-6"
+				m-dec="5"
+				v-max="14">
+			</totvs-field>
+		<% } %>
+	<% } )%>
+
+	<% if (dicountsInformation2) { %>
+		<div ng-if="itemController.isRepresentative">
+			<div class="col-sm-12" style="margin: 15px 0;">
+				<button
+					type="button"
+					class="btn btn-default"
+					ng-disabled="itemController.itemDisabled"
+					ng-click="itemController.reloadDiscounts()">
+					<i class="glyphicon glyphicon-refresh"></i>
+					&nbsp;&nbsp;{{:: 'l-load-discounts' | i18n : [] : 'dts/mpd' }}
+				</button>
+
+				<button
+					type="button"
+					class="btn btn-default"
+					ng-disabled="itemController.itemDisabled"
+					ng-click="itemController.applyDiscounts()">
+					<i class="glyphicon glyphicon-arrow-up"></i>
+					&nbsp;&nbsp;{{:: 'l-apply-discounts' | i18n : [] : 'dts/mpd' }}
+				</button>
+			</div>
+
+			<div class="col-sm-12">
+				<totvs-grid
+					grid-data="itemController.itemDiscount"
+					grid-height="200"
+					navigatable="true" 
+					editable="!itemController.itemDisabled"
+					on-edit="itemController.discountGridEdit(event)" 
+					selectable="row">
+
+					<totvs-grid-column
+						field="val-pct-desconto-prazo"
+						width="180"
+						editable="true"
+						filter="number : 2"
+						style="text-align: right;">
+						{{:: 'l-val-pct-desconto-prazo' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column
+						field="val-pct-desconto-periodo"
+						width="180"
+						editable="true"
+						filter="number : 2"
+						style="text-align: right;">
+						{{:: 'l-val-pct-desconto-periodo' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column
+						field="['val-desconto'][0]"
+						width="180"
+						editable="true"
+						filter="number : 5"
+						style="text-align: right;">
+						<header-template>
+							{{ itemController.ttParamBonif[0].labelColumnDiscount_1 }}
+						</header-template>
+					</totvs-grid-column>
+
+					<totvs-grid-column
+						field="['val-desconto'][1]"
+						width="180"
+						editable="true"
+						filter="number : 5"
+						style="text-align: right;">
+						<header-template>
+							{{ itemController.ttParamBonif[0].labelColumnDiscount_2 }}
+						</header-template>
+					</totvs-grid-column>
+
+					<totvs-grid-column
+						field="['val-desconto'][2]"
+						width="180"
+						editable="true"
+						filter="number : 5"
+						style="text-align: right;">
+						<header-template>
+							{{ itemController.ttParamBonif[0].labelColumnDiscount_3 }}
+						</header-template>
+					</totvs-grid-column>
+
+					<totvs-grid-column
+						field="['val-desconto'][3]"
+						width="180"
+						editable="true"
+						filter="number : 5"
+						style="text-align: right;">
+						<header-template>
+							{{ itemController.ttParamBonif[0].labelColumnDiscount_4 }}
+						</header-template>
+					</totvs-grid-column>
+
+					<totvs-grid-column
+						field="['val-desconto'][4]"
+						width="180"
+						editable="true"
+						filter="number : 5"
+						style="text-align: right;">
+						<header-template>
+							{{ itemController.ttParamBonif[0].labelColumnDiscount_5 }}
+						</header-template>
+					</totvs-grid-column>
+
+				</totvs-grid>
+			</div>
+		</div>
+	<% } %>
+</div>
