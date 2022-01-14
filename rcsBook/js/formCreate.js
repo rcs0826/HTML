@@ -125,7 +125,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                 }
 
                 attr = "";
-                attr += objValue == "" || objType == "select" || objType == "checkbox" || objType == "radio" || objType == "button" ? "" : ' value="' + objValue + '"';
+                attr += objValue == "" || objType == "select" || objType == "dataset" || objType == "checkbox" || objType == "radio" || objType == "button" ? "" : ' value="' + objValue + '"';
                 attr += objType == "button" ? ' value="' + objNome + '"' : "";
                 attr += objPlaceholder == "" ? "" : ' placeholder="' + objPlaceholder + '"';
                 attr += objType != "email" ? "" : ' placeholder="email@email.com.br"';
@@ -135,6 +135,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                 attr += objNome != "CEP" ? "" : ' placeholder="00000-000" mask="00000-000"';
                 attr += objNome != "RG" ? "" : ' placeholder="00.000.000-0" mask="00.000.000-0"';
                 attr += objType != "placa" ? "" : ' placeholder="XXX-0000" mask="XXX-0000"';
+                attr += objType != "zoom" ? "" : " data-zoom=\"{'displayKey': 'colleagueName','datasetId': 'colleague','filterValues': 'active,true','fields': [{'field': 'colleagueName','label': 'Nome','standard': 'true','search': 'true'},   {'field': 'colleagueId','label': 'Matricula','standard': 'true','search': 'true'}]}\"";
                 attr += objReadonly != 1 ? "" : ' readonly="readonly"';
                 attr += objObrigatorio == 1 && objReadonly != 1 ? ' required="required"' : "";
 
@@ -162,17 +163,40 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                     if(val.length == 2){
                         table += '</div>';    
                     }
-                } else if (objType == "select") {
+                } else if (objType == "select" || objType == "dataset") {
+                    let attrDs = "";
                     isSelect = true;
-                    table += '<select class="form-control" id="' + idName + '" name="' + idName + '"' + attr + ' title="' + titName + '" >';
                     val = objValue.toString().split("|");
-                    for (var x = 0; x < val.length; x++) {
-                        if (val[x] == "") {
-                            table += '<option value="" readonly="readonly" selected="selected" >Selecione</option>';
-                        } else {
-                            table += '<option value="' + val[x] + '">' + val[x] + "</option>";
+
+                    if(objType == "dataset"){
+                        for (var x = 0; x < val.length; x++) {
+                            if (x == 0) {
+                                attrDs += ' dataset="'+((val[x] == "")?"colleague":val[x])+'"';
+                            }
+                            else if (x == 1) {
+                                attrDs += ' datasetkey="'+((val[x] == "")?"colleagueId":val[x])+'"';
+                            }
+                            else if (x == 2) {
+                                attrDs += ' datasetvalue="'+((val[x] == "")?"colleagueName":val[x])+'"';
+                            }
+                            else if (x == 3) {
+                                attrDs += ' addblankline="'+((val[x] == "false")?"false":"true")+'"';
+                            }
                         }
                     }
+
+                    table += '<select class="form-control" id="' + idName + '" name="' + idName + '"' + attr + ' title="' + titName+ '"'+attrDs+' >';
+                    
+                    if(objType == "select"){
+                        for (var x = 0; x < val.length; x++) {
+                            if (val[x] == "") {
+                                table += '<option value="" readonly="readonly" selected="selected" >Selecione</option>';
+                            } else {
+                                table += '<option value="' + val[x] + '">' + val[x] + "</option>";
+                            }
+                        }
+                    }
+
                     table += "</select>";
                 } else if (objType == "textarea") {
                     table += '<textarea class="form-control" rows="6" id="' + idName + '" name="' + idName + '"' + attr + ' title="' + titName + '" >' + objValue + "</textarea>";
@@ -344,6 +368,7 @@ function nameSugeri(type, name) {
             break;
         case "select":
         case "zoom":
+        case "dataset":
             newName = "sl";
             break;
         case "date":

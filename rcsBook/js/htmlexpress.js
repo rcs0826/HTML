@@ -113,6 +113,7 @@ var HE = {
                 var xClass = type == "button" || type == "submit" ? "btn btn-primary" : "form-control";
                 textarea.value += ('<input class="' + xClass + '" type="[x]" value="" /> ').replace("[x]", type);
         }
+        textarea.value += "\n";
         this.recriar("result");
     }
 }
