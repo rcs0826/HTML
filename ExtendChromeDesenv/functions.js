@@ -2,7 +2,10 @@ $(document).ready(function(){
 	chrome.tabs.query({ "active": true, "lastFocusedWindow": true }, function (tabs) {
 		//$("#head").attr('src',getUrl(tabs[0].url)+'/webdesk/vcXMLRPC.js');
 		var cod = '$("#logged-user-name").html();';
-		getValue(cod,"#infoUser","html");		
+		getValue(cod,"#infoUser","html");	
+		
+		//$(".imageProfile").attr("src","file:///home/rogerio/Documentos/Codigos/Projetos_HTML/HTMLs/rcsBook/img/logo.jpg");
+		$(".imageProfile").attr("src",getUrl(0,tabs[0].url)+"/social/api/rest/social/image/profile/undefined/SMALL_PICTURE");
             
 	     /*Atalhos*/
 	     $("#btPesq").click(function(){
@@ -28,6 +31,18 @@ $(document).ready(function(){
 	     $("#btPape").click(function(){importador(this.id);});
 	     $("#btLimp").click(function(){$("#txtCodiDesc").val(""); });
 
+	     $("#btDesBK").click(function(){
+	     	executeScript('$("[readonly]").removeAttr("readonly"); $("[disabled]").removeAttr("disabled");');
+	     });
+	     $("#btShow").click(function(){
+	     	executeScript('$("input[type=\"hidde\"]").attr("type","text"); $("[style=\"display:none\"]").attr("style","display: inline");');
+	     });
+		 $("#btSepFWF").click(function(){
+		 	executeScript('window.open(document.getElementById("workflowView-cardViewer").getAttribute("src"));');		 	
+		 });
+
+		 
+
 	     /* Dataset View */
     	 var that = WDataset;  	
          $('#dataset').on('change',function(){
@@ -40,7 +55,7 @@ $(document).ready(function(){
          	that.setFilter();
          });
          $('#Limpar').on('click',function(){
-         	that.clearFilter();
+         	that.clearFilter();         	
          });
          $('#btDSincronizar').on('click',function(){
          	that.datasetSync();
@@ -52,6 +67,14 @@ $(document).ready(function(){
          	that.code();
          });    
 	     that.init();
+
+
+    	 var cap = capivara;
+
+	     $("#slUsuaCadaAtiv").change(function(){
+	     	cap.getCapivara(this.value);
+	     });
+	     cap.init();
 	 });
 });
 
@@ -74,7 +97,148 @@ function importador(id){
 		alert("Cadastrado efetuado");
 	}
 	catch(e){
-		throw e.message;
+		throw "Erro";
+	}
+}
+
+var capivara = {
+	init:function(){
+		var col = ["colleagueName","mail","login","colleaguePK.colleagueId"];
+		var c = [FLUIG.simpleConstr("active","true",1)];
+		FLUIG.getDataset("colleague",col,c,col,function(res){
+			res = res.values;
+			for(var i=0; i<res.length; i++){
+    			let option = "<option value='"
+    					   + res[i]["colleaguePK.colleagueId"] + "|" 
+    					   + res[i].login + "|" 
+    					   + res[i].mail + "|" 
+    					   + res[i].colleagueName + "'>"
+    					   + res[i].colleagueName + " - Email: "
+    					   + res[i].mail
+    					   + "</option>";
+    			$("#slUsuaCadaAtiv").append(option);
+    		}
+		});
+	},
+	getCapivara:function(val){
+		let info = val.split("|");
+		let matricula = info[0];
+		let login = info[1];
+		let email = info[2];
+		let name = info[3];
+		/* Adiciona as informações do usuário */
+		chrome.tabs.query({ "active": true, "lastFocusedWindow": true }, function (tabs) {
+			$(".imageProfile").attr("src",getUrl(0,tabs[0].url)+"/social/api/rest/social/image/profile/"+login+"/SMALL_PICTURE");
+		});
+		info = '<label>'+name+'</label>'
+            +'<span>E-mail: </span>'+email+'<br />'
+            +'<span>Login: </span>'+login+'<br />'
+            +'<span>Matricula: </span>'+matricula+'<br />';
+		$(".idProfile").html(info);
+
+		/* Busca os grupos */		
+		var col = ["colleagueGroupPK.groupId"];
+		var c = [FLUIG.simpleConstr("colleagueGroupPK.colleagueId",matricula,1)];
+		FLUIG.getDataset("colleagueGroup",col,c,col,function(res){
+			res = res.values;
+			let html = "";
+
+    		let col = ["groupDescription","groupPK.groupId"];
+			let c = new Array();
+			for(var i=0; i<res.length; i++){
+    			c.push(FLUIG.simpleConstr("groupPK.groupId",res[i]["colleagueGroupPK.groupId"],2));
+    		}
+			FLUIG.getDataset("group",col,c,col,function(res){
+				res = res.values;
+				let html = "";
+				//alert("role",res.length);
+				for(var i=0; i<res.length; i++){
+	    			html += "<div>"
+	    			      + res[i]["groupDescription"]
+	    			      + " - <small>("
+	    			      + res[i]["groupPK.groupId"]
+	    			      + ")</small></div><br />";    	
+	    		}
+	    		$("#userGroup").html(html);
+			});
+		});
+
+		/* Busca os papéis */		
+		col = ["workflowColleagueRolePK.roleId"];
+		c = [FLUIG.simpleConstr("workflowColleagueRolePK.colleagueId",matricula,1)];
+		FLUIG.getDataset("workflowColleagueRole",col,c,col,function(res){
+			res = res.values;
+			let html = "";
+			/*
+			for(var i=0; i<res.length; i++){
+    			html += "<span>"
+    			      + res[i]["workflowColleagueRolePK.roleId"]
+    			      + "</span><br />";    			
+    		}
+    		$("#userRole").html(html);*/
+    		let col = ["roleDescription","workflowRolePK.roleId"];
+			let c = new Array();
+			for(var i=0; i<res.length; i++){
+    			c.push(FLUIG.simpleConstr("workflowRolePK.roleId",res[i]["workflowColleagueRolePK.roleId"],2));
+    		}
+			FLUIG.getDataset("workflowRole",col,c,col,function(res){
+				res = res.values;
+				let html = "";
+				//alert("role",res.length);
+				for(var i=0; i<res.length; i++){
+	    			html += "<div>"
+	    			      + res[i]["roleDescription"]
+	    			      + " - <small>("
+	    			      + res[i]["workflowRolePK.roleId"]
+	    			      + ")</small></div><br />";    			
+	    		}
+	    		$("#userRole").html(html);
+			});
+		});
+
+		/* Busca os Processos em aberto */		
+		col = ["processId","startDateProcess","workflowProcessPK.processInstanceId"];
+		c = [FLUIG.simpleConstr("requesterId",matricula,1),FLUIG.simpleConstr("active","true",1)];
+		FLUIG.getDataset("workflowProcess",col,c,col,function(res){
+			res = res.values;
+			let html = "";
+			let idlink = "";
+			
+			chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+				for(var i=0; i<res.length; i++){
+					
+	    			html += '<a href="'+getUrl(1,tabs[0].url)+'/pageworkflowview?app_ecm_workflowview_detailsProcessInstanceID='
+	    				  + res[i]["workflowProcessPK.processInstanceId"]
+	    				  + '" target="_blank">'
+	    			      + res[i]["workflowProcessPK.processInstanceId"] + ' | '
+	    			      + res[i]["processId"] + ' | '
+	    			      + pardeDatePTBR(res[i]["startDateProcess"])
+	    			      + '</a><br />';
+	    		}
+	    		$("#userProcess").html(html);
+    		});	
+		});
+
+		/* Busca os documentos */		
+		col = ["documentDescription","documentPK.documentId","documentPK.version","phisicalFile"];
+		c = [FLUIG.simpleConstr("colleagueId",matricula,1),FLUIG.simpleConstr("datasetName","",1)];
+		FLUIG.getDataset("document",col,c,col,function(res){
+			res = res.values;
+			let html = "";
+
+			chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+				for(var i=0; i<res.length; i++){
+	    			html += '<a href="'+getUrl(1,tabs[0].url)+'/ecmnavigation?app_ecm_navigation_doc='
+	    				  + res[i]["documentPK.documentId"]
+	    				  + '" target="_blank">'
+	    			      + res[i]["documentPK.documentId"] + " | "
+	    			      + res[i]["documentDescription"] + " | v: "
+	    			      + res[i]["documentPK.version"]
+	    			      + "</a><br />";    			
+	    		}
+	    		$("#userDoc").html(html);
+    		});	
+		});
 	}
 }
 /**************************************************************************
@@ -87,7 +251,8 @@ function importador(id){
 function goLink(link,param){
 	var url = "";
 	var typeUrl = 1;
-	
+	alert(link);
+	alert(param);
 	if(param.trim() != ""){
 		switch(link){
 			case "ProcessInstanceID": url = "/pageworkflowview?app_ecm_workflowview_detailsProcessInstanceID="+param; break;
@@ -108,18 +273,13 @@ function goLink(link,param){
 	}
 }
 
-/**************************************************************************
-* 	Faz Download do log Completo
-* *************************************************************************
-* 
-* @param Sem parâmetro;
-* @return Sem retorno;
-**************************************************************************/
-function getLog(){
-	chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
-		var url = getUrl(tabs[0].url)+"/portal/api/rest/wcm/service/userlog/downloadServerLog";
-		window.open(url);
-	});
+function pardeDatePTBR(val){
+     var today = new Date(parseInt(val));
+     var year = today.getFullYear();
+     var month = today.getMonth() + 1 < 10 ? '0' + (today.getMonth() + 1) : (today.getMonth() + 1);
+     var day = today.getDate() < 10 ? '0' + today.getDate() : today.getDate();
+     var dtAtual = (day + '/' + month + '/' + year);
+     return dtAtual;
 }
 
 /**************************************************************************
@@ -169,6 +329,13 @@ function saldo(){
 
 
 //
+function executeScript(codget){
+	var jqurl = "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js";
+	
+	chrome.tabs.executeScript( null, {file: "jquery-1.9.1.js"},function(){
+		chrome.tabs.executeScript( null, {code: codget},function(results){});
+	});
+}
 function getValue(codget,id,tp){
 	var jqurl = "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js";
 	
@@ -494,7 +661,7 @@ var WDataset = {
 	    		    	}
 	    			},
 	    			erro : function(res) {
-	    				alert("Erro: "+res);
+	    				alert("Essa Extenção fó funciona no Fluig depois que logado como ADM");
 	    				return;
 	    			}
 	    	});
@@ -514,7 +681,9 @@ var WDataset = {
     		    			 option = "<option value='"+res[i].datasetPK.datasetId+"'>"+res[i].datasetPK.datasetId+" | "+res[i].datasetDescription+"</option>";
     		    			 $("#dataset").append(option);
     		    		 }
-    		    		 catch (e) {}
+    		    		 catch (e) {
+    		    		 	alert("Essa Extenção fó funciona no Fluig depois que logado como ADM");
+    		    		 }
     		    	 }
     		     }
     		     ,"JSON"  
@@ -621,7 +790,7 @@ var FLUIG = {
 	        		return res;
 	        	},
 	        	error : function(res) {
-	        		alert("Erro " + res);
+	        		alert("Essa Extenção fó funciona no Fluig depois que logado como ADM");
 	        	}
 	        });
         });
@@ -664,9 +833,47 @@ var FLUIG = {
 	        		return res;
 	        	},
 	        	error : function(res) {
-	        		alert("Erro " + res);
+	        		alert("Essa Extenção fó funciona no Fluig depois que logado como ADM");
 	        	}
 	        });
         });
 	}
 };
+
+var FLUIG = {
+	simpleConstr:function(col, val,tp){
+		var conObj = new Object();	
+    	conObj._field = col;
+    	conObj._initialValue = val;
+    	conObj._finalValue = val;
+    	conObj._type = tp;
+    	conObj._likeSearch = false;
+    	
+      	return conObj;
+	},
+	getDataset:function(nameDataset,fields,cons,order,callback){
+    	var param = new Object();
+    	param.name = nameDataset;
+    	param.fields = fields;
+    	param.constraints = cons;
+    	param.order = order;
+    	var ds,html,like="";
+
+
+         chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+	    	$.ajax({
+	    		type : "POST",
+	    		url : getUrl(0,tabs[0].url)+'/ecm/api/rest/ecm/dataset/datasetsListForm/',
+	    		contentType : "application/json",
+	    		dataType : "JSON",
+	    		data : JSON.stringify(param),	
+	    		success : function(res) {
+	    			callback(res);
+    		    },
+	        	error : function(res) {
+	        		alert("Essa Extenção fó funciona no Fluig depois que logado como ADM");
+	        	}
+    		 });
+    	});
+    }
+}
