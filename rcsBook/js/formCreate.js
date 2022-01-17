@@ -67,6 +67,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
     var isObr = false;
     var isSelect = false;
     var vetTitle = txtTitle.split(";");   
+    var colType = RCS.getValueSelect("slColu");
 
     try {
         if (txtTitle != null && txtTitle != "" && vetTitle.length >= 2) {
@@ -117,7 +118,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                     isObr = true;
                 }
 
-                table += '<div class="col-md-' + tamanho + '">';
+                table += '<div class="col-'+colType+'-' + tamanho + '">';
                 table += (objType == "button" || objType == "msg")?'':'<label for="' + idName + '" ' + obr + ">" + objNome + ":</label>";
 
                 if (objPlaceholder == "c" && objReadonly != 1) {
@@ -147,7 +148,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                     for (var x = 0; x < val.length; x++) {
                         if (val[x] != "") {
                             if(val.length == 2){
-                                table += '<div class="col-md-6">';    
+                                table += '<div class="col-'+colType+'-6">';    
                             }
                             table += '<div class="input-group"> ';
                             table += '<span class="input-group-addon"> ';
