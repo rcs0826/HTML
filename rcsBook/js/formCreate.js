@@ -68,6 +68,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
     var isSelect = false;
     var vetTitle = txtTitle.split(";");   
     var colType = RCS.getValueSelect("slColu");
+    var isTable = false;
 
     try {
         if (txtTitle != null && txtTitle != "" && vetTitle.length >= 2) {
@@ -96,6 +97,11 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
 
                 tamanho = objTamanho.trim() == "" ? 2 : parseInt(objTamanho);
                 sum += tamanho;
+                if (isTable) {
+                    sum = 0;
+                    isTable = false;
+                    line = true;
+                }
                 //console.info("soma: "+soma);
                 if (sum > 12) {
                     line2 = true;
@@ -108,6 +114,10 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                     line = false;
                 }
 
+                if (objType == "table") {
+                    isTable = true;
+                }
+
                 objType = objType == "" ? "text" : objType;
                 idName = objIDName != "" ? objIDName : nameSugeri(objType, objNome.trim());
                 titName = clearString(objNome.trim());
@@ -118,8 +128,10 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                     isObr = true;
                 }
 
-                table += '<div class="col-'+colType+'-' + tamanho + '">';
-                table += (objType == "button" || objType == "msg")?'':'<label for="' + idName + '" ' + obr + ">" + objNome + ":</label>";
+                if(objNome != "tablefim"){
+                    table += '<div class="col-'+colType+'-' + tamanho + '">';
+                }
+                table += (objType == "button" || objType == "msg" || objType == "table" || objNome == "tablefim")?'':'<label for="' + idName + '" ' + obr + ">" + objNome + ":</label>";
 
                 if (objPlaceholder == "c" && objReadonly != 1) {
                     objPlaceholder = "Digite o " + titName + " aqui!";
@@ -139,6 +151,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                 attr += objType != "zoom" ? "" : " data-zoom=\"{'displayKey': 'colleagueName','datasetId': 'colleague','filterValues': 'active,true','fields': [{'field': 'colleagueName','label': 'Nome','standard': 'true','search': 'true'},   {'field': 'colleagueId','label': 'Matricula','standard': 'true','search': 'true'}]}\"";
                 attr += objReadonly != 1 ? "" : ' readonly="readonly"';
                 attr += objObrigatorio == 1 && objReadonly != 1 ? ' required="required"' : "";
+                attr += ( objType == "table" && objReadonly == 1)? " noaddbutton=true nodeletebutton=true" : "";
 
                 if (objType == "radio" || objType == "checkbox") {
                     val = objValue.toString().split("|");
@@ -152,7 +165,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                             }
                             table += '<div class="input-group"> ';
                             table += '<span class="input-group-addon"> ';
-                            table += '<input type="'+objType+'" id="' + idName + '" name="' + idName + '"' + attr + ' value="' + val[x] + '" title="' + titName + '" />';
+                            table += '<input type="'+objType+'" id="' + idName + '_'+nameNormalize(val[x])+'" name="' + idName + '"' + attr + ' value="' + nameNormalize(val[x]) + '" title="' + titName + '" />';
                             table += "</span> ";
                             table += '<label class="form-control">' + val[x] + "</label>";
                             table += "</div>";
@@ -202,6 +215,15 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                 } else if (objType == "textarea") {
                     table += '<textarea class="form-control" rows="6" id="' + idName + '" name="' + idName + '"' + attr + ' title="' + titName + '" >' + objValue + "</textarea>";
 
+                } else if (objType == "table") {
+                    table += '<fieldset> <legend>' + titName + '</legend>';
+                    table += '<table id="' + idName + '" class="table table-striped" tablename="' + idName + '" addbuttonlabel="Incluir" addbuttonclass="btn btn-primary" ' + attr + ' width="100%">';
+                    table += '<thead> <tr class="tableHeadRow"> <th class="tableColumn"></th> </tr> </thead>';
+                    table += '<tbody> <tr class="tableBodyRow"> <td>';
+
+                } else if (objNome == "tablefim") {
+                    table += '</div></td></tr></tbody></table></fieldset>';
+
                 } else if (objType == "msg") {
                     table += getDivMensage(objIDName,objNome,objValue);
                 } 
@@ -212,7 +234,8 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                     }
                     var typedef = '';
                     if(objType == "data" || objType == "time"){
-                        table += '<div class="input-group enable-calendar">';  
+                        table += '<div class="input-group enable-calendar">';   
+                        typedef = (objType == "data")?'text':typedef;
                     }
                     else if(objType == "placa"){
                         typedef = 'text';
@@ -243,8 +266,9 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                         table += '</div>';   
                     }
                 }
-
-                table += "</div>";
+                if(objType != "table"){
+                    table += "</div>";
+                }
 
                 if (i + 1 == total) {
                     table += "</div>";
@@ -288,6 +312,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
         
         document.getElementById(divRet).innerHTML = table;
         document.getElementById(txtRet).value = vkbeautify.xml(table);
+        //document.getElementById(txtRet).value = table;
     } catch (e) {
         alert("Erro: " + e.message);
     }
@@ -387,6 +412,9 @@ function nameSugeri(type, name) {
             break;
         case "time":
             newName = "tm";
+            break;
+        case "table":
+            newName = "tb";
             break;
         default:
             newName = "txt";
