@@ -13,7 +13,7 @@
 * tp 3 = Captura os valores dos inputs e cria um script de insersão
 * */
 function codValidate(tp){
-    var obj = (tp == 1)?$('[required]'):$('#divForm [name]');
+    var obj = (tp == 1)?$('[required]'):$('[name]');
     var retorno = "";
     var vetVerif = new Array();
   
@@ -26,9 +26,10 @@ function codValidate(tp){
     else if(tp == 2){
         retorno += "function enableFields(form){  \n";
     }
-    retorno += "var act = getValue('WKNumState'); \n";
-    retorno += "var ini = ( act == 0 || act == 4 ); \n";
-    
+    if (tp != 3) {
+        retorno += "var act = getValue('WKNumState'); \n";
+        retorno += "var ini = ( act == 0 || act == 4 ); \n";
+    }
     for(var i=0; i < obj.length; i++){
         if(obj[i].name != undefined && obj[i].name != "form"){
             if(!isVet(vetVerif,obj[i].name)){
@@ -44,7 +45,9 @@ function codValidate(tp){
                       retorno += "form.setEnabled(\""+obj[i].name+"\", ini); \n";
                 }
                 else{
-                  retorno += "$('[name=\""+obj[i].name+"\"]').val(\""+$('[name="'+obj[i].name+'"]').val()+"\"); \n";
+                  //retorno += "$('[name=\""+obj[i].name+"\"]').val(\""+$('[name="'+obj[i].name+'"]').val()+"\"); \n";
+                  retorno += "<item><item>"+obj[i].name+"</item><item>"+$('[name="'+obj[i].name+'"]').val()+"</item></item> \n";
+                  //retorno += "<item><item>"+obj[i].name+"</item><item>"+obj[i].name+"</item></item>";
                 }
             }
         }

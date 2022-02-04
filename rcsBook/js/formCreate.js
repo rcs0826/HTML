@@ -98,7 +98,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                 tamanho = objTamanho.trim() == "" ? 2 : parseInt(objTamanho);
                 sum += tamanho;
                 if (isTable) {
-                    sum = 0;
+                    sum = 2;
                     isTable = false;
                     line = true;
                 }
