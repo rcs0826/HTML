@@ -1,8 +1,10 @@
 $(document).ready(function(){
 	chrome.tabs.query({ "active": true, "lastFocusedWindow": true }, function (tabs) {
 		//$("#head").attr('src',getUrl(tabs[0].url)+'/webdesk/vcXMLRPC.js');
-		var cod = '$("#logged-user-name").html();';
-		getValue(cod,"#infoUser","html");	
+		if($("#infoUser").html() == "null"){		
+			var cod = '$("#logged-user-name").html();';
+			getValue(cod,"#infoUser","html");	
+		}
 		
 		//$(".imageProfile").attr("src","file:///home/rogerio/Documentos/Codigos/Projetos_HTML/HTMLs/rcsBook/img/logo.jpg");
 		$(".imageProfile").attr("src",getUrl(0,tabs[0].url)+"/social/api/rest/social/image/profile/undefined/SMALL_PICTURE");
@@ -32,16 +34,31 @@ $(document).ready(function(){
 	     $("#btLimp").click(function(){$("#txtCodiDesc").val(""); });
 
 	     $("#btDesBK").click(function(){
-	     	executeScript('$("[readonly]").removeAttr("readonly"); $("[disabled]").removeAttr("disabled");');
+	     	executeScript('readonlyNo();');
 	     });
 	     $("#btShow").click(function(){
 	     	executeScript('$("input[type=\"hidde\"]").attr("type","text"); $("[style=\"display:none\"]").attr("style","display: inline");');
 	     });
 		 $("#btSepFWF").click(function(){
-		 	executeScript('window.open(document.getElementById("workflowView-cardViewer").getAttribute("src"));');		 	
+		 	executeScript('window.open(document.getElementById("workflowView-cardViewer").getAttribute("src"));');
 		 });
 
-		 
+	     $('#btgetValInpur').on('click',function(){  
+	         	try{let func = codValidate;
+	         	let func2 = copyClipboard2;
+	         	//getValue(func2.toString()+';'+func.toString()+';copyClipboard2(function(){return codValidate(3);});',"#tempClipboard","val");
+	         	getValue(func2.toString()+';'+func.toString()+';codValidate(3);',"#tempClipboard2","memory");
+
+	        	/*setTimeout(function(){
+	        		alert($("#tempClipboard").val());
+	        		//RCS.copyClipboard("tempClipboard");
+	        		alert("Código dos valores copiados para a área de transferência");
+	        	},1000);*/
+	        }
+	        catch(e){
+	        	alert(e.message);
+	        }
+         });  		 
 
 	     /* Dataset View */
     	 var that = WDataset;  	
@@ -74,12 +91,39 @@ $(document).ready(function(){
 	     $("#slUsuaCadaAtiv").change(function(){
 	     	cap.getCapivara(this.value);
 	     });
+
+	     $("#slUsuaAtiv1,#slUsuaAtiv2").change(function(){
+	     	cap.getInfo(this);
+	     });
+
+	     $("#allGroup").click(function(){
+		    selectAll("usuGroup", this.checked);
+	     }); 
+
+	     $("#allRole").click(function(){
+	     	selectAll("usuRole", this.checked);
+	     });
+
+	     $("#btTranPerm").click(function(){
+	     	cap.setTransferRole();
+	     });
+	     
 	     cap.init();
 	 });
 });
+function selectAll(name, val){
+	let obj = document.getElementsByName(name);	
 
+	for (var i = 0; i < obj.length; i++) {
+		if (val) {
+			obj[i].setAttribute("checked", val);
+		}
+		else{
+			obj[i].removeAttribute("checked");
+		}
+	}
+}
 function importador(id){
-	alert(id);
 	let txt = $("#txtCodiDesc").val();
 	let row = txt.split("\n");
 	try{
@@ -102,6 +146,8 @@ function importador(id){
 }
 
 var capivara = {
+	configUser1:new Object(),
+	configUser2:new Object(),
 	init:function(){
 		var col = ["colleagueName","mail","login","colleaguePK.colleagueId"];
 		var c = [FLUIG.simpleConstr("active","true",1)];
@@ -117,8 +163,224 @@ var capivara = {
     					   + res[i].mail
     					   + "</option>";
     			$("#slUsuaCadaAtiv").append(option);
+    			$("#slUsuaAtiv1").append(option);
+    			$("#slUsuaAtiv2").append(option);    			
     		}
 		});
+	},
+	containsVetPerm:function(vetObj,obj){
+		for (var i = 0; i < vetObj.length; i++) {
+			if (vetObj[i].key == obj.key) {
+				return true;
+			} 
+		}
+		return false;
+	},
+	setTransferRole:function(){
+		var that = this;
+		var user2 = that.configUser2.info;
+		var user2roles = that.configUser2.roles;
+		var user2groups = that.configUser2.groups;
+		var obj = new Object();
+
+		var roles = RCS.getValueCheckedList("usuRole");
+		var groups = RCS.getValueCheckedList("usuGroup");
+		//alert("1 user2groups: "+user2groups.length+" | groups: "+groups.length);
+
+		if(roles.length == 0 && groups.length == 0){
+			alert("Não foi escolhido nenhum Grupo e Papél");
+			return;
+		}
+		for (var i = 0; i < roles.length; i++) {
+			console.info(roles[i])
+			obj.key = (roles[i]).split("-")[0];
+			obj.value = (roles[i]).split("-")[1];
+			if (!that.containsVetPerm(user2roles, obj)) {				
+				user2roles.push(obj);
+			}		
+			obj = new Object();	
+		}
+		for (var i = 0; i < groups.length; i++) {
+			obj.key = (groups[i]).split("-")[0];
+			obj.value = (groups[i]).split("-")[1];
+			if (!that.containsVetPerm(user2groups, obj)) {
+				user2groups.push(obj);
+			}	
+			obj = new Object();		
+		}
+		
+		var permissions = (user2.permissions == null)?"":JSON.stringify(user2.permissions);
+
+		chrome.tabs.query({ "active": true, "lastFocusedWindow": true }, function (tabs) {
+			var urlpost = getUrl(0,tabs[0].url)+"/ecm/api/rest/ecm/user/update";
+			var param = {
+				"formData": {
+					"editLogin": user2.login,
+					"email": user2.email,
+					"data": "",
+					"role": JSON.stringify(user2roles),
+					"group": JSON.stringify(user2groups),
+					"permissions": permissions,
+					"password": "",
+					"passwordConfirm": "",
+					"idpId": user2.idpId,
+					"firstName": user2.firstName,
+					"lastName": user2.lastName,
+					"idLocal": "",
+					"user-langdef": "pt_BR",
+					"user-vol": "",
+					"user-quota": "0",
+					"user-projects": "",
+					"user-specialization": "",
+					"user-groupworkflow": "",
+					"selectedItens": []
+				},
+				"config": {
+					"validateFields": [
+						{
+							"key": "email"
+						}
+					]
+				}
+			};
+			console.info("param",param);
+	        if(confirm("Quer realmente copiar as permissões selecionadas")){
+		        $.ajax({
+		        	type : "PUT",
+		        	url : urlpost,
+		        	contentType : "application/json",
+		        	dataType : "JSON",
+		        	data : JSON.stringify(param),	
+		        	success : function(res) {
+		        		document.getElementById("slUsuaAtiv2").change();
+		        		return res;
+		        	},
+		        	error : function(res) {
+		        		console.info("res",res);
+		        		alert("Erro: "+res.toString());
+		        	}
+		        });
+		    }
+        });
+	},
+	getInfo:function(obj){
+		let newId = obj.id.replace("slUsuaAtiv","");
+		let valid = (newId == "1");
+		let info = obj.value.split("|");
+		let matricula = info[0];
+		let login = info[1];
+		let email = info[2];
+		let name = info[3];
+		/* Adiciona as informações do usuário */
+		chrome.tabs.query({ "active": true, "lastFocusedWindow": true }, function (tabs) {
+			$("#imageProfile"+newId).attr("src",getUrl(0,tabs[0].url)+"/social/api/rest/social/image/profile/"+login+"/SMALL_PICTURE");
+		});
+		info = '<label>'+name+'</label>'
+            +'<span>E-mail: </span>'+email+'<br />'
+            +'<span>Login: </span>'+login+'<br />'
+            +'<span>Matricula: </span>'+matricula+'<br />';
+		$("#idProfile"+newId).html(info);
+		this.getGroup(login,("#userGroup"+newId),valid);
+		this.getRole(login,("#userRole"+newId),valid);
+		this.getConfigUser(login,valid);
+	},
+	getConfigUser:function(login,user){
+		var that = this;
+    	var option = "";
+    	//alert("user: "+ user + " matricula: "+ matricula);
+    	chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+    		//alert(getUrl(0,tabs[0].url)+'/ecm/api/rest/ecm/user/get/'+login);
+    	$.get(getUrl(0,tabs[0].url)+'/ecm/api/rest/ecm/user/get/'+login
+    		     , {}            
+    		     , function(res) { 
+					if(user){
+						that.configUser1.info = res;
+					}
+					else{
+						that.configUser2.info = res;
+					}  
+    		     }
+    		     ,"JSON"  
+    		 );
+    	});
+	},
+	getGroup:function(login,id,select){
+		var that = this;
+    	var option = "";
+    	//alert("user: "+ user + " matricula: "+ matricula);
+    	chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+    		//alert(getUrl(0,tabs[0].url)+'/ecm/api/rest/ecm/user/get/'+login);
+    	$.get(getUrl(0,tabs[0].url)+'/portal/api/rest/wcm/service/user/findAllGroupsByUser?space=&login='+login
+    		     , {}            
+    		     , function(res) {  
+					res = res.content;
+
+					if(select){
+						that.configUser1.groups = res;
+					}
+					else{
+						that.configUser2.groups = res;
+					} 
+					var html = "";
+					
+					for(var i=0; i<res.length; i++){
+			    		html += "<div>"
+						if(select){
+			    			html += '<input type="checkbox" name="usuGroup" value="';
+			    			html += res[i].key;
+			    			html += "-";
+			    			html += res[i].value;
+			    			html += '" /> ';
+		    			}
+			    		html += res[i].value;
+			    		html += " - <small usuGroup >(";
+			    		html += res[i].key;
+			    		html += ")</small></div><br />";	
+		    		}
+		    		$(id).html(html);
+    		     }
+    		     ,"JSON"  
+    		 );
+    	});
+	},
+	getRole:function(login,id,select){
+		var that = this;
+    	var option = "";
+    	//alert("user: "+ user + " matricula: "+ matricula);
+    	chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
+    		//alert(getUrl(0,tabs[0].url)+'/ecm/api/rest/ecm/user/get/'+login);
+    	$.get(getUrl(0,tabs[0].url)+'/portal/api/rest/wcm/service/user/findUserRoles?space=&login='+login
+    		     , {}            
+    		     , function(res) {  
+					res = res.content;
+
+					if(select){
+						that.configUser1.roles = res;
+					}
+					else{
+						that.configUser2.roles = res;
+					} 
+					var html = "";
+					
+					for(var i=0; i<res.length; i++){
+			    		html += "<div>"
+						if(select){
+			    			html += '<input type="checkbox" name="usuRole" value="';
+			    			html += res[i].key;
+			    			html += "-";
+			    			html += res[i].value;
+			    			html += '" /> ';
+		    			}
+		    			html += res[i].value;
+		    			html += " - <small usuRole>(";
+		    			html += res[i].key;
+		    			html += ")</small></div><br />";
+		    		}
+		    		$(id).html(html);
+    		     }
+    		     ,"JSON"  
+    		 );
+    	});
 	},
 	getCapivara:function(val){
 		let info = val.split("|");
@@ -135,70 +397,16 @@ var capivara = {
             +'<span>Login: </span>'+login+'<br />'
             +'<span>Matricula: </span>'+matricula+'<br />';
 		$(".idProfile").html(info);
-
+		
 		/* Busca os grupos */		
-		var col = ["colleagueGroupPK.groupId"];
-		var c = [FLUIG.simpleConstr("colleagueGroupPK.colleagueId",matricula,1)];
-		FLUIG.getDataset("colleagueGroup",col,c,col,function(res){
-			res = res.values;
-			let html = "";
+		this.getGroup(login,"#userGroup",false);
 
-    		let col = ["groupDescription","groupPK.groupId"];
-			let c = new Array();
-			for(var i=0; i<res.length; i++){
-    			c.push(FLUIG.simpleConstr("groupPK.groupId",res[i]["colleagueGroupPK.groupId"],2));
-    		}
-			FLUIG.getDataset("group",col,c,col,function(res){
-				res = res.values;
-				let html = "";
-				//alert("role",res.length);
-				for(var i=0; i<res.length; i++){
-	    			html += "<div>"
-	    			      + res[i]["groupDescription"]
-	    			      + " - <small>("
-	    			      + res[i]["groupPK.groupId"]
-	    			      + ")</small></div><br />";    	
-	    		}
-	    		$("#userGroup").html(html);
-			});
-		});
-
-		/* Busca os papéis */		
-		col = ["workflowColleagueRolePK.roleId"];
-		c = [FLUIG.simpleConstr("workflowColleagueRolePK.colleagueId",matricula,1)];
-		FLUIG.getDataset("workflowColleagueRole",col,c,col,function(res){
-			res = res.values;
-			let html = "";
-			/*
-			for(var i=0; i<res.length; i++){
-    			html += "<span>"
-    			      + res[i]["workflowColleagueRolePK.roleId"]
-    			      + "</span><br />";    			
-    		}
-    		$("#userRole").html(html);*/
-    		let col = ["roleDescription","workflowRolePK.roleId"];
-			let c = new Array();
-			for(var i=0; i<res.length; i++){
-    			c.push(FLUIG.simpleConstr("workflowRolePK.roleId",res[i]["workflowColleagueRolePK.roleId"],2));
-    		}
-			FLUIG.getDataset("workflowRole",col,c,col,function(res){
-				res = res.values;
-				let html = "";
-				//alert("role",res.length);
-				for(var i=0; i<res.length; i++){
-	    			html += "<div>"
-	    			      + res[i]["roleDescription"]
-	    			      + " - <small>("
-	    			      + res[i]["workflowRolePK.roleId"]
-	    			      + ")</small></div><br />";    			
-	    		}
-	    		$("#userRole").html(html);
-			});
-		});
+		/* Busca os papéis */	
+		this.getRole(login,"#userRole",false);
 
 		/* Busca os Processos em aberto */		
-		col = ["processId","startDateProcess","workflowProcessPK.processInstanceId"];
-		c = [FLUIG.simpleConstr("requesterId",matricula,1),FLUIG.simpleConstr("active","true",1)];
+		let col = ["processId","startDateProcess","workflowProcessPK.processInstanceId"];
+		let c = [FLUIG.simpleConstr("requesterId",matricula,1),FLUIG.simpleConstr("active","true",1)];
 		FLUIG.getDataset("workflowProcess",col,c,col,function(res){
 			res = res.values;
 			let html = "";
@@ -251,8 +459,6 @@ var capivara = {
 function goLink(link,param){
 	var url = "";
 	var typeUrl = 1;
-	alert(link);
-	alert(param);
 	if(param.trim() != ""){
 		switch(link){
 			case "ProcessInstanceID": url = "/pageworkflowview?app_ecm_workflowview_detailsProcessInstanceID="+param; break;
@@ -343,9 +549,16 @@ function getValue(codget,id,tp){
 		chrome.tabs.executeScript( null, {code: codget},function(results){ 
 			if (tp == "html") {
 				$(id).html(results);
-			} else {
-				$(id).val(results);
-			}			
+			} 
+			else if(tp == "memory"){				
+				copyClipboard2(codget);
+			}
+			else {
+				$(id).val(results);	
+			}	
+			//alert("results: "+results);		
+			//alert("codget: "+codget);		
+			//alert("tp: "+tp);	
 		});
 	});
 }
@@ -877,3 +1090,107 @@ var FLUIG = {
     	});
     }
 }
+
+/* =======================
+* Criador de Validação
+* =======================
+* tp 1 = validateForm
+* tp 2 = enableFields
+* tp 3 = Captura os valores dos inputs e cria um script de insersão
+* */
+function codValidate(tp){
+    var obj = (tp == 1)?$('[required]'):$('#divForm [name]');
+    var retorno = "";
+    var vetVerif = new Array();
+  
+    if(tp == 1){
+           retorno += "function validateForm(form){ \n";
+           retorno += "var msg = \"\";\n";
+           retorno += "var txtBreak = form.getMobile()?\"\r\n\":\"<br />\";\n";
+           retorno += "var txtLine = form.getMobile()?\" <br /> \":\"<hr />\";\n";
+    }
+    else if(tp == 2){
+        retorno += "function enableFields(form){  \n";
+    }
+    retorno += "var act = getValue('WKNumState'); \n";
+    retorno += "var ini = ( act == 0 || act == 4 ); \n";
+    
+    for(var i=0; i < obj.length; i++){
+        if(obj[i].name != undefined && obj[i].name != "form"){
+            if(!isVet(vetVerif,obj[i].name)){
+                if(tp == 1){
+                      if(obj[i].type == "text" || obj[i].type == "textarea" || obj[i].type == "number"){
+                            retorno += "if( form.getValue(\""+obj[i].name+"\") == \"\" ){ msg += \"Campo '"+obj[i].title+"' não pode ser vazio.\" + txtBreak; } \n";
+                      }
+                      else{
+                            retorno += "if( form.getValue(\""+obj[i].name+"\") == \"\" ){ msg += \"Selecione uma alternativa no campo '"+obj[i].title+"'.\" + txtBreak; } \n";              
+                      }
+                }
+                else if(tp == 2){
+                      retorno += "form.setEnabled(\""+obj[i].name+"\", ini); \n";
+                }
+                else{
+                  retorno += "$('[name=\""+obj[i].name+"\"]').val(\""+$('[name="'+obj[i].name+'"]').val()+"\"); \n";
+                }
+            }
+        }
+    }
+   
+    if(tp == 1){
+        retorno += "if(msg != \"\"){ \n";  
+        retorno += "throw txtLine + msg + txtLine; \n";
+        retorno += "} \n"; 
+        retorno += "}"; 
+    }
+    else if(tp == 2){
+          retorno += "}"; 
+    }
+  
+    return retorno;
+}
+// Teste - Retira o readonly
+function readonlyNo(){
+      var obj = $('[name]');
+      var hidden = $('[type="hidden"]');
+      $("[value='Novo']").show();
+      $("[value='Inserir']").show();
+      $('.fluigicon.fluigicon-trash.fluigicon-md').show();
+      $("th").removeAttr("style");
+      $("td").removeAttr("style");
+     
+      for(var x=0; x < hidden.length; x++){
+            hidden[x].type = "text";
+      }
+     
+      for(var i=0; i < obj.length; i++){
+            $("#"+obj[i].id).removeAttr("readonly");
+            $("#"+obj[i].id).removeAttr("disabled");
+      }
+
+}
+
+function isVet(vet,val){
+    for(var i=0;i<vet.length;i++){
+       if(vet[i] == val){
+          return true;
+       }
+    }
+    vet.push(val);
+    return false;
+}
+
+/**************************************************************************
+*   Copia as informações na memória temporária do Computador
+* *************************************************************************
+* 
+* @param id: ID do Input;
+* @return Sem retorno;
+**************************************************************************/
+function copyClipboard2(info) {
+      var copyText = document.createElement("textarea");
+      copyText.value = info;
+      copyText.select();
+      copyText.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert(copyText.value);
+    }

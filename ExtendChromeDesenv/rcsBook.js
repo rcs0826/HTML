@@ -665,6 +665,21 @@ var RCS = {
       document.execCommand("copy");
     },
 /**************************************************************************
+*   Copia as informações na memória temporária do Computador
+* *************************************************************************
+* 
+* @param id: ID do Input;
+* @return Sem retorno;
+**************************************************************************/
+    copyClipboard2:function(func) {
+      var copyText = document.createElement("textarea");
+      copyText.value = func(3);
+      copyText.select();
+      copyText.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert(copyText.value);
+    },
+/**************************************************************************
 *   Transforma um CSV em comandos SQL Insert
 * *************************************************************************
 * 
