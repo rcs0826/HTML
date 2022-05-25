@@ -40,6 +40,10 @@ function(index, custom) {
 					paramsAux.modal(parameters).then(function(result) {});
 				};	
 			},
+            rfimcc1000:function(params, element){
+                console.info("rfimcc1000 params",params);
+                console.info("rfimcc1000 element",element);
+            },
         }
         angular.extend(service, customService);
         return service;
