@@ -49,7 +49,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
     if (txt == "") {
         return;
     }
-
+    var bootstrap = RCS.getValueChecked("cbBoot");
     var row = txt.split("\n");
     var total = row.length;
     var column,
@@ -69,6 +69,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
     var vetTitle = txtTitle.split(";");   
     var colType = RCS.getValueSelect("slColu");
     var isTable = false;
+    var isBot = (bootstrap == 'Sim');
 
     try {
         if (txtTitle != null && txtTitle != "" && vetTitle.length >= 2) {
@@ -78,9 +79,9 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
             else{
                 nclass = "primary";
             }
-            table += (vetTitle[0] == "f")?'<fieldset><legend>':'<div class="panel panel-'+nclass+'"><div class="panel-heading"><center><h2 class="fs-no-margin">';
+            table += (vetTitle[0] == "f")?'<fieldset><legend>':'<div class="'+(isBot?"card":"panel panel")+'-'+nclass+'"><div class="'+(isBot?"card-header":"panel panel-heading")+'">'+(isBot?'<div class="card-title">':'<center>')+'<h2 class="fs-no-margin">';
             table += vetTitle[1];
-            table += (vetTitle[0] == "f")?'</legend>':'</h2></center></div><div class="panel-body" >';
+            table += (vetTitle[0] == "f")?'</legend>':'</h2>'+(isBot?"</div>":"</center>")+'</div><div class="'+(isBot?"card":"panel panel")+'-body" >';
         }
         for (var i = 0; i < total; i++) {
             column = row[i].toString().split(";");
@@ -128,8 +129,8 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                     isObr = true;
                 }
 
-                if(objNome != "tablefim"){
-                    table += '<div class="col-'+colType+'-' + tamanho + '">';
+                if(objNome != "tablefim"){    
+                    table += '<div class="col-'+colType+'-' + tamanho + (isBot?" pr-1":"")+'">';
                 }
                 table += (objType == "button" || objType == "msg" || objType == "table" || objNome == "tablefim")?'':'<label for="' + idName + '" ' + obr + ">" + objNome + ":</label>";
 
@@ -161,7 +162,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                     for (var x = 0; x < val.length; x++) {
                         if (val[x] != "") {
                             if(val.length == 2){
-                                table += '<div class="col-'+colType+'-6">';    
+                                table += '<div class="col-'+colType+'-6"'+(isBot?" pr-1":"")+'>';    
                             }
                             table += '<div class="input-group"> ';
                             table += '<span class="input-group-addon"> ';
@@ -177,7 +178,8 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                     if(val.length == 2){
                         table += '</div>';    
                     }
-                } else if (objType == "select" || objType == "dataset") {
+                } 
+                else if (objType == "select" || objType == "dataset") {
                     let attrDs = "";
                     isSelect = true;
                     val = objValue.toString().split("|");
@@ -217,7 +219,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
 
                 } else if (objType == "table") {
                     table += '<fieldset> <legend>' + titName + '</legend>';
-                    table += '<table id="' + idName + '" class="table table-striped" tablename="' + idName + '" addbuttonlabel="Incluir" addbuttonclass="btn btn-primary" ' + attr + ' width="100%">';
+                    table += '<table id="' + idName + '" class="table table-striped" tablename="' + idName + '" addbuttonlabel="Incluir" addbuttonclass="'+(isBot? 'btn-fill ':'') + 'btn btn-primary" ' + attr + ' width="100%">';
                     table += '<thead> <tr class="tableHeadRow"> <th class="tableColumn"></th> </tr> </thead>';
                     table += '<tbody> <tr class="tableBodyRow"> <td>';
 
@@ -228,7 +230,7 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                     table += getDivMensage(objIDName,objNome,objValue);
                 } 
                 else {
-                    nclass = objType == "button" ? "btn btn-" : "form-control";
+                    nclass = objType == "button" ?(isBot? 'btn-fill ':'') + "btn btn-" : "form-control";
                     if(objType == "button"){
                         nclass += getMessageClass(objValue);
                     }
@@ -252,6 +254,10 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                         table += '<div class="input-group"><span class="input-group-addon">Kg</span>';    
                         typedef = 'number';     
                     }
+                    else if (objType == "pesq"){
+                        table += '<div class="input-group">';
+                        typedef = 'text';
+                    }
 
                     typedef = (typedef != '')?typedef:objType;
                     table += '<input type="' + typedef + '" class="' + nclass + '" id="' + idName + '" name="' + idName + '"' + attr + ' title="' + titName + '" />';
@@ -261,6 +267,9 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                     }
                     else if(objType == "time"){
                         table += '<span class="input-group-addon fs-cursor-pointer"> <span class="fluigicon fluigicon-time"></span></span></div>';  
+                    }
+                    else if(objType == "pesq"){
+                        table += '<span class="input-group-addon fs-cursor-pointer"> <span class="fluigicon fluigicon-search"></span></span></div>';     
                     }
                     else if(objType == "email" || objType == "money" || objType == "kg"){
                         table += '</div>';   
@@ -349,7 +358,7 @@ function getDivMensage(tp,tt,bd){
         +'<big>'
         +'<b>'
         + tt
-        +'</b></big><br>'
+        +'</b></big><br />'
         + bd
         +'</center>'
         +'</div>'

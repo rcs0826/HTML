@@ -37,6 +37,7 @@ RCS Biblioteca Javascript
      *  - (MDFe)   Manifesto de Documento Fiscal Eletrônico;
      *  *************************************************************************
 - RCS.isCPF(cpf); return obj: bolean + msg
+- RCS.isEmail(email); return bolean
 - RCS.isCNPJ(cnpj); return obj: bolean + msg  
 - RCS.isNullOrEmpty(val); Valida se uma variável está vazia ou nula
 - RCS.digitalEfect(id,tipo,message); tipo 1=value, 2=innerHTML
@@ -435,8 +436,8 @@ var RCS = {
 * @return: Boolean;
 **************************************************************************/
     alfMax:function(val1, val2){
-            var vm1 = val1.toString().split().length;
-            var vm2 = val2.toString().split().length;
+            var vm1 = val1.toString().split("").length;
+            var vm2 = val2.toString().split("").length;
             var ct = (vm1 < vm2)?vm1:vm2;
             val1 = val1.toString();
             val2 = val2.toString();
@@ -891,7 +892,7 @@ var RCS = {
                     ret += val[i];
                 }
             }            
-            return ret;
+            return ret.trim();
     },
 /**************************************************************************
 *   Retorna o Horário Atual
@@ -1161,6 +1162,8 @@ var RCS = {
     htmlTableToCSV:function(filename, idTable){
            var element = document.createElement('a'); 
            var table = document.getElementById(idTable).innerHTML;
+           table = table.replace(/;/g, ",");
+           table = table.replace(/\n/g, " ");
            table = table.replace(/&(.*?);/g, "");
            table = table.replace(/<(.td?)>/g, ";");
            table = table.replace(/<(.th?)>/g, ";");
@@ -1433,6 +1436,20 @@ var RCS = {
              return msg;
        }
   },
+/**************************************************************************
+*   Validação de Email
+* *************************************************************************
+* 
+* @param val: Email a ser validade;
+* @return: true/false;
+**************************************************************************/
+    isEmail: function (email) {
+        let rgxEmail = new RegExp(/\S+@\S+\.\S+/);
+        if (email.match(rgxEmail) == null) {
+            return false;
+        }
+        return true;
+    },
 /**************************************************************************
 *   Validação de CPF
 * *************************************************************************
@@ -2094,6 +2111,7 @@ var RCS = {
            +'- RCS.retZeroEsq(valor); retira os zeros a esquerda' + bk
            +'- RCS.validChave(chave); valida a chave NFe, NFCe, CTe, CTe OS e MDFe' + bk
            +'- RCS.isCPF(cpf); return obj: bolean + msg' + bk
+           +'- RCS.isEmail(email); return bolean' + bk
            +'- RCS.isCNPJ(cnpj); return obj: bolean + msg' + bk   
            +'- RCS.isNullOrEmpty(val); Valida se uma variável está vazia ou nula' + bk         
            +'- RCS.digitalEfect(id,tipo,message); tipo 1=value, 2=innerHTML' + bk

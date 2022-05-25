@@ -12,24 +12,15 @@
         <script type="text/javascript" src="./js/fluig-style-guide-docs-components.min.js" charset="utf-8"></script>
         <script type="text/javascript" src="./js/fluig-style-guide-docs-chart.min.js" charset="utf-8"></script>   
         <script type="text/javascript">
-        	var PAG = {    
-        	    loadItens: function(pagAtual,valinit){  
-        	    	pagAtual = (pagAtual == "")?1:parseInt(pagAtual);
-    			valinit = (valinit == "")?10:parseInt(valinit);
-
-    			// Controle de paginação
-			var qtdAmost = valinit;
-			var numpag = pagAtual;
-			var totalRow = tab.length;
-			var qtdPag = totalRow / qtdAmost;
-			qtdPag = (qtdPag > parseInt(qtdPag))?(parseInt(qtdPag)+1):parseInt(qtdPag);
-			var ini = 1;
-			ini = qtdAmost * (numpag - 1);
-			qtdAmost = qtdAmost * numpag;
-			qtdAmost = (qtdAmost > totalRow)?totalRow:qtdAmost;
-
+        	var PAG = {   
+        	    totalReg:1,
+        	    slPagi:"slPagi",
+        	    divpag:"divpag",
+        	    divTab:"tab",
+        	    montarTabela: function(ini,total){  
+        	    	total = ((total+1) > vet.length)?vet.length:(total+1);
 			var html = '<table id="tabela" class="table table-striped" tablename="tabelaName" addbuttonlabel="Incluir" addbuttonclass="btn btn-primary" width="100%">';
-	        	for (var i = ini; i < vet[i].length; i++){
+	        	for (var i = ini; i < total; i++){
 	        		html += '<tr class="tableBodyRow">';
 	        		for (var x = 1; x < vet[i].length; x++) {
 					html += '<td>'+vet[i][x]+'</td>';		    		
@@ -38,22 +29,49 @@
 			}
 
 			html += '</table>';
-			document.getElementById("tab").innerHTML = html;
+			document.getElementById(this.divTab).innerHTML = html;
+        	    },
+        	    loadItens: function(pagAtual,valinit){ 
+			this.totalReg = vet.length;
+
+        	    	pagAtual = (pagAtual == "")?1:parseInt(pagAtual);
+    			valinit = (valinit == "")?10:parseInt(valinit);
+
+    			// Controle de paginação
+			var qtdAmost = valinit;
+			var numpag = pagAtual;
+			var totalRow = vet.length;
+		        console.info("totalRow",totalRow);
+			var qtdPag = totalRow / qtdAmost;
+			qtdPag = (qtdPag > parseInt(qtdPag))?(parseInt(qtdPag)+1):parseInt(qtdPag);
+			var ini = 1;
+			ini = qtdAmost * (numpag - 1);
+			qtdAmost = qtdAmost * numpag;
+			qtdAmost = (qtdAmost > totalRow)?totalRow:qtdAmost;
+		        console.info("qtdAmost 1",qtdAmost);
+		        console.info("ini 1",ini);
+
+			this.montarTabela(ini,qtdAmost);
+			this.loadBt(pagAtual,0);
         	    },    		
 		    loadBt:function(pagAtual,valinit){
 		        var classe = "";                        
 		        var qtdTotalBt = 9;
-		        var qtdAmost = (valinit != 0)?valinit:parseInt(this.getValueSelect("slPagi"));   
+		        var qtdAmost = (valinit != 0)?valinit:parseInt(this.getValueSelect(this.slPagi));   
 		        var qtdTotalBtMetade = parseInt(qtdTotalBt/2)+1;
 		        var qtdPag = this.calc(qtdAmost,pagAtual);
 		        var html = '<div class="btn-group ">';
 		        var compress = (qtdPag > qtdTotalBt);
 		        var ini = 1;
 		        var fim = qtdPag;
+		        console.info("qtdPag",qtdPag);
+		        console.info("qtdAmost",qtdAmost);
+		        console.info("pagAtual",pagAtual);
+		        console.info("valinit",valinit);
 
 		        if(compress  &&  (pagAtual > qtdTotalBtMetade)){
-		            html +='<button type="button" class="btn btn-default" onclick="ListagemContratos.loadItens(1,'+valinit+')" ><<</button>';
-		            html +='<button type="button" class="btn btn-default" onclick="ListagemContratos.loadItens('+(pagAtual-1)+','+valinit+')" ><</button>';
+		            html +='<button type="button" class="btn btn-default" onclick="PAG.loadItens(1,'+valinit+')" ><<</button>';
+		            html +='<button type="button" class="btn btn-default" onclick="PAG.loadItens('+(pagAtual-1)+','+valinit+')" ><</button>';
 		        }
 		        if(compress){
 		            ini = (pagAtual <= qtdTotalBtMetade)?1:(pagAtual-(qtdTotalBtMetade-1));
@@ -67,7 +85,7 @@
 		            
 		            html += '<button type="button" class="btn btn-';
 		            html += classe;
-		            html += '" onclick="ListagemContratos.loadItens(';
+		            html += '" onclick="PAG.loadItens(';
 		            html += i;
 		            html += ',';
 		            html += valinit;
@@ -76,14 +94,15 @@
 		            html += '</button>';     
 		        }
 		        if(compress  &&  (pagAtual < qtdPag-((qtdTotalBtMetade+2)/2))){
-		            html +='<button type="button" class="btn btn-default" onclick="ListagemContratos.loadItens('+(pagAtual+1)+','+valinit+')" >></button>';
-		            html +='<button type="button" class="btn btn-default" onclick="ListagemContratos.loadItens('+qtdPag+','+valinit+')" >>></button>';
+		            html +='<button type="button" class="btn btn-default" onclick="PAG.loadItens('+(pagAtual+1)+','+valinit+')" >></button>';
+		            html +='<button type="button" class="btn btn-default" onclick="PAG.loadItens('+qtdPag+','+valinit+')" >>></button>';
 		        }                           
 		        html += '</div>';
-		        $("#divpag").html(html);
+		        document.getElementById(this.divpag).innerHTML = html;
+		        //$("#divpag").html(html);
 		    },
 		    calc:function(qtdAmost, numpag){
-		        var totalRow = this.qtdPag;
+		        var totalRow = this.totalReg;
 		        var qtdPag = totalRow / qtdAmost;
 		        qtdPag = (qtdPag > parseInt(qtdPag))?(parseInt(qtdPag)+1):parseInt(qtdPag); 
 
@@ -109,10 +128,25 @@
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<center>
-					<h2 class="fs-no-margin">Tabela</h2>
+					<h2 class="fs-no-margin">Tabela-Exemplo de Paginação</h2>
 				</center>
 			</div>
-			<div class="panel-body" >		
+			<div class="panel-body" >
+				<div class="row">
+					<div class="col-md-11"></div>
+					<div class="col-md-1">
+						<label>QTD Pag</label>
+						<select id="slPagi" class="form-control" onchange="PAG.loadItens(1,this.value)">
+							<option value="10">10</option>				
+							<option value="30">30</option>				
+							<option value="50">50</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row">
+					<center><div class="col-md-12 center" id="divpag"></div></center>
+				</div>		
 				<div id="ret"></div>		
 				<div id="tab"></div>
 			</div>
@@ -250,15 +284,16 @@
 
         	
 
-        	PAG.loadItens(1,10);
+        	/*
         	var ret = "";
         	for (var i = 0; i < vet[1].length; i++) {
         		//ret += "Campos <br />"+(i%2);
         		if((i%2) == 0){
         			ret += vet[1][i] + "<br />";
         		}
-        	}
-        	document.getElementById("ret").innerHTML = ret;
+        	}*/
+        	//document.getElementById("ret").innerHTML = ret;
+        	PAG.loadItens(1,0);
         </script>
 </body>
 </html>

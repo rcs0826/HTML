@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#btCopi").click(function(){
+    $("#btCopi","[btCopi]").click(function(){
         RCS.copyClipboard("txtSaid");
     });
     $("#btLimpEntr").click(function(){

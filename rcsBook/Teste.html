@@ -1,193 +1,205 @@
 <html>
-    <head>        
-        <meta charset="UTF-8" />
+    <head>
+        <title>Teste</title>
         <link rel="shortcut icon" href="./img/favicon.ico" />
         <link type="text/css" rel="stylesheet" href="./css/fluig-style-guide-flat.min.css" />
+        <link type="text/css" rel="stylesheet" href="./css/rcsBook.css" />
+        <link type="text/css" rel="stylesheet" href="./css/menu.css" />
         <script type="text/javascript" src="./js/jquery-1.9.1.js"></script>
         <script type="text/javascript" src="./js/fluig-style-guide.min.js" charset="utf-8"></script>
-        <title>Projeto Transportadora</title>
-        <style>[req]:after {  content: " *" !important;  color: red !important;}legend{  color: #CB4921 !important;}</style>
-    </head>
-    <body onclick="setLocal()">
-
-    
-    <!-- ========================================================================================================================= -->
-    <div class="bodyChat btn-default" >
-        <div class="imgChat">
-            <img src="file:///home/rogerio/Imagens/atendimento2.jpeg" class="img-circle thumb-profile-sm-legacy" />
-        </div>
-        <span class="titleChat">Posso Ajudar?</span>
-    </div>
-    
-    <div class="panel panel-info newclass" style="display: none;">
-        <div class="panel-heading">
-            <span>
-                <center>Posso Ajudar?</center>
-            </span>
-        </div>
-        <div class="panel-body">
-            <iframe id=botChat class="botChat" ></iframe>
-            <div class="row left">
-                <!--<input type="button" id="btnredm" class="btn btn-info" value="Redimencionar" />
-                <input type="button" id="btnclose" class="btn btn-danger" value="Fechar" />-->
-            </div>
-        </div>
-    </div>
-        <script type="text/javascript">
-            var urlChat = 'https://sac-santher.ascbrazil.com.br/Chat/id/SACProfessional';
-            var close = false;
-            $(document).ready(function() {
-                hideCT(".newclass", true);  
-                $(".panel-heading").hide();
-
-                setTimeout(function(){
-                    $(".botChat").attr('src',urlChat);
-                },800); 
-
-                $(".bodyChat").on("click", function() {
-                    hideCT(".newclass", close);
-                     close = (close) ? false : true;
-
-                });
-
-                $("#btnredm").on("click", function() {
-                    fullScreem(".newclass", ".botChat");
-                });
-
-                $("#btnclose").on("click", function() {
-                });
-            });
-
-            /*******************************************************************************
-             * Faz a transição de uma tela a outra
-             * ***********************************************
-             * 
-             * @parameter id: Identificador da div; val: Permissão para exibir ou não uma
-             *            div;
-             * 
-             * @return Sem Retorno;
-             * 
-             * 
-             * height: '0%', width: '0%' ,
-             ******************************************************************************/
-            function hideCT(newId, val) {
-                if (val) {
-                    //$(newId).animate({
-                    //  position:'absolute',
-                    //  top:'1000px'
-                    //});
-                    $(newId).hide();
-                } else {
-                    $(newId).show();
-                    $(newId).animate({
-                        bottom : window.innerHeight/5
-                    });
-                    $(".botChat").attr('src',urlChat);
-                }
-            };
-
-            var fs = true;
-            function fullScreem(newId, idFS) {
-                // hide(".panel-heading", fs);
-                if (fs) {
-                    $(newId).animate({
-                        top : '11%',
-                        width : '92%',
-                        height : '90%'
-                    });
-                    $(idFS).animate({
-                        width : '100%',
-                        height : '400px',
-                        scrollTop: '100%'
-                    });
-                    $(".panel-heading").hide();
-                } else {
-                    // Volta para as configurações iniciais
-                    $(newId).animate({
-                        bottom : '11%',
-                        width : '430px'
-                    });
-                    $(newId).css("height","");
-                    $(idFS).animate({
-                        width : '430px',
-                        height : '400px',
-                        scrollTop: '100%'
-                    });
-                    $(".panel-heading").show();
-                }
-                fs = (fs) ? false : true;
-            }
-        </script>
+        <script type="text/javascript" src="./js/rcsBook.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/menu.js" charset="utf-8"></script>
         <style type="text/css">
-            /*Chat*/
-            .newclass {
-               width: 430px;
-                z-index: 100 !important;
-                box-shadow: 10px 10px 5px #888888 !important;
-                right: 1% !important;
-                position: fixed;
-            }
-            .botChat {
-               border: none !important;
-                width: 100%;
-                height: 430;
-                border-radius: 10px;
-                bottom: 1%;
-            }
+         .filtergroup > button{
+             border: 0px solid #ccc;
+             border-radius: 10px;
+             width: 20px;
+             height:20px;
+             float:right;
+             width: 100%;
+             text-align: right;
+        }
+         .form-filter{
+             border: 1px solid #ccc;
+             border-radius: 5px;
+             width: 100%;
+             background-color: #ffffff;
+        }
+         .filtergroupfixed, .filtergroup{
+             border: 1px solid #ccc;
+             border-radius: 5px;
+             padding:5px 1px;
+             margin: 2px;
+             background-color: #eeeeec;
+        }
 
-            .left {
-                float: right;
-                padding: 5px 15px;
-            }
-
-            .panel-heading{
-                color:black !important;
-                font-weight: bold !important; 
-            }
-            /*Botão do Chat*/
-            .titleChat {
-                position: relative;
-                right: 7px;
-                top: -48px;
-                font-family: "Times New Roman", Times, serif;
-                font-size: 20px;
-                font-weight: bold;
-                color: white;
-            }
-
-            .imgChat img {
-                width: 70px;
-                height: 70px;
-                position: relative;
-                background-color: #ffffff;
-                border-radius: 100px;
-            }
-
-            .imgChat {
-                border: 1px solid #fff;
-                border-radius: 100px;
-                width: 70px;
-                height: 70px;
-                padding: 5px 5px;
-                background-color: #00c08d;
-                display: inline-block;
-                position: relative;
-                top: -42%;
-                left: -5%;
-            }
-
-            .bodyChat {
-                border: 1px solid #fff;
-                box-shadow: 5px 5px 20px #888888;
-                border-radius: 100px;
-                padding-right: 15px;
-                height: 50px;
-                background-color: #00c08d;
-                position: fixed;
-                right: 5%;
-                top: 85%;
-            }
         </style>
-<!-- ========================================================================================================================= -->        
+    </head>
+    <body >
+    
+<div class="fluig-style-guide" >
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <center>
+                <h2 class="fs-no-margin">
+                    <i class="flaticon flaticon-invoices-check icon-xl"></i> Envio de Nota Fiscal em Aberto
+                
+                </h2>
+            </center>
+        </div>
+        <div class="panel-body" >
+                <div class="form-group row ">
+                    <div class="col-md-2">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                            Adicionar Filtros 
+                                
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" getfilter="divAdiantamento">Adiantamento</a>
+                                </li>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" getfilter="divDtVenc">Data Vencimento</a>
+                                </li>
+                                <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#" getfilter="">Data Solicitação</a></li><li role="presentation"><a role="menuitem" tabindex="-1" href="#" getfilter="">Estabelecimento</a></li>-->
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" getfilter="divIdentificador">Identificador</a>
+                                </li>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" getfilter="divNumNota">Número das Notas</a>
+                                </li>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" getfilter="divNumSolicitacao">Número solicitação</a>
+                                </li>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" getfilter="divResponsavel">Solicitação parada com</a>
+                                </li>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" getfilter="divSolicitante">Solicitante</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="btn-group">
+                            <input data-pesquisar class="btn btn-info" type="button" value="Pesquisar" />
+                            <input data-limpar class="btn btn-danger" type="button" value="Limpar" />
+                            <input data-downloadcsv class="btn btn-primary" type="button" value="Download CSV" />
+                        </div>
+                    </div>
+                </div>
+            <fieldset>
+                <legend>
+                    <i class="flaticon flaticon-filter icon-xl"></i> Filtros
+                
+                </legend>
+                <div  class="form-group row ">
+                    <div class="col-md-4 filtergroupfixed">
+                        <label for="slEsta" >Estabelecimento:</label>
+                        <select class="form-filter" id="slEsta" name="slEsta" title="Estabelecimento" dataset="frmCadastroAprovEstabelecimento" datasetkey="descritorForm" datasetvalue="descritorForm" addblankline="true"></select>
+                    </div>
+                    <div class="col-md-4 filtergroupfixed">
+                        <div class="col-md-6">
+                            <label for="dtDataInic">
+                                <small>Data Início: (Solicitação):</small>
+                            </label>
+                            <input type="date" class="form-filter" id="dtDataInic" name="dtDataInic" required="required" title="Data Início" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="dtDataFim">
+                                <small>Data Fim: (Solicitação)</small>
+                            </label>
+                            <input type="date" class="form-filter" id="dtDataFim" name="dtDataFim" required="required" title="Data Fim" />
+                        </div>
+                    </div>
+                    <div class="col-md-2 filtergroup" id="divAdiantamento" style="display: none;">
+                        <label for="cbAdia" >Adiantamento:</label>
+                            <input type="checkbox" id="cbAdia" name="cbAdia" value="Sim" title="Adiantamento" />
+                            Sim
+                        </div>
+                    </div>
+                    <div class="col-md-3 filtergroup" id="divIdentificador" style="display: none;">
+                        <label for="txtIden" >Identificador                            
+                            <small>(Detalhes)</small>:                        
+                        </label>
+                        <input type="text" class="form-filter" id="txtIden" name="txtIden" title="Identificador (chave)" />
+                    </div>
+                    <div class="col-md-4 filtergroup" id="divDtVenc" style="display: none;">
+                        <div class="col-md-6">
+                            <label for="dtDataVencInic">
+                                <small>Data Início: (Vencimento):</small>
+                            </label>
+                            <input type="date" class="form-filter" id="dtDataVencInic" name="dtDataVencInic" required="required" title="Data Início" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="dtDataVencFim">
+                                <small>Data Fim: (Vencimento)</small>
+                            </label>
+                            <input type="date" class="form-filter" id="dtDataVencFim" name="dtDataVencFim" required="required" title="Data Fim" />
+                        </div>
+
+                    </div>
+                    <div class="col-md-4 filtergroup" id="divNumNota" style="display: none;">
+                        <div class="col-md-6">
+                            <label for="numNotaIni" >
+                                <small>Número das Notas - Início:</small>
+                            </label>
+                            <input type="number" class="form-filter" id="numNotaIni" name="numNotaIni" title="Número das Notas" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="numNotaFim" >
+                                <small>Número das Notas - Fim:</small>
+                            </label>
+                            <input type="number" class="form-filter" id="numNotaFim" name="numNotaFim" title="Número das Notas" />
+                        </div>
+                    </div>
+                    <div class="col-md-5 filtergroup" id="divNumSolicitacao" style="display: none;">
+                        <div class="col-md-6">
+                            <label for="txtNumeIni" >
+                                <small>Número solicitação - Início</small>
+                            </label>
+                            <input type="number" class="form-filter" id="txtNumeIni" name="txtNumeIni" title="Número solicitação" />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="txtNumeFim" >
+                                <small>Número solicitação - Fim</small>
+                            </label>
+                            <input type="number" class="form-filter" id="txtNumeFim" name="txtNumeFim" title="Número solicitação" />
+                        </div>
+                    </div>
+                    <div class="col-md-3 filtergroup" id="divResponsavel" style="display: none;">
+                        <label for="slResp" >Solicitação parada com:</label>
+                        <select class="form-filter" id="slResp" name="slResp" title="Responsável" dataset="colleague" datasetkey="colleaguePK.colleagueId" datasetvalue="colleagueName" addblankline="true" ></select>
+                    </div>
+                    <div class="col-md-3 filtergroup" id="divSolicitante" style="display: none;">
+                        <label for="slSoli">Solicitante:</label>
+                        <select class="form-filter" id="slSoli" name="slSoli" title="Solicitante" dataset="colleague" datasetkey="colleaguePK.colleagueId" datasetvalue="colleagueName" addblankline="true" ></select>
+                    </div>
+                </div>
+                <hr />
+                <div class="form-group row">
+                    <div class="col-md-12" id="result"></div>
+                </div>
+            </fieldset>
+        </div>
+        <div id="divAnexo" ></div>
+    </div>
+</div>
+<script type="text/javascript">
+    $("[getfilter]").click(function(){
+        let id = "#" + this.getAttribute("getfilter");
+        $(id).show();
+    });
+    $(".filtergroup").prepend('<button>X</button>');
+    $(".filtergroup > button").click(function(){
+        if (this.parentElement.id != "") {
+            $("#"+this.parentElement.id+"  input").val("");
+            $("#"+this.parentElement.id+"  select").val("");
+            $("#"+this.parentElement.id).hide();
+        }
+    }); 
+</script>
     </body>
 </html>

@@ -95,10 +95,10 @@ var HE = {
                 textarea.value += '<textarea class="form-control" ></textarea> ';
                 break;
             case "a":
-                textarea.value += '<a href= "#" >Ancora</a>';
+                textarea.value += '<a href="#" target="_blank">Ancora</a>';
                 break;
             case "img":
-                textarea.value += '<img src= "" />';
+                textarea.value += '<img src="" />';
                 break;
             case "fieldset":
                 textarea.value += "<fieldset><legend>Grupo</legend></fieldset> ";
