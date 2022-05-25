@@ -14,18 +14,25 @@ $(document).ready(function(){
 	     	var id = document.getElementById("txtInstance").value;
 			goLink("ProcessInstanceID",id);	     	
 	     });
+	     $("#btPesqDoc").click(function(){
+	     	var id = document.getElementById("txtdocumentID").value;
+			goLink("documentID",id);	     	
+	     });
 	     $("#btDSync").click(function(){
 	     	var ds = ($("#txtDataset").val() == "")?RCS.getValueSelect("dataset"):$("#txtDataset").val();
 			goLink("DsSync",ds);
 	     });
 	     $("#btBP").click(function(){goLink("pageProcessPes","X");});
 	     $("#btUsu").click(function(){goLink("pageUsu","X");});
-		 $("#btGrp").click(function(){goLink("pageGrp","X");});
-		 $("#btRol").click(function(){goLink("pageRol","X");});
-		 $("#btApp").click(function(){goLink("pageApp","X");});
-		 $("#btAPI").click(function(){goLink("pageAPI","X");});
-		 $("#btWSDL").click(function(){goLink("pageWSDL","X");});	     
-	     $("#btLog").click(function(){goLink("Log","X");});
+		$("#btGrp").click(function(){goLink("pageGrp","X");});		 
+		$("#btRol").click(function(){goLink("pageRol","X");});
+		$("#btMyPages").click(function(){goLink("pageMyPages","X");});
+		$("#btApp").click(function(){goLink("pageApp","X");});
+		$("#btAPI").click(function(){goLink("pageAPI","X");});
+		$("#btWSDL").click(function(){goLink("pageWSDL","X");});	     
+	     $("#btLog").click(function(){goLink("Log","X");});     
+	     $("#btGED").click(function(){goLink("pageGED","X");});     
+	     $("#btDS").click(function(){goLink("pageDataset","X");});
 
 	     $("#dsPage").click(function(){});
 	     /* Importador em Massa*/
@@ -39,9 +46,9 @@ $(document).ready(function(){
 	     $("#btShow").click(function(){
 	     	executeScript('$("input[type=\"hidde\"]").attr("type","text"); $("[style=\"display:none\"]").attr("style","display: inline");');
 	     });
-		 $("#btSepFWF").click(function(){
-		 	executeScript('window.open(document.getElementById("workflowView-cardViewer").getAttribute("src"));');
-		 });
+		$("#btSepFWF").click(function(){
+			executeScript('window.open(document.getElementById("workflowView-cardViewer").getAttribute("src"));');
+		});
 
 	     $('#btgetValInpur').on('click',function(){  
 	         	try{let func = codValidate;
@@ -141,7 +148,8 @@ function importador(id){
 		alert("Cadastrado efetuado");
 	}
 	catch(e){
-		throw "Erro";
+		console.error(e);
+		alert("Erro: "+ e.message);
 	}
 }
 
@@ -461,13 +469,17 @@ function goLink(link,param){
 	var typeUrl = 1;
 	if(param.trim() != ""){
 		switch(link){
+			case "documentID": url = "/ecmnavigation?app_ecm_navigation_doc="+param; break;
 			case "ProcessInstanceID": url = "/pageworkflowview?app_ecm_workflowview_detailsProcessInstanceID="+param; break;
 			case "DsSync": url = "/datasetsync?datasetId="+param; break;
 			case "pageUsu": url = "/wcmuserpage"; break;
 			case "pageGrp": url = "/wcmgrouppage"; break;
 			case "pageRol": url = "/wcmrolepage"; break;
 			case "pageApp": url = "/applicationcenter"; break;
+			case "pageMyPages": url = "/mypages"; break;
 			case "pageProcessPes": url = "/pageprocesssearch"; break;	
+			case "pageGED": url = "/ecmnavigation";  break;
+			case "pageDataset": url = "/wcmdatasetpage"; break;
 			case "pageAPI": url = "/api"; typeUrl=0; break;
 			case "pageWSDL": url = "/services"; typeUrl=0; break;
 			case "Log": url = "/portal/api/rest/wcm/service/userlog/downloadServerLog"; typeUrl=0; break;
@@ -653,10 +665,10 @@ var WDataset = {
     			codtype = 1;
     			break;
     		case "MUST_NOT":
-    			codtype = 2;
+    			codtype = 3;
     			break;
     		case "SHOULD":
-    			codtype = 3;
+    			codtype = 2;
     			break;
     		default:
     			codtype = 1;
@@ -680,7 +692,8 @@ var WDataset = {
     	this.getTabDataset($("#datasetSearch").val());
     },
     downloadCSV:function(){
-    	RCS.htmlTableToCSV(RCS.getDescSelect("dataset") + ".csv", "tableResultDataset");
+    	let dataset = ($("#txtDataset").val() == "")?RCS.getDescSelect("dataset"):$("#txtDataset").val();
+    	RCS.htmlTableToCSV( dataset + ".csv", "tableResultDataset");
     },    
 
     /***************************************************************************
@@ -703,10 +716,10 @@ var WDataset = {
             html += "<th></th>";
             // Cria as colunas
             for(var y=0;y<ds.columns.length;y++){
-                like = ds.columns[y];
-                if(like.indexOf("metadata#") == -1){
+                //like = ds.columns[y];
+                //if(like.indexOf("metadata#") == -1){
                     html += "<th>"+ds.columns[y]+"</th>";
-                }
+                //}
             }
             html += "</tr>";
             
@@ -715,10 +728,10 @@ var WDataset = {
                 html += "<tr>";
                 html += "<th>"+ (i+1) +"</th>";
                 for(var x=0;x<ds.columns.length;x++){
-                    like = ds.columns[x];
-                    if(like.indexOf("metadata#") == -1){
+                    //like = ds.columns[x];
+                    //if(like.indexOf("metadata#") == -1){
                         html += '<td>' + ds.values[i][ds.columns[x]]+ '</td>';
-                    }
+                    //}
                 }  
                 html += "</tr>";                        
             }
@@ -844,10 +857,10 @@ var WDataset = {
 	    					html += "<th></th>";
 	    					// Cria as colunas
 	    		    		for(var y=0;y<ds.columns.length;y++){
-	    		    			like = ds.columns[y];
-	    		    			if(like.indexOf("metadata#") == -1){
+	    		    			//like = ds.columns[y];
+	    		    			//if(like.indexOf("metadata#") == -1){
 	    		    				html += "<th>"+ds.columns[y]+"</th>";
-	    		    			}
+	    		    			//}
 	    		    		}
 	    		    		html += "</tr>";
 	    		    		
@@ -856,10 +869,10 @@ var WDataset = {
 	    						html += "<tr>";
 	    						html += "<th>"+ (i+1) +"</th>";
 	    						for(var x=0;x<ds.columns.length;x++){
-	    							like = ds.columns[x];
-	        		    			if(like.indexOf("metadata#") == -1){
-	        		    				html += '<td>' + ds.values[i][ds.columns[x]]+ '</td>';
-	        		    			}
+	    							//like = ds.columns[x];
+	        		    				//if(like.indexOf("metadata#") == -1){
+	        		    					html += '<td>' + ds.values[i][ds.columns[x]]+ '</td>';
+	        		    				//}
 	    						}  
 	        					html += "</tr>";  		    			
 	    		    		}
@@ -874,7 +887,7 @@ var WDataset = {
 	    		    	}
 	    			},
 	    			erro : function(res) {
-	    				alert("Essa Extenção fó funciona no Fluig depois que logado como ADM");
+	    				alert("Essa Extenção fó funciona no Fluig depois que logado como ADM 1");
 	    				return;
 	    			}
 	    	});
@@ -895,7 +908,7 @@ var WDataset = {
     		    			 $("#dataset").append(option);
     		    		 }
     		    		 catch (e) {
-    		    		 	alert("Essa Extenção fó funciona no Fluig depois que logado como ADM");
+    		    		 	alert("Essa Extenção fó funciona no Fluig depois que logado como ADM 2");
     		    		 }
     		    	 }
     		     }
@@ -1000,10 +1013,11 @@ var FLUIG = {
 	        	dataType : "JSON",
 	        	data : JSON.stringify(param),	
 	        	success : function(res) {
+	        		console.info("res",res);
 	        		return res;
 	        	},
 	        	error : function(res) {
-	        		alert("Essa Extenção fó funciona no Fluig depois que logado como ADM");
+	        		alert("Essa Extenção fó funciona no Fluig depois que logado como ADM 3");
 	        	}
 	        });
         });
@@ -1043,34 +1057,33 @@ var FLUIG = {
 	        	dataType : "JSON",
 	        	data : JSON.stringify(param),	
 	        	success : function(res) {
+	        		console.info("res",res);
 	        		return res;
 	        	},
 	        	error : function(res) {
-	        		alert("Essa Extenção fó funciona no Fluig depois que logado como ADM");
+	        		alert("Essa Extenção fó funciona no Fluig depois que logado como ADM 4");
 	        	}
 	        });
         });
-	}
-};
+	},
 
-var FLUIG = {
 	simpleConstr:function(col, val,tp){
 		var conObj = new Object();	
-    	conObj._field = col;
-    	conObj._initialValue = val;
-    	conObj._finalValue = val;
-    	conObj._type = tp;
-    	conObj._likeSearch = false;
+    		conObj._field = col;
+    		conObj._initialValue = val;
+    		conObj._finalValue = val;
+    		conObj._type = tp;
+    		conObj._likeSearch = false;
     	
       	return conObj;
 	},
 	getDataset:function(nameDataset,fields,cons,order,callback){
-    	var param = new Object();
-    	param.name = nameDataset;
-    	param.fields = fields;
-    	param.constraints = cons;
-    	param.order = order;
-    	var ds,html,like="";
+    		var param = new Object();
+    		param.name = nameDataset;
+    		param.fields = fields;
+    		param.constraints = cons;
+    		param.order = order;
+    		var ds,html,like="";
 
 
          chrome.tabs.query({active: true, lastFocusedWindow: true}, tabs => {
@@ -1084,7 +1097,9 @@ var FLUIG = {
 	    			callback(res);
     		    },
 	        	error : function(res) {
-	        		alert("Essa Extenção fó funciona no Fluig depois que logado como ADM");
+	        		console.error("Essa Extenção fó funciona no Fluig depois que logado como ADM 5");
+	        		console.error(res);
+	        		//alert("Essa Extenção fó funciona no Fluig depois que logado como ADM 5");
 	        	}
     		 });
     	});
@@ -1194,3 +1209,5 @@ function copyClipboard2(info) {
       document.execCommand("copy");
       alert(copyText.value);
     }
+// URL open doc
+// http://fluig.brascorp.net/portal/p/1/ecmnavigation?app_ecm_navigation_doc=6955&app_ecm_navigation_docVersion=19000    

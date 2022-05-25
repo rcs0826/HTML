@@ -1176,6 +1176,8 @@ var RCS = {
     htmlTableToCSV:function(filename, idTable){
            var element = document.createElement('a'); 
            var table = document.getElementById(idTable).innerHTML;
+           table = table.replace(/;/g, ",");
+           table = table.replace(/\n/g, " ");
            table = table.replace(/&(.*?);/g, "");
            table = table.replace(/<(.td?)>/g, ";");
            table = table.replace(/<(.th?)>/g, ";");
