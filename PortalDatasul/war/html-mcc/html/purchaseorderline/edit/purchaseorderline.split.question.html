@@ -1,0 +1,42 @@
+<style type="text/css">
+  .form-horizontal > div{
+    margin-bottom: 15px;
+  }
+ 
+</style>
+<totvs-modal-header>
+    {{ 'l-split-delivery-vendor' | i18n }} 
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <div class="row">
+  		<form class="form-horizontal" role="form">
+          <div class="col-xs-12">
+            <span class="span-label">{{ 'l-split-delivery-between-vendors' | i18n: []: 'dts/mcc' }}</span>
+            <br>
+            <input type="checkbox"
+                ng-model="controller.model.splitDeliveryVendors"
+                bsswitch
+                ng-change="controller.model.showSplit = controller.model.splitDeliveryVendors"
+                class="col-xs-12 col-md-6">                
+            </input>
+          </div>
+
+          <div class="col-xs-12">
+            <span class="span-label">{{ 'l-show-split' | i18n: []: 'dts/mcc' }}</span>
+            <br>
+            <input type="checkbox"
+                ng-model="controller.model.showSplit"
+                bsswitch
+                class="col-xs-12 col-md-6"
+                ng-disabled="!controller.model.splitDeliveryVendors">                
+            </input>
+          </div>
+        </form> 
+    </div>      
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()">{{ 'l-confirm' | i18n }}</button>
+</totvs-modal-footer>

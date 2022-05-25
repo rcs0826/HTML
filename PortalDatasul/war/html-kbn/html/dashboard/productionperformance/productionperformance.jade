@@ -1,0 +1,19 @@
+div(class="",
+    ng-controller="kbn.dashboard.productionPerformanceCtrl.ctrl as productionPerformanceCtrl")
+    link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+    totvs-widget
+        totvs-widget-header(settings="productionPerformanceCtrl.showParams()", title="{{ productionPerformanceCtrl.chart.titleWidget | i18n : [] : 'dts/kbn'}}")
+            i(ng-if="productionPerformanceCtrl.chart.titleWidget == 'l-production-performance-card'",class="glyphicon glyphicon-info-sign hidden-xs", tooltip-placeholder="rigth", tooltip-html="productionPerformanceCtrl.tooltip")
+        totvs-widget-body
+            ol.dashboard.breadcrumb
+                li(ng-repeat="chart in productionPerformanceCtrl.chartArray" ng-class="{ 'active' : $last, 'is-pointer': !$last }") 
+                    span(ng-click="productionPerformanceCtrl.navigate($index)") {{ chart.titleBreadcrumb }}
+            totvs-chart(
+                t-categories="productionPerformanceCtrl.chart.categories",
+                t-series='productionPerformanceCtrl.chart.series',
+                t-type-chart="{{productionPerformanceCtrl.chart.typeChart}}",
+                t-chart-tooltip="false",
+                t-on-click="productionPerformanceCtrl.chart.onClick")
+        totvs-widget-footer
+            totvs-widget-footer-actions
+                action(ng-click="productionPerformanceCtrl.sendDataToReport()") {{ 'l-detail' | i18n : [] : 'dts/kbn/' }}

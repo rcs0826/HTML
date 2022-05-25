@@ -1,0 +1,199 @@
+<totvs-modal-header>{{ 'l-search-advanced' | i18n }}</totvs-modal-header>
+
+<totvs-modal-body>
+    <div class="row">
+    	<form class="form-horizontal" role="form" >
+			<accordion close-others="controller.closeOther">
+				<accordion-group is-open="status.isFirstOpen">
+					<accordion-heading>
+						{{'l-selection' | i18n }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.isFirstOpen, 'glyphicon-chevron-right': !status.isFirstOpen}"></i>
+					</accordion-heading>      	
+		           	<field type="input"
+						   ng-model="controller.advancedSearch.itemCode"
+						   label="{{ 'l-item' | i18n }}"
+						   zoom
+						   zoom-service="men.item.zoom"
+						   zoom-id="it-codigo"
+						   zoom-description="desc-item">
+		        	</field>
+		           	<field type="input" 
+		            	   ng-model="controller.advancedSearch.itemReference"
+						   label="{{ 'l-reference' | i18n }}"
+						   zoom
+						   zoom-service="men.referenciaitem.zoom"
+						   zoom-id="cod-refer"
+						   zoom-init="{'property': 'it-codigo',
+                                      'value': {'start': controller.advancedSearch.itemCode,
+                                                'end': controller.advancedSearch.itemCode}}">
+		        	</field>
+					<totvs-field totvs-input
+		            	   ng-model="controller.advancedSearch.routingCode"
+						   label="{{ 'l-routing' | i18n }}"
+						zoom-id="cod-roteiro"
+						zoom-init="{filter: {'it-codigo': controller.advancedSearch.itemCode}}"
+						zoom-service="mcs.roteiro.zoom">
+					</totvs-field>
+					<totvs-field totvs-input
+		            	   ng-model="controller.advancedSearch.componentListCode"
+						   label="{{ 'l-lista-compon' | i18n }}"
+						zoom-id="cod-lista-compon"
+						zoom-init="{filter: {'it-codigo': controller.advancedSearch.itemCode}}"
+						zoom-service="mcs.listaCompon.zoom">
+					</totvs-field>
+		           	<field type="input" 
+		            	   ng-model="controller.advancedSearch.site"
+						   label="{{ 'l-site' | i18n }}"
+						   zoom
+						   zoom-service="mpd.estabelecSE.zoom"
+						   zoom-id="cod-estabel"
+						   zoom-description="nome">
+		        	</field>
+
+					<field
+						type="combo"
+						ng-model="controller.advancedSearch.itemStatus"
+						label="{{ 'l-status' | i18n }}">
+						<totvs-options>
+							<totvs-option value="1">Ativo</totvs-option>
+							<totvs-option value="2">Obsoleto para ordens automáticas</totvs-option>
+							<totvs-option value="3">Obsoleto para todas as ordens</totvs-option>
+							<totvs-option value="4">Totalmente Obsoleto</totvs-option>
+						</totvs-options>
+					</field>
+				</accordion-group>
+                
+				<accordion-group is-open="status.open" >
+					<accordion-heading>
+						{{'l-parameters' | i18n }}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					</accordion-heading>
+                    
+					<field
+						type="combo"
+						ng-model="controller.advancedSearch.setupType"
+						label="{{ 'l-tipo-custo-prep' | i18n }}">
+						<totvs-options>
+							<totvs-option value="0">Sem custo preparação</totvs-option>
+							<totvs-option value="1">Preparação por ordem</totvs-option>
+							<totvs-option value="2">Preparação x Números Lotes</totvs-option>
+							<totvs-option value="3">Preparação Unitário x Quantidade</totvs-option>
+							<totvs-option value="4">Preparação x Quantidade</totvs-option>
+						</totvs-options>
+					</field>
+
+					<field
+						type="combo"
+						ng-model="controller.advancedSearch.itemPrice"
+						label="{{ 'l-price-type' | i18n }}">
+						<totvs-options>
+							<totvs-option value="1">Mensal</totvs-option>
+							<totvs-option value="2">Online</totvs-option>
+							<totvs-option value="3">Base</totvs-option>
+							<totvs-option value="4">Reposição</totvs-option>
+							<totvs-option value="5">Última entrada</totvs-option>
+						</totvs-options>
+					</field>
+
+					<field
+						type="combo"
+						ng-model="controller.advancedSearch.operationCost"
+						label="{{ 'l-tipo-custo-op' | i18n }}">
+						<totvs-options>
+							<totvs-option value="1">Total</totvs-option>
+							<totvs-option value="2">Estimado</totvs-option>
+							<totvs-option value="3">Estimado 2</totvs-option>
+						</totvs-options>
+					</field>
+
+					<field
+						type="combo"
+						ng-model="controller.advancedSearch.currency"
+						label="{{ 'l-currency' | i18n }}">
+						<totvs-options>
+							<totvs-option value="0">Real</totvs-option>
+							<totvs-option value="1">IFRS I</totvs-option>
+							<totvs-option value="2">IFRS II</totvs-option>
+						</totvs-options>
+					</field>
+
+					<field
+						type="combo"
+						ng-model="controller.advancedSearch.costCalcMethod"
+						label="{{ 'l-tipo-custo' | i18n }}">
+						<totvs-options>
+							<totvs-option value="1">RKW</totvs-option>
+							<totvs-option value="2">Up</totvs-option>
+						</totvs-options>
+					</field>
+					<field
+						type="checkbox"
+						ng-model="controller.advancedSearch.correction"
+						label="{{ 'l-correcao-moeda' | i18n }}">
+					</field>
+					<totvs-divider></totvs-divider>
+					<field
+						type="date"
+						label="{{ 'l-corte-estr' | i18n }}"
+						depth='year'
+						format='MMMM yyyy'
+						ng-model='controller.advancedSearch.bomCutOffDate'
+						canclean
+						ng-show=true >
+					</field>
+
+					<field
+						type="date"
+						label="{{ 'l-corte-op' | i18n }}"
+						depth='year'
+						format='MMMM yyyy'
+						ng-model='controller.advancedSearch.opCutOffDate'
+						canclean
+						ng-show=true >
+					</field>
+
+					<field
+						type="number"
+						ng-model="controller.advancedSearch.calcUpToLevel"
+						min="1"
+						max="30"
+						label="{{ 'l-quant-niv' | i18n }}">
+					</field>
+
+					<field
+						type="number"
+						ng-model="controller.advancedSearch.quantity"
+						min="1"
+						max="999999999"
+						label="{{ 'l-quant-item' | i18n }}">
+					</field>
+					
+					<field
+						type="checkbox"
+						ng-model="controller.advancedSearch.childItemSite"
+						label="{{ 'l-considerar-fil' | i18n }}">
+					</field>
+					<field
+						type="checkbox"
+						ng-model="controller.advancedSearch.includeScrapCost"
+						label="{{ 'l-considerar-custo-ref' | i18n }}">
+					</field>
+					<field
+						type="checkbox"
+						ng-model="controller.advancedSearch.businessUnit"
+						label="{{ 'l-unid-neg' | i18n }}">
+					</field>
+					<field
+						type="checkbox"
+						ng-model="controller.advancedSearch.showExternalOperation"
+						label="{{ 'l-demos-op-ext' | i18n }}">
+					</field>
+                    
+				</accordion-group>
+			</accordion>
+        </form>
+    </div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'l-cancel' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="controller.search();">{{ 'l-search' | i18n }}</button>
+</totvs-modal-footer>

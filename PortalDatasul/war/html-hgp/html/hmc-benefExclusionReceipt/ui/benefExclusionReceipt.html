@@ -1,0 +1,278 @@
+<style>
+    .boxParams {
+                background-color: aliceblue;
+                float: left;
+                width: 100%;
+                padding-right: 40px;
+                border-style: solid;
+                border-radius: 10px;
+                border-width: 1px;
+                border-color: #ccc;
+                margin-bottom: 15px;
+                margin-left: 10px;
+                color: gray;
+    }
+    .boxParamsFields {
+                     margin-left: 10px;
+                     margin-bottom: 20px;
+                     padding-left: 15px;
+                     display: none;                      
+    }
+    #searchType:hover{
+                          color: #3276b1;
+                          background-color: #fff;
+    }
+</style>
+    
+<totvs-page type="base"> 
+    
+    <totvs-page-navbar id="navBar">
+
+        <totvs-page-breadcrumb>
+                <breadcrumb>Emissão Comprovante Solicitação/Exclusão de Beneficiário</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title>Emissão Comprovante Solicitação/Exclusão de Beneficiário</totvs-page-header-title>
+
+             <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">                     
+                    
+                    <action class="btn-primary"                            
+                            ng-click="controller.onGenerateClick();"> Gerar </action>                            
+                    
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+    
+
+    <totvs-page-content>
+        
+        <totvs-page-form>
+            
+            <legend>Parâmetros</legend>
+
+            <div style="margin-left: 20px;
+                        padding-right: 15px">               
+                
+                <div class="boxParams">
+                    
+                    <div>   
+                        <input type="checkbox" 
+                               ng-click="controller.openCloseParamFields('email-params')"
+                               ng-model="controller.parameters.lgEmail"
+                               style="float: left; width: 40px"><h4>Enviar E-mail</h4>
+                    </div>
+
+
+                    <form id="email-params" render="controller.parameters.lgEmail"
+                         ng-submit="controller.generate()"
+                         class="boxParamsFields col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                        <field label="Remetente"
+                               required="true"
+                               type="email"                       
+                               class="col-lg-6 col-sm-12 col-md-12"  
+                               data-ng-model="controller.parameters.dsRemetente">
+                        </field>  
+
+                        <field label="Destinatário"
+                               required="true"
+                               type="email"                       
+                               class="col-lg-6 col-sm-12 col-md-12"  
+                               data-ng-model="controller.parameters.dsDestinatario">
+                        </field> 
+
+                        <input type="submit" class="submitButton" style="display: none"/>                                               
+                              
+                    </form>                    
+                </div> 
+            </div>
+
+            <legend>Seleção</legend>
+            
+            <div id="selectMainBox"
+                 class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                 style="margin-left: 20px;
+                        padding-right: 35px">
+                  
+
+                <div id="searchType" class="btn-group" data-toggle="buttons">
+
+                    <label class="btn btn-info"  ng-click="controller.changeSearchType('contractSearch')">
+                          <input type="radio"  id="contractSearchBtn" autocomplete="off"> Por Contrato
+                    </label>
+                    <label class="btn btn-info"  ng-click="controller.changeSearchType('contractingPartySearch')">
+                          <input type="radio"  id="contractingPartySearchBtn" autocomplete="off"> Por Contratante
+                    </label>
+                    <label class="btn btn-info"  ng-click="controller.changeSearchType('protocolSearch')">
+                          <input type="radio"  id="protocolSearchBtn" autocomplete="off"> Por Protocolo
+                    </label> 
+                    <label class="btn btn-info " ng-click="controller.changeSearchType('dateSearch')">
+                          <input type="radio"  id="dateSearchBtn" autocomplete="off"> Por Data
+                    </label>                   
+
+                </div>
+
+                <div id="searchParams">
+
+                    <totvs-page-header-operation>
+                        <totvs-page-header-operation-action limit-primary-action="5">                     
+                            
+                              <action class="btn-primary"
+                                      ng-click="controller.search();"> Buscar Protocolos </action>
+                              
+                        </totvs-page-header-operation-action>
+                    </totvs-page-header-operation>
+
+                
+                    <div id="contractSearch" class = "boxParamsFields"> 
+                        
+                        <field class="field col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                               type="inputrange"
+                               ng-model="controller.modalityRange"                     
+                               start-placeholder="0"
+                               start-maxlength="2"
+                               end-placeholder="99"
+                               end-maxlength="2"
+                               label="Modalidade">
+                        </field> 
+
+                        <field class="field col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                               type="inputrange"
+                               ng-model="controller.contractRange"          
+                               start-placeholder="0"
+                               start-maxlength="6"
+                               end-placeholder="999999"
+                               end-maxlength="6"
+                               label="Contrato">
+                        </field>
+
+                        <field class="field col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                               type="inputrange"
+                               ng-model="controller.userRange"          
+                               start-placeholder="0"
+                               start-maxlength="6"
+                               end-placeholder="999999"
+                               end-maxlength="6"
+                               label="Beneficiário">
+                        </field>
+
+                    </div>
+
+                    <div id="contractingPartySearch" class = "boxParamsFields">  
+
+                        <field class="field col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                               type="inputrange"
+                               ng-model="controller.contractingPartyRange"                       
+                               start-placeholder="0"
+                               start-maxlength="9"
+                               end-placeholder="999999999"
+                               end-maxlength="9"
+                               label="Contratante">
+                        </field>                     
+
+                        <field
+                            type="daterange"  
+                            class="col-lg-4 col-md-4 col-sm-4"
+                            ng-model='controller.dateRange'
+                            label='Data de Geração do Protocolo'
+                            canclean>
+                        </field>                       
+                        
+                    </div>
+                        
+                    </div>
+
+                    <div id="protocolSearch" class = "boxParamsFields">  
+
+                        <field label="Protocolo"
+                               type="input" 
+                               numbers-only
+                               class="col-lg-6 col-sm-12 col-md-6"  
+                               data-ng-model="controller.protocol">
+                        </field>                    
+                        
+                    </div>
+
+
+                    <div id="dateSearch" class = "boxParamsFields">  
+
+                        <field
+                            type="daterange"
+                            class="col-lg-4 col-md-4 col-sm-4"
+                            ng-model='controller.protocolDateRange'
+                            label='Data de Geração do Protocolo'
+                            canclean>
+                        </field>                       
+                        
+                    </div>
+                </div>
+                
+                <legend>Protocolos ({{controller.listOfBenefsCount}})</legend>
+    
+                <totvs-page-header>
+                    <totvs-page-disclaimers
+                        disclaimer-list="controller.disclaimers"
+                        ng-click="controller.removeDisclaimer">
+                    </totvs-page-disclaimers>
+                </totvs-page-header>
+
+                <totvs-page-content id="pageContent">
+
+                     <totvs-page-alert ng-if="controller.hasDoneSearch == true && controller.listOfBenefs.length <= 0"
+                                       type="info"
+                                       message="Nenhum registro encontrado">
+                     </totvs-page-alert>
+
+                     <totvs-list-item
+                         id="benef{{benef.id}}"
+                         style="border-left-color: #337ab7;"
+                         ng-repeat="benef in controller.listOfBenefs"
+                         selected="benef"
+                         >
+ 
+                         <totvs-list-item-header>
+ 
+                             <totvs-list-item-title
+                                 title="Modalidade: {{benef.cdModalidadeConcat}} | Contrato: {{(StringTools.fill(benef.nrTerAdesao, '0', 6))}} | Beneficiário: {{benef.cdUsuarioConcat}}">
+                             </totvs-list-item-title> 
+                            
+                         </totvs-list-item-header>
+ 
+                         <totvs-list-item-content>
+ 
+                             <totvs-list-item-info class="{{controller.listItemInfoClasses}}" 
+                                                   title="Protocolo"
+                                                   value="{{benef.codProtocolo}}">
+                             </totvs-list-item-info>
+
+                             <totvs-list-item-info class="{{controller.listItemInfoClasses}}" 
+                                                   title="Data de Geração"
+                                                   value="{{benef.dataProtocolo | date : 'dd/MM/yyyy'}}">
+                             </totvs-list-item-info>
+
+                             <totvs-list-item-info class="{{controller.listItemInfoClasses}}" 
+                                                   title="Hora de Geração"                                                   
+                                                   value="{{benef.horaProtocolo | time}}">
+                             </totvs-list-item-info>
+                             
+                         </totvs-list-item-content>
+                         <p></p>
+                     </totvs-list-item>
+
+                     <totvs-list-pagination
+                         ng-if="controller.listOfBenefs.length < controller.listOfBenefsCount && controller.listOfBenefs.length"
+                         ng-click="controller.search(true);">
+                     </totvs-list-pagination>
+
+                </totvs-page-content>               
+               
+            </div>         
+        </totvs-page-form>                    
+    </totvs-page-content>    
+</totvs-page>

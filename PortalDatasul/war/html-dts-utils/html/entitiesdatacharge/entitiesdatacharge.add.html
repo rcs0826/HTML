@@ -1,0 +1,58 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{:: 'l-new-entity' | i18n : [] : 'dts/dts-utils' }}</h3>
+</div>
+
+<div class="modal-body">	
+	<div class="row">
+		<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="input" canclean required ng-model="controller.entityName" ng-required="true">
+			<label>{{'l-name'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>
+	</div>
+	<div class="row">
+		<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="input" canclean required ng-model="controller.entityTransaction" ng-required="true">
+			<label>{{'l-transaction'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>
+	</div>
+	<div class="row">
+		<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="input" canclean required ng-model="controller.entityTransactionversion" ng-required="true">
+			<label>{{'l-version-transaction'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>
+	</div>
+	<div class="row">
+		<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="input" canclean required ng-model="controller.entityApiExec" ng-required="true">
+			<label>{{'l-api-exec'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>
+	</div>	
+	<div class="row">
+			<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="input" canclean required ng-model="controller.database" ng-required="false">
+				<label>{{'l-database'| i18n : [] : 'dts/dts-utils' }}</label>
+			</field>
+		</div>	
+	<div class="row">
+		<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="combo" ng-model="controller.modesupported.model.typeId" ng-change="controller.changeModeSupported()" required ng-disabled="controller.integrationType == 1"
+		 ng-options="tipo.typeId as tipo.descMode for tipo in controller.modesupported.types" ng-required="true">
+			<label>{{'l-mode-supported'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>
+	</div>
+	<div class="row">
+			<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="combo" ng-model="controller.modeenabled.model.typeId" required ng-disabled="controller.integrationType == 1"
+			 ng-options="tipo.typeId as tipo.descEnabled for tipo in controller.modeenabled.types" ng-required="true">
+				<label>{{'l-mode-enabled'| i18n : [] : 'dts/dts-utils' }}</label>
+			</field>
+		</div>
+	<div class="row">
+		<div class="btn-group" style="margin-top: 15px; margin-bottom: 5px;margin-left: 15px;" class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+		 ng-show="true">
+			<label class="btn btn-default">
+				<input type="checkbox" ng-change="controller.checkActiveEntity()" ng-model="controller.activeEntity" class="ng-valid ng-dirty ng-valid-parse ng-touched">
+				<span class="ng-binding"> &nbsp; {{'l-active' | i18n: [] : 'dts/dts-utils'}}</span>
+			</label>
+		</div>		
+	</div>
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" ng-click="controller.save(controller.integDesc.model.idDefaultIntegration);">{{:: 'l-save' | i18n : [] : 'dts/mpd'}}</button>
+	<!-- <button type="button" class="btn btn-primary" ng-click="controller.saveandnew($event);">{{:: 'Salvar e Novo' | i18n : [] : 'dts/mpd'}}</button> -->
+	<button type="button" class="btn btn-default" ng-click="controller.close();">{{:: 'l-cancel' | i18n : [] : 'dts/mpd'}}</button>
+</div>

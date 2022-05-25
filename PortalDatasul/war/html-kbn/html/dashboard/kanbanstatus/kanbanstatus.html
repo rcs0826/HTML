@@ -1,0 +1,19 @@
+
+<div ng-controller="kbn.dashboard.kanbanstatus.ctrl as kanbanStatusCtrl">
+  <link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+  <link rel="stylesheet" href="/dts/kbn/css/font-awesome.css"/>
+  <totvs-widget>
+    <totvs-widget-header settings="kanbanStatusCtrl.openSettings()" title="{{kanbanStatusCtrl.chart.titleWidget | i18n : [] : 'dts/kbn'}}"><i ng-if="kanbanStatusCtrl.chart.titleWidget == 'l-kanbanstatus'" tooltip-placeholder="rigth" tooltip-html="kanbanStatusCtrl.tooltip" class="glyphicon glyphicon-info-sign hidden-xs"></i></totvs-widget-header><span ng-if="kanbanStatusCtrl.chart.typeChart == 'column'" title="{{'l-invert-pareto-order' | i18n : [] : 'dts/kbn'}}" ng-class="{'fa-sort-amount-desc':kanbanStatusCtrl.paretoOrderDesc, 'fa-sort-amount-asc': !kanbanStatusCtrl.paretoOrderDesc}" ng-click="kanbanStatusCtrl.changeOrderPareto()" class="dashboard-padding-right pull-right fa fa-sort-amount-desc is-pointer">&nbsp;</span>
+    <totvs-widget-body>
+      <ol class="dashboard breadcrumb">
+        <li ng-repeat="chart in kanbanStatusCtrl.chartArray" ng-class="{ 'active' : $last, 'is-pointer': !$last }"> <span ng-click="kanbanStatusCtrl.navigate($index)">{{ chart.titleBreadcrumb }}</span></li>
+      </ol>
+      <totvs-chart t-categories="kanbanStatusCtrl.chart.categories" t-series="kanbanStatusCtrl.chart.series" t-type-chart="{{kanbanStatusCtrl.chart.typeChart}}" t-on-click="kanbanStatusCtrl.chart.onClick" t-chart-tooltip="false"></totvs-chart>
+    </totvs-widget-body>
+    <totvs-widget-footer>
+      <totvs-widget-footer-actions>
+        <action ng-click="kanbanStatusCtrl.sendDataToReport()">{{ 'l-detail' | i18n : [] : 'dts/kbn/' }}</action>
+      </totvs-widget-footer-actions>
+    </totvs-widget-footer>
+  </totvs-widget>
+</div>

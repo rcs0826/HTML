@@ -1,0 +1,69 @@
+<style type="text/css">
+	.page-content, .page-head{
+		border: none !important;
+	}
+	.page-head{
+		padding-top: 0 !important;
+		padding-left: 0 !important;
+	}
+</style>
+<totvs-modal-header>
+	{{:: 'l-sending-confirmation' | i18n: []: 'dts/mcc' }}
+</totvs-modal-header>
+
+<totvs-modal-body>	
+	<totvs-page>
+		<totvs-page-header>
+			{{ 'l-vendors-request-item' | i18n: []: 'dts/mcc' }} 
+		</totvs-page-header>
+
+		<totvs-page-content>
+			<totvs-grid grid-selected-items="controller.mrSelected"
+						grid-height="400"
+						grid-data="controller.ttSendingItemInfo"
+						auto-resize-content="true"
+						auto-resize-column="true"
+						reorderable="true"
+						selectable="multiple,row"
+						resizable="true"
+						editable="true">    
+
+				<totvs-grid-column field="numero-ordem">{{:: 'l-requisition' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+				<totvs-grid-column field="it-codigo">{{:: 'l-item' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+				<totvs-grid-column field="desc-item">{{:: 'l-description' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+				<totvs-grid-column field="un">{{:: 'l-un' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+				<totvs-grid-column field="qt-solic" filter="number : 4">{{:: 'l-quantity' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+
+				<!-- GRID COM OS FORNECEDORES DA ORDEM -->
+				<totvs-grid-detail>
+					<div class="row" style="margin: 0;" ng-init="controller.loadInfoCompItem(dataItem)">
+						<div class="col-xs-12" style="padding: 5px 0 0;">
+							<totvs-grid 
+								grid-height="350"
+								grid-data="dataItem.ttSendingVendorItemInfo"
+								auto-resize-content="true"
+								auto-resize-column="false"
+								add-select-column="separate"
+								reorderable="true"
+								selectable="multiple,row"
+								resizable="true"
+								editable="true"
+								on-change="controller.onChange(event)">    
+					
+								<totvs-grid-column width="95" field="cod-emitente">{{:: 'l-code' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+								<totvs-grid-column width="125" field="nome-abrev">{{:: 'l-abrev-name' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+								<totvs-grid-column width="319" field="nome-emit">{{:: 'l-name' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+								<totvs-grid-column width="145" field="cgc">{{:: 'l-cnpj' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+							</totvs-grid>
+						</div>
+					</div>
+				</totvs-grid-detail>
+			</totvs-grid>
+		<totvs-page-content>
+	</totvs-page>	
+</totvs-modal-body>
+
+<totvs-modal-footer>	
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n: []: 'dts/mcc' }}</button> 	
+	<button class="btn btn-primary" ng-click="controller.apply();">{{ 'l-send' | i18n: []: 'dts/mcc' }}</button>
+</totvs-modal-footer>

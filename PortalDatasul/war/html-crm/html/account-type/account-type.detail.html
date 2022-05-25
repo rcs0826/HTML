@@ -1,0 +1,63 @@
+<totvs-page type="detail">
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/hierarchy-type/">{{ 'l-type-client' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ controller.model.nom_tip_clien }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action on-back-link="#/dts/crm/account-type/"
+													on-edit="controller.onEdit"
+													on-remove="controller.onRemove"
+													hide-actions="true">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+    
+    <totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.model">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-show="controller.model">
+            
+            <div class="col-xs-12 no-gutter">
+
+                <totvs-page-detail-info class="col-xs-12 col-sm-3"
+										title="{{ 'l-cpf-cnpj-required' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ (controller.model.log_validac_cnpj_cpf === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</totvs-page-detail-info>
+                
+                <totvs-page-detail-info class="col-xs-12 col-sm-3"
+										title="{{ 'l-integrates-erp' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ (controller.model.log_integrad_erp === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</totvs-page-detail-info>
+
+            </div>
+            
+            <totvs-tabset class="no-border">
+
+				<tabset>
+					<tab heading="{{ 'l-type-account' | i18n: []: 'dts/crm' }}">
+                        <ng-include src="'/dts/crm/html/account-type/types/types.list.html'"></ng-include>
+                    </tab>
+                </tabset>
+            </totvs-tabset>
+            
+        </totvs-page-detail>
+    </totvs-page-content>
+    
+</totvs-page>

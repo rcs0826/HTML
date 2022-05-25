@@ -1,0 +1,547 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/task/">{{'nav-task' | i18n: []: 'dts/crm'}}</breadcrumb>
+			<breadcrumb>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header ng-if="(controller.model | isDefined)">
+
+			<totvs-page-header-title
+				title="{{controller.model.num_id}} - {{controller.model.ttAcao.nom_acao}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action on-back-link="#/dts/crm/task/"
+													<% if ((!data["btn-edit"] || data["btn-edit"].log_visivel === true)) { %>
+													on-edit="controller.onEdit"
+													hide-edit="{{(controller.model.log_executa !== true || controller.model.idi_status_tar === 3 || controller.model.ttConta.log_acesso !== true)}}"
+													<% } else { %>
+													hide-edit="true"
+													<% } %>
+													hide-remove="true"
+													hide-actions="{{(controller.model.idi_status_tar === 3)}}">
+					<% if ((!data["btn-execute"] || data["btn-execute"].log_visivel === true)) { %>
+					<action icon="glyphicon-play"
+							ng-click="controller.execute();"
+							ng-if="controller.model.log_executa === true && controller.model.idi_status_tar === 1">
+						{{ 'btn-execute' | i18n: []: 'dts/crm' }}
+					</action>
+					<% } %>
+
+					<% if ((!data["btn-reopen"] || data["btn-reopen"].log_visivel === true)) { %>
+					<action icon="glyphicon-retweet"
+							ng-click="controller.reopen();"
+							ng-if="controller.model.log_executa === true && controller.model.idi_status_tar === 2">
+						{{ 'btn-reopen' | i18n: []: 'dts/crm' }}
+					</action>
+					<% } %>
+
+					<% if ((!data["btn-new-task"] || data["btn-new-task"].log_visivel === true)) { %>
+					<action icon="glyphicon-pushpin"
+							ng-if="controller.model.idi_status_tar !== 3"
+							ng-click="controller.registerTask()">
+						{{ 'btn-new-task' | i18n: []: 'dts/crm' }}
+					</action>
+					<% } %>
+
+					<% if ((!data["btn-assume"] || data["btn-assume"].log_visivel === true)) { %>
+					<action icon="glyphicon-transfer"
+							ng-click="controller.assume(controller.model);"
+							ng-if="(controller.model.log_assume === true && controller.model.ttConta.log_acesso === true)">
+						{{ 'btn-assume' | i18n: []: 'dts/crm' }}
+					</action>
+					<% } %>
+
+					<% if ((!data["btn-send-email"] || data["btn-send-email"].log_visivel === true)) { %>
+					<!--action icon="glyphicon-envelope"
+							ng-click="controller.sendEmail(controller.model)" >
+						{{ 'btn-send-email' | i18n: []: 'dts/crm' }}
+					</action-->
+					<% } %>
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert
+			ng-if="(controller.model | isUndefined)"
+			type="info"
+			message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}">
+		</totvs-page-alert>
+
+		<totvs-page-alert
+			ng-if="controller.model.ttConta.log_acesso === false"
+			type="info"
+			message="{{ 'msg-access-denied' | i18n: []: 'dts/crm' }}">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-if="(controller.model | isDefined) && controller.model.ttConta.log_acesso !== false">
+
+			<div class="col-xs-12 no-gutter">
+
+				<% if ( (!data["l-end"] || data["l-end"].log_visivel === true)
+					 || (!data["l-start"] || data["l-start"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					value-break="false"
+					class="col-xs-12 col-sm-4"
+					title="{{ 'l-date' | i18n: []: 'dts/crm' }}">
+					<% if ((!data["l-start"] || data["l-start"].log_visivel === true)) { %>
+					{{ controller.model.dat_inic | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+					<% } %>
+					<% if ((!data["l-end"] || data["l-end"].log_visivel === true)) { %>
+					<span ng-if="controller.model.dat_fim">
+						- {{ controller.model.dat_fim  | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+					</span>
+					<% } %>
+					{{ 'l-as' | i18n: []: 'dts/crm' }}
+					<% if ((!data["l-start"] || data["l-start"].log_visivel === true)) { %>
+					{{ controller.model.hra_inic }}
+					<% } %>
+					<% if ((!data["l-end"] || data["l-end"].log_visivel === true)) { %>
+					<span ng-if="controller.model.hra_fim">
+						-  {{ controller.model.hra_fim  }}
+					</span>
+					<% } %>
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ( (!data["l-status"] || data["l-status"].log_visivel === true)
+					 || (!data["l-date-execution"] || data["l-date-execution"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					value-break="false"
+					class="col-xs-12 col-sm-4"
+					title="{{ 'l-status' | i18n: []: 'dts/crm' }}">
+
+					<span class="label"
+						  ng-class="controller.model.virtualStatus.cor">
+
+						<% if ((!data["l-status"] || data["l-status"].log_visivel === true)) { %>
+						{{ controller.model.virtualStatus.nom_status }}
+						<% } %>
+
+						<% if ((!data["l-date-execution"] || data["l-date-execution"].log_visivel === true)) { %>
+						<span ng-if="controller.model.dat_exec">
+							{{ controller.model.dat_exec | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+						</span>
+
+						<span ng-if="controller.model.hra_exec">
+							{{ controller.model.hra_exec}}
+						</span>
+						<% } %>
+
+					</span>
+				</totvs-page-detail-info>
+				<% } %>
+				<% if ((!data["l-user-close"] || data["l-user-close"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					value-break="false"
+					class="col-xs-12 col-sm-4"
+					title="{{ 'l-user-close' | i18n: []: 'dts/crm' }}"
+					value="{{controller.model.ttUsuarioFechamento.nom_usuar}}"
+					ng-if="controller.model.dat_exec && controller.model.ttUsuarioFechamento.num_id">
+				</totvs-page-detail-info>
+				<% } %>
+
+			</div>
+
+			<% if ( (!data["l-campaign"] || data["l-campaign"].log_visivel === true)
+				 || (!data["l-objective"] || data["l-objective"].log_visivel === true)
+				 || (!data["l-user-responsible"] || data["l-user-responsible"].log_visivel === true)) { %>
+			<div class="col-xs-12 no-gutter">
+
+				<% if ((!data["l-campaign"] || data["l-campaign"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					value-break="false"
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-campaign' | i18n: []: 'dts/crm' }}"
+					value="{{controller.model.ttCampanha.nom_campanha}}">
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-objective"] || data["l-objective"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					value-break="false"
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-objective' | i18n: []: 'dts/crm' }}"
+					value="{{controller.model.ttObjetivo.nom_objet_acao}}">
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-user-responsible"] || data["l-user-responsible"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					value-break="false"
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}"
+					value="{{controller.model.ttResponsavel.nom_usuar}}">
+				</totvs-page-detail-info>
+				<% } %>
+
+			</div>
+			<% } %>
+
+			<% if ( (!data["l-user-create"] || data["l-user-create"].log_visivel === true)
+			 || (!data["l-date-create"] || data["l-date-create"].log_visivel === true)
+			 || (!data["l-workflow"] || data["l-workflow"].log_visivel === true)) {
+			%>
+			<div class="col-xs-12 no-gutter">
+
+				<% if ((!data["l-user-create"] || data["l-user-create"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					value-break="false"
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-user-open' | i18n: []: 'dts/crm' }}"
+					value="{{controller.model.ttUsuarioAbertura.nom_usuar}}">
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-date-create"] || data["l-date-create"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					value-break="false"
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-date-create' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.dat_cadastro | date : ('l-date-format' | i18n: []: 'dts/crm') }} - {{ controller.model.hra_cadastro }}
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-workflow"] || data["l-workflow"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					value-break="false"
+					ng-if="controller.model.num_id_workflow > 0"
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-workflow' | i18n: []: 'dts/crm' }}">
+					<a href="{{controller.model.nom_workflow_url}}" target="_blank">
+						{{controller.model.num_id_workflow}} - {{controller.model.nom_workflow}}
+					</a>
+				</totvs-page-detail-info>
+				<% } %>
+
+			</div>
+			<% } %>
+			<% if ((!data["l-integrates-outlook"] || data["l-integrates-outlook"].log_visivel === true)
+			 || (!data["l-group-user"] || data["l-group-user"].log_visivel === true)
+			 || (!data["l-phone"] || data["l-phone"].log_visivel === true)) {
+			%>
+			<div class="col-xs-12 no-gutter">
+				<% if ((!data["l-phone"] || data["l-phone"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					value-break="false"
+					ng-if="controller.model.nom_telefone && controller.isShowPhoneInTask === true"
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-phone' | i18n: []: 'dts/crm' }}">
+					{{controller.model.nom_telefone}}
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-group-user"] || data["l-group-user"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					value-break="false"
+					ng-if="controller.isActiveUserGroup === true"
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-group-user' | i18n: []: 'dts/crm' }}"
+					value="{{controller.model.ttGrupoUsuario.nom_grp_usuar}}">
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-integrates-outlook"] || data["l-integrates-outlook"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					value-break="false"
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-integrates-outlook' | i18n: []: 'dts/crm' }}"
+					value="{{ controller.model.log_integrad_outlook ? 'l-yes' : 'l-no' | i18n: []: 'dts/crm' }}">
+				</totvs-page-detail-info>
+				<% } %>
+			</div>
+			<% } %>
+
+			<% if ( (!data["l-source-task"] || data["l-source-task"].log_visivel === true)
+				 || (!data["l-source-ticket"] || data["l-source-ticket"].log_visivel === true)
+				 || (!data["l-source-history"] || data["l-source-history"].log_visivel === true)
+				 || (!data["l-source-opportunity"] || data["l-source-opportunity"].log_visivel === true)) {
+			%>
+			<div class="col-xs-12 no-gutter">
+
+				<% if ((!data["l-source-ticket"] || data["l-source-ticket"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					value-break="false"
+					ng-if="controller.model.ttOcorrenciaOrigem"
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-source-ticket' | i18n: []: 'dts/crm' }}">
+					<a href="#/dts/crm/ticket/detail/{{controller.model.ttOcorrenciaOrigem.num_id}}">
+						{{ controller.model.ttOcorrenciaOrigem.cod_livre_1 }} - {{ controller.model.ttOcorrenciaOrigem.nom_ocor }}
+					</a>
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-source-task"] || data["l-source-task"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					value-break="false"
+					ng-if="controller.model.ttTarefaOrigem"
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-source-task' | i18n: []: 'dts/crm' }}">
+					<a href="#/dts/crm/task/detail/{{controller.model.ttTarefaOrigem.num_id}}">
+						{{ controller.model.ttTarefaOrigem.num_id }} - {{ controller.model.ttTarefaOrigem.nom_acao }}
+					</a>
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-source-history"] || data["l-source-history"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					value-break="false"
+					ng-if="controller.model.ttHistoricoOrigem"
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-source-history' | i18n: []: 'dts/crm' }}">
+					<a href="#/dts/crm/history/detail/{{controller.model.ttHistoricoOrigem.num_id}}">
+						{{ controller.model.ttHistoricoOrigem.num_id }} - {{ controller.model.ttHistoricoOrigem.nom_acao }}
+					</a>
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-source-opportunity"] || data["l-source-opportunity"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					value-break="false"
+					ng-if="controller.model.ttOportunidadeOrigem"
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-source-opportunity' | i18n: []: 'dts/crm' }}">
+					<a href="#/dts/crm/opportunity/detail/{{controller.model.ttOportunidadeOrigem.num_id}}">
+						{{ controller.model.ttOportunidadeOrigem.num_id }} - {{ controller.model.ttOportunidadeOrigem.des_oportun_vda }}
+					</a>
+				</totvs-page-detail-info>
+				<% } %>
+
+			</div>
+			<% } %>
+
+			<% if ( (!data["l-account"] || data["l-account"].log_visivel === true)
+				 || (!data["l-contact"] || data["l-contact"].log_visivel === true)) { %>
+
+			<div class="col-xs-12 col-md-12" ng-if="controller.model.ttConta.log_acesso || controller.model.ttContato.log_acesso">
+				<totvs-divider></totvs-divider>
+
+                <div class="crm-group-accordion">
+                    <accordion close-others="false">
+
+                        <% if ((!data["l-account"] || data["l-account"].log_visivel === true)){ %>
+
+                        <accordion-group is-open="controller.groupAccountOpen"
+                                        ng-if="controller.model.ttConta.log_acesso"
+                                        ng-click="controller.loadAccountSummary()"
+                                        class="crm-panel">
+                            <accordion-heading>
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <b>{{ 'l-account' | i18n: []: 'dts/crm' }}: </b>
+                                        <span ng-if="controller.model.ttConta.log_matriz"
+                                            class="glyphicon glyphicon-globe">
+                                        </span>
+                                        {{controller.model.ttConta.nom_razao_social}}
+                                    </div>
+                                    <div class="col-xs-2 text-right">
+                                        <a class="clickable"
+                                        style="padding-right: 15px"
+                                        ng-click="controller.detailLink(controller.model.ttConta.num_id,'account', $event);">
+                                            {{ 'btn-detail' | i18n: []: 'dts/crm' }}
+                                        </a>
+                                        <i class="pull-right glyphicon"
+                                        ng-class="{'glyphicon-chevron-down' :  controller.groupAccountOpen,
+                                                    'glyphicon-chevron-right': !controller.groupAccountOpen}">
+                                        </i>
+                                    </div>
+                                </div>
+                            </accordion-heading>
+                            <div class="row">
+                                <totvs-page-detail>
+
+                                        <div class="col-xs-12 no-gutter">
+
+                                            <totvs-page-detail-info
+                                                class="col-xs-12 col-sm-4"
+                                                title="{{ (controller.model.ttConta.idi_tip_pessoa === 1 ? 'l-cpf' : 'l-cnpj') | i18n: []: 'dts/crm' }}"
+                                                value="{{(controller.model.ttConta.idi_tip_pessoa === 1 ? controller.model.ttConta.nom_cpf : controller.model.ttConta.nom_cnpj) | mask : (controller.model.ttConta.idi_tip_pessoa === 1 ? '999.999.999-99' : '99.999.999/9999-99')}}">
+                                            </totvs-page-detail-info>
+
+                                            <totvs-page-detail-info
+                                                class="col-xs-12 col-sm-4"
+                                                title="{{ 'l-email' | i18n: []: 'dts/crm' }}"
+                                                value="{{controller.model.ttConta.nom_email_1}}"
+                                                ng-if="controller.model.ttConta.nom_email_1">
+                                            </totvs-page-detail-info>
+
+                                            <totvs-page-detail-info
+                                                class="col-xs-12 col-sm-4"
+                                                title="{{ 'l-email-2' | i18n: []: 'dts/crm' }}"
+                                                value="{{controller.model.ttConta.nom_email_2}}"
+                                                ng-if="controller.model.ttConta.nom_email_2">
+                                            </totvs-page-detail-info>
+
+                                            <totvs-page-detail-info
+                                                class="col-xs-12"
+                                                title="{{ 'l-address' | i18n: []: 'dts/crm' }}"
+                                                ng-if="controller.model.ttConta.ttEnderecoCorrespondencia">
+                                                <a target="_blank"
+                                                href="http://maps.google.com.br/maps?q={{controller.model.ttConta.ttEnderecoCorrespondencia.nom_lograd_ender}}, {{controller.model.ttConta.ttEnderecoCorrespondencia.nom_bairro}},
+                                                        {{controller.model.ttConta.ttEnderecoCorrespondencia.nom_cidade}},{{controller.model.ttConta.ttEnderecoCorrespondencia.nom_unid_federac}},{{controller.model.ttConta.ttEnderecoCorrespondencia.nom_pais}}">
+                                                    {{ controller.model.ttConta.ttEnderecoCorrespondencia.nom_lograd_ender }}, {{ controller.model.ttConta.ttEnderecoCorrespondencia.nom_bairro }} - {{ controller.model.ttConta.ttEnderecoCorrespondencia.nom_cidade }},
+                                                    {{ controller.model.ttConta.ttEnderecoCorrespondencia.nom_unid_federac }} - {{ controller.model.ttConta.ttEnderecoCorrespondencia.nom_pais }}, {{ controller.model.ttConta.ttEnderecoCorrespondencia.cod_cep }}
+                                                </a>
+                                            </totvs-page-detail-info>
+
+                                            <totvs-page-detail-info
+                                                class="col-xs-3"
+                                                ng-if="controller.model.ttConta.ttTelefone"
+                                                ng-repeat="phone in controller.model.ttConta.ttTelefone track by $index"
+                                                title="{{phone.nom_tip_telef}}">
+                                                    {{ phone.nom_telefone }}
+                                            </totvs-page-detail-info>
+                                        </div>
+                                </totvs-page-detail>
+                            </div>
+                        </accordion-group>
+                        <% } %>
+                        <!-- Alternative for user agent stylesheet on chrome, it put a 'cursor: auto' on A tag's. -->
+                        <div class="crm-panel panel panel-default ng-isolate-scope">
+                            <div class="panel-heading" ng-if="controller.model.ttContato && !controller.model.ttContato.log_acesso">
+                                <h4 class="panel-title">
+                                    <div class="row ng-scope">
+                                        <div class="col-xs-10 ng-binding">
+                                            <b class="ng-binding">{{ 'l-contact' | i18n: []: 'dts/crm' }}:</b> {{ controller.model.ttContato.nom_razao_social }}
+                                        </div>
+                                    </div>
+                                </h4>
+                            </div>
+                        </div>
+
+                        <% if ((!data["l-contact"] || data["l-contact"].log_visivel === true)){ %>
+                        <accordion-group is-open="controller.groupContactOpen"
+                                        ng-if="controller.model.ttContato && controller.model.ttContato.log_acesso"
+                                        class="crm-panel">
+                            <accordion-heading>
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <b>{{ 'l-contact' | i18n: []: 'dts/crm' }}:</b> {{controller.model.ttContato.nom_razao_social}}
+                                    </div>
+                                    <div class="col-xs-2 text-right">
+                                        <a class="clickable"
+                                        style="padding-right: 15px;"
+                                        ng-click="controller.detailLink(controller.model.ttContato.num_id,'account', $event);">
+                                            {{ 'btn-detail' | i18n: []: 'dts/crm' }}
+                                        </a>
+                                        <i class="pull-right glyphicon"
+                                        ng-class="{'glyphicon-chevron-down' :  controller.groupContactOpen,
+                                                    'glyphicon-chevron-right': !controller.groupContactOpen}">
+                                        </i>
+                                    </div>
+                                </div>
+                            </accordion-heading>
+                            <div class="row">
+                                <totvs-page-detail>
+                                        <div class="col-xs-12 no-gutter">
+
+                                            <totvs-page-detail-info
+                                                class="col-xs-12 col-sm-6"
+                                                title="{{ 'l-email' | i18n: []: 'dts/crm' }}"
+                                                value="{{controller.model.ttContato.nom_email_1}}">
+                                            </totvs-page-detail-info>
+
+                                            <totvs-page-detail-info
+                                                class="col-xs-12 col-sm-6"
+                                                ng-if="controller.model.ttContato.nom_email_2"
+                                                title="{{ 'l-email' | i18n: []: 'dts/crm' }}"
+                                                value="{{controller.model.ttContato.nom_email_2}}">
+                                            </totvs-page-detail-info>
+
+                                            <totvs-page-detail-info
+                                                class="col-xs-12 col-sm-6"
+                                                ng-if="controller.model.ttContato.nom_tip_vinc"
+                                                title="{{ 'l-type-bond' | i18n: []: 'dts/crm' }}"
+                                                value="{{controller.model.ttContato.nom_tip_vinc}}">
+                                            </totvs-page-detail-info>
+
+                                            <totvs-page-detail-info
+                                                class="col-xs-12 col-sm-6"
+                                                ng-if="controller.model.ttContato.nom_departamento"
+                                                title="{{ 'l-department' | i18n: []: 'dts/crm' }}"
+                                                value="{{controller.model.ttContato.nom_departamento}}">
+                                            </totvs-page-detail-info>
+
+                                            <totvs-page-detail-info
+                                                class="col-xs-12 col-sm-6"
+                                                ng-if="controller.model.ttContato.nom_niv_decis"
+                                                title="{{ 'l-decision-level' | i18n: []: 'dts/crm' }}"
+                                                value="{{controller.model.ttContato.nom_niv_decis}}">
+                                            </totvs-page-detail-info>
+
+                                            <totvs-page-detail-info
+                                                class="col-xs-6 col-sm-6"
+                                                ng-repeat="phone in controller.model.ttContato.ttContatoTelefone track by $index"
+                                                title="{{'l-phone' | i18n: []: 'dts/crm'}}">
+                                                    {{ phone.nom_telefone }}
+                                            </totvs-page-detail-info>
+
+                                        </div>
+                                </totvs-page-detail>
+                            </div>
+                        </accordion-group>
+                    <% } %>
+                    </accordion>
+                </div>
+
+				<totvs-divider style="margin-top: 10px; margin-bottom: 10px;"></totvs-divider>
+
+			</div>
+			<% } %>
+
+			<% if ( (!data["l-description"] || data["l-description"].log_visivel === true)
+				 || (!data["nav-history"] || data["nav-history"].log_visivel === true)
+				 || (!data["nav-attachment"] || data["nav-attachment"].log_visivel === true)) {
+			%>
+			<totvs-tabset>
+				<tabset>
+					<% if ((!data["l-description"] || data["l-description"].log_visivel === true)) { %>
+					<tab heading="{{ 'l-description' | i18n: []: 'dts/crm' }}">
+						<div class="row">
+							<div class="col-xs-12">
+								<pre class="description">{{ controller.model.dsl_motivo }}</pre>
+							</div>
+						</div>
+					</tab>
+					<% } %>
+					<% if ((!data["nav-attachment"] || data["nav-attachment"].log_visivel === true)) { %>
+					<tab heading="{{ 'nav-attachment' | i18n: []: 'dts/crm' }} ({{ attachmentController.listOfAttachmentCount }})"
+						 ng-controller="crm.attachment.tab.control as attachmentController">
+						<div ng-include="'/dts/crm/html/attachment/attachment.tab.html'"></div>
+					</tab>
+					<% } %>
+					<% if ((!data["nav-history"] || data["nav-history"].log_visivel === true)) { %>
+					<tab heading="{{ 'nav-history' | i18n: []: 'dts/crm' }} ({{ controllerHistroyList.listOfHistoryCount }})"
+						 ng-controller="crm.history.list.control as controllerHistroyList"
+						 ng-init="controllerHistroyList.isChild = true;">
+						<div ng-include="'/dts/crm/html/history/history.list.tab.html'"></div>
+					</tab>
+					<% } %>
+					<% if ((!data["nav-script"] || data["nav-script"].log_visivel === true)) { %>
+					<tab heading="{{ 'nav-script' | i18n: []: 'dts/crm' }} ({{ controllerAnwserTab.listOfAnwserCount }})"
+						 ng-controller="crm.script-anwser.list.control as controllerAnwserTab">
+
+						<totvs-lodash-template
+								src="/dts/crm/html/script/anwser/anwser.tab.lodash.html"
+								template-data="controller.accessRestriction"/>
+
+					</tab>
+					<% } %>
+				</tabset>
+			</totvs-tabset>
+			<% } %>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

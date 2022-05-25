@@ -1,0 +1,37 @@
+<div class="modal-header">
+    <h3 class="modal-title">Glosas</h3>
+</div>
+<div class="modal-body">  
+    <totvs-page-form>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height" 
+             style="height: 370px; overflow-y: auto;">
+            <totvs-page-content>
+
+                 <totvs-table
+                    items="controller.restrictionsList"
+                    items-as="restriction"
+                    t-selectable="OFF"
+                    t-resizable="true"
+                    t-reorderable="true"
+                    t-highlight-selected="true"
+                    t-table="controller.table">
+
+                    <column title="Glosa"
+                            width="350">    
+                        {{restriction.rotuloCodGlo}}
+                    </column> 
+
+                    <column title="Classe Erro"
+                            width="350">    
+                        {{restriction.rotuloClasseErro}}
+                    </column> 
+                </totvs-table>
+            </totvs-page-content>
+
+            <h5 ng-if="controller.restrictionsList.length == 0"> Não existem glosas para serem mostradas</h5>
+        </div>
+    </totvs-page-form>
+</div>
+<totvs-modal-footer>  
+    <button class="btn" ng-click="controller.cancel()">Fechar</button>
+</totvs-modal-footer>

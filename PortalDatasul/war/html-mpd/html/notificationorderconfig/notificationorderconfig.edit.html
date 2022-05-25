@@ -1,0 +1,372 @@
+<style>
+	.no-padding-tab-messages{
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+
+	.page-content .item-container .link {
+		color: #333333;
+		text-decoration: none;
+	}
+
+	.page-content .list-item:nth-child(odd) {
+		border-left: 5px solid #d0d0d0;
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+
+	.page-content .list-item:nth-child(even) {
+		border-left: 5px solid #c0c0c0;
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+
+	.totvs-style-guide hr {
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+
+	.text-area-kendo-label{
+		font-family: 'Arial';
+		margin-bottom: 5px;
+		font-weight: 200 !important;
+		font-size: 12px;
+		color: gray;
+	}
+
+</style>
+
+<totvs-page type="edit">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">Home</breadcrumb>
+			<breadcrumb>{{'l-order-email-notif'| i18n}}</breadcrumb>
+	</totvs-page-breadcrumb>
+		<totvs-page-header>
+			<totvs-page-header-title title="{{'l-order-email-notif' | i18n}}"></totvs-page-header-title>
+	</totvs-page-navbar>
+	<totvs-page-content>
+		<div>     
+			<totvs-tabset>
+				<totvs-tab  class="col-md-4 col-sm-6 col-xs-6 no-padding-tab-messages" active="true" heading="{{:: 'l-events-message' | i18n : [] : 'dts/mpd' }}">
+
+					<div class="row" style="padding-top: 15px; padding-right: 15px">
+
+						<div class="col-xs-12 col-sm-12 col-md-12">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="{{'Filtro' | i18n}}" ng-model="controller.messageFilter">
+								<span class="input-group-btn">
+									<button class="btn btn-default" type="button" ng-click="controller.messageFilter = ''"><span class="glyphicon glyphicon-remove"></span></button>
+								</span>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="row" style="margin-top: 15px">
+
+						<totvs-list-item ng-repeat="message in controller.messages | filter:controller.messageFilter" style="padding-left: 0px">
+
+							<totvs-list-item-header>
+								<totvs-list-item-title>
+									<span style="font-size: 14px; margin-right: 10px;"
+										  ng-show="message.send_notification"
+										  class="glyphicon glyphicon-ok"
+										  tooltip-html="controller.sendNotificationIcon"
+										  tooltip-placement="right"></span>
+									<span style="font-size: 14px; margin-right: 10px;"
+										  ng-show="!message.send_notification"
+										  class="glyphicon glyphicon-remove"
+										  tooltip-html="controller.noSendNotificationIcon"
+										  tooltip-placement="right"></span>
+									{{message.message_label}}
+								</totvs-list-item-title>
+								<totvs-list-item-action limit-primary-action="3">
+									<action  ng-if="!message.edit_message" ng-click="controller.setEdit(message);" class="btn-primary" icon="glyphicon-pencil">{{ 'l-edit-operagions-rule' | i18n }}</action>
+									<action  ng-if="message.edit_message"  ng-click="controller.setSave(message);" class="btn-success" icon="glyphicon-ok">{{ 'l-save' | i18n }}</action>
+									<action  ng-if="message.edit_message"  ng-click="controller.setCancel(message)" class="btn-default" icon="glyphicon-remove">{{ 'l-cancel' | i18n }}</action>
+									<action  icon="glyphicon glyphicon-eye-open" ng-click="controller.showMessage(message)">{{ 'l-show' | i18n }}</action>
+								</totvs-list-item-action>
+							</totvs-list-item-header>
+
+							<totvs-list-item-content style="padding-bottom: 15px" ng-show="message.expandeddetail">
+								<div class="col-md-12 field">
+									<label class="field-label" tooltip="{{'l-report-email' | i18n}} {{message.message_label}}" tooltip-placement="top">{{'l-send-notif' | i18n}}</label>
+									<div class="field-input">
+										<div class="btn-group btn-group">
+											<button class="btn btn-default" style="opacity: 1" ng-disabled="!message.edit_message"
+												ng-class="{active: message.send_notification == true}"
+												ng-click="message.send_notification = true">{{'l-yes' | i18n}}</button>
+											<button class="btn btn-default" style="opacity: 1" ng-disabled="!message.edit_message"
+												ng-class="{active: message.send_notification == false}"
+												ng-click="message.send_notification = false">{{'l-no' | i18n}}</button>
+										</div>
+									</div>
+								</div>
+
+								<!--<div class="col-md-12 field">
+									<label class="field-label" tooltip="Enviar Impressão do pedido como anexo" tooltip-placement="top" style="padding-top: 10px">Enviar Impressão do pedido como anexo</label>
+									<div class="field-input">
+										<div class="btn-group btn-group">
+											<label class="btn btn-default"
+												ng-class="{active: message.send_print_order == true}"
+												ng-click="message.send_print_order = true">{{'l-yes' | i18n}}</label>
+											<label class="btn btn-default"
+												ng-class="{active: message.send_print_order == false}"
+												ng-click="message.send_print_order = false">{{'l-no' | i18n}}</label>
+										</div>
+									</div>
+								</div>-->
+
+								<div class="col-md-12 field">
+									<label class="field-label" tooltip="{{'l-msg-notif-html' | i18n}}" tooltip-placement="top" style="padding-top: 10px"> {{'l-use-format-html' | i18n}} </label>
+									<div class="field-input">
+										<div class="btn-group btn-group">
+											<label class="btn btn-default"
+												ng-class="{active: message.use_html_model == true}"
+												ng-click="message.use_html_model = true">{{'l-yes' | i18n}}</label>
+											<label class="btn btn-default"
+												ng-class="{active: message.use_html_model == false}"
+												ng-click="message.use_html_model = false; message.message_model_text = ''">{{'l-no' | i18n}}</label>
+										</div>
+									</div>
+								</div>
+
+								<div ng-show="message.use_html_model == true" class="col-md-12">
+									<label class="text-area-kendo-label" tooltip="{{'l-body-msg-notif-html' | i18n}}" tooltip-placement="top" style="padding-top: 10px">{{'l-mensagem' | i18n}}</label>
+									<textarea maxlength="10"
+											  kendo-editor
+											  k-tools="controller.ktools"
+											  k-ng-model="message.message_text"
+											  style="height: 300px">
+									</textarea>
+								</div>
+
+								<field ng-show="message.use_html_model != true"
+									type="textarea"
+									id="message_text_{{message.message_code}}"
+									rows="3"
+									ng-model="message.message_text"
+									label="{{'l-mensagem' | i18n}}"
+									ng-disabled="!message.edit_message"
+									class="col-md-12"
+									maxlength="2000">
+								</field>
+
+								<div class="col-md-12 field" style="margin-top:15px">
+									<button ng-show="message.use_html_model == true"
+											class="btn btn-default"
+											ng-click="controller.confirmLoadTemplate(message);">
+										<span class="glyphicon glyphicon-star"></span>
+										{{'l-load-default-html' | i18n}}
+									</button>
+									<button ng-show="message.use_html_model == true"
+											class="btn btn-default"
+											ng-click="controller.editModelHTML(message)">
+										<span class="glyphicon glyphicon-pencil"></span>
+										{{'l-edit-model-html' | i18n}}
+									</button>
+								</div>
+
+
+							</totvs-list-item-content>
+
+						</totvs-list-item>
+					</div>
+
+				</totvs-tab>
+
+				<totvs-tab class="col-md-3 col-sm-6 col-xs-6 no-padding-tab-messages"  active="controller.thirdTabSelected" heading="{{:: 'l-variables-msg' | i18n : [] : 'dts/mpd' }}" ng-click="controller.selectedTab(3)">
+					<totvs-page-form>
+						<div class="alert alert-info fade in alert-dismissable" style="margin-top: 15px">
+							<a href="/#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+							<p>{{'l-use-variables-msg' | i18n}}.</p>
+							<p>{{'l-remenber-variables-msg' | i18n}}.</p>
+							<p>{{'l-something-variables-msg' | i18n}}.</p>
+						</div>
+
+						<div style="margin-top: 15px">
+							<ul class="list-group">
+								<li class="list-group-item" style="background-color: #eceded;"><b>{{'l-general' | i18n}}</b></li>
+							  <li class="list-group-item"><b>[[nome-evento-pedido]]</b> - {{'l-show-name-event-notif' | i18n}}</li>
+							  <li class="list-group-item"><b>[[mensagem-evento-pedido]]</b> - {{'l-show-msg-event-notif' | i18n}}</li>
+							  <li class="list-group-item"><b>[[endereco-visualizacao-pedido]]</b> - {{'l-show-address-order' | i18n}}</li>
+							</ul>
+
+							<ul class="list-group">
+								<li class="list-group-item" style="background-color: #eceded;"><b>{{'l-pedido' | i18n}}</b></li>
+							  <li class="list-group-item"><b>[[numero-pedido]]</b> - {{'l-show-nr-pedido' | i18n}}</li>
+							  <li class="list-group-item"><b>[[numero-pedido-cliente]]</b> - {{'l-show-nr-pedcli' | i18n}}</li>
+							  <li class="list-group-item"><b>[[nome-abreviado-cliente]]</b> - {{'l-show-nome-abrev' | i18n}}</li>
+							  <li class="list-group-item"><b>[[nome-completo-cliente]]</b> - {{'l-show-full-name' | i18n}}</li>
+							  <li class="list-group-item"><b>[[data-entrega]]</b> - {{'l-show-dt-entrega' | i18n}}</li>
+							  <li class="list-group-item"><b>[[endereco-entrega]]</b> - {{'l-show-endereco-entrega' | i18n}}</li>
+							  <li class="list-group-item"><b>[[condicao-de-pagamento]]</b> - {{'l-show-cond-pagto' | i18n}}</li>
+							  <li class="list-group-item"><b>[[observacoes]]</b> - {{'l-show-observation' | i18n}}</li>
+							  <li class="list-group-item"><b>[[condicoes-redespacho]]</b> - {{'l-show-cond-redesp' | i18n}}</li>
+							  <li class="list-group-item"><b>[[condicoes-especiais]]</b> - {{'l-show-cond-esp' | i18n}}</li>
+							  <li class="list-group-item"><b>[[valor-total]]</b> - {{'l-show-vl-tot-ped' | i18n}}</li>
+							  <li class="list-group-item"><b>[[total-descontos]]</b> - {{'l-show-vl-tot-desc-ped' | i18n}}</li>
+							</ul>
+
+							<ul class="list-group">
+								<li class="list-group-item" style="background-color: #eceded;"><b>{{'l-nome-ab-rep' | i18n}}</b></li>
+							  <li class="list-group-item"><b>[[nome-representante-principal]]</b> - {{'l-show-nome-ab-rep' | i18n}}</li>
+							  <li class="list-group-item"><b>[[email-representante-principal]]</b> - {{'l-show-email-ab-rep' | i18n}}</li>
+							  <li class="list-group-item"><b>[[telefone-1-representante]]</b> - {{'l-show-tel1-rep' | i18n}}</li>
+							  <li class="list-group-item"><b>[[telefone-2-representante]]</b> - {{'l-show-tel2-rep' | i18n}}</li>
+							  <li class="list-group-item"><b>[[endereco-representante]]</b> - {{'l-show-address-rep' | i18n}}</li>
+							</ul>
+
+							<ul class="list-group">
+								<li class="list-group-item" style="background-color: #eceded;"><b>{{'l-company' | i18n}}</b></li>
+							  <li class="list-group-item"><b>[[nome-empresa]]</b> - {{'l-show-company-name' | i18n}}</li>
+							  <li class="list-group-item"><b>[[razao-social-empresa]]</b> - {{'l-show-razao-social' | i18n}}</li>
+							  <li class="list-group-item"><b>[[endereco-empresa]]</b> - {{'l-show-company-address' | i18n}}</li>
+							  <li class="list-group-item"><b>[[telefone-1-empresa]]</b> - {{'l-show-company-tel1' | i18n}}</li>
+							  <li class="list-group-item"><b>[[telefone-2-empresa]]</b> - {{'l-show-company-tel2' | i18n}}</li>
+							  <li class="list-group-item"><b>[[cnpj-empresa]]</b> - {{'l-show-company-cnpj' | i18n}}</li>
+							  <li class="list-group-item"><b>[[email-empresa]]</b> - {{'l-show-company-email' | i18n}}</li>
+							  <li class="list-group-item"><b>[[home-page-empresa]]</b> - {{'l-show-company-site' | i18n}}</li>
+							</ul>
+
+							<ul class="list-group">
+							  <li class="list-group-item" style="background-color: #eceded;"><b>{{'l-invoice-notification' | i18n}}</b></li>
+							  <li class="list-group-item"><b>[[serie-nota-fiscal]]</b> - {{'l-invoice-series' | i18n}}</li>
+							  <li class="list-group-item"><b>[[nr-nota-fiscal]]</b> - {{'l-number-invoice' | i18n}}</li>
+							  <li class="list-group-item"><b>[[data-emissao-nota-fiscal]]</b> - {{'l-invoice-issue-date' | i18n}}</li>
+							  <li class="list-group-item"><b>[[vl-tot-nota-fiscal]]</b> - {{'l-vl-tot-invoice' | i18n}}</li>
+							</ul>
+
+							<ul class="list-group">
+								<li class="list-group-item" style="background-color: #eceded;"><b>{{'l-app' | i18n}}</b></li>								
+								<li class="list-group-item"><b>[[link-dowload-app]]</b> - {{'l-download-app' | i18n}}</li>
+							</ul>
+						</div>
+
+					</totvs-page-form>
+				</totvs-tab>
+
+				<totvs-tab class="col-md-3 col-sm-6 col-xs-6 no-padding-tab-messages"  active="controller.secondTabSelected" heading="{{:: 'l-parametros' | i18n : [] : 'dts/mpd' }}" ng-click="controller.selectedTab(2)">
+					<totvs-page-form>
+						<div class="col-md-12" style="padding-left:0px">
+							<totvs-field
+								totvs-input
+								label="{{:: 'l-address-order' | i18n : [] : 'dts/mpd'}}"
+								ng-model="controller.link_order_detail"
+								canclean
+								class="col-md-12"
+								focus>
+							</totvs-field>
+
+							<totvs-field
+								totvs-input
+								label="{{:: 'l-server-rpw' | i18n : [] : 'dts/mpd'}}"
+								ng-model="controller.rpw_server_name"
+								canclean
+								class="col-md-12">
+							</totvs-field>
+							<div class="col-md-12">
+								<div class="alert alert-info fade in alert-dismissable" style="margin-top: 15px">
+									<a href="/#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+									<p>{{ 'l-parameter-server-rpw' | i18n : [] : 'dts/mpd/'}}</p>
+								</div>
+							</div>
+
+							<div class="col-md-12 field">
+								<label class="field-label" tooltip="Notificação para Pedidos do Portal de Vendas" tooltip-placement="top" style="padding-top: 10px">Notificação para Pedidos do Portal de Vendas: </label>
+								<div class="field-input">
+									<div class="btn-group btn-group">
+										<label class="btn btn-default"
+											ng-class="{active: controller.send_notifications_to_portal == true}"
+											ng-click="controller.send_notifications_to_portal = true">{{'l-yes' | i18n}}</label>
+										<label class="btn btn-default"
+											ng-class="{active: controller.send_notifications_to_portal == false}"
+											ng-click="controller.send_notifications_to_portal = false">{{'l-no' | i18n}}</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-12 field" style="paddign-bottom:15px">
+								<label class="field-label" tooltip="Notificação para Pedidos Internos" tooltip-placement="top" style="padding-top: 10px">Notificação para Pedidos Internos: </label>
+								<div class="field-input">
+									<div class="btn-group btn-group">
+										<label class="btn btn-default"
+											ng-class="{active: controller.send_notificatioins_to_internal_order == true}"
+											ng-click="controller.send_notificatioins_to_internal_order = true">{{'l-yes' | i18n}}</label>
+										<label class="btn btn-default"
+											ng-class="{active: controller.send_notificatioins_to_internal_order == false}"
+											ng-click="controller.send_notificatioins_to_internal_order = false">{{'l-no' | i18n}}</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-12 field " style="padding-top:15px">
+								<button ng-click="controller.saveParams()" class="btn btn-primary pull-right">{{'l-save' | i18n}}</button>
+							</div>
+
+						</div>
+					</totvs-page-form>
+
+				</totvs-tab>
+
+			</totvs-tabset>
+
+		</div> 
+   
+	</totvs-page-content>
+</totvs-page>
+
+<div ng-repeat="message in controller.messages | filter:controller.messageFilter">
+	<div class="modal fade" id="modalMessageShow{{message.message_code}}" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div id="modalContentMessageShow{{message.message_code}}" style="max-height: 500px; overflow-y: auto"></div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">{{'l-close' | i18n }}</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	<div class="modal fade" id="modalEditHTML{{message.message_code}}" role="dialog">
+		<div class="modal-dialog modal-lg" style="height:80%; width:95% !important">
+			<div class="modal-content">
+				<div style="overflow-y: auto">
+
+					<div ng-show="!message.show_html_editor_code" class="col-md-12" style="height: 500px; padding-top:15px; padding-bottom:15px">
+						<textarea kendo-editor
+								  k-tools="controller.ktools"
+								  k-ng-model="message.message_model_text"
+								  style="width: 100%; height: 100%;"></textarea>
+					</div>
+
+					<div ng-show="message.show_html_editor_code" class="col-md-12" style="height: 500px; padding-top:15px; padding-bottom:15px">
+						<textarea ng-model="message.message_model_text"
+								  ng-bind-html="message.message_model_text"
+								  style="width: 100%; height: 100%"></textarea>
+					</div>
+
+				</div>
+				<div class="modal-footer" style="padding-right: 0px !important;">
+					<div class="row col-md-12" style="padding-right: 0px;">
+						
+						<div ng-click="controller.changeShowHTML(message, message.show_html_editor_code)"
+						     class="btn-group pull-left" style="margin-bottom: 0px; margin-right: 15px;  margin-left: 0px;">
+							<label class="btn btn-default">
+								<input type="checkbox" style="margin: 0px 0 0;"	
+									   ng-model="message.show_html_editor_code"
+									   class="ng-valid ng-dirty ng-touched">
+								<span class="ng-binding"> &nbsp; {{'l-show-html' | i18n }} </span>
+							</label>
+						</div>
+
+						<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="controller.confirmEditModeHtml(message)">{{'l-confirmar' | i18n }}</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="controller.cancelEditModelHTML(message)">{{'l-cancel' | i18n }}</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

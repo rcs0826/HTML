@@ -1,0 +1,38 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<totvs-modal-header>{{'l-configure-urls' | i18n}}</totvs-modal-header>
+<totvs-modal-body>
+  <totvs-page-form role="form" id="urlForm" name="urlModel" novalidate="novalidate">
+    <div class="row">
+      <ng-form name="urlForm">
+        <field ng-model="controller.server.serverName" required="required" label=" {{ 'l-server' | i18n }}" class="col-xs-8"></field>
+        <field ng-model="controller.server.serverPort" required="required" label="{{ 'l-port' | i18n }}" class="col-xs-4"></field>
+        <field ng-model="controller.server.serverUser" required="required" label="{{ 'l-user' | i18n }}" class="col-xs-4"></field>
+        <field ng-model="controller.server.serverPassword" required="required" label="{{ 'l-senha' | i18n }}" type="password" class="col-xs-4"></field>
+        <totvs-tabset>
+          <totvs-tab heading="{{'l-integration-urls' | i18n}}" style="margin-top: 15px;">
+            <totvs-list-item ng-repeat="url in (controller.integratedDatasul ? [] : controller.urls)">
+              <totvs-list-item-header>
+                <div>
+                  <div class="col-xs-12">
+                    <label for="{{url.key_param}}" tooltip-placement="top" class="parametersIntegrationLabel">{{ url.label }} </label><span ng-if="url.urlError === false" class="pull-right status-icon fa fa-check"></span><span ng-if="url.urlError === true" class="pull-right status-icon fa fa-times"></span>
+                    <input type="text" ng-model="url.value_param" name="{{url.key_param}}" class="form-control"/>
+                  </div>
+                </div>
+              </totvs-list-item-header>
+              <totvs-list-item-content-detail>
+                <div class="col-xs-12">
+                  <totvs-page-alert type="info" message="{{url.info}}"></totvs-page-alert>
+                </div>
+              </totvs-list-item-content-detail>
+            </totvs-list-item>
+          </totvs-tab>
+        </totvs-tabset>
+      </ng-form>
+    </div>
+  </totvs-page-form>
+</totvs-modal-body>
+<totvs-modal-footer>
+  <button data-ng-click="controller.cancel();" class="btn btn-default">{{ 'l-cancel' | i18n }}</button>
+  <button data-ng-click="controller.save();" class="btn btn-primary">{{ 'l-save' | i18n }}</button>
+</totvs-modal-footer>

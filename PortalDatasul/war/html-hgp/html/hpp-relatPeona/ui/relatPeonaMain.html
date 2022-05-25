@@ -1,0 +1,228 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb id="breadcrumb">
+            <breadcrumb>Relatório de Eventos Ocorridos e Não Avisados</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="Relatório de Eventos Ocorridos e Não Avisados">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="4">
+
+                    <action class="btn btn-default" ng-click="controller.irPara('parametros');" style="color: #333;
+                    background-color: #fff;
+                    border-color: #ccc; padding-right: 15px;">
+                        Parâmetros
+                    </action>
+                    <action class="btn btn-default" ng-click="controller.irPara('selecao');" style="padding-right: 15px;">
+                        Seleção
+                    </action>
+                    <action class="btn btn-default" ng-click="controller.irPara('execucao');" style="padding-right: 15px;">
+                        Execução
+                    </action>
+                    <action class="btn btn-primary" ng-click="controller.generate();" style="padding-right: 15px;">
+                        Enviar
+                    </action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.filtersForm">
+            <a name="parametros" id="parametros" style="display: block;
+            position: relative;
+            top: -170px;
+            visibility: hidden;"></a>
+            <legend>
+                Parâmetros
+            </legend>
+            <totvs-row>
+                <totvs-field totvs-checkbox class="col-lg-3 col-md-3 col-sm-3 col-xs-12" label="Por Beneficiario" ng-model="controller.dadosTela.lgBeneficiario">
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <field type="radio" ng-show="!controller.dadosTela.lgBeneficiario" ng-model="controller.dadosTela.tipoRelatorio" class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <totvs-options>
+                        <totvs-option value="1">Resumido</totvs-option>
+                        <totvs-option value="2">Detalhado</totvs-option>
+                    </totvs-options>
+                    <label>Tipo Relatório</label>
+                </field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-checkbox class="col-lg-2 col-md-2 col-sm-2 col-xs-12" label="Gerar Arquivo CSV" ng-model="controller.dadosTela.lgCsv">
+                </totvs-field>
+                <totvs-field placeholder="arquivo.csv" ng-show="controller.dadosTela.lgCsv" totvs-input class="col-lg-6 col-md-8 col-sm-12 col-xs-12" label="Arquivo"
+                    ng-model="controller.dadosTela.dsCsv">
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-checkbox class="col-lg-2 col-md-2 col-sm-2 col-xs-12" label="Gerar Arquivo TXT" ng-model="controller.dadosTela.lgTxt">
+                </totvs-field>
+                <!--<totvs-field placeholder="arquivo.txt" ng-show="controller.dadosTela.lgTXT" totvs-input class="col-lg-6 col-md-8 col-sm-12 col-xs-12" label="Arquivo"
+                    ng-model="controller.dadosTela.dsCsv">-->
+                </totvs-field>
+            </totvs-row>
+            <a name="selecao" id="selecao" style="display: block;
+            position: relative;
+            top: -170px;
+            visibility: hidden;"></a>
+            <legend name="selecao" id="selecao">
+                Seleção
+            </legend>
+            <totvs-row>
+                <totvs-field totvs-datepicker class="col-lg-2 col-md-4 col-sm-6 col-xs-12" label="Data Contab. Inicial"
+                    placeholder="01/01/1900" ng-model="controller.dadosTela.dtContabIni" format="dd/MM/yyyy" culture="pt">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+                <totvs-field totvs-datepicker class="col-lg-2 col-md-4 col-sm-6 col-xs-12" label="Final" ng-model="controller.dadosTela.dtContabFim"
+                placeholder="31/12/2099" format="dd/MM/yyyy" culture="pt">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-checkbox ng-change="controller.changeGrupoConta()" class="col-lg-2 col-md-2 col-sm-2 col-xs-12" label="Seleção Grupo Contas?" ng-model="controller.dadosTela.lgGrupoConta">
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field ng-show="controller.dadosTela.lgGrupoConta" numbers-only placeholder="1" maxlength="8" totvs-input class="col-lg-3 col-md-8 col-sm-12 col-xs-12" label="Grupo Conta Inicial"
+                    ng-model="controller.dadosTela.cdGrupoContaIni">
+                </totvs-field>
+                <totvs-field ng-show="controller.dadosTela.lgGrupoConta" numbers-only placeholder="99999999" maxlength="8" totvs-input class="col-lg-3 col-md-8 col-sm-12 col-xs-12" label="Grupo Conta Final"
+                    ng-model="controller.dadosTela.cdGrupoContaFim">
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>
+                <totvs-field totvs-checkbox ng-change="controller.changeOutrosDados()" ng-show="controller.dadosTela.lgGrupoConta" class="col-lg-2 col-md-2 col-sm-2 col-xs-12" label="Seleção Outros Dados?" ng-model="controller.dadosTela.lgOutrosDados">
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field ng-show="(controller.dadosTela.lgGrupoConta && controller.dadosTela.lgOutrosDados) || !controller.dadosTela.lgGrupoConta" maxlength="20" totvs-input class="col-lg-3 col-md-8 col-sm-12 col-xs-12" label="Conta Inicial"
+                    ng-model="controller.dadosTela.cdContaIni">
+                </totvs-field>
+                <totvs-field ng-show="(controller.dadosTela.lgGrupoConta && controller.dadosTela.lgOutrosDados) || !controller.dadosTela.lgGrupoConta" maxlength="20" totvs-input class="col-lg-3 col-md-8 col-sm-12 col-xs-12" label="Conta Final"
+                    ng-model="controller.dadosTela.cdContaFim">
+                </totvs-field>
+            </totvs-row>
+
+
+            <totvs-row>
+
+                <totvs-field totvs-input ng-show="(controller.dadosTela.lgGrupoConta && controller.dadosTela.lgOutrosDados) || !controller.dadosTela.lgGrupoConta"  numbers-only placeholder="1" maxlength="2" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Grupo Prestador Inicial"
+                    ng-model="controller.dadosTela.cdGrupoPrestadorIni">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+                <totvs-field totvs-input ng-show="(controller.dadosTela.lgGrupoConta && controller.dadosTela.lgOutrosDados) || !controller.dadosTela.lgGrupoConta" numbers-only placeholder="99" maxlength="2" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Final"
+                    ng-model="controller.dadosTela.cdGrupoPrestadorFim">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+            </totvs-row>
+
+            <totvs-row>
+                <totvs-field totvs-datepicker ng-show="(controller.dadosTela.lgGrupoConta && controller.dadosTela.lgOutrosDados) || !controller.dadosTela.lgGrupoConta" class="col-lg-2 col-md-4 col-sm-6 col-xs-12" label="Data Realização Inicial"
+                placeholder="01/01/1900" ng-model="controller.dadosTela.dtRealizacaoIni" format="dd/MM/yyyy" culture="pt">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+                <totvs-field totvs-datepicker ng-show="(controller.dadosTela.lgGrupoConta && controller.dadosTela.lgOutrosDados) || !controller.dadosTela.lgGrupoConta" class="col-lg-2 col-md-4 col-sm-6 col-xs-12" label="Final" ng-model="controller.dadosTela.dtRealizacaoFim"
+                placeholder="31/12/2099" format="dd/MM/yyyy" culture="pt">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>
+                <totvs-field totvs-input ng-show="(controller.dadosTela.lgGrupoConta && controller.dadosTela.lgOutrosDados) || !controller.dadosTela.lgGrupoConta" numbers-only placeholder="1" maxlength="4" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Unidade Inicial"
+                    ng-model="controller.dadosTela.cdUnidadeIni">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+                <totvs-field totvs-input ng-show="(controller.dadosTela.lgGrupoConta && controller.dadosTela.lgOutrosDados) || !controller.dadosTela.lgGrupoConta"  numbers-only placeholder="9999" ng-disabled="controller.dadosTela.lgPrestadorBenef == 'Beneficiário'"
+                    maxlength="4" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Final" ng-model="controller.dadosTela.cdUnidadeFim">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>
+                <totvs-field totvs-input ng-show="(controller.dadosTela.lgGrupoConta && controller.dadosTela.lgOutrosDados) || !controller.dadosTela.lgGrupoConta" numbers-only placeholder="1" maxlength="8" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Prestador Inicial"
+                    ng-model="controller.dadosTela.cdPrestadorIni">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+                <totvs-field totvs-input ng-show="(controller.dadosTela.lgGrupoConta && controller.dadosTela.lgOutrosDados) || !controller.dadosTela.lgGrupoConta" numbers-only ng-disabled="controller.dadosTela.lgPrestadorBenef == 'Beneficiário'" placeholder="99999999"
+                    maxlength="8" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Final" ng-model="controller.dadosTela.cdPrestadorFim">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>
+                <totvs-field totvs-input ng-show="(controller.dadosTela.lgGrupoConta && controller.dadosTela.lgOutrosDados) || !controller.dadosTela.lgGrupoConta" numbers-only placeholder="1" maxlength="4" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Unidade Carteira Inicial"
+                    ng-model="controller.dadosTela.cdUnidadeCarteiraIni">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+                <totvs-field totvs-input ng-show="(controller.dadosTela.lgGrupoConta && controller.dadosTela.lgOutrosDados) || !controller.dadosTela.lgGrupoConta"  numbers-only placeholder="9999" maxlength="4" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Final"
+                    ng-model="controller.dadosTela.cdUnidadeCarteiraFim">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+
+
+            <totvs-row>
+                <totvs-field totvs-input ng-show="(controller.dadosTela.lgGrupoConta && controller.dadosTela.lgOutrosDados) || !controller.dadosTela.lgGrupoConta"  placeholder="0000000000000" numbers-only maxlength="13" class="col-lg-2 col-md-3 col-sm-6 col-xs-6"
+                    label="Carteira Inicial" ng-model="controller.dadosTela.cdCarteiraInicial">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+                <totvs-field totvs-input ng-show="(controller.dadosTela.lgGrupoConta && controller.dadosTela.lgOutrosDados) || !controller.dadosTela.lgGrupoConta"  placeholder="9999999999999" numbers-only maxlength="13" class="col-lg-2 col-md-3 col-sm-6 col-xs-6"
+                    label="Final" ng-model="controller.dadosTela.cdCarteiraFinal">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>
+                <totvs-field totvs-checkbox class="col-lg-2 col-md-2 col-sm-2 col-xs-12" label="Movtos. Contab." ng-model="controller.dadosTela.lgMovtosContab">
+                </totvs-field>
+            </totvs-row>
+
+            <h4 style="padding-left: 15px;">Seleciona Movimentos</h4>
+     
+
+
+            <totvs-row>
+                <totvs-field totvs-checkbox class="col-lg-3 col-md-3 col-sm-3 col-xs-12" label="Extra Pagamento Prestador" ng-model="controller.dadosTela.lgMovtosExtra">
+                </totvs-field>
+                <totvs-field totvs-checkbox class="col-lg-3 col-md-3 col-sm-3 col-xs-12" label="Contestado Pagamento Prestador" ng-model="controller.dadosTela.lgMovtosContestado">
+                </totvs-field>
+                <totvs-field totvs-checkbox class="col-lg-3 col-md-3 col-sm-3 col-xs-12" label="Desconto Pagamento Prestador" ng-model="controller.dadosTela.lgMovtosDesconto">
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>
+                <totvs-field totvs-checkbox class="col-lg-3 col-md-3 col-sm-3 col-xs-12" label="Co-participação Fatura Avulsa Faturamento"
+                    ng-model="controller.dadosTela.lgFaturaAvulsa">
+                </totvs-field>
+                <totvs-field totvs-checkbox class="col-lg-3 col-md-3 col-sm-3 col-xs-12" label="Co-participacao Evento Programado Faturamento"
+                    ng-model="controller.dadosTela.lgEvento">
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+            </totvs-row>
+
+
+            <a name="execucao" id="execucao" style="display: block;
+            position: relative;
+            visibility: hidden;"></a>
+            <totvs-execution hide-repeat="true" ng-model="controller.execution">
+                <totvs-execution-item type="execution">
+                    <gps-totvs-schedule program-name="relatPeona" ng-model="controller.schedule">
+                    </gps-totvs-schedule>
+                    <totvs-field totvs-select ng-model="controller.dadosTela.servidor" label="Servidor de Execução" t-no-data="Sem dados" placeholder="Selecione.."
+                        select-id="cdServidor" select-description="dsServidor" t-data-source="controller.options.servidores"
+                        canclean>
+                    </totvs-field>
+                </totvs-execution-item>
+            </totvs-execution>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

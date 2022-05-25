@@ -1,0 +1,8 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<field type="select" ng-model="establishmentSelectController.localModel" label="{{'l-site' | i18n : [] : 'dts/kbn'}}" required="required" class="col-md-12 col-lg-12 col-sm-12">
+  <include>
+    <ui-select-match placeholder="{{ 'l-code-description' | i18n : [] : 'dts/kbn'}}">{{$select.selected.cod_estab_erp}} - {{$select.selected.des_estab}}</ui-select-match>
+    <ui-select-choices repeat="estab in establishmentSelectController.listEstab | descIdContains: $select.search track by $index" class="truncate"><span ng-bind-html="texto=(estab.cod_estab_erp + ' - ' + estab.des_estab) | highlight: $select.search"></span></ui-select-choices>
+  </include>
+</field>

@@ -1,0 +1,198 @@
+<totvs-page-child type="list">
+
+	<br/>
+
+	<totvs-page-content class="crm-tab">
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-campaign-action' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.model.ttAcao || controller.model.ttAcao.length <= 0">
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addEditAction();">
+				<span class="glyphicon glyphicon-plus"></span>
+				&nbsp;&nbsp;{{ 'btn-add' | i18n: []: 'dts/crm' }}
+			</button>
+		</totvs-page-alert>
+
+		<div ng-if="controller.model.ttAcao.length">
+
+			<div class="col-xs-12 col-sm-4 col-md-3"
+				 style="padding-left: 0;">
+
+				<div class="crm-tab">
+
+					<div class="row crm-tab-item hover"
+						 ng-class="{ 'crm-selected' : action.$selected }"
+						 ng-repeat="action in controller.model.ttAcao"
+						 ng-drag="true"
+						 ng-drag-data="action"
+						 ng-drop="true"
+						 ng-drop-success="controller.onCampaignActionDropComplete($index, $data, $event)">
+
+						<div class="col-xs-10 clickable overflow-ellipsis"
+							 ng-click="controller.selectAction(action);">
+							<span class="hidden-xs glyphicon glyphicon-resize-vertical"
+								  style="margin-right: 5px;">
+							</span>
+							{{ action.nom_acao }}
+						</div>
+
+						<div class="col-xs-2">
+							<span class="glyphicon glyphicon-star crm-starred-default"
+								  ng-if="action.log_acao_default === true">
+							</span>
+							<span class="glyphicon glyphicon-star-empty clickable"
+								  ng-if="action.log_acao_default === false"
+								  ng-click="controller.setAsDefaultAction(action, $index);">
+							</span>
+						</div>
+					</div>
+
+				</div>
+
+				<br/>
+
+				<button type="button"
+						class="btn btn-primary col-xs-12"
+						ng-click="controller.addEditAction();">
+					<span class="glyphicon glyphicon-plus"></span>
+					{{ 'btn-add' | i18n: []: 'dts/crm' }}
+				</button>
+			</div>
+
+			<div class="col-xs-12 col-sm-8 col-md-9"
+				 style="padding-right: 0;">
+
+				<div class="row">
+
+					<div class="col-xs-8">
+						<h3 style="margin-top: 0px;">
+							{{ controller.selectedAction.nom_acao }}
+						</h3>
+					</div>
+
+					<div class="col-xs-4">
+						<div class="pull-right">
+
+							<button type="button"
+									class="btn btn-default"
+									ng-if="controller.selectedAction.log_acao_default !== true"
+									ng-click="controller.setAsDefaultAction(controller.selectedAction);">
+								<span class="glyphicon glyphicon-star-empty">
+								</span>
+							</button>
+
+							<button type="button"
+									class="btn btn-primary"
+									ng-click="controller.addEditAction(controller.selectedAction);">
+								<span class="glyphicon glyphicon-pencil"></span>
+								<span class="hidden-xs">{{ 'btn-edit' | i18n: []: 'dts/crm' }}</span>
+							</button>
+
+							<button type="button"
+									class="btn btn-default"
+									ng-click="controller.removeAction(controller.selectedAction);">
+								<span class="glyphicon glyphicon-trash"></span>
+								<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+							</button>
+
+						</div>
+					</div>
+
+					<totvs-tabset>
+
+						<tabset>
+
+							<tab heading="{{ 'l-complement' | i18n: []: 'dts/crm' }}">
+
+								<br/>
+
+								<!--totvs-page-detail-info class="col-xs-6 col-sm-2"
+														title="{{ 'l-sequence' | i18n: []: 'dts/crm' }}">
+									{{ controller.selectedAction.num_ord_acao }}
+								</totvs-page-detail-info-->
+
+								<totvs-page-detail-info class="col-xs-6 col-sm-4"
+														title="{{ 'l-default' | i18n: []: 'dts/crm' }}">
+									{{ (controller.selectedAction.log_acao_default === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+								</totvs-page-detail-info>
+  
+                                <totvs-page-detail-info class="col-xs-6 col-sm-4"
+														title="{{ 'l-require-gps' | i18n: []: 'dts/crm' }}">  
+									 {{  (controller.selectedAction.log_gps_obrig === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+								</totvs-page-detail-info>
+                                
+								<totvs-page-detail-info class="col-xs-12 col-sm-4"
+														title="{{ 'l-related-process' | i18n: []: 'dts/crm' }}"
+														value-break="false">
+									{{ controller.selectedAction.nom_proces_relacto }}
+								</totvs-page-detail-info>
+
+								<totvs-divider ng-if="controller.selectedAction.nom_workflow_process.length"></totvs-divider>
+
+								<totvs-page-detail-info class="col-xs-12 col-sm-4"
+														ng-if="controller.selectedAction.nom_workflow_process.length"
+														title="{{ 'l-workflow' | i18n: []: 'dts/crm' }}"
+														value-break="false">
+									{{ controller.selectedAction.nom_workflow_process }} - {{ controller.selectedAction.nom_workflow }}
+								</totvs-page-detail-info>
+
+								<totvs-page-detail-info class="col-xs-12 col-sm-4"
+														ng-if="controller.selectedAction.nom_workflow_process.length"
+														title="{{ 'l-information-group' | i18n: []: 'dts/crm' }}"
+														value-break="false">
+									{{ controller.selectedAction.ttGrupoInformacao.nom_grp_inform }}
+								</totvs-page-detail-info>
+
+								<totvs-page-detail-info class="col-xs-12 col-sm-4"
+														ng-if="controller.selectedAction.nom_workflow_process.length"
+														title="{{ 'l-update-workflow' | i18n: []: 'dts/crm' }}">
+									{{ (controller.selectedAction.log_alter_tar_fluig === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+								</totvs-page-detail-info>
+
+								<totvs-page-detail-info class="col-xs-12 col-sm-4"
+														ng-if="controller.selectedAction.nom_workflow_process.length"
+														title="{{ 'l-workflow-close-task' | i18n: []: 'dts/crm' }}">
+									{{ (controller.selectedAction.log_workflow_finaliza === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+								</totvs-page-detail-info>
+
+							</tab>
+
+							<tab heading="{{ 'nav-objective' | i18n: []: 'dts/crm' }} ({{ controller.selectedAction.ttObjetivo.length || 0 }})">
+								<ng-include src="'/dts/crm/html/campaign/action/objective/objective.tab.html'"></ng-include>
+							</tab>
+
+							<tab heading="{{ 'nav-media' | i18n: []: 'dts/crm' }} ({{ controller.selectedAction.ttMidia.length || 0 }})">
+								<ng-include src="'/dts/crm/html/campaign/action/media/media.tab.html'"></ng-include>
+							</tab>
+
+							<tab heading="{{ 'nav-result' | i18n: []: 'dts/crm' }} ({{ controller.selectedAction.ttResultado.length || 0 }})">
+								<ng-include src="'/dts/crm/html/campaign/action/result/result.tab.html'"></ng-include>
+							</tab>
+
+							<tab heading="{{ 'nav-user' | i18n: []: 'dts/crm' }} ({{ controller.selectedAction.ttUsuario.length || 0 }})">
+								<ng-include src="'/dts/crm/html/campaign/action/user/user.tab.html'"></ng-include>
+							</tab>
+
+							<tab heading="{{ 'nav-group' | i18n: []: 'dts/crm' }} ({{ controller.selectedAction.ttGrupo.length || 0 }})">
+								<ng-include src="'/dts/crm/html/campaign/action/group/group.tab.html'"></ng-include>
+							</tab>
+                            
+                            <tab heading="{{ 'nav-expense' | i18n: []: 'dts/crm' }} ({{ controller.selectedAction.ttAcaoDespesa.length || 0 }})">
+								<ng-include src="'/dts/crm/html/campaign/action/expense/expense.tab.html'"></ng-include>
+							</tab>
+
+						</tabset>
+
+					</totvs-tabset>
+
+				</div>
+
+			</div>
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

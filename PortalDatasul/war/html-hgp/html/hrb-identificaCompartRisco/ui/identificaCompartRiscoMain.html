@@ -1,0 +1,310 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-header>
+            <totvs-page-header-title title="Identificar Beneficiários Compartilhamento Risco">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="4">
+                    <action class="btn btn-default" ng-click="controller.irPara('parametros');" style="color: #333;
+                    background-color: #fff; border-color: #ccc; padding-right: 15px;">
+                        Parâmetros
+                    </action>
+                    <action class="btn btn-default" ng-click="controller.irPara('selecao');" style="padding-right: 15px;">
+                        Seleção
+                    </action>
+                    <action class="btn btn-default" ng-click="controller.irPara('execucao');" style="padding-right: 15px;">
+                        Execução
+                    </action>
+                    <action class="btn btn-primary" ng-click="controller.generate();" style="padding-right: 15px;">
+                        Enviar
+                    </action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.filtersForm">
+
+            <a name="parametros" id="parametros" style="display: block;
+            position: relative;
+            top: -170px;
+            visibility: hidden;"></a>
+            <legend>
+                Parâmetros
+            </legend>
+            
+            <totvs-row>
+                <field type="checkbox"
+                    class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                    label="Listar compartilhamentos que podem ser cancelados"
+                    ng-model="controller.dadosTela.lgGeraCancelamento">
+                </field>
+
+                <totvs-field totvs-datepicker
+                    class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                    label="Data fim do compartilhamento (Registros cancelados)"
+                    format="dd/MM/yyyy"
+                    ng-model="controller.dadosTela.dtFimCompartCanc"
+                    ng-if="controller.dadosTela.lgGeraCancelamento"
+                    culture="pt"
+                    canclean>
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>  
+                <totvs-field totvs-datepicker
+                    class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                    label="Data início do compartilhamento (Registros novos)"
+                    format="dd/MM/yyyy"
+                    ng-model="controller.dadosTela.dtIniNovoCompart"
+                    culture="pt"                    
+                    canclean>
+                </totvs-field>
+                <totvs-field totvs-datepicker
+                    class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                    label="Data fim do compartilhamento (Registros novos)"
+                    format="dd/MM/yyyy"
+                    ng-model="controller.dadosTela.dtFimNovoCompart"
+                    culture="pt"
+                    canclean>
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>    
+                <field
+                    class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                    type="input"
+                    numbers-only
+                    ng-model="controller.dadosTela.qtMinAtendEletivo"
+                    placeholder="1"
+                    maxlength="4"                
+                    label="Quantidade mínima de atendimentos eletivos">
+                </field> 
+                <field
+                    class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                    type="input"
+                    numbers-only
+                    ng-model="controller.dadosTela.qtMinAtendUrgen"
+                    placeholder="1"
+                    maxlength="4"                
+                    label="Quantidade mínima de atendimentos urgência">
+                </field>
+            </totvs-row>
+
+            <a name="selecao" id="selecao" style="display: block;
+            position: relative;
+            top: -170px;
+            visibility: hidden;"></a>
+            <legend name="selecao" id="selecao">
+                Seleção
+            </legend>
+            <totvs-row>  
+                <totvs-field totvs-datepicker
+                    class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                    label="Data inicial"
+                    format="dd/MM/yyyy"
+                    ng-model="controller.dadosTela.dtInicial"
+                    culture="pt"
+                    canclean>
+                </totvs-field>
+                <totvs-field totvs-datepicker
+                    class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                    label="Data final"
+                    format="dd/MM/yyyy"
+                    ng-model="controller.dadosTela.dtFinal"
+                    culture="pt"
+                    canclean>
+                </totvs-field>
+            </totvs-row>
+
+            <legend style="font-size: 15px; font-weight: bold;">Tipo de Contratação</legend>
+
+            <totvs-row>
+                <field
+                    type="checkbox"
+                    ng-model="controller.dadosTela.lgIndividualFamiliar"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    label="Individual ou Familiar">
+                </field>
+                <field
+                    type="checkbox"
+                    ng-model="controller.dadosTela.lgColAdeComPatrocinio"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    label="Coletivo por Adesão com Patrocínio">
+                </field>
+            </totvs-row>
+            <totvs-row>
+                <field
+                    type="checkbox"
+                    ng-model="controller.dadosTela.lgColAdeSemPatrocinio"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    label="Coletivo por Adesão sem Patrocínio">
+                </field>
+                <field
+                    type="checkbox"
+                    ng-model="controller.dadosTela.lgColEmpComPatrocinio"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    label="Coletivo Empresarial com Patrocínio">
+                </field>
+            </totvs-row>
+            <totvs-row>
+                <field
+                    type="checkbox"
+                    ng-model="controller.dadosTela.lgColEmpSemPatrocinio"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    label="Coletivo Empresarial sem Patrocínio">
+                </field>
+                <field
+                    type="checkbox"
+                    ng-model="controller.dadosTela.lgNaoInformado"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    label="Não Informado">
+                </field>
+            </totvs-row>
+
+            <legend style="font-size: 15px; font-weight: bold;">Unidades</legend>
+
+            <totvs-row  class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="padding-bottom: 30px;">
+                <totvs-field totvs-input numbers-only 
+                    placeholder="1" 
+                    ng-change="controller.onChangeRangeUnidade(event)"
+                    maxlength="4" 
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-5" 
+                    label="Unidade Inicial" 
+                    ng-model="controller.dadosTela.cdUnidadeInic">
+                </totvs-field>
+                <totvs-field totvs-input numbers-only 
+                    placeholder="1"
+                    ng-change="controller.onChangeRangeUnidade(event)"
+                    maxlength="4" 
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-5" 
+                    label="Unidade Final" 
+                    ng-model="controller.dadosTela.cdUnidadeFim">
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <totvs-page-content>
+                        <totvs-table
+                            t-items="controller.tmpUnidadeFiltrada"
+                            t-items-as="item"
+                            style="height: 200px; display:block; ">
+
+                            <column title="Código" width="30" >
+                                {{item.cdUnidade}}
+                            </column>
+
+                            <column title="Descrição" width="200">
+                                {{item.nmUnidade}}
+                            </column>
+
+                        </totvs-table>
+                    </totvs-page-content>
+                </div>
+            </totvs-row>
+
+            <legend style="font-size: 15px; font-weight: bold;">Tipos de Planos</legend>
+
+            <totvs-row class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                <totvs-field totvs-input numbers-only 
+                    placeholder="1" 
+                    ng-change="controller.onChangeRangeModalidade(event)"
+                    maxlength="2" 
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-5" 
+                    label="Modalidade Inicial" 
+                    ng-model="controller.dadosTela.cdModalidadeInic">
+                </totvs-field>
+                <totvs-field totvs-input numbers-only 
+                    placeholder="1"
+                    ng-change="controller.onChangeRangeModalidade(event)"
+                    maxlength="2" 
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-5" 
+                    label="Modalidade Final" 
+                    ng-model="controller.dadosTela.cdModalidadeFim">
+                </totvs-field>
+            </totvs-row>
+            <totvs-row class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                <totvs-field totvs-input numbers-only 
+                    placeholder="1" 
+                    ng-change="controller.onChangeRangeModalidade(event)"
+                    maxlength="2" 
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-5" 
+                    label="Plano Inicial" 
+                    ng-model="controller.dadosTela.cdPlanoInic">
+                </totvs-field>
+                <totvs-field totvs-input numbers-only 
+                    placeholder="1"
+                    ng-change="controller.onChangeRangeModalidade(event)"
+                    maxlength="2" 
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-5" 
+                    label="Plano Final" 
+                    ng-model="controller.dadosTela.cdPlanoFim">
+                </totvs-field>
+            </totvs-row>
+            <totvs-row class="col-lg-8 col-md-8 col-sm-8 col-xs-12" style="padding-bottom: 30px;">
+                <totvs-field totvs-input numbers-only 
+                    placeholder="1" 
+                    ng-change="controller.onChangeRangeModalidade(event)"
+                    maxlength="2" 
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-5" 
+                    label="Tipo de Plano Inicial" 
+                    ng-model="controller.dadosTela.cdTipoPlanoInic">
+                </totvs-field>
+                <totvs-field totvs-input numbers-only 
+                    placeholder="1"
+                    ng-change="controller.onChangeRangeModalidade(event)"
+                    maxlength="2" 
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-5" 
+                    label="Tipo de Plano Final" 
+                    ng-model="controller.dadosTela.cdTipoPlanoFim">
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <totvs-page-content>
+                        <totvs-table
+                            t-items="controller.tmpTpPlanoFiltrada"
+                            t-items-as="item"
+                            style="height: 200px; display:block; ">
+
+                            <column title="Modalidade" width="100" >
+                                {{item.rotuloModalidade}}
+                            </column>
+
+                            <column title="Plano" width="100">
+                                {{item.rotuloPlano}}
+                            </column>
+
+                            <column title="Tipo de Plano" width="100">
+                                {{item.rotuloTipoPlano}}
+                            </column>
+
+                        </totvs-table>
+                    </totvs-page-content>
+                </div>
+            </totvs-row>
+
+            <a name="execucao" id="execucao" style="display: block;
+            position: relative;
+            visibility: hidden;"></a>
+            <totvs-execution hide-repeat="true" ng-model="controller.execution">
+                <totvs-execution-item type="execution">
+                    <gps-totvs-schedule program-name="identificaCompartRisco" ng-model="controller.schedule">
+                    </gps-totvs-schedule>
+                    <totvs-field totvs-select 
+                        ng-model="controller.dadosTela.servidor" 
+                        label="Servidor de Execução" 
+                        t-no-data="Sem dados" 
+                        placeholder="Selecione.."
+                        select-id="cdServidor" 
+                        select-description="dsServidor" 
+                        t-data-source="controller.options.servidores"
+                        canclean>
+                    </totvs-field>
+                </totvs-execution-item>
+            </totvs-execution>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

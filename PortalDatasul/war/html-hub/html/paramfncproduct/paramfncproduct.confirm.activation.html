@@ -1,0 +1,33 @@
+<totvs-modal-header>
+	{{ 'l-confirm-ativaction' | i18n: []: 'dts/hub'}} - {{controller.record.nom_funcao}}
+</totvs-modal-header>	
+
+<totvs-modal-body>
+    <p ng-bind-html="controller.record.des_funcao | linkFormat"></p>
+    <ul class="modal-obs-aceite">
+      <li ng-if="controller.record.log_usa_aceite">
+        {{ 'msg-need-read-and-agree' | i18n: []: 'dts/hub'}}
+      </li>
+      <li ng-if="!controller.record.log_desligto">
+        {{ 'msg-function-cannot-disabled' | i18n: []: 'dts/hub'}}
+      </li>
+    </ul>
+    
+    
+              
+    <totvs-page-form>
+        <fieldset>
+            <field type="checkbox"
+                   ng-if="controller.record.log_usa_aceite"
+                   ng-model="controller.model.confirmReadAgree"
+                   label="{{('l-read-and-agree'| i18n: []: 'dts/hub')}}">
+                    
+            </field>
+        </fieldset>
+    </totvs-page-form>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n: []: 'dts/hub'}}</button>	
+	<button class="btn btn-primary" ng-click="controller.apply()">{{ 'l-confirm' | i18n: []: 'dts/hub'}}</button>
+</totvs-modal-footer>

@@ -1,0 +1,41 @@
+<div ng-controller="salesorder.dashboard.salesChargeSummary.Controller as salesChargeSummaryController">
+	<totvs-widget>
+        <totvs-widget-header settings="salesChargeSummaryController.summaryShow = false" title="{{ 'l-sales-charge-summary' | i18n : [] : 'dts/mpd/'}}">				
+        </totvs-widget-header>
+	    <totvs-widget-body>
+            <div style="height:300px;">		
+                <div ng-show="salesChargeSummaryController.summaryShow">
+                    <br>
+                    <h3>{{ 'l-forecast' | i18n : [] : 'dts/mpd/' }}</h3>
+                    <p ng-if="salesChargeSummaryController.previsto == undefined">{{ 'l-loading-portlet' | i18n : [] : 'dts/mpd'}}</p>
+                    <p ng-if="salesChargeSummaryController.previsto != undefined">{{salesChargeSummaryController.previsto| currency}} </p>
+                    <h3>{{ 'l-accomp' | i18n : [] : 'dts/mpd/' }}</h3>
+                    <p ng-if="salesChargeSummaryController.realizado == undefined">{{ 'l-loading-portlet' | i18n : [] : 'dts/mpd'}}</p>
+                    <p ng-if="salesChargeSummaryController.realizado != undefined">{{salesChargeSummaryController.realizado| currency}} </p>
+                </div>
+                <div ng-hide="salesChargeSummaryController.summaryShow">
+                    <form>                                                                                                    
+                        <p>{{ 'l-transaction-date' | i18n : [] : 'dts/mpd/' }}</p>
+                        <div class="row">                                                                         
+                            <field type="date" ng-model="salesChargeSummaryController.dataini" required class="col-md-12">                            
+                                <label>{{ 'l-transaction-start' | i18n : [] : 'dts/mpd/' }}</label>
+                            </field>                                                            
+                            <field type="date" ng-model="salesChargeSummaryController.datafim" required class="col-md-12">                            
+                                <label>{{ 'l-transaction-end' | i18n : [] : 'dts/mpd/' }}</label>
+                            </field>
+                        </div>
+                         <hr>                    
+                         <a role="button" class="btn btn-default pull-right" ng-click="salesChargeSummaryController.applyConfig()">&nbsp; {{ 'btn-apply' | i18n : [] : 'dts/mpd/'}} &nbsp; </a>                            		                        
+                    </form>                                                        
+                </div>			
+            </div>
+	    </totvs-widget-body>
+        <totvs-widget-footer>
+            <totvs-widget-footer-body>
+            </totvs-widget-footer-body>
+            <totvs-widget-footer-actions>
+                <action link="#/dts/mpd/salescharge">{{ 'l-detail' | i18n : [] : 'dts/mpd/' }}</action>
+            </totvs-widget-footer-actions>            
+        </totvs-widget-footer>
+	</totvs-widget>
+</div>        

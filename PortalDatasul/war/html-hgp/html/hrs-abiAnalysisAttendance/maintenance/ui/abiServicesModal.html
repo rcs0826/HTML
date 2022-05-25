@@ -1,0 +1,52 @@
+<div class="modal-header">
+    <h3 class="modal-title">Serviços do Atendimento</h3>
+</div>
+<div class="modal-body">  
+    <totvs-page-form>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height" 
+             style="height: 200px; overflow-y: auto;">
+            <totvs-page-content>
+                <totvs-table
+                    items="controller.abiServices"
+                    items-as="services"
+                    t-selectable="OFF"
+                    t-highlight-selected="true"
+                    t-table="controller.tableServices"
+                    id="tableeee">
+
+                    <column title=""
+                            width="20" >
+                        <input type="checkbox" 
+                               ng-disabled="controller.action != 'EDIT'"
+                               data-ng-model="services.$selected">
+                    </column>
+
+                    <column title="Serviço"
+                            width="450">    
+                        {{services.codMovimento}} - {{services.dsMovimento}}
+                    </column>
+
+                    <column title="Tipo"
+                            width="100">    
+                        {{services.servico.indTipServRessus | tpMovtoRessus}}
+                    </column>
+
+                    <column title="Quantidade"
+                            width="100">    
+                        {{services.servico.qtdProcedimento}}
+                    </column>
+
+                    <column title="Valor Cobrado"
+                            width="100">    
+                        {{services.servico.valProcedimento | currency : 'R$ '}}
+                    </column>
+
+                </totvs-table>
+            </totvs-page-content>           
+        </div>
+    </totvs-page-form>
+</div>
+<totvs-modal-footer>  
+    <button class="btn" ng-click="controller.cancel()">{{controller.action == 'EDIT' ? 'Cancelar' : 'Voltar'}}</button>
+    <button class="btn btn-primary" ng-if="controller.action == 'EDIT'" ng-click="controller.save()">Salvar</button>
+</totvs-modal-footer>

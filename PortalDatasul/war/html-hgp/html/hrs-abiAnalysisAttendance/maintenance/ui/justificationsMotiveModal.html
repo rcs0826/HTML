@@ -1,0 +1,143 @@
+
+<link type="text/css"  rel="stylesheet" href="/dts/hgp/html/assets/css/mention.css" />
+
+<div class="modal-header">
+    <h3 class="modal-title">Justificativas do Motivo {{controller.impugnation.rotuloMotivo}}</h3>
+</div>
+<div class="modal-body">  
+
+    <div class="justificationTextDiv" 
+         style="border: 1px solid #424c4e; width: 77%; height: auto; display: block; 
+                background-color: white; position: absolute; z-index: 4; margin-left: 83px;
+                top: 85px; box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 8px 20px 0 rgba(0, 0, 0, 0.19);
+                visibility: hidden">
+        <totvs-modal-header>            
+            <h3 class="modal-title">Texto da Justificativa {{controller.rotuloJustificativaAux}}</h3>
+        </totvs-modal-header>
+        
+        <totvs-modal-body style="height: 242px;">
+            <form>
+                <div style="max-height: 300px;">
+                    <field type="textarea"
+                           ng-disabled="controller.actionAux != 'EDIT'"
+                           style="min-height: 200px; min-width: 615px; resize: none;"                    
+                           ng-model="controller.desTextoJustificativaAux"
+                           label="">
+                    </field>
+                </div>
+            </form>
+        </totvs-modal-body>
+        
+        <totvs-modal-footer>
+            <button class="btn col-sm-height"  
+                    ng-click="controller.closeJustificationTextDiv()">{{controller.actionAux == 'EDIT' ? 'Cancelar' : 'Voltar'}}
+            </button>
+            <button class="btn btn-primary col-sm-height"
+                    ng-if="controller.actionAux == 'EDIT'"
+                    ng-click="controller.saveObservation()">Salvar
+            </button>
+        </totvs-modal-footer>
+    </div>
+
+    <totvs-page-form id="modal-form-justif">
+        <totvs-row style="margin-bottom: 25px;">
+            <field type="textarea"
+                   style="min-height: 100px; min-width: 395px; "                
+                   ng-model="controller.desObservacaoAux"
+                   ng-disabled="controller.action == 'DETAIL'"
+                   label="Observação">
+            </field>
+        </totvs-row>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height" 
+             style="height: 308px; overflow-y: auto;">
+
+            <totvs-page-content ng-if="controller.attendance != undefined">
+                <totvs-table
+                    items="controller.justificationListSelected"
+                    items-as="justification"
+                    t-selectable="OFF"
+                    t-resizable="true"
+                    t-reorderable="true"
+                    t-highlight-selected="true"
+                    t-table="controller.table">
+
+                    <column title=""
+                            width="20" >
+                        <input type="checkbox" 
+                               ng-disabled="controller.action != 'EDIT'"  
+                               ng-change="controller.orderJustificationList('SELECTED', justification)"
+                               data-ng-model="justification.$selected">
+                    </column>
+
+                    <column title="Justificativa"
+                            width="500">
+                        {{justification.idJustificativa}} - {{justification.dsJustificativa}}
+                    </column>    
+
+                    <column title="Texto"
+                            width="33">
+                        <span class="clickable glyphicon glyphicon-comment" 
+                              style="margin-left: 8px;" 
+                              ng-click="controller.openJustificationTextDiv(justification, 'EDIT')"></span>
+                    </column>
+
+                </totvs-table>                
+            </totvs-page-content>
+
+            <totvs-page-content style="margin-top: 25px;" ng-if="controller.attendance != undefined">
+                <totvs-table
+                    items="controller.justificationListUnselected"
+                    items-as="justification"
+                    t-selectable="OFF"
+                    t-resizable="true"
+                    t-reorderable="true"
+                    t-highlight-selected="true"
+                    t-table="controller.table">
+
+                    <column title=""
+                            width="20" >
+                        <input type="checkbox"  
+                               ng-disabled="controller.action != 'EDIT'"   
+                               ng-change="controller.orderJustificationList('UNSELECTED', justification)"                            
+                               data-ng-model="justification.$selected">
+                    </column>
+
+                    <column title="Justificativa"
+                            width="500">    
+                        {{justification.idJustificativa}} - {{justification.dsJustificativa}}
+                    </column>  
+
+                    <column title="Texto"
+                            width="33">
+                        <span class="clickable glyphicon glyphicon-comment" 
+                              style="margin-left: 8px;" 
+                              ng-click="controller.openJustificationTextDiv(justification, 'DETAIL_TEXT')"></span>
+                    </column>
+
+                </totvs-table>
+            </totvs-page-content>
+
+            <h5 ng-if="controller.justificationListSelected.length == 0
+                    && controller.justificationListUnselected.length == 0"> Não existem justificativas para serem mostradas</h5>
+        </div>
+    </totvs-page-form>
+</div>
+<totvs-modal-footer>  
+
+  <span style="color: #337ab7;
+               position: absolute;
+               margin-top: 9px;
+               margin-left: -682px;
+               font-family: 'Arial';
+               font-size: 12px;"
+        ng-if="controller.action == 'EDIT'"
+        id="variablefields" tabindex="0" role="button" data-html="true" data-toggle="popover" 
+        data-trigger="focus" title="<b>Campos Variáveis</b>" data-content="{{controller.dsCamposVariaveis}}" 
+        data-placement="top" ng-mouseover="controller.openVariableFields()">Campos Variáveis
+    <span class="glyphicon glyphicon-tags" style="font-size: 10px; margin-left: 3px;"></span>
+</span>
+
+    <button id="btn-cancel" class="btn" ng-click="controller.cancel()">{{controller.action == 'EDIT' ? 'Cancelar' : 'Voltar'}}</button>
+    <button id="btn-save" class="btn btn-primary" ng-click="controller.save()" ng-if="controller.action == 'EDIT'">Salvar</button>
+</totvs-modal-footer>

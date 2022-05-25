@@ -1,0 +1,651 @@
+<style>
+    totvs-field[totvs-select]{
+        height: 62px;
+        font-size: 14px;
+    }
+
+    /* Ajuste do tamanho para evitar quebra de layout no Firefox e no IE */    
+    field[type="textarea"] {
+        height: auto !important;
+    }
+
+    field {
+        height: 62px;
+    }    
+    /***********************************************/
+
+	.portal-detail-title {
+		padding-top: 20px !important;
+        margin-bottom: 5px !important;
+	}
+
+</style>
+
+<totvs-page-detail-info-group ><p class="portal-detail-title">{{ 'l-basic-information' | i18n }} </p></totvs-page-detail-info-group>
+
+<%		    
+	_.forEach(data, function(pedVendaCadastroVisibleFields) {
+
+        if (pedVendaCadastroVisibleFields.fieldName == "nat-operacao") {
+
+            %>
+                <totvs-field
+                    totvs-select
+                    label="{{ 'l-natur-oper' | i18n }}"
+                    placeholder="{{ 'l-natur-oper' | i18n }}"
+                    ng-model="controller.order['nat-operacao']"
+                    select-id="nat-operacao"
+                    select-description="denominacao"
+                    select-service="salesorder.zoomNatOperacao.Service"
+                    zoom-service="salesorder.zoomNatOperacao.Service"
+                    zoom-init="{ setDefaultValue: false }"
+                    ng-change="controller.applyLeaveOrder('nat-operacao', true)"
+                    canclean
+                    ng-disabled=
+                    <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %> 
+                        "true"
+                    <% }else{ %>
+                        "controller.orderDisabled"
+                    <% } %>
+                >
+                    <validator key="required">{{ $fieldLabel }} {{ 'l-required' | i18n }}</validator>
+                </totvs-field>
+            <%
+        }
+
+        if (pedVendaCadastroVisibleFields.fieldName == "esp-pedido") { %>
+            <field class="col-lg-6 col-md-6 col-sm-6 col-xs-12" type="combo" ng-model="controller.order['esp-ped']"
+                ng-disabled="<%= pedVendaCadastroVisibleFields.fieldEnabled ? '!controller.newOrder' : 'true' %>"
+                ng-options="item.espPed as item.descEspPed for item in controller.especiePedido">
+                <label>{{:: 'l-esp-cotac' | i18n : [] : 'dts/mpd'}}</label>
+            </field>
+        <% }
+
+        if (pedVendaCadastroVisibleFields.fieldName == "tp-preco") {
+
+            %>
+            <field type="combo" ng-model="controller.order['tp-preco']"
+                ng-disabled=<% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %> "true" <% } else{ %> "controller.orderDisabled" <% }%>
+                ng-options="item.tpPreco as item.descTpPreco for item in controller.tipoPreco">
+                <label>{{'l-tp-preco' | i18n}}</label>
+            </field>
+            <%
+        }
+        
+        if (pedVendaCadastroVisibleFields.fieldName == "cod-canal-venda") {
+
+            %>
+            <totvs-field totvs-select
+                    label="{{'l-canal-venda' | i18n}}"
+                    placeholder="{{'l-canal-venda' | i18n}}"
+                    ng-model="controller.order['cod-canal-venda']"
+                    select-id="cod-canal-venda"
+                    select-description="descricao"
+                    select-service="mpd.canal-venda.zoom"
+                    zoom-service="mpd.canal-venda.zoom"
+                    ng-change="controller.applyLeaveOrder('cod-canal-venda',true)"
+                    ng-disabled=
+                    <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %> 
+                        "true"
+                    <% }else{ %>
+                        "controller.orderDisabled"
+                    <% } %>>
+            </totvs-field>
+            <%
+        }
+        
+        if (pedVendaCadastroVisibleFields.fieldName == "dt-implant") {
+
+            %>
+            <field type="date" ng-model="controller.order['dt-implant']"
+                ng-disabled=
+                <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %>
+                    "true"
+                <% }else{ %>
+                    "controller.orderDisabled"
+                <% } %>
+                ng-change="controller.applyLeaveOrder('dt-implant', true)">
+                <label>{{ 'l-data-implant' | i18n }}</label>
+            </field>
+            <%
+        }
+
+        if (pedVendaCadastroVisibleFields.fieldName == "dt-emissao") {
+
+            %>
+            <field type="date" ng-model="controller.order['dt-emissao']"
+                ng-disabled=
+                <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %>
+                    "true"
+                <% }else{ %>
+                    "controller.orderDisabled"
+                <% } %>
+                >
+                <label>{{ 'l-dt-emissao' | i18n }}</label>
+            </field>
+            <%
+        }
+        
+        if (pedVendaCadastroVisibleFields.fieldName == "tp-operacao") {
+
+            %>
+            <totvs-field totvs-select
+                    label="{{'l-tp-oper' | i18n}}"
+                    placeholder="{{'l-tp-oper' | i18n}}"
+                    ng-model="controller.order['tp-operacao']"
+                    select-id="cdn-tip-ped"
+                    select-description="descricao"
+                    select-service="mpd.tp-operacao.zoom"
+                    zoom-service="mpd.tp-operacao.zoom"
+                    canclean
+                    ng-disabled=
+                    <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %> 
+                        "true"
+                    <% }else{ %>
+                        "controller.orderDisabled"
+                    <% } %>>
+            </totvs-field>
+            <%
+        }
+
+        if (pedVendaCadastroVisibleFields.fieldName == "nome-abrev-tri") { %>
+            <totvs-field class="col-lg-6 col-md-6 col-sm-6 col-xs-12" totvs-select
+                         label="{{:: 'l-nome-abrev-tri' | i18n : [] : 'dts/mpd' }}"
+                         ng-model="controller.order['nome-abrev-tri']"
+                         ng-disabled="<%= pedVendaCadastroVisibleFields.fieldEnabled ? 'controller.orderDisabled' : 'true' %>"
+                         select-id="nome-abrev"
+                         select-init="{filter: {'identific': '1|3'}}"  
+                         select-match='[{"field":"cod-emitente", "separator": " - "},{"field":"nome-abrev"}]'
+                         select-service="mpd.emitente.zoom"
+                         zoom-init="{setDefaultValue: false} "
+                         zoom-service="mpd.emitente.zoom"
+                         zoom-init="{filter: {'identific': '1|3'}}"
+                         canclean>
+            </totvs-field>
+        <% }
+	});
+%>
+
+<totvs-page-detail-info-group class="portal-detail-title"> <p class="portal-detail-title">{{ 'l-delivery-information' | i18n }}</p></totvs-page-detail-info-group>
+
+<%		    
+	_.forEach(data, function(pedVendaCadastroVisibleFields) {
+                				
+		if (pedVendaCadastroVisibleFields.fieldName == "cod-entrega") {
+
+            
+            %>
+            <totvs-field totvs-select
+                    label="{{'l-local-entrega' | i18n}}"
+                    placeholder="{{'l-local-entrega' | i18n}}"
+                    ng-model="controller.order['cod-entrega']"
+                    select-id="cod-entrega"
+                    select-match='[{"field":"cod-entrega"}]'
+                    select-init="controller.order['nome-abrev']"
+                    select-service="salesorder.zoomLocalEntrega.Service"
+                    zoom-service="salesorder.zoomLocalEntrega.Service"
+                    zoom-init="controller.order['nome-abrev']"
+                    ng-change="controller.applyLeaveOrder('cod-entrega',true)"
+                    canclean
+                    ng-disabled=
+                    <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %> 
+                        "true"
+                    <% }else{ %>
+                        "controller.orderDisabled"
+                    <% } %>>
+            </totvs-field>
+            <%
+        }
+        
+        if (pedVendaCadastroVisibleFields.fieldName == "local-entreg") {
+
+            %>
+            <field type="input" ng-model="controller.order['local-entreg']"
+                ng-disabled=
+                <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %>
+                    "true"
+                <% }else{ %>
+                    "controller.orderDisabled"
+                <% } %>>
+                <label>{{'l-local-entreg' | i18n}}</label>
+            </field>
+            <%
+        }
+        
+        if (pedVendaCadastroVisibleFields.fieldName == "endereco_text") {
+
+            %>
+            <field type="textarea" ng-model="controller.order.endereco_text"
+                ng-disabled=
+                <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %>
+                    "true"
+                <% }else{ %>
+                    "controller.orderDisabled"
+                <% } %>>
+                <label>{{'l-endereco_text' | i18n}}</label>
+            </field>
+            <%
+        }
+        
+        if (pedVendaCadastroVisibleFields.fieldName == "bairro") {
+
+            %>
+            <field type="input" ng-model="controller.order.bairro"
+                ng-disabled=
+                <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %>
+                    "true"
+                <% }else{ %>
+                    "controller.orderDisabled"
+                <% } %>>
+                <label>{{'l-bairro' | i18n}}</label>
+            </field>
+            <%
+        }
+        
+        if (pedVendaCadastroVisibleFields.fieldName == "cidade") {
+
+            %>
+            <field type="input" ng-model="controller.order.cidade"
+                ng-disabled=
+                <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %>
+                    "true"
+                <% }else{ %>
+                    "controller.orderDisabled"
+                <% } %>>
+                <label>{{'l-cidade' | i18n}}</label>
+            </field>
+            <%
+        }
+        
+        if (pedVendaCadastroVisibleFields.fieldName == "estado") {
+
+            %>
+            <totvs-field totvs-select
+                    label="{{'l-estado' | i18n}}"
+                    placeholder="{{'l-estado' | i18n}}"
+                    ng-model="controller.order.estado"
+                    select-init="controller.order.pais"
+                    select-id="estado"
+                    select-description="no-estado"
+                    select-service="salesorder.zoomEstado.Service"
+                    zoom-service="salesorder.zoomEstado.Service"
+                    ng-disabled=
+                    <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %> 
+                        "true"
+                    <% }else{ %>
+                        "controller.orderDisabled"							
+                    <% } %>>
+                    <validator key="required">{{$fieldLabel}} {{ 'l-required' | i18n }}</validator>
+            </totvs-field>
+            <%
+        }
+        
+        if (pedVendaCadastroVisibleFields.fieldName == "pais") {
+
+            %>
+            <totvs-field totvs-select
+                    label="{{'l-pais' | i18n}}"
+                    placeholder="{{'l-pais' | i18n}}"
+                    ng-model="controller.order.pais"
+                    select-id="nome-pais"
+                    select-match='[{"field":"nome-pais"}]'
+                    select-init="{gotomethod: 'gotopais'}"
+                    select-service="salesorder.zoomPais.Service"
+                    zoom-service="salesorder.zoomPais.Service"
+                    canclean
+                    ng-disabled=
+                    <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %> 
+                        "true"
+                    <% }else{ %>
+                        "controller.orderDisabled"							
+                    <% } %>>
+            </totvs-field>
+            <%
+        }
+        
+        if (pedVendaCadastroVisibleFields.fieldName == "cidade-cif") {
+
+            %>
+            <field type="input" ng-model="controller.order['cidade-cif']"
+                ng-disabled=
+                <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %>
+                    "true"
+                <% }else{ %>
+                    "controller.orderDisabled"
+                <% } %>>
+                <label>{{'l-cidade-cif' | i18n}}</label>
+            </field>
+            <%
+        }
+
+    });
+
+%>
+    
+<totvs-page-detail-info-group class="portal-detail-title"> <p class="portal-detail-title">{{ 'l-attend-information' | i18n }}</p></totvs-page-detail-info-group>
+
+<%		    
+	_.forEach(data, function(pedVendaCadastroVisibleFields) {
+        
+
+        if (pedVendaCadastroVisibleFields.fieldName == "ind-fat-par") {
+
+            %>
+            <field type="checkbox" ng-model="controller.order['ind-fat-par']"
+                ng-disabled=
+                <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %>
+                    "true"
+                <% }else{ %>
+                    "controller.orderDisabled"
+                <% } %>>
+                <label>{{'l-ind-fat-par' | i18n}}</label>
+            </field>
+            <%
+        }
+
+        if (pedVendaCadastroVisibleFields.fieldName == "dt-entrega") {
+
+            %>
+            <field  type="date" 
+                    ng-model="controller.order['dt-entrega']"
+                            ng-disabled=
+                    <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %> 
+                        "true"
+                    <% }else{ %>
+                        "controller.orderDisabled"
+                    <% } %>>
+                <label>{{'l-dt-entrega' | i18n}}</label>
+            </field>
+            <%
+        }
+
+        if (pedVendaCadastroVisibleFields.fieldName == "dt-validade-cot") {
+
+            %>
+            <field  type="date" 
+                    ng-model="controller.order['dt-validade-cot']"
+                            ng-disabled=
+                    <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %>
+                        "true"
+                    <% }else{ %>
+                        "controller.orderDisabled"
+                    <% } %>>
+                <label>{{'l-validate-date' | i18n}}</label>
+            </field>
+            <%
+        }
+
+        if (pedVendaCadastroVisibleFields.fieldName == "cod-cond-pag") {
+
+            %>
+            <totvs-field totvs-select
+                    label="{{ 'l-condicao-pagamento' | i18n}}"
+                    placeholder="{{'l-condicao-pagamento' | i18n}}"
+                    ng-model="controller.order['cod-cond-pag']"
+                    select-id="cod-cond-pag"
+                    select-description="descricao"
+                    select-service="salesorder.zoomCondicaoPagamento.Service"
+                    zoom-service="salesorder.zoomCondicaoPagamento.Service"
+                    zoom-init="{setDefaultValue: false}"
+                    ng-change="controller.applyLeaveOrder('cod-cond-pag',true)"
+                    canclean
+                    ng-disabled=
+                    <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %> 
+                        "true"
+                    <% }else{ %>
+                        "controller.orderDisabled"
+                    <% } %>>
+            </totvs-field>
+            <%
+        }
+
+        if (pedVendaCadastroVisibleFields.fieldName == "cod-estabel") {
+
+            %>
+            <totvs-field totvs-select
+                    label="{{'l-estabel' | i18n}}"
+                    placeholder="{{'l-estabel' | i18n}}"
+                    ng-model="controller.order['cod-estabel']"
+                    select-id="cod-estabel"
+                    select-description="nome"
+                    select-service="mpd.estabelecSE.select"
+                    zoom-service="mpd.estabelecSE.zoom"
+                    ng-change="controller.applyLeaveOrder('cod-estabel',true)"
+                    canclean
+                    ng-disabled=
+                    <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %> 
+                        "true"
+                    <% }else{ %>
+                        "controller.orderDisabled"							
+                    <% } %>>
+            </totvs-field>
+            <%
+        }
+
+        if (pedVendaCadastroVisibleFields.fieldName == "cod-modalid-frete") {
+
+            %>
+            <totvs-field totvs-select
+                    label="{{'l-modalidade-frete' | i18n}}"
+                    placeholder="{{'l-modalidade-frete' | i18n}}"
+                    ng-model="controller.order['cod-modalid-frete']"
+                    select-id="cod-modalid-frete"
+                    select-description="des-modalid-frete"
+                    select-service="mpd.modalidadefrete.zoom"
+                    zoom-service="mpd.modalidadefrete.zoom"
+                    zoom-init="{setDefaultValue: false}"
+                    ng-change="controller.applyLeaveOrder('cod-modalid-frete',true)"
+                    canclean
+                    ng-disabled=
+                    <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %> 
+                        "true"
+                    <% }else{ %>
+                        "controller.orderDisabled"							
+                    <% } %>>
+            </totvs-field>
+            <%
+        }
+
+    });
+
+%>
+
+<totvs-page-detail-info-group class="portal-detail-title"> <p class="portal-detail-title">{{ 'l-observacoes' | i18n }}</p></totvs-page-detail-info-group>
+
+<%		    
+	_.forEach(data, function(pedVendaCadastroVisibleFields) {
+        
+        if (pedVendaCadastroVisibleFields.fieldName == "observacoes") {
+
+            %>
+            <field type="textarea" class="col-xs col-sm-12 col-md-12" 
+                ng-model="controller.order.observacoes"
+                ng-disabled=
+                <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %>
+                    "true"
+                <% }else{ %>
+                    "controller.orderDisabled"
+                <% } %>>
+                <label>{{'l-observacoes' | i18n}}</label>
+            </field>
+            <%
+        }
+
+    });
+
+%>
+
+<totvs-page-detail-info-group class="portal-detail-title"> <p class="portal-detail-title">{{'l-price' | i18n}}</p></totvs-page-detail-info-group>
+
+<%		    
+	_.forEach(data, function(pedVendaCadastroVisibleFields) {
+        
+        if (pedVendaCadastroVisibleFields.fieldName == "log-usa-tabela-desconto") {
+
+            %>
+            <field type="checkbox" ng-model="controller.order['log-usa-tabela-desconto']"
+                ng-disabled=
+                <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %>
+                    "true"
+                <% }else{ %>
+                    "controller.orderDisabled"
+                <% } %>>
+                <label>{{'l-log-usa-tabela-desconto' | i18n}}</label>
+            </field>
+            <%
+        }	
+        
+        if (pedVendaCadastroVisibleFields.fieldName == "des-pct-desconto-inform") {
+
+            %>
+            <field type="input" ng-model="controller.order['des-pct-desconto-inform']"
+                maxlength="50"
+                ng-disabled=
+                <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %> 
+                    "true"
+                <% }else{ %>
+                    "controller.orderDisabled"
+                <% } %>>
+                <label>{{'l-des-pct-desconto-inform' | i18n}}</label>
+            </field>
+            <%
+        }
+
+        if (pedVendaCadastroVisibleFields.fieldName == "perc-desco1") {
+
+            %>
+            <field type="decimal" ng-model="controller.order['perc-desco1']"
+                data-v-max="99.999"  
+                data-m-dec="3"
+                ng-model-options="{ updateOn: 'blur' }"
+                ng-disabled=
+                <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %> 
+                    "true"
+                <% }else{ %>
+                    "controller.orderDisabled"
+                <% } %>>
+                <label>{{'l-perc-desco1' | i18n}}</label>
+            </field>
+            <%
+        }
+                
+        if (pedVendaCadastroVisibleFields.fieldName == "nr-tabpre") {
+
+            %>
+            <totvs-field totvs-select 
+                label="{{:: 'l-nr-tabpre' | i18n : [] : 'dts/mpd'}}"
+                placeholder="{{:: 'l-nr-tabpre' | i18n : [] : 'dts/mpd'}}"
+                ng-model="controller.order['nr-tabpre']"
+                select-id="nr-tabpre"
+                select-description="descricao"
+                select-service="mpd.tb-preco-pv.zoom"
+                zoom-init="{setDefaultValue: false}"
+                zoom-service="mpd.tb-preco-pv.zoom"
+                canclean
+                ng-disabled=
+                <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %> 
+                    "true"
+                <% }else{ %>
+                    "controller.orderDisabled"
+                <% } %>>
+                <validator key="required">{{$fieldLabel}} {{:: 'l-required' | i18n }}</validator>
+            </totvs-field>
+            <%
+        }
+
+        if (pedVendaCadastroVisibleFields.fieldName == "mo-codigo") {
+
+            %>
+            <totvs-field totvs-select
+                    label="{{'l-mo-codigo' | i18n}}"
+                    placeholder="{{'l-mo-codigo' | i18n}}"
+                    ng-model="controller.order['mo-codigo']"
+                    select-id="mo-codigo"
+                    select-description="descricao"
+                    select-service="salesorder.zoomMoeda.Service"
+                    zoom-service="salesorder.zoomMoeda.Service"
+                    canclean
+                    ng-disabled=
+                    <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %> 
+                        "true"
+                    <% }else{ %>
+                        "controller.orderDisabled"
+                    <% } %>>
+            </totvs-field>
+            <%
+        }
+        
+        if (pedVendaCadastroVisibleFields.fieldName == "val-pct-desconto-tab-preco") {
+
+            %>
+            <field type="decimal" ng-model="controller.order['val-pct-desconto-tab-preco']"
+                data-v-max="999.99"  
+                data-m-dec="2"
+                ng-model-options="{ updateOn: 'blur' }"
+                ng-disabled=
+                <% if (!pedVendaCadastroVisibleFields.fieldEnabled) { %> 
+                    "true"
+                <% }else{ %>
+                    "controller.orderDisabled"
+                <% } %>>
+                <label>{{'l-val-pct-desconto-tab-preco' | i18n}}</label>
+            </field>
+            <%
+        }
+
+    });
+
+%>
+
+<totvs-page-detail-info-group class="portal-detail-title"> <p class="portal-detail-title">{{ 'l-additional-information' | i18n }}</p></totvs-page-detail-info-group>
+
+<%		    
+	_.forEach(data, function(pedVendaCadastroVisibleFields) {
+        
+        if (pedVendaCadastroVisibleFields.fieldName == "no-ab-reppri") { %>
+
+            <totvs-field class="col-lg-6 col-md-6 col-sm-6 col-xs-12" 
+                ng-if="controller.order"
+                totvs-select
+                label="{{:: 'l-no-ab-reppri' | i18n : [] : 'dts/mpd'}}"
+                ng-model="controller.order['no-ab-reppri']"
+                ng-disabled="<%= pedVendaCadastroVisibleFields.fieldEnabled ? 'controller.orderDisabled' : 'true' %>"
+                select-id="nome-abrev"
+                select-description="nome"
+                select-init="{gotomethod: 'gotonomeabrev'}"
+                select-service="mpd.repres.zoom"
+                canclean
+                zoom-service="mpd.repres.zoom">
+        </totvs-field>
+
+        <% }
+        
+        if (pedVendaCadastroVisibleFields.fieldName == "nr-tab-finan") { %>
+            <totvs-field class="col-lg-6 col-md-6 col-sm-6 col-xs-12" totvs-select
+                ng-model="controller.order['nr-tab-finan']"
+                label="{{:: 'l-nr-tab-finan' | i18n : [] : 'dts/mpd'}}"
+                ng-disabled="<%= pedVendaCadastroVisibleFields.fieldEnabled ? 'controller.orderDisabled' : 'true' %>"
+                select-id="nr-tab-finan"
+                select-match='[{"field":"nr-tab-finan"}]'
+                select-service="mpd.tab-finan.zoom"
+                zoom-service="mpd.tab-finan.zoom"
+                ng-change="controller.setIndFinan();">
+            </totvs-field>
+
+            <totvs-field class="col-lg-6 col-md-6 col-sm-6 col-xs-12" totvs-select
+                ng-model="controller.order['nr-ind-finan']"
+                label="{{:: 'l-nr-ind-finan' | i18n : [] : 'dts/mpd'}}"
+                ng-disabled="<%= pedVendaCadastroVisibleFields.fieldEnabled ? 'controller.orderDisabled' : 'true' %>"
+                select-id="num-seq"
+                select-description="tab-ind-fin"
+                select-init="controller.order['nr-tab-finan']"
+                select-service="mpd.tab-finan-indice.zoom"
+                zoom-service="mpd.tab-finan-indice.zoom"
+                zoom-init="controller.order['nr-tab-finan']"
+                ng-change="controller.getIndFinan()">
+            </totvs-field>
+        <% }
+
+    });
+
+%>

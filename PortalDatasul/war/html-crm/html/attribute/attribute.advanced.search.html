@@ -1,0 +1,73 @@
+<totvs-modal-header>
+	{{ 'l-search-advanced' | i18n: []: 'dts/crm' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    
+    <fieldset class="row">
+        
+        <field type="input"
+			   class="col-xs-6"
+			   ng-model="controller.model.nom_atrib"
+			   canclean="undefined"
+			   placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+			   focus>
+            
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+            
+		</field>
+
+        <field type="select"
+			   class="col-xs-6"
+			   ng-model="controller.model.idi_process"
+               canclean="">
+            
+			<label>{{ 'l-process' | i18n : [] : 'dts/crm' }}</label>
+            
+			<include>
+				<ui-select-match placeholder="{{ 'l-process' | i18n : [] : 'dts/crm' }}">
+					{{ $select.selected.nom_process}}
+				</ui-select-match>
+				<ui-select-choices repeat="process in controller.listOfProcess | filter: $select.search track by $index">
+					<span ng-bind-html="process.nom_process | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+            
+		</field>
+        
+        <field type="select"
+			   class="col-xs-6"
+			   ng-model="controller.model.idi_tip_atrib"
+               canclean="">
+            
+			<label>{{ 'l-type' | i18n : [] : 'dts/crm' }}</label>
+            
+			<include>
+				<ui-select-match placeholder="{{ 'l-type' | i18n : [] : 'dts/crm' }}">
+					{{ $select.selected.nom_type }}
+				</ui-select-match>
+				<ui-select-choices repeat="type in controller.listOfTypes | filter: $select.search track by $index">
+					<span ng-bind-html="type.nom_type | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+            
+		</field>
+        
+        <totvs-field totvs-checkbox
+                     t-bsswitch
+					 ng-disabled="false"
+					 ng-model="controller.model.log_obrig"
+					 label="{{ 'l-required' | i18n: []: 'dts/crm' }}"
+					 class="col-xs-6">
+		</totvs-field>
+
+    </fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cleanFilters()">{{ 'btn-clean-filters' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply(false)">{{ controller.isAddEditMode ? 'btn-save' : 'btn-apply' | i18n: []: 'dts/crm' }}</button>
+	<button ng-if="controller.isAddEditMode === true" class="btn btn-primary" ng-click="controller.apply(true)">{{ 'btn-apply-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

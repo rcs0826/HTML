@@ -1,0 +1,40 @@
+<br/>
+<div ng-if="!shiftCtrl.hideActions && shiftCtrl.showButton">
+	<div>
+		<button class="btn btn-primary"
+				ng-click="shiftCtrl.addShift()"
+				ng-disabled="shiftCtrl.isDisabled">
+			<span class="glyphicon glyphicon-plus"></span>
+			{{ 'l-add' | i18n }}
+		</button>
+	</div>
+	
+	<totvs-divider style="margin-top: 10px; margin-bottom: 10px;"></totvs-divider>
+</div>		
+<totvs-page-content>
+	<totvs-grid
+			grid="shiftCtrl.myGrid"
+			grid-data="listOfShifts" 
+			grid-selected-item="shiftCtrl.selectedItem"
+	        grid-height="300" 
+	        navigatable="true" 
+	        selectable="row"
+	        scrollable="true"
+        	resizable="true"
+        	sortable="true"
+        	auto-resize-column="false">        
+        <totvs-grid-column width="32" field="remover" style="text-align: center">
+	        <template>
+				<a class="glyphicon glyphicon-trash btn-default" style="cursor: pointer"
+				   ng-if="!shiftCtrl.hideActions && shiftCtrl.showButton" 
+				   data-toggle="tooltip" title="{{ 'l-remove' | i18n }}"
+				   ng-click="shiftCtrl.remove(dataItem)"></a>
+				<a class="glyphicon glyphicon-trash btn-default" style="cursor: not-allowed"
+				   ng-if="shiftCtrl.hideActions && shiftCtrl.showButton" disabled></a>
+	        </template>
+       	</totvs-grid-column>
+	    <totvs-grid-column field="cd-tarefa" width="60" style="text-align: right">{{ 'l-task' | i18n }}</totvs-grid-column>                    
+		<totvs-grid-column field="cd-turno" width="100" style="text-align: right">{{ 'l-shift' | i18n }}</totvs-grid-column>
+		<totvs-grid-column field="des-turno" width="872">{{ 'l-description' | i18n }}</totvs-grid-column>
+	</totvs-grid>
+</totvs-page-content>

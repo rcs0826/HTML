@@ -1,0 +1,94 @@
+<totvs-page type="edit" totvs-custom-element="customPage" ng-init="">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mce/blockitemwarehouse">{{'l-block-item-warehouse' | i18n}}</breadcrumb>
+			<breadcrumb ng-click = "">{{'l-new' | i18n}}</breadcrumb>
+		</totvs-page-breadcrumb>
+		
+		<totvs-page-header>  
+     
+            <totvs-page-header-title title="{{'l-new-block-item-warehouse' | i18n}}">
+            </totvs-page-header-title>
+
+			<totvs-page-header-operation>
+                <totvs-page-header-operation-action save-new = "true"> 
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+			
+		</totvs-page-header>	
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+        <totvs-page-form>
+            <div id = "blockFormFields">
+                <fieldset>                
+                      <field type="input"  
+                            class="col-lg-7 col-md-7 col-sm-7 col-xs-12"  
+                            data-ng-model="controller.model['cod-estabel']"                          
+                            zoom
+                            zoom-id="cod-estabel"
+                            zoom-description="nome"
+                            zoom-service="mpd.estabelecSE.zoom"
+                            required
+                            focus
+                            label="{{ 'l-site' | i18n }}"
+                            canclean>
+                       
+                      </field>
+
+                      <field type="input"  
+                             class="col-lg-7 col-md-7 col-sm-7 col-xs-12"  
+                             data-ng-model="controller.model['cod-depos']"                          
+                             zoom
+                             zoom-id="cod-depos"
+                             zoom-description="nome"
+                             zoom-service="mce.deposito.zoom"
+                             required
+                             label="{{ 'l-warehouse' | i18n }}"
+                             canclean>
+                        </field>
+
+                        <field type="checkbox"
+                               label="{{ 'l-block-warehouse' | i18n }}"
+                               class="col-md-12"
+                               data-ng-model="controller.model.isBlockWarehouse" 
+                               ng-change="controller.blockWarehouse()">  
+                        </field>
+
+                       <field type="input"
+                              class = "col-lg-7 col-md-7 col-sm-7 col-xs-12 "
+                              data-ng-model="controller.model['it-codigo']"                      
+                              zoom
+                              zoom-service = "men.item.zoom"
+                              placeholder="{{'l-item' | i18n}}"                   
+                              zoom-id="it-codigo"
+                              zoom-description="desc-item"
+                              ng-disabled = "!controller.isEnableItem"
+                              canclean>                         
+                            <label>{{'l-item' | i18n}}</label>
+                        </field>   
+                    </fieldset>
+                    <fieldset>
+                        <field type="date"
+                               data-ng-model="controller.model['dat-inic-bloq']"  
+                               class="col-md-3"
+                               required
+                               label="{{ 'l-block-init-date' | i18n }}"
+                               canclean>                            
+                        </field>  
+
+                        <field type="time"
+                               data-ng-model="controller.model['hra-inic-bloq']"                     
+                               class="col-md-3"
+                               required
+                               label="{{ 'l-block-init-time' | i18n }}"
+                               canclean>                           
+                        </field> 
+                    </fieldset>  
+                </div>        
+             
+        </totvs-page-form>    
+		
+	</totvs-page-content>
+</totvs-page>

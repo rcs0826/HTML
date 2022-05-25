@@ -1,0 +1,63 @@
+<totvs-page type="detail">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{'l-initial-page' | i18n}}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalconfigpdp">{{'l-portal-config-clien-rep' | i18n}}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalreg/{{controller.father}}">{{'l-portal-reg' | i18n}}</breadcrumb>
+            <breadcrumb>{{'l-detail' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-sequencia' | i18n}} : {{ controller.model['idi-seq-reg'] }}"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action on-back-link="#/dts/mpd/portalreg/{{controller.model['idi-seq']}}"
+                                                    on-edit-link="#/dts/mpd/portalreg/edit/{{controller.model.table}}/{{ controller.model['idi-seq'] }}/{{ controller.model['idi-seq-reg'] }}"
+                                                    on-remove="controller.onRemove">                    
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    
+    <totvs-page-content>
+        <totvs-page-detail>          
+            <totvs-page-detail-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                    title="{{ 'l-cod-tabela' | i18n }}"
+                                    value="{{controller.model['desc-tabela']}}">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                    title="{{ 'l-cod-item' | i18n }}"
+                                    value="{{controller.model['cod-item']}}"
+                                    ng-hide="controller.itemHide">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                    title="{{ 'l-cod-refer' | i18n }}"
+                                    value="{{controller.model['cod-refer']}}"
+                                    ng-hide="controller.itemHide">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                    title="{{ 'l-dat-ini-val-item' | i18n }}"
+                                    value="{{controller.model['dat-livre-3'] | date : ('l-date-format' | i18n) : 'UTC'}}"
+                                    ng-hide="controller.itemHide">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                    title="{{ 'l-dat-fim-val-item' | i18n }}"
+                                    value="{{controller.model['dat-livre-4'] | date : ('l-date-format' | i18n) : 'UTC'}}"
+                                    ng-hide="controller.itemHide">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                    title="{{ 'l-cdn-cond-pag' | i18n }}"
+                                    value="{{controller.model['cdn-cond-pag']}}"
+                                    ng-hide="controller.condPagHide">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                    title="{{ 'l-cod-tab-preco' | i18n }}"
+                                    value="{{controller.model['cod-tab-preco']}}"
+                                    ng-hide="controller.tbPrecoHide">
+            </totvs-page-detail-info>
+			<totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                    title="{{ 'l-canal-venda' | i18n }}"
+                                    value="{{controller.model['cdn-canal-vendas']}}"
+                                    ng-hide="controller.canalVendaHide">
+            </totvs-page-detail-info>
+        </totvs-page-detail>
+    </totvs-page-content>
+</totvs-page>

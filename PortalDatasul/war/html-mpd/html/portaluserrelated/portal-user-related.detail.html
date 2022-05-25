@@ -1,0 +1,51 @@
+<totvs-page type="detail">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{'l-initial-page' | i18n}}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalconfigpdp/">{{'l-portal-config-clien-rep' | i18n}}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portaluserrelated/{{controller.father}}">{{'l-portal-user-related' | i18n}}</breadcrumb>
+            <breadcrumb>{{'l-detail' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title >{{'l-user' | i18n}}: {{ controller.model.cod_usuario }}</totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action on-back-link="#/dts/mpd/portaluserrelated/{{controller.model.idi_seq}}"
+                                                    on-edit-link="#/dts/mpd/portaluserrelated/edit/{{controller.model.idi_seq}}/{{controller.model.cod_usuario}}"
+                                                    on-remove="controller.onRemove">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-detail>
+            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                                    title="{{ 'l-nom-user' | i18n }}"
+                                    value="{{controller.model.nom_usuario}}">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                                    title="{{ 'l-email' | i18n }}"
+                                    value="{{controller.model.cod_e_mail_local}}">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                                    title="{{ 'l-dt-inival' | i18n }}"
+                                    value="{{controller.model.dat_inic_valid | date : ('l-date-format' | i18n) : 'UTC'}}">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                                    title="{{ 'l-dt-fimval' | i18n }}"
+                                    value="{{controller.model.dat_fim_valid | date : ('l-date-format' | i18n) : 'UTC'}}">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                                    title="{{'l-user-bloq' | i18n}}">
+                        {{controller.model.user_block | booleanI18N}}
+            </totvs-page-detail-info>
+            <!-- <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                                    title="{{'l-exibir-imagem-produto' | i18n}}">
+                        {{controller.model.log_img_produto | booleanI18N}}
+            </totvs-page-detail-info> -->
+			<totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                                    title="{{'l-criar-modelo-pedido' | i18n}}">
+                        {{controller.model.log_novo_modelo | booleanI18N}}
+            </totvs-page-detail-info>
+        </totvs-page-detail>
+    </totvs-page-content>
+</totvs-page>

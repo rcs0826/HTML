@@ -1,0 +1,165 @@
+<totvs-page type="detail">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mab/employee">{{'l-workshop-employees' | i18n}}</breadcrumb>
+            <breadcrumb>{{ 'l-detail' | i18n }}</breadcrumb>            
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{controller.model['cod-matr']}} - {{controller.model['nom-func']}}"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action on-back-link="#/dts/mab/employee"
+													hide-edit="true"
+													hide-remove="true">
+					<action ng-click="controller.openEdit()" icon="glyphicon-pencil" >{{ 'l-edit' | i18n }}</action>
+					<action ng-click="controller.delete()" icon="glyphicon-trash" >{{ 'l-remove' | i18n }}</action>		
+				</totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-detail>
+        	<div class="col-lg-12">
+	            <totvs-page-detail-info class="col-md-4 col-xs-12"
+	                                    title="{{ 'l-company' | i18n }}"
+	                                    value="{{controller.model['ep-codigo']}} - {{controller.model['_'].desEmpresa}}">
+	            </totvs-page-detail-info>
+	            <totvs-page-detail-info class="col-md-4 col-xs-12"
+	                                    title="{{ 'l-site' | i18n }}"
+	                                    value="{{controller.model['cod-estabel']}} - {{controller.model['_'].desEstabel}}">
+	            </totvs-page-detail-info>            
+	
+	            <div class="col-md-1 col-xs-12">
+				    <div class="field-label ng-binding">{{ 'l-status' | i18n }}</div>
+				    <span class="label situacao-{{controller.model['idi-situacao']}} ng-binding ng-scope">{{controller.model['_'].situacao.toUpperCase()}}</span>
+				</div>
+				<totvs-page-detail-info ng-if="controller.model['idi-situacao'] === 2"
+										class="col-md-2 col-xs-12"
+	                                    title="{{ 'l-deactivation-date' | i18n }}"
+	                                    value="{{controller.model['dat-desativ'] | date:'dd/MM/yyyy'}}">
+	            </totvs-page-detail-info>
+			</div>
+            
+            <div class="col-lg-12">
+	            <totvs-page-detail-info class="col-md-4 col-xs-12"
+	                                    title="{{ 'l-sector' | i18n }}"
+	                                    value="{{controller.model['cod-setor-ofici']}} - {{controller.model['_'].desSetor}}">
+	            </totvs-page-detail-info>
+	            <totvs-page-detail-info class="col-md-4 col-xs-12"
+	                                    title="{{ 'l-cost-center' | i18n }}"
+	                                    value="{{controller.model['cc-codigo']}} - {{controller.model['_'].desCentroCusto}}">
+	            </totvs-page-detail-info>
+	            <totvs-page-detail-info class="col-md-4 col-xs-12"
+	                                    title="{{ 'l-control-start' | i18n }}"
+	                                    value="{{controller.model['dat-inicial'] | date:'dd/MM/yyyy'}}">
+	            </totvs-page-detail-info>
+	        </div>
+	        
+	        <div class="col-lg-12">
+	            <totvs-page-detail-info class="col-md-4 col-xs-12"
+	                                    title="{{ 'l-direct-labor-code' | i18n }}"
+	                                    value="{{controller.model['cd-mob-dir']}} - {{controller.model['_'].desMobDireta}}">
+	            </totvs-page-detail-info>           
+	            <totvs-page-detail-info class="col-md-4 col-xs-12"
+	                                    title="{{ 'l-control-time' | i18n }}"
+	                                    value="{{controller.model['log-control-hora'] === true ? 'l-yes' : 'l-no' | i18n}}">
+	            </totvs-page-detail-info>
+	            <totvs-page-detail-info class="col-md-4 col-xs-12"
+	                                    title="{{ 'l-create-wo-task' | i18n }}"
+	                                    value="{{controller.model['log-permite-cria-tar'] === true ? 'l-yes' : 'l-no' | i18n}}">
+	            </totvs-page-detail-info>
+	        </div>
+			
+			<div class="col-lg-12">
+	            <totvs-page-detail-info class="col-md-4 col-xs-12"
+	                                    title="{{ 'l-user' | i18n }}"
+	                                    value="{{controller.model['cod-usuar']}}">
+	            </totvs-page-detail-info>           
+	        </div>
+
+            <div class="col-xs-12">
+				<totvs-divider style="margin-top: 10px; margin-bottom: 15px;"></totvs-divider>
+			</div>
+
+			<div class="col-xs-12 mab-group-accordion">
+				<accordion>
+					<div>
+						<accordion-group class="mab-panel" is-open="controller.showChildren">
+							<accordion-heading>
+								<div>
+									{{ 'l-relationships' | i18n}}
+									<i class="pull-right glyphicon"
+									   ng-class="{'glyphicon-chevron-down': controller.showChildren,
+									   			  'glyphicon-chevron-right': !controller.showChildren}">
+									</i>
+								</div>
+							</accordion-heading>
+							
+							<div class="row">
+								<totvs-page-child type="list">
+									<totvs-page-content class="mab-tab">
+										<totvs-tabset class="no-padding col-xs-12">									
+											<totvs-tab ng-controller="mab.employee.specialty.SpecialtyListCtrl as specialtyListCtrl" heading="{{ 'l-specialtys' | i18n }}" >
+												<div ng-include="'/dts/mab/html/employee/specialty/specialty.list.html'"></div>
+											</totvs-tab>
+											<totvs-tab ng-controller="mab.employee.training.TrainingListCtrl as trainingListCtrl" 
+													  heading="{{ 'l-trainings' | i18n }}" 
+													  ng-click="trainingListCtrl.buscaTreinamentosFuncionario()">
+												<div ng-include="'/dts/mab/html/employee/training/training.list.html'"></div>
+											</totvs-tab>
+											<totvs-tab ng-controller="mab.employee.shiftEmployee.ShiftListCtrl as shiftListCtrl" 
+													  heading="{{ 'l-shifts' | i18n }}" 
+													  ng-click="shiftListCtrl.buscaTurnoFuncionario()">
+												<div ng-include="'/dts/mab/html/employee/shiftEmployee/shift.list.html'"></div>
+											</totvs-tab>
+										</totvs-tabset>
+									</totvs-page-content>
+								</totvs-page-child>
+							</div>
+						</accordion-group>
+					</div>
+				</accordion>
+			</div>
+        </totvs-page-detail>
+    </totvs-page-content>
+</totvs-page>
+
+<style>
+	.mab-panel, .mab-tab {
+		border:none;
+		position:relative;
+	}
+	
+	.mab-group-accordion .panel-group>div {
+		margin:0px 0;
+	}
+	
+	.panel-heading {
+    	background-color: #ebf0f0 !important;
+	}
+
+	.panel {
+    	border: medium none !important;
+    	box-shadow: none !important;
+	}
+
+	.panel-group {
+    	margin-bottom: 0 !important;
+	}
+	
+	.no-padding { padding: 0 !important; }
+	
+	.totvs-style-guide hr {
+		margin-top:1px;
+		margin-bottom:1px;
+	}
+	
+	.situacao-1 {
+		background-color: #5f9653;
+	}
+
+	.situacao-2 {
+		background-color: #ff0000;
+	}
+
+</style>

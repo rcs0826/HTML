@@ -1,0 +1,48 @@
+<div ng-controller="salesorder.dashboard.salegoals.Controller as saleGoalsController">
+	<totvs-widget>
+        <totvs-widget-header settings="saleGoalsController.showConfig = true" title="{{'l-sales-goals' | i18n : [] : 'dts/mpd/' }}">			
+        </totvs-widget-header>
+	    <totvs-widget-body>
+                        
+			<div style="height:300px;">
+                                <p ng-if="!saleGoalsController.goalsData || saleGoalsController.goalsData == ''">{{ 'l-loading-portlet' | i18n : [] : 'dts/mpd'}} </p>                                
+				<div ng-if="saleGoalsController.goalsData" ng-hide="saleGoalsController.showConfig" style="height:100%">
+					<chart  dataset="saleGoalsController.goalsData" 
+							options="saleGoalsController.goalsOptions"></chart>
+				</div>
+    				<div ng-show="saleGoalsController.showConfig">
+					<form>
+	                <div class="row">
+	                    <field type="date" ng-model="saleGoalsController.refDate" required class="col-md-12">
+	                        <label>{{ 'reference-date' | i18n : [] : 'dts/mpd/'}}</label> 
+	                    </field>
+						<field  type="select2"
+						        ng-model="saleGoalsController.codEstabel"
+						        class="col-md-12"
+							    select-conector="{{'l-estabel' | i18n : [] : 'dts/mpd/'}}"
+								select-id="cod-estabel"
+								select-description="nome"
+								select-service="mpd.estabelecSE.select">
+							<zoom zoom-service="mpd.estabelecSE.zoom"></zoom>
+							<label>{{'l-estabel' | i18n : [] : 'dts/mpd/'}}</label>
+							<validator key="zoom">{{ 'l-not-found-estabel' | i18n : [] : 'dts/mpd/'}}{{$fieldLabel}}</validator>
+						</field>                    
+	                </div>
+	                </form>
+	                <hr>	                
+	                <a role="button" class="btn btn-default pull-right" ng-click="saleGoalsController.applyConfig()">&nbsp; {{ 'btn-apply' | i18n : [] : 'dts/mpd/' }} &nbsp; </a>	                                
+				</div>
+			</div>
+			
+		</totvs-widget-body>
+        
+        <totvs-widget-footer>
+            <totvs-widget-footer-body>
+            </totvs-widget-footer-body>
+            <totvs-widget-footer-actions>
+                <action link="#/dts/mpd/salesgoals">{{ 'l-detail' | i18n : [] : 'dts/mpd/'}}</action>
+            </totvs-widget-footer-actions>            
+        </totvs-widget-footer>
+	</totvs-widget>
+</div>        
+        

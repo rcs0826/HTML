@@ -1,0 +1,51 @@
+<totvs-modal-header>{{ 'l-productconfigured' | i18n: []: 'dts/mcf' }}</totvs-modal-header>
+<totvs-modal-body>
+    <div class="row">
+ 		<totvs-page-detail>
+		    <totvs-page-detail-info class="col-sm-8"
+		                            title="{{ 'l-item' | i18n: []: 'dts/mcf' }}"
+		                            value="{{controller.config.itemCotacao}} - {{controller.config.descItem}}">
+		    </totvs-page-detail-info>
+		    <totvs-page-detail-info class="col-sm-4"
+		                            title="{{ 'l-measure-unit' | i18n: []: 'dts/mcf' }}"
+		                            value="{{controller.config.un}}">
+		    </totvs-page-detail-info>
+		    <field type="radio"  
+            	   ng-model="controller.config.tipo"
+            	   ng-init="controller.config.tipo = '1'"
+            	   ng-change="controller.config.nrEstrut = '0'">
+            	<totvs-options>
+					<totvs-option value="1">{{ 'l-configure-now' | i18n: []: 'dts/mcf' }}</totvs-option>
+					<totvs-option value="2">{{ 'l-leave-pending' | i18n: []: 'dts/mcf' }}</totvs-option>
+					<totvs-option value="3">{{ 'l-not-leaving-pending' | i18n: []: 'dts/mcf' }}</totvs-option>
+                </totvs-options>
+            </field>
+            <field type="input" class="col-md-6" 
+            	   ng-model="controller.config.nrEstrut"
+            	   ng-hide="controller.config.tipo == '1' || controller.config.tipo == '2'"
+            	   maxlength="7"
+            	   numbers-only>
+            	<zoom zoom-id="nr-estrut"
+				   	  zoom-service="mcf.cot-est-mast.zoom"
+				   	  zoom-refresh-delay=99999999
+				      zoom-init="{'filters': {'item-cotacao': controller.config.itemCotacao}}"></zoom>				   
+                <label>{{ 'l-configuration' | i18n: []: 'dts/mcf' }}</label>
+            </field>
+            <field type="input" class="col-md-12" 
+            	   ng-model="controller.config.observacao"
+            	   maxlength="20">
+                <label>{{ 'l-observation' | i18n: []: 'dts/mcf' }}</label>
+            </field>            
+            <field type="textarea" class="col-md-12" 
+            	   ng-model="controller.config.narrativa"
+            	   maxlength="200"
+            	   ng-hide="controller.config.tipo == '1' || controller.config.tipo == '3'">
+                <label>{{ 'l-narrative' | i18n: []: 'dts/mcf' }}</label>
+            </field>
+	    </totvs-page-detail>
+    </div>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'l-cancel' | i18n: []: 'dts/mcf' }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="controller.confirm();">{{ 'l-confirm' | i18n: []: 'dts/mcf' }}</button>
+</totvs-modal-footer>

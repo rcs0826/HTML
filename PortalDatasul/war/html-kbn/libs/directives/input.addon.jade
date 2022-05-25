@@ -1,0 +1,12 @@
+
+.field-container
+	label.field-label
+	.field-input
+		.input-group
+			input.form-control(type="text", bind)
+			.input-group-addon
+		.tooltip.bottom(ng-class="{'in': $fieldErrors.length, 'off': !$fieldErrors.length}")
+			.tooltip-inner
+				.help-inline(ng-repeat="error in $fieldErrors")
+					{{$validationMessages[error](this)}}
+			.tooltip-arrow

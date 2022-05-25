@@ -1,0 +1,61 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_hier_time : ('btn-hierarchy' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>    
+    <fieldset class="row">
+		<field type="input"
+			   class="col-md-6"
+               maxlength="40"
+			   ng-required="true"
+			   ng-model="controller.model.nom_hier_time"
+			   canclean="undefined"
+			   placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+		</field>
+        
+        <totvs-field totvs-combo
+					 label="{{'l-repor-to' | i18n: []: 'dts/crm' }}"
+					 ng-model="controller.model.num_id_hier_reporta_a"
+					 t-options="controller.hierarchies"
+					 ng-required="false"
+					 canclean>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</totvs-field>
+        
+        <field type="select"
+			   ng-model="controller.model.cod_usuario"
+			   canclean="undefined">
+			<label>{{ 'l-leader-user' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.usuar_mestre.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-leader-user' | i18n: []: 'dts/crm' }}">
+					{{$select.selected.nom_usuario}}
+				</ui-select-match>
+				<ui-select-choices repeat="user in controller.masterUsers track by $index"
+								   refresh="controller.getMasterUsers($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="user.nom_usuario | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+        
+    </fieldset>
+    
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" 
+            ng-click="controller.cancel()">
+        {{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+    </button>
+    <button class="btn btn-default" 
+            ng-click="controller.save(true)" 
+            ng-if="controller.editMode === false;">
+        {{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+    </button>
+	<button class="btn btn-primary" 
+            ng-click="controller.save(false)">
+        {{ 'btn-save' | i18n: []: 'dts/crm' }}
+    </button>
+</totvs-modal-footer>

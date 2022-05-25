@@ -1,0 +1,61 @@
+<totvs-page type="detail" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-order-history' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		
+		<totvs-page-header>
+     
+            <totvs-page-header-title title="{{ 'l-order-history' | i18n }} {{controller.orderId}}"></totvs-page-header-title>
+		</totvs-page-header>	
+	</totvs-page-navbar>
+	
+	<totvs-page-content>
+		<totvs-page-detail>
+                    
+                    <div ng-if="controller.history.length <= 0">
+                        </br>
+                        <alert type="danger">{{ 'l-no-history' | i18n : [] : 'dts/mpd/'}}</alert>
+                    </div>
+                    
+                    <div ng-if="controller.history.length > 0">
+                    
+			<totvs-list-item ng-repeat="hist in controller.history">
+				<totvs-list-item-content>
+					<totvs-list-item-info class="col-xs-12 col-sm-12 col-md-12" title="Hist&oacute;rico">{{hist['dat_histor'] | date : ('l-date-format' | i18n) : 'UTC'}} {{hist['hra_histor']}} - {{hist['des_cod_classif']}} ({{hist['cod_usuar']}})</totvs-list-item-info>
+				</totvs-list-item-content>
+				<totvs-list-item-content-detail>
+					<totvs-list-item-info title="{{ 'date' | i18n  }}" class="col-xs col-sm-4 col-md-4 detail-span">
+						{{hist['dat_histor'] | date : ('l-date-format' | i18n) : 'UTC'}}
+					</totvs-list-item-info>
+
+					<totvs-list-item-info title="{{ 'l-time' | i18n }}" class="col-xs col-sm-4 col-md-4 detail-span">
+						{{hist['hra_histor']}}
+					</totvs-list-item-info>
+
+					<totvs-list-item-info title="{{ 'l-usuario' | i18n }}" class="col-xs col-sm-4 col-md-4 detail-span">
+						{{hist['cod_usuar']}}
+					</totvs-list-item-info>
+
+					<totvs-list-item-info title="{{ 'l-cdn-tip-histor' | i18n }}" class="col-xs col-sm-4 col-md-4 detail-span">
+						{{hist['des_cdn_tip_histor']}}
+					</totvs-list-item-info>
+
+					<totvs-list-item-info title="{{ 'l-cod-classif' | i18n }}" class="col-xs col-sm-4 col-md-4 detail-span">
+						{{hist['des_cod_classif']}}
+					</totvs-list-item-info>
+
+					<totvs-list-item-info title="{{ 'l-des-compl' | i18n }}" class="col-xs col-sm-4 col-md-4 detail-span">
+						{{hist['des_compl']}}
+					</totvs-list-item-info>
+
+					<totvs-list-item-info title="{{ 'l-des-histor' | i18n }}" class="col-xs col-sm-4 col-md-4 detail-span">
+						{{hist['des_histor']}}
+					</totvs-list-item-info>
+				</totvs-list-item-content-detail>
+			</totvs-list-item>
+                    </div>    
+		</totvs-page-detail>		
+	</totvs-page-content>
+</totvs-page>

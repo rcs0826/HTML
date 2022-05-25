@@ -1,0 +1,51 @@
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+link(rel="stylesheet" href="/dts/kbn/css/font-awesome.css")
+totvs-page(type='list')
+	totvs-page-navbar
+		totvs-page-breadcrumb
+			breadcrumb(link="#/") {{ 'l-home' | i18n }}
+			breadcrumb {{ 'l-mapping' | i18n }}
+		totvs-page-header
+			totvs-page-header-title(title="{{ 'l-mapping-list' | i18n }}" total="{{controller.totalRecords}}") 
+			totvs-page-header-operation
+				totvs-page-header-operation-action(limit-primary-action="2")
+					action(icon="glyphicon-plus", ng-click="controller.openModalRelatedActions('new', map);") {{ 'l-new-mapping' | i18n }}
+				div.col-md-5.col-sm-5
+				totvs-page-header-operation-filter(placeholder="{{ 'l-description' | i18n}}",
+													ng-submit="controller.quickSearch()", 
+													ng-model="controller.quickSearchText" 
+													advanced-search="controller.openAdvancedSearch")
+			totvs-page-tags
+				tag.vermelho {{ 'l-not-published' | i18n}}
+				tag.verde {{ 'l-published' | i18n}}
+				tag.azul {{ 'l-unpublished' | i18n}}
+			totvs-page-disclaimers(disclaimer-list="controller.filtersApplied", ng-click="controller.removeFilter")
+
+	totvs-page-content
+		totvs-page-content-header
+			totvs-page-quick-filter(filters-list="controller.preSavedFilters", on-select-filter="controller.selectQuickFilter")
+		totvs-page-alert(ng-if="controller.listMap.length === 0" type="info" message="{{ 'msg-not-found' | i18n }}")
+		totvs-list-item(class="{{controller.colorTagStatus(map.idi_status)}}" data-ng-repeat="map in controller.listMap")
+			totvs-list-item-header
+				totvs-list-item-title(title="{{map.des_mapeamento}}", link="#/dts/kbn/mapping/{{map.num_id_mapeamento}}")
+				totvs-list-item-action(limit-primary-action="3")
+					action.btn-success(icon="glyphicon-cog", ng-if="[1,2].indexOf(map.idi_status) != -1", data-ng-click="controller.openPublishModal(map)")
+						{{ 'l-publish' | i18n }}
+					action(icon="glyphicon-th-list", link="#/dts/kbn/mapping/{{map.num_id_mapeamento}}")
+						{{ 'l-list-flows' | i18n }}
+					action(icon="glyphicon-th", ng-if="map.hasItem", link="#/dts/kbn/mapping/cell/{{map.num_id_mapeamento}}")
+						{{ 'l-list-cells' | i18n }}
+					action(ng-if="map.idi_status == 1", data-ng-click="controller.openModalRelatedActions('edit', map)")
+						{{ 'l-edit' | i18n }}
+					action(data-ng-click="controller.openModalRelatedActions('clone', map)")
+						{{ 'l-clone' | i18n }}
+					action(ng-if="[1,2].indexOf(map.idi_status) != -1", data-ng-click="controller.validPendencies(map)")
+						{{ 'l-valid-pendencies' | i18n }}
+					action(ng-if="!map.publicationDate && map.idi_status == 1 || map.idi_status == 2", data-ng-click="controller.remove(map)")
+						{{ 'l-to-exclude' | i18n }}
+			totvs-list-item-content
+				totvs-list-item-info.col-md-3(title="{{'l-cutoff-date' | i18n}}", value="{{map.dat_corte | kbnDateFormat}}")
+				totvs-list-item-info.col-md-3(title="{{'l-site' | i18n}}", value="{{map.cod_estab_erp}}")
+				totvs-list-item-info.col-md-3(ng-show="map.dat_publicacao", title="{{'l-publication-date' | i18n}}", value="{{map.dat_publicacao | kbnDateFormat}}")
+		.container(align="center")
+			pagination.pagination-sm(total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages", items-per-page="controller.pageSize", previous-text="{{'l-previous' | i18n}}", next-text="{{'l-next' | i18n}}")

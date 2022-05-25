@@ -1,0 +1,157 @@
+<totvs-page type="detail"> 
+
+    <totvs-page-navbar>
+
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hrc-transactionVsUserAssociative/">Associativa Transação x Usuário</breadcrumb>
+                <breadcrumb></breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Associativa Transação x Usuário" >
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action on-back="controller.onCancel"
+                                                    on-cancel="controller.onCancel"
+                                                    on-save-new="controller.onSaveNew"
+                                                    hide-edit="true"
+                                                    hide-remove="true"
+                                                    hide-save-new="{{controller.action === 'INSERT' ? false : true }}">
+                </totvs-page-header-operation-action>
+
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+
+        <totvs-page-form>
+            <fieldset>        
+
+                <legend>Transação / Usuário</legend>                                  
+            
+
+                <totvs-field  totvs-select name-id="transacaoZoom"
+                        ng-model="controller.transactionVsUserAssociative.cdTransacao"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Transação"
+                        required 
+                        canclean
+                        select-service="hrc.transactionZoomController"
+                        zoom-service="hrc.transactionZoomController"
+                        select-id="cdTransacao" 
+                        select-description="dsTransacao"
+                        ng-disabled="controller.action == 'DETAIL' || controller.action == 'EDIT'"> 
+                </totvs-field>
+
+
+                <field  type="input"
+                        label="fake" style="visibility: hidden"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-sm-height">
+                </field>                       
+
+
+                <totvs-field  totvs-select name-id="deUsuarioZoom"
+                        ng-model="controller.transactionVsUserAssociative.cdUseridTransacao"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Usuário"
+                        required 
+                        canclean
+                        select-service="hrc.userZoomController"
+                        zoom-service="hrc.userZoomController"
+                        select-id="codUsuario" 
+                        select-description="nomUsuario"
+                        ng-disabled="controller.action == 'DETAIL' || controller.action == 'EDIT'"> 
+                </totvs-field>  
+                                            
+                <field type="input"
+                        label="fake" style="visibility: hidden"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-sm-height">
+                </field>
+
+                <field  type="checkbox"
+                        label="Permite Validar"                        
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"                        data-ng-model="controller.transactionVsUserAssociative.lgAutorizaDigitacao"                              
+                        ng-disabled="controller.action == 'DETAIL'"
+                        >
+                </field>
+
+                <field  type="checkbox"
+                        label="Situação Única"                        
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"                        data-ng-model="controller.transactionVsUserAssociative.lgUnicaSitPeriodo"                              
+                        ng-disabled="controller.action == 'DETAIL'"
+                        >
+                </field>
+
+
+                <field  type="input"
+                        label="fake" style="visibility: hidden"
+                        class="col-lg-8 col-md-8 col-sm-8 col-xs-12 col-sm-height">
+                </field> 
+
+                <div ng-if="controller.transactionVsUserAssociative.lgUnicaSitPeriodo">
+                    
+                <totvs-field  totvs-select name-id="sitPerZoom"
+                        ng-model="controller.transactionVsUserAssociative.cdSitPer"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Situação do Período"
+                        required 
+                        canclean
+                        select-service="hrc.sitPerZoomController"
+                        zoom-service="hrc.sitPerZoomController"
+                        select-id="cdSitPer" 
+                        select-description="dsSitPer"
+                        ng-disabled="controller.action == 'DETAIL'"> 
+                </totvs-field>
+
+                        <field type="input"
+                                label="fake" style="visibility: hidden"
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-sm-height">
+                        </field>
+
+                </div>
+
+                <legend>Atualização</legend>  
+
+               <div ng-if="controller.action == 'DETAIL'">                
+                    <field  type="input"
+                            label=""                         
+                            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"                            data-ng-model="controller.transactionVsUserAssociative.cdUserid"                          
+                            ng-disabled="true">
+                    </field>
+
+                    <field  type="input"
+                            label="fake" style="visibility: hidden"
+                            class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                    </field>                     
+                </div>                 
+
+                <field  type="date"
+                        label=""                        
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        data-ng-model="controller.transactionVsUserAssociative.dtAtualizacao"       ng-disabled="true">
+                </field> 
+
+                <field  type="input"
+                        label="fake" style="visibility: hidden"
+                        class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                </field>  
+
+
+                <legend>Observação / Justificativa</legend>
+
+                <field  type="textarea" style="width:100%;" 
+                        data-ng-model="controller.transactionVsUserAssociative.dsObservacao"
+                        ng-readonly="controller.action === 'DETAIL'">
+                </field>              
+                
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>   
+</totvs-page>
+

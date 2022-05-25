@@ -1,0 +1,89 @@
+<totvs-page type="base"> 
+
+    <totvs-page-navbar >
+
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#dtshrs/adjustmentPercentage/">Percentual de Reajuste</breadcrumb>
+                <breadcrumb>Manutenção de Percentual de Reajuste</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Percentual de Reajuste">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                    <action ng-click="controller.saveNew();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Novo</action>
+                    <action class="btn-primary"
+                            ng-click="controller.saveClose();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Fechar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.adjustmentPercentageForm">
+            <fieldset>
+                <totvs-row>
+                    <totvs-field
+                        totvs-number  
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12" 
+                        label="Ano Período"
+                        numbers-only
+                        t-maxlength=4
+                        min="1900"
+                        max="2500"
+                        ng-required="true"                
+                        ng-model="controller.adjustmentPercentage.numAno"		
+                        ng-disabled="controller.action != 'INSERT'">
+                        <validator key="required">Este campo é obrigatório!</validator>
+                        <validator key="min">Valor mínimo do campo: 1900</validator>
+                        <validator key="max">Valor máximo do campo: 2500</validator>
+                    </totvs-field>
+                    <totvs-field
+                        totvs-combo
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12" 
+                        ng-required="true"     
+                 		label="Mês Período"
+                        t-options="[{value:  1, label: 'Janeiro'},
+                                    {value:  2, label: 'Fevereiro'},
+                                    {value:  3, label: 'Março'},
+                                    {value:  4, label: 'Abril'},
+                                    {value:  5, label: 'Maio'},
+                                    {value:  6, label: 'Junho'},
+                                    {value:  7, label: 'Julho'},
+                                    {value:  8, label: 'Agosto'},
+                                    {value:  9, label: 'Setembro'},
+                                    {value: 10, label: 'Outubro'},
+                                    {value: 11, label: 'Novembro'},
+                                    {value: 12, label: 'Dezembro'}]"
+                 		ng-model="controller.adjustmentPercentage.numMes"			
+                        ng-disabled="controller.action != 'INSERT'">
+                        <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field>
+                    <totvs-field
+                        totvs-decimal
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12" 
+                        numbers-only
+                        t-maxlength="2"
+                        ng-required="true"               
+                        label="Valor Percentual"
+                        ng-model="controller.adjustmentPercentage.valPerc"			
+                        ng-disabled="controller.action != 'INSERT'">
+                        <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field>
+                </totvs-row>
+            </fieldset>
+        </totvs-page-form>        
+    </totvs-page-content>   
+</totvs-page>
+
+

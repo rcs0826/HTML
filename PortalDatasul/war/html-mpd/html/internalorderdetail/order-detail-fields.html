@@ -1,0 +1,1007 @@
+<div class="col-md-12">
+	<accordion close-others="false">
+		<% _.forEach(data, function(group) { %>
+			<% if (group.item.codeGroup == 1 && group.item.visible == true) { %>
+				<accordion-group is-open="controller.listGroups[0].item.expanded">
+					<accordion-heading>
+						{{ 'l-dados-gerais' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+				   			ng-class="{
+								'glyphicon-chevron-down' : controller.listGroups[0].item.expanded,
+							  	'glyphicon-chevron-right': !controller.listGroups[0].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+					
+					<totvs-page-detail-info title="{{ 'l-cod-estabel' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-estabel'] }} - {{ controller.ttOrderDetails['cod-estabel-desc'] }}
+					</totvs-page-detail-info>
+					<totvs-page-detail-info title="{{ 'l-canal-venda' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-canal-venda'] }} - {{ controller.ttOrderDetails['cod-canal-venda-desc'] }}
+					</totvs-page-detail-info>
+					<totvs-page-detail-info title="{{ 'l-cod-sit-aval' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-sit-aval'] }} - {{ controller.ttOrderDetails['cod-sit-aval-desc'] }}
+					</totvs-page-detail-info>
+					<totvs-page-detail-info title="{{ 'l-cod-sit-com' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-sit-com'] }} - {{ controller.ttOrderDetails['cod-sit-com-desc'] }}
+					</totvs-page-detail-info>
+					<totvs-page-detail-info title="{{ 'l-cod-sit-ped' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-sit-ped'] }} - {{ controller.ttOrderDetails['cod-sit-ped-desc'] }}
+					</totvs-page-detail-info>
+					<totvs-page-detail-info title="{{ 'l-cod-sit-pre' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-sit-pre'] }} - {{ controller.ttOrderDetails['cod-sit-pre-desc'] }}
+					</totvs-page-detail-info>
+					<totvs-page-detail-info title="{{ 'l-cod-sit-preco' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-sit-preco'] }} - {{ controller.ttOrderDetails['cod-sit-preco-desc'] }}
+					</totvs-page-detail-info>
+					<totvs-page-detail-info title="{{ 'l-completo' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['completo']| booleanI18N }}
+					</totvs-page-detail-info>
+					<totvs-page-detail-info ng-if="controller.ttOrderDetails['sugestOperTypeActive']" title="{{ 'l-tp-oper' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['tp-operacao'] }} - {{ controller.ttOrderDetails['des-tp-operacao'] }}
+					</totvs-page-detail-info>            
+					<totvs-page-detail-info ng-if="controller.ttOrderDetails['loadingLocationActive']" title="{{ 'Local de Carregamento' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['local-carregamento'] }} - {{ controller.ttOrderDetails['des-local-carregamento'] }}
+					</totvs-page-detail-info>
+					<totvs-page-detail-info ng-if="controller.ttOrderDetails['esp-ped-desc']" title="{{ 'Espécie de Pedido' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['esp-ped-desc'] }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 2) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[1].item.expanded">
+					<accordion-heading>
+						{{ 'l-informacoes-fiscais' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+				   			ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[1].item.expanded,
+							  	'glyphicon-chevron-right': !controller.listGroups[1].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{ 'l-condicao-pagamento' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-cond-pag'] }} - {{ controller.ttOrderDetails['cod-cond-pag-desc'] }}
+					</totvs-page-detail-info>
+					<totvs-page-detail-info title="{{ 'l-cod-des-merc' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-des-merc'] }} - {{ controller.ttOrderDetails['cod-des-merc-desc'] }}
+					</totvs-page-detail-info>
+					<totvs-page-detail-info title="{{ 'l-natur-oper' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['nat-operacao'] }} - {{ controller.ttOrderDetails['nat-operacao-desc'] }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 3) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[2].item.expanded">
+					<accordion-heading>
+						{{ 'l-valores-do-pedido' | i18n: []:  'dts/mpd' }}
+				
+						<i
+							class="pull-right glyphicon"
+				   			ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[2].item.expanded,
+							  	'glyphicon-chevron-right': !controller.listGroups[2].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{ 'l-vl-tot-ped' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['vl-tot-ped']| number:2 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-vl-liq-abe' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['vl-liq-abe']| number:2 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-vl-liq-ped' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['vl-liq-ped']| number:2 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-val-desconto-total' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['val-desconto-total']| number:2 }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 4) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[3].item.expanded">
+					<accordion-heading>
+						{{ 'l-informacoes-de-data' | i18n: []:  'dts/mpd' }}
+				
+						<i
+							class="pull-right glyphicon"
+				   			ng-class="{
+								   'glyphicon-chevron-down' :  controller.listGroups[3].item.expanded,
+							  	'glyphicon-chevron-right': !controller.listGroups[3].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{ 'l-dt-entrega' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-entrega']  | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-dt-entorig' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-entorig']  | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-dt-entrega-prim' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-entrega-prim'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-dt-minfat' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-minfat'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-dt-lim-fat' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-lim-fat'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-dt-inivig' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-inivig'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-dt-fimvig' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-fimvig'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 5) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[4].item.expanded">
+					<accordion-heading>
+						{{ 'l-endereco-entrega' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[4].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[4].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{ 'l-cod-entrega' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-entrega'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-local-entreg' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['local-entreg'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-cidade' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cidade'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-cep' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cep'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-estado' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['estado'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-bairro' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['bairro'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-caixa-postal' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['caixa-postal'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-pais' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['pais'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-cpf-cnpj' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cgc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-ins-estadual' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['ins-estadual'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-usa-end-fatur' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['ind-ender-fatur']| booleanI18N }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-endereco_text' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['endereco_text'] }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 6) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[5].item.expanded">
+					<accordion-heading>
+						{{ 'l-observacoes' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[5].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[5].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{ 'l-observacoes' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-12 col-md-12">
+						{{ controller.ttOrderDetails['observacoes'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-cond-espec' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cond-espec'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-cons-mrp' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cons-mrp']| booleanI18N }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-cons-pv' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cons-pmp']| booleanI18N }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-num-contrato' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['nr-contrato'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-num-ped-crm' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['nr-pedi'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-entrega-completa' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['ind-ent-completa']| booleanI18N }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-forma-implant' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['ind-imp-ped'] }} - {{ controller.ttOrderDetails['ind-imp-ped-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-usuario-aprov' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['user-aprov'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-aprovacao' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['ind-aprov']| booleanI18N }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-permission' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['permissao'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-proc-exp' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['nr-proc-exp'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-num-proforma' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['nr-proforma'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-tipo-pedido' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['tp-pedido'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-origem' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['origem'] }} - {{ controller.ttOrderDetails['origem-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-cod-priori' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-priori'] }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 7) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[6].item.expanded">
+					<accordion-heading>
+						{{ 'l-cancelamento' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[6].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[6].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{ 'l-dt-cancela' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{controller.ttOrderDetails['dt-cancela'] | date : ('l-date-format' | i18n) : 'UTC'}}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-cd-cancela' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{controller.ttOrderDetails['cod-mot-canc-cot']}} - {{controller.ttOrderDetails['cod-mot-canc-cot-desc']}}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-desc-cancela' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{controller.ttOrderDetails['desc-cancela']}}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-user-canc' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{controller.ttOrderDetails['user-canc']}}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 8) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[7].item.expanded">
+					<accordion-heading>
+						{{ 'l-sup-reat' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[7].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[7].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{'l-dt-suspensao'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-suspensao'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'l-usuario-suspencao'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['user-suspen'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-dt-usersusp' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-usersusp'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-desc-suspend' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-12 col-md-12">
+						{{ controller.ttOrderDetails['desc-suspend'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'l-dt-reativ'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-reativ'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'l-usuario-reativacao'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['user-reat'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-dt-userrea' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-userrea'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-desc-reativa' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-12 col-md-12">
+						{{ controller.ttOrderDetails['desc-reativa'] }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 9) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[8].item.expanded">
+					<accordion-heading>
+						{{ 'l-impl-alt' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[8].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[8].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{ 'l-data-implant' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-implant'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-user-order-adder' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['user-impl'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-dt-userimp' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-userimp'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-proc-edi' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['proc-edi'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-dt-useralt' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-useralt'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-user-alte' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['user-alte'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-dat-alter-sit' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dat-alter-sit'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-cod-usu-alt-sit' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-usu-alt-sit'] }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 10) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[9].item.expanded">
+					<accordion-heading>
+						{{ 'l-credit-aval' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[9].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[9].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{ 'l-cod-sit-aval' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-sit-aval'] }} - {{ controller.ttOrderDetails['cod-sit-aval-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-desc-bloq-cr' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['desc-bloq-cr'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-quem-aprovou' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['quem-aprovou'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-aprov-forcado' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['aprov-forcado'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-desc-forc-cr' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['desc-forc-cr'] }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 11) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[10].item.expanded">
+					<accordion-heading>
+						{{ 'l-prices' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[10].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[10].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{ 'l-mo-codigo' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['mo-codigo'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-mo-fatur' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['mo-fatur'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-nr-tab-finan' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['nr-tab-finan'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-nr-ind-finan' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['nr-ind-finan'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-tp-preco' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['tp-preco'] }} - {{ controller.ttOrderDetails['tp-preco-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-nr-tabpre' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['nr-tabpre'] }} - {{ controller.ttOrderDetails['nr-tabpre-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-log-usa-tabela-desconto' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['log-usa-tabela-desconto']| booleanI18N }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-dat-aprov-preco' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dat-aprov-preco'] | date : ('l-date-format' | i18n) : 'UTC '}}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-desc-lib-preco' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['desc-lib-preco'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-user-preco' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['user-preco'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-pct-min-rentab' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['pct-min-rentab']| number:4 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-dt-base-ft' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-base-ft'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 12) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[11].item.expanded">
+					<accordion-heading>
+						{{ 'l-faturamento' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[11].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[11].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{ '% Máximo Cancelamento Saldo' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['per-max-canc']| number:4 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'Atendimento Total/Data Base' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['atendido']| booleanI18N }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'Faturamento Parcial' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['ind-fat-par']| booleanI18N }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'Libera NF' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['ind-lib-nota']| booleanI18N }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'Mensagem' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-mensagem'] }} - {{ controller.ttOrderDetails['cod-mensagem-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'Moeda Faturamento' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['mo-fatur'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'Descrição Tipo Faturamento' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['tp-faturam-desc'] }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 13) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[12].item.expanded">
+					<accordion-heading>
+						{{ 'Pré Faturamento' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[12].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[12].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{ 'Disponível para envio?' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dsp-pre-fat']| booleanI18N }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Data Mensagem'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-mensagem'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Mensagem Alerta'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-message-alerta'] }} - {{ controller.ttOrderDetails['cod-message-alerta-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Nome Programa'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['nome-prog'] }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 14) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[13].item.expanded">
+					<accordion-heading>
+						{{ 'Cobrança' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[13].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[13].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{'Cobrança'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-portador']}} - {{ controller.ttOrderDetails['cod-portador-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Modalidade Cobrança'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['modalidade']}} - {{ controller.ttOrderDetails['modalidade-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Taxa Financeira Original'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['taxa-orig'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Taxa Financeira Real'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['taxa-real'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Tipo Cobrança Despesas'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['tip-cob-desp'] }} - {{ controller.ttOrderDetails['desc-tip-cob-desp'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Unidade de Negócio'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-unid-negoc'] }} - {{ controller.ttOrderDetails['cod-unid-negoc-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Condição de Pagamento'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-cond-pag'] }} - {{ controller.ttOrderDetails['cod-cond-pag-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Juros Pro Rata'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['log-juros-prorate']| booleanI18N }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Antecipação'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['ind-antecip']| booleanI18N }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Tipo Receita'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['tp-receita'] }} - {{ controller.ttOrderDetails['tp-receita-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Data Prevista Vendor'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dt-prev-vend'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 15) && (group.item.visible == true)){ %>
+				<accordion-group is-open="controller.listGroups[14].item.expanded">
+					<accordion-heading>
+						{{ 'Descontos' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[14].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[14].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{'Percentual Desconto Informado'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['des-pct-desconto-inform'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Desconto Cliente'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['perc-desco1']| number:4 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Desconto por Valor'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['desc-valor-ped']| number:5 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Desconto-2'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['perc-desco2']| number:4 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Percentual de Desconto Total'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['val-pct-desconto-total']| number:4 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Percentual de Desconto Valor'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['val-pct-desconto-valor']| number:4 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Data Sit Desconto'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['dat-sit-desconto'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Motivo Liberação Desconto'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['desc-lib-desconto'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Bonificação'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['val-pct-desc-politic-bonifi']| number:2 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Desconto Extra'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['inc-desc-txt']| booleanI18N }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Situação Avaliação Desconto'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['ind-sit-desconto'] }} - {{ controller.ttOrderDetails['ind-sit-desconto-desc'] }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 16) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[15].item.expanded">
+					<accordion-heading>
+						{{ 'Bonificação' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[15].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[15].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{'Numero Pedido Origem'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['num-pedido-origem'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Situação Pedido'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-sit-ped'] }} - {{ controller.ttOrderDetails['cod-sit-ped-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Geração Bonificação Pendente'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['log-ped-bonif-pendente']| booleanI18N }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Bonificação Atualizada'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['log-pedido-alterado']| booleanI18N }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Pedido Bonificação'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['num-pedido-bonif'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Situação Pedido Bonificação'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['bonif-cod-sit-ped'] }} - {{ controller.ttOrderDetails['bonif-cod-sit-ped-desc'] }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 17) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[16].item.expanded">
+					<accordion-heading>
+						{{ 'Dados Fiscais' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[16].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[16].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{'Destino Mercadoria'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-des-merc'] }} - {{ controller.ttOrderDetails['cod-des-merc-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Natureza de Operação'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['nat-operacao'] }} - {{ controller.ttOrderDetails['nat-operacao-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Percentual Desconto ICMS'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['per-des-icms']| number:3 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Cliente Remessa Triang'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['nome-abrev-tri'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Código Entrega Triang'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-entrega-tri'] }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 18) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[17].item.expanded">
+					<accordion-heading>
+						{{ 'Cliente' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[17].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[17].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{'Grupo Cliente'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-gr-cli'] }} - {{ controller.ttOrderDetails['cod-gr-cli-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Contato'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['contato'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'E-mail'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['e-mail'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Versão Pedido Cliente'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['nr-versao'] }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 19) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[18].item.expanded" totvs-custom-element="customDeliveryAccordion">
+					<accordion-heading>
+						{{ 'Frete' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[18].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[18].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{'Descrição Tipo do Frete'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['ind-tp-frete-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Cidade CIF'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cidade-cif'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Modalidade Frete'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['des-modalid-frete'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Placa'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['placa'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'UF Placa'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['uf-placa'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Rota'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-rota'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Distância'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['distancia'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Transportador'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['nome-transp'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Transportador de Redespacho'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['nome-tr-red'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Condições de Redespacho'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-12 col-md-12">
+						{{ controller.ttOrderDetails['cond-redespa'] }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 20) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[19].item.expanded">
+					<accordion-heading>
+						{{ 'Multiplanta' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[19].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[19].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{'Estabelecimento de Atendimento'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['estab-atend'] }} - {{ controller.ttOrderDetails['estab-atend-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Estabelecimento de Controle'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['estab-central'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Estabelecimento Destino'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['estab-destino'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Pedido do Cliente'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['cod-ped-clien-mp'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Réplica Pedido'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['replica-pd']| booleanI18N }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{'Pedido MP'| i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['log-pedido-mp']| booleanI18N }} {{ controller.ttOrderDetails['pedido-mp']| booleanI18N }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 21) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[20].item.expanded" ng-show="controller.ttOrderDetails['funcao-vendor']">
+					<accordion-heading>
+						{{ 'l-vendor' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[20].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[20].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{ 'l-taxa-cliente' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderVendor['taxa-cliente']| number:4 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-cod-cond-pag' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderVendor['cod-cond-pag'] }} - {{ controller.ttOrderVendor['cod-cond-pag-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-dias-base' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderVendor['dias-base'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-data-base' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderVendor['data-base'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+
+			<% if ((group.item.codeGroup == 22) && (group.item.visible == true)) { %>
+				<accordion-group is-open="controller.listGroups[21].item.expanded" ng-show="controller.ttOrderDetails['modulo-graos']">
+					<accordion-heading>
+						{{ 'l-graos' | i18n: []:  'dts/mpd' }}
+
+						<i
+							class="pull-right glyphicon"
+							ng-class="{
+								'glyphicon-chevron-down' :  controller.listGroups[21].item.expanded,
+								'glyphicon-chevron-right': !controller.listGroups[21].item.expanded
+							}"
+						>
+						</i>
+					</accordion-heading>
+
+					<totvs-page-detail-info title="{{ 'l-grains-contract' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['grainsContract'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-grains-harvest' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-6 col-md-4">
+						{{ controller.ttOrderDetails['grainsHarvest'] }}
+					</totvs-page-detail-info>
+				</accordion-group>
+			<% } %>
+		<% } )%>
+	</accordion>
+</div>

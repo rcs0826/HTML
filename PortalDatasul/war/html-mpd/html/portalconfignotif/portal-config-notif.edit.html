@@ -1,0 +1,90 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{'l-initial-page' | i18n}}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalconfigpdp/">{{'l-portal-config-clien-rep' | i18n}}</breadcrumb>
+            <breadcrumb>{{'l-config-notif' | i18n}}</breadcrumb>            
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-config-notif' | i18n}}"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new='true'>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form>
+            <fieldset>
+                <form class="form-horizontal" role="form">
+                    <field type="textarea" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-ng-model="controller.listResult.c_emailsAdicionais">
+                        <label>{{'l-email-adicionais' | i18n}}</label>
+                    </field>
+                    <div class="col-md-12 field" style="padding-left: 15px; padding-top: 10px">
+                        <label class="field-label" tooltip="{{'l-help-notification-customer' | i18n}}" tooltip-placement="top">{{'l-send-notification-customer' | i18n}}</label>
+                        <div class="field-input">
+                            <div class="btn-group btn-group">
+                                <button class="btn btn-default" style="opacity: 1" ng-class="{active: controller.listResult.l_sendToClient == true}" ng-click="controller.listResult.l_sendToClient = true">{{'l-yes' | i18n}}</button>
+                                <button class="btn btn-default" style="opacity: 1" ng-class="{active: controller.listResult.l_sendToClient == false}" ng-click="controller.listResult.l_sendToClient = false">{{'l-no' | i18n}}</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 field" style="padding-left: 15px; padding-top: 10px">
+                        <label class="field-label" tooltip="{{'l-help-notification-representative' | i18n}}" tooltip-placement="top">{{'l-send-notification-representative' | i18n}}</label>
+                        <div class="field-input">
+                            <div class="btn-group btn-group">
+                                <button class="btn btn-default" style="opacity: 1" ng-class="{active: controller.listResult.l_sendToRepres == true}" ng-click="controller.listResult.l_sendToRepres = true">{{'l-yes' | i18n}}</button>
+                                <button class="btn btn-default" style="opacity: 1" ng-class="{active: controller.listResult.l_sendToRepres == false}" ng-click="controller.listResult.l_sendToRepres = false">{{'l-no' | i18n}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h2>{{'l-eventos-notif' | i18n}}</h4>
+                    <hr>
+                    <form class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom: 10px" ng-repeat="message in controller.messages | filter:controller.messageFilter">
+                        <div>
+                            <label>{{message.message_label}}</label>
+                            <div class="col-md-12 field" style="padding-left: 0px; padding-right: 0px">
+                                <label class="field-label" tooltip="{{'l-report-email' | i18n}}{{message.message_label}}" tooltip-placement="top">{{'l-send-notif' | i18n}}</label>
+                                <div class="field-input">
+                                    <div class="btn-group btn-group">
+                                        <button class="btn btn-default" style="opacity: 1" 
+                                            ng-class="{active: message.send_notification == true}"
+                                            ng-click="message.send_notification = true">{{'l-yes' | i18n}}</button>
+                                        <button class="btn btn-default" style="opacity: 1" 
+                                            ng-class="{active: message.send_notification == false}"
+                                            ng-click="message.send_notification = false">{{'l-no' | i18n}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div ng-show="message.use_html_model == 'true' && message.send_notification == true" class="col-md-12 field" style="padding-left: 0px; padding-right: 0px">
+                                <label class="field-label" tooltip="{{'l-body-msg-notif-html' | i18n}}" tooltip-placement="top" style="padding-top: 10px">{{'l-mensagem' | i18n}}</label>
+                                <textarea maxlength="10"
+                                          kendo-editor
+                                          k-tools="controller.ktools"
+                                          k-ng-model="message.message_text"
+                                          style="height: 300px">
+                                </textarea>
+                            </div>
+                            
+                            <div ng-show="message.use_html_model != 'true' && message.send_notification == true" class="col-md-12 field" style="padding-left: 0px; padding-right: 0px">
+                                <label class="field-label" tooltip="{{'l-body-msg-notif-html' | i18n}}" tooltip-placement="top" style="padding-top: 10px">{{'l-mensagem' | i18n}}</label>
+                                <field type="textarea"
+                                    id="message_text_{{message.message_code}}"
+                                    rows="3"
+                                    ng-model="message.message_text"
+                                    class="col-md-12"
+                                    maxlength="2000"
+                                    style="padding-left: 0px; padding-right: 0px">
+                                </field>
+                            </div>                          
+                        </div>                            
+                    </form>                    
+                </div>
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

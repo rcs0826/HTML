@@ -1,0 +1,122 @@
+<link rel="stylesheet" href="/dts/mmi/html/sprint/dashboard/dashboard.maintenance.css">
+<totvs-modal-header>
+    {{ 'l-search-programming' | i18n }} ({{buscaProgramacaoCtrl.totalRecords}})
+</totvs-modal-header >
+    
+<totvs-modal-body>
+    <div class="row" 
+         style="padding-bottom: 10px; padding-left: 0px; padding-right: 0px;">
+        <div class="filters col-xs-12">
+            <div class="search-field ng-scope">
+                <form class="ng-pristine ng-valid ng-submitted">
+                    <div class="input-group">
+                        <input type="text"
+                               autofocus 
+                               class="form-control ng-pristine ng-valid ng-scope ng-touched" 
+                               ng-model="buscaProgramacaoCtrl.search" 
+                               placeholder="{{ 'l-search' | i18n }}"
+                               id="programacaoId"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default ng-scope" type="button" ng-click="buscaProgramacaoCtrl.search = ''">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                            <button class="btn btn-default" type="submit" ng-click="buscaProgramacaoCtrl.pesquisar()">
+                                <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <totvs-page-alert
+            ng-if="buscaProgramacaoCtrl.listaProgramacoes.length <= 0"
+            ng-animate="'animate-if'"
+            type="info"
+            message="{{ 'msg-search-not-found' | i18n }}"
+            style="margin-bottom:0px">
+        </totvs-page-alert>
+
+        <div class="table-content"
+             ng-class="buscaProgramacaoCtrl.areaProgramacao"
+             ng-if="buscaProgramacaoCtrl.listaProgramacoes.length > 0"
+             ng-animate="'animate-if'"
+             style="padding-right: 5px; padding-left: 15px">
+
+            <div class="table-responsive" style="height:300px; overflow:auto">
+
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th class="col-xs-2">{{ 'l-code' | i18n }}</th>
+                            <th class="col-xs-6">{{ 'l-description' | i18n }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="programac in buscaProgramacaoCtrl.listaProgramacoes"
+                            ng-click="buscaProgramacaoCtrl.selecionaProgramacao(programac)">
+                            <td class="col-xs-1"
+                                style="padding-top:2px">
+                                <totvs-field totvs-checkbox
+                                    ng-model="programac.selecionada">
+                                </totvs-field>
+                            </td>
+                            <td class="col-xs-3">{{ programac['cod-programac'] }}</td>
+                            <td class="col-xs-8">{{ programac['des-programac'] }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <totvs-list-pagination
+                    ng-click="buscaProgramacaoCtrl.buscaProgramacoes(true)"
+                    ng-if="buscaProgramacaoCtrl.listaProgramacoes.length < buscaProgramacaoCtrl.totalRecords && buscaProgramacaoCtrl.listaProgramacoes.length">
+                </totvs-list-pagination>
+            </div>
+        </div>
+        <div ng-class="buscaProgramacaoCtrl.areaPeriodo"
+             class="table-content"
+             style="padding-left: 0px; height: 300px;"
+             ng-show="buscaProgramacaoCtrl.exibirPeriodo">
+             <div class="table-responsive" style="height:300px; overflow:auto">
+
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th class="col-xs-1">&nbsp;</th>
+                            <th class="col-xs-6">{{ 'l-period' | i18n }}</th>
+                            <th class="col-xs-5"> {{'l-status' | i18n }} </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="periodo in buscaProgramacaoCtrl.listaPeriodo | orderBy: '-dataInicial'"
+                            ng-click="buscaProgramacaoCtrl.selecionaPeriodo(periodo)">
+                            <td class="col-xs-1"
+                                style="padding-top:2px; padding-left: 0px; padding-right: 0px;">
+                                <totvs-field totvs-checkbox
+                                    style="padding-left: 5px; padding-right: 5px;"
+                                    ng-model="periodo.selecionada">
+                                </totvs-field>
+                            </td>
+                            <td class="col-xs-6">
+                                {{ periodo.dataInicial | date:'dd/MM/yyyy' }} - {{ periodo.dataFinal | date:'dd/MM/yyyy'}}
+                            </td>
+                            <td class="col-xs-5 label ">
+                                <div class="situacao-{{periodo.statusPeriodo}}" 
+                                     style="border-radius: 3px; padding-top: 2px; padding-bottom: 2px"> 
+                                     {{ periodo.descStatusPeriodo }} 
+                               </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="buscaProgramacaoCtrl.cancel()">{{ 'l-close' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="buscaProgramacaoCtrl.confirma()">{{ 'l-select' | i18n }}</button>
+</totvs-modal-footer>

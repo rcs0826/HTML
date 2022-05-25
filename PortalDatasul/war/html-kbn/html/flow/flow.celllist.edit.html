@@ -1,0 +1,49 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/field-addon.css"/>
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<totvs-modal-header>{{ 'l-cell-detail' | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+  <totvs-page-form role="form" id="cellForm" name="cellModel" novalidate="novalidate">
+    <div class="row">
+      <ng-form name="cellForm">
+        <accordion class="col-xs-12">
+          <accordion-group is-open="true">
+            <accordion-heading>{{ 'l-cell' | i18n }}: {{controller.cell.cod_chave_erp| htmlText}} - {{controller.cell.des_cel | htmlText}}</accordion-heading>
+            <totvs-tabset>
+              <totvs-tab heading="{{ 'l-parameters' | i18n }}">
+                <totvs-field totvs-input="totvs-input" numbers-only="numbers-only" name="qtd_cartoes" label="{{'l-max-many-cards' | i18n}}" ng-model="controller.cell.qtd_cartoes" required="true" ng-disabled="controller.mapping.idi_status === 4 || !controller.log_ativo" class="col-lg-6 col-xs-6 col-sm-6"></totvs-field>
+                <totvs-field totvs-input="totvs-input" name="qtd_horiz" ng-model="controller.cell.qtd_horiz" required="required" placeholder="00:00:00,000" label="{{'l-programming-interval' | i18n}}" ng-disabled="controller.mapping.idi_status === 4 || !controller.log_ativo" ng-pattern="/^\d{1,}:[0-5][0-9]:[0-5][0-9],\d{3,3}$/" class="col-lg-6 col-xs-6 col-sm-6">
+                  <validator key="pattern">{{ 'l-should-be-completed-hours-format' | i18n }}</validator>
+                </totvs-field>
+                <totvs-field totvs-checkbox="totvs-checkbox" required="required" ng-model="controller.cell.log_multiplos_itens" label="{{'l-simultaneous-card' | i18n}}" ng-disabled="controller.mapping.idi_status === 4 || !controller.log_ativo" class="col-lg-6 col-xs-6 col-sm-6"></totvs-field>
+                <totvs-field totvs-input="totvs-input" name="fixedZone" ng-model="controller.cell.qtd_faixa_fixa" required="required" placeholder="00:00:00,000" label="{{'l-fixed-range' | i18n}}" ng-disabled="controller.mapping.idi_status === 4 || !controller.log_ativo" ng-pattern="/^\d{1,}:[0-5][0-9]:[0-5][0-9],\d{3,3}$/" class="col-lg-6 col-xs-6 col-sm-6">
+                  <validator key="pattern">{{ 'l-should-be-completed-hours-format' | i18n }}</validator>
+                </totvs-field>
+              </totvs-tab>
+              <totvs-tab heading="{{ 'l-cell-workcenters' | i18n }}" ng-if="controller.cell.ttCellWorkcenterDs2.length &gt; 0">
+                <totvs-list-item ng-repeat="workcenter in controller.cell.ttCellWorkcenterDs2" class="col-xs-12">
+                  <totvs-list-item-info value="{{workcenter.ttMasterWorkcenterDs2.cod_chave_erp | htmlText}} - {{workcenter.ttMasterWorkcenterDs2.des_ct_erp | htmlText}}" class="col-lg-10"></totvs-list-item-info>
+                  <totvs-list-item-action limit-primary-action="1" class="col-lg-2">
+                    <action icon="glyphicon-remove" ng-show="controller.mapping.idi_status != 4 &amp;&amp; controller.cell.ttCellWorkcenterDs2.length &gt; 1 &amp;&amp; workcenter.ttMasterWorkcenterDs2.cod_chave_erp != 'PE' &amp;&amp; controller.log_ativo" data-ng-click="controller.removeCt(workcenter.ttMasterWorkcenterDs2.num_id_ct_mestre)">{{ 'l-to-exclude' | i18n }}</action>
+                  </totvs-list-item-action>
+                </totvs-list-item>
+                <div class="div pull-right">
+                  <button icon="glyphicon-refresh" ng-show="controller.mapping.idi_status != 3 && controller.mapping.idi_status != 4 && !controller.cell.log_proces_ext" data-ng-click="controller.regenCt()" style="position: relative;display: inline-block;font-style: normal;-webkit-font-smoothing: antialiased;font-size:12px; margin-top: 10px;" class="btn btn-default">
+                    <div class="fa fa-refresh"> &nbsp;</div>{{ 'l-to-regen' | i18n }}
+                  </button>
+                  <button zoom="zoom" zoom-service="kbn.ct-estab.zoom" ng-model="" zoom-multiple="zoom-multiple" zoom-init="{'filters':{'num_id_estab': controller.mapping.num_id_estab, 'num_id_cel': controller.cell.num_id_cel, 'num_id_mapeamento': controller.mapping.num_id_mapeamento}}" zoom-selected="controller.retornoZoom(selected, controller.cell)" ng-if="controller.mapping.idi_status != 4 &amp;&amp; !controller.cell.log_proces_ext &amp;&amp; controller.log_ativo" style="position: relative;display: inline-block;font-style: normal;-webkit-font-smoothing: antialiased;font-size:12px; margin-top: 10px;" class="btn btn-default"> 
+                    <div class="fa fa-plus"> &nbsp;</div>{{'l-inserts-workcenters' | i18n}}
+                  </button>
+                </div>
+              </totvs-tab>
+            </totvs-tabset>
+          </accordion-group>
+        </accordion>
+      </ng-form>
+    </div>
+  </totvs-page-form>
+</totvs-modal-body>
+<totvs-modal-footer>
+  <button ng-click="controller.cancel();" class="btn btn-default">{{ 'l-cancel' | i18n }}</button>
+  <button ng-click="controller.save();" class="btn btn-primary">{{ 'l-save' | i18n }}</button>
+</totvs-modal-footer>

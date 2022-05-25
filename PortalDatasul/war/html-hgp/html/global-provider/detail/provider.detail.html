@@ -1,0 +1,354 @@
+<!--<healthcare-workarea>-->
+
+    <totvs-page type="detail"> 
+        
+<!--        ng-controller="hrc.documentMaintenance.Control as controller"-->
+
+        <totvs-page-navbar id="navBar">
+
+            <totvs-page-breadcrumb>
+                    <breadcrumb link="#/dts/hgp/hrc-document">Central Guias TISS</breadcrumb>
+                    <breadcrumb>Dados do Prestador</breadcrumb>
+            </totvs-page-breadcrumb>
+            
+<!--    <totvs-page id="providerPage" type="detail" 
+                ng-controller="global.providerDetail.Control as controller"> -->
+
+            <totvs-page-header>
+
+                <totvs-page-header-title 
+                    title="Dados do Prestador" >
+                </totvs-page-header-title>
+
+                <totvs-page-header-operation>
+                    <totvs-page-header-operation-action on-back="controller.onCancel"
+                                                        hide-edit="true"
+                                                        hide-remove="true">
+                    </totvs-page-header-operation-action>
+                </totvs-page-header-operation>
+
+            </totvs-page-header>
+
+        </totvs-page-navbar>
+
+       <totvs-page-content id="pageContent">
+
+            <totvs-page-detail style="margin-left: 50px">
+
+                <legend>Prestador</legend>
+
+                <totvs-page-detail-info
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Unidade"
+                    value="{{(StringTools.fill(controller.provider.cdUnidade, '0', 4))}} - {{controller.provider.dsUnidade}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Nome"
+                    value="{{(StringTools.fill(controller.provider.cdPrestador, '0', 8))}} - {{controller.provider.pessoa.nmPessoa}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Código de Fornecedor"
+                    value="{{(StringTools.fill(controller.provider.cdContratante, '0', 9))}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Nome Abreviado"
+                    value="{{controller.provider.nomeAbrev}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Unidade Seccional"
+                    value="{{controller.provider.cdUnidadeSeccional}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Grupo Prestador"
+                    value="{{controller.provider.cdGrupoPrestador}} - {{controller.provider.dsGrupoPrestador}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Tipo Pessoa"
+                    value="{{controller.provider.inTipoPessoa == 'F' ? 'Física' : 'Jurídica' }}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    ng-if="controller.provider.inTipoPessoa == 'F'"
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="CPF"
+                    value="{{controller.provider.pessoa.cdCpf | cpf}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    ng-if="controller.provider.inTipoPessoa == 'J'"
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="CNPJ"
+                    value="{{controller.provider.pessoa.cdCnpj | cnpj}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    ng-if="controller.provider.inTipoPessoa == 'F'"
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Nascimento"
+                    value="{{controller.provider.pessoa.dtNascimento | date : 'dd/MM/yyyy'}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    ng-if="controller.provider.inTipoPessoa == 'J'"
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Fundação"
+                    value="{{controller.provider.pessoa.dtFundacao | date : 'dd/MM/yyyy'}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Cooperado"
+                    value="{{(controller.provider.lgCooperado === true ? 'Sim' : 'Não')}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Representa Unidade"
+                    value="{{(controller.provider.lgRepresentaUnidade === true ? 'Sim' : 'Não')}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Hora Urgência"
+                    value="{{(StringTools.fill(controller.provider.cdTabUrge, '0', 2))}} - {{controller.provider.dsTabUrge}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="UF Conselho"
+                    value="{{controller.provider.cdUfConselho}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Conselho"
+                    value="{{controller.provider.cdConselho}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Registro"
+                    value="{{controller.provider.nrRegistro}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Recolhe Participação"
+                    value="{{(controller.provider.lgRecolheParticipacao === true ? 'Sim' : 'Não')}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Número de Dias de Validade"
+                    value="{{controller.provider.nrDiasValidade}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Dias Receb. Int.(base)"
+                    value="{{controller.provider.nrDiasMaxReceberDoctos}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Divide Honorários"
+                    value="{{(controller.provider.lgDivisaoHonorario === true ? 'Sim' : 'Não')}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Especialidade Principal"
+                    value="{{controller.provider.especialidadePrincipal.cdEspecialid}} - {{controller.provider.especialidadePrincipal.dsEspecialidade}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Inclusão"
+                    value="{{controller.provider.dtInclusao | date : 'dd/MM/yyyy'}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info
+                    ng-if="controller.provider.dtExclusao != null"
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Exclusão"
+                    value="{{controller.provider.dtExclusao | date : 'dd/MM/yyyy'}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info
+                    ng-if="controller.provider.dtExclusao != null"
+                    class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                    title="Motivo Exclusão"
+                    value="{{controller.provider.cdMotivoCancel}} - {{controller.provider.dsMotivoExclusao}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    ng-if="controller.provider.suspensao != null"
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Suspensão"
+                    value="{{controller.provider.suspensao.dtInicioSuspensao | date : 'dd/MM/yyyy'}} a {{controller.provider.suspensao.dtFimSuspensao | date : 'dd/MM/yyyy'}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    ng-if="controller.provider.suspensao != null"
+                    class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                    title="Motivo Suspensão"
+                    value="{{controller.provider.suspensao.cdMotivo}} - {{controller.provider.suspensao.dsMotivoSuspensao}}">
+                </totvs-page-detail-info>
+
+                <legend>Endereços</legend>
+                
+                <div class="field-label"
+                     ng-if="!(controller.provider.pessoa.enderecos.length > 0)"
+                     >Este prestador não possui endereço cadastrado.</div>
+
+                <totvs-list-item ng-repeat="address in controller.provider.pessoa.enderecos" >
+
+                    <totvs-list-item-header>
+                        <totvs-list-item-title
+                            title="{{address.dsEndereco}}" >
+                        </totvs-list-item-title>
+                    </totvs-list-item-header>
+
+                    <totvs-list-item-content>
+                        <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                              title="CEP"
+                                              value="{{address.cdCep | cep}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                              title="Cidade"
+                                              value="{{address.dsCidade}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                              title="Principal"
+                                              value="{{(address.lgPrincipal === true ? 'Sim' : 'Não')}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                              title="Cobrança"
+                                              value="{{(address.lgEndCobranca === true ? 'Sim' : 'Não')}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                              title="Complemento"
+                                              value="{{address.dsComplemento}}">
+                        </totvs-list-item-info>
+
+                    </totvs-list-item-content>
+                </totvs-list-item>
+
+                <legend>Contatos</legend>
+                
+                <div class="field-label"
+                     ng-if="!(controller.provider.pessoa.contatos.length > 0)"
+                     >Este prestador não possui contatos cadastrados.</div>
+                
+
+                <totvs-list-item ng-repeat="contact in controller.provider.pessoa.contatos" >
+
+                    <totvs-list-item-header>
+                        <totvs-list-item-title
+                            title="{{contact.dsContato}}" >
+                        </totvs-list-item-title>
+                    </totvs-list-item-header>
+
+                    <totvs-list-item-content>
+                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                              title="Tipo"
+                                              value="{{controller.getLabelContactTypeByKey(contact.tpContato)}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                              title="Ramal"
+                                              value="{{contact.dsRamal}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                              title="Nome Contato"
+                                              value="{{contact.nmContato}}">
+                        </totvs-list-item-info>
+                    </totvs-list-item-content>
+                </totvs-list-item>
+
+                <legend>Especialidades</legend>
+                
+                <div class="field-label"
+                     ng-if="!(controller.provider.especialidades.length > 0)"
+                     >Nenhuma especialidade vinculada a este prestador.</div>
+
+                <totvs-list-item ng-repeat="specialty in controller.provider.especialidades" >
+
+                    <totvs-list-item-header>
+                        <totvs-list-item-title
+                            title="{{specialty.cdEspecialid}} - {{specialty.dsEspecialidade}}" >
+                        </totvs-list-item-title>
+                    </totvs-list-item-header>
+
+                    <totvs-list-item-content>
+                        <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                              title="Vínculo"
+                                              value="{{specialty.cdVinculo}} - {{specialty.dsVinculo}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                              title="Início da Validade"
+                                              value="{{specialty.dtInicioValidade | date : 'dd/MM/yyyy'}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                              title="Fim da Validade"
+                                              value="{{specialty.dtFimValidade | date : 'dd/MM/yyyy'}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                              title="Principal"
+                                              value="{{(specialty.lgPrincipal === true ? 'Sim' : 'Não')}}">
+                        </totvs-list-item-info>
+                    </totvs-list-item-content>
+                </totvs-list-item>
+
+                <legend>Clínicas</legend>
+
+                <div class="field-label"
+                     ng-if="!(controller.provider.clinicasPrestador.length > 0)"
+                     >Nenhuma clínica vinculada a este prestador.</div>
+                
+                <totvs-list-item ng-repeat="clinicList in controller.provider.clinicasPrestador" >
+
+                    <totvs-list-item-header>
+                        <totvs-list-item-title
+                            title="{{(StringTools.fill(clinicList.clinica.cdClinica, '0', 8))}} - {{clinicList.clinica.dsClinica}}" >
+                        </totvs-list-item-title>
+                    </totvs-list-item-header>
+
+                    <totvs-list-item-content>
+                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                              title="Data de Inclusão"
+                                              value="{{clinicList.dtInclusao | date : 'dd/MM/yyyy'}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info ng-if="clinicList.dtExclusao != null"
+                                              class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                              title="Data de Exclusão"
+                                              value="{{clinicList.dtExclusao | date : 'dd/MM/yyyy'}}">
+                        </totvs-list-item-info>
+
+                    </totvs-list-item-content>
+                </totvs-list-item>
+            </totvs-page-detail>
+                
+        </totvs-page-content>		
+    </totvs-page>

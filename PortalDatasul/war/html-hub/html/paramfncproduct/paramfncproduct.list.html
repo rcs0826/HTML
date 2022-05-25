@@ -1,0 +1,124 @@
+
+<totvs-page type="list">
+    
+  <totvs-page-navbar>
+		<totvs-page-breadcrumb>
+      <breadcrumb link="#/">{{'l-home' | i18n:[] : 'dts/hub'}}</breadcrumb>
+			<breadcrumb>{{'l-parameters-product-functions' | i18n:[] : 'dts/hub'}}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+			<totvs-page-header-title 
+				title="{{'l-parameters-product-functions' | i18n:[] : 'dts/hub'}}">
+
+  		</totvs-page-header-title>
+		
+			<totvs-page-header-operation>
+			
+				<totvs-page-header-operation-action limit-primary-action="2">
+           <action ng-click="controller.disableAllFunction()" 
+            icon="glyphicon-remove-circle">
+            {{ 'l-disable-all' | i18n: []: 'dts/hub'}}
+          </action>
+                    
+          <action ng-click="controller.activeAllFunction()" 
+            icon="glyphicon glyphicon-play-circle">
+            {{ 'l-activate-all' | i18n:[] : 'dts/hub'}}
+          </action>
+        </totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter 
+          advanced-search="controller.openAdvancedSearch">
+            <field type="input"
+                   ng-model="controller.model.functionName"
+                   ng-change="controller.onChangefunctionName()"
+                   class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                   canclean>
+              <label>{{'l-function' | i18n: []: 'dts/hub'}}</label>
+            </field>
+				</totvs-page-header-operation-filter>
+			</totvs-page-header-operation>
+
+      <totvs-page-disclaimers
+          disclaimer-list="controller.disclaimers"
+          ng-click="controller.removeDisclaimer">
+      </totvs-page-disclaimers>
+      
+      <totvs-page-tags ng-if="controller.listResult && controller.listResult.length > 0">
+        <tag class="tag-enabled">{{('l-activated'| i18n: []: 'dts/hub')}}</tag>
+        <tag class="tag-disabled">{{('l-disabled' | i18n: []: 'dts/hub')}}</tag>
+      </totvs-page-tags>
+
+    </totvs-page-header>
+	</totvs-page-navbar>
+
+  <totvs-page-content>
+     
+    <totvs-page-alert ng-if="!controller.listResult.length || controller.listResult.length <= 0"
+                      type="info"
+                      message="{{ 'msg-record-not-found' | i18n: []: 'dts/hub'}}">
+    </totvs-page-alert>
+        
+    <totvs-list-item ng-if="controller.listResult && controller.listResult.length > 0"
+                     ng-repeat="record in controller.listResult"
+                     class="item-{{(record.log_ativac ? 'enabled' : 'disabled')}}">
+
+      <totvs-list-item-header> 
+        <totvs-list-item-title title="{{ 'l-function' | i18n: []: 'dts/hub'}}: {{record.nom_funcao}} - {{(record.log_ativac ? ('l-activated'| i18n: []: 'dts/hub') : ('l-disabled' | i18n: []: 'dts/hub')) }}">
+        </totvs-list-item-title>
+                
+        <totvs-list-item-action display-limit="4">
+          <action ng-click="controller.disableFunction(record)" 
+            icon="glyphicon-remove"
+            ng-if="record.log_ativac">
+            {{ 'l-disable' | i18n: []: 'dts/hub'}}
+          </action>
+                    
+          <action ng-click="controller.activeFunction(record)" 
+            icon="glyphicon glyphicon-play"
+            ng-if="!record.log_ativac">
+            
+            {{ 'l-activate' | i18n:[] : 'dts/hub'}}
+          </action>
+                    
+        </totvs-list-item-action>
+      </totvs-list-item-header>
+
+      <totvs-list-item-content>
+        <totvs-list-item-info title="{{'l-app' | i18n: []: 'dts/hub'}}"
+                              value="{{record.cod_aplicat_dtsul}} - {{record.nom_aplicat_dtsul_menu}}">
+        </totvs-list-item-info>
+
+        <totvs-list-item-info title="{{'l-module' | i18n: []: 'dts/hub'}}"
+                              value="{{record.cod_modul_dtsul}} - {{record.nom_modul_dtsul_menu}}">
+        </totvs-list-item-info>
+        
+        <totvs-list-item-info title="{{'l-turn-off' | i18n: []: 'dts/hub'}}">
+        
+          <a popover="{{record.des_histor_desligto}}" popover-title="{{'l-reason' | i18n: []: 'dts/hub'}}"" class="clickable">{{record.log_desligto | booleanFormat}}</a>
+        </totvs-list-item-info>
+      </totvs-list-item-content>
+
+      <totvs-list-item-content-detail>
+        <totvs-list-item-info title="{{'l-has-data-adjust' | i18n: []: 'dts/hub'}}">
+          <a popover="{{record.cod_prog_acerto_base}}" popover-title="{{'l-program-data-adjust' | i18n: []: 'dts/hub'}}"" class="clickable">{{record.log_acerto_base | booleanFormat}}</a>
+        </totvs-list-item-info>
+
+        <totvs-list-item-info title="{{'l-has-dependeces' | i18n: []: 'dts/hub'}}">
+          <a popover="{{record.nom_funcao_depen}}" popover-title="{{'l-function-dependeces' | i18n: []: 'dts/hub'}}"" class="clickable">{{record.log_possui_depen | booleanFormat}}</a>
+        </totvs-list-item-info>
+      
+        <totvs-list-item-info title="{{'l-control-company-execution' | i18n: []: 'dts/hub'}}">
+          <a popover="{{record.des_list_empres_exec}}" popover-title="{{'l-company-execution' | i18n: []: 'dts/hub'}}"" class="clickable">{{record.log_control_exec_empr | booleanFormat}}</a>
+        </totvs-list-item-info>
+
+        <totvs-list-item-info title="{{'l-function-description' | i18n: []: 'dts/hub'}}"
+                              >
+            <p ng-bind-html="record.des_funcao | linkFormat"></p>
+        </totvs-list-item-info>
+        
+      </totvs-list-item-content-detail>
+    </totvs-list-item> 
+  </totvs-page-content>
+
+</totvs-page>

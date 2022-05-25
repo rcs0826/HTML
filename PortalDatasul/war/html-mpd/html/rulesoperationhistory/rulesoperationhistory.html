@@ -1,0 +1,73 @@
+<totvs-page type="detail" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb link="#/dts/mpd/rulesoperations/">{{ 'l-rules-operations-title' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-rule-history' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'l-rule-history' | i18n }} {{controller.ctrlRulesId}}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<div class="pull-left col-md-2" style="margin-top: 10px;">
+					<div class="btn-group">
+						<button class="btn btn-default" ng-class="{active: controller.optionView == true}" ng-click="controller.changeView(true)" title="{{ 'l-show-grid' | i18n }}"><span class="glyphicon glyphicon-th"></span></button>                                    
+						<button class="btn btn-default" ng-class="{active: controller.optionView == false}"  ng-click="controller.changeView(false)" title="{{ 'l-show-list' | i18n }}"><span class="glyphicon glyphicon-align-justify"></span></button>
+					</div>
+				</div>	
+				
+				<div class="pull-right" style="padding-right: 15px; padding-left: 15px; padding-top: 15px">
+					<i class="glyphicon glyphicon-question-sign"
+					   tooltip-placement="left"
+					   tooltip-html="controller.help"
+					   ng-show="controller.helpControl &&
+					   			controller.optionView"></i>
+				</div>
+			</totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-detail>
+
+			<div ng-if="controller.history.length <= 0">
+				</br>
+				<alert type="danger">{{ 'l-without-history' | i18n : [] : 'dts/mpd/'}}</alert>
+			</div>
+
+			<div ng-show="controller.ruleHistoryDataGrid.length > 0 && controller.optionView">
+				<div class="row">
+					<div style="margin-left: 25px; margin-right: 25px;">
+							<totvs-grid
+								grid-data="controller.ruleHistoryDataGrid"
+								resizable="true"
+								navigatable="true"
+								grid-options="controller.ruleHistoryGridOptions"
+								grid="controller.ruleHistoryGrid">
+							</totvs-grid>
+					</div>
+				</div>	
+			</div>
+
+			<div ng-show="controller.ruleHistoryDataList.length > 0 && !controller.optionView">
+					<totvs-list-item ng-repeat="historyRule in controller.ruleHistoryDataList">
+	
+						<totvs-list-item-content>
+							<totvs-list-item-info class="col-xs-12 col-sm-12 col-md-12" title="">
+								<h5><b>{{controller.ruleHistoryDataList[$index][0]['des-label-campo']}} : {{controller.ruleHistoryDataList[$index][0]['cod-valor']}}</b></h5>
+							</totvs-list-item-info>
+						</totvs-list-item-content>
+	
+						<totvs-lodash-template
+							src="/dts/mpd/html/rulesoperationhistory/rulesoperationhistory.fields.html"
+							template-data="historyRule"/>
+						</totvs-lodash-template>
+	
+				</totvs-list-item>
+			</div>
+
+		</totvs-page-detail>
+	</totvs-page-content>
+</totvs-page>

@@ -1,0 +1,351 @@
+<style> 
+    legend{
+            float: left;
+        }    
+</style>
+
+<totvs-page type="base">
+    
+    <link type="text/css"  rel="stylesheet" href="/dts/hgp/html/assets/css/mention.css" />
+    <totvs-page-navbar>
+        
+        <totvs-page-breadcrumb id="breadcrumb">
+                <breadcrumb>Parâmetros do Ressarcimento ao SUS</breadcrumb>
+        </totvs-page-breadcrumb>
+        
+        <totvs-page-header>
+
+            <totvs-page-header-title title="Parâmetros do Ressarcimento ao SUS">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action class="btn-primary"
+                            ng-click="controller.onEdit();"
+                            ng-if="controller.action == 'DETAIL'">Editar</action>
+                    <action ng-click="controller.onCancel();"
+                            ng-if="controller.action != 'DETAIL'">Cancelar</action>
+                    <action class="btn-primary"
+                            ng-click="controller.save();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.globalParametersForm">
+            <fieldset>
+                <totvs-row>
+                    <totvs-field  
+                        totvs-input 
+                 		class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                 		label="Representante Legal"
+                 		ng-model="controller.globalParameters.nmRepresentante"
+                 		ng-required="true"     
+                 		ng-disabled="controller.action == 'DETAIL'">
+                        <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field>
+                    <!-- representativeTitle -->
+                    <totvs-field  
+                        totvs-input 
+                 		class="col-lg-4 col-md-4 col-sm-3 col-xs-12"
+                 		label="Cargo Representante Legal"
+                 		ng-model="controller.globalParameters.profissao"
+                 		ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field> 
+                </totvs-row>
+                <totvs-row>
+                    <totvs-field  
+                        totvs-input 
+                 		class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                 		label="CNPJ"
+                        ng-model="controller.globalParameters.cnpj"
+                        ng-required="true" 
+                        ng-disabled="controller.action == 'DETAIL'">
+                        <validator key="min">Insira um CNPJ valido</validator>                         
+                    </totvs-field>      
+                    <totvs-field  
+                        totvs-input 
+                 		class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                 		label="Cidade Impugnação"
+                 		ng-model="controller.globalParameters.cidadeImpug"
+                 		ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field> 
+                </totvs-row>
+                <totvs-row>
+                    <totvs-field  
+                        totvs-input 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            label="Diretório Declaração"
+                            ng-model="controller.globalParameters.nomDirDecla"
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+                    <totvs-field  
+                        totvs-input 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            label="Diretório Impugnação"
+                            ng-model="controller.globalParameters.nomDirImpug"
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+                    <totvs-field  
+                        totvs-input 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            label="Diretório de Documentos Comprobatórios"
+                            ng-model="controller.globalParameters.nomDirDocComp"
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+                    <totvs-field  
+                        totvs-input 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mentions"
+                            label="Máscara Arquivo de Declaração de Vínculo"
+                            ng-model="controller.globalParameters.nmMascaraArqDeclaracao"
+                            ng-disabled="controller.action == 'DETAIL'">
+                            <span style="color: gray; 
+                                     position: absolute;
+                                     margin-left: 237px;
+                                     margin-top: 10px;
+                                     font-size: 11px;"
+                              class="glyphicon glyphicon-tags"
+                              ng-mouseover="controller.openVariableFields('variablefieldsDeclaracao')" id="variablefieldsDeclaracao" tabindex="0"
+                              data-html="true" data-toggle="popover" data-trigger="focus" 
+                              title="<b>Campos Variáveis</b> " 
+                              data-content="{{HASH_VARIABLE_ENUM.TOOLTIP}}" data-placement="right">
+                        </span>
+                    </totvs-field>
+                    <totvs-field  
+                        totvs-input 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mentions"
+                            label="Máscara Arquivo de Impugnação"
+                            ng-model="controller.globalParameters.nmMascaraArqImpugnacao"
+                            ng-disabled="controller.action == 'DETAIL'">
+                            <span style="color: gray; 
+                                     position: absolute;
+                                     margin-left: 183px;
+                                     margin-top: 10px;
+                                     font-size: 11px;"
+                              class="glyphicon glyphicon-tags"
+                              ng-mouseover="controller.openVariableFields('variablefieldsImpugnacao')" id="variablefieldsImpugnacao" tabindex="0"
+                              data-html="true" data-toggle="popover" data-trigger="focus" 
+                              title="<b>Campos Variáveis</b> " 
+                              data-content="{{HASH_VARIABLE_ENUM.TOOLTIP}}" data-placement="right">
+                        </span>
+                    </totvs-field>
+                    <totvs-field  
+                        totvs-input 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mentions"
+                            label="Máscara Arquivo de Declaração de Atendimento"
+                            ng-model="controller.globalParameters.nmMascaraArqAtendimento"
+                            ng-disabled="controller.action == 'DETAIL'">
+                            <span style="color: gray; 
+                                     position: absolute;
+                                     margin-left: 264px;
+                                     margin-top: 10px;
+                                     font-size: 11px;"
+                              class="glyphicon glyphicon-tags"
+                              ng-mouseover="controller.openVariableFields('variablefieldsAtendimento')" id="variablefieldsAtendimento" tabindex="0"
+                              data-html="true" data-toggle="popover" data-trigger="focus" 
+                              title="<b>Campos Variáveis</b> " 
+                              data-content="{{HASH_VARIABLE_ENUM.TOOLTIP}}" data-placement="right">
+                        </span>
+                    </totvs-field>
+                </totvs-row>
+
+                <legend>Upload</legend>
+
+                <totvs-row>
+                    <totvs-field
+                           totvs-input
+                           label="Diretório de Carga dos XML"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           ng-model="controller.globalParameters.nmDirCargaXml"
+                           ng-required="true"
+                           ng-disabled="controller.action == 'DETAIL'">
+                           <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field> 
+
+                    <totvs-field 
+                           totvs-input
+                           label="Diretório dos XML Processados"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           ng-model="controller.globalParameters.nmDirProcessamentoXml"
+                           ng-required="true"
+                           ng-disabled="controller.action == 'DETAIL'">
+                           <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field>
+
+                    <totvs-field 
+                           totvs-input
+                           label="Diretório de Erros dos XML"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           ng-model="controller.globalParameters.nmDirErrosXml"
+                           ng-required="true"
+                           ng-disabled="controller.action == 'DETAIL'">
+                           <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field>
+                </totvs-row>
+
+                <totvs-row>
+                    <totvs-field
+                           totvs-input
+                           label="Diretório de Carga dos XML (Linux)"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           ng-model="controller.globalParameters.nmDirCargaXmlLinux"
+                           ng-disabled="controller.action == 'DETAIL'">
+                           <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field> 
+
+                    <totvs-field 
+                           totvs-input
+                           label="Diretório dos XML Processados (Linux)"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           ng-model="controller.globalParameters.nmDirProcessamentoXmlLinux"
+                           ng-disabled="controller.action == 'DETAIL'">
+                           <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field>
+
+                    <totvs-field 
+                           totvs-input
+                           label="Diretório de Erros dos XML (Linux)"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           ng-model="controller.globalParameters.nmDirErrosXmlLinux"
+                           ng-disabled="controller.action == 'DETAIL'">
+                           <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field>
+                </totvs-row>
+
+                <legend>Parâmetros do Revisão de Contas</legend>
+
+                <totvs-row>
+                    <totvs-field 
+                           totvs-input
+                           label="Série do Documento"
+                           maxlength="4"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           ng-model="controller.globalParameters.nrSerieDoc"
+                           ng-disabled="controller.action == 'DETAIL'"
+                           ng-required="true">
+                           <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field>
+
+                    <totvs-field totvs-input
+                            maxlength="3"
+                            label="Série da Nota Fiscal"                       
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            ng-model="controller.globalParameters.nrSerieFatura"
+                            ng-disabled="controller.action == 'DETAIL'"
+                            ng-required="true">
+                            <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field> 
+
+                    <totvs-field totvs-select
+                            id="financialDocumentKindSUS"
+                            name-id="financialDocumentKindSUS"
+                            label="Espécie SUS" canclean
+                            ng-model="controller.globalParameters.cdEspecDocto"
+                            select-service="global.financialDocumentKindZoomController"
+                            zoom-service="global.financialDocumentKindZoomController"
+                            select-id="financialDocumentKindCode" 
+                            select-description="financialDocumentKindDescription"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            ng-disabled="controller.action == 'DETAIL'"
+                            ng-required="true">
+                            <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field>
+                </totvs-row>
+
+                <totvs-row>
+                    <totvs-field totvs-select
+                            id="transactionZoom"
+                            name-id="transactionZoom"
+                            ng-model="controller.globalParameters.cdnTransacaoAih"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            label="Transação AIH" canclean
+                            select-service="hrc.transactionZoomController"
+                            zoom-service="hrc.transactionZoomController"
+                            select-id="cdTransacao"
+                            select-description="dsTransacao"
+                            ng-change="controller.onTransactionSelect()"                            
+                            ng-disabled="controller.action == 'DETAIL'"
+                            ng-required="true">
+                            <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field>
+
+                    <totvs-field totvs-select 
+                            id="transactionZoom"
+                            name-id="transactionZoom"
+                            ng-model="controller.globalParameters.cdnTransacaoApac"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            label="Transação APAC" canclean
+                            select-service="hrc.transactionZoomController"
+                            zoom-service="hrc.transactionZoomController"
+                            select-id="cdTransacao" 
+                            select-description="dsTransacao"
+                            ng-change="controller.onTransactionSelect()"                            
+                            ng-disabled="controller.action == 'DETAIL'"
+                            ng-required="true">
+                            <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field>
+
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height">
+                    </field>
+                </totvs-row>
+
+                <totvs-row>
+                    <totvs-field totvs-select
+                            label="Prestador SUS" canclean
+                            ng-model="controller.globalParameters.cdUnidCdPrestadorSus"
+                            select-service="global.providerZoomController"
+                            zoom-service="global.providerZoomController"
+                            select-id="cdUnidCdPrestador" 
+                            select-description="nmPrestador"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            ng-change="controller.onProviderSelect()"
+                            ng-disabled="controller.action == 'DETAIL'"
+                            ng-required="true">
+                            <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field>
+
+                    <totvs-field totvs-select
+                            ng-model="controller.globalParameters.cdUnidCdCarteiraUsuarioGenerico"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            label="Beneficiário Genérico" canclean
+                            select-service="hvp.beneficiaryZoomController"
+                            zoom-service="hvp.beneficiaryZoomController"
+                            select-id="cdUnidCdCarteiraInteira"
+                            select-description="nmUsuario"
+                            ng-change="controller.onBeneficiarySelect()"                    
+                            select-init="{filters: controller.beneficiaryFixedFilters}"
+                            zoom-init="{filters: controller.beneficiaryFixedFilters}"
+                            ng-disabled="controller.action == 'DETAIL'"                    
+                            ng-required="true">
+                        <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field>
+                </totvs-row>
+				
+                <totvs-row>
+                    <totvs-field canclean
+                                 class="col-lg-6 col-md-6 col-sm-6 col-xs-10"
+                                 label="Movimento Genérico"
+                                 name-id="movementZoom"
+                                 ng-model="controller.movementReturnObject"
+                                 ng-disabled="controller.action == 'DETAIL'"
+                                 ng-change="controller.onMovementSelect()"
+                                 return-object
+                                 select-id="formattedCodeWithType"
+                                 select-init="{filters: controller.movementFixedFilters}"
+                                 select-description="dsMovimento"
+                                 select-match='[{"field": "formattedCodeWithType", "separator": " - "}, {"field": "dsMovimento"}]'
+                                 select-service="hrc.movementZoomController"
+                                 totvs-select id="movementZoom"
+                                 zoom-service="hrc.movementZoomController"
+                                 zoom-init="{filters: controller.movementFixedFilters}">
+                    </totvs-field>
+                </totvs-row>
+            </fieldset>
+        </totvs-page-form>        
+    </totvs-page-content>
+</totvs-page>
+
+

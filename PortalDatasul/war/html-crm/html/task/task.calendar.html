@@ -1,0 +1,65 @@
+<style type="text/css" scoped>
+
+	/* Alterado para não comprometer o a <totvs-page-navbar> */
+	.fc-toolbar .fc-state-active,
+	.fc-toolbar .ui-state-active,
+	.fc-toolbar button:focus {
+		z-index: 2;
+	}
+
+	/* Alterado para não comprometer a perfect-scrollbar do framework */
+	.fc-scroller {
+		overflow: auto;
+	}
+
+	.fc-toolbar .fc-left {
+		padding-left: 10px;
+	}
+
+	.fc-toolbar .fc-right {
+		padding-right: 10px;
+	}
+
+</style>
+
+<totvs-page type="list"
+			ng-init="controllerTaskList.isCalendar = true;">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb>{{'nav-calendar' | i18n: []: 'dts/crm'}}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title
+				title="{{'nav-calendar' | i18n: []: 'dts/crm'}}"
+				total="{{controllerTaskList.listOfTaskCount}}">
+			</totvs-page-header-title>
+
+			<totvs-lodash-template src="/dts/crm/html/task/task.list.header.html"
+								   template-data="controllerTaskList.accessRestriction"></totvs-lodash-template>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-content-header>
+			<totvs-page-quick-filter filters-list="controllerTaskList.quickFilters"
+									 on-select-filter="controllerTaskList.selectQuickFilter">
+			 </totvs-page-quick-filter>
+		</totvs-page-content-header>
+
+		<br>
+
+		<div ui-calendar="controllerTaskList.calendarConfig"
+			 ng-model="controllerTaskList.listOfTaskAsEvents"
+			 calendar="tasksCalendar">
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page>

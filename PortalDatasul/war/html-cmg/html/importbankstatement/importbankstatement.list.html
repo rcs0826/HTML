@@ -1,0 +1,145 @@
+<totvs-page type="list">
+	<totvs-page-navbar>
+	
+		<totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n: []: 'dts/cmg'}}</breadcrumb>
+			<breadcrumb>{{'l-import-bank-statement' | i18n: []: 'dts/cmg'}}</breadcrumb>
+		</totvs-page-breadcrumb>
+	
+		<totvs-page-header>
+		
+			<totvs-page-header-title 
+				title="{{'l-rules' | i18n: []: 'dts/cmg'}}" 
+				total="{{controller.totalRecords}}">
+			</totvs-page-header-title>
+		
+			<totvs-page-header-operation>
+			
+                <totvs-page-header-operation-action limit-primary-action="3">
+					<action link="#/dts/cmg/importbankstatement/new"
+                            icon="glyphicon glyphicon-plus">
+                        {{ 'l-add' | i18n:[] : 'dts/cmg'}}
+                    </action>                   
+                    
+					<action ng-if="controller.listResult && controller.listResult.length > 0"
+                            link="#/dts/cmg/importbankstatement/report/all"
+                            icon="glyphicon glyphicon-play">
+                        {{ 'l-execute-all' | i18n: []: 'dts/cmg'}}
+                    </action>
+                    
+					<action ng-if="controller.listResult && controller.listResult.length > 0"
+                            ng-click="controller.deleteAllRule();"
+                            icon="glyphicon glyphicon-trash">
+                        {{ 'l-remove-all' | i18n: []: 'dts/cmg'}}
+                    </action>
+				</totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter>
+                    <!-- BANCO -->
+                    <field type="select"
+                           ng-model="controller.model.bank"
+                           class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                           ng-change="controller.onChangeBank();"
+                           canclean>
+                        <zoom zoom-service="cmg.banco.zoom"
+                              zoom-selected="controller.onChangeBank(selected, oldValue)"></zoom>
+                        <include>
+                            <ui-select-match placeholder="{{'l-bank' | i18n: []: 'dts/cmg'}}">
+                            {{$select.selected.objSelected ? $select.selected.toString() : 
+                             ($select.selected.cod_banco + ' - ' +
+                              $select.selected.nom_banco)}}
+                            </ui-select-match>
+                            <ui-select-choices repeat="bank in
+                                                       controller.serviceBank.selectResultList 
+                                                       track by $index"
+                                               refresh="controller.serviceBank.getSelectResultList(
+                                                        $select.search, undefined)"
+                                               refresh-delay="500">
+                                <span ng-bind-html="bank.cod_banco + ' - ' + 
+                                                    bank.nom_banco | highlight: $select.search">
+                                </span>
+                            </ui-select-choices>
+                        </include>
+                    </field>
+				</totvs-page-header-operation-filter>
+			</totvs-page-header-operation>
+            
+			<totvs-page-disclaimers disclaimer-list="controller.disclaimers"
+                                    ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+
+        </totvs-page-header>
+	</totvs-page-navbar>
+	<totvs-page-content>
+        
+        <totvs-page-alert ng-if="!controller.totalRecords || controller.totalRecords <= 0"
+                          type="info"
+                          message="{{ 'msg-record-not-found' | i18n: []: 'dts/cmg'}}">
+		</totvs-page-alert>
+        
+        <totvs-list-item ng-if="controller.listResult && controller.listResult.length > 0"
+                         ng-repeat="record in controller.listResult">
+
+            <totvs-list-item-header> 
+
+                <totvs-list-item-title title="{{'l-id' | i18n:[] : 'dts/cmg'}}: {{record.num_id_regra_extrat}} - {{record.des_regra_extrat}}">
+                </totvs-list-item-title>
+                
+                <totvs-list-item-action display-limit="4">
+                    <action link="#/dts/cmg/importbankstatement/edit/{{record.num_id_regra_extrat}}"
+                            icon="glyphicon-pencil">
+                        {{ 'l-to-update' | i18n: []: 'dts/cmg'}}
+                    </action>                    
+                    
+                    <action ng-click="controller.deleteRule(record)" 
+							icon="glyphicon-remove">
+						{{ 'l-to-exclude' | i18n:[] : 'dts/cmg'}}
+					</action>
+                    
+                    <action link="#/dts/cmg/importbankstatement/report/{{record.num_id_regra_extrat}}"
+                            icon="glyphicon glyphicon-play">
+                        {{ 'l-to-execute' | i18n: []: 'dts/cmg'}}
+                    </action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+            <totvs-list-item-content>
+                <totvs-list-item-info title="{{'l-bank' | i18n: []: 'dts/cmg'}}"
+                                      value="{{record.ttBank[0].cod_banco}} - {{record.ttBank[0].nom_banco}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info title="{{'l-checkings-accounts' | i18n: []: 'dts/cmg'}}"
+                                      value="{{record.ttChkAccount | chkAccountFormat}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info title="{{'l-stmnt-layout' | i18n: []: 'dts/cmg'}}"
+                                      value="{{record.ttBankStatementLayout[0].cod_layout_extrat}} - {{record.ttBankStatementLayout[0].des_layout_extrat}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info title="{{'l-last-execution' | i18n: []: 'dts/cmg'}}"
+                                      value="{{(record.dat_ult_exec) ? ((record.dat_ult_exec | dateFormat) + ' ' + record.hra_ult_exec) : ''}}">
+                </totvs-list-item-info>
+            </totvs-list-item-content>
+            <totvs-list-item-content-detail>
+                <totvs-list-item-info title="{{'l-upload' | i18n: []: 'dts/cmg'}}"
+                                      value="{{record.log_upload | booleanFormat}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info title="{{'l-file' | i18n: []: 'dts/cmg'}}">
+                    <span class="hidden-xs"
+                          ng-if="!record.log_upload">
+                        {{record.dsl_arq_import}}
+                    </span>
+                    <span ng-if="record.log_upload"
+                         ng-repeat="fileUpload in record.ttFileRuleBankStmnt">
+                        <a target="_self"
+                           href="{{'/dts/datasul-rest/resources/api/fch/fchcmg/importbankstatement/download/' + record.num_id_regra_extrat + '/' + fileUpload.num_seq_arq_regra}}">
+                            {{fileUpload.nom_arq_regra}}
+                        </a> |
+                    </span>
+                </totvs-list-item-info>
+                <totvs-list-item-info title="{{'l-transfer' | i18n: []: 'dts/cmg'}}"
+                                      value="{{record.log_transf_arq | booleanFormat}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info title="{{'l-directory' | i18n: []: 'dts/cmg'}}"
+                                      value="{{record.dsl_dir_transf}}">
+                </totvs-list-item-info>
+            </totvs-list-item-content-detail>
+        </totvs-list-item> 
+	</totvs-page-content>
+</totvs-page>

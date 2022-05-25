@@ -1,0 +1,135 @@
+<totvs-page type="base"> 
+    <totvs-page-navbar >
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hrs-gru/">Cadastro de GRU</breadcrumb>
+                <breadcrumb>Manutenção de GRU</breadcrumb>
+		</totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            <totvs-page-header-title
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} GRU">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+						{{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+
+					<action class="btn-primary"
+							ng-click="controller.save();"
+                            ng-if="controller.action != 'DETAIL'">Salvar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+        <totvs-page-form>
+				<fieldset>
+					<totvs-row>
+						<totvs-field totvs-input
+									 t-maxlength="9"
+									 numbers-only
+									 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+									 label="Número do Documento"
+									 ng-model="controller.gru.cddGru"
+									 ng-disabled="controller.action != 'INSERT'"
+									 required>
+			 			</totvs-field>
+						<totvs-field canclean
+									 class="col-lg-3 col-md-3 col-sm-3 col-xs-10"
+									 label="Código da ABI"
+									 name-id="ressusAbiImportationZoom"
+									 data-ng-model="controller.gruReturnObject"
+									 ng-disabled="controller.action == 'DETAIL'"
+									 return-object
+									 select-id="codAbi"
+									 select-init="{filters: controller.abiFixedFilters}"
+									 select-service="hrs.ressusAbiImportationZoomController"
+									 totvs-select id="ressusAbiImportationZoom"
+									 select-match='[{"field": "codAbi"}]'
+									 zoom-service="hrs.ressusAbiImportationZoomController"
+									 ng-change="controller.onRessusAbiImportationSelect()"
+									 zoom-init="{filters: controller.abiAnalysisFixedFilters}"
+									 required>
+						</totvs-field>
+						<totvs-field totvs-decimal
+									 m-dec="2"
+									 v-max="11"
+									 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+									 label="Valor da GRU (R$)"
+									 ng-model="controller.gru.vlGru"
+									 ng-disabled="controller.action == 'DETAIL'"
+									 required>
+		   				</totvs-field>
+					</totvs-row>
+					<totvs-row>
+						<field class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+							   data-ng-model="controller.gru.datDocto"
+							   label="Data do Documento"
+							   ng-disabled="controller.action == 'DETAIL'"
+							   type="date"
+							   required>
+						</field>
+						<field class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+							   data-ng-model="controller.gru.datProcmto"
+							   label="Data do Processamento"
+							   ng-disabled="controller.action == 'DETAIL'"
+							   type="date"
+							   required>
+						</field>
+						<field class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+							   data-ng-model="controller.gru.dtVencimento"
+							   label="Data de Vencimento"
+							   ng-disabled="controller.action == 'DETAIL'"
+							   type="date"
+							   required>
+						</field>
+					</totvs-row>
+				</fieldset>
+				<fieldset>
+					<div ng-if="controller.action != 'INSERT'">
+						<legend>Fatura Contas Médicas</legend>
+						<totvs-row>
+							<totvs-field totvs-select
+										name-id="providerZoom"
+										id="providerZoom"
+										label="Unidade/Prestador"
+										canclean
+										class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+										ng-model="controller.provider.cdnPrestdor"
+										select-service="global.providerZoomController"
+										zoom-service="global.providerZoomController"
+										select-id="cdUnidCdPrestador"
+										select-description="nmPrestador"
+										zoom-init="{filters: controller.fixedFiltersProvider}"
+										select-init="{filters: controller.fixedFiltersProvider}"
+										ng-change="controller.onProviderSelect()"
+										ng-disabled="true">
+							</totvs-field>
+						</totvs-row>
+						<totvs-row>
+							<totvs-field totvs-input
+										class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+										label="Ano da Fatura"
+										ng-model="controller.gru.cdnAnoFatur"
+										ng-disabled="true">
+							</totvs-field>
+							<totvs-field totvs-input
+										class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+										label="Série da Nota Fiscal"
+										ng-model="controller.gru.codSerNotaFisc"
+										ng-disabled="true">
+							</totvs-field>
+							<totvs-field totvs-input
+										class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+										label="Número da Fatura"
+										ng-model="controller.gru.codFaturCtasPagar"
+										ng-disabled="true">
+							</totvs-field>
+						</totvs-row>
+					</div>
+            	</fieldset>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

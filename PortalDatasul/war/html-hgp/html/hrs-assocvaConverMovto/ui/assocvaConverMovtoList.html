@@ -1,0 +1,97 @@
+<style>
+    .list-item.tag-1 {
+        border-left: 5px solid #5FB404 !important;
+    }
+
+    .tag-1:before {
+        background-color: #5FB404 !important;
+    }
+
+    .list-item.tag-2 {
+        border-left: 5px solid #4385F5 !important;
+    }
+
+    .tag-2:before {
+        background-color: #4385F5 !important;
+    }
+</style>
+
+<totvs-page type="list">
+
+    <totvs-page-navbar>
+
+        <totvs-page-breadcrumb id="breadcrumb">
+            <breadcrumb>Associativa de Procedimento SUS x GPS</breadcrumb>
+
+            <breadcrumb></breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title title="Associativa de Procedimento SUS x GPS" total="{{controller.listOfAssocvaConverMovtoCount}}">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+
+                <totvs-page-header-operation-action on-new="controller.onNew" limit-primary-action="1">
+                    <action class="glyphicon-plus" link="#/dts/hgp/hrs-assocvaConverMovto/new">
+                        Incluir Associativa
+                    </action>
+
+                </totvs-page-header-operation-action>
+
+                <totvs-page-header-operation-filter placeholder="Código do movimento SUS" ng-submit="controller.search()" ng-model="controller.searchInputText"
+                    advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+
+            </totvs-page-header-operation>
+
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers" ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+
+            <totvs-page-tags>
+                <tag class="tag-1">Procedimento</tag>
+                <tag class="tag-2">Insumo</tag>
+            </totvs-page-tags>
+
+        </totvs-page-header>
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+
+        <totvs-page-alert ng-if="controller.listOfAssocvaConverMovto.length <= 0" type="info" message="Nenhum registro encontrado">
+        </totvs-page-alert>
+
+        <totvs-list-item class="tag-{{assocvaConverMovto.codIndicador}}" ng-repeat="assocvaConverMovto in controller.listOfAssocvaConverMovto track by $index">
+
+            <totvs-list-item-header>
+
+                <totvs-list-item-title title="{{assocvaConverMovto.rotulo}}" 
+                                       link="#/dts/hgp/hrs-assocvaConverMovto/detail/{{assocvaConverMovto.cddMovtoExt}}/{{assocvaConverMovto.codIndicador}}/{{assocvaConverMovto.cdProcedimentoCompleto}}/{{assocvaConverMovto.cdTipoInsumo}}/{{assocvaConverMovto.cdInsumo}}">
+                </totvs-list-item-title>
+
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/hgp/hrs-assocvaConverMovto/edit/{{assocvaConverMovto.cddMovtoExt}}/{{assocvaConverMovto.codIndicador}}/{{assocvaConverMovto.cdProcedimentoCompleto}}/{{assocvaConverMovto.cdTipoInsumo}}/{{assocvaConverMovto.cdInsumo}}"
+                        icon="glyphicon-pencil">Editar</action>
+
+                    <action ng-click="controller.removeAssocvaConverMovto(assocvaConverMovto)" icon="glyphicon-trash">Remover</action>
+                </totvs-list-item-action>
+
+            </totvs-list-item-header>
+
+            <totvs-list-item-content>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}" 
+                                      title="Movimento GPS" 
+                                      value="{{assocvaConverMovto.codIndicador == '1' ? 
+                                      controller.fillInteger(assocvaConverMovto.cdProcedimentoCompleto,8) 
+                                      : (controller.fillInteger(assocvaConverMovto.cdTipoInsumo,2) + '.' + controller.fillInteger(assocvaConverMovto.cdInsumo,8)) }}">
+                </totvs-list-item-info>
+            </totvs-list-item-content>
+        </totvs-list-item>
+
+        <totvs-list-pagination ng-if="controller.listOfAssocvaConverMovto.length < controller.listOfAssocvaConverMovtoCount && controller.listOfAssocvaConverMovto.length"
+            ng-click="controller.search(true);">
+        </totvs-list-pagination>
+
+    </totvs-page-content>
+</totvs-page>

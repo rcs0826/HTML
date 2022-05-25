@@ -1,0 +1,586 @@
+<totvs-page type="detail">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb link="#/dts/mmi/order">{{'l-maintenance-order' | i18n}}</breadcrumb>
+			<breadcrumb>{{ 'l-detail' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		<totvs-page-header ng-if="controller.showOrderDetail">
+			<totvs-page-header-title
+				title="{{controller.model['nr-ord-produ'] | orderNumberMask}} - {{controller.model['des-man-corr']}}">
+			</totvs-page-header-title>
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action limit-primary-action="4" on-back-link="#/dts/mmi/order"
+					hide-remove="true" hide-edit="true">
+					<action ng-if="controller.model.estado == 1" ng-click="controller.release(controller.model)"
+						icon="glyphicon-play">{{ 'l-release' | i18n }}</action>
+					<action ng-if="controller.model.estado == 2 || controller.model.estado == 3"
+						ng-click="controller.block(controller.model)" icon="glyphicon-stop">{{ 'l-block' | i18n }}
+					</action>
+					<action ng-click="controller.openOrderEdit()" icon="glyphicon-pencil">{{ 'l-edit' | i18n }}</action>
+					<action ng-click="controller.remove()" icon="glyphicon-trash">{{ 'l-remove' | i18n }}</action>
+					<action ng-click="controller.openOrderCopy()" icon="glyphicon glyphicon-duplicate">
+						{{ 'l-copy' | i18n }}</action>
+					<action
+						ng-if="controller.model['estado-om'] != 3 && (controller.model.estado <= 6 && controller.model['estado-om'] != 3)"
+						ng-click="controller.openOrderSuspend(controller.model)" icon="glyphicon-remove">
+						{{ 'l-suspend' | i18n }}</action>
+					<action ng-if="controller.model['estado-om'] == 3"
+						ng-click="controller.openOrderSuspend(controller.model)" icon="glyphicon-ok">
+						{{ 'l-reactivate' | i18n }}</action>
+					<action ng-if="controller.model['estado-om'] < 3"
+						ng-click="controller.openOrderClose(controller.model)" icon="glyphicon-off">
+						{{ 'l-shut' | i18n }}</action>
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert ng-if="!controller.showOrderDetail" type="info" message="{{'msg-search-not-found' | i18n}}">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-if="controller.showOrderDetail">
+			<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12" title="{{ 'l-equipment' | i18n }}"
+					value="{{controller.model['cd-equipto']}} - {{controller.model['des-equipto']}}">
+				</totvs-page-detail-info>
+				<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12" title="{{ 'l-tag' | i18n }}"
+					value="{{controller.model['cd-tag']}} - {{controller.model['des-tag']}}">
+				</totvs-page-detail-info>
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 detail-field">
+					<div class="field-label ng-binding">{{ 'l-state' | i18n }}</div>
+					<span
+						class="label tag-{{controller.model.situacao}} ng-binding ng-scope">{{controller.model['des-estado'].toUpperCase()}}</span>
+				</div>
+				<totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-2 col-xs-12" title="{{ 'l-suspended' | i18n }}"
+					value="{{controller.model['estado-om'] == 3 ? 'l-yes' : 'l-no' | i18n }}">
+				</totvs-page-detail-info>
+			</div>
+
+			<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12" title="{{ 'l-planner' | i18n }}"
+					value="{{controller.model['cd-planejado']}} - {{controller.model['nom-planejador']}}">
+				</totvs-page-detail-info>
+				<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12" title="{{ 'l-team' | i18n }}"
+					value="{{controller.model['cd-equip-res']}} - {{controller.model['des-equipe']}}">
+				</totvs-page-detail-info>
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 detail-field">
+					<div class="field-label ng-binding">{{ 'l-urgency' | i18n }}</div>
+					<span
+						class="label urgencia-{{controller.model['urgencia']}} ng-binding ng-scope">{{controller.model['des-urgencia'].toUpperCase()}}</span>
+				</div>
+				<totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-2 col-xs-12" title="{{ 'l-priority' | i18n }}"
+					value="{{controller.model['prioridade']}}">
+				</totvs-page-detail-info>
+			</div>
+
+			<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12" title="{{ 'l-sympthom' | i18n }}"
+					value="{{controller.model['cd-sint-padr']}} - {{controller.model['des-sintoma']}}">
+				</totvs-page-detail-info>
+				<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12" title="{{ 'l-cause' | i18n }}"
+					value="{{controller.model['cd-causa-padr']}} - {{controller.model['des-causa']}}">
+				</totvs-page-detail-info>
+				<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+					title="{{ 'l-intervention' | i18n }}"
+					value="{{controller.model['cd-interv-padr']}} - {{controller.model['des-interv']}}">
+				</totvs-page-detail-info>
+			</div>
+
+			<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+					title="{{ 'l-user-opening' | i18n }}"
+					value="{{controller.model['usuario-alt']}} - {{controller.model['nom-usuario']}}">
+				</totvs-page-detail-info>
+				<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+					title="{{ 'l-allocation-format-material' | i18n }}" value="{{controller.model['des-sit-aloc']}}">
+				</totvs-page-detail-info>
+				<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12" title="{{ 'l-project' | i18n }}"
+					value="{{controller.model['cd-projeto']}} - {{controller.model['des-projeto']}}">
+				</totvs-page-detail-info>
+			</div>
+
+			<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12" title="{{ 'l-counter' | i18n }}"
+					value="{{controller.model['vl-contador'] | number:4}}">
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+					title="{{ 'l-counter-acum' | i18n }}" value="{{controller.model['vl-cont-acum'] | number:4}}">
+				</totvs-page-detail-info>
+			</div>
+
+			<div class="no-gutter ng-scope
+        			col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:10px">
+				<a class="clickable" ng-click="controller.openOrderPlan()">
+					{{ 'l-maintenance' | i18n}}
+					<span class="dropdown-menu-right glyphicon" ng-class="{'glyphicon-chevron-down': controller.showOrderPlan,
+							      'glyphicon-chevron-right': !controller.showOrderPlan}">
+					</span>
+				</a>
+			</div>
+
+			<div ng-if="controller.showOrderPlan">
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-maintenance-type' | i18n }}"
+						value="{{controller.model['cd-tipo']}} - {{controller.model['des-tipo-manut']}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-maintenance' | i18n }}"
+						value="{{controller.model['cd-manut']}} - {{controller.model['des-manut']}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-2 col-xs-12" title="{{ 'l-plan' | i18n }}"
+						value="{{controller.model['des-plano-orig']}}">
+					</totvs-page-detail-info>
+				</div>
+
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12" title="{{ 'l-class' | i18n }}"
+						value="{{controller.model['des-classe']}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-inspection' | i18n }}"
+						value="{{controller.model['cd-inspecao']}} - {{controller.model['des-inspecao']}}"
+						ng-if="controller.model['tp-manut'] == 10">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-stoppage' | i18n }}" value="{{controller.model['tempo-para'] | number:4}}">
+					</totvs-page-detail-info>
+				</div>
+			</div>
+
+			<div class="no-gutter ng-scope
+        			col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:10px"
+				ng-if="controller.model['cd-parada'] != ''">
+				<a class="clickable" ng-click="controller.openStopPlan()">
+					{{ 'l-stop' | i18n}}
+					<span class="dropdown-menu-right glyphicon" ng-class="{'glyphicon-chevron-down': controller.showStopPlan,
+							      'glyphicon-chevron-right': !controller.showStopPlan}">
+					</span>
+				</a>
+			</div>
+
+			<div ng-if="controller.showStopPlan && controller.model['cd-parada'] != ''">
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-stop-plan' | i18n }}"
+						value="{{controller.model['cd-parada']}} - {{controller.model['des-parada']}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-initial-date' | i18n }}"
+						value="{{controller.model['dtParadaStr']}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-sequence' | i18n }}" value="{{controller.model['sequencia']}}">
+					</totvs-page-detail-info>
+				</div>
+			</div>
+
+			<div class="no-gutter ng-scope
+        			col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:10px">
+				<a class="clickable" ng-click="controller.openOrderDates()">
+					{{ 'l-dates' | i18n}}
+					<span class="dropdown-menu-right glyphicon" ng-class="{'glyphicon-chevron-down': controller.showOrderDates,
+							      'glyphicon-chevron-right': !controller.showOrderDates}">
+					</span>
+				</a>
+			</div>
+
+			<div ng-if="controller.showOrderDates">
+
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-expected-maintenance-date' | i18n }}"
+						value="{{controller.model['dtPrevManutStr']}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-end-forecast' | i18n }}"
+						value="{{controller.model['dtPrevStr']}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-maintenance-date' | i18n }}"
+						value="{{controller.model['dtManutStr']}}">
+					</totvs-page-detail-info>
+				</div>
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-early-start' | i18n }}"
+						value="{{controller.model['dtIniCedoStr']}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-late-start' | i18n }}"
+						value="{{controller.model['dtIniTardeStr']}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-end-date' | i18n }}" value="{{controller.model['dtFechamStr']}}">
+					</totvs-page-detail-info>
+				</div>
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-date-hour-opening' | i18n }}"
+						value="{{controller.model['data-abertura']}} {{ 'l-at' | i18n }} {{controller.model['hora-abertura']}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-original-start-date' | i18n }}"
+						value="{{controller.model['dtIniOrigStr']}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-maintenance-duaration' | i18n }}" value="{{controller.model['dur-man']}}">
+					</totvs-page-detail-info>
+				</div>
+			</div>
+
+			<div class="no-gutter ng-scope
+        			col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:10px">
+				<a class="clickable" ng-click="controller.openAccounting()">
+					{{ 'l-posting' | i18n}}
+					<span class="dropdown-menu-right glyphicon" ng-class="{'glyphicon-chevron-down': controller.showAccounting,
+							      'glyphicon-chevron-right': !controller.showAccounting}">
+					</span>
+				</a>
+			</div>
+
+			<div ng-if="controller.showAccounting">
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-company' | i18n }}"
+						value="{{controller.model['ep-codigo']}} - {{controller.model['des-empresa']}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12" title="{{ 'l-site' | i18n }}"
+						value="{{controller.model['cod-estabel']}} - {{controller.model['des-estab']}}">
+					</totvs-page-detail-info>
+					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 detail-field">
+						<div class="field-label ng-binding">{{ 'l-busines-unit' | i18n }}</div>
+						{{controller.model['cod-unid-negoc']}} - {{controller.model['des-unid-negoc']}}
+						&nbsp;
+						<a ng-if="controller.model['cod-unid-negoc'] != ''" class="unidNegoc glyphicon glyphicon-list"
+							ng-click="controller.openUnidNegoc()" ng-href="" data-toggle="tooltip"
+							title="{{ 'l-business-unit-matrix' | i18n }}"></a>
+					</div>
+				</div>
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-order-account' | i18n }}"
+						value="{{controller.model['ct-codigo']}} - {{controller.model['des-ct-codigo']}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-order-cost-center' | i18n }}"
+						value="{{controller.model['sc-codigo']}} - {{controller.model['des-sc-codigo']}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-investment-order' | i18n }}" value="{{controller.model['num-ord-inv']}}">
+					</totvs-page-detail-info>
+				</div>
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-expense-account' | i18n }}"
+						value="{{controller.model['ct-desp']}} - {{controller.model['des-ct-desp']}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						title="{{ 'l-cost-center-expense' | i18n }}"
+						value="{{controller.model['sc-desp']}} - {{controller.model['des-sc-desp']}}">
+					</totvs-page-detail-info>
+				</div>
+			</div>
+
+			<div class="no-gutter ng-scope
+        			col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:10px"
+				ng-if="controller.model['nr-ord-orig'] != 0">
+				<a class="clickable" ng-click="controller.openOriginMaintenance()">
+					{{ 'l-origin' | i18n}}
+					<span class="dropdown-menu-right glyphicon" ng-class="{'glyphicon-chevron-down': controller.showOriginMaintenance,
+							      'glyphicon-chevron-right': !controller.showOriginMaintenance}">
+					</span>
+				</a>
+			</div>
+
+			<div ng-if="controller.showOriginMaintenance && controller.model['nr-ord-orig'] != 0">
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+					<totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+						title="{{ 'l-origin-order' | i18n }}"
+						value="{{controller.model['nr-ord-orig'] | orderNumberMask}} - {{controller.model['des-ord-orig']}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+						title="{{ 'l-origin-task' | i18n }}"
+						value="{{controller.model['cd-tarefa-orig']}} - {{controller.model['des-tarefa-orig']}}">
+					</totvs-page-detail-info>
+				</div>
+			</div>
+
+			<div class="no-gutter ng-scope
+                        col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top:10px">
+				<a class="clickable" ng-click="controller.openOrderMoreInfo()">
+					{{ 'l-documentation' | i18n}}
+					<span class="dropdown-menu-right glyphicon" ng-class="{'glyphicon-chevron-down': controller.showOrderMoreInfo,
+                                    'glyphicon-chevron-right': !controller.showOrderMoreInfo}">
+					</span>
+				</a>
+			</div>
+
+			<div ng-if="controller.showOrderMoreInfo">
+
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="field-label ng-binding">{{ 'l-narrative' | i18n }}</div>
+					<totvs-page-detail-info class="brokeLine col-lg-12 col-md-12 col-sm-12 col-xs-12"
+						value="{{controller.model['narrativa'] | enterLineTextArea}}">
+					</totvs-page-detail-info>
+				</div>
+
+				<!-- Anexos -->
+
+				<div>
+					<div class="no-gutter col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-right: 16px">
+						<totvs-field totvs-upload ng-model="controller.files" ng-hide="controller.model['estado'] == 8"
+							name="file" label="{{ 'l-attached-document' | i18n }}" name-id="file"
+							t-status-uploaded="{{ 'l-status-uploaded' | i18n }}"
+							t-status-uploading="{{ 'l-status-uploading' | i18n }}"
+							t-upload-selected-files="{{ 'l-upload-selected-files' | i18n }}" t-auto-upload="true"
+							t-multiple="true" t-save-url="controller.saveUrl" t-on-success="controller.onSuccess"
+							t-on-select="controller.onSelect" t-on-complete="controller.onComplete"
+							t-on-error="controller.onError" class="no-gutter col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						</totvs-field>
+					</div>
+
+					<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-right: 16px">
+						<totvs-grid grid="controller.gridAnexos" grid-data="controller.listaAnexos" grid-height="180"
+							navigatable="true" selectable="row" scrollable="true" resizable="true" sortable="true"
+							auto-resize-column="false">
+							<totvs-grid-column width="32" field="remover" style="text-align: center">
+								<template>
+									<a class="glyphicon glyphicon-trash btn-default" style="cursor: pointer"
+										data-toggle="tooltip" title="{{ 'l-remove' | i18n }}"
+										ng-click="controller.removerAnexo(dataItem)"></a>
+								</template>
+							</totvs-grid-column>
+							<totvs-grid-column width="32" field="remover" style="text-align: center">
+								<template>
+									<a class="glyphicon glyphicon-download-alt btn-default" style="cursor: pointer"
+										data-toggle="tooltip" title="Download"
+										ng-href="{{controller.downloadUrl}}{{dataItem.nomeAnexo}}" target="_blank"></a>
+								</template>
+							</totvs-grid-column>
+							<totvs-grid-column field="nomeAnexo" width="680">{{ 'l-attached-document' | i18n }}
+							</totvs-grid-column>
+							<totvs-grid-column field="usuarioAnexo" width="280">{{ 'l-user' | i18n }}
+							</totvs-grid-column>
+						</totvs-grid class="no-gutter col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<br>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xs-12">
+				<totvs-divider style="margin-top: 10px; margin-bottom: 15px;"></totvs-divider>
+			</div>
+
+			<div class="col-xs-12 mmi-group-accordion">
+
+				<accordion close-others="controller.closeOthers">
+					<div>
+						<accordion-group is-open="controller.showTasks" class="mmi-panel">
+
+							<accordion-heading>
+								<div>
+									{{ 'l-relationships' | i18n}}
+									<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': controller.showTasks,
+									   			  'glyphicon-chevron-right': !controller.showTasks}">
+									</i>
+								</div>
+							</accordion-heading>
+
+							<div class="row">
+								<totvs-page-child type="list">
+									<totvs-page-content class="mmi-tab">
+										<totvs-tabset class="no-padding col-xs-12">
+											<totvs-tab ng-controller="mmi.order.task.taskListCtrl as taskCtrl"
+												heading="{{ 'l-tasks' | i18n }}"
+												ng-click="taskCtrl.loadTasks(controller.model['nr-ord-produ'])">
+												<div ng-include="'/dts/mmi/html/order/task/task.list.html'"></div>
+											</totvs-tab>
+
+											<totvs-tab
+												ng-controller="mmi.order.specialty.SpecialtyListCtrl as specialtyCtrl"
+												heading="{{ 'l-specialtys' | i18n }}"
+												ng-click="specialtyCtrl.loadDataGridSpecialty()">
+												<div ng-include="'/dts/mmi/html/order/specialty/specialty.list.html'">
+												</div>
+											</totvs-tab>
+
+											<totvs-tab
+												ng-controller="mmi.order.materials.materialsListCtrl as materialsCtrl"
+												heading="{{ 'l-materials' | i18n }}"
+												ng-click="materialsCtrl.loadDataGridMaterials()">
+												<div ng-include="'/dts/mmi/html/order/materials/materials.list.html'">
+												</div>
+											</totvs-tab>
+											<totvs-tab ng-controller="mmi.order.epi.EpiListCtrl as epiCtrl"
+												heading="{{ 'l-epi' | i18n }}" ng-click="epiCtrl.loadDataGridEpi()">
+												<div ng-include="'/dts/mmi/html/order/epi/epi.list.html'"></div>
+											</totvs-tab>
+
+											<totvs-tab ng-controller="mmi.order.tool.ToolListCtrl as toolCtrl"
+												heading="{{ 'l-tools' | i18n }}" ng-click="toolCtrl.loadDataGridTool()">
+												<div ng-include="'/dts/mmi/html/order/tool/tool.list.html'"></div>
+											</totvs-tab>
+
+											<totvs-tab ng-controller="mmi.order.shift.ShiftListCtrl as shiftCtrl"
+												heading="{{ 'l-shifts' | i18n }}"
+												ng-click="shiftCtrl.loadDataGridShift()" ng-if="controller.showShift">
+												<div ng-include="'/dts/mmi/html/order/shift/shift.list.html'"></div>
+											</totvs-tab>
+											<totvs-tab ng-controller="mmi.order.method.MethodListCtrl as methodCtrl"
+												heading="{{ 'l-method-sheets' | i18n }}"
+												ng-click="methodCtrl.loadDataGridMethod()">
+												<div ng-include="'/dts/mmi/html/order/method/method.list.html'"></div>
+											</totvs-tab>
+											<totvs-tab ng-if="!controller.model['nr-ord-sum']"
+												ng-controller="mmi.order.pert.PertListCtrl as pertCtrl"
+												heading="{{ 'l-pert' | i18n }}" ng-click="pertCtrl.loadDataGridPert()">
+												<div ng-include="'/dts/mmi/html/order/pert/pert.list.html'"></div>
+											</totvs-tab>
+
+											<totvs-tab ng-controller="mmi.order.history.HistoryListCtrl as historyCtrl"
+												heading="{{ 'l-history' | i18n }}"
+												ng-click="historyCtrl.loadDataGridHistory()">
+												<div ng-include="'/dts/mmi/html/order/history/history.list.html'"></div>
+											</totvs-tab>
+
+										</totvs-tabset>
+									</totvs-page-content>
+								</totvs-page-child>
+							</div>
+						</accordion-group>
+					</div>
+				</accordion>
+			</div>
+		</totvs-page-detail>
+	</totvs-page-content>
+</totvs-page>
+
+<style>
+	.brokeLine {
+		white-space: pre-line;
+	}
+
+	.mmi-panel .mmi-panel-item,
+	.mmi-panel .mmi-tab-item,
+	.mmi-tab .mmi-panel-item,
+	.mmi-tab .mmi-tab-item {
+		border: 1px solid #ddd;
+		margin: 5px 0;
+		padding: 10px;
+		position: relative;
+
+	}
+
+	.no-padding {
+		padding: 0 !important;
+	}
+
+	.mmi-panel .mmi-panel-item:nth-child(odd),
+	.mmi-panel .mmi-tab-item:nth-child(odd),
+	.mmi-tab .mmi-panel-item:nth-child(odd),
+	.mmi-tab .mmi-tab-item:nth-child(odd) {
+		border-left: 5px solid #D0D0D0;
+	}
+
+	.mmi-panel .mmi-panel-item:nth-child(even),
+	.mmi-panel .mmi-tab-item:nth-child(even),
+	.mmi-tab .mmi-panel-item:nth-child(even),
+	.mmi-tab .mmi-tab-item:nth-child(even) {
+		border-left: 5px solid silver;
+	}
+
+	.mmi-panel .mmi-panel-item.header,
+	.mmi-panel .mmi-tab-item.header,
+	.mmi-tab .mmi-panel-item.header,
+	.mmi-tab .mmi-tab-item.header {
+		padding-top: 5px;
+		padding-bottom: 5px;
+		background-color: #F9F9F9;
+		border: none;
+		border-left: 5px solid #CCC;
+		border-bottom: 1px solid #CCC;
+	}
+
+	.mmi-group-accordion .panel-group>div {
+		margin: 0px 0;
+	}
+
+	.mmi-group-accordion .panel-group .mmi-tab {
+		margin-top: 5px;
+	}
+
+	.mmi-group-accordion .panel-body {
+		padding-bottom: 0;
+	}
+
+	.panel-heading {
+		background-color: #ebf0f0 !important;
+	}
+
+	.panel {
+		border: medium none !important;
+		box-shadow: none !important;
+	}
+
+	.panel-group {
+		margin-bottom: 0 !important;
+	}
+
+	.panel-title {
+		color: #777 !important;
+		font-family: Arial !important;
+		font-size: 14px !important;
+	}
+
+	.mmi-field-extra-button {
+		margin-top: 28px;
+	}
+
+	.totvs-style-guide hr {
+		margin-top: 1px;
+		margin-bottom: 1px;
+	}
+
+	.mmi-label {
+		font-weight: 500 !important;
+	}
+
+	.tag-1,
+	.tag-0 {
+		background-color: #f0ca38;
+	}
+
+	.tag-2 {
+		background-color: #5f9653;
+	}
+
+	.tag-3 {
+		background-color: #ff0000;
+	}
+
+	.tag-4 {
+		background-color: #1a1a1a;
+	}
+
+	.urgencia-1 {
+		background-color: #ff0000;
+	}
+
+	.urgencia-2 {
+		background-color: #f0ca38;
+	}
+
+	.urgencia-3 {
+		background-color: #5f9653;
+	}
+
+	.unidNegoc {
+		cursor: pointer;
+	}
+</style>

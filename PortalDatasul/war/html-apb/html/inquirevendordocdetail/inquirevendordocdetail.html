@@ -1,0 +1,413 @@
+<totvs-page>
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-document-detail' | i18n}}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			{{ 'l-document' | i18n }} / {{ 'l-parcel' | i18n }}:
+
+			<totvs-page-header-title 
+				title="{{controller.detailResult.documentCode}} / {{controller.detailResult.documentParcel}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action on-back-link="#/dts/apb/inquirevendordocs">
+					<action icon="glyphicon-menu-left" ng-click="controller.previousDocument()"></action>
+					<action icon="glyphicon-menu-right" ng-click="controller.nextDocument()"></action>
+					<action icon="glyphicon-search" ng-submit="controller.load()" ng-click="controller.openSelectDocs()">{{'l-select-document' | i18n }}</action>
+				</totvs-page-header-operation-action>
+
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-detail>
+
+			<div class="col-lg-12">
+
+				<totvs-row>
+
+					<totvs-page-detail-info 
+						class="col-xs-12 col-sm-3 text-center" 
+						title="{{ 'l-site' | i18n }}">
+						{{ controller.detailResult.site }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info 
+						class="col-xs-12 col-sm-3 text-center" 
+						title="{{ 'l-vendor' | i18n }}">
+						{{ controller.detailResult.shortName }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info 
+						class="col-xs-12 col-sm-3 text-center" 
+						title="{{ 'l-class' | i18n }}">
+						{{ controller.detailResult.documentClass }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info 
+						class="col-xs-12 col-sm-3 text-center" 
+						title="{{ 'l-invoice-series' | i18n }}">
+						{{ controller.detailResult.documentSeries }}
+					</totvs-page-detail-info>
+
+				</totvs-row>
+
+				<totvs-row>
+
+					<totvs-page-detail-info 
+						class="col-xs-12 col-sm-3 text-center" 
+						title="{{ 'l-due-date' | i18n }}">
+						{{ controller.detailResult.dueDate | date: ('l-date-format' | i18n: []: 'dts/apb') }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info 
+						class="col-xs-12 col-sm-3 text-center" 
+						title="{{ 'l-original-amount' | i18n }}">
+						{{ controller.detailResult.shortCurrency }} {{ controller.detailResult.origAmount | currency: ('l-space' | i18n )}}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info 
+						class="col-xs-12 col-sm-3 text-center" 
+						title="{{ 'l-balance' | i18n }}">
+						{{ controller.detailResult.shortCurrency }} {{ controller.detailResult.balance | currency: ('l-space' | i18n )}}
+					</totvs-page-detail-info>
+
+				</totvs-row>
+
+			</div>
+			<div class="col-lg-12 col-md-12">
+				<totvs-divider></totvs-divider>
+
+				<div class="col-md-12">
+
+					<div class="col-md-6">
+
+						<totvs-widget>
+
+							<strong>
+								<totvs-widget-header 
+									class="text-center">
+									{{ 'l-dates' | i18n }}
+								</totvs-widget-header>
+							</strong>
+
+							<totvs-widget-body>
+
+								<totvs-row>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-md-6 text-center" 
+										title="{{ 'l-print-date' | i18n }}" 
+										value="{{ controller.detailResult.printDate | date: ('l-date-format' | i18n: []: 'dts/apb') }}">
+									</totvs-page-detail-info>
+		
+									<totvs-page-detail-info 
+										class="col-xs-12 col-md-6 text-center" 
+										title="{{ 'l-transaction-date' | i18n }}" 
+										value="{{ controller.detailResult.transactionDate | date: ('l-date-format' | i18n: []: 'dts/apb') }}">
+									</totvs-page-detail-info>
+									
+								</totvs-row>
+
+								<totvs-row>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-md-6 text-center" 
+										title="{{ 'l-due-date' | i18n }}" 
+										value="{{ controller.detailResult.dueDate | date: ('l-date-format' | i18n: []: 'dts/apb') }}">
+									</totvs-page-detail-info>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-md-6 text-center" 
+										title="{{ 'l-payment-forecast' | i18n }}" 
+										value="{{ controller.detailResult.fcstPaymentDate | date: ('l-date-format' | i18n: []: 'dts/apb') }}">
+									</totvs-page-detail-info>
+
+								</totvs-row>
+
+								<totvs-row>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-md-6 text-center" 
+										title="{{ 'l-payment-date' | i18n }}" 
+										value="{{ controller.detailResult.lastPaymentDate | date: ('l-date-format' | i18n: []: 'dts/apb') }}">
+									</totvs-page-detail-info>
+
+								</totvs-row>
+								
+							</totvs-widget-body>
+
+						</totvs-widget>
+
+					</div>
+					<div class="col-md-6">
+
+						<totvs-widget>
+
+							<strong>
+								<totvs-widget-header 
+									class="text-center">
+									{{ 'l-amounts' | i18n }}
+								</totvs-widget-header>
+							</strong>
+
+							<totvs-widget-body>
+
+								<totvs-row>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-md-6 text-center" 
+										title="{{ 'l-net-amount' | i18n }}" 
+										value="{{ controller.detailResult.shortCurrency }} {{ controller.detailResult.netAmount | currency: ('l-space' | i18n ) }}">
+									</totvs-page-detail-info>
+									
+									<totvs-page-detail-info 
+										class="col-xs-12 col-md-6 text-center" 
+										title="{{ 'l-discount-amount' | i18n }}" 
+										value="{{ controller.detailResult.shortCurrency }} {{ controller.detailResult.discountValue | currency: ('l-space' | i18n ) }}">
+									</totvs-page-detail-info>
+
+									
+								</totvs-row>
+
+								<totvs-row>								
+	
+									<totvs-page-detail-info 
+										class="col-xs-12 col-md-6 text-center" 
+										title="{{ 'l-penalty-amount' | i18n }}" 
+										value="{{ controller.detailResult.shortCurrency }} {{ controller.detailResult.pnltyValue | currency: ('l-space' | i18n ) }}">
+									</totvs-page-detail-info>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-md-6 text-center" 
+										title="{{ 'l-interest-amount' | i18n }}" 
+										value="{{ controller.detailResult.shortCurrency }} {{ controller.detailResult.intrsValue | currency: ('l-space' | i18n ) }}">
+									</totvs-page-detail-info>									
+
+								</totvs-row>
+
+								<totvs-row>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-md-6 text-center" 
+										title="{{ 'l-write-off-amount' | i18n }}" 
+										value="{{ controller.detailResult.shortCurrency }} {{ controller.detailResult.writeOffValue | currency: ('l-space' | i18n ) }}">
+									</totvs-page-detail-info>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-md-6 text-center" 
+										title="{{ 'l-restatement' | i18n }}" 
+										value="{{ controller.detailResult.shortCurrency }} {{ controller.detailResult.restValue | currency: ('l-space' | i18n ) }}">
+									</totvs-page-detail-info>
+
+								</totvs-row>
+								
+							</totvs-widget-body>
+
+						</totvs-widget>
+
+					</div>					
+
+				</div>
+
+				<div class="col-md-12">
+
+					<div class="col-md-12">
+
+						<totvs-widget>
+
+							<strong>
+								<totvs-widget-header 
+									class="text-center">
+									{{ 'l-calculated-discount' | i18n }}
+								</totvs-widget-header>
+							</strong>
+
+							<totvs-widget-body>
+
+								<totvs-row>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-md-4 text-center" 
+										title="{{ 'l-discount-date' | i18n }}" 
+										value="{{ controller.detailResult.discountDate | date: ('l-date-format' | i18n: []: 'dts/apb') }}">
+									</totvs-page-detail-info>
+	
+									<totvs-page-detail-info 
+										class="col-xs-12 col-md-4 text-center" 
+										title="{{ 'l-discount-percentage' | i18n }}" 
+										value="{{ controller.detailResult.discountPercent }}">
+									</totvs-page-detail-info>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-md-4 text-center" 
+										title="{{ 'l-discount-value' | i18n }}" 
+										value="{{ controller.detailResult.shortCurrency }} {{ controller.detailResult.discountCalcValue | currency: ('l-space' | i18n ) }}">
+									</totvs-page-detail-info>
+
+								</totvs-row>
+
+							</totvs-widget-body>
+
+						</totvs-widget>
+
+						
+					</div>
+				</div>
+
+				<div class="col-md-12">
+
+					<div class="col-md-6">
+
+						<totvs-widget>
+
+							<strong>
+								<totvs-widget-header 
+									class="text-center">
+									{{ 'l-banking-info' | i18n }}
+								</totvs-widget-header>
+							</strong>
+
+							<totvs-widget-body>
+
+								<totvs-row>									
+
+									<totvs-widget>
+
+										<totvs-page-detail-info
+											class="col-xs-12 text-center">
+											<strong>{{ 'l-collecting-bank' | i18n }}</strong>
+										</totvs-page-detail-info>
+
+										<totvs-widget-body>
+
+											<totvs-page-detail-info 
+												class="col-xs-12 col-md-6 text-center"
+												title="{{ 'l-collector-bank-code' | i18n }}"
+												value="{{ controller.detailResult.collectorBank }}">
+											</totvs-page-detail-info>
+			
+											<totvs-page-detail-info 
+												class="col-xs-12 col-md-6 text-center" 
+												title="{{ 'l-collector-bank-doc' | i18n }}"
+												value="{{ controller.detailResult.collectorBankDoc }}">
+											</totvs-page-detail-info>
+
+										</totvs-widget-body>
+
+
+									</totvs-widget>
+									
+								</totvs-row>
+
+								<totvs-row>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-md-6 text-center" 
+										title="{{ 'l-bank-document-code' | i18n }}" 
+										value="{{ controller.detailResult.bankDocumentCode }}">
+									</totvs-page-detail-info>
+									
+								</totvs-row>
+
+								<totvs-row>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-md-6 text-center" 
+										title="{{ 'l-spread-code' | i18n }}" 
+										value="{{ controller.detailResult.spreadCode }}">
+									</totvs-page-detail-info>
+
+								</totvs-row>
+
+							</totvs-widget-body>
+							
+						</totvs-widget>						
+
+					</div>
+					<div class="col-md-6">
+
+						<totvs-widget>
+
+							<strong>
+								<totvs-widget-header 
+									class="text-center">
+									{{ 'l-financial-expenses' | i18n }}
+								</totvs-widget-header>
+							</strong>
+
+							<totvs-widget-body>
+
+								<totvs-row>	
+									
+									<totvs-widget>
+
+										<totvs-page-detail-info
+											class="col-xs-12 text-center">
+											<strong>{{ 'l-interests' | i18n }}</strong>
+										</totvs-page-detail-info>
+
+										<totvs-widget-body>
+
+											<totvs-page-detail-info 
+												class="col-xs-12 col-md-6 text-center" 
+												title="{{ 'l-day-percent' | i18n }}" 
+												value="{{ controller.detailResult.intrsDayPercent }}">
+											</totvs-page-detail-info>
+
+											<totvs-page-detail-info 
+												class="col-xs-12 col-md-6 text-center" 
+												title="{{ 'l-delay-days' | i18n }}" 
+												value="{{ controller.detailResult.delayDays }}">
+											</totvs-page-detail-info>
+
+										</totvs-widget-body>
+									
+									</totvs-widget>
+									
+								</totvs-row>
+
+								<totvs-row>
+
+									<totvs-widget>
+
+										<totvs-page-detail-info
+											class="col-xs-12 text-center">
+											<strong>{{ 'l-penalty' | i18n }}</strong>
+										</totvs-page-detail-info>
+
+										<totvs-widget-body>
+
+											<totvs-page-detail-info 
+												class="col-xs-12 col-md-6 text-center" 
+												title="{{ 'l-day-percent' | i18n }}" 
+												value="{{ controller.detailResult.intrsDayPercent }}">
+											</totvs-page-detail-info>
+
+										</totvs-widget-body>
+									
+									</totvs-widget>
+
+								</totvs-row>									
+
+							</totvs-widget-body>
+
+						</totvs-widget>
+
+					</div>
+
+				</div>
+
+			</div>
+			
+		</totvs-page-detail>
+	</totvs-page-content>
+</totvs-page>

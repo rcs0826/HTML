@@ -1,0 +1,49 @@
+<totvs-page type="list" totvs-custom-element="customPage">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{:: 'l-atincipated-billing' | i18n : [] : 'dts/mft' }}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-atincipated-billing' | i18n : [] : 'dts/mft/'}} ({{controller.total}})">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-remove='true' hide-edit='true' hide-back='true'>
+                    <action ng-click="controller.listMovements(controller.movListSelected)">
+                        {{:: 'l-movements' | i18n : [] : 'dts/mft' }}
+                    </action>
+                </totvs-page-header-operation-action>
+                <totvs-page-header-operation-filter placeholder="{{:: 'l-fast-search-for-item' | i18n }}" ng-submit="controller.applySimpleFilter();"
+                    ng-model="controller.searchValue" advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers" ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-content-header>
+            <totvs-page-quick-filter filters-list="controller.quickFilters" on-select-filter="controller.setQuickFilter" filters-list-custom="controller.listOfCustomFilters">
+            </totvs-page-quick-filter>
+        </totvs-page-content-header>
+
+        <div class="row">
+            <div style="margin-left: 25px; margin-right: 25px;">
+                <totvs-grid grid-data="controller.apps" grid="controller.grid" navigatable="true" resizable="true" selectable="multiple, row"
+                    resizable="true" reorderable="true" sortable="true" grid-selected-item="controller.movListSelected">
+                    <totvs-grid-column field="itemCode" width="75">{{:: 'l-it-codigo' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                    <totvs-grid-column field="itemDescription" width="250">{{:: 'l-description' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                    <totvs-grid-column field="reference" width="100">{{:: 'l-cod-refer' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                    <totvs-grid-column field="balanceQty" width="100" filter="number : 4">{{:: 'l-balance' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                </totvs-grid>
+            </div>
+            <div class="more-results" style="margin-left: 15px; margin-right: 15px;" ng-show="controller.hasNext">
+                <button ng-click="controller.search(true)" class="btn btn-primary col-xs-12">
+                    {{'l-more' | i18n}}
+                </button>
+            </div>
+        </div>
+
+    </totvs-page-content>
+
+</totvs-page>

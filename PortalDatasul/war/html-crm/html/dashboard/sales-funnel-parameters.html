@@ -1,0 +1,123 @@
+<totvs-modal-header>
+	{{ 'l-parameters' | i18n: []: 'dts/crm' }} {{'l-opportunity-funnel' | i18n : [] : 'dts/crm/' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<fieldset class="row">
+
+		<field type="select"
+			   ng-model="controller.config.ttEstrategia"
+			   ng-change="controller.onChangeStrategy();"
+			   required
+			   canclean="undefined">
+			<label>{{ 'l-sales-strategy' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-sales-strategy' | i18n: []: 'dts/crm' }}">{{ $select.selected.des_estrateg_vda }}</ui-select-match>
+				<ui-select-choices repeat="strategy in controller.strategies | filter: $select.search track by $index">
+					<span ng-bind-html="strategy.des_estrateg_vda | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.config.ttCampanha"
+			   ng-animate="'animate-if'"
+			   canclean="undefined">
+			<label>{{ 'l-campaign' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-campaign' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_campanha }}
+				</ui-select-match>
+				<ui-select-choices repeat="campaign in controller.campaigns | filter: $select.search track by $index">
+					<span ng-bind-html="campaign.nom_campanha | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="daterange"
+			   class="col-xs-12 col-md-6"
+			   ng-model="controller.config.dat_prev_fechto"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-date-close-forecast' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="daterange"
+			   class="col-xs-12 col-md-6"
+			   ng-model="controller.config.dat_fechto_oportun"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-date-close' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="daterange"
+			   class="col-xs-12 col-md-6"
+			   ng-model="controller.config.dat_cadastro"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-date-create' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<!-- funnel type -->
+		<field type="select"
+			   required
+			   class="col-xs-12 col-md-6"
+			   ng-model="controller.config.ttTipoFunil">
+			<label>{{ 'l-type' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-type' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_tipo }}
+				</ui-select-match>
+				<ui-select-choices repeat="type in controller.types | filter: $select.search track by $index">
+					<span data-ng-bind-html="type.nom_tipo | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+        <div class="col-xs-6 crm-no-gutter" style="max-height: 64px;">
+            <field type="select"
+                   ng-model="controller.config.ttResponsavel"
+                   canclean="undefined"
+                   ng-disabled="controller.isUserPortfolio === true"
+                   class="col-xs-12">
+                <label name="responsibleLabel">{{'l-user-responsible' | i18n: []: 'dts/crm'}}</label>
+
+                <zoom zoom-service="crm.crm_usuar.zoom" zoom-init="{subordinate: true}"></zoom>
+                <include>
+                    <ui-select-match placeholder="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_usuar }}</ui-select-match>
+                    <ui-select-choices repeat="user in controller.users track by $index"
+                                       refresh="controller.getUsers($select.search)"
+                                       refresh-delay="500">
+                        <span ng-bind-html="user.nom_usuar | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </include>
+            </field>
+            <div style="position: relative;top: -57px;float: left;left: 90px;display: inline-block;" ng-if="controller.isUserPortfolio == true">
+                <i class="glyphicon glyphicon-info-sign"
+                  tooltip-placement="bottom"
+                  tooltip-html="controller.tooltipMessage">
+                </i>
+            </div>
+        </div>
+
+		<field type="checkbox"
+			   class="col-xs-12 col-sm-3 col-md-3"
+			   ng-model="controller.config.log_suspenso"
+			   label="{{ 'l-consider-suspended' | i18n: []: 'dts/crm' }}">
+		</field>
+
+		<field type="checkbox"
+			   class="col-xs-12 col-sm-3 col-md-3"
+			   ng-if="controller.config.ttResponsavel"
+			   ng-model="controller.config.log_meta_geral">
+			<label>{{ 'l-consider-overall-goals' | i18n: []: 'dts/crm' }}</label>
+		</field>
+	</fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-primary" ng-click="controller.apply(true)">{{ 'btn-apply' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

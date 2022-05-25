@@ -1,0 +1,227 @@
+<totvs-page type="list">
+
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{i18n('l-home', [], 'dts/mdb')}}</breadcrumb>
+            <breadcrumb>{{i18n('l-operation-gantt', [], 'dts/mdb')}}</breadcrumb>
+        </totvs-page-breadcrumb>
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+        <totvs-page-detail ng-show="controller.showCenarHeader">
+            <!-- Combo de Cenarios -->
+            <div class="col-xs-6 col-md-6 col-lg-6">
+                <totvs-field class="col-xs-9 col-md-9 col-lg-9"
+                    label="{{i18n('l-scenar', [], 'dts/mdb')}}"
+                    totvs-combo
+                    canclean
+                    t-options="controller.listCombo"
+                    ng-model="controller.selectedScenario"
+                    ng-change="controller.onChangeScenario()">
+                </totvs-field>
+
+                 <!-- Combo de Simulação -->
+                <totvs-field class="col-xs-3 col-md-3 col-lg-3"
+                    label="Simulação"
+                    totvs-combo
+                    t-options="controller.listComboSimulation"
+                    ng-model="controller.selectedSimulation"
+                    ng-change="controller.onChangeSimulation()">
+                </totvs-field>
+            </div>
+
+            <!-- Popover Detalhes do Cenário -->
+            <div class="row col-xs-1 col-md-1 col-lg-1 scenario-info">
+                <span class="glyphicon glyphicon-info-sign scenario-info-icon"
+                      uib-popover-template="'/dts/mdb/html/operationsgantt/scenario-detail.html'"
+                      popover-trigger="'mouseenter'"
+                      popover-class="scenario-info-width"
+                      popover-placement="'auto'"
+                      popover-append-to-body="'true'">
+                </span>
+            </div>
+
+            <!-- Escala -->
+            <div class="row col-xs-2 col-md-2 col-lg-2 custom-scale " style="z-index:2;">
+                <label for="teste" class="custom-title"
+                        tooltip="{{i18n('l-scale', [], 'dts/mdb')}}" tooltip-placement="top">{{i18n('l-scale', [], 'dts/mdb')}} </label>
+                <br>
+                <input  kendo-slider
+                        small-step=1
+                        min=1
+                        max=5
+                        value=3
+                        ng-model="controller.ganttSliderWidth"
+                        k-tooltip="{ enabled: false }"
+                        k-orientation="'horizontal'"
+                        ng-change="controller.sliderChange()"
+                        />
+            </div>
+
+            <!-- Botões Inconsistencia, Backlog, Legenda e Parâmetros -->
+            <div class="col-xs-3 col-md-3 col-lg-3 pull-right custom-operation" style="z-index:1;">
+                <button type="button" class="btn btn-default pull-right custom-operation-action" ng-click="controller.openParameters()" title="{{i18n('l-parameters', [], 'dts/mdb')}}"><span class="glyphicon glyphicon-cog"></span></button>
+                <button type="button" class="btn btn-default pull-right custom-operation-action" ng-click="controller.legend()" title="{{i18n('l-legend', [], 'dts/mdb')}}"><span class="glyphicon glyphicon-list"></span></button>
+                <button type="button" class="btn btn-default pull-right custom-operation-action" ng-click="controller.openBacklog()" title="{{i18n('l-backlog', [], 'dts/mdb')}}"><span class="glyphicon glyphicon-tasks"></span></button>
+                <button type="button" class="btn btn-default pull-right custom-operation-action" ng-click="controller.openValidate()" title="{{i18n('l-validate', [], 'dts/mdb')}}"><span class="glyphicon glyphicon-object-align-left"></span></button>
+            </div>
+        </totvs-page-detail>
+
+        <!-- Mostrar/Esconder cabeçalho -->
+        <div class="text-center col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <a class="clickable"
+               title="{{i18n('l-show-hide-header', [], 'dts/mdb')}}"
+               ng-click="controller.openCenarHeader()">
+                <span class="dropdown-menu-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down': !controller.showCenarHeader,
+                                'glyphicon-chevron-up': controller.showCenarHeader}">
+                </span>
+            </a>
+        </div>
+
+        <!-- Mensagem: Nenhum registro encontrado -->
+        <totvs-page-alert
+            class="alert-message-margin"
+            ng-if="controller.ganttData.length === 0"
+            type="info"
+            message="{{i18n('msg-record-not-found', [], 'dts/mdb')}}">
+        </totvs-page-alert>
+
+        <totvs-page-detail ng-if="controller.ganttData.length != 0">
+
+            <div class="row col-xs-12 col-md-12 col-lg-12 custom-row">
+
+                <!-- Paginação GM -->
+                <div class="custom-pagination-left col-xs-4 col-md-4 col-lg-4">
+                    <!-- Título GM -->
+                    <div class="custom-title">
+                        {{i18n('l-machine-group', [], 'dts/mdb')}}
+                    </div>
+                    <div>
+                        <!-- GM anterior-->
+                        <label title="{{i18n('l-previous-machine-group', [], 'dts/mdb')}}" role="button"
+                        ng-click="controller.prevList();" ng-disabled='controller.selectedPage == 1' class="btn btn-default clickable">
+                            <span class="glyphicon glyphicon-arrow-left"></span>
+                        </label>
+
+                        <!-- Páginas de GM -->
+                        <label  ng-repeat="gms in controller.pageCount" ng-attr-title="{{controller.gettitle(gms)}}" ng-disabled='controller.selectedPage == gms' role="button"
+                        ng-click="controller.gotolist(gms);" class="btn btn-default clickable">
+                        {{gms}}
+                        </label>
+
+                        <!-- Proximo GM -->
+                        <label title=" {{i18n('l-next-machine-group', [], 'dts/mdb')}}" ng-disabled='controller.selectedPage == controller.maxPages' role="button"
+                        ng-click="controller.nextList();" class="btn btn-default clickable">
+                            <span class="glyphicon glyphicon-arrow-right"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Localizar Operação -->
+                <div class="col-xs-4 col-md-4 col-lg-4">
+                    <totvs-page-form
+                        class="col-xs-12 custom-page-form-padding"
+                        ng-if="controller.ganttData.length != 0"
+                        ng-submit="controller.searchOperation(false, false)">
+                        <!-- Operação Anterior -->
+                        <label
+                            title="{{i18n('l-previous-operation', [], 'dts/mdb')}}"
+                            role="button"
+                            ng-click="controller.searchOperation(false, true);"
+                            class="btn btn-default clickable search-operation-button-left">
+                            <span class="glyphicon glyphicon-arrow-left"></span>
+                        </label>
+
+                        <!-- Localizar Operação -->
+                        <totvs-field
+                            totvs-input
+                            type="submit"
+                            placeholder="{{i18n('l-order-item', [], 'dts/mdb')}}"
+                            label="{{i18n('l-operation-locate', [], 'dts/mdb')}}"
+                            ng-model="controller.searchModel"
+                            class="col-xs-8 search-operation-padding">
+                        </totvs-field>
+
+                        <!-- Próxima Operação -->
+                        <label
+                        title="{{i18n('l-next-operation', [], 'dts/mdb')}}"
+                        role="button"
+                        ng-click="controller.searchOperation(true, false);"
+                        class="btn btn-default clickable search-operation-button-right">
+                            <span class="glyphicon glyphicon-arrow-right"></span>
+                        </label>
+
+                    </totvs-page-form>
+                </div>
+
+                <!-- Paginação Período -->
+                <div class="custom-pagination-right col-xs-4 col-md-4 col-lg-4">
+                    <!-- Título Período -->
+                    <div class="custom-title">
+                        {{i18n('l-period', [], 'dts/mdb')}}
+                    </div>
+                    <div>
+                        <!-- Período Anterior -->
+                        <label title="{{i18n('l-previous-period', [], 'dts/mdb')}}" role="button"
+                        ng-click="controller.prevListOp();" ng-disabled='controller.selectedSubPage == 1' class="btn btn-default clickable">
+                        <span class="glyphicon glyphicon-arrow-left">
+                        </span>
+                        </label>
+
+                        <!-- Páginas de Períodos -->
+                        <label  ng-repeat="op in controller.subPageList" ng-attr-title="{{controller.getTitleOp(op)}}" ng-disabled='controller.selectedSubPage == op' role="button"
+                        ng-click="controller.goToListOp(op);" class="btn btn-default clickable">
+                        {{op}}
+                        </label>
+
+                        <!-- Próximo Período -->
+                        <label title=" {{i18n('l-next-period', [], 'dts/mdb')}}" ng-disabled='controller.selectedSubPage == controller.maxSubPages' role="button"
+                        ng-click="controller.nextListOp();" class="btn btn-default clickable">
+                        <span class="glyphicon glyphicon-arrow-right"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gantt -->
+            <div gantt
+                 class="col-xs-12 custom-angular-gantt"
+                 data="controller.ganttData"
+                 headers="controller.header"
+                 headers-formats="controller.headersFormats"
+                 headers-scales="controller.headersScales"
+                 view-scale="controller.headerType"
+                 column-width="controller.ganttWidth"
+                 max-height="5000"
+                 from-date="controller.ganttFromDate"
+                 to-date="controller.ganttToDate"
+                 timespans="controller.timespans"
+                 task-limit-threshold="-1"
+                 api="controller.registerApi"
+                 task-context-menu="controller.taskContextMenuOptions"
+                 task-popover-options="controller.taskPopOverOptions"
+                 ng-show="controller.ganttData.length > 0">
+                <gantt-tree
+                    header="i18n('l-machines', [], 'dts/mdb')"
+                    content="controller.ganttTreeContent"></gantt-tree>
+                <gantt-table
+                    columns="controller.ganttColumns"
+                    headers="controller.ganttGmHeaders"
+                    contents="controller.ganttGmContent"></gantt-table>
+                <gantt-movable allow-row-switching="controller.allowRowSwitch" allow-resizing="false"></gantt-movable>
+                <gantt-overlap></gantt-overlap>
+                <gantt-tooltips content="controller.customTooltip"></gantt-tooltips>
+            </div>
+
+            <!-- Carregando -->
+            <div id="loading-screen" class="overlay" ng-if="controller.ganttLoading">
+                <img src="assets/img/loading.gif">
+                <p class="text-center text-muted">Carregando</p>
+            </div>
+
+        </totvs-page-detail>
+
+    </totvs-page-content>
+
+</totvs-page>

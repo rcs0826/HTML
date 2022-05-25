@@ -1,0 +1,62 @@
+<div ng-controller="salesorder.pd4000Financing.Controller as orderFinancingController" totvs-custom-element="pd4000e">
+	<div class="row">
+		<div style="border:0; padding: 5px;">
+
+			<div class="row">
+
+				<div  class="nolabel col-md-12" style="margin-top: 10px">
+
+                    <totvs-field totvs-select                        
+                            ng-model="orderFinancingController.order['nr-tab-finan']"
+                            ng-disabled="!orderFinancingController.enabled"
+                            ng-change="orderFinancingController.changeFinanc()"
+                            class="col-xs-6"
+                            select-id="nr-tab-finan"
+                            select-match='[{"field":"nr-tab-finan"}]'
+                            select-service="mpd.tab-finan.zoom"
+                            zoom-service="mpd.tab-finan.zoom">
+                    </totvs-field>
+                    
+                    <totvs-page-detail-info title="{{:: 'Prazo Médio' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-4 col-md-2">
+                        {{ orderFinancingController.prazomedio | number : 2 }} dias
+                    </totvs-page-detail-info>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <totvs-grid grid-data="orderFinancingController.ttFinancingRatesPD4000"
+                grid="orderFinancingController.ratesGrid"
+				grid-height="220"
+                selectable="row"
+                navigatable="true"
+                auto-resize-content="true">
+                <totvs-grid-column width="100">{{:: 'Selecionado' | i18n : [] : 'dts/mpd' }}
+                    <template>
+                        <a class="btn btn-default" role="button"
+                            ng-if="!dataItem.selecionado && orderFinancingController.enabled" 
+                            ng-click="orderFinancingController.selectIndex(dataItem)">
+                            <span class="hidden-xs ng-binding">{{:: 'Selecionar' | i18n : [] : 'dts/mpd' }}</span>
+                            <span class="glyphicon glyphicon-menu-right"></span>
+                        </a>
+                        <a class="btn btn-primary" role="button" ng-disabled="true"
+                            ng-if="dataItem.selecionado">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            <span class="hidden-xs ng-binding">{{:: 'Selecionado' | i18n : [] : 'dts/mpd' }}</span>
+                        </a>
+                    </template>
+                </totvs-grid-column>
+                <totvs-grid-column field="num-seq" filter="number:0" width="60">{{:: 'Sequência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                <totvs-grid-column field="tab-dia-fin" filter="number:0" width="60">{{:: 'Dias' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                <totvs-grid-column field="tab-ind-fin" filter="number:5" width="100"  style="text-align: right;">{{:: 'Índice' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<totvs-grid-column field="vl-ped-ajustado" filter="number : 5" width="180"  style="text-align: right;">{{:: 'Valor ajustado' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            </totvs-grid>
+        </div>
+        <div class="col-sm-12">
+            <small>* O valor ajustado é estimado baseado no índice de financiamento e valor atual do pedido, outros fatores podem alterar esses valores no faturamento</small>
+        </div>
+    </div>
+</div>
+

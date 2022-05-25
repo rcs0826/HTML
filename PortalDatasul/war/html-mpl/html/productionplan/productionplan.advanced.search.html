@@ -1,0 +1,121 @@
+<totvs-modal-header>{{ 'l-advanced-search' | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+    <div class="row">
+    	<form class="form-horizontal" role="form" >
+			<accordion close-others="controller.closeOther">
+				<accordion-group is-open="status.isFirstOpen">
+					<accordion-heading>
+						{{'l-selection' | i18n }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.isFirstOpen, 'glyphicon-chevron-right': !status.isFirstOpen}"></i>
+					</accordion-heading>      					
+		           	<field type="input" class="col-md-12" 
+		            	   ng-model="controller.advancedSearch.cdPlano"
+		            	   ng-change="controller.planCodeChange()">
+		                <label>{{ 'l-plan' | i18n }}</label>
+		        	</field>  
+		            <field type="daterange" class="col-md-6" 
+            	   		ng-model="controller.advancedSearch.dateRange">
+	                	<label>{{ 'l-initial-date' | i18n }}</label>
+		            </field>
+		            <div class="col-xs-12 col-md-6 col-lg-6 range-container">
+		            	<label class="field-label" >{{ 'l-initial-period' | i18n }}</label>
+		            	<div class="input-group col-xs-12">
+			             	<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding" 
+			            	   ng-model="controller.advancedSearch.initialPeriodString"
+			            	   ui-mask="?9?99/9999"
+			            	   maxlength="9">		            	   
+			        		</field>
+			        		<span class="input-group-addon ng-binding">a</span>
+			        		<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding"   
+			            	   ng-model="controller.advancedSearch.finalPeriodString"
+			            	   ui-mask="?9?99/9999"
+			            	   maxlength="9">
+			        		</field>  
+		        		</div>
+	        		</div>
+		            <!-- 
+		            <field type="inputrange" class="col-md-6" 
+           	  			ng-model="controller.advancedSearch.periodRange"
+		            	   ng-change="controller.changePeriod()"
+		            	   mask="999/9999" >
+		                <label>{{ 'l-initial-period' | i18n }}</label>
+		            </field> -->
+				</accordion-group>
+				<accordion-group is-open="status.open" >
+					<accordion-heading>
+						{{'l-parameters' | i18n }}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					</accordion-heading>
+		  			<field type="checkbox" class="col-md-6" 
+		            	   data-ng-model="controller.advancedSearch.lAtivo"
+		            	   label="{{ 'l-active' | i18n }}" >
+		        	</field>  
+		            <field type="checkbox" class="col-md-6" 
+		            	   data-ng-model="controller.advancedSearch.lInativo"
+		            	   label="{{ 'l-inact' | i18n }}" >
+		            </field>
+		            <field type="checkbox" class="col-md-6" 
+		            	   data-ng-model="controller.advancedSearch.plVenda"
+		            	   label="{{ 'l-plan-sale' | i18n }}" >
+		            </field>
+		            <field type="checkbox" class="col-md-6" 
+		            	   data-ng-model="controller.advancedSearch.plProdu"
+		            	   label="{{ 'l-production-plan' | i18n }}" >
+		            </field>
+				</accordion-group>
+			</accordion>
+        </form>
+    </div>
+</totvs-modal-body>
+<totvs-modal-footer>    
+    <button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'l-cancel' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="controller.search();">{{ 'l-search' | i18n }}</button>
+</totvs-modal-footer>
+<style>
+
+
+	.no-padding-left,
+	.no-padding { padding-left: 0; }
+		
+	.no-padding-right,
+	.no-padding { padding-right: 0; }
+	
+	.range-container { margin-top: 5px; }
+	
+	.range-container div > span {
+		border: none;
+	    border-top: 1px solid #ccc;
+	    border-bottom: 1px solid #ccc;
+	    width: 30px !important;
+	}
+	
+	.range-container div field > .field-container {
+		margin-top: 0 !important;
+	}
+	
+	.field-label {
+		margin-bottom: 5px;
+	   	font-weight: 200;
+	   	font-size: 12px;
+	   	color: gray;
+	}
+	
+	.faixa-addon {
+	    width: auto;
+    	min-width: 16px;
+    	padding: 4px 5px;
+	    font-weight: 400;
+    	line-height: 1.428571429;
+    	text-align: center;
+   		text-shadow: 0 1px 0 #fff;
+    	vertical-align: middle;
+    	background-color: #eee;
+    	border: solid #ccc;
+    	border-width: 1px 0;
+    	margin-left: -5px;
+    	margin-right: -5px;
+    	max-width: 40px;
+    	min-width: 40px;
+    	margin-top: 28px;
+    	height: 34px;
+	}
+	
+</style>

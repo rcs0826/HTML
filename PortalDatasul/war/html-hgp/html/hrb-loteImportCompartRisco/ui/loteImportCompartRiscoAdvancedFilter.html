@@ -1,0 +1,56 @@
+<totvs-modal-header>
+        Busca Avançada
+    </totvs-modal-header>
+    <totvs-modal-body style="height: 180px; overflow-y: auto;">
+        <fieldset>
+                <field  class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        type="input"
+                        numbers-only
+                        ng-model="afController.model.cdUnidadeOrigem"
+                        placeholder="1"
+                        maxlength="9"                
+                        label="Unidade Origem">
+                </field>  
+                <field  class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        type="input"
+                        numbers-only
+                        ng-model="afController.model.nrLoteImp"
+                        placeholder="1"
+                        maxlength="8"                
+                        label="Numero do Lote">
+                </field>   
+                <field type="input"
+                        label="fake" style="visibility: hidden"
+                        class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
+                </field> 
+                <totvs-field totvs-datepicker
+                        class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                        label="Data de Importação Inicial"
+                        format="dd/MM/yyyy"
+                        ng-model="afController.model.dtImportacaoIni"
+                        culture="pt"
+                        canclean
+                        ng-show="true"
+                        ng-blur="afController.changeRange('dtImportacaoIni','dtImportacaoFim')">
+                </totvs-field>
+                <totvs-field totvs-datepicker
+                        class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                        label="Data de Importação Final"
+                        format="dd/MM/yyyy"
+                        ng-model="afController.model.dtImportacaoFim"
+                        culture="pt"
+                        canclean
+                        ng-show="true"
+                        ng-blur="afController.changeRange('dtImportacaoIni','dtImportacaoFim')">
+                </totvs-field>      
+            
+        </fieldset>
+    </totvs-modal-body>
+    
+    <totvs-modal-footer>
+        <button class="btn" ng-click="afController.cleanFields()">Limpar Campos</button>
+        <button class="btn" ng-click="afController.cancel()">Cancelar</button>
+        <button class="btn btn-primary" ng-click="afController.search()">Buscar</button>
+    </totvs-modal-footer>
+    
+    

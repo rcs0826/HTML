@@ -1,0 +1,115 @@
+<div class="row" style="overflow: auto; margin-left:-13px; margin-right: -13px; border: 1px solid lightgray; border-radius: 4px;">
+  <div ng-repeat="sprint in dashboardCtrl.arvoreModel.ttSprint">
+    <div id="div-sprint" class="{{dashboardCtrl.sprintClass}}" style="padding-left:2px; padding-right:2px">
+      <div class="sprint-title" class="col-xs-12">
+        <div style="float:left; padding-left:1px">
+          <a data-toggle="tooltip" style="cursor:default; width:50px" title="{{sprint.dataInicial | date:'dd/MM/yy'}} - {{sprint.dataFinal | date:'dd/MM/yy'}}">
+            {{sprint.periodo}}
+          </a>
+        </div>
+
+        <div align="right" style="padding-right:1px">
+          <span class="label situacao-{{sprint.situacao}} ng-binding ng-scope"
+                style=" margin-right: 4px"
+                ng-if="dashboardCtrl.expandido === false || dashboardCtrl.arvoreModel.ttProgramacao['num-dias-interac'] < 4">
+              {{sprint.desSituacao}}
+          </span>
+          <div class="dropdown" style="float:right;">
+            <a ng-click="dashboardCtrl.atualizaOrdens()">
+              <span class="glyphicon glyphicon-refresh"
+                    style="top: 2px; cursor:pointer"
+                    title="{{dashboardCtrl.ultimaAtualizacao}}"
+                    ng-if="sprint.situacao === 3 || sprint.situacao === 4">
+              </span>
+            </a>
+            <a ng-click="dashboardCtrl.ativaExecucaoAutomatica()" ng-if="!dashboardCtrl.intervaloExecucoes">
+              <span class="glyphicon glyphicon-time"
+                    style="top: 2px; cursor:pointer"
+                    title="{{ 'l-update-order-automatic-off' | i18n}}"
+                    ng-if="sprint.situacao === 3 || sprint.situacao === 4">
+              </span>
+            </a>
+            <a ng-click="dashboardCtrl.desativaExecucaoAutomatica()" ng-if="dashboardCtrl.intervaloExecucoes">
+              <span class="glyphicon glyphicon-time"
+                    style="top: 2px; cursor:pointer; color: lightseagreen;"
+                    title="{{'l-update-order-automatic-on' | i18n}}">
+              </span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="sprint" ng-style="dashboardCtrl.obterAlturaDivSprint()">
+        <!-- RESUMO -->
+        <div ng-if="dashboardCtrl.possuiNivelSelecionado && !dashboardCtrl.nivelOrdens" class="col-xs-12"
+            style="padding:0px; background-color:white; border-style: solid; border-width:0.5px; border-color:silver">
+            
+          <div class="table-content"
+              ng-animate="'animate-if'"
+              style="padding:1px">
+            
+            <div class="div-resumo text-center">{{dashboardCtrl.valorSelecionado}} ({{sprint.qtdPeriodo}})</div>
+
+            <div class="table-responsive" style="color:#555">
+              <table class="table table-condensed">
+                <tbody>
+                  <tr ng-repeat="resumo in dashboardCtrl.arvoreModel.ttResumo  | filter: {iteracao: sprint.iteracao}">
+                    <td>{{resumo.desTipo}}</td> 
+                      <td align="right">{{resumo.qtdOrdem}}</td>
+                    <td align="right">{{resumo.percentual}}%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+        <!-- ORDENS -->
+        <div ng-if="dashboardCtrl.possuiNivelSelecionado && dashboardCtrl.nivelOrdens" class="col-xs-12"
+            style="padding:0px; background-color:#eff0f2">
+            
+          <div class="table-content"
+              ng-animate="'animate-if'"
+              style="padding:1px">
+            
+            <div class="div-resumo">{{dashboardCtrl.valorSelecionado}} ({{sprint.qtdOrdem}})</div>
+            
+            <div ng-if="dashboardCtrl.nivelOrdens">
+              <div ng-repeat="ordem in dashboardCtrl.arvoreModel.ttOrdem | filter: {iteracao: sprint.iteracao} | orderBy:['dtManut', 'nrOrdProdu']">
+                <div class="card-ordem tipo-borda-{{ordem.situacao}}" 
+                     align="center">
+                  <a data-toggle="tooltip" 
+                    style="cursor:default; color:#555" 
+                    title="{{ordem.detalhe}}">
+                    <b>{{ordem.nrOrdProdu | orderNumberMask}}</b>
+                  </a>
+                  <br>
+                  <small>{{ordem.dtManut | date:'dd/MM'}}</small>
+                  <br>
+                  <div class="dropdown col-xs-3 col-md-offset-3">
+                    <a class="dropdown-toggle" style="color:#555; font-size:90%; cursor:pointer" 
+                        id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                      <li ng-if="ordem.idiStatus != 4 && sprint.situacao != 5"><a ng-click="dashboardCtrl.alterarData(ordem, sprint)" style="cursor:pointer">{{'l-reschedule-order' | i18n}}</a></li>
+                      <li ng-if="ordem.idiStatus != 4 && sprint.situacao != 5"><a ng-click="dashboardCtrl.retirarOrdemProgramacao(ordem, sprint)" style="cursor:pointer">{{'l-remove-from-schedule' | i18n}}</a></li>
+                      <li ng-if="ordem.idiStatus != 4 && sprint.situacao != 5"><a ng-click="dashboardCtrl.criarImpedimento(ordem)" style="cursor:pointer">{{ 'l-create-impediment' | i18n }}</a></li>
+                      <li><a ng-click="dashboardCtrl.executeProgram(ordem)" style="cursor:pointer">{{ 'l-maintenance-order' | i18n }} - MV0301</a></li>
+                    </ul>
+                  </div>
+                  <div class="col-xs-3" style="padding-left: 10px" ng-if="ordem.idiStatus == 6">
+                      <a data-toggle="tooltip" title="{{ 'l-has-impediment' | i18n }}" style="color: #F44336">
+                        <span class="glyphicon glyphicon-warning-sign"/>
+                      </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

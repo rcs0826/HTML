@@ -1,0 +1,89 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{'l-initial-page' | i18n}}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/budgetmanagementapp/">{{'l-budget-manager' | i18n}}</breadcrumb>
+            <breadcrumb>{{'l-comunicacao' | i18n}}</breadcrumb>            
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-comunicacao' | i18n}}"></totvs-page-header-title>
+            <totvs-page-form style="padding-bottom: 5px;">
+                <div class="row">
+                    <totvs-page-detail-info title="{{ 'l-budget' | i18n }}" class="col-xs-6 col-sm-2 col-md-2">
+                        {{controller.budgetCode}} ({{controller.budgetId}})
+                    </totvs-page-detail-info>
+                    <totvs-page-detail-info title="{{ 'l-customer' | i18n }}" class="col-xs-6 col-sm-2 col-md-2">
+                        <a href="#/dts/mpd/customer/{{controller.codEmitente}}">{{controller.nomeAbrev}}</a>
+                    </totvs-page-detail-info>
+                    <totvs-page-detail-info title="{{ 'l-telefone-cont-emit' | i18n }}" class="col-xs-6 col-sm-2 col-md-2">
+                        {{controller.telefone}}
+                    </totvs-page-detail-info>
+                </div>
+            </totvs-page-form>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="overflow-y: auto;height: auto; max-height: 47vh">
+                    <form class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-repeat="message in controller.listResult | orderBy: controller.sortMessages : false">
+                        <div class="alert alert-success col-lg-9 col-md-9 col-sm-9 col-xs-12" role="alert" style="padding: 5px 5px 5px 5px" ng-show="(message['usuario'] === controller.codEmitente && (!controller.onlyShowUnread || (controller.onlyShowUnread && message['log-lido'] === false)))">
+                            <div class="row">
+                                <div class="btn-group col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <span class="badge" ng-show="message['log-lido'] === false">{{'l-unread' | i18n}}</span>
+                                    <button class="btn btn-default btn-xs" ng-click="controller.answerCommunication(message['des-texto'])"         icon="glyphicon-share-alt">
+                                        <span class="glyphicon glyphicon-share-alt"></span> &nbsp; {{'l-answer' | i18n}} 
+                                    </button>
+                                    <button class="btn btn-default btn-xs" ng-click="controller.copyCommunication(message['des-texto'])" 
+                                    icon="glyphicon-copy">
+                                        <span class="glyphicon glyphicon-copy"></span> &nbsp; {{'l-copy' | i18n}} 
+                                    </button>
+                                    <button class="btn btn-default btn-xs" ng-click="controller.markAsRead(message)" 
+                                    icon="glyphicon-ok" ng-show="message['log-lido'] === false">
+                                        <span class="glyphicon glyphicon-ok"></span> &nbsp; {{'l-mark-as-read' | i18n}} 
+                                    </button>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-right">
+                                    <p align="right">{{message['dat-incl'] | date}} - {{message['hra-incl']}}</p>
+                                </div>        
+                            </div>
+                            <hr style="margin-top:5px; margin-bottom: 5px">
+                            {{message['des-texto']}} 
+                        </div>
+                        <div class="alert alert-info col-lg-9 col-md-9 col-sm-9 col-xs-12 pull-right" role="alert" style="padding: 5px 5px 5px 5px" ng-show="(message['usuario'] !== controller.codEmitente  && (!controller.onlyShowUnread || (controller.onlyShowUnread && message['log-lido'] === false)))">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <button class="btn btn-default btn-xs" ng-click="controller.copyCommunication(message['des-texto'])" 
+                                    icon="glyphicon-copy">
+                                        <span class="glyphicon glyphicon-copy"></span> &nbsp; {{'l-copy' | i18n}} 
+                                    </button>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pull-right">
+                                    <p align="right">{{message['dat-incl'] | date}} - {{message['hra-incl']}}</p>
+                                </div>        
+                            </div>
+                            <hr style="margin-top:5px; margin-bottom: 5px">
+                            {{message['des-texto']}} 
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <form class="form-horizontal">
+                        <hr>
+                        <field type="textarea"
+                                data-ng-model="controller.new_communication"
+                                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                style="padding-bottom: 10px"
+                                maxlength="2000"
+                                placeholder="Digite aqui...">
+                        </field>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <button class="btn btn-success pull-right" ng-click="controller.sendNewCommunication()"
+                            icon="glyphicon-ok">
+                            <span class="glyphicon glyphicon-ok"></span> &nbsp; Enviar Comunicação </button>
+                            <button class="btn btn-default pull-right" ng-click="controller.setShowUnread()"
+                            icon="glyphicon-ok">
+                            <span class="glyphicon glyphicon-filter"></span> &nbsp; {{controller.showUnreadLabel}} </button>
+                        </div>
+                    </form>
+                </div>
+    </totvs-page-content>
+</totvs-page>

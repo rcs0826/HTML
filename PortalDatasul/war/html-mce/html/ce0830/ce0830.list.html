@@ -1,0 +1,144 @@
+<link rel="stylesheet" href="/dts/mce/css/mce.css"/>
+<totvs-page type="list">
+    <script>
+        $("a.tips").tooltip();
+
+    </script>
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{'l-item-balance' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <div class="row">
+                <!--TITULO-->
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-8">
+                    <h2 class="title">{{ 'l-item-balance' | i18n}}
+                        <span>({{controller.listOfItensCount}})</span>            
+                    </h2>
+                </div>               
+                <totvs-field class="col-md-5 col-sm-5 col-xs-10"
+                             totvs-select
+                             ng-model="controller.itemCode"
+                             select-id="it-codigo"
+                             select-description="desc-item"
+                             select-service="men.item.zoom"
+                             zoom-service="men.item.zoom"
+                             canclean
+                             zoom-selected="controller.search"
+                             ng-change="controller.search()"
+                             delay="1000"
+                             placeholder=" {{ 'l-item' | i18n}}, {{ 'l-description' | i18n}}">
+                </totvs-field>
+                
+                <div id="mce_advancedSearch" 
+                     class="col-md-1 col-lg-1 col-xs-1 col-sm-1">
+                    <span>
+                        <a ng-click="controller.openAdvancedSearch()" 
+                              class="ng-binding"> 
+                           {{ 'l-advanced-search' | i18n}}
+                        </a>
+                    </span>
+                </div>
+
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <totvs-page-disclaimers disclaimer-list="controller.disclaimers" 
+                                            ng-click="controller.removeDisclaimer">
+                    </totvs-page-disclaimers>
+                </div>
+								
+				<totvs-page-header-operation-action>
+					<action ng-click="controller.gerarExcel()" 
+							icon="glyphicon-save"
+							class="col-xs-2 col-sm-4 col-md-4 col-lg-2 btn btn-success" >
+							{{ ::'l-export-excel' | i18n : [] : 'dts/mce' }}
+					</action>
+				</totvs-page-header-operation-action>				
+				
+            </div>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+
+        <totvs-page-form name="formGrid">
+
+            <totvs-grid grid-data="controller.listOfItens" navigatable="true" reorderable="true" resizable="true" grid="controller.myGrid" grid-height="200" auto-resize-content="true" sortable="true" selectable="row">
+                <!-- ESTABELECIMENTO  -->
+                <totvs-grid-column field=" cod-estabel" width="60">
+                    {{ ::'l-site-short' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+                <!-- DEPÓSITO  -->
+                <totvs-grid-column field=" cod-depos" width="60">
+                    {{ ::'l-warehouse-micro' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+                <!-- LOCALIZAÇÃO  -->
+                <totvs-grid-column field="cod-localiz" width="95">
+                    {{ ::'l-localization-short' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+                <!-- LOTE  -->
+                <totvs-grid-column field="lote" width="100">
+                    {{ ::'l-lot-serial' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+                <!-- DATA VALIDADE LOTE  -->
+                <totvs-grid-column field="dt-vali-lote" width="120" filter="date: dd/MM/yyyy">
+                    {{ ::'l-date-valid-lot-short' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+                <!-- REFERÊNCIA  -->
+                <totvs-grid-column field="cod-refer" width="100">
+                    {{ ::'l-reference-short' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+                <!-- QUANTIDADE  -->
+                <totvs-grid-column field="quantidade" width="150"  filter="number : 4">
+                    {{ ::'l-qt-data' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+                <!-- QUANTIDADE ATUAL  -->
+                <totvs-grid-column field="qtidade-atu" width="150" filter="number : 4" template="controller.templateNumber( 'qtidade-atu')">
+                    {{ ::'l-current-qtd' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+                <!-- QUANTIDADE DISPONIVEL  -->
+                <totvs-grid-column field="qtyAvail" width="150"  filter="number : 4" template="controller.templateNumber( 'qtyAvail')">
+                    {{ ::'l-available-qtd' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+                <!-- QUANTIDADE ALOCADA  -->
+                <totvs-grid-column field="qt-alocada" width="150" filter="number : 4">
+                    {{ ::'l-qt-aloc' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+                <!-- QUANTIDADE ALOCADA PRODUÇÃO  -->
+                <totvs-grid-column field="qt-aloc-prod" width="150" filter="number : 4">
+                    {{ ::'l-qt-aloc-prod' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+                <!-- QUANTIDADE ALOCADA PEDIDO  -->
+                <totvs-grid-column field="qt-aloc-ped" width="150" filter="number : 4">
+                    {{ ::'l-qt-aloc-ped' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+                <!-- QUANTIDADE ALOCADA PEDIDO  -->
+                <totvs-grid-column field="per-ppm" width="90">
+                    {{ ::'l-ppm-conc' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="" width="70" template="controller.templateMovimento">
+                    &nbsp;
+                </totvs-grid-column>
+            </totvs-grid>
+        </totvs-page-form>
+    </totvs-page-content>
+	<totvs-page-content>
+
+		<!--TOTAL QTDE-->
+		<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+			<h4 class="ng-binding">Total Qtde:
+				<span> {{ controller.totalQuantity }} </span>            
+			</h4>
+		</div>
+		
+		<!--TOTAL DISP-->
+		<div class="col-xs-6 col-sm-4 col-md-4 col-lg-3">
+			<h4 class="ng-binding">Total Disp:
+				<span> {{ controller.totalQtyAvail }} </span>            
+			</h4>
+		</div>
+
+	</totvs-page-content>
+</totvs-page>

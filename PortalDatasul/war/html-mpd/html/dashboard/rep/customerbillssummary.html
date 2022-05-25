@@ -1,0 +1,45 @@
+<div ng-controller="salesorder.dashboard.customerBillsSummary.Controller as customerBillsSummaryController">
+	<totvs-widget>
+        <totvs-widget-header settings="customerBillsSummaryController.summaryShow = false" title="{{ 'l-bill-summary' | i18n : [] : 'dts/mpd/' }}">					
+        </totvs-widget-header>
+	    <totvs-widget-body>
+
+			<div style="height:300px">			
+				<div ng-show="customerBillsSummaryController.summaryShow" style="height:100%">
+				<br>
+				<h3>{{ 'l-titulos-vencidos' | i18n : [] : 'dts/mpd/' }}</h3>
+                                <p ng-if="customerBillsSummaryController.vencidos == undefined">{{ 'l-loading-portlet' | i18n : [] : 'dts/mpd'}}</p>
+				<p ng-if="customerBillsSummaryController.vencidos != undefined">{{customerBillsSummaryController.vencidos | currency}}</p>
+				<h3>{{ 'l-titulos-a-vencer' | i18n : [] : 'dts/mpd/' }}</h3>
+                                <p ng-if="customerBillsSummaryController.aVencer == undefined">{{ 'l-loading-portlet' | i18n : [] : 'dts/mpd'}}</p>
+				<p ng-if="customerBillsSummaryController.aVencer != undefined">{{customerBillsSummaryController.aVencer | currency}}</p>				
+				</div>
+				<div ng-hide="customerBillsSummaryController.summaryShow">
+					<form>
+						<p>{{'l-order-summary-period' | i18n : [] : 'dts/mpd/' }}</p>
+	                	<div class="row">																																											
+							<field type="date" ng-model="customerBillsSummaryController.dataini" required class="col-md-12">
+								<label>{{ 'l-dt-emissao' | i18n : [] : 'dts/mpd/' }}</label>
+							</field>																				
+							<field type="date" ng-model="customerBillsSummaryController.datafim" required class="col-md-12">
+								<label>{{ 'l-dt-vencimento' | i18n : [] : 'dts/mpd/' }}</label>
+							</field>																								
+ 	                	</div>
+	                </form>
+                    <hr>            	                
+	                <a role="button" class="btn btn-default pull-right" ng-click="customerBillsSummaryController.applyConfig()">&nbsp; {{ 'btn-apply' | i18n : [] : 'dts/mpd/' }} &nbsp; </a>	                                
+				</div>			
+			</div>
+			
+		</totvs-widget-body>
+        
+        <totvs-widget-footer>
+            <totvs-widget-footer-body>
+            </totvs-widget-footer-body>
+            <totvs-widget-footer-actions>
+                <action link="#/dts/mpd/customerbill">{{ 'l-detail' | i18n : [] : 'dts/mpd/' }}</action>
+            </totvs-widget-footer-actions>            
+        </totvs-widget-footer>
+	</totvs-widget>
+</div>        
+        

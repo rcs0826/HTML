@@ -1,0 +1,100 @@
+<link rel="stylesheet" href="/dts/mmi/html/tag/dashboard/dashboard.tag.css">
+<totvs-page type="list">
+ 
+    <totvs-page-content style="padding-left:0px; padding-right:0px;">
+        <div class="row" style="margin: 0px; padding-top: 2px">
+            <div class="my-col-md-1" style="padding-left: 5px; padding-right: 0px;">
+                <button class="btn btn-link"
+                  zoom 
+                  zoom-service="mmi.tag.zoom"
+                  ng-model="controller.tag"
+                  ng-change="controller.pesquisaTag();"                        
+                  type="button" 
+                  id="btPesquisar"                  
+                  tooltip="{{'l-search-tag' | i18n }}"
+                  tooltip-placement="right"
+                  align="right"
+                  style="padding-top: 10px;">
+                  <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </div>
+            <div class="my-col-md-8" style="padding-left:0px">
+                <button class="btn btn-link"
+                       zoom 
+                       zoom-service="mmi.tag.zoom"
+                       ng-model="controller.tag"
+                       ng-change="controller.pesquisaTag();"
+                       type="button" 
+                       style="padding-top: 10px; font-weight: bold; font-size: 16px;">{{controller.titulo}}</button>
+            </div>
+            <div align="right" style="padding-top: 3px; padding-right: 5px; padding-left: 5px">
+                <div style="background-color: #e6e6e6;">
+                    <button class="btn btn-link" 
+                            ng-model="controller.advSearch"
+                            ng-click="controller.openAdvancedSearch();"
+                            type="button" 
+                            id="filter">
+                        {{ 'l-advanced-search' | i18n }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row check-element animate-show-hide" 
+            ng-show="controller.tagSelecionada"
+            style="margin: 0px;">
+    
+            <div class="my-col-md-1"
+                ng-include="'/dts/mmi/html/tag/dashboard/dashboard.tag.icones.html'"
+                style="padding-left: 5px; padding-right: 5px;">
+            </div>
+            
+            <div id="tagid"
+                class="my-col-md-11"
+                ng-show="controller.tag" 
+                ng-if="controller.dados" 
+                ng-include="'/dts/mmi/html/tag/dashboard/dashboard.tag.data.html'"
+                ng-style="controller.obterAlturaConteudo()">
+            </div>
+
+            <div id="tagHistory"
+                class="my-col-md-11"
+                style="padding-left: 0px; overflow: auto;"
+                ng-if="controller.historico" 
+                ng-include="'/dts/mmi/html/tag/dashboard/dashboard.tag.history.html'"
+                ng-style="controller.obterAlturaConteudo()">
+            </div>
+            
+            <div id="tagEquipment"
+                class="my-col-md-11"
+                style="padding-left: 0px; overflow: auto;"
+                ng-if="controller.equipamento" 
+                ng-include="'/dts/mmi/html/tag/dashboard/dashboard.tag.equipment.html'"
+                ng-style="controller.obterAlturaConteudo()">
+            </div>
+            
+            <div id="tagOrder"
+                class="my-col-md-11"
+                style="padding-left: 0px; overflow: auto;"
+                ng-if="controller.ordem" 
+                ng-include="'/dts/mmi/html/tag/dashboard/dashboard.tag.order.html'"
+                ng-style="controller.obterAlturaConteudo()">
+            </div>
+            
+            <div id="serviceRequestOrder"
+                class="my-col-md-11"
+                style="padding-left: 0px; overflow: auto;"
+                ng-if="controller.solicitacao" 
+                ng-include="'/dts/mmi/html/tag/dashboard/dashboard.tag.servicerequest.html'"
+                ng-style="controller.obterAlturaConteudo()">
+            </div>
+            
+            <div id="operationalConditionOrder"
+                class="my-col-md-11"
+                style="padding-left: 0px; overflow: auto;"
+                ng-if="controller.condicao" 
+                ng-include="'/dts/mmi/html/tag/dashboard/dashboard.tag.operationalcondition.html'"
+                ng-style="controller.obterAlturaConteudo()">
+            </div>
+        </div>
+    </totvs-page-content>
+</totvs-page>

@@ -1,0 +1,111 @@
+<totvs-page-child type="list">
+
+	<br/>
+
+	<totvs-page-content class="crm-tab">
+
+		<div class="row">
+
+			<div class="col-xs-10">
+				<h3 style="margin-top: 0px;">
+					{{ 'nav-phase' | i18n: []: 'dts/crm' }} ({{ controller.model.ttFase.length || 0 }})
+				</h3>
+			</div>
+
+			<div class="col-xs-2">
+				<div class="pull-right">
+					<button type="button"
+							class="btn btn-primary"
+							ng-click="controller.addEditStrategyPhase(controller.model);">
+						<span class="glyphicon glyphicon-plus"></span>
+						<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<totvs-divider></totvs-divider>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-strategy-phase' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.model.ttFase || controller.model.ttFase.length <= 0">
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addEditStrategyPhase(controller.model);">
+				<span class="glyphicon glyphicon-plus"></span>
+				<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+			</button>
+		</totvs-page-alert>
+
+		<div class="crm-tab"
+			 ng-if="controller.model.ttFase.length"
+			 ng-init="controller.reorderStrategyPhase(controller.model);">
+
+			<div class="row crm-tab-item header hidden-xs">
+				<strong>
+					<div class="col-xs-9 col-sm-4">
+						{{ 'l-name' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-sm-2">
+						{{ 'l-allow-change' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-sm-2">
+						{{ 'l-allow-delete' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-sm-2">
+						{{ 'l-omit-sales-funnel' | i18n: []: 'dts/crm' }}
+					</div>
+				</strong>
+			</div>
+
+			<div class="row crm-tab-item"
+				 ng-style="{ 'border-left-color' : phase.cod_livre_1 }"
+				 ng-repeat="phase in controller.model.ttFase"
+				 ng-drag="true"
+				 ng-drag-data="phase"
+				 ng-drop="true"
+				 ng-drop-success="controller.onStrategyPhaseDropComplete(controller.model, $index, $data, $event)">
+
+				<div class="col-xs-9 col-sm-4 overflow-ellipsis">
+					<span class="hidden-xs glyphicon glyphicon-resize-vertical"
+						  style="margin-right: 5px;"
+						  ng-style="{ 'color' : phase.cod_livre_1 }">
+					</span>
+					{{ phase.des_fase }}
+				</div>
+
+				<div class="hidden-xs col-sm-2 overflow-ellipsis">
+					{{ (phase.log_permite_alter === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</div>
+
+				<div class="hidden-xs col-sm-2 overflow-ellipsis">
+					{{ (phase.log_permite_exc === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</div>
+
+				<div class="hidden-xs col-sm-2 overflow-ellipsis">
+					{{ (phase.log_omit_funil === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</div>
+
+				<div class="col-xs-3 col-sm-2 text-right">
+					<a class="clickable"
+					   ng-click="controller.addEditStrategyPhase(controller.model, phase, $index);">
+						<span class="visible-xs-inline glyphicon glyphicon-pencil"></span>
+						<span class="hidden-xs">{{ 'btn-edit' | i18n: []: 'dts/crm' }}</span>
+					</a>
+					&nbsp;&nbsp;
+					<a class="clickable"
+					   ng-click="controller.removeStrategyPhase(phase, $index);">
+						<span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+						<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+					</a>
+				</div>
+			</div>
+
+			<br/>
+
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

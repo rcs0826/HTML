@@ -1,0 +1,100 @@
+<div ng-controller="salesorder.pd4000Payment.Controller as orderPaymentController" totvs-custom-element="pd4000d">
+	<div class="row">
+		<div style="border:0; padding: 15px;">
+
+			<div class="row">
+
+				<div class="nolabel">
+
+					<totvs-field totvs-select
+							ng-model="orderPaymentController.order['cod-cond-pag']"
+							ng-disabled="!orderPaymentController.enabled"
+							ng-change="orderPaymentController.changeCondPag()"
+							class="col-xs-6"
+							canclean="0"
+							select-id="cod-cond-pag"
+							select-description="descricao"
+							select-service="mpd.cond-pagto-inter.zoom"
+							zoom-valid-values="[0]"
+							zoom-service="mpd.cond-pagto-inter.zoom">
+					</totvs-field>
+
+					<div class="btn-group" ng-if="orderPaymentController.enabled && !orderPaymentController.order['cod-cond-pag']">
+						<a class="btn btn-default" role="button" ng-click="orderPaymentController.addPaymentTerm()">
+							<span class="glyphicon glyphicon-plus"></span>
+							<span class="hidden-xs ng-binding">{{:: 'Adicionar' | i18n : [] : 'dts/mpd' }}</span>
+						</a>
+						<a class="btn btn-default" role="button" ng-click="orderPaymentController.removePaymentTerm()"
+							ng-disabled="!orderPaymentController.gridSelectedItems.length">
+							<span class="glyphicon glyphicon-remove"></span>
+							<span class="hidden-xs ng-binding">{{:: 'Remover' | i18n : [] : 'dts/mpd' }}</span>
+						</a>
+					</div>
+
+					<div class="btn-group" ng-if="orderPaymentController.enabled && !orderPaymentController.order['cod-cond-pag']">
+						<button class="btn btn-default" ng-click="orderPaymentController.save()" ng-disabled="!orderPaymentController.canSave()">
+							<span class="glyphicon glyphicon-save"></span>
+							<span class="hidden-xs ng-binding">&nbsp;&nbsp;{{:: 'Salvar' | i18n : [] : 'dts/mpd' }}</span>
+						</button>
+						<button class="btn btn-default" ng-click="orderPaymentController.cancel()" ng-disabled="!orderPaymentController.canSave()">
+							<span class="glyphicon glyphicon-refresh"></span>
+							<span class="hidden-xs ng-binding">&nbsp;&nbsp;{{:: 'Descartar' | i18n : [] : 'dts/mpd' }}</span>
+						</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<totvs-grid grid-data="orderPaymentController.ttSpecialPaymentConditionPD4000"
+				grid="orderPaymentController.paymentsGrid"
+				grid-height="230"
+				auto-resize-content="true"
+				navigatable="true"
+				editable="true"
+				resizable="true"
+				selectable="multiple,row"
+				show-header-edit-icon="!orderPaymentController.order['cod-cond-pag']"
+				grid-selected-item="orderPaymentController.gridSelectedItem"
+				grid-selected-items="orderPaymentController.gridSelectedItems"
+				on-edit="orderPaymentController.gridEdit(event, column)"
+				on-save="orderPaymentController.itemsGridSave(event, column, value, original, currentIndex)"
+				add-select-column>
+				<totvs-grid-column field="nr-sequencia" editable="true" filter="number:0" width="50">{{:: 'Sequência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<totvs-grid-column field="cod-vencto" editable="true" width="250">{{:: 'Tipo Vencto' | i18n : [] : 'dts/mpd'}}
+					<option id="1">{{:: 'Dias da Data' | i18n : [] : 'dts/mpd'}}</option>
+					<option id="2">{{:: 'A Vista' | i18n : [] : 'dts/mpd'}}</option>
+					<option id="3">{{:: 'Antecipado' | i18n : [] : 'dts/mpd'}}</option>
+					<option id="4">{{:: 'Contra Entrega' | i18n : [] : 'dts/mpd'}}</option>
+					<option id="5">{{:: 'Fora Dezena' | i18n : [] : 'dts/mpd'}}</option>
+					<option id="6">{{:: 'Fora Quinzena' | i18n : [] : 'dts/mpd'}}</option>
+					<option id="7">{{:: 'Fora Mês' | i18n : [] : 'dts/mpd'}}</option>
+					<option id="8">{{:: 'Fora Semana' | i18n : [] : 'dts/mpd'}}</option>
+					<option id="9">{{:: 'Apresentação' | i18n : [] : 'dts/mpd'}}</option>
+					<option id="10">{{:: 'Na Dezena' | i18n : [] : 'dts/mpd'}}</option>
+				</totvs-grid-column>
+				<totvs-grid-column field="data-pagto" editable="true" filter="date : dd/MM/yyyy" width="130"
+					template="orderPaymentController.dataPagtoTemplate">{{:: 'Data Vencto' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<totvs-grid-column field="nr-dias-venc" editable="true" filter="number : 0" width="50"
+					template="orderPaymentController.nrDiasVencTemplate">{{:: 'Dias Pagto' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<totvs-grid-column field="perc-pagto" editable="true" filter="number : 2" width="90" style="text-align: right;"
+					totals="sum"
+					template="orderPaymentController.percPagtoTemplate">{{:: '% Pagamento' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<totvs-grid-column field="vl-pagto" editable="true" filter="number : 5" width="150" style="text-align: right;"
+					totals="sum"
+					template="orderPaymentController.vlPagtoTemplate">{{:: 'Vlr Parcela' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<totvs-grid-column field="observacoes" editable="true" width="350">{{:: 'Obervações' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+			</totvs-grid>
+		</div>
+		<div class="col-sm-12">
+			<small>* Informações <strong><em>destacadas</em></strong> são estimadas baseadas na data atual e valor atual do pedido, antecipações e outros fatores podem alterar essas datas e valores no faturamento</small>
+		</div>
+	</div>
+
+</div>
+

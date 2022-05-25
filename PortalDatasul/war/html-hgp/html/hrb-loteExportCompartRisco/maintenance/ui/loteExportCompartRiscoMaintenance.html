@@ -1,0 +1,105 @@
+<totvs-page type="base"> 
+    <totvs-page-navbar >
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hrb-loteExportCompartRisco/">Lotes de Exportação Compartilhamento de Riscos</breadcrumb>
+                <breadcrumb>Consulta Lotes de Exportação Compartilhamento de Riscos</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+  
+           <totvs-page-header-title 
+                title="{{(controller.action === 'EDIT' ? 'Editar' : 'Detalhar')}} Lote de Exportação Compartilhamento de Riscos">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.loteExportCompartRiscoForm">
+            <fieldset>
+                <totvs-page-detail class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <legend>Lote</legend>
+
+                    <totvs-page-detail-info
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        title="Unidade Destino"
+                        value="{{controller.loteExportCompartRisco.rotuloUnidadeDestino}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        title="Número do Lote"
+                        value="{{(StringTools.fill(controller.loteExportCompartRisco.nrLoteExp, '0', 8))}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        title="Situação"
+                        value="{{controller.loteExportCompartRisco.rotuloStatusLote}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        title="Usuario de Exportação"
+                        value="{{controller.loteExportCompartRisco.cdUsuarioLote}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        title="Data de Exportação"
+                        value="{{controller.loteExportCompartRisco.dtExportacaoLote | date : 'dd/MM/yyyy'}}">
+                    </totvs-page-detail-info>
+
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-5 col-md-5 col-sm-5 col-xs-12 ">
+                    </field>
+                    
+                </totvs-page-detail>
+            </fieldset>
+
+            <legend>Beneficiários ({{controller.loteExportCompartRisco.nrTotalBeneficiarioExpor}})</legend>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <totvs-page-content>
+                    <totvs-table
+                        t-items="controller.loteExportBenefs"
+                        t-items-as="item"
+                        t-selectable="off"
+                        style="height: 400px; display:block; ">
+
+                        <column title="Mod." width="30" >
+                            {{item.cdModalidade}}
+                        </column>
+                        <column title="Proposta" width="30" >
+                            {{item.nrProposta}}
+                        </column>
+                        <column title="Contrato" width="30" >
+                            {{item.nrTerAdesao}}
+                        </column>
+                        <column title="Beneficiário" width="100">
+                            {{item.rotuloUsuario}}
+                        </column>
+                        <column title="Unidade Destino" width="50">
+                            {{item.rotuloUnidadeDestino}}
+                        </column>
+                        <column title="Dt. Compart. Inicial" width="30" >
+                            {{item.dtIntercambio | date : 'dd/MM/yyyy'}}
+                        </column>
+                        <column title="Dt. Compart. Final" width="30" >
+                            {{item.dtSaida | date : 'dd/MM/yyyy'}}
+                        </column>
+                    </totvs-table>
+                </totvs-page-content>
+            </div>
+        </totvs-page-form>        
+    </totvs-page-content>   
+</totvs-page>
+
+

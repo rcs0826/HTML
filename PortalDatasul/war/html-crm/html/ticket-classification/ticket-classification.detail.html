@@ -1,0 +1,74 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/ticket-classification/">{{ 'nav-ticket-classification' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ controller.model.nom_classif_ocor }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action on-back-link="#/dts/crm/ticket-classification/"
+													on-edit="controller.onEdit"
+													on-remove="controller.onRemove"
+													hide-actions="true">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}"
+						  ng-if="(controller.model | isUndefined)">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-show="controller.model | isDefined">
+            
+            <totvs-tabset class="no-border">
+
+				<tabset>
+
+					<tab heading="{{ 'nav-product' | i18n: []: 'dts/crm' }}" 
+                         ng-controller="crm.ticket-classification-product.list.control as controller">
+                        <ng-include src="'/dts/crm/html/ticket-classification/products/ticket-classification-product.list.html'"></ng-include>
+					</tab>
+
+				</tabset>
+            </totvs-tabset>
+
+			<!--<totvs-tabset class="no-border">
+
+				<tabset>
+
+					<tab heading="{{ 'nav-status' | i18n: []: 'dts/crm' }} ({{ controller.model.ttFluxoStatus.length || 0 }})">
+						<ng-include src="'/dts/crm/html/ticket-flow/status/status.tab.html'"></ng-include>
+					</tab>
+
+					<tab heading="{{ 'nav-resource' | i18n: []: 'dts/crm' }} ({{ controller.model.ttFluxoRecursos.length || 0 }})">
+						<ng-include src="'/dts/crm/html/ticket-flow/resources/resources.tab.html'"></ng-include>
+					</tab>
+
+					<tab heading="{{ 'nav-flow-rules' | i18n: []: 'dts/crm' }} ({{ CRMControlFlowRulesTab.listOfFlowRules.length || 0 }})"
+						 ng-controller="crm.ticket-flow-rules.tab.control as CRMControlFlowRulesTab"
+						 ng-init="CRMControlFlowRulesTab.init(controller.selectedFlow)">
+						<div ng-include="'/dts/crm/html/ticket-flow/rules/rules.tab.html'"></div>
+					</tab>
+
+				</tabset>
+
+			</totvs-tabset>-->
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

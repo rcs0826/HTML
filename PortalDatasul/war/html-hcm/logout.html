@@ -1,0 +1,44 @@
+<html !DOCTYPE>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body onload="redirect()">
+    <script>
+      function redirect() {
+        var erp = GetERP();
+
+        if (erp === 'RM') {
+          var path = 'web/app/rh/portalmeurh';
+          var startIndex = document.location.pathname.toLocaleLowerCase().indexOf(path);
+
+          if (startIndex >= 0) {
+            const baseRef = document.location.pathname.substring(0, startIndex + path.length);
+            window.top.location.href = baseRef;
+          } else {
+            window.top.location.href = '/';
+          }
+        } else {
+          window.top.location.href = document.location.pathname.toLocaleLowerCase().replace('logout.html', '');
+        }
+      }
+
+      function GetERP() {
+        var _url = document.location.pathname;
+        // TODO ler de properties.json ou encontrar uma forma automática de identificar ERP.
+        // TODO implementar os testes unitários ao fazer a leitura do arquivo json.
+        if (_url.toLowerCase().indexOf('dts') > -1) {
+          return 'DTS';
+        } else if (_url.toLowerCase().indexOf('web/app/rh') > -1) {
+          return 'RM';
+        } else if (_url.indexOf('505') > -1) {
+          return 'NODE';
+        } else if (_url.indexOf('5000') > -1) {
+          return 'CORE';
+        } else {
+          return 'PROTHEUS';
+        }
+      }
+    </script>
+  </body>
+</html>

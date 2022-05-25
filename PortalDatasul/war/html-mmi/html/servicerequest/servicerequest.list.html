@@ -1,0 +1,192 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-service-request' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+			<totvs-page-header-title title="{{ 'l-service-request' | i18n }} ({{ controller.totalRecords }})">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action>
+					<action ng-click="controller.addService('new')" icon="glyphicon-plus">{{ 'l-add' | i18n }}</action>
+				</totvs-page-header-operation-action>
+				<totvs-page-header-operation-filter placeholder="{{ 'l-solicitation-number' | i18n }}"
+													ng-submit="controller.search()"
+													ng-model="controller.quickSearchText"
+													advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+			</totvs-page-header-operation>
+
+			<totvs-page-tags>
+				<tag class="tag-1 legend">{{ 'l-pending' | i18n }}</tag>
+				<tag class="tag-2 legend">{{ 'l-approved' | i18n }}</tag>
+				<tag class="tag-3 legend">{{ 'l-open-order' | i18n }}</tag>
+				<tag class="tag-4 legend">{{ 'l-canceled' | i18n }}</tag>
+				<tag class="tag-5 legend">{{ 'l-inmate' | i18n }}</tag>
+			</totvs-page-tags>
+
+			<totvs-page-disclaimers disclaimer-list="controller.disclaimers"
+									ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert ng-if="controller.listResult.length <= 0"
+						  type="info"
+						  message="{{ 'msg-search-not-found' | i18n }}">
+		</totvs-page-alert>
+
+    	<totvs-list-item id="servicerequest{{servicerequest['nr-soli-serv']}}"
+		 				 ng-repeat="servicerequest in controller.listResult">
+
+			<totvs-list-item-header>
+
+        		<totvs-list-item-title title="{{servicerequest['nr-soli-serv'] | orderNumberMask}} - {{servicerequest['descricao']}}"
+				   			           ng-click="controller.openDetail(servicerequest)">
+        		</totvs-list-item-title>
+
+        		<totvs-list-item-action limit-primary-action="3">
+					<action ng-click="controller.openOM(servicerequest)" ng-if="servicerequest.estado == 3 || servicerequest.estado == 5">{{ 'l-om-detail' | i18n}}</action>
+					<action ng-disabled="controller.isDisabledAction(servicerequest['estado'])" ng-click="controller.openEdit(servicerequest)" icon="glyphicon-pencil" ng-hide="servicerequest['nome-usua'] != controller.loginCurrentUser">{{ 'l-edit' | i18n }}</action>
+		            <action ng-disabled="controller.isDisabledAction(servicerequest['estado'])" ng-click="controller.delete(servicerequest)" icon="glyphicon-trash" ng-hide="servicerequest['nome-usua'] != controller.loginCurrentUser">{{ 'l-remove' | i18n }}</action>
+		       	</totvs-list-item-action>
+		    </totvs-list-item-header>
+
+			<totvs-list-item-content>
+				<totvs-list-item-info
+                	class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <span ng-if="servicerequest.estado == 1" class="page-tags situacao situacao-1">{{servicerequest.estado}}</span>
+                    <span ng-if="servicerequest.estado == 2" class="page-tags situacao situacao-2">{{servicerequest.estado}}</span>
+                    <span ng-if="servicerequest.estado == 3" class="page-tags situacao situacao-3">{{servicerequest.estado}}</span>
+					<span ng-if="servicerequest.estado == 4" class="page-tags situacao situacao-4">{{servicerequest.estado}}</span>
+					<span ng-if="servicerequest.estado == 5" class="page-tags situacao situacao-5">{{servicerequest.estado}}</span>
+                    <span class="label situacao-{{servicerequest.estado}}">{{servicerequest['des-estado'].toUpperCase()}}</span>
+                </totvs-list-item-info>
+		       	<totvs-list-item-info class="col-lg-5 col-md-5 col-sm-6 col-xs-12"
+		          					  title="{{ 'l-equipment' | i18n }}"
+		            				  value="{{servicerequest['cd-equipto']}} - {{servicerequest['des-equipto']}}">
+		        </totvs-list-item-info>
+				<totvs-list-item-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+		         					  title="{{ 'l-sympthom' | i18n }}"
+									  value="{{servicerequest['cd-sint-padr']}} - {{servicerequest['des-sintoma-padrao']}}">
+		        </totvs-list-item-info>
+				<totvs-list-item-info class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+	      						  		  title="{{ 'l-opening' | i18n }}"
+	      							      value="{{servicerequest['dataStr'] | date:'dd/MM/yyyy'}} {{ 'l-at' | i18n }} {{servicerequest['hora']}}">
+				</totvs-list-item-info>
+				<totvs-list-item-info class="col-lg-5 col-md-5 col-sm-6 col-xs-12"
+									  title="{{ 'l-maintenance' | i18n }}"
+									  value="{{servicerequest['cd-manut']}} - {{servicerequest['des-manutencao']}}">
+				</totvs-list-item-info>
+				<totvs-list-item-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+									  title="{{ 'l-user' | i18n }}"
+									  value="{{servicerequest['nome-usua']}} - {{servicerequest['des-usuario']}}">
+				</totvs-list-item-info>
+				<totvs-list-item-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+										ng-if="servicerequest.estado == 3 || servicerequest.estado == 5"
+										title="{{ 'l-maintenance-order' | i18n }}"
+										value="{{servicerequest['nr-ord-produ']}} - {{servicerequest['des-man-corr']}}">
+				</totvs-list-item-info>
+			</totvs-list-item-content>
+	    </totvs-list-item>
+	    <div class="more-results ng-scope" ng-if="controller.paginate && controller.listResult.length > 1" ng-click="controller.loadData(true)" >
+        	<a class="btn btn-primary col-xs-12 ng-binding">{{ 'l-displaying' | i18n }} {{ controller.totalRecords }} {{ 'l-results' | i18n }}. {{ 'msg-click-to-get-more' | i18n }}.</a>
+      	</div>
+        <div class="more-results ng-scope" ng-if="controller.paginate && controller.listResult.length === 1" ng-click="controller.loadData(true)" >
+        	<a class="btn btn-primary col-xs-12 ng-binding">{{ 'l-displaying' | i18n }} {{ controller.totalRecords }} {{ 'l-result-lower' | i18n }}. {{ 'msg-click-to-get-more' | i18n }}.</a>
+        </div>
+		<div class="more-results ng-scope" ng-if="controller.totalRecords > 0 && !controller.paginate && controller.listResult.length > 0 && controller.totalRecords > 1" ng-href="#" >
+      		<a ng-disabled="true" class="btn btn-primary col-xs-12 ng-binding">{{ 'l-total-of' | i18n }} {{ controller.totalRecords }} {{ 'l-results-found' | i18n }}.</a>
+      	</div>
+      	<div class="more-results ng-scope" ng-if="controller.totalRecords > 0 && !controller.paginate && controller.listResult.length > 0 && controller.totalRecords == 1" ng-href="#" >
+      		<a ng-disabled="true" class="btn btn-primary col-xs-12 ng-binding">{{ 'l-total-of' | i18n }} {{ controller.totalRecords }} {{ 'l-result-found' | i18n }}.</a>
+      	</div>
+
+		<totvs-list-pagination
+	        ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+	        ng-click="controller.loadData(true);">
+	    </totvs-list-pagination>
+
+	</totvs-page-content>
+
+</totvs-page>
+
+<style>
+	.page-tags.situacao{
+	    border-radius: 50%;
+	    height: 15px;
+	    width: 15px;
+	    font-size: 10px;
+	    text-align: center;
+	    vertical-align: middle;
+	    display: inline-block;
+	    color: #fff;
+	    margin-right: 10px;
+	}
+
+	.page-head .page-tags .tag-1:before {
+		background-color: #FFD700;
+	}
+	.page-content .list-item.tag-1 {
+			border-left: 5px solid #FFD700;
+	}
+	.page-head .page-tags .tag-2:before {
+		background-color: #009933 ;
+	}
+	.page-content .list-item.tag-2 {
+			border-left: 5px solid #009933 ;
+	}
+	.page-head .page-tags .tag-3:before {
+		background-color: #4169E1;
+	}
+	.page-content .list-item.tag-3 {
+			border-left: 5px solid #4169E1;
+	}
+	.page-head .page-tags .tag-4:before {
+		background-color: #FF0000;
+	}
+	.page-content .list-item.tag-4 {
+			border-left: 5px solid #FF0000;
+	}
+	.page-head .page-tags .tag-5:before {
+		background-color: #000000;
+	}
+	.page-content .list-item.tag-5 {
+			border-left: 5px solid #000000;
+	}
+
+	.situacao-1 {
+		background-color: #FFD700;
+	}
+
+	.situacao-2 {
+		background-color: #009933;
+	}
+
+	.situacao-3 {
+		background-color: #4169E1;
+	}
+
+	.situacao-4 {
+		background-color: #FF0000;
+	}
+
+	.situacao-5 {
+		background-color: #000000;
+	}
+
+  	.item-actions a { cursor: pointer; }
+  	
+	.page-tags > .tag {
+		cursor: pointer;
+	}
+
+</style>

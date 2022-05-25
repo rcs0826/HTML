@@ -1,0 +1,83 @@
+<totvs-modal-header>{{ 'l-advanced-search' | i18n }}</totvs-modal-header>
+
+<totvs-modal-body>
+	<div class="row">
+		<totvs-field 
+			class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+			label="{{ 'l-show-pendencies-all-companies' | i18n }}" 
+			totvs-checkbox
+            ng-model="controller.allCompanies"
+			ng-change="controller.changeAllCompany(!controller.allCompanies)"
+            t-bsswitch>
+        </totvs-field>
+	</div>
+    <div class="row" >
+        <field type="select"
+               ng-model="controller.companyZoomField"
+               ng-if="!controller.disableCompany"
+               class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+               ng-init="controller.initSelects($select, 'company')"
+               ng-change="controller.changeCompany()"
+               name-id="company">
+            <label>{{'l-company' | i18n: []: 'dts/mla'}}</label>
+            <zoom zoom-service="mla.empresa.zoom"
+                  ng-change="controller.changeCompany()"></zoom>
+            <include>
+                <ui-select-match placeholder="{{ 'l-company' | i18n }}">
+                    {{$select.selected.objSelected ? $select.selected.toString() : 
+                     ($select.selected.cod_empresa + ' - ' +
+                      $select.selected.nom_razao_social )}}
+                </ui-select-match>
+                <ui-select-choices repeat="company in
+                                           controller.serviceCompany.selectResultList 
+                                           track by $index"
+                                   refresh="controller.refreshLists($select.search, 'company');"
+	        						refresh-delay="500">
+                    <span ng-bind-html="company.cod_empresa + ' - ' + 
+                                        company.nom_razao_social | highlight: $select.search">
+                    </span>
+                </ui-select-choices>
+            </include>
+        </field>
+		
+    </div>
+	<div class="row">
+    <totvs-field 
+        totvs-select
+        ng-model="controller.advancedSearch.estab"
+        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+        label="{{'l-site' | i18n: []: 'dts/mla'}}"
+        select-id="cod-estabel"
+        select-description="nome"
+        canclean="undefined"
+        placeholder="{{ 'l-all-gen' | i18n }}"
+        select-service="mla.estabelecSE.select"
+        zoom-service="mla.estabelecSE.select"
+        select-init="controller.zoomInitSite"
+        zoom-init="controller.zoomInitSite"
+        zoom-valid-search-values="['']">
+    </totvs-field>
+	</div>  	
+    <div class="row">
+        <form class="form-horizontal" role="form">
+            <field type="date"
+                ng-show="controller.advancedSearch.historic === true"
+                data-ng-model="controller.advancedSearch.dateStart"
+                label="{{ 'l-initial-date' | i18n }}"
+                class="col-md-6">
+            </field>
+
+            <field type="date"
+                ng-show="controller.advancedSearch.historic === true"
+                data-ng-model="controller.advancedSearch.dateEnd"
+                label="{{ 'l-final-date' | i18n }}"
+                class="col-md-6">
+            </field>
+        </form>
+    </div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()">{{ 'l-search' | i18n }}</button>
+</totvs-modal-footer>

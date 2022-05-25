@@ -1,0 +1,214 @@
+<div class="row" style="margin-left: 0px; margin-right: 5px; ">
+    <div class="col-xs-12" style="padding-top: 8px; padding-bottom: 4px; padding-left: 0px;  font-weight: bold; font-size: 16px;">
+      {{'l-equipment-data' | i18n}}
+    </div>
+    <totvs-tabset class="col-xs-12" style="padding-left: 0px">									
+        <totvs-tab heading="{{ 'l-general' | i18n }}">
+            <totvs-page-content>
+                <totvs-page-detail>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-bem' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['bm-codigo']}} - {{dashboardCtrl.equiptoData['bm-indice']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-alternative' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['cod-altern']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-site' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['cod-estabel']}} - {{dashboardCtrl.equiptoData['desc-estab']}}">
+                        </totvs-page-detail-info>
+                    </div>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-division' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['di-codigo']}} - {{dashboardCtrl.equiptoData['desc-div']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-machine-group' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['gm-codigo']}} - {{dashboardCtrl.equiptoData['desc-gm']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-cc-codigo' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['cc-codigo']}} - {{dashboardCtrl.equiptoData['desc-cc']}}">
+                        </totvs-page-detail-info>
+                    </div>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-family' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['fm-equipto']}} - {{dashboardCtrl.equiptoData['desc-fm']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-planner' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['cd-planejado']}} - {{dashboardCtrl.equiptoData['desc-planej']}}">
+                        </totvs-page-detail-info>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 detail-field">
+                            <div class="field-label ng-binding">{{ 'l-busines-unit' | i18n }}</div>						
+                            {{dashboardCtrl.equiptoData['cod-unid-negoc']}} - {{dashboardCtrl.equiptoData['desc-unid-negoc']}}
+                            &nbsp;							
+                            <a ng-if="dashboardCtrl.matrizUnidadeNegocio"
+                               class="unidNegoc glyphicon glyphicon-list" 
+                               ng-click="dashboardCtrl.openUnidNegoc()" ng-href=""
+                               data-toggle="tooltip"
+                               title="{{ 'l-business-unit-matrix' | i18n }}"></a>
+                        </div>
+                    </div>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-status' | i18n }}"
+                                                value="{{dashboardCtrl.getSituacao(dashboardCtrl.equiptoData.situacao) | i18n }}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-criticality' | i18n }}"
+                                                value="{{dashboardCtrl.getCriticidade(dashboardCtrl.equiptoData.criticidade) | i18n }}">
+                        </totvs-page-detail-info>
+                    </div>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-calend' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['cd-calen']}} - {{dashboardCtrl.equiptoData['desc-calend']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-productive-equipment' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['log-produtiv'] == true ? 'l-yes' : 'l-no' | i18n }}">
+                        </totvs-page-detail-info>
+                    </div>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-image' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['cod-imagem']}} ">
+                        </totvs-page-detail-info>
+                    </div>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-tag' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['cd-tag']}} - {{dashboardCtrl.equiptoData['desc-tag']}}">
+                        </totvs-page-detail-info>
+                    </div>
+                </totvs-page-detail>
+            </totvs-page-content>
+        </totvs-tab>
+        <totvs-tab heading="{{ 'l-technical-data' | i18n }}">
+            <totvs-page-content>
+                <totvs-page-detail>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-acquisition-date' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['data-aquis'] | date:'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-activation-date' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['data-ativa'] | date:'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+                    </div>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-invoice' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['nr-nota']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-series' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['serie-nota']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-acquisition-value' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['valor-aquis'] | number:2 }}">
+                        </totvs-page-detail-info>
+                    </div>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-vendor' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['cod-emitente']}} - {{dashboardCtrl.equiptoData['num-fornec']}} - {{dashboardCtrl.equiptoData['cgc-fornec']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-manufacturer' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData.fabricante}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-technical-assistance' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['fornec-at']}} - {{dashboardCtrl.equiptoData['num-assist']}} - {{dashboardCtrl.equiptoData['cgc-assist']}}">
+                        </totvs-page-detail-info>
+                    </div>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-drawing' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['de-codigo']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-revision' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['rv-codigo']}}">
+                        </totvs-page-detail-info>
+                    </div>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-equipment-type' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['desc-tp-equipto']}}">
+                        </totvs-page-detail-info>
+                    </div>
+                </totvs-page-detail>
+            </totvs-page-content>
+        </totvs-tab>
+        <totvs-tab heading="{{ 'l-utility' | i18n }}">
+            <totvs-page-content>
+                <totvs-page-detail>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-counter-type' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['tp-contador']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-utility-calculus' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['calc-utilizacao'] == 1 ? 'l-previsto' : 'l-history' | i18n }}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-appointment-type' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['tp-apont'] == 1 ? 'l-counter' : 'l-utility' | i18n }}">
+                        </totvs-page-detail-info>
+                    </div>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-conversion-factor' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['fator-conversao'] | number:4 }}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-distrib' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['perc-rateio'] | number:2 }}">
+                        </totvs-page-detail-info>
+                    </div>                    
+                </totvs-page-detail>
+            </totvs-page-content>
+        </totvs-tab>
+
+        <totvs-tab heading="{{ 'l-narrative' | i18n }}">
+            <totvs-page-content>
+                <totvs-page-detail>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="field-label ng-binding">{{ 'l-narrative' | i18n }}</div>
+                        <totvs-page-detail-info class="brokeLineNarrative col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                value="{{dashboardCtrl.equiptoData['narrativa'] | enterLineTextArea}}">
+                        </totvs-page-detail-info>
+                    </div>
+                </totvs-page-detail>
+            </totvs-page-content>
+        </totvs-tab>
+        <totvs-tab heading="{{ 'l-predictive-maintenance' | i18n }}" ng-if="dashboardCtrl.preditivaOn">
+            <totvs-page-content>
+                <totvs-page-detail>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-undergo-predictive-maintenance' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['log-preditiva'] == true ? 'l-yes' : 'l-no' | i18n }}">
+                        </totvs-page-detail-info>
+                    </div>
+                    <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="{{ 'l-analyst' | i18n }}"
+                                                value="{{dashboardCtrl.equiptoData['cod-analista']}} - {{dashboardCtrl.equiptoData['nom-analista']}}">
+                        </totvs-page-detail-info>
+                    </div>
+                </totvs-page-detail>
+            </totvs-page-content>
+        </totvs-tab>
+    </totvs-tabset>
+</div>

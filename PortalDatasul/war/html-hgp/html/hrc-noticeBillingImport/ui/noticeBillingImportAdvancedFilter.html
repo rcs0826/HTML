@@ -1,0 +1,129 @@
+<totvs-modal-header>
+    Busca Avançada
+</totvs-modal-header>
+<totvs-modal-body style="height: 450px; overflow-y: auto;">
+    <fieldset>
+        <totvs-field totvs-datepicker
+                class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                label="Data de Conhecimento Inicial"
+                format="dd/MM/yyyy"
+                ng-model="afController.model.datConhectoInic"
+                culture="pt"
+                canclean
+                ng-show="true"
+                ng-blur="afController.changeRange('datConhectoInic','datConhectoFim')">
+        </totvs-field>
+        <totvs-field totvs-datepicker
+                class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                label="Data de Conhecimento Final"
+                format="dd/MM/yyyy"
+                ng-model="afController.model.datConhectoFim"
+                culture="pt"
+                canclean
+                ng-show="true"
+                ng-blur="afController.changeRange('datConhectoInic','datConhectoFim')">
+        </totvs-field>
+        <field type="input"
+                label="fake" style="visibility: hidden"
+                class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
+        </field>
+        <totvs-field totvs-select 
+                ng-model="afController.model.cdnUnidOrig"
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                label="Unidade" canclean
+                select-service="hcg.unitZoomController"
+                zoom-service="hcg.unitZoomController"
+                select-id="cdUnimed" 
+                select-description="nmUnimed">
+        </totvs-field>
+        <totvs-field totvs-select canclean
+               ng-model="afController.model.cdUnidCdCarteiraUsuario"
+               class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+               label="Beneficiário"
+               select-service="hvp.beneficiaryZoomController"
+               zoom-service="hvp.beneficiaryZoomController"
+               select-init ="{filters: afController.benefFixedFilters}"
+               zoom-init = "{filters: afController.benefFixedFilters}"
+               select-id="cdUnidCdCarteiraInteira" 
+               select-description="nmUsuario">
+        </totvs-field>
+        <field
+                class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                type="input"
+                numbers-only
+                ng-model="afController.model.codPrestdorExecut"
+                maxlength="14"                
+                label="Prestador (CPF/CNPJ)">
+        </field>
+        <field
+                class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                type="input"
+                numbers-only
+                ng-model="afController.model.codLotePrestdor"
+                maxlength="20"                
+                label="Lote Prestador">
+        </field>
+        <field
+                class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                type="input"
+                ng-model="afController.model.codGuiaPrestdor"
+                maxlength="20"                
+                label="Guia Prestador">
+        </field>
+        <field
+                class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                type="input"
+                numbers-only
+                ng-model="afController.model.numLote"
+                maxlength="20"                
+                label="Número do Lote GPS">
+        </field>
+        <totvs-field totvs-select 
+                ng-model="afController.model.cdnUnidPrestdra"
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                label="Unidade Prestadora" canclean
+                select-service="hcg.unitZoomController"
+                zoom-service="hcg.unitZoomController"
+                select-id="cdUnimed" 
+                select-description="nmUnimed">
+        </totvs-field>
+        <totvs-field totvs-select
+            id="transactionZoom"
+            ng-model="afController.model.cdnTrans"
+            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+            label="Transação"
+            canclean
+            select-service="hrc.transactionZoomController"
+            zoom-service="hrc.transactionZoomController"
+            select-id="cdTransacao"
+            select-description="dsTransacao">
+        </totvs-field>
+        <field type="input"
+               canclean
+               class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+               data-ng-model="afController.model.codSerDoctoOrigin"
+               maxlength="4"
+               label="Série">
+        </field>
+        <field type="input"
+               canclean
+               maxlength="8"
+               class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+               data-ng-model="afController.model.numDoctoOrigin"
+               label="Documento">
+        </field>
+        <field type="combo"
+               class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+               ng-model="afController.model.indSit"
+               ng-options="v.data as v.label for v in DOCUMENTOS_AVISOS_STATUS_IMP_ENUM.VALUES_WITH_ALL_OPTION"
+               label="Status">
+        </field>
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn" ng-click="afController.cleanFields()">Limpar Campos</button>
+    <button class="btn" ng-click="afController.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-click="afController.search()">Buscar</button>
+</totvs-modal-footer>
+

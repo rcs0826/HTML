@@ -1,0 +1,43 @@
+<link rel="stylesheet" href="/dts/mcf/js/utils/bootstrap-treeview.css"/>
+<totvs-page type="detail">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mcf/smartconfiguration">{{'l-productconfigured' | i18n}}</breadcrumb>
+            <breadcrumb>{{ 'l-cost-variable' | i18n }}</breadcrumb>            
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{ pItemCotacao }} - {{ pNumCFG }}"></totvs-page-header-title>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="operations page-detail-actions">
+						<action class="btn btn-primary ng-binding ng-scope"
+                                ng-click="controller.exportaParaPedidos();"
+                                >{{ 'l-export-to-order' | i18n: []: 'dts/mcf' }}</action>
+                        <action class="btn btn-default ng-binding ng-scope" 
+                                ng-click="controller.cancel();" 
+                                >{{ 'l-back' | i18n: []: 'dts/mcf' }}</action>
+                	</div>
+               	</div>
+            </div>
+            <!--totvs-page-header-operation>
+                <totvs-page-header-operation-action on-back-link="#/dts/mcf/smartconfiguration" 
+                									hide-remove='true'
+                									hide-edit="true"/>
+            </totvs-page-header-operation-->
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+		<div style="padding: 15px 20px;">
+			<div id="treeCost"></div>
+		</div>
+        <div class="col-lg-9 col-md-10 col-sm-12 col-xs-12" style="padding-bottom: 15px;">
+            <div id="treeList"></div>
+        </div>
+</totvs-page-content>
+</totvs-page>
+<style>	
+	
+	.totvs-style-guide .treeview .list-group-item { border: none;}
+
+</style>

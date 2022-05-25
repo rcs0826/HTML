@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <title>P�gina de Valida��o Integra��o TOTVS Financial Services (TFS)</title>
+  </head>
+
+  <body onload="fakeTfs()">
+    <script>
+      function fakeTfs() {
+        var token = getParameterByName('sso');
+        var html = 'Token de Autoriza��o: ' + token;
+        $('#conteudo').html(html);
+      }
+
+      function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+          results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+      }
+    </script>
+  </body>
+  <h1>P�gina de Valida��o de Par�metros de Autentica��o para TOTVS Financial Services (TFS)</h1>
+  <div id="conteudo"></div>
+</html>

@@ -1,0 +1,105 @@
+<totvs-page type="base"> 
+    <totvs-page-navbar > 
+
+        <link type="text/css"  rel="stylesheet" href="/dts/hgp/html/assets/css/mention.css" />
+
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hrs-justification/">Justificativas de Impugnação</breadcrumb>
+                <breadcrumb>Manutenção de Justificativas de Impugnação</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Justificativas de Impugnação">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                    <action ng-click="controller.save();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar</action>
+                    <action ng-click="controller.saveNew();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Novo</action>
+                    <action class="btn-primary"
+                            ng-click="controller.saveClose();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Fechar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header> 
+    </totvs-page-navbar>
+    <totvs-page-content style="height:500px;">
+        <totvs-page-form t-name="controller.justificationForm" style="width:100%;height:100%;">
+            <fieldset>
+                 <totvs-row>
+                 	<totvs-field totvs-number
+                 			class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                 			label="Código"
+                 			ng-model="controller.justification.idJustificativa"
+                 	  		ng-disabled="true">
+                 	</totvs-field>
+                 	<totvs-field totvs-combo
+                 			class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                 			label="Natureza"
+                 			ng-required="true"
+                 			t-options="controller.natures"
+                 	  		ng-disabled="controller.action  == 'DETAIL'"
+                 			ng-model="controller.justification.idNatureza"
+                            ng-change="controller.onNatureChanged()">
+                        <validator key="required">Este campo é obrigatório!</validator>
+                 	</totvs-field>
+                    <totvs-field totvs-select 
+                            ng-model="controller.justification.idMotivo"
+                            class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                            label="Motivo" canclean
+                            select-service="hrs.reasonZoomController"
+                            zoom-service="hrs.reasonZoomController"
+                            select-id="idMotivo" 
+                 			ng-required="true"
+                            select-description="dsMotivo"
+                            select-init ="{filters: controller.reasonFixedFilters}"
+                            zoom-init = "{filters: controller.reasonFixedFilters}"
+                            ng-disabled="!(controller.justification.idNatureza > 0)">
+                        <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field>
+                 </totvs-row>
+
+                 <totvs-row>
+                 	<totvs-field totvs-input
+                 			class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                 			label="Justificativa"
+                 			ng-model="controller.justification.dsJustificativa"
+                 			ng-required="true"
+                 	  		ng-disabled="controller.action == 'DETAIL'">
+                 	    <validator key="required">Este campo é obrigatório!</validator>  
+
+                        <span style="color: gray; 
+                                     position: absolute;
+                                     margin-left: 70px;
+                                     margin-top: 72px;
+                                     font-size: 11px;
+                                     z-index: 1;"
+                              class="glyphicon glyphicon-tags"
+                              ng-mouseover="controller.openVariableFields()" id="variablefields" tabindex="0"
+                              data-html="true" data-toggle="popover" data-trigger="focus" 
+                              title="<b>Campos Variáveis</b> " 
+                              data-content="{{HASH_VARIABLE_ENUM.TOOLTIP}}" data-placement="right">
+                        </span>
+                 	</totvs-field>
+                 </totvs-row>
+                 <totvs-row>                    
+                    <field
+						type="textarea" style="height:300px;"
+             			class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+             			label="Observação"
+             			ng-model="controller.justification.dsObservacao"
+             			maxlength="2000"
+             	  		ng-disabled="controller.action == 'DETAIL'">                            
+                    </field>
+                 </totvs-row>
+            </fieldset>
+        </totvs-page-form>        
+    </totvs-page-content>   
+</totvs-page>

@@ -1,0 +1,19 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<link rel="stylesheet" href="/dts/kbn/css/font-awesome.css"/>
+<div ng-controller="kbn.dashboard.itemTimebyRange.ctrl as itemTimeByRangeCtrl">
+  <totvs-widget>
+    <totvs-widget-header settings="itemTimeByRangeCtrl.showParams()" title="{{itemTimeByRangeCtrl.chart.titleWidget | i18n : [] : 'dts/kbn'}} {{'l-in-hours' | i18n : [] : 'dts/kbn'}}"><i ng-if="itemTimeByRangeCtrl.chart.canChangeOrder" tooltip-placeholder="rigth" tooltip-html="itemTimeByRangeCtrl.tooltip" class="glyphicon glyphicon-info-sign hidden-xs"></i></totvs-widget-header><span ng-if="itemTimeByRangeCtrl.chart.canChangeOrder" title="{{'l-invert-pareto-order' | i18n : [] : 'dts/kbn'}}" ng-class="{'fa-sort-amount-desc':itemTimeByRangeCtrl.paretoOrderRed, 'fa-sort-amount-asc': !itemTimeByRangeCtrl.paretoOrderRed}" ng-click="itemTimeByRangeCtrl.changeOrder()" class="dashboard-padding-right pull-right fa fa-sort-amount-desc is-pointer">&nbsp;</span>
+    <totvs-widget-body>
+      <ol class="dashboard breadcrumb">
+        <li ng-repeat="chart in itemTimeByRangeCtrl.chartArray" ng-class="{ 'active' : $last, 'is-pointer': !$last }"> <span ng-click="itemTimeByRangeCtrl.navigate($index)">{{ chart.titleBreadcrumb }}</span></li>
+      </ol>
+      <totvs-chart t-categories="itemTimeByRangeCtrl.chart.categories" t-series="itemTimeByRangeCtrl.chart.series" t-type-chart="column" t-chart-tooltip="false" t-on-click="itemTimeByRangeCtrl.chart.onClick"></totvs-chart>
+    </totvs-widget-body>
+    <totvs-widget-footer>
+      <totvs-widget-footer-actions>
+        <action ng-click="itemTimeByRangeCtrl.sendDataToReport()">{{ 'l-detail' | i18n : [] : 'dts/kbn/' }}</action>
+      </totvs-widget-footer-actions>
+    </totvs-widget-footer>
+  </totvs-widget>
+</div>

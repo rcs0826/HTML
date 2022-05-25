@@ -1,0 +1,138 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/generic-action-setting/">{{ 'nav-generic-action-setting' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ controller.model.nom_configur }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action on-back-link="#/dts/crm/generic-action-setting/"
+													on-edit="controller.onEdit"
+													on-remove="controller.onRemove"
+													hide-actions="true">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}"
+						  ng-if="(controller.model | isUndefined)">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-show="controller.model | isDefined">
+
+			<div class="col-xs-12 no-gutter">
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-3 col-md-3"
+					title="{{ 'l-model' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_modo_reg_acao }}
+				</totvs-list-item-info>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-3 col-md-3"
+					title="{{ 'l-operation-type' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_operac }}
+				</totvs-list-item-info>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-3 col-md-3"
+					title="{{ 'l-movement-ticket' | i18n: []: 'dts/crm' }}">
+					{{ (controller.model.log_mov_ocor === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</totvs-list-item-info>
+
+			</div>
+
+			<div class="col-xs-12 no-gutter" ng-if="controller.model.idi_modo_reg_acao !== 1">
+
+				<!--totvs-divider style="margin-top: 0px; margin-bottom: 10px;"></totvs-divider-->
+
+				<totvs-list-item-info
+
+					class="col-xs-12 col-sm-3 col-md-3"
+					title="{{ 'l-campaign' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_campanha }}
+				</totvs-list-item-info>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-3 col-md-3"
+					title="{{ 'l-action' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_acao }}
+				</totvs-list-item-info>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-3 col-md-3"
+					title="{{ 'l-result' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_restdo }}
+				</totvs-list-item-info>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-3 col-md-3"
+					title="{{ 'l-media' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_mid_relacto }}
+				</totvs-list-item-info>
+
+			</div>
+
+			<div class="col-xs-12 crm-group-accordion" ng-if="controller.model.idi_modo_reg_acao !== 1">
+
+				<accordion close-others="false">
+					<div>
+
+						<accordion-group is-open="controller.historyTextOpen"
+										 class="crm-panel">
+							<accordion-heading>
+								<div class="row">
+									<div class="col-xs-12">
+										{{ 'l-description' | i18n: []: 'dts/crm' }}
+										<i class="pull-right glyphicon"
+										   ng-class="{'glyphicon-chevron-down' :  controller.historyTextOpen,
+													  'glyphicon-chevron-right': !controller.historyTextOpen}">
+										</i>
+									</div>
+								</div>
+							</accordion-heading>
+
+							<div class="row">
+								<div class="col-xs-12 no-gutter">
+
+									<totvs-page-detail-info
+										class="col-xs-12 col-sm-6 col-md-3">
+										{{ controller.model.dsl_histor_acao }}
+									</totvs-page-detail-info>
+
+								</div>
+							</div>
+
+						</accordion-group>
+
+					</div>
+				</accordion>
+
+			</div>
+
+			<totvs-tabset class="no-border">
+				<tabset>
+					<tab heading="{{ 'nav-rules' | i18n: []: 'dts/crm' }}">
+						<ng-include src="'/dts/crm/html/generic-action-setting/rules/rules.list.html'"></ng-include>
+					</tab>
+				</tabset>
+			</totvs-tabset>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

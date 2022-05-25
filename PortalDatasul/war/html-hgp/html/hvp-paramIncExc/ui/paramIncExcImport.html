@@ -1,0 +1,45 @@
+<totvs-modal-header>
+Importação de Regras
+</totvs-modal-header>
+<totvs-modal-body style="height: 350px; overflow-y: auto;">
+    <totvs-page type="list">
+        <totvs-page-content>
+            <totvs-row>
+                <totvs-field
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    totvs-upload
+                    ng-model="impController.arqImportacao"
+                    t-show-drag-drop="false"
+                    drop-files-here="Arraste o arquivo aqui"
+                    t-remove="Remove"
+                    t-multiple="false"
+                    t-with-credentials="false"
+                    t-select="Selecione o arquivo das regras"
+                    t-show-file-list="false">
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                    <totvs-list-item ng-repeat="importParam in impController.listOfImportParam">
+                        <totvs-list-item-header>
+                            <totvs-list-item-title
+                                title="{{importParam.cdnNivParam}} - {{importParam.nmParamLabel}}">
+                            </totvs-list-item-title>
+                            <totvs-list-item-action limit-primary-action="1">
+                                <action ng-click="impController.sobe(importParam.cdnNivParam)" icon="glyphicon glyphicon-arrow-up"></action>
+                                <action ng-click="impController.desce(importParam.cdnNivParam)" icon="glyphicon glyphicon-arrow-down"></action>
+                            </totvs-list-item-action>
+                        </totvs-list-item-header>
+                        <totvs-list-item-content>
+                            <totvs-list-item-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                value="{{importParam.nmParamDescription}}">
+                            </totvs-list-item-info>
+                        </totvs-list-item-content>           
+                    </totvs-list-item> 
+            </totvs-row>
+        </totvs-page-content>
+    </totvs-page>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button class="btn" ng-click="impController.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-click="impController.import()">Importar</button>
+</totvs-modal-footer>

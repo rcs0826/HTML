@@ -1,0 +1,105 @@
+<totvs-page type="base"> 
+    <totvs-page-navbar >
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hcg-associativaUnidadeAreaAcao/">Associativa Unidade x Área de Ação</breadcrumb>
+                <breadcrumb>Associativa Unidade x Área de Ação</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+  
+           <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Associativa Unidade x Área de Ação">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                    <action ng-click="controller.save();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar</action>
+                    <action ng-click="controller.saveNew();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Novo</action>
+                    <action class="btn-primary"
+                            ng-click="controller.saveClose();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Fechar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.associativaUnidadeAreaAcaoForm">
+            <fieldset>
+                <totvs-row>
+                    <totvs-field totvs-select canclean
+                        ng-model="controller.associativaUnidadeAreaAcao.cdnUnid"
+                        class="col-lg-4 col-md-6 col-sm-8 col-xs-12"
+                        label="Unidade"
+                        select-service="hcg.unitZoomController"
+                        zoom-service="hcg.unitZoomController"                        
+                        select-id="cdUnimed" 
+                        select-description="nmUnimed"
+                        ng-disabled="controller.action != 'INSERT'"
+                        min="1"
+                        ng-required="true">
+                        <validator key="required">Este campo é obrigatório!</validator>
+                        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>                    
+                </totvs-row>
+                
+                <totvs-row>
+                    <totvs-field totvs-select canclean
+                        ng-model="controller.associativaUnidadeAreaAcao.cdnCidade"
+                        class="col-lg-4 col-md-6 col-sm-8 col-xs-12"
+                        ng-change="controller.onCitySelect()"
+                        label="Cidade"
+                        select-service="hcg.cityZoomController"
+                        zoom-service="hcg.cityZoomController"
+                        select-id="cdCidade"
+                        select-description="nmCidade"
+                        ng-disabled="controller.action != 'INSERT'"
+                        ng-required="true">
+                        <validator key="required">Este campo é obrigatório!</validator>
+                        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>                
+                </totvs-row>
+
+                <totvs-row>
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        ng-model="controller.associativaUnidadeAreaAcao.estado"
+                        label="Estado"
+                        ng-disabled="true">
+                    </field>
+
+                    <totvs-field totvs-number
+                            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                            label="Código IBGE"
+                            ng-model="controller.associativaUnidadeAreaAcao.ibge"
+                            min="1"
+                            ng-disabled="true">
+                    </totvs-field>
+                </totvs-row>
+
+                <totvs-row ng-if="controller.action != 'INSERT'">
+                    <field type="date"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        label="Data de Atualização"
+                        ng-model="controller.associativaUnidadeAreaAcao.datUltAtualiz"
+                        format="dd/MM/yyyy"
+                        ng-disabled="true">
+                    </field>
+                    <totvs-field totvs-input
+                        class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+                        label="Usuário da última atualização"
+                        ng-model="controller.associativaUnidadeAreaAcao.codUsuarUltAtualiz"
+                        ng-disabled="true">
+                    </totvs-field>
+                </totvs-row>
+                 
+            </fieldset>
+        </totvs-page-form>        
+    </totvs-page-content>   
+</totvs-page>
+
+

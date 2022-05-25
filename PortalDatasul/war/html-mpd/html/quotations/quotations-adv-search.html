@@ -1,0 +1,90 @@
+<div class="modal-header">
+			<h3 class="modal-title">{{'l-search-advanced' | i18n}}</h3>
+</div>
+
+<div class="modal-body">
+
+	<div class="row">
+		<form class="form-horizontal" role="form">
+
+			<!-- Número da cotação do cliente inicial -->
+			<field maxlength="30" type="input" ng-model="controller.advancedSearch.model.codCotacCliIni">
+				<label>{{ 'l-quotation-client' | i18n }}</label>
+			</field>
+			<!-- Número da cotação do cliente final -->
+			<field maxlength="60" type="input" ng-model="controller.advancedSearch.model.codCotacCliFim">
+				<label>{{ 'l-filter-to-generic' | i18n }}</label>
+			</field>
+
+			<!-- Cliente(nome abreviado) inicial -->
+			<field maxlength="30" type="input" ng-model="controller.advancedSearch.model.nomeAbrevIni">
+				<label>{{ 'l-nome-abrev-start' | i18n }}</label>
+			</field>
+			<!-- Cliente(nome abreviado) final -->
+			<field maxlength="60" type="input" ng-model="controller.advancedSearch.model.nomeAbrevFim">
+				<label>{{ 'l-filter-to-generic' | i18n }}</label>
+			</field>
+
+			<!-- Número da cotação inicial -->
+			<field maxlength="30" type="input" ng-model="controller.advancedSearch.model.codCotacIni">
+				<label>{{ 'l-nr-cotac-start' | i18n }}</label>
+			</field>
+			<!-- Número da cotação final -->
+			<field maxlength="60" type="input" ng-model="controller.advancedSearch.model.codCotacFim">
+				<label>{{ 'l-filter-to-generic' | i18n }}</label>
+			</field>
+
+			<!-- Data da implantação inicial -->
+			<field type="date" ng-model="controller.advancedSearch.model.dtImplIni">
+				<label>{{ 'l-dt-impl-start' | i18n }}</label>
+			</field>
+			<!-- Data da implantação final -->
+			<field type="date" ng-model="controller.advancedSearch.model.dtImplFim">
+				<label>{{ 'l-filter-to-generic' | i18n }}</label>
+			</field>
+
+			<div ng-if="currentuser['user-hiearchy']" class="col-xs-12 col-md-12" style="margin-top: 15px">                    
+				<button class="btn btn-default" ng-model="controller.selectedRepresentatives" ng-change="controller.onZoomSelectRepresentatives();"
+				zoom zoom-multiple zoom-init="currentuser['listSubord']" zoom-service="mpd.repres.zoom">
+					<span class="glyphicon glyphicon-plus"></span>
+					{{ 'l-bt-repres' | i18n: []: 'dts/mpd/' }}
+				</button>
+			</div>
+			<div class="col-xs-12 col-md-12">
+				<totvs-page-disclaimers disclaimer-list="controller.disclaimers" ng-click="controller.removeDisclaimer">
+				</totvs-page-disclaimers>
+			</div>
+
+			<field type="checkbox" class="col-md-3" ng-model="controller.advancedSearch.model.statusPortalQuotation1">
+				<label>{{ 'l-status-quotation-1' | i18n }}</label>
+			</field>
+			<field type="checkbox" class="col-md-3" ng-model="controller.advancedSearch.model.statusPortalQuotation2">
+				<label>{{ 'l-status-quotation-2' | i18n }}</label>
+			</field>
+			<field type="checkbox" class="col-md-3" ng-model="controller.advancedSearch.model.statusPortalQuotation3">
+				<label>{{ 'l-status-quotation-3' | i18n }}</label>
+			</field>
+			<field type="checkbox" class="col-md-3" ng-model="controller.advancedSearch.model.statusPortalQuotation4">
+				<label>{{ 'l-status-quotation-4' | i18n }}</label>
+			</field>
+			<field type="checkbox" class="col-md-3" ng-model="controller.advancedSearch.model.statusPortalQuotation5">
+				<label>{{ 'l-status-quotation-5' | i18n }}</label>
+			</field>
+			<field type="checkbox" class="col-md-3" ng-model="controller.advancedSearch.model.statusPortalQuotation6">
+				<label>{{ 'l-status-quotation-6' | i18n }}</label>
+			</field>
+			<field type="checkbox" class="col-md-3" ng-model="controller.advancedSearch.model.statusPortalQuotation7">
+				<label>{{ 'l-status-quotation-7' | i18n }}</label>
+			</field>
+			<field type="checkbox" class="col-md-3" ng-model="controller.advancedSearch.model.statusPortalQuotation8">
+				<label>{{ 'l-status-quotation-8' | i18n }}</label>
+			</field>
+		</form>
+	</div>
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" data-ng-click="controller.search();">{{ 'btn-search' | i18n }}</button>
+	<button type="button" class="btn btn-default" data-ng-click="controller.clear();">{{ 'btn-clean' | i18n }}</button>
+	<button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'btn-cancel' | i18n }}</button>
+</div>

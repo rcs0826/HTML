@@ -1,0 +1,156 @@
+<div class="modal-header">
+    <h3 class="modal-title">Cópia de Documento</h3>
+</div>
+<div class="modal-body">  
+    <totvs-page-form>
+        <totvs-row>
+            <totvs-field totvs-radio
+                label="Tipo da Cópia"
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-12" 
+                t-options="[{value: 0, label: 'Mesmo Documento'},
+                            {value: 1, label: 'Novo Documento'}]"
+                ng-model="controller.model.tipoCopiaDocumento"
+                ng-change="controller.onTipoCopiaChanged()">
+            </totvs-field>        
+        </totvs-row>
+        <totvs-row>
+            <totvs-field totvs-select canclean required
+                    ng-model="controller.model.cdUnidCdCarteiraUsuario"
+                    class="col-lg-10 col-md-10 col-sm-10 col-xs-12"
+                    label="Beneficiário"
+                    select-service="hvp.beneficiaryZoomController"
+                    zoom-service="hvp.beneficiaryZoomController"
+                    select-init ="{filters: controller.benefFixedFilters}"
+                    zoom-init = "{filters: controller.benefFixedFilters}"
+                    select-id="cdUnidCdCarteiraInteira"
+                    select-description="nmUsuario"
+                    ng-disabled="controller.model.tipoCopiaDocumento == 0"
+                    ng-change="controller.onBeneficiarySelect()">
+            </totvs-field>
+        </totvs-row>
+        <totvs-row>
+            <field	type="combo" required
+                    data-ng-model="controller.model.dtAnoNrPerRef"
+                    ng-change="controller.onChangeAnoPeriodo()"
+                    label="Ano/Periodo"
+                    class="col-lg-2 col-md-2 col-sm-2 col-md-12"
+                    ng-options="o.dtAnoNrPerRef as o.dtAnoNrPerRef for o in controller.periodsList"
+                    >
+            </field>            
+        </totvs-row>
+        <totvs-row>
+            <totvs-field totvs-select 
+                ng-model="controller.model.aaNrGuiaAtendimento"
+                class="col-lg-10 col-md-10 col-sm-10 col-xs-12"
+                label="Autorização" canclean
+                select-service="hat.guideZoomController"
+                zoom-service="hat.guideZoomController"
+                select-id="aaNrGuiaAtendimento"
+                ng-change="controller.onGuideSelect(false)"
+                select-match='[{"field": "aaNrGuiaAtendimento"}]'
+                select-init ="{filters: controller.guideSelectFixedFilters}"
+                zoom-init = "{filters: controller.guideZoomFixedFilters}">
+            </totvs-field>
+        </totvs-row>
+        <totvs-row>
+            <totvs-field totvs-select 
+                ng-model="controller.model.cdChaveDocAnterior"
+                class="col-lg-10 col-md-10 col-sm-10 col-xs-12"
+                label="Guia Principal" canclean
+                select-service="hrc.documentZoomController"
+                zoom-service="hrc.documentZoomController"
+                select-id="cdChaveDocumento"
+                zoom-init="{filters: {'SEARCH_OPTION': 'Descriptions'}}"
+                select-match='[{"field": "cdChaveDocumento"}]'
+                ng-change="controller.onDocumentoAnteriorChanged()"
+                ng-disabled="controller.model.tipoCopiaDocumento == 1">
+            </totvs-field>
+        </totvs-row>
+        <totvs-row>
+            <field type="checkbox"
+                    class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                    label="Mantém Vínculo com a Fatura/Lote"
+                    ng-change="controller.onVinculoFaturaLoteChanged()"
+                    data-ng-model="controller.model.lgVinculoFaturaLote"
+                    ng-disabled="(!controller.lgPossuiFatura) && (!controller.lgPossuiLoteImp)">
+            </field>
+            <totvs-field totvs-select
+                    id="transactionZoom"
+                    name-id="transactionZoom"
+                    ng-model="controller.model.cdTransacao"
+                    class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                    label="Transação sem controle por fatura" canclean
+                    select-service="hrc.transactionZoomController"
+                    zoom-service="hrc.transactionZoomController"
+                    select-id="cdTransacao" 
+                    select-description="dsTransacao"
+                    ng-change="controller.onTransactionSelect()"
+                    ng-show="(controller.lgPossuiFatura)&&(!controller.model.lgVinculoFaturaLote)">
+            </totvs-field>                                                
+        </totvs-row>
+        <totvs-row>
+            <totvs-field totvs-select
+                    canclean
+                    ng-model="controller.model.cdUnidCdPrestador"
+                    class="col-lg-10 col-md-10 col-sm-10 col-xs-12"
+                    label="Prestador"
+                    select-service="global.providerZoomController"
+                    zoom-service="global.providerZoomController"
+                    select-id="cdUnidCdPrestador"
+                    select-description="nmPrestador"
+                    ng-disabled="true">
+            </totvs-field>
+        </totvs-row>
+        <totvs-row>
+            <totvs-field totvs-select
+                    label="Fatura" canclean
+                    ng-model="controller.model.aaFaturaCdSerieNfCodFaturAp"
+                    select-service="hrc.notapresZoomController"
+                    zoom-service="hrc.notapresZoomController"
+                    select-init ="{filters: controller.invoiceFixedFilters}"
+                    zoom-init = "{filters: controller.invoiceFixedFilters}"
+                    select-id="aaFaturaCdSerieNfCodFaturAp"
+                    select-match='[{"field": "aaFaturaCdSerieNfCodFaturAp"}]'
+                    class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                    ng-disabled="true">
+            </totvs-field>
+
+            <totvs-field totvs-select
+                    label="Lote de Importação" canclean
+                    ng-model="controller.model.nrLoteNrSequencia"
+                    select-service="hrc.loteimpZoomController"
+                    zoom-service="hrc.loteimpZoomController"
+                    select-init ="{filters: controller.batchFixedFilters}"
+                    zoom-init="{filters: controller.batchFixedFilters}"
+                    select-id="nrLoteNrSequencia"
+                    select-match='[{"field": "nrLoteNrSequencia"}]'
+                    class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                    ng-disabled="true">
+            </totvs-field>            
+        </totvs-row>
+        <totvs-row>
+            <field type="checkbox"
+                    class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                    label="Reapresentação de Intercâmbio"
+                    ng-change="controller.onReapresentacaoIntercambioChanged()"
+                    data-ng-model="controller.model.lgReapresentacaoIntercambio"
+                    ng-disabled="(!controller.lgExchangeBeneficiary) || (!controller.lgPossuiLoteExp) || (controller.model.tipoCopiaDocumento != 0)">
+            </field>
+            <field	type="combo"
+                    data-ng-model="controller.model.inMovimentos"
+                    ng-init="controller.model.inMovimentos = '0'"
+                    label="Movimentos"
+                    class="col-lg-3 col-md-3 col-sm-3 col-md-12"
+                    ng-disabled="!controller.model.lgReapresentacaoIntercambio">
+                <totvs-options>
+                    <totvs-option value="0">Todos</totvs-option>
+                    <totvs-option value="1">Faturados</totvs-option>
+                </totvs-options>                                 
+            </field>              
+        </totvs-row>
+    </totvs-page-form>
+</div>
+<div class="modal-footer">
+    <button class="btn" ng-click="controller.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-click="controller.save()">Gerar</button>
+</div>

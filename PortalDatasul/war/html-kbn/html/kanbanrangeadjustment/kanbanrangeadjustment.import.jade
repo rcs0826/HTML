@@ -1,0 +1,41 @@
+totvs-page
+    totvs-page-navbar
+        totvs-page-breadcrumb
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb {{'l-recalculation-stack-kanban' | i18n}}
+        totvs-page-header
+            totvs-page-header-title {{'l-recalculation-stack-kanban' | i18n}}
+            totvs-page-header-operation
+                div.col-sm-offset-7.col-md-5.col-sm-6
+                    establishment-select(ng-model="controller.establishment", callback-id="controller.establishmentChanged")
+    totvs-page-content(ng-if="controller.establishment != undefined")
+
+        totvs-page-detail
+            totvs-page-alert(ng-if="!controller.isMappingPublished" type="warning") {{'l-map-not-published' | i18n}}
+            totvs-page-alert(type="info")
+                p {{'l-msg-init-recalculation-one' | i18n}}
+                p {{'l-msg-init-recalculation-two' | i18n}}
+                ol
+                    li {{'l-msg-init-recalculation-three' | i18n}}
+                    li {{'l-msg-init-recalculation-four' | i18n}}
+                    li {{'l-msg-init-recalculation-five' | i18n}}
+            div.pull-right
+
+                a.btn.btn-warning(ng-disabled="!controller.isMappingPublished" ng-click="controller.exportarItens()") {{'l-export-items' | i18n}}
+
+                | &nbsp;
+
+                label.btn.btn-primary(role="button" ng-disabled="!controller.isMappingPublished"
+                                      ng-click="controller.importItens()")
+                    {{ 'l-import-changed-items' | i18n: []: 'dts/kbn' }}
+                span.file-text
+                input(id="file-input"
+                      type="file"
+                      style="position:fixed;top:-999px;"
+                      ngf-select
+                      ngf-change="controller.uploadFiles($files);"
+                      ngf-multiple="false"
+                      ngf-allow-dir="false")
+                p
+                    div.progress(ng-show="controller.barProgress")
+                            div.progress-bar.progress-bar-striped.active(style="width: 100%") {{'l-importing' | i18n}}

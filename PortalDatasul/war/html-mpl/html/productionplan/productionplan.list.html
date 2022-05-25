@@ -1,0 +1,115 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+	
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-production-plan' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+			
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'l-production-plan' | i18n }}" 
+									 total="{{controller.totalRecords}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+			
+				<totvs-page-header-operation-action>
+                    <action link="#/dts/mpl/productionplan/new" class="glyphicon-plus">{{ 'l-add' | i18n }}</action>
+                </totvs-page-header-operation-action>
+				<totvs-page-header-operation-filter placeholder="{{ 'l-code-description' | i18n }}"
+													ng-submit="controller.search()"
+													ng-model="controller.quickSearchText"
+													advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+								
+			</totvs-page-header-operation>
+			
+			 <totvs-page-tags>
+				<tag class="tag-1">Ativo</tag>
+				<tag class="tag-2">Inativo</tag>
+			</totvs-page-tags>
+			
+			<totvs-page-disclaimers
+					disclaimer-list="controller.disclaimers"
+					ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+
+		</totvs-page-header>
+						
+	</totvs-page-navbar>
+	
+	<totvs-page-content>
+
+		<totvs-page-alert
+			ng-if="controller.listResult.length <= 0"
+			type="info"
+			message="{{ 'msg-search-not-found' | i18n }}">			
+		</totvs-page-alert>
+ 
+        <totvs-list-item id="plano{{plano['planCode']}}"
+						 ng-repeat="plano in controller.listResult"
+						 class="tag-{{plano['planStatus']}}" >
+						 
+			<totvs-list-item-header>
+                <totvs-list-item-title
+                	title="{{plano['planCode']}} - {{plano['planDescription']}}"
+                	link="#/dts/mpl/productionplan/detail/{{ plano['planCode'] }}">
+                </totvs-list-item-title>
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/mpl/productionplan/edit/{{plano['planCode']}}" icon="glyphicon-pencil">{{ 'l-edit' | i18n }}</action>
+                    <action ng-click="controller.copyPlan(plano)">{{ 'l-copy-plan' | i18n }}</action>
+                    <action link="#/dts/mpl/productionplanitem/{{plano['planCode']}}">{{'l-production-plan-item' | i18n }}</action>
+                    <action ng-click="controller.setSite(plano)">{{ 'l-set-site' | i18n }}</action>
+                    <action ng-click="controller.delete(plano)" icon="glyphicon-trash">{{ 'l-remove' | i18n }}</action>
+               	</totvs-list-item-action>               											
+			</totvs-list-item-header>
+			<totvs-list-item-content-detail>
+                <totvs-list-item-info
+                	class="col-xs-4"
+                    title="{{ 'l-type-plan' | i18n }}"
+                    value="{{plano['planType']}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info
+                	class="col-xs-4"
+                    title="{{ 'l-multi-site' | i18n }}"
+                    value="{{controller.traduzLog(plano['isMultiSites'])}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info
+                	class="col-xs-4 lg-font"
+                    title="{{ 'l-calculation' | i18n }}"
+                    value="{{plano['percentualCalculation']}}%"/>
+                </totvs-list-item-info>
+                <totvs-list-item-info
+                	class="col-xs-4"
+                    title="{{ 'l-period' | i18n }}"
+                    value="{{plano['initialPeriod']}}/{{plano['initialPeriodYear']}} - {{plano['finalPeriod']}}/{{plano['finalPeriodYear']}}">
+                </totvs-list-item-info>  
+                 
+			</totvs-list-item-content-detail>
+        </totvs-list-item>
+		
+		<totvs-list-pagination
+            ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+            ng-click="controller.loadData(true);">
+        </totvs-list-pagination>
+ 
+    </totvs-page-content>	
+		
+</totvs-page>
+<style>
+	.page-head .page-tags .tag-1:before {
+		background-color: #6ace39;
+	}
+	.page-content .list-item.tag-1 {
+    	border-left: 5px solid #6ace39;
+	}
+	.page-head .page-tags .tag-2:before {
+		background-color: #f15a22;
+	}
+	.page-content .list-item.tag-2 {
+    	border-left: 5px solid #f15a22;
+	}
+	.lg-font .item-field { font-size: 26px !important; }
+</style>

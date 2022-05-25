@@ -1,0 +1,68 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb id="breadcrumb">
+            <breadcrumb>Compartilhamento de Riscos de Beneficiários</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="Compartilhamento de Riscos de Beneficiários" 
+                                     total="{{controller.listOfBeneficiarioCompartRiscoCount}}"
+                                     settings="controller.openConfigWindow()">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-filter placeholder="Código da Unidade"
+                                                    ng-submit="controller.search()"
+                                                    ng-model="controller.searchInputText"
+                                                    advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-alert ng-if="controller.listOfBeneficiarioCompartRisco.length <= 0"
+                    type="info"
+                    message="Nenhum registro encontrado">
+        </totvs-page-alert>
+        <totvs-list-item ng-repeat="beneficiarioCompartRisco in controller.listOfBeneficiarioCompartRisco"
+                          selected="beneficiarioCompartRisco">
+            <totvs-list-item-header>
+                <totvs-list-item-title
+                    title="{{beneficiarioCompartRisco.rotulo}}"
+                    link="#/dts/hgp/hrb-beneficiarioCompartRisco/detail/{{beneficiarioCompartRisco.cdUnidade}}/{{beneficiarioCompartRisco.cdModalidade}}/{{beneficiarioCompartRisco.cdContrato}}/{{beneficiarioCompartRisco.cdBeneficiario}}/{{beneficiarioCompartRisco.dtInicio}}">
+                </totvs-list-item-title>                
+            </totvs-list-item-header>
+            <totvs-list-item-content>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Carteira"
+                    value="{{beneficiarioCompartRisco.cdUnidCdCarteiraInteira}}">
+                </totvs-list-item-info>                 
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Data Início"
+                    value="{{beneficiarioCompartRisco.dtInicio | date : 'dd/MM/yyyy'}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Data Fim"
+                    value="{{beneficiarioCompartRisco.dtFim | date : 'dd/MM/yyyy'}}">
+                </totvs-list-item-info>                 
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Data Atualizacao"
+                    value="{{beneficiarioCompartRisco.dtAtualizacao | date : 'dd/MM/yyyy'}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Usuário Última Atualização"
+                    value="{{beneficiarioCompartRisco.codUsuarUltAtualiz}}">
+                </totvs-list-item-info>                 
+            </totvs-list-item-content>
+        </totvs-list-item>
+
+        <totvs-list-pagination
+            ng-if="controller.listOfBeneficiarioCompartRisco.length < controller.listOfBeneficiarioCompartRiscoCount && controller.listOfBeneficiarioCompartRisco.length"
+            ng-click="controller.search(true);">
+        </totvs-list-pagination>
+    </totvs-page-content>
+</totvs-page>
+
+

@@ -1,0 +1,16 @@
+
+<totvs-modal-header>{{'l-relac-item-clasdor' | i18n}}</totvs-modal-header>
+<totvs-modal-body>
+  <totvs-page-form id="linkitemclassifierForm" role="form">
+    <field type="select" ng-model="controller.itemERP" label="{{'l-item' | i18n: []: 'dts/kbn' }}" required="required" class="col-xs-12">
+      <include>
+        <ui-select-match placeholder="{{ 'l-item' | i18n: []: 'dts/kbn' }}">{{ $select.selected | descFlow }}</ui-select-match>
+        <ui-select-choices repeat="item in controller.listItems | filter:$select.search"><span ng-bind-html="item | descFlow | highlight: $select.search"></span></ui-select-choices>
+      </include>
+    </field>
+  </totvs-page-form>
+</totvs-modal-body>
+<totvs-modal-footer>
+  <button data-ng-click="controller.cancel();" class="btn btn-default">{{ 'l-cancel' | i18n }}</button>
+  <button data-ng-click="controller.createLink();" class="btn btn-primary">{{ 'l-ok' | i18n }}</button>
+</totvs-modal-footer>

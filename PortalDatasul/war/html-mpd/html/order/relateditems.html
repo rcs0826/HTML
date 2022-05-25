@@ -1,0 +1,83 @@
+<div style="max-height: 300px; overflow-y : auto;">
+    <p>{{ 'l-related-products-description' | i18n }}</p>
+    <hr>  
+    <div class="table table-condensed" ng-show="popoverData.itemsRelatedRequire.length > 0">
+        <p>{{ 'l-required-products' | i18n }}</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="min-width: 100px">{{ 'l-cod-item' | i18n }}</th>
+                    <th style="min-width: 150px">{{ 'l-cod-refer' | i18n }}</th>
+                    <th style="min-width: 150px">{{ 'l-vl-preuni' | i18n }}</th>
+                    <th style="min-width: 150px">{{ 'l-inventory' | i18n }}</th>                 
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="item in popoverData.itemsRelatedRequire track by $index">
+                    <td style="min-width: 100px">{{item['it-codigo']}}</td>
+                    <td style="min-width: 150px">{{item['cod-refer']}}</td>
+                    <td style="min-width: 150px">{{item['vl-preuni'] | number : 4}}</td>
+                    <td ng-if="item.isRepresentative" style="min-width: 150px">{{item['vl-saldo'] | number : 4}}</td>
+                    <td style="min-width: 150px" ng-if="item.hasBalance && !item.isRepresentative">{{ 'l-inventory-avail' | i18n }}</td>
+                    <td style="min-width: 150px" ng-if="!item.hasBalance && !item.isRepresentative">{{ 'l-inventory-not-avail' | i18n }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr> 
+    </div>
+
+    <div class="table table-condensed" ng-show="popoverData.itemsRelatedUpSelling.length > 0">
+        <p>{{ 'l-up-selling-products-description' | i18n }}</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="min-width: 100px">{{ 'l-cod-item' | i18n }}</th>
+                    <th style="min-width: 150px">{{ 'l-cod-refer' | i18n }}</th>
+                    <th style="min-width: 150px">{{ 'l-vl-preuni' | i18n }}</th>
+                    <th style="min-width: 150px">{{ 'l-inventory' | i18n }}</th>                 
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="clickable" data-ng-repeat="item in popoverData.itemsRelatedUpSelling track by $index">
+                    <td style="min-width: 100px">     
+                        <input type="checkbox" ng-model="item.selected"> {{item['it-codigo']}}
+                    </td>
+                    <td style="min-width: 150px" ng-click="item.selected = !item.selected">{{item['cod-refer']}}</td>
+                    <td style="min-width: 150px" ng-click="item.selected = !item.selected">{{item['vl-preuni'] | number : 4}}</td>
+                    <td ng-if="item.isRepresentative" style="min-width: 150px" ng-click="item.selected = !item.selected">{{item['vl-saldo'] | number : 4}}</td>
+                    <td style="min-width: 150px" ng-if="item.hasBalance && !item.isRepresentative" ng-click="item.selected = !item.selected">{{ 'l-inventory-avail' | i18n }}</td>
+                    <td style="min-width: 150px" ng-if="!item.hasBalance && !item.isRepresentative" ng-click="item.selected = !item.selected">{{ 'l-inventory-not-avail' | i18n }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr> 
+    </div>
+
+    <div class="table table-condensed" ng-show="popoverData.itemsRelatedCrossSelling.length > 0">
+        <p>{{ 'l-cross-selling-products-description' | i18n }}</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="min-width: 100px">{{ 'l-cod-item' | i18n }}</th>
+                    <th style="min-width: 150px">{{ 'l-cod-refer' | i18n }}</th>
+                    <th style="min-width: 150px">{{ 'l-vl-preuni' | i18n }}</th>
+                    <th style="min-width: 150px">{{ 'l-inventory' | i18n }}</th>                 
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="clickable" data-ng-repeat="item in popoverData.itemsRelatedCrossSelling track by $index">
+                    <td style="min-width: 150px">     
+                        <input type="checkbox" ng-model="item.selected"> {{item['it-codigo']}}
+                    </td>
+                    <td style="min-width: 150px" ng-click="item.selected = !item.selected">{{item['cod-refer']}}</td>
+                    <td style="min-width: 150px" ng-click="item.selected = !item.selected">{{item['vl-preuni'] | number : 4}}</td>
+                    <td ng-if="item.isRepresentative" style="min-width: 150px" ng-click="item.selected = !item.selected">{{item['vl-saldo'] | number : 4}}</td>
+                    <td style="min-width: 150px" ng-if="item.hasBalance && !item.isRepresentative" ng-click="item.selected = !item.selected">{{ 'l-inventory-avail' | i18n }}</td>
+                    <td style="min-width: 150px" ng-if="!item.hasBalance && !item.isRepresentative" ng-click="item.selected = !item.selected">{{ 'l-inventory-not-avail' | i18n }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<hr style="margin-top: 10px; margin-bottom: 10px;">
+<button type="button" style="margin-bottom: 5px;" class="btn btn-default btn-xs pull-right" template-popover-remove-all>{{ 'close' | i18n }}</button>

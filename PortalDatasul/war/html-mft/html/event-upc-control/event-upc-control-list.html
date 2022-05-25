@@ -1,0 +1,51 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{:: 'l-begin' | i18n : [] : 'dts/mft' }}</breadcrumb>
+            <breadcrumb>{{:: 'l-event-upc-control' | i18n : [] : 'dts/mft' }}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{:: 'l-event-upc-control' | i18n : [] : 'dts/mft' }}" total="{{controller.listProgram.length}}">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action>
+                    <action icon="glyphicon-plus" ng-click="controller.addProgram()">{{:: 'l-add-program' | i18n : [] : 'dts/mft' }}</action>
+                </totvs-page-header-operation-action>
+                <totvs-page-header-operation-filter placeholder="{{:: 'l-fast-search' | i18n : [] : 'dts/mft' }}"
+                    ng-submit="controller.search()" ng-model="controller.quickSearchText">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers" ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+            <totvs-page-tags>
+                <tag class="btn btn-link list-program-green-tag" ng-click="controller.addFilterActiveProgram(true);">{{'l-control-event' | i18n }}</tag>
+                <tag class="btn btn-link list-program-red-tag" ng-click="controller.addFilterActiveProgram(false);">{{'l-not-control-event' | i18n }}</tag>
+            </totvs-page-tags>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-list-item ng-repeat="program in controller.listProgram" 
+                         ng-class="{'list-program-green': program['log-ativo'] === true,
+                                    'list-program-red': program['log-ativo'] === false}">
+            <totvs-list-item-header>
+                <totvs-list-item-title title="{{program['cod-prog-dtsul']}} - {{program['des-prog-dtsul']}}">
+                </totvs-list-item-title>
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/mft/event-upc-control/edit/{{program['cod-prog-dtsul']}}" icon="glyphicon-pencil">{{'btn-edit' | i18n }}</action>
+                    <action ng-click="controller.deleteProgram(program)" icon="glyphicon-remove">{{ 'btn-remove' | i18n }}</action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+            <totvs-list-item-content-detail open="controller.getEvent(program)">
+                <totvs-list-item ng-repeat="event in program.listEvent">
+                    <totvs-list-item-content>
+                        <totvs-list-item-info title="{{'l-event'|i18n}}" class="col-xs col-sm-3 col-md-4">{{event['cod-evento']}}</totvs-list-item-info>
+                        <totvs-list-item-info title="{{'l-active'|i18n}}" class="col-xs col-sm-3 col-md-4">{{event['log-ativo'] | booleanI18N}}</totvs-list-item-info>
+                    </totvs-list-item-content>
+                </totvs-list-item>
+            </totvs-list-item-content-detail>
+        </totvs-list-item>
+        <totvs-list-pagination ng-if="controller.hasNext"
+            ng-click="controller.getProgram(true);">
+        </totvs-list-pagination>
+    </totvs-page-content>
+</totvs-page>

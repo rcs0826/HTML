@@ -1,0 +1,104 @@
+<div ng-Controller="salesorder.pd4000DeliveryItems.Controller as deliveryItemsController" totvs-custom-element="pd4000h">
+    <div class="row">
+        <br>
+        <div class="col-sm-12">
+            <totvs-grid grid-data="deliveryItemsController.orderItens"
+                        grid="deliveryItemsController.itensGrid"
+                        grid-options="deliveryItemsController.gridOptions" 
+						grid-height="270"
+                        navigatable="true" 
+                        editable="false" 
+                        auto-resize-content="true"
+                        selectable="row">
+                <totvs-grid-column field="nr-sequencia" width="50">{{:: 'Sequência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                <totvs-grid-column field="it-codigo" width="160">{{:: 'Item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                <totvs-grid-column field="desc-item" class="text-nowrap" width="350">{{:: 'Descrição' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                <totvs-grid-column field="cod-refer" width="160">{{:: 'Referência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                <totvs-grid-column field="qt-un-fat" width="90" filter="number : 4" style="text-align: right;">{{:: 'Qt UM Fatur' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                <totvs-grid-column field="cod-un" width="50">{{:: 'UM' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                <totvs-grid-detail size="table">
+                    <div ng-controller="salesorder.pd4000Delivery.Controller as deliveryController" ng-init="deliveryController.init(dataItem)">
+                        <div class="row" style="padding-bottom: 5px; margin: 0;" ng-if="!orderController.orderDisabled">
+                            <div class="btn-group" ng-if="deliveryController.canEdit()">
+                                <a class="btn btn-default" role="button" ng-click="deliveryController.add()">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    <span class="hidden-xs ng-binding">{{:: 'Adicionar' | i18n : [] : 'dts/mpd' }}</span>
+                                </a>
+                                <a class="btn btn-default" role="button" ng-click="deliveryController.cancel()"
+                                    ng-disabled="!deliveryController.canDelete()">
+                                    <span class="glyphicon glyphicon-ban-circle"></span>
+                                    <span class="hidden-xs ng-binding">{{:: 'Cancelar' | i18n : [] : 'dts/mpd' }}</span>
+                                </a>
+                                <a class="btn btn-default" role="button" ng-click="deliveryController.remove()"
+                                    ng-disabled="!deliveryController.canDelete()">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                    <span class="hidden-xs ng-binding">{{:: 'Remover' | i18n : [] : 'dts/mpd' }}</span>
+                                </a>
+                            </div>
+                            <div class="btn-group" ng-if="deliveryController.canEdit()">
+                                <a class="btn btn-default" role="button" ng-click="deliveryController.save()"
+                                    ng-disabled="!deliveryController.checkDirty()">
+                                    <span class="glyphicon glyphicon-save"></span>
+                                    <span class="hidden-xs ng-binding">&nbsp;&nbsp;{{:: 'Salvar' | i18n : [] : 'dts/mpd' }}</span>
+                                </a>
+                                <a class="btn btn-default" role="button" ng-click="deliveryController.refresh()" ng-if="!advancePaymentController.codEmit")
+                                    ng-disabled="!deliveryController.checkDirty()">
+                                    <span class="glyphicon glyphicon-refresh"></span>
+                                    <span class="hidden-xs ng-binding">&nbsp;&nbsp;{{:: 'Descartar alterações' | i18n : [] : 'dts/mpd' }}</span>
+                                </a>
+                            </div>
+                        </div>                            
+                        <div class="row" style="margin: 0;">
+                            <totvs-grid grid-data="deliveryController.ttOrderDelivery" 
+                                        grid="deliveryController.deliveryItemsGrid"
+                                        grid-height="200"
+                                        navigatable="true" 
+                                        editable="true" 
+                                        selectable="multiple,row"
+                                        show-header-edit-icon="deliveryController.canEdit"
+                                        grid-selected-items="deliveryController.deliveryItemsGridSelectedItems"
+                                        on-edit="deliveryController.deliveryItemsGridEdit(event, column)">
+                                <totvs-grid-column field="nr-entrega" class="#= data['cod-sit-ent'] == 6 ? 'cancelled' : ''#" width="50" editable="true" filter="number : 0">{{:: 'Entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                <totvs-grid-column field="cod-sit-ent" class="#= data['cod-sit-ent'] == 6 ? 'cancelled' : ''#" width="90">{{:: 'Situação' | i18n : [] : 'dts/mpd'}}
+                                    <option id="1">{{:: 'Aberta' | i18n : [] : 'dts/mpd'}}</option>
+                                    <option id="2">{{:: 'Atendida Parcial' | i18n : [] : 'dts/mpd'}}</option>
+                                    <option id="3">{{:: 'Atendida Total' | i18n : [] : 'dts/mpd'}}</option>
+                                    <option id="4">{{:: 'Pendente' | i18n : [] : 'dts/mpd'}}</option>
+                                    <option id="5">{{:: 'Suspensa' | i18n : [] : 'dts/mpd'}}</option>
+                                    <option id="6">{{:: 'Cancelada' | i18n : [] : 'dts/mpd'}}</option>
+                                    <option id="7">{{:: 'Fat. Balcão' | i18n : [] : 'dts/mpd'}}</option>                                    
+                                </totvs-grid-column>
+                                <totvs-grid-column field="dt-entrega" class="#= data['cod-sit-ent'] == 6 ? 'cancelled' : ''#" width="90" editable="true" filter="date : dd/MM/yyyy">{{:: 'Data Entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                <totvs-grid-column field="hr-entrega" class="#= data['cod-sit-ent'] == 6 ? 'cancelled' : ''#" width="80" editable="true"
+                                    template="deliveryController.horaTemplate"
+                                    editor="deliveryController.horaEditor">{{:: 'Hora Entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                <totvs-grid-column field="qt-un-fat" class="#= data['cod-sit-ent'] == 6 ? 'cancelled' : ''#" width="90" editable="true" filter="number : 4" style="text-align: right;">{{:: 'Qt UM Fatur' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                <totvs-grid-column field="qt-log-aloca" class="#= data['cod-sit-ent'] == 6 ? 'cancelled' : ''#" width="90" editable="true" filter="number : 4" style="text-align: right;">{{:: 'Qtd Alocar' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                <totvs-grid-column field="tipo-atend" class="#= data['cod-sit-ent'] == 6 ? 'cancelled' : ''#" width="90" editable="true" >{{:: 'Tipo Atendimento' | i18n : [] : 'dts/mpd'}}
+                                    <option id="1">{{:: 'Total' | i18n : [] : 'dts/mpd'}}</option>
+                                    <option id="2">{{:: 'Parcial' | i18n : [] : 'dts/mpd'}}</option>
+                                    <option id="3">{{:: 'Parcial, Cancela saldo' | i18n : [] : 'dts/mpd'}}</option>
+                                </totvs-grid-column>
+                                <totvs-grid-column field="tp-entrega" class="#= data['cod-sit-ent'] == 6 ? 'cancelled' : ''#" width="90" editable="true" >{{:: 'Tipo Entrega' | i18n : [] : 'dts/mpd'}}
+                                    <option id="1">{{:: 'Firme' | i18n : [] : 'dts/mpd'}}</option>
+                                    <option id="2">{{:: 'Estimado' | i18n : [] : 'dts/mpd'}}</option>
+                                    <option id="3">{{:: 'Atraso' | i18n : [] : 'dts/mpd'}}</option>
+                                    <option id="4">{{:: 'Estima Devolução' | i18n : [] : 'dts/mpd'}}</option>
+                                    <option id="5">{{:: 'Estima Cancelamento' | i18n : [] : 'dts/mpd'}}</option>
+                                </totvs-grid-column>
+                                <totvs-grid-detail>
+                                    <field type="textarea" ng-model="model.observacao" label="Observações"
+                                        ng-change="model.dirty = true" rows="2"
+                                        ng-disabled="!(deliveryController.canEdit() && model['cod-sit-ent'] == 1)"
+                                        class="col-xs-12" style="padding:0">                                        
+                                    </field>
+                                </totvs-grid-detail>
+                            </totvs-grid>
+                        </div>                            
+                    </div>
+                </totvs-grid-detail>             
+            </totvs-grid>
+        </div>
+    </div>
+</div>
+

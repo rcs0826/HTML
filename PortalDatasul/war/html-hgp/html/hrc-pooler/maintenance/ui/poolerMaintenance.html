@@ -1,0 +1,101 @@
+<totvs-page type="edit"> 
+
+    <totvs-page-navbar>
+
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hrc-pooler/">Manutenção Agrupadores Regras Coparticipação</breadcrumb>
+                <breadcrumb></breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Agrupadores Regras Coparticipação" >
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action on-back="controller.onCancel"
+                                                    on-cancel="controller.onCancel"
+                                                    on-save-new="controller.onSaveNew"
+                                                    hide-edit="true"
+                                                    hide-remove="true"
+                                                    hide-save-new="{{controller.action === 'INSERT' ? false : true }}">
+                </totvs-page-header-operation-action>
+
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+
+        <totvs-page-form>
+            <fieldset>
+                
+                <legend>Agrupador</legend>                 
+
+                <field  type="input"
+                        label="Código"
+                        required
+                        maxlength="6"
+                        numbers-only                         
+                        class="col-lg-2 col-md-4 col-sm-6 col-xs-12"
+                        data-ng-model="controller.pooler.cdnAgrupRegraFaturam"                            
+                        ng-disabled="controller.action == 'DETAIL' || controller.action == 'EDIT'">
+                </field>                 
+                             
+                <field  type="input"
+                        label="Descrição"
+                        required
+                        maxlength="200"                    
+                        class="col-lg-6 col-md-6 col-sm-10 col-xs-12"
+                        data-ng-model="controller.pooler.desAgrupRegraFaturam"                            
+                        ng-disabled="controller.action == 'DETAIL'">
+                </field>           
+
+                <field  type="input"
+                        label="fake" style="visibility: hidden"
+                        class="col-lg-4 col-md-2 col-sm-12 col-xs-12">
+                </field> 
+
+
+                <field  type="date"
+                        label="Data Inicial"
+                        required
+                        class="col-lg-2 col-md-3 col-sm-6 col-xs-8"
+                        data-ng-model="controller.pooler.datInicVigenc"
+                        ng-disabled="controller.action == 'DETAIL'">
+                </field>                  
+
+                <field  type="input"
+                        label="fake" style="visibility: hidden"
+                        class="col-lg-10 col-md-9 col-sm-6 col-xs-12">
+                </field>                                               
+            
+                <field  type="date"
+                        label="Data Final"
+                        required
+                        class="col-lg-2 col-md-3 col-sm-6 col-xs-8"
+                        data-ng-model="controller.pooler.datFimVigenc"
+                        ng-disabled="controller.action == 'DETAIL'">
+                </field>              
+
+                <field  type="input"
+                        label="fake" style="visibility: hidden"
+                        class="col-lg-10 col-md-9 col-sm-6 col-xs-12">
+                </field>
+
+                <legend>Atualização do Registro</legend>
+
+                <field  type="date"
+                        label=""
+                        class="col-lg-2 col-md-3 col-sm-6 col-xs-8"
+                        data-ng-model="controller.pooler.datUltAtualiz"
+                        ng-disabled="true">
+                </field>  
+                
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>	
+</totvs-page>

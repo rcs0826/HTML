@@ -1,0 +1,78 @@
+<totvs-page type="detail">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{'l-home'| i18n}}</breadcrumb>
+			<breadcrumb>{{ controller.dashboard.dashboardName}}</breadcrumb>
+		</totvs-page-breadcrumb>
+		<totvs-page-header>
+			<totvs-page-header-title title="{{!controller.dashboard.dashboardHeader? i18n('l-loading-dashboard') : controller.dashboard.dashboardHeader}}" settings="controller.settings()">
+			</totvs-page-header-title>
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action
+					hide-edit="true"
+					hide-back="true"
+					hide-remove="true">
+					<action ng-click="controller.cancel()">{{ 'l-cancel' | i18n }}</action>
+					<action ng-click="controller.save()">{{ 'l-save' | i18n }}</action>
+					<action ng-if="controller.dashboard.custom" ng-click="controller.restore()">{{ 'l-restore' | i18n }}</action>
+					<action ng-click="controller.addwidgets()">{{ 'l-add-widgets' | i18n }}</action>
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<div class="row">
+			<div class="col-xs-12">
+				<totvs-page-form>
+					<fieldset>
+						<field type="input" class="col-md-6" data-ng-model="controller.dashboard.dashboardName" required>
+							<label>{{ 'l-name' | i18n }}</label>
+						</field>
+						<field type="input" class="col-md-6" data-ng-model="controller.dashboard.dashboardHeader" required>
+							<label>{{ 'l-header' | i18n }}</label>
+						</field>
+					</fieldset>
+				</totvs-page-form>
+
+				<div ng-repeat="widget in controller.widgets" class="dashboard-portlet-config col-md-12" ng-class="{'col-md-6':widget.widgetSize == 'half'}">
+					<div class="dashboard-on-drag" ng-drop="true" ng-drop-success="controller.onDropPortletComplete($index, $data,$event)">
+						<totvs-widget class="dashboard-painel-no-border" ng-drag="true" ng-drag-data="widget" ng-drag-success="controller.onDragPortletComplete($index, $data,$event)">
+							<totvs-widget-header class="dashboard-portlet-header-config">
+								<!--{{$index + 1}} {{ widget.widgetName}} {{widget.widgetPosition}} -->
+								<div class="pull-left btn">
+									<span class="glyphicon glyphicon glyphicon-move"></span>
+								</div>
+								<div class="pull-right">
+									<button type="button" class="btn btn-default" ng-if="!$first" ng-click="controller.up($index)" title="{{ 'l-move-up' | i18n }}">
+										<span class="glyphicon glyphicon-arrow-up"></span>
+									</button>
+									<button type="button" class="btn btn-default"ng-if="!$last" ng-click="controller.down($index)" title="{{ 'l-move-down' | i18n }}">
+										<span class="glyphicon glyphicon-arrow-down"></span>
+									</button>
+									<button type="button" class="btn btn-default" ng-click="controller.changesize($index)" title="{{ 'l-change-width' | i18n }}">
+										<span class="glyphicon glyphicon-resize-horizontal"></span>
+									</button>
+									<button type="button" class="btn btn-default" ng-click="controller.remove($index)" title="{{ 'l-delete' | i18n }}">
+										<span class="glyphicon glyphicon-remove"></span>
+									</button>
+								</div>
+							</totvs-widget-header>
+							<totvs-widget-body>
+								<div class="disableddiv" ng-include="widget.widgetSource"></div>
+							</totvs-widget-body>
+						</totvs-widget>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<totvs-page-alert
+			ng-if="!controller.widgets || !controller.widgets.length"
+			type="info"
+			message="{{ 'msg-not-found-widgets-dashboard' | i18n: [controller.dashboard.dashboardName]: 'dts/dts-utils' }}">
+		</totvs-page-alert>
+
+	</totvs-page-content>
+</totvs-page>

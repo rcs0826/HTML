@@ -1,0 +1,51 @@
+<div class="col-xs-12 crm-tab">
+
+	<div class="row">
+		<div class="col-xs-10">
+			<strong>
+				{{ 'l-resources' | i18n: []: 'dts/crm' }} ({{ product.ttProdutSuporRecur.length || 0 }})
+			</strong>
+		</div>
+		<div class="col-xs-2">
+			<div class="pull-right">
+				<button type="button"
+						class="btn btn-primary"
+						ng-model="controller.selectedResources"
+						ng-change="controller.addResource(product)"
+						zoom
+						zoom-multiple
+						zoom-service="crm.crm_recur.zoom">
+					<span class="glyphicon glyphicon-plus"></span>
+					<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<totvs-page-alert type="info"
+					  style="margin-top: 10px; margin-bottom: 10px;"
+					  message="{{ 'msg-not-found-resources' | i18n: []: 'dts/crm' }}"
+					  ng-if="!product.ttProdutSuporRecur || product.ttProdutSuporRecur.length <= 0">
+	</totvs-page-alert>
+
+	<div ng-if="product.ttProdutSuporRecur.length">
+
+		<div class="row crm-tab-item" ng-repeat="resource in product.ttProdutSuporRecur">
+
+			<div class="col-xs-12 col-sm-10 clickable">
+				{{ resource.nom_usuar }}
+			</div>
+
+			<div class="col-xs-2 text-right">
+				<a class="clickable"
+				   ng-click="controller.removeProductSupportResource(resource.num_id, product.ttProdutSuporRecur, $index);">
+					<span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+					<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+				</a>
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

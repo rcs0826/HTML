@@ -1,0 +1,28 @@
+<totvs-page type="edit" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#{{defaultPageHome}}">{{ 'l-home-page' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-salesorder' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		
+		<totvs-page-header>
+     
+            <totvs-page-header-title title="{{currentuser['user-entity']}}, {{ 'l-salesorder' | i18n }} {{controller.nrPedido}}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action hide-save-new="true"> 
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+			<h4>{{ 'l-customer' | i18n }}: {{controller.item['nome-abrev']}} - {{ 'nr-pedcli' | i18n }}: {{controller.item['nr-pedcli']}} </h4>
+		</totvs-page-header>	
+	</totvs-page-navbar>
+
+	<totvs-page-content>	
+		<totvs-page-form>
+									
+			<totvs-lodash-template ng-if="controller.item['ind-componen'] != 3" src="/dts/mpd/html/order/order-item-fields.html" template-data="controller.pedItemCadastroVisibleFields"/></totvs-lodash-template>
+			<totvs-lodash-template ng-if="controller.item['ind-componen'] == 3" src="/dts/mpd/html/order/order-item-fields-comp.html" template-data="controller.pedItemCadastroVisibleFields"/></totvs-lodash-template>						
+			
+		</totvs-page-form>	
+	</totvs-page-content>
+</totvs-page>

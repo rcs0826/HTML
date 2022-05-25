@@ -1,0 +1,16 @@
+link(rel="stylesheet" href="/dts/kbn/css/field-addon.css")
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+totvs-modal-header
+    {{ 'l-insert-items' | i18n }} {{'l-in-cell' | i18n}} {{controller.cell | descGeneric:"{codeErpCell} {descCell}"}}
+totvs-modal-body
+    .row
+        totvs-page(type="list")
+            totvs-page-content
+                totvs-list-item(data-ng-repeat="item in controller.items")
+                    totvs-list-item-header
+                        totvs-list-item-title(
+                            title="{{item | descFlow:'{sku} - {desc} {ref} ({exp})'}}"
+                        )
+totvs-modal-footer
+    button.btn.btn-default(ng-click="controller.cancel();") {{ 'l-cancel' | i18n }}
+    button.btn.btn-primary(ng-click="controller.confirm();") {{ 'l-confirm' | i18n }}

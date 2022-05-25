@@ -1,0 +1,67 @@
+
+<totvs-modal-header>
+	{{ 'l-block-item-warehouse' | i18n }}   
+</totvs-modal-header>
+<totvs-modal-body>  
+    <totvs-page-header>
+        <totvs-page-disclaimers disclaimer-list="controller.modalDisclaimers">
+        </totvs-page-disclaimers>  
+        <h5 style="color:#888; font-weight:bold; margin-bottom: 0cm;">
+            {{'l-restricted-to-situations' | i18n}}: 
+        </h5>
+        
+        <div>
+            <h5 style="font-weight: normal; color:#888;"> 
+                 2 - {{ 'l-not-update' | i18n }}, 3 - {{ 'l-inventory-ok' | i18n }}, 4 - {{ 'l-ok-to-inventory' | i18n }}
+            </h5>
+        </div>   
+    </totvs-page-header>
+    
+    <hr style="margin: 0px;" />
+        <totvs-page-form>
+            <fieldset>                                                      
+                <form  role="form">
+                    <field type="radio"
+                           ng-model="controller.block['option']">
+                        <totvs-options>
+                            <totvs-option value="1">{{'l-block' | i18n}}</totvs-option>&nbsp
+                            <totvs-option value="2">{{'l-unblock' | i18n}}</totvs-option>
+                        </totvs-options>
+                    </field>
+                </form>                                   
+            </fieldset>
+        </totvs-page-form>
+    
+        <div style="margin-left:5px;">   
+            <span style="color:#888; font-weight:bold; margin: 0px 0px 0px 15px; " > 
+                {{'l-movements-lock' | i18n}} 
+            </span>
+            <hr style="margin: 0px 15px 0px 15px;"/>
+            <fieldset>
+                <field type="date"
+                       data-ng-model="controller.block['dat-inic-bloq']"  
+                       class="col-md-6"
+                       required
+                       label="{{ 'l-block-init-date' | i18n }}"
+                       canclean
+                       style="margin: 0px"
+                       ng-disabled="controller.block['option'] == 2">                            
+                </field>  
+
+                <field type="time"
+                       data-ng-model="controller.block['hra-inic-bloq']"                     
+                       class="col-md-6"
+                       required
+                       label="{{ 'l-block-init-time' | i18n }}"
+                       canclean
+                       ng-disabled="controller.block['option'] == 2">                           
+                </field>             
+            </fieldset>    
+        </div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply()">{{ 'l-apply' | i18n }}</button>
+</totvs-modal-footer>
+

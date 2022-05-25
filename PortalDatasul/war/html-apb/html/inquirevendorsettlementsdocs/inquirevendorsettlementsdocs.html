@@ -1,0 +1,291 @@
+<totvs-page type="list" totvs-custom-element="customPage">
+
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-inquire-vendor-settlements-docs' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		<totvs-page-header>
+
+			<totvs-page-header-operation>
+
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-title">
+					<totvs-page-header-title title="{{currentuser['user-entity']}} {{ 'l-settled-vendor-docs' | i18n }} ({{controller.totalRecords}})"></totvs-page-header-title>
+				</div>
+				<totvs-page-header-operation-action>
+
+					<action icon="glyphicon-list" class="btn-default" ng-click="controller.showList()">
+						{{ 'btn-list' | i18n: []: 'dts/apb' }}
+					</action>
+
+					<action icon="glyphicon-stats" class="btn-default" ng-click="controller.showChart()">
+						{{ 'btn-chart' | i18n: []: 'dts/apb' }}
+					</action>
+
+					<action icon="glyphicon-plus" class="btn-default" ng-click="controller.openResume()">
+						{{ 'btn-totals' | i18n: []: 'dts/apb' }}
+					</action>
+
+				</totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter placeholder="{{ 'l-fast-search-bill' | i18n }}" 
+													ng-submit="controller.loadData(false);"
+													ng-model="controller.quickSearchText"
+													advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+			<totvs-page-disclaimers ng-if="controller.disclaimers" 
+									disclaimer-list="controller.disclaimers" 
+									ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+
+			<totvs-page-tags>
+				<tag class="tag-1 btn btn-link" ng-click="controller.setQuickFilter('CHEQUE');">{{ 'l-cheque' | i18n }}</tag>
+				<tag class="tag-2 btn btn-link" ng-click="controller.setQuickFilter('BORDERO');">{{ 'l-bordero' | i18n }}</tag>
+				<tag class="tag-3 btn btn-link" ng-click="controller.setQuickFilter('DINHEIRO');">{{ 'l-dinheiro' | i18n}}</tag>
+				<tag class="tag-4 btn btn-link" ng-click="controller.setQuickFilter('ESCRITURAL');">{{ 'l-escritural' | i18n }}</tag>
+				<tag class="tag-5 btn btn-link" ng-click="controller.setQuickFilter('CARTAOCREDITO');">{{ 'l-cartao-credito' | i18n }}</tag>
+			</totvs-page-tags>
+
+			<div class="col-lg-12 col-md-12"></div>
+
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<div>
+		<div ng-show=controller.listShow>
+			<totvs-page-content>
+
+				<totvs-list-item 
+					ng-repeat="inquirevendorsettlementsdocs in controller.listResult"
+					ng-class="{'tag-1':inquirevendorsettlementsdocs.modoPagamento == 'Cheque', 
+							   'tag-2':inquirevendorsettlementsdocs.modoPagamento == 'Borderô', 
+							   'tag-3':inquirevendorsettlementsdocs.modoPagamento == 'Dinheiro',
+							   'tag-4':inquirevendorsettlementsdocs.modoPagamento == 'Escritural',
+							   'tag-5':inquirevendorsettlementsdocs.modoPagamento == ''}">
+
+					<totvs-list-item-header>
+
+							
+						<totvs-list-item-title 
+							class="clickable btn-link"
+							ng-class="{'tag-1':inquirevendorsettlementsdocs.modoPagamento == 'Cheque', 
+									   'tag-2':inquirevendorsettlementsdocs.modoPagamento == 'Borderô', 
+									   'tag-3':inquirevendorsettlementsdocs.modoPagamento == 'Dinheiro',
+									   'tag-4':inquirevendorsettlementsdocs.modoPagamento == 'Escritural',
+									   'tag-5':inquirevendorsettlementsdocs.modoPagamento == ''}" 
+							ng-click="controller.openDetail(inquirevendorsettlementsdocs.codEstab,inquirevendorsettlementsdocs.cdnFornecedor,inquirevendorsettlementsdocs.codEspecDocto,inquirevendorsettlementsdocs.codSerDocto,inquirevendorsettlementsdocs.codTitApb,inquirevendorsettlementsdocs.codParcela)">
+							<span ng-if="inquirevendorsettlementsdocs.modoPagamento == 'Cheque'" class="page-tags modo modo-1">1</span>
+                    		<span ng-if="inquirevendorsettlementsdocs.modoPagamento == 'Borderô'" class="page-tags modo modo-2">2</span>
+							<span ng-if="inquirevendorsettlementsdocs.modoPagamento == 'Dinheiro'" class="page-tags modo modo-3">3</span>
+							<span ng-if="inquirevendorsettlementsdocs.modoPagamento == 'Escritural'" class="page-tags modo modo-4">4</span>
+							<span ng-if="inquirevendorsettlementsdocs.modoPagamento == ''" class="page-tags modo modo-5">5</span>
+							<span ng-if="inquirevendorsettlementsdocs.codTitApb != ''">{{inquirevendorsettlementsdocs.codTitApb}} / {{inquirevendorsettlementsdocs.codParcela}}</span>
+						</totvs-list-item-title>
+						
+					</totvs-list-item-header>
+					<totvs-list-item-content>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-vendor' | i18n}}">
+							{{inquirevendorsettlementsdocs.nomAbrev}}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-site' | i18n}}">
+							{{inquirevendorsettlementsdocs.codEstab}}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{'l-invoice-series' | i18n}}">
+							{{inquirevendorsettlementsdocs.codSerDocto}}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{'l-class' | i18n}}">
+							{{inquirevendorsettlementsdocs.codEspecDocto}}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-document-currency' | i18n}}">
+							{{inquirevendorsettlementsdocs.codIndicEcon}}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-payment-date' | i18n}}">
+							{{inquirevendorsettlementsdocs.datPagamento | date: ('l-date-format' | i18n: []: 'dts/apb') }}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-dt-vencimento' | i18n}}">
+							{{inquirevendorsettlementsdocs.datVenctoTitApb | date: ('l-date-format' | i18n: []: 'dts/apb') }}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-tipo-pagamento' | i18n}}"
+							value="{{controller.traduzTipoPagamento(inquirevendorsettlementsdocs['tipoPagamento'])}}">
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{ 'l-movement-currency' | i18n }}">
+							{{inquirevendorsettlementsdocs.codMovtoIndicEcon}}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-movement-amount' | i18n}}">
+							{{inquirevendorsettlementsdocs.valorMovto | currency: ('l-currency-format' | i18n: []: 'dts/apb') }}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-interest-amount' | i18n}}">
+							{{inquirevendorsettlementsdocs.valorJuros | currency: ('l-currency-format' | i18n: []: 'dts/apb') }}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-penalty-amount' | i18n}}">
+							{{inquirevendorsettlementsdocs.valorMulta | currency: ('l-currency-format' | i18n: []: 'dts/apb') }}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-discount-amount' | i18n}}">
+							{{inquirevendorsettlementsdocs.valorDesconto | currency: ('l-currency-format' | i18n: []: 'dts/apb') }}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-write-off-amount' | i18n}}">
+							{{inquirevendorsettlementsdocs.valorAbatimento | currency: ('l-currency-format' | i18n: []: 'dts/apb') }}
+						</totvs-list-item-info>
+
+
+					</totvs-list-item-content>
+
+				</totvs-list-item>
+
+				<totvs-list-pagination 
+					ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+			 		ng-click="controller.loadData(true);">
+				</totvs-list-pagination>
+
+			</totvs-page-content>
+
+		</div>
+		<div ng-show="controller.chartShow">
+
+			<totvs-page-content>
+
+				<totvs-page-content-header>
+
+					<div id="frame" class="col-md-12">
+
+						<apb-totvs-chart 
+							t-width="controller.tamGrafico"
+							t-height="controller.tamGraficoH"
+							t-series="[{}]"
+							t-title="{{ 'l-total-por-moeda' | i18n : [] : 'dts/apb/' }}"
+							t-options="controller.optionsTotal">
+						</apb-totvs-chart>
+
+					</div>
+
+				</totvs-page-content-header>
+			</totvs-page-content>
+		</div>
+
+	</div>
+</totvs-page>
+
+<style>
+
+	#frame {
+		padding-bottom: 5%;
+	}
+
+	.page-tags{ width: 15px; }
+
+	.p-title { padding-left: 15px !important; }
+
+	.page-tags.modo{
+	    border-radius: 50%;
+	    height: 15px;
+	    width: 15px;
+	    font-size: 10px;
+	    text-align: center;
+	    vertical-align: middle;
+	    display: inline-block;
+	    color: #fff;
+	    margin-right: 10px;
+	}
+
+	.page-head .page-tags .tag-1:before {
+		background-color: #f15a22;
+	}
+	.page-content .list-item.tag-1 {
+    	border-left: 5px solid #f15a22;
+	}
+	.page-head .page-tags .tag-2:before {
+		background-color: #faa61a ;
+	}
+	.page-content .list-item.tag-2 {
+    	border-left: 5px solid #faa61a ;
+	}
+	.page-head .page-tags .tag-3:before {
+		background-color: #f0ca38;
+	}
+	.page-content .list-item.tag-3 {
+    	border-left: 5px solid #f0ca38;
+	}
+	.page-head .page-tags .tag-4:before {
+		background-color: #5f9653;
+	}
+	.page-content .list-item.tag-4 {
+    	border-left: 5px solid #5f9653;
+	}
+	.page-head .page-tags .tag-5:before {
+		background-color: #0764bb;
+	}
+	.page-content .list-item.tag-5 {
+    	border-left: 5px solid #0764bb;
+	}
+
+	.modo-1 {
+		background-color: #f15a22;
+	}
+
+	.modo-2 {
+		background-color: #faa61a;
+	}
+
+	.modo-3 {
+		background-color: #f0ca38;
+	}
+
+	.modo-4 {
+		background-color: #5f9653;
+	}
+
+	.modo-5 {
+		background-color: #0764bb;
+	}
+
+	.page-tags > .tag {
+		cursor: pointer;
+	}
+
+
+</style>

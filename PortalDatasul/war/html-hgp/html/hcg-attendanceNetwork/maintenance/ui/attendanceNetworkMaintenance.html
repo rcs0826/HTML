@@ -1,0 +1,132 @@
+<style type="text/css">
+  legend{
+    float: left;
+  }  
+
+</style>
+
+<totvs-page type="base"> 
+
+    <totvs-page-navbar >
+
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hcg-attendanceNetwork/">Redes de Atendimentos</breadcrumb>
+                <breadcrumb>Manutenção de Rede de Atendimento</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Rede de Atendimento">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                    <action ng-click="controller.save();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar</action>
+                    <action ng-click="controller.saveNew();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Novo</action>
+                    <action class="btn-primary"
+                            ng-click="controller.saveClose();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Fechar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+            
+        <totvs-page-form>
+            <fieldset>
+
+                <legend>Rede de Atendimento</legend>
+
+                <field type="input"                      
+                       required
+                       numbers-only
+                       label="Código"
+                       class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                       ng-if="controller.action != 'INSERT'"
+                       ng-disabled="true"
+                       ng-model="controller.attendanceNetwork.cdnRede">
+                </field>
+                
+                <field type="input"
+                       class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                       data-ng-model="controller.attendanceNetwork.desRede"
+                       label="Descrição"
+                       maxlength="100"
+                       required
+                       ng-disabled="controller.action == 'DETAIL'">
+                </field>
+
+                <legend>Prestadores</legend>
+
+                <div ng-include="'/dts/hgp/html/hcg-attendanceNetwork/maintenance/ui/providerMaintenanceFields.html'"
+                     ng-if="controller.provider.isEdit != true
+                         && controller.action != 'DETAIL'"/>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height"
+                     ng-if="controller.attendanceNetwork.providers.length <= 0">
+                    <totvs-page-alert 
+                        type="info"
+                        message="Nenhum registro encontrado">
+                    </totvs-page-alert>
+                </div>
+
+                <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height" 
+                     ng-if="controller.attendanceNetwork.providers.length > 0">
+                    <totvs-page-form>
+                        <totvs-page-child type="list" style="margin-bottom: 3px"
+                                          ng-if="controller.attendanceNetwork.providers.length > 0"
+                                          ng-repeat="prov in controller.attendanceNetwork.providers track by $index">
+                            <totvs-list-item>
+                                <totvs-list-item-header>
+                                    <totvs-list-item-title title="Unidade: {{prov.rotuloUnidade}} | Prestador: {{prov.rotuloPrestador}}"></totvs-list-item-title>
+
+                                    <totvs-list-item-action limit-primary-action="2"
+                                              ng-if="controller.action != 'DETAIL'">
+                                        <action icon="glyphicon-pencil"
+                                                ng-click="controller.editProvider(prov, $index)"
+                                                >Editar</action>
+                                        <action icon="glyphicon-trash"
+                                                ng-click="controller.removeProvider(prov, $index)"
+                                                >Remover</action>
+                                    </totvs-list-item-action>
+                                </totvs-list-item-header>
+                                <totvs-list-item-content>
+                                    <totvs-list-item-info
+                                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12 col-sm-height"
+                                        title="Tipo do Prestador"
+                                        value="{{controller.getProviderTypesLabel(prov.cdTipoPrestador)}}">
+                                    </totvs-list-item-info>
+                                    <totvs-list-item-info
+                                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                        title="Grupo do Prestador"
+                                        value="{{prov.rotuloGrupoPrestador}}">
+                                    </totvs-list-item-info>
+                                    <totvs-list-item-info
+                                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                        title="Atendimento"
+                                        value="{{prov.logPermiteAtendim == true ? 'Permite' : 'Não Permite'}}">
+                                    </totvs-list-item-info>
+                                </totvs-list-item-content>
+                            </totvs-list-item>
+                        </totvs-page-child>
+                        <totvs-list-pagination ng-if="controller.hasLoadedAllProvidersAttendNet != true
+                                                   && controller.action != 'INSERT'"
+                                               ng-click="controller.loadProvidersAttendenceNetwork();">
+                                           
+                        </totvs-list-pagination>
+
+                    </totvs-page-form>
+                </div>
+
+            </fieldset>
+        </totvs-page-form>        
+    </totvs-page-content>   
+</totvs-page>

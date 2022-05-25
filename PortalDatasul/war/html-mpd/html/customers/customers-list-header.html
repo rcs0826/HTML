@@ -1,0 +1,36 @@
+	<totvs-page-header-operation>
+
+		<totvs-page-header-operation-action>
+
+			<%
+			_.forEach(data.fields, function(carteiraClienteRepresVisibleFields) {
+				if (carteiraClienteRepresVisibleFields.fieldName == "btn-new-lead") {
+					%>
+						<action ng-click="controller.addLead()"
+								icon="glyphicon-plus"
+								ng-if="controller.canAddLead === true">
+							{{ 'btn-new-lead' | i18n: []: 'dts/mpd' }}
+						</action>
+					<%
+				}
+			});
+			%>
+
+		</totvs-page-header-operation-action>
+
+		<totvs-page-header-operation-filter placeholder="{{ 'l-fast-search-customer' | i18n }}"
+											ng-submit="controller.search();"
+											ng-model="controller.quickSearchText"
+											advanced-search="controller.openAdvancedSearch">
+		</totvs-page-header-operation-filter>
+	</totvs-page-header-operation>
+
+	<totvs-page-disclaimers
+			disclaimer-list="controller.filterBy"
+			ng-click="controller.removeSelectedFilter">
+	</totvs-page-disclaimers>
+
+	<totvs-page-tags ng-if="controller.isCRMActive !== true">
+		<tag class="btn btn-link portal-list-customer-green-tag" ng-click="controller.setQuickFilter(controller.ACTIVECUSTOMERS);">{{ 'l-active' | i18n }}</tag>
+		<tag class="btn btn-link portal-list-customer-red-tag" ng-click="controller.setQuickFilter(controller.INACTIVECUSTOMERS);">{{ 'l-inactive' | i18n }}</tag>
+	</totvs-page-tags>

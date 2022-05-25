@@ -1,0 +1,131 @@
+<totvs-page-child type="list">
+
+	<br/>
+
+	<totvs-page-content class="crm-tab">
+
+		<div class="row">
+
+			<totvs-page-detail-info class="col-xs-9"
+									style="margin-bottom: -10px"
+									title="{{ 'l-expiration-date' | i18n: []: 'dts/crm' }}">
+				{{ controller.selectedGoal.dat_inic | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+				 -
+				{{ controller.selectedGoal.dat_fim | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+			</totvs-page-detail-info>
+
+			<div class="col-xs-3">
+				<div class="pull-right">
+
+					<button type="button"
+							class="btn btn-primary"
+							ng-click="controller.addEditStrategyPhaseGoal(controller.selectedGoal, controller.isIntegratedWithGP);">
+						<span class="glyphicon glyphicon-plus"></span>
+						<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+					</button>
+
+				</div>
+			</div>
+
+			<div class="col-xs-12">
+				<totvs-divider></totvs-divider>
+			</div>
+
+		</div>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-strategy-phase-goals' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.selectedGoal.ttMetaFase || controller.selectedGoal.ttMetaFase.length <= 0">
+			<br/>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addEditStrategyPhaseGoal(controller.selectedGoal, controller.isIntegratedWithGP);">
+				<span class="glyphicon glyphicon-plus"></span>
+				&nbsp;&nbsp;{{ 'btn-add' | i18n: []: 'dts/crm' }}
+			</button>
+		</totvs-page-alert>
+
+        
+		<div class="crm-tab"
+			 ng-if="controller.selectedGoal.ttMetaFase.length">
+
+			<div class="row crm-tab-item header hidden-xs">
+				<strong>
+					<div class="col-xs-4">
+						{{ 'l-phase' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-xs-2 overflow-ellipsis">
+						{{ 'l-value' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-xs-2 overflow-ellipsis">
+						{{ 'l-quantity' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-xs-1 overflow-ellipsis" ng-if="controller.isIntegratedWithGP" title="{{'l-number-of-lifes-accomplished'| i18n: []: 'dts/crm'}}">
+						{{ 'l-lives'| i18n: []: 'dts/crm' }}
+					</div>
+                    <div class="col-xs-1 overflow-ellipsis" ng-if="!controller.isIntegratedWithGP">
+						{{ 'l-items' | i18n: []: 'dts/crm' }}
+					</div>
+
+				</strong>
+			</div>
+
+			<div class="row crm-tab-item hover"
+				 ng-init="(strategyPhaseGoal.isOpen === undefined ? false : strategyPhaseGoal.isOpen)"
+				 ng-repeat="strategyPhaseGoal in controller.selectedGoal.ttMetaFase">
+
+				<div class="col-xs-12 col-sm-4 overflow-ellipsis">
+					<span class="hidden-xs">{{ strategyPhaseGoal.des_fase }}</span>
+					<strong class="visible-xs-inline">{{ strategyPhaseGoal.des_fase }}</strong>
+				</div>
+
+				<div class="col-xs-12 col-sm-2 overflow-ellipsis">
+					<span class="visible-xs-inline">{{ 'l-value' | i18n: []: 'dts/crm' }}: </span>
+					{{ strategyPhaseGoal.val_meta | currency : '' }}
+				</div>
+
+				<div class="col-xs-12 col-sm-2 overflow-ellipsis">
+					<span class="visible-xs-inline">{{ 'l-quantity' | i18n: []: 'dts/crm' }}: </span>
+					{{ strategyPhaseGoal.qtd_meta | number : 2 }}
+				</div>
+
+				<div class="col-xs-12 col-sm-1 overflow-ellipsis">
+					<span class="visible-xs-inline">{{ controller.isIntegratedWithGP ? 'l-number-of-lifes-accomplished' : 'l-items' | i18n: []: 'dts/crm' }}: </span>
+					{{ strategyPhaseGoal.qti_nume_vida }}
+				</div>
+
+				<div class="col-xs-12 col-sm-3 text-right">
+					<a class="clickable"
+					   ng-click="controller.addEditStrategyPhaseGoal(controller.selectedGoal, controller.isIntegratedWithGP, strategyPhaseGoal, $index, controller.isIntegratedWithGP);">
+						{{ 'l-edit' | i18n: []: 'dts/crm' }}
+					</a>
+					&nbsp;&nbsp;
+					<a class="clickable"
+					   ng-click="controller.removeStrategyPhaseGoal(controller.selectedGoal, strategyPhaseGoal, $index);">
+						{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+					</a>
+					&nbsp;&nbsp;
+					<i class="clickable glyphicon"
+					   ng-class="{'glyphicon-chevron-down' :  strategyPhaseGoal.isOpen,
+								  'glyphicon-chevron-right': !strategyPhaseGoal.isOpen}"
+					   ng-click="strategyPhaseGoal.isOpen = !strategyPhaseGoal.isOpen;">
+					</i>
+				</div>
+
+				<div ng-if="strategyPhaseGoal.isOpen">
+
+					<totvs-divider></totvs-divider>
+
+					<ng-include src="'/dts/crm/html/strategy/goal/phase/user/user.item.content.html'"></ng-include>
+
+				</div>
+
+			</div>
+
+			<br/>
+
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

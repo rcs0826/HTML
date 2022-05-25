@@ -1,0 +1,169 @@
+<br>
+
+<div class="row">
+
+    <div class="col-xs-12 form-box">
+        <totvs-field totvs-radio
+            class="col-lg-8 col-md-8 col-sm-12 col-xs-12"
+            label="{{ 'l-search-by' | i18n }}"
+            t-options="programacaoBacklogCtrl.opcoesData"
+            ng-model="programacaoBacklogCtrl.tipoData"
+            style="padding-left:0;">
+        </totvs-field>	
+    </div>
+
+    <totvs-field
+        totvs-datepicker
+        t-mask-date
+        label="{{ 'l-initial-date' | i18n }}"
+        ng-model="programacaoBacklogCtrl.dataInicialBusca"
+        output-format="date"
+        style="padding-right:2px"
+        class="col-xs-3">
+    </totvs-field>
+    <totvs-field
+        totvs-datepicker
+        t-mask-date
+        label="{{ 'l-final-date' | i18n }}"
+        ng-model="programacaoBacklogCtrl.dataFinalBusca"
+        class="col-xs-3"
+        style="padding-left:10px; padding-right:10px"
+        ng-disabled=true>
+    </totvs-field>
+    <div class="col-xs-1"
+    	 style="padding-left:0px; padding-right:0px">
+	    <button class="btn btn-default"
+	            style="margin-top:30px; margin-bottom: 10px; cursor: pointer; width: 40px" 
+	            ng-click="programacaoBacklogCtrl.buscaOrdens()"
+	            data-toggle="tooltip"
+                title="{{ 'l-load-orders' | i18n }}">
+	            <span class="glyphicon glyphicon-refresh"></span>
+	    </button>
+    </div>
+    
+    <div class="filters col-xs-5"
+    	 style="padding-bottom: 5px;padding-left: 0px;padding-right: 15px;padding-top: 29px">
+        <div class="search-field ng-scope col-xs-12" style="padding:0">
+            <form class="ng-pristine ng-valid ng-submitted">
+                <div class="input-group">
+                    <input type="text"
+                     	   id="pesquisaOrdem"
+                     	   class="form-control ng-pristine ng-valid ng-scope ng-touched" 
+                           ng-model="programacaoBacklogCtrl.search"
+                           placeholder="{{ 'l-search-order' | i18n }}"
+                           ng-disabled="!programacaoBacklogCtrl.pesquisarOrdem"
+                           numbers-only/>
+
+                    <span class="input-group-btn">
+
+                        <button class="btn btn-default ng-scope" 
+                                type="button" 
+                                ng-click="programacaoBacklogCtrl.search = ''">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+
+                        <button class="btn btn-default" 
+                                type="submit" 
+                                ng-click="programacaoBacklogCtrl.pesquisar()">
+                            <span class="glyphicon glyphicon-filter"
+                                  aria-hidden="true"></span>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+	</div>
+    
+</div>
+ 
+<div class="row" style="padding-top:5px">
+    <totvs-page-alert ng-if="programacaoBacklogCtrl.listaOrdens.length <= 0"
+                      ng-animate="'animate-if'"
+                      type="info"
+                      message="{{ 'msg-search-not-found' | i18n }}"
+                      style="margin:0">
+    </totvs-page-alert>
+    
+    <div ng-if="programacaoBacklogCtrl.listaOrdens.length > 0">
+	    
+	    <totvs-page-content style="padding-left: 15px;padding-right: 15px; padding-top: 5px">							                                  		
+			<totvs-grid
+				    grid="programacaoBacklogCtrl.myGrid"
+					grid-data="programacaoBacklogCtrl.listaOrdens"
+					add-select-column="separate"
+					selectable="multiple, row" 
+			        grid-height="350" 
+			        navigatable="true" 
+			        selectable="row"
+			        scrollable="true"
+		        	sortable="true"
+		        	resizable="true"
+		        	editable="true"
+		        	auto-resize-column="false"
+                show-header-edit-icon="true">
+                <totvs-grid-column width="58" field="detail" style="text-align: center">{{ 'l-observation' | i18n }}  
+                        <template>
+                            <a class="glyphicon glyphicon-list-alt btn-default" 
+                            style="cursor: pointer"
+                            data-toggle="tooltip" 
+                            title="{{ 'l-observation' | i18n }}"
+                            ng-click="programacaoBacklogCtrl.detalhar(dataItem.narrativa , dataItem.nrOrdProdu)"></a>
+                        </template>                   
+                </totvs-grid-column>
+		        <totvs-grid-column field="nrOrdProdu" width="100" style="text-align: right">{{ 'l-ord' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="datEntr" editable="true" filter="date : dd/MM/yyyy" width="130">{{ 'l-document-in' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="hraEntr" editable="true" filter="timeMask" editor="programacaoBacklogCtrl.editHraEntr" width="80">{{ 'l-hour' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="datTerm" editable="true" filter="date : dd/MM/yyyy" width="130">{{ 'l-end-forecast' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="hraTerm" editable="true" filter="timeMask" editor="programacaoBacklogCtrl.editHraTerm" width="80">{{ 'l-hour' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="desEstado" width="120">{{ 'l-status' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="desTpManut" width="120">{{ 'l-class' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="codOficina" width="80">{{ 'l-workshop' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="codSetor" width="80">{{ 'l-sector' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="nomPlanejador" width="300">{{ 'l-planner' | i18n }}</totvs-grid-column>
+			</totvs-grid>
+		</totvs-page-content>
+	</div>   
+</div>
+ 
+<div class="row" style="padding-top: 5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;"
+	 ng-if="programacaoBacklogCtrl.listaOrdens.length > 0">
+    <totvs-field totvs-checkbox 
+                 ng-model="programacaoBacklogCtrl.dataUnicaOrdens"
+                 class="my-col-md-1"
+                 style="cursor: pointer">
+    </totvs-field>
+    <label style="cursor: pointer; margin-top: 6px; font-weight: normal; color: gray; font-size:14px;"
+           ng-click="programacaoBacklogCtrl.alteraDataUnicaOrdens()">{{ 'l-group-order-dates' | i18n }}</label>    
+</div>
+<div class="row " ng-if="programacaoBacklogCtrl.dataUnicaOrdens && programacaoBacklogCtrl.listaOrdens.length > 0"
+	 ng-if="programacaoBacklogCtrl.listaOrdens.length > 0">
+    <totvs-field
+        totvs-datepicker
+        t-mask-date
+        label="{{ 'l-document-in' | i18n }}"
+        ng-model="programacaoBacklogCtrl.dataEntrada"
+        t-max="programacaoBacklogCtrl.dataLimite"
+        class="col-md-3"
+        ng-blur="programacaoBacklogCtrl.ajustaDataTermino()">
+    </totvs-field>
+    <totvs-field
+       totvs-time
+       ng-model="programacaoBacklogCtrl.horaEntrada"
+       label="{{ 'l-hour' | i18n }}"
+       class="col-md-3">
+    </totvs-field>
+    <totvs-field
+        totvs-datepicker
+        t-mask-date
+        label="{{ 'l-end-forecast' | i18n }}"
+        ng-model="programacaoBacklogCtrl.dataTermino"
+        t-max="programacaoBacklogCtrl.dataLimite"
+        class="col-md-3">
+    </totvs-field>
+    <totvs-field
+       totvs-time
+       ng-model="programacaoBacklogCtrl.horaTermino"
+       label="{{ 'l-hour' | i18n }}"
+       class="col-md-3">
+    </totvs-field>
+</div>

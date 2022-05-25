@@ -1,0 +1,19 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<link rel="stylesheet" href="/dts/kbn/css/font-awesome.css"/>
+<div ng-controller="kbn.dashboard.processexception.ctrl as processExceptionCtrl">
+  <totvs-widget>
+    <totvs-widget-header settings="processExceptionCtrl.showParams()" title="{{processExceptionCtrl.chart.titleWidget | i18n : [] : 'dts/kbn'}}"><i ng-if="processExceptionCtrl.chart.canChangeOrder" tooltip-placeholder="rigth" tooltip-html="processExceptionCtrl.tooltip" class="glyphicon glyphicon-info-sign hidden-xs"></i></totvs-widget-header>
+    <totvs-widget-body>
+      <ol class="dashboard breadcrumb">
+        <li ng-repeat="chart in processExceptionCtrl.chartArray" ng-class="{ 'active' : $last, 'is-pointer': !$last }"><span ng-click="processExceptionCtrl.navigate($index)">{{ chart.titleBreadcrumb }}</span></li>
+      </ol>
+      <totvs-chart t-categories="processExceptionCtrl.chart.categories" t-series="processExceptionCtrl.chart.series" t-type-chart="{{processExceptionCtrl.chart.typeChart}}" t-chart-tooltip="false" t-on-click="processExceptionCtrl.chart.onClick">               </totvs-chart>
+    </totvs-widget-body>
+    <totvs-widget-footer>
+      <totvs-widget-footer-actions>
+        <action ng-click="processExceptionCtrl.sendDataToReport()">{{ 'l-detail' | i18n : [] : 'dts/kbn/' }}</action>
+      </totvs-widget-footer-actions>
+    </totvs-widget-footer>
+  </totvs-widget>
+</div>

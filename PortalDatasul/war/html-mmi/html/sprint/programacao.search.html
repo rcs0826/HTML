@@ -1,0 +1,80 @@
+<totvs-modal-header>
+        {{ 'l-search-programming' | i18n }} ({{programacaoSearchCtrl.totalRecords}})
+    </totvs-modal-header >
+    
+    <totvs-modal-body>
+        <div class="row" 
+             style="padding-bottom: 10px; padding-left: 0px; padding-right: 0px;">
+             <div class="filters col-xs-12">
+                 <div class="search-field ng-scope">
+                     <form class="ng-pristine ng-valid ng-submitted">
+                         <div class="input-group">
+                             <input type="text"
+                                    autofocus 
+                                    class="form-control ng-pristine ng-valid ng-scope ng-touched" 
+                                    ng-model="programacaoSearchCtrl.search" 
+                                    placeholder="{{ 'l-search' | i18n }}"/>
+                             <span class="input-group-btn">
+                                 <button class="btn btn-default ng-scope" type="button" ng-click="programacaoSearchCtrl.search = ''">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                 <button class="btn btn-default" type="submit" ng-click="programacaoSearchCtrl.pesquisar()">
+                                        <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+                                    </button>
+                             </span>		 					
+                         </div>
+                     </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <totvs-page-alert
+                ng-if="programacaoSearchCtrl.listaProgramacoes.length <= 0"
+                ng-animate="'animate-if'"
+                type="info"
+                message="{{ 'msg-search-not-found' | i18n }}"
+                style="margin-bottom:0px">
+            </totvs-page-alert>
+    
+            <div class="table-content"
+                 ng-if="programacaoSearchCtrl.listaProgramacoes.length > 0"
+                 ng-animate="'animate-if'">
+    
+                <div class="table-responsive" style="height:500px; overflow:auto">
+    
+                    <table class="table table-condensed">
+                        <colgroup><col span="2" style="position: absolute"></colgroup>
+                        <thead>
+                            <tr>
+                                <th class="col-xs-1">&nbsp;</th>
+                                <th class="col-xs-2">{{ 'l-code' | i18n }}</th>
+                                <th class="col-xs-6">{{ 'l-description' | i18n }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="programac in programacaoSearchCtrl.listaProgramacoes"
+                            	ng-click="programacaoSearchCtrl.selecionaProgramacao(programac)">
+                                <td class="col-xs-1"
+                                    style="padding-top:2px">
+                                    <totvs-field totvs-checkbox
+                                        ng-model="programac.selecionada">
+                                    </totvs-field>
+                                </td>
+                                <td class="col-xs-3">{{ programac['cod-programac'] }}</td>
+                                <td class="col-xs-8">{{ programac['des-programac'] }}</td>
+                            </tr>
+                        </tbody>					
+                    </table>
+                    <totvs-list-pagination
+                        ng-click="programacaoSearchCtrl.buscaProgramacoes(true)"
+                        ng-if="programacaoSearchCtrl.listaProgramacoes.length < programacaoSearchCtrl.totalRecords && programacaoSearchCtrl.listaProgramacoes.length">
+                    </totvs-list-pagination>
+                </div>
+            </div>
+        </div>
+    </totvs-modal-body>
+    
+    <totvs-modal-footer>
+        <button type="button" class="btn btn-default" data-ng-click="programacaoSearchCtrl.cancel()">{{ 'l-close' | i18n }}</button>
+        <button type="button" class="btn btn-primary" data-ng-click="programacaoSearchCtrl.confirma()">{{ 'l-select' | i18n }}</button>
+    </totvs-modal-footer>

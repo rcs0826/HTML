@@ -1,0 +1,258 @@
+<totvs-page-content-header>
+	<totvs-page-quick-filter filters-list="controller.quickFilters"
+							 on-select-filter="controller.selectQuickFilter"
+							 orderby-list="controller.listOfOrderBy"
+							 on-select-orderby="controller.selectOrderBy"
+							 filters-list-custom="controller.listOfCustomFilters"
+							 on-remove-custom="controller.removeCustomFilter"
+							 on-add-edit-custom="controller.addEditCustomFilters">
+	 </totvs-page-quick-filter>
+</totvs-page-content-header>
+
+<totvs-page-alert
+	ng-if="controller.listOfAccounts.length <= 0"
+	type="info"
+	message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+	<% if ((!data["btn-new-lead"] || data["btn-new-lead"].log_visivel === true)) { %>
+	<br>
+	<button type="button"
+			class="btn btn-primary"
+			ng-click="controller.addEdit(undefined, false);">
+		<span class="glyphicon glyphicon-plus"></span>
+		&nbsp;&nbsp;{{ 'btn-new-lead' | i18n: []: 'dts/crm' }}
+	</button>
+	<% } %>
+
+	<% if ((!data["btn-new-account"] || data["btn-new-account"].log_visivel === true)) { %>
+	&nbsp;
+	<button type="button"
+			class="btn btn-default"
+			ng-click="controller.addEdit(undefined, true);">
+		<span class="glyphicon glyphicon-plus"></span>
+		&nbsp;&nbsp;{{ 'btn-new-account' | i18n: []: 'dts/crm' }}
+	</button>
+	<% } %>
+</totvs-page-alert>
+
+<totvs-list-item
+	 id="account{{account.num_id}}"
+	 ng-repeat="account in controller.listOfAccounts"
+	 class="crm-default"
+	 ng-class="account.nom_cor">
+
+	<totvs-list-item-header>
+
+		<totvs-list-item-title
+			class="legend overflow-ellipsis"
+			ng-class="account.nom_cor">
+
+			<span ng-if="account.log_matriz"
+				  class="glyphicon glyphicon-globe"
+				  style="font-size: 16px">
+			</span>
+
+			<a href="#/dts/crm/account/detail/{{account.num_id}}"
+			   ng-if="account.log_acesso === true">
+				{{ account.nom_razao_social }}
+				<% if ((!data["l-code-erp"] || data["l-code-erp"].log_visivel === true)) { %>
+				{{ account.cod_pessoa_erp ? '(' + account.cod_pessoa_erp + ')' : '' }}
+				<% } %>
+				<% if ((!data["l-gpl-code"] || data["l-gpl-code"].log_visivel === true)) { %>
+				{{ account.cod_pessoa_gpl ? '{' + account.cod_pessoa_gpl + '}' : '' }}
+				<% } %>
+			</a>
+			<span ng-if="account.log_acesso !== true">
+				<span class="glyphicon glyphicon-lock"></span> &nbsp;
+				{{ account.nom_razao_social }}
+				<% if ((!data["l-code-erp"] || data["l-code-erp"].log_visivel === true)) { %>
+				{{ account.cod_pessoa_erp ? '(' + account.cod_pessoa_erp + ')' : '' }}
+				<% } %>
+				<% if ((!data["l-gpl-code"] || data["l-gpl-code"].log_visivel === true)) { %>
+				{{ account.cod_pessoa_gpl ? '{' + account.cod_pessoa_gpl + '}' : '' }}
+				<% } %>
+			</span>
+		</totvs-list-item-title>
+
+		<totvs-list-item-action limit-primary-action="1">
+
+			<% if ((!data["btn-edit"] || data["btn-edit"].log_visivel === true)) { %>
+			<action icon="glyphicon-pencil"
+					ng-click="controller.addEdit(account)"
+					ng-if="account.log_acesso">
+				{{ 'btn-edit' | i18n: []: 'dts/crm' }}
+			</action>
+			<% } %>
+
+			<% if ((!data["btn-new-history"] || data["btn-new-history"].log_visivel === true)) { %>
+			<action icon="glyphicon-flash"
+					ng-click="controller.registerHistory(account)"
+					ng-if="account.idi_tip_cta != 3">
+				{{ 'btn-new-history' | i18n: []: 'dts/crm' }}
+			</action>
+			<% } %>
+
+			<% if ((!data["btn-new-task"] || data["btn-new-task"].log_visivel === true)) { %>
+			<action icon="glyphicon-pushpin"
+					ng-click="controller.registerTask(account)"
+					ng-if="account.idi_tip_cta != 3">
+				{{ 'btn-new-task' | i18n: []: 'dts/crm' }}
+			</action>
+			<% } %>
+
+			<% if ((!data["btn-new-ticket"] || data["btn-new-ticket"].log_visivel === true)) { %>
+			<action icon="glyphicon-headphones"
+					ng-click="controller.registerTicket(account)"
+					ng-if="account.idi_tip_cta != 3">
+				{{ 'btn-new-ticket' | i18n: []: 'dts/crm' }}
+			</action>
+			<% } %>
+
+			<% if ((!data["btn-new-opportunity"] || data["btn-new-opportunity"].log_visivel === true)) { %>
+			<action icon="glyphicon-credit-card"
+					ng-click="controller.registerOpportunity(account)"
+					ng-if="account.idi_tip_cta != 3">
+				{{ 'btn-new-opportunity' | i18n: []: 'dts/crm' }}
+			</action>
+			<% } %>
+
+			<% if ((!data["btn-send-email"] || data["btn-send-email"].log_visivel === true)) { %>
+			<!--action icon="glyphicon-envelope"
+					ng-click="controller.sendEmail(account)" >
+				{{ 'btn-send-email' | i18n: []: 'dts/crm' }}
+			</action-->
+			<% } %>
+
+			<% if ((!data["btn-convert"] || data["btn-convert"].log_visivel === true)) { %>
+			<action icon="glyphicon-ok"
+					ng-click="controller.convertAccount(account)"
+					ng-if="(account.idi_tip_cta === 1 && account.log_acesso === true)">
+				{{ 'btn-convert' | i18n: []: 'dts/crm' }}
+			</action>
+			<% } %>
+
+			<% if ((!data["btn-print-relationship"] || data["btn-print-relationship"].log_visivel === true)) { %>
+			<action icon="glyphicon-print"
+					ng-click="controller.printContactRelationship(account.num_id)"
+					ng-if="account.log_acesso && (account.idi_tip_cta >= 6 || account.idi_tip_cta === 3)">
+				{{ 'btn-print-relationship' | i18n: []: 'dts/crm' }}
+			</action>
+			<% } %>
+		</totvs-list-item-action>
+
+	</totvs-list-item-header>
+
+	<totvs-list-item-content>
+
+		<% if ((!data["l-type-account"] || data["l-type-account"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-3 col-md-3"
+			title="{{ 'l-type-account' | i18n: []: 'dts/crm' }}">
+			{{ account.nom_tip_cta }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-cpf"] || data["l-cpf"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-3 col-md-3"
+			ng-if="account.idi_tip_pessoa === 1"
+			title="{{ 'l-cpf' | i18n: []: 'dts/crm' }}">
+			{{ account.nom_cpf | mask : '999.999.999-99' }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-cnpj"] || data["l-cnpj"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-3 col-md-3"
+			ng-if="account.idi_tip_pessoa !== 1"
+			title="{{ 'l-cnpj' | i18n: []: 'dts/crm' }}">
+			{{ account.nom_cnpj | mask : '99.999.999/9999-99' }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-email"] || data["l-email"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-3 col-md-3"
+			title="{{ 'l-email' | i18n: []: 'dts/crm' }}"
+			value-break="false">
+			<a ng-if="account.log_acesso" href="mailto:{{ account.nom_email_1 }}">{{ account.nom_email_1 }}</a>
+			<p ng-if="!account.log_acesso">{{ account.nom_email_1 }}</p>
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-user-responsible"] || data["l-user-responsible"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-3 col-md-3"
+			title="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}"
+			value-break="false">
+			<a role="button" ng-click="controller.openUserSummary(account)">
+				{{ account.ttResponsavel.nom_usuar }}
+			</a>
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-type-client"] || data["l-type-client"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="controller.isIntegratedWithGP === true"
+			class="col-xs-12 col-sm-3 col-md-3"
+			title="{{ 'l-type-client' | i18n: []: 'dts/crm' }}">
+				{{ account.ttTipoCliente.nom_tip_clien }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-rating"] || data["l-rating"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-3 col-md-3"
+			title="{{ 'l-rating' | i18n: []: 'dts/crm' }}">
+				{{ account.ttClassificacao ? account.ttClassificacao.nom_clas_clien : '' }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-localization"] || data["l-localization"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-3 col-md-3"
+			title="{{ 'l-localization' | i18n: []: 'dts/crm' }}">
+				{{ account.ttEnderecoCorrespondencia ? controller.getAddresDescription(account.ttEnderecoCorrespondencia) : '' }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-financial-situation"] || data["l-financial-situation"].log_visivel === true)) { %>
+		<totvs-list-item-info ng-if="account.cod_pessoa_erp && account.cod_pessoa_erp.length > 0"
+							  class="col-xs-12 col-sm-3 col-md-3"
+							  title="{{ 'l-financial-situation' | i18n: []: 'dts/crm' }}">
+
+			<span ng-if="controller.financialStatusLastExecution">
+				<i class="glyphicon glyphicon-info-sign"
+				   tooltip-placement="top"
+				   tooltip-html="controller.financialStatusLastExecution"></i>
+				<span ng-if="account.log_inadimpte === true" class="label label-warning">{{ 'l-overdue' | i18n: []: 'dts/crm' }}</span>
+				<span ng-if="!account.log_inadimpte" >
+					{{ 'l-defaulter' | i18n: []: 'dts/crm' }}
+				</span>
+			</span>
+			<span ng-if="!controller.financialStatusLastExecution">
+				{{ 'l-not-calculated' | i18n: []: 'dts/crm' }}
+			</span>
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-prfv"] || data["l-prfv"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="account.log_acesso === true && account.val_recenc_freq_val"
+			class="col-xs-12 col-sm-3 col-md-3"
+			title="{{ 'l-prfv' | i18n: []: 'dts/crm' }}">
+			<a role="button" ng-click="controller.openPrfvSummary(account)">
+				{{ account.val_recenc_freq_val }}
+			</a>
+		</totvs-list-item-info>
+		<% } %>
+
+	</totvs-list-item-content>
+
+	</totvs-list-item-content-detail>
+
+</totvs-list-item>
+
+<totvs-list-pagination
+	ng-if="controller.listOfAccounts.length < controller.listOfAccountsCount && controller.listOfAccounts.length"
+	ng-click="controller.search(true);">
+</totvs-list-pagination>

@@ -1,0 +1,386 @@
+<totvs-modal-header>
+	<span ng-if="!(controller.model.num_id > 0)">
+		{{ 'btn-new-customer-group' | i18n: []: 'dts/crm' }}
+	</span>
+
+	<span ng-if="controller.model.num_id > 0">
+		{{ controller.model.nom_grp_clien }}
+		{{ controller.model.cod_grp_clien_erp ? '(' + controller.model.cod_grp_clien_erp + ')' : '' }}
+	</span>
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="input"
+			   ng-required="true"
+			   ng-model="controller.model.nom_grp_clien"
+			   canclean="undefined"
+			   placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+			   maxlength="40"
+			   ng-disabled="controller.isIntegrated === true">
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttTipoPessoa"
+			   ng-animate="'animate-if'"
+			   ng-required="true"
+			   ng-disabled="controller.isIntegrated === true">
+			<label>{{ 'l-nature' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-nature' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_tipo }}
+				</ui-select-match>
+				<ui-select-choices repeat="type in controller.personTypes | filter: $select.search track by $index">
+					<span ng-bind-html="type.nom_tipo | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttClassificacao"
+			   canclean="undefined"
+			   ng-required="true">
+
+			<label>{{ 'l-classification' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-classification' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_clas_clien }}
+				</ui-select-match>
+				<ui-select-choices repeat="class in controller.ratings | filter: $select.search track by $index">
+					<span ng-bind-html="class.nom_clas_clien | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttTransportadora"
+			   ng-required="true"
+			   canclean="undefined"
+			   ng-disabled="controller.isIntegrated === true">
+
+			<label>{{ 'l-carrier' | i18n: []: 'dts/crm' }}</label>
+
+			<zoom zoom-service="crm.crm_transpdor.zoom"></zoom>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-carrier' | i18n: []: 'dts/crm'  }}">
+					{{$select.selected.nom_transpdor}} {{ $select.selected.log_integrad_erp ? ' (ERP)' : '' }}
+				</ui-select-match>
+				<ui-select-choices repeat="carrier in controller.carriers track by $index"
+								   refresh="controller.getCarriers($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="carrier.nom_transpdor + (carrier.log_integrad_erp ? ' (ERP)' : '') | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttRamoAtividade"
+			   ng-required="true"
+			   canclean="undefined"
+			   ng-disabled="controller.isIntegrated === true">
+			<label>{{ 'l-activity-line' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-activity-line' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_ramo_ativid }} {{ $select.selected.log_integrad_erp ? ' (ERP)' : '' }}
+				</ui-select-match>
+				<ui-select-choices repeat="activity in controller.activities track by $index"
+								   refresh="controller.getActivities($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="activity.nom_ramo_ativid  + (activity.log_integrad_erp === true ? '(ERP)' : '' ) | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttRepresentante"
+			   ng-required="true"
+			   canclean="undefined"
+			   ng-disabled="controller.isIntegrated === true">
+
+			<label>{{ 'l-seller' | i18n: []: 'dts/crm' }}</label>
+
+			<zoom zoom-service="crm.crm_repres.zoom"></zoom>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-seller' | i18n: []: 'dts/crm' }}">
+					{{$select.selected.nom_repres}} {{ $select.selected.log_integrad_erp ? ' (ERP)' : '' }}
+				</ui-select-match>
+				<ui-select-choices repeat="rep in controller.representatives track by $index"
+								   refresh="controller.getRepresentatives($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="rep.nom_repres + (rep.log_integrad_erp ? ' (ERP)' : '') | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttNivelAcesso"
+			   ng-animate="'animate-if'"
+			   ng-required="true">
+			<label>{{ 'l-access-level' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-access-level' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_niv_aces }}
+				</ui-select-match>
+				<ui-select-choices repeat="access in controller.accesses | filter: $select.search track by $index">
+					<span ng-bind-html="access.nom_niv_aces | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="input"
+			   ng-model="controller.model.nom_categ_clien"
+			   canclean="undefined"
+			   placeholder="{{ 'l-category' | i18n: []: 'dts/crm' }}"
+			   maxlength="3"
+			   ng-disabled="controller.isIntegrated === true">
+			<label>{{ 'l-category' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttResponsavel"
+			   canclean="undefined"
+			   ng-disabled="controller.isIntegrated === true">
+			<label>{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_usuar.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_usuar }}</ui-select-match>
+				<ui-select-choices repeat="user in controller.users track by $index"
+								   refresh="controller.getUsers($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="user.nom_usuar | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttCondicaoPagamento"
+			   canclean="undefined"
+			   ng-disabled="controller.isIntegrated === true">
+
+			<label>{{ 'l-payment-condition' | i18n: []: 'dts/crm' }}</label>
+
+			<zoom zoom-service="crm.crm_erp_cond_pagto.zoom"></zoom>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-payment-condition' | i18n: []: 'dts/crm'  }}">
+					{{$select.selected.nom_cond_pagto}} {{ $select.selected.log_integrad_erp ? ' (ERP)' : '' }}
+				</ui-select-match>
+				<ui-select-choices repeat="pc in controller.paymentConditions track by $index"
+								   refresh="controller.getPaymentConditions($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="pc.nom_cond_pagto + (pc.log_integrad_erp ? ' (ERP)' : '') | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttPortador"
+			   canclean="undefined"
+			   ng-disabled="controller.isIntegrated === true">
+
+			<label>{{ 'l-bearer' | i18n: []: 'dts/crm' }}</label>
+
+			<zoom zoom-service="crm.crm_erp_portad.zoom"></zoom>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-bearer' | i18n: []: 'dts/crm'  }}">
+					{{$select.selected.nom_portador}} {{ $select.selected.log_integrad_erp ? ' (ERP)' : '' }}
+				</ui-select-match>
+				<ui-select-choices repeat="bearer in controller.bearers track by $index"
+								   refresh="controller.getBearers($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="bearer.nom_portador + (bearer.log_integrad_erp ? ' (ERP)' : '') | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+				ng-model="controller.model.ttTabelaPreco"
+				canclean="undefined"
+				ng-disabled="controller.isIntegrated === true">
+			<zoom zoom-service="crm.crm_tab_preco.zoom"
+				  zoom-init="{isValid: true}"></zoom>
+			<label>{{ 'l-price-table' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-price-table' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_tab_preco }}</ui-select-match>
+				<ui-select-choices repeat="priceTable in controller.priceTables"
+								   refresh="controller.getPriceTables($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="priceTable.nom_tab_preco | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="checkbox"
+			   class="col-sm-6"
+			   ng-model="controller.model.log_suspenso"
+			   label="{{ 'l-suspended' | i18n: []: 'dts/crm' }}"
+			   ng-disabled="controller.isIntegrated === true">
+		</field>
+
+	</fieldset>
+
+    <div class="crm-group-accordion">
+        <accordion close-others="false">
+
+            <accordion-group is-open="controller.group.complement.open"
+                            ng-click="controller.onOpenComplementPanel()"
+                            class="crm-panel">
+
+                <accordion-heading>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <span >{{ 'l-complement' | i18n: []:  'dts/crm' }}</span>
+                            <i class="pull-right glyphicon"
+                            ng-class="{'glyphicon-chevron-down' :  controller.group.complement.open,
+                                        'glyphicon-chevron-right': !controller.group.complement.open}">
+                            </i>
+                        </div>
+                    </div>
+                </accordion-heading>
+
+                <fieldset class="row">
+
+                    <totvs-field
+                        totvs-decimal
+                        ng-model="controller.model.num_meses_inativ"
+                        m-dec="0"
+                        label="{{ 'l-months-inactive' | i18n: []: 'dts/crm' }}"
+                        canclean="0"
+                        placeholder="{{ 'l-months-inactive' | i18n: []: 'dts/crm' }}"
+                        ng-disabled="controller.isIntegrated === true"
+                        v-max="8">
+                    </totvs-field>
+
+                    <totvs-field
+                        totvs-decimal
+                        ng-model="controller.model.num_period_cheq_devolv"
+                        m-dec="0"
+                        label="{{ 'l-return-period' | i18n: []: 'dts/crm' }}"
+                        canclean="0"
+                        placeholder="{{ 'l-return-period' | i18n: []: 'dts/crm' }}"
+                        ng-disabled="controller.isIntegrated === true"
+                        v-max="8">
+                    </totvs-field>
+
+                    <totvs-field
+                        totvs-decimal
+                        ng-model="controller.model.num_atraso_max"
+                        m-dec="0"
+                        label="{{ 'l-max-day-delay' | i18n: []: 'dts/crm' }}"
+                        canclean="0"
+                        placeholder="{{ 'l-max-day-delay' | i18n: []: 'dts/crm' }}"
+                        ng-disabled="controller.isIntegrated === true"
+                        v-max="8">
+                    </totvs-field>
+
+                    <totvs-field
+                        totvs-decimal
+                        ng-model="controller.model.val_perc_max_faturam_ped"
+                        m-dec="2"
+                        label="{{ 'l-max-billing-percentage-request' | i18n: []: 'dts/crm' }}"
+                        canclean="0"
+                        placeholder="{{ 'l-max-billing-percentage-request' | i18n: []: 'dts/crm' }}"
+                        ng-disabled="controller.isIntegrated === true"
+                        v-max="9">
+                    </totvs-field>
+
+                    <totvs-field
+                        totvs-decimal
+                        ng-model="controller.model.val_max_cheq_devolv"
+                        m-dec="2"
+                        label="{{ 'l-max-value-returned' | i18n: []: 'dts/crm' }}"
+                        canclean="0"
+                        placeholder="{{ 'l-max-value-returned' | i18n: []: 'dts/crm' }}"
+                        ng-disabled="controller.isIntegrated === true"
+                        v-max="9">
+                    </totvs-field>
+
+                    <totvs-field
+                        totvs-decimal
+                        ng-model="controller.model.num_max_cheq_devolv"
+                        m-dec="0"
+                        label="{{ 'l-max-number-returned' | i18n: []: 'dts/crm' }}"
+                        canclean="0"
+                        placeholder="{{ 'l-max-number-returned' | i18n: []: 'dts/crm' }}"
+                        ng-disabled="controller.isIntegrated === true"
+                        v-max="8">
+                    </totvs-field>
+
+                    <totvs-field
+                        totvs-decimal
+                        ng-model="controller.model.num_period_atraso"
+                        m-dec="0"
+                        label="{{ 'l-delay-periods' | i18n: []: 'dts/crm' }}"
+                        canclean="0"
+                        placeholder="{{ 'l-delay-periods' | i18n: []: 'dts/crm' }}"
+                        ng-disabled="controller.isIntegrated === true"
+                        v-max="1">
+                    </totvs-field>
+
+                    <totvs-field
+                        totvs-decimal
+                        ng-model="controller.model.val_perc_bonifi"
+                        m-dec="2"
+                        label="{{ 'l-discount-percentage' | i18n: []: 'dts/crm' }}"
+                        canclean="0"
+                        placeholder="{{ 'l-discount-percentage' | i18n: []: 'dts/crm' }}"
+                        ng-disabled="controller.isIntegrated === true"
+                        v-max="9">
+                    </totvs-field>
+
+                    <totvs-field
+                        totvs-decimal
+                        ng-model="controller.model.val_perc_cancel_quant"
+                        m-dec="2"
+                        label="{{ 'l-max-percentage-cancel-balance' | i18n: []: 'dts/crm' }}"
+                        canclean="0"
+                        placeholder="{{ 'l-max-percentage-cancel-balance' | i18n: []: 'dts/crm' }}"
+                        ng-disabled="controller.isIntegrated === true"
+                        v-max="9">
+                    </totvs-field>
+
+                    <totvs-field
+                        totvs-decimal
+                        ng-model="controller.model.num_dias_atraso"
+                        m-dec="0"
+                        label="{{ 'l-days-delay' | i18n: []: 'dts/crm' }}"
+                        canclean="0"
+                        placeholder="{{ 'l-days-delay' | i18n: []: 'dts/crm' }}"
+                        ng-disabled="controller.isIntegrated === true"
+                        v-max="2">
+                    </totvs-field>
+
+                    <totvs-field
+                        totvs-decimal
+                        ng-model="controller.model.val_perc_min_faturam_ped"
+                        m-dec="2"
+                        label="{{ 'l-min-billing-percentage' | i18n: []: 'dts/crm' }}"
+                        canclean="0"
+                        placeholder="{{ 'l-min-billing-percentage' | i18n: []: 'dts/crm' }}"
+                        ng-disabled="controller.isIntegrated === true"
+                        v-max="9">
+                    </totvs-field>
+
+                </fieldset>
+
+            </accordion-group>
+        </accordion>
+    </div>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

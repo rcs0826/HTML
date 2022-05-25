@@ -1,0 +1,98 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_tip_despes : ('new-expense' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>    
+    
+    <fieldset class="row">
+        <field type="select"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-model="controller.model.num_id_tip_despes">
+
+			<label>{{ 'l-expense-type' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-expense-type' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_tip_despes }}
+				</ui-select-match>
+				<ui-select-choices repeat="expense in controller.expenseType | filter: $select.search track by $index">
+					<span ng-bind-html="expense.nom_tip_despes | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+        
+        <field type="select"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-model="controller.model.num_id_umd">
+
+			<label>{{ 'l-unit-of-measurement' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-unit-of-measurement' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_unid_medid }}
+				</ui-select-match>
+				<ui-select-choices repeat="unit in controller.units | filter: $select.search track by $index">
+					<span ng-bind-html="unit.nom_unid_medid | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+    </fieldset>    
+    
+    <fieldset class="row">
+        <totvs-field totvs-decimal
+                     ng-required="true"
+                     ng-model="controller.model.qtd_itens_despes"
+                     placeholder="{{ 'l-quantity' | i18n: []: 'dts/crm' }}"
+                     canclean="undefined"
+                     label="{{ 'l-quantity' | i18n: []: 'dts/crm' }}"
+                     m-dec="2"
+                     v-max="12">
+        </totvs-field>
+
+        <totvs-field totvs-decimal
+                     ng-required="true"
+                     ng-model="controller.model.val_despes_previs"
+                     placeholder="{{ 'l-value' | i18n: []: 'dts/crm' }}"
+                     canclean="undefined"
+                     label="{{ 'l-total-value' | i18n: []: 'dts/crm' }}"
+                     m-dec="2"
+                     v-max="12">
+        </totvs-field>
+        
+        <totvs-field totvs-checkbox
+					 ng-model="controller.model.log_livre_1"
+					 label="{{ 'l-limited-value' | i18n: [] : 'dts/crm'}}"
+					 t-bsswitch>
+		</totvs-field>
+        
+    	<field type="textarea"
+               class="col-md-12"
+               maxlength="2000"
+               ng-required="false"
+               ng-model="controller.model.dsl_tip_despes">
+            
+		  <label>{{ 'l-observation' | i18n: []: 'dts/crm' }}</label>
+	   </field>
+        
+    </fieldset>
+    
+    
+</totvs-modal-body>
+<totvs-modal-footer>
+	<button class="btn btn-default" 
+            ng-click="controller.cancel()">
+        {{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+    </button>
+    <button class="btn btn-default" 
+            ng-click="controller.save(true)" 
+            ng-if="controller.editMode === false;">
+        {{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+    </button>
+	<button class="btn btn-primary" 
+            ng-click="controller.save(false)">
+        {{ 'btn-save' | i18n: []: 'dts/crm' }}
+    </button>
+</totvs-modal-footer>

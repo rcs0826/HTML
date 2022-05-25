@@ -1,0 +1,140 @@
+<totvs-page type="edit" totvs-custom-element="customRequest_edit">
+    <totvs-page-navbar>  
+
+        <!-- Se for uma edição e o usuário veio a partir do detalhe da requisição -->
+        <totvs-page-breadcrumb ng-if="controller.isUpdate && controller.showDetail">
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/{{module}}/request">{{'l-requests' | i18n: []: 'dts/mcc'}}</breadcrumb>            
+            <breadcrumb link="#/dts/{{module}}/request/detail/{{controller.model['nr-requisicao']}}">
+                <span class="hidden-xs">{{'l-request-detail' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-detail' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+            <breadcrumb>
+                <span class="hidden-xs">{{'l-edit-request' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-edit' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <!-- Se for uma edição e o usuário veio a partir da lista de requisições -->
+        <totvs-page-breadcrumb ng-if="controller.isUpdate && !controller.showDetail">
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/{{module}}/request">{{'l-requests' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb>
+                <span class="hidden-xs">{{'l-edit-request' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-edit' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <!-- Se for uma inclusão -->
+        <totvs-page-breadcrumb ng-if="!controller.isUpdate">
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/{{module}}/request">{{'l-requests' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb>{{'l-new-request' | i18n: []: 'dts/mcc'}}</breadcrumb>
+        </totvs-page-breadcrumb> 
+
+      <totvs-page-header>
+
+        <totvs-page-header-title title="{{controller.model['tp-requis-desc']}} {{controller.model['nr-requisicao'] | number}}" ng-if="controller.isUpdate"></totvs-page-header-title>
+
+        <totvs-page-header-title title="{{'l-new-request' | i18n: []: 'dts/mcc'}}" ng-if="!controller.isUpdate"></totvs-page-header-title>
+
+        <totvs-page-header-operation>
+          <totvs-page-header-operation-action hide-save-new="{{controller.isUpdate}}">
+          </totvs-page-header-operation-action>
+        </totvs-page-header-operation>
+      </totvs-page-header>   
+    </totvs-page-navbar>
+    <totvs-page-content>     
+        <totvs-page-form>
+            <fieldset>
+              <form>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <field type="input"
+                         class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                         numbers-only
+                         required
+                         name-id="requestNumber"
+                         maxlength="9"
+                         ng-model="controller.model['nr-requisicao']"
+                         ng-disabled="controller.enableFields && !controller.enableFields['nr-requisicao']">
+                      <label>{{ 'l-request' | i18n: []: 'dts/mcc' }}</label>                                           
+                  </field>            
+                </div>
+                
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <field type="input"
+                         maxlength="30"
+                         name-id="requestDeliveryPlace"
+                         class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                         ng-model="controller.model['loc-entrega']">
+                      <label>{{ 'l-delivery-place' | i18n: []: 'dts/mcc' }}</label>
+                  </field>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <field  type="select2"
+                          ng-model="controller.model['cod-estabel']"
+                          class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                          select-conector="{{'l-site' | i18n: []: 'dts/mcc'}}"
+                          select-id="cod-estabel"
+                          select-description="nome"
+                          canclean="undefined"
+                          select-service="mpd.estabelecSE.select">
+                    <zoom zoom-service="mpd.estabelecSE.zoom"></zoom>
+                    <label>{{'l-site' | i18n: []: 'dts/mcc'}}</label>
+                  </field>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <field type="select2" data-ng-model="controller.model['nome-abrev']"
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    select-conector="{{'l-requester' | i18n: []: 'dts/mcc'}}"
+                    canclean
+                    select-id="nome-abrev"
+                    select-description="nome"
+                    select-service="mcc.requisitante.select">
+                    <zoom zoom-service="mcc.requisitante.zoom"></zoom>
+                    <label>{{'l-requester' | i18n: []: 'dts/mcc'}}</label>
+                  </field>
+                </div>
+                
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <field type="date"
+                         class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+                         ng-model="controller.model['dt-requisicao']"                         
+                         required>
+                      <label>{{ 'l-requisition-date' | i18n: []: 'dts/mcc' }}</label>
+                  </field>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <field type="radio"
+                         class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                         ng-disabled="controller.enableFields && !controller.enableFields['tp-requis']"
+                         ng-model="controller.model['tp-requis']">
+                      <label>{{ 'l-type' | i18n: []: 'dts/mcc' }}</label>
+                      <totvs-options>
+                          <totvs-option value="1">{{ 'l-inventory-request' | i18n: []: 'dts/mcc'}}</totvs-option>
+                          <totvs-option value="2">{{ 'l-purchase-request' | i18n: []: 'dts/mcc' }}</totvs-option>
+                          <totvs-option value="3">{{ 'l-quotation-request' | i18n: []: 'dts/mcc' }}</totvs-option>
+                      </totvs-options>
+                  </field>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <field type="textarea"
+                         class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                         ng-model="controller.model['narrativa']"
+                         maxlength="2000">
+                      <label>{{ 'l-comments' | i18n: []: 'dts/mcc' }}</label>
+                  </field>
+                </div>
+              </form>
+            </fieldset> 
+            <div ng-include="'/dts/mcc/html/request/detail/request.detail.items.html'" 
+                 ng-if="controller.isUpdate" 
+                 class="col-xs-12"
+                 style="margin-top:25px;"></div>                 
+        </totvs-page-form>            
+    </totvs-page-content>
+</totvs-page>

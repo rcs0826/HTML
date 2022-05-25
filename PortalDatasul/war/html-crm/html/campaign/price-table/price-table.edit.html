@@ -1,0 +1,44 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_tab_preco : ('btn-new-campaign-price-table' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="select"
+			   ng-model="controller.model.ttTabelaPreco"
+			   ng-disabled="controller.editMode === true"
+			   canclean="undefined">
+			<label>{{ 'l-price-table' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_tab_preco.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-price-table' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_tab_preco }}
+				</ui-select-match>
+				<ui-select-choices repeat="priceTable in controller.priceTables track by $index"
+								   refresh="controller.getPriceTables($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="priceTable.nom_tab_preco | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<totvs-field
+			   totvs-decimal
+			   ng-model="controller.model.val_perc_desc_campanha"
+			   placeholder="{{ 'l-discount' | i18n: []: 'dts/crm' }}"
+			   canclean="undefined"
+			   label="{{ 'l-discount' | i18n: []: 'dts/crm' }}"
+			   m-dec="2"
+			   v-max="3"
+		</totvs-field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

@@ -1,0 +1,121 @@
+<totvs-page type="list">
+	<totvs-page-navbar>
+	<totvs-page-breadcrumb>
+		<breadcrumb link="#/">{{:: 'Início' | i18n : [] : 'dts/mpd' }}</breadcrumb>
+		<breadcrumb link="#/dts/mpd/pd4000/config">{{:: 'Configuração do Pedido de Venda'  | i18n : [] : 'dts/mpd' }}</breadcrumb>
+		<breadcrumb>{{:: 'Modelos' | i18n : [] : 'dts/mpd' }}</breadcrumb>
+	</totvs-page-breadcrumb>
+	<totvs-page-header>
+			<totvs-page-header-title title="{{:: 'Configuração - Modelos' | i18n : [] : 'dts/mpd' }} - {{configModelsController.registro}}"></totvs-page-header-title>
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action>
+					<action icon="glyphicon-plus"
+						ng-click="configModelsController.add()">{{:: 'Adicionar' | i18n : [] : 'dts/mpd' }}</action>
+					<action icon="glyphicon-ok"
+						ng-disabled="!configModelsController.fieldGridDirtyItems.length"
+						ng-click="configModelsController.save()">{{:: 'Salvar Alterações' | i18n : [] : 'dts/mpd' }}</action>
+					<action icon="glyphicon-refresh"
+						ng-disabled="!configModelsController.fieldGridDirtyItems.length"
+						ng-click="configModelsController.reloadData()">{{:: 'Cancelar Alterações' | i18n : [] : 'dts/mpd' }}</action>
+					<action icon="glyphicon-remove"
+						ng-disabled="configModelsController.fieldGridSelectedItems.length < 1"
+						ng-click="configModelsController.deleteData()">{{:: 'Remover Selecionados' | i18n : [] : 'dts/mpd' }}</action>
+				</totvs-page-header-operation-action>
+				<totvs-page-header-operation-filter placeholder="{{:: 'Pesquisar Modelos' | i18n : [] : 'dts/mpd' }}"
+													ng-submit="configModelsController.search()"
+													ng-model="configModelsController.quickSearchText">
+				</totvs-page-header-operation-filter>
+			</totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+	<totvs-page-content>
+		<totvs-page-detail>
+			<div class="row">
+				<div class="col-xs-12">
+					<totvs-grid grid-data="configModelsController.configModels"
+								grid="configModelsController.configModelsGrid"
+								height="400" navigatable="true" editable="true" selectable="multiple,row"
+								grid-selected-items="configModelsController.fieldGridSelectedItems"
+								grid-dirty-items="configModelsController.fieldGridDirtyItems">
+						<totvs-grid-column field="idi-model" width="100">{{:: 'Modelo' | i18n : [] : 'dts/mpd'}}
+							<template>
+								<span ng-if="dataItem.dirty" class="k-dirty"></span>
+								{{ dataItem['idi-model'] }}
+							</template>
+						</totvs-grid-column>
+						<totvs-grid-column field="nom-model" width="140" editable="true">{{:: 'Nome' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+						<totvs-grid-column field="nom-descr" width="240" editable="true">{{:: 'Descrição' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+						<totvs-grid-column field="log-ativo" editable="true" filter="booleanI18N" width="60">{{:: 'Visível' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+						<totvs-grid-detail size="table">
+							<div ng-controller="salesorder.pd4000.config.models.val.Controller as configModelValController" ng-init="configModelValController.init(model)">
+								<div class="row" style="padding-bottom: 5px; margin: 0;">
+									<a class="btn btn-primary" role="button" tabindex="0"
+										ng-click="configModelValController.save()"
+										ng-disabled="!configModelValController.canSave()">
+										<span class="glyphicon glyphicon-save"></span>
+										<span class="hidden-xs ng-binding">&nbsp;&nbsp;Salvar no Modelo</span>
+									</a>
+									<a class="btn btn-default" role="button" tabindex="0"
+										ng-click="configModelValController.reload()"
+										ng-disabled="!configModelValController.canSave()">
+										<span class="glyphicon glyphicon-refresh"></span>
+										<span class="hidden-xs ng-binding">&nbsp;&nbsp;Descartar Alterações</span>
+									</a>
+									<a class="btn btn-default" role="button" ng-click="configModelValController.add()">
+										<span class="glyphicon glyphicon-plus"></span>
+										<span class="hidden-xs ng-binding">{{:: 'Adicionar' | i18n : [] : 'dts/mpd' }}</span>
+									</a>
+									<a ng-hide="" class="btn btn-default" role="button"
+										ng-click="configModelValController.remove()"
+										ng-disabled="!configModelValController.gridSelectedItem">
+										<span class="glyphicon glyphicon-remove"></span>
+										<span class="hidden-xs ng-binding">{{:: 'Remover' | i18n : [] : 'dts/mpd' }}</span>
+									</a>
+
+									<a ng-hide="" class="btn btn-info pull-right" role="button"
+										ng-click="configModelValController.setShowAlert()">
+										<span class="glyphicon glyphicon-question-sign"></span>
+									</a>
+
+								</div>
+
+								<div class="alert alert-info alert-dismissible" role="alert" ng-if="configModelValController.showAlert">
+								  <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="configModelValController.setShowAlert()"><span aria-hidden="true">&times;</span></button>
+								  <strong>{{:: 'Atenção' | i18n : [] : 'dts/mpd' }}</strong>
+								  </br>
+								  {{:: 'Para adicionar itens ao modelo informe na coluna "Seq Item" a sequência que o item tera no pedido. ' | i18n : [] : 'dts/mpd' }}
+								  </br>
+								  {{:: 'Apenas ao informar uma sequência para o item na coluna "Seq Item", os campos de itens para o modelo estarão disponíveis na coluna "Campo".' | i18n : [] : 'dts/mpd' }}
+								  </br>
+								  {{:: 'Sugestão: Informe sequências de itens multiplas de 10.' | i18n : [] : 'dts/mpd' }}
+
+								</div>
+
+
+								<div class="row" style="margin: 0;">
+									<totvs-grid grid-data="configModelValController.ttOrderConfigurationModelVal"
+										grid="configModelValController.modelValGrid"
+										grid-height="350"
+										navigatable="true"
+										editable="true"
+										selectable="row"
+										grid-selected-item="configModelValController.gridSelectedItem">
+										<totvs-grid-column field="num-seq-campo" width="60">{{:: 'Seq Campo' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+										<totvs-grid-column editable="true" field="num-seq-item"  width="60" filter="number:0">{{:: 'Seq Item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+										<totvs-grid-column editable="true" field="cod-campo" width="210"
+											editor="configModelValController.codCampoEditor"
+											template="configModelValController.codCampoTemplate">{{:: 'Campo' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+										<totvs-grid-column editable="true" field="cod-valor" width="160"
+											editor="configModelValController.codValorEditor"
+											template="configModelValController.codValorTemplate">{{:: 'Valor' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+									</totvs-grid>
+								</div>
+							</div>
+						</totvs-grid-detail>
+					</totvs-grid>
+				</div>
+			</div>
+		</totvs-page-detail>
+	</totvs-page-content>
+</totvs-page>
+

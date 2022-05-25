@@ -1,0 +1,57 @@
+<totvs-modal-header>
+	{{ 'l-search-advanced' | i18n: []: 'dts/crm' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="input"
+			   canclean="undefined"
+			   maxlength="8"
+			   numbers-only
+			   ng-model="controller.model.num_id"
+			   placeholder="{{ 'l-code' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-code' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.num_id_tip_campanha"
+			   canclean="undefined">
+			<label>{{ 'l-type-campaign' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-type-campaign' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_tip_campanha }}
+				</ui-select-match>
+				<ui-select-choices repeat="type in controller.types track by $index">
+					<span ng-bind-html="type.nom_tip_campanha | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+	</fieldset>
+
+	<fieldset class="row">
+
+		<field type="daterange"
+			   ng-model="controller.model.dat_inic"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-date-start' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="daterange"
+			   ng-model="controller.model.dat_term"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-date-close' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply()">{{ 'btn-apply' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

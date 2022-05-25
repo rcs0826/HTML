@@ -1,0 +1,45 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.des_meta : ('btn-new-strategy-goal' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="input"
+			   ng-required="true"
+			   ng-model="controller.model.des_meta"
+			   canclean="undefined"
+			   maxlength="40"			   
+			   placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="daterange"
+			   ng-required="true"
+			   ng-model="controller.model.initialDate"
+			   start-date="controller.model.dateTimeBase"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-date' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" 
+			ng-click="controller.close()">
+		{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-default" 
+			ng-click="controller.save(true)"
+			ng-if="controller.editMode === false;">
+		{{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-primary" 
+			ng-click="controller.save()">
+		{{ 'btn-save' | i18n: []: 'dts/crm' }}
+	</button>
+</totvs-modal-footer>

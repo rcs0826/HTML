@@ -1,0 +1,134 @@
+<totvs-modal-header>{{ 'l-generating-om-by-requesting-services' | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+    <div ng-repeat="ordem in controller.ttListOM">
+       <accordion close-others="controller.closeOther">
+            <accordion-group is-open="ordem.isOpen" ng-click="controller.setLoadModal()">
+                <accordion-heading>
+                        {{ 'l-service-request' | i18n }}: {{ordem.nrSoliServ}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ordem.isOpen, 'glyphicon-chevron-right': !ordem.isOpen}"></i>
+                </accordion-heading>
+                <totvs-page-form >
+                    <fieldset>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <totvs-field totvs-select
+                                            canclean="undefined"
+                                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                            ng-model="ordem['cd-equipto']"
+                                            ng-disabled="ordem['disable-equipto'] === true"
+                                            select-id="cd-equipto"
+                                            select-description="descricao"
+                                            select-service="mmi.equipto.zoom"
+                                            zoom-service="mmi.equipto.zoom"
+                                            zoom-selected="controller.leaveCdEquipto(ordem)"
+                                            ng-change="controller.leaveCdEquipto(ordem)"
+                                            return-object="select-id"
+                                            zoom-init="{}"
+                                            label="{{ 'l-equipment' | i18n }}"
+                                            id="cd-equipto"
+                                            required>
+                                </totvs-field>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <totvs-field totvs-select
+                                            canclean="undefined"
+                                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                            ng-model="ordem['cd-manut']"
+                                            select-id="cdManut"
+                                            select-description="descricao"
+                                            select-service="mmi.plano.zoom"                     
+                                            zoom-service="mmi.plano.zoom"
+                                            zoom-selected="controller.leaveCdManut(ordem)"
+                                            return-object="select-id"
+                                            zoom-init="{equipto: ordem['cd-equipto']}"
+                                            label="{{ 'l-maintenance' | i18n }}"
+                                            ng-change="controller.leaveCdManut(ordem)">
+                                </totvs-field>
+                                <field type="input"
+                                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                    data-ng-model="ordem['des-plano-orig']"
+                                    ng-disabled="true"
+                                    maxlength="40">
+                                    <label>{{ 'l-origin-plan' | i18n }}</label>
+                                </field>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <totvs-field totvs-select
+                                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                            ng-model="ordem['cd-tipo']"
+                                            ng-change="controller.leaveCdTipo(ordem)"
+                                            zoom-selected="controller.leaveCdTipo(ordem)"
+                                            select-id="cd-tipo"
+                                            return-object="select-id"
+                                            select-description="descricao"
+                                            select-service="mmi.tipo-manut.zoom"
+                                            zoom-service="mmi.tipo-manut.zoom"
+                                            label="{{ 'l-maintenance-type' | i18n }}"
+                                            canclean="undefined"
+                                            required>                      
+                                </totvs-field>    
+                            </div>    
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <totvs-field totvs-select
+                                            canclean="undefined"
+                                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                            ng-model="ordem['cd-planejado']"
+                                            select-id="cd-planejado"
+                                            select-description="nome"
+                                            select-service="mmi.mntplanejador.zoom"
+                                            zoom-service="mmi.mntplanejador.zoom"
+                                            label="{{ 'l-planner' | i18n }}"
+                                            required>
+                                </totvs-field>
+                                <totvs-field totvs-select
+                                            canclean="undefined"
+                                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                            ng-model="ordem['cd-equip-res']"
+                                            select-id="cd-equipe"
+                                            select-description="desc-equipe"
+                                            select-service="mmi.equipe.zoom"
+                                            zoom-service="mmi.equipe.zoom"
+                                            return-object="select-id"
+                                            zoom-init="{}"
+                                            label="{{ 'l-team' | i18n }}"
+                                            required>
+                                </totvs-field>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <totvs-field totvs-datepicker
+                                            t-mask-date
+                                            label="{{ 'l-expected-maintenance-date' | i18n }}"
+                                            culture='pt'
+                                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                            ng-model="ordem['da-manut']"
+                                            canclean="undefined"
+                                            required>
+                                </totvs-field>
+                                <totvs-field totvs-input
+                                            numbers-only
+                                            class="col-lg-2 col-md-2 col-sm-6 col-xs-12"
+                                            label="{{ 'l-priority' | i18n }}"
+                                            ng-model="ordem['prioridade']"
+                                            minlength="1"
+                                            maxlength="3">
+                                </totvs-field>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <field type="input"
+                                        name-id="descricao"
+                                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                    data-ng-model="ordem['descricao']"
+                                    maxlength="50">
+                                    <label>{{ 'l-description' | i18n }}</label>
+                                </field>
+                            </div>
+                        </div>
+                    </fieldset>
+                </totvs-page-form>
+            </accordion-group>
+        </accordion>
+    </div>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'l-close' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="controller.generating();">{{ 'l-generating-maintenance-order' | i18n }}</button>
+</totvs-modal-footer>

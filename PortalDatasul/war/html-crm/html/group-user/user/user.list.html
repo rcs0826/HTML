@@ -1,0 +1,90 @@
+<totvs-page-child type="list">
+
+	<br/>
+
+	<totvs-page-content class="crm-tab">
+
+		<div class="row">
+
+			<div class="col-xs-10">
+				<h3 style="margin: 0 0 0 15px;">
+					{{ 'l-users' | i18n: []: 'dts/crm' }} ({{ (controller.model.ttUsuario && controller.model.ttUsuario.length) ? controller.model.ttUsuario.length : 0 }})
+				</h3>
+			</div>
+			<div class="col-xs-2">
+				<div class="pull-right" style="margin: 0 15px 0 0;">
+					<button type="button"
+							class="btn btn-primary"
+							ng-model="controller.selectedUsers"
+							ng-change="controller.addUsers(controller.model)"
+							zoom
+							zoom-multiple
+							zoom-service="crm.crm_usuar.zoom">
+						<span class="glyphicon glyphicon-plus"></span>
+						<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<totvs-divider></totvs-divider>
+
+		<totvs-page-alert type="info"
+						  style="margin-top: 10px; margin-bottom: 10px;"
+						  message="{{ 'msg-not-found-users' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.model.ttUsuario || controller.model.ttUsuario.length <= 0">
+		</totvs-page-alert>
+
+		<div class="crm-tab"
+			 ng-if="controller.model.ttUsuario.length">
+
+			<div class="row crm-tab-item header">
+				<strong>
+					<div class="col-xs-0 col-sm-2">
+						{{ 'l-user-login' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-xs-8 col-sm-7">
+						{{ 'l-user' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-xs-3 col-sm-2">
+						{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}
+					</div>
+				</strong>
+			</div>
+
+			<div class="row crm-tab-item" ng-repeat="user in controller.model.ttUsuario">
+				<div class="col-xs-0 col-sm-2 clickable">
+					{{ user.cod_usuario }}
+				</div>
+
+				<div class="col-xs-8 col-sm-7 clickable overflow-ellipsis">
+					{{ user.nom_usuar }}
+				</div>
+
+				<div class="col-xs-2 col-sm-2">
+					<input type="checkbox"
+						   ng-model="user.log_usuar_respons"
+						   ng-change="controller.setAsResponsible(controller.model.ttUsuario, user);"
+						   bsswitch>
+					<!--a class="clickable"
+					   ng-click="controller.setAsResponsible(controller.model.ttUsuario, user);">
+						<span>{{ (user.log_usuar_respons === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}</span>
+					</a-->
+				</div>
+
+				<div class="col-sm-1 text-right">
+					<a class="clickable"
+					   ng-click="controller.removeUser(user.num_id, controller.model.ttUsuario, $index);">
+						<span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+						<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+					</a>
+				</div>
+
+			</div>
+
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>
+

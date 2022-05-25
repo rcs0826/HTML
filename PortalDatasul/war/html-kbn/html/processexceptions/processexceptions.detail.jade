@@ -1,0 +1,19 @@
+link(rel="stylesheet" href="/dts/kbn/css/field-addon.css")
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+totvs-modal-header
+    span.initialwrap.title.link {{controller.item.ttItemExceptionDs | descGeneric:"{sku} - {desc} {ref} ({exp})"}}
+totvs-modal-body
+    totvs-page-content
+        totvs-page-alert(ng-if="controller.movtoDetail.length == 0",
+                         type="info",
+                         message="{{ 'msg-not-found' | i18n }}")
+        totvs-table(ng-if="controller.movtoDetail.length > 0",
+                    items="controller.movtoDetail",
+                    items-as="movtoDetail",
+                    type-select="off")
+            column(width="150",title="{{'l-date-movement' | i18n}}") {{movtoDetail.dtm_movto | date:'dd-MM-yyyy HH:mm:ss'}}
+            column(width="80", title="{{'l-number-cards' | i18n}}") {{movtoDetail.qtd_cartoes}}
+            column(width="220",title="{{'l-exception-type' | i18n}}") {{controller.exceptionType(movtoDetail.tipo_excecao)}}
+            column(width="220",title="{{'l-reason' | i18n}}") {{movtoDetail.ttJustificativaDs.des_justif}}
+totvs-modal-footer
+    button.btn.btn-default(ng-click="controller.close()") {{ 'l-close' | i18n }}

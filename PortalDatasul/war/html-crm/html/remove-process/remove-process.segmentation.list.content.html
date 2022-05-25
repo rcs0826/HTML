@@ -1,0 +1,76 @@
+<totvs-page-content style="border-top: 1px dotted #e4e4e4;">
+
+	<totvs-page-content-header style="border-bottom: 0px;">
+		<fieldset>
+			<field type="input"
+				canclean="undefined"
+				maxlength="8"
+				numbers-only
+			    class="col-xs-12 col-sm-4 col-md-4"
+				ng-model="controllerRemoveProcess.basicFilter.segmentation.num_id"
+				placeholder="{{ 'l-code' | i18n: []: 'dts/crm' }}">
+				<label>{{ 'l-code' | i18n: []: 'dts/crm' }}</label>
+			</field>
+			<field type="daterange"
+				canclean="undefined"
+				class="col-xs-12 col-sm-6 col-md-7"
+				ng-model="controllerRemoveProcess.basicFilter.segmentation.dat_cadastro"
+				start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+				end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+				<label>{{ 'l-date-create' | i18n: []: 'dts/crm' }}</label>
+			</field>
+			<div class="col-xs-12 col-sm-2 col-md-1" style="margin-top: 27px;">
+				<button class="btn btn-default pull-right"
+						ng-click="controllerRemoveProcess.search(false, true);">{{ 'btn-apply' | i18n: []: 'dts/crm' }}
+				</button>
+			</div>
+		</fieldset>
+	</totvs-page-content-header>
+
+	<totvs-page-content-header>
+		<totvs-page-quick-select
+			title="{{ 'l-select-all' | i18n: []: 'dts/crm' }} (Selecionados {{(controllerRemoveProcess.listOfSegmentations | filter:{$selected:'true'}).length}} de {{controllerRemoveProcess.listOfSegmentationsCount}})"
+			list="controllerRemoveProcess.listOfSegmentations">
+		</totvs-page-quick-select>
+	</totvs-page-content-header>
+
+	<totvs-page-alert
+		ng-if="controllerRemoveProcess.listOfSegmentations.length <= 0"
+		type="info"
+		message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+	</totvs-page-alert>
+
+	<totvs-list-item
+		id="segmentation{{segmentation.num_id}}"
+		class="crm-default"
+		ng-repeat="segmentation in controllerRemoveProcess.listOfSegmentations"
+		selected="segmentation">
+
+		<totvs-list-item-header>
+			<totvs-list-item-title>
+				{{ segmentation.num_id }} - {{ segmentation.nom_segmtcao_public }}
+			</totvs-list-item-title>
+		</totvs-list-item-header>
+
+		<totvs-list-item-content>
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-4"
+				title="{{ 'l-date-create' | i18n: []: 'dts/crm' }}"
+				value="{{ segmentation.dat_cadastro | date : ('l-date-format' | i18n: []: 'dts/crm') }}">
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-8"
+				title="{{ 'l-user-open' | i18n: []: 'dts/crm' }}"
+				value="{{ segmentation.ttUsuario.nom_usuar }}">
+			</totvs-list-item-info>
+		</totvs-list-item-content>
+
+	</totvs-list-item>
+
+	<totvs-list-pagination
+		ng-if="controllerRemoveProcess.listOfSegmentations.length < controllerRemoveProcess.listOfSegmentationsCount && controllerRemoveProcess.listOfSegmentations.length"
+		ng-click="controllerRemoveProcess.search(true);">
+	</totvs-list-pagination>
+
+</totvs-page-content>

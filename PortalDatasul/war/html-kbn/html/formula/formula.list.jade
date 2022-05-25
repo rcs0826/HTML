@@ -1,0 +1,26 @@
+totvs-page(type="list")
+    totvs-page-navbar
+        totvs-page-breadcrumb
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb {{ 'l-formula-kanban' | i18n }}
+        totvs-page-header
+            totvs-page-header-title(title="{{ 'l-formula-kanban' | i18n }}" total="{{controller.totalRecords}}")
+            totvs-page-header-operation
+                totvs-page-header-operation-action(limit-primary-action="2")
+                    action(icon="glyphicon-plus", ng-click="controller.openModalFormulaNew(formula);") {{ 'l-new-formula' | i18n }}
+                totvs-page-header-operation-filter(placeholder="{{ 'l-formula-search' | i18n}}", ng-submit="controller.quickSearch()", ng-model="controller.quickSearchText")
+            totvs-page-disclaimers(disclaimer-list="controller.filtersApplied", ng-click="controller.removeFilter")
+    totvs-page-content
+        totvs-page-alert(ng-if="controller.totalRecords == 0" type="info" message="{{ 'msg-not-found' | i18n }}")
+        totvs-list-item(data-ng-repeat="formula in controller.listFormula")
+            totvs-list-item-header
+                totvs-list-item-title(title="{{formula.num_id_formul}} - {{formula.des_formula}}")
+                totvs-list-item-action(limit-primary-action="1")
+                    action(ng-if="formula.num_id_formul > 1000", icon="glyphicon-pencil", data-ng-click="controller.openModalFormulaEdit(formula)") {{ 'l-edit' | i18n }}
+                    action(ng-if="formula.num_id_formul > 1000", icon="glyphicon-remove", data-ng-click="controller.remove(formula)" ) {{ 'l-to-exclude' | i18n }}
+            totvs-list-item-content-detail
+                totvs-divider
+                totvs-list-item-info.col-md-6(title="{{ 'l-observation' | i18n }}" value="{{formula.observacao}}")
+                totvs-list-item-info.col-md-4(title="{{ 'l-program' | i18n }}" value="{{formula.programa}}")
+        .container(align="center")
+            pagination.pagination-sm(total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages", items-per-page="controller.pageSize", previous-text="{{'l-previous' | i18n}}", next-text="{{'l-next' | i18n}}")

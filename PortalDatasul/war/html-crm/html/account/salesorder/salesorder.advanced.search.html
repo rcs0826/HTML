@@ -1,0 +1,96 @@
+<totvs-modal-header>
+	{{ 'l-search-advanced' | i18n: []: 'dts/crm' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<totvs-field totvs-input
+					 ng-model="controller.model.nr_ped_cli"
+					 label="{{ 'l-order-client' | i18n : [] : 'dts/crm' }}"
+					 placeholder="{{ 'l-order-client' | i18n : [] : 'dts/crm' }}">
+		</totvs-field>
+
+		<totvs-field totvs-input
+					 ng-model="controller.model.nr_pedido"
+					 label="{{ 'l-order-number' | i18n : [] : 'dts/crm' }}"
+					 placeholder="{{ 'l-order-number' | i18n : [] : 'dts/crm' }}">
+		</totvs-field>
+
+		<field type="select"
+			   ng-model="controller.model.cod_estab_erp"
+			   canclean="undefined">
+			<label>{{ 'l-establishment' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_estab.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-establishment' | i18n: []: 'dts/crm' }}">
+					{{$select.selected.nom_estab}} {{$select.selected.log_integrad_erp ? ' (' + $select.selected.cod_estab_erp + ')' : '' }}
+				</ui-select-match>
+				<ui-select-choices repeat="estab in controller.establishments track by $index"
+								   refresh="controller.getEstablishments($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="estab.nom_estab + (estab.log_integrad_erp ? ' (' + estab.cod_estab_erp + ')' : '') | highlight: 	$select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.num_id_repres"
+			   canclean="undefined"
+			   ng-if="!controller.representative">
+			<label>{{ 'l-principal-representative' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_repres.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-principal-representative' | i18n: []: 'dts/crm' }}">
+					{{$select.selected.nom_abrev_repres_erp}} {{$select.selected.log_integrad_erp ? ' (' + $select.selected.cod_repres_erp + ')' : '' }}
+				</ui-select-match>
+				<ui-select-choices repeat="rep in controller.representatives track by $index"
+								   refresh="controller.getRepresentatives($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="rep.nom_abrev_repres_erp + (rep.log_integrad_erp ? ' (' + rep.cod_repres_erp + ')' : '') | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.cod_usuar_impl"
+			   canclean="undefined">
+			<label>{{ 'l-user-deployment' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.usuar_mestre.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-user-deployment' | i18n: []: 'dts/crm' }}">
+					{{$select.selected.nom_usuario}}
+				</ui-select-match>
+				<ui-select-choices repeat="user in controller.masterUsers track by $index"
+								   refresh="controller.getMasterUsers($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="user.nom_usuario | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="daterange"
+			   class="col-xs-6"
+			   ng-model="controller.model.dt_emissao"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-date-emission' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<totvs-field totvs-checkbox
+					 ng-model="controller.model.log_portal"
+					 label="{{ 'l-only-portal' | i18n: [] : 'dts/crm'}}"
+					 t-bsswitch>
+		</totvs-field>
+
+	</fieldset>
+
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cleanFilters()">{{ 'btn-clean-filters' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply()">{{ 'btn-apply' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

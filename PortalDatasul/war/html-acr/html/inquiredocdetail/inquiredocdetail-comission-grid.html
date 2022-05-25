@@ -1,0 +1,46 @@
+<totvs-page-form ng-controller="acr.inquiredocdetail.Controller as controller">
+	<totvs-table 
+		t-items="controller.detailComis" 
+		t-items-as="comis" 
+		t-selectable="off"
+		t-double-click="controller.openComisDetail(controller.detailComis.indexOf(comis))">
+
+		<column width="30" title="">
+			<span 
+				style="cursor: pointer;" 
+				class="glyphicon glyphicon-file" 
+				ng-click="controller.openComisDetail(controller.detailComis.indexOf(comis))">
+			</span>
+		</column>
+
+		<column title="{{ 'l-transaction-date' | i18n : [] : 'dts/acr'}}">
+			{{comis.transactionDate | date : ('l-date-format' | i18n: []: 'dts/acr') }}
+		</column>
+
+		<column title="{{ 'l-transaction-amount' | i18n : [] : 'dts/acr'}}">
+			{{comis.transAmountEconIndic | currency: ('l-currency-format' | i18n: []: 'dts/acr') }}
+		</column>
+
+		<column title="{{ 'l-calc-basis' | i18n : [] : 'dts/acr'}}">
+			{{comis.commCalcBasis | currency: ('l-currency-format' | i18n: []: 'dts/acr') }}
+		</column>
+
+		<column title="{{ 'l-short-movement-accounting-nature' | i18n : [] : 'dts/acr'}}">
+			{{comis.typeGLTrans}}
+		</column>
+
+		<column title="{{ 'l-movement-type' | i18n : [] : 'dts/acr'}}">
+			{{comis.transactionType}}
+		</column>
+
+		<column title="{{ 'l-movement-source' | i18n : [] : 'dts/acr'}}">
+			{{comis.transactionSource}}
+		</column>
+
+		<column title="{{ 'l-status' | i18n : [] : 'dts/acr'}}">
+			{{comis.transactionStatus}}
+		</column>
+
+	</totvs-table>
+
+</totvs-page-form>

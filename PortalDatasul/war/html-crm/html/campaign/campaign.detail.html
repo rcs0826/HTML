@@ -1,0 +1,128 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/campaign/">{{ 'nav-campaign' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ controller.model.nom_campanha }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation ng-show="controller.model | isDefined">
+				<totvs-page-header-operation-action on-back-link="#/dts/crm/campaign/"
+													on-edit="controller.onEdit"
+													on-remove="controller.onRemove"
+													hide-actions="true">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}"
+						  ng-if="(controller.model | isUndefined)">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-show="controller.model | isDefined">
+
+			<div class="col-xs-12 no-gutter">
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-3"
+										title="{{ 'l-date' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ controller.model.dat_inic | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+					<span ng-if="controller.model.dat_term">
+						- {{ controller.model.dat_term  | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+					</span>
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-3"
+										title="{{ 'l-type' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ controller.model.ttTipoCampanha.nom_tip_campanha }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-3"
+										title="{{ 'l-finished' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ (controller.model.log_finaliza === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-3"
+										title="{{ 'l-allows-unpaid-expenses' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ (controller.model.log_livre_1 === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-3"
+										ng-if="controller.isIntegratedWithGpls == true && controller.model.log_padr_gpls == true"
+										value-break="false">
+
+					<span class="label crm-label-green">
+						{{ 'l-default-campaign-gpls' | i18n: []: 'dts/crm' }}
+					</span>
+					<!--span class="label"
+						  ng-attr-style="background-color: {{ controller.model.log_padr_gpls === true ? 'green' : 'red' }};">
+						{{ (controller.model.log_padr_gpls === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+					</span-->
+
+				</totvs-page-detail-info>
+
+			</div>
+
+			<totvs-tabset class="no-border">
+
+				<tabset>
+
+					<tab heading="{{ 'nav-action' | i18n: []: 'dts/crm' }} ({{ controller.model.ttAcao.length || 0 }})">
+						<ng-include src="'/dts/crm/html/campaign/action/action.tab.html'"></ng-include>
+					</tab>
+
+					<tab heading="{{ 'nav-expense' | i18n: []: 'dts/crm' }} ({{ controller.model.ttDespesa.length || 0 }})">
+						<ng-include src="'/dts/crm/html/campaign/expense/expense.tab.html'"></ng-include>
+					</tab>
+
+					<!-- INI - CAMPAIGN PRICE TABLE
+					<tab heading="{{ 'nav-price-table' | i18n: []: 'dts/crm' }} ({{ controller.model.ttTabelaPreco.length || 0 }})">
+						<ng-include src="'/dts/crm/html/campaign/price-table/price-table.tab.html'"></ng-include>
+					</tab>
+					END - CAMPAIGN PRICE TABLE -->
+
+					<tab heading="{{ 'l-others' | i18n: []: 'dts/crm' }}"
+						 ng-if="controller.model.dsl_campanha.length > 0 || controller.model.dsl_motivo.length > 0">
+
+						<br/>
+
+						<div class="row">
+
+							<totvs-page-detail-info class="col-xs-12"
+													ng-if="controller.model.dsl_campanha"
+													title="{{ 'l-description' | i18n: []: 'dts/crm' }}">
+								<pre class="description">{{ controller.model.dsl_campanha }}</pre>
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info class="col-xs-12"
+													ng-if="controller.model.dsl_motivo"
+													title="{{ 'l-justification' | i18n: []: 'dts/crm' }}">
+								<pre class="description">{{ controller.model.dsl_motivo }}</pre>
+							</totvs-page-detail-info>
+
+						</div>
+
+					</tab>
+
+				</tabset>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

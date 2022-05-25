@@ -1,0 +1,80 @@
+<totvs-page-child type="list">
+
+	<br/>
+
+	<totvs-page-content class="crm-tab">
+
+		<div class="row">
+
+			<div class="col-xs-10">
+				<h3 style="margin-top: 0px;">
+					{{ 'nav-reference' | i18n: []: 'dts/crm' }} ({{ (controller.model.ttProdutoReferencia && controller.model.ttProdutoReferencia.length) ? controller.model.ttProdutoReferencia.length : 0 }})
+				</h3>
+			</div>
+			<!--totvs-page-header>
+				<totvs-page-header-operation>
+
+					<totvs-page-header-operation-action>
+						<action icon="glyphicon-plus"
+								ng-click="controller.addReference(controller.model.num_id);">
+							{{ 'btn-add' | i18n: []: 'dts/crm' }}
+						</action>
+					</totvs-page-header-operation-action>
+
+				</totvs-page-header-operation>
+			</totvs-page-header-->
+		</div>
+
+		<!--totvs-divider></totvs-divider-->
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-reference' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.model.ttProdutoReferencia || controller.model.ttProdutoReferencia.length <= 0">
+			<br>
+			<!--button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addReference(controller.model.num_id);">
+				<span class="glyphicon glyphicon-plus"></span>
+				<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+			</button-->
+		</totvs-page-alert>
+
+		<div class="crm-tab"
+			 ng-if="controller.model.ttProdutoReferencia.length">
+
+			<div class="row crm-tab-item header hidden-xs">
+				<strong>
+					<div class="col-xs-5 col-sm-4 col-md-3">
+						{{ 'l-code-erp' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-xs-7 col-sm-8 col-md-9">
+						{{ 'l-name' | i18n: []: 'dts/crm' }}
+					</div>
+				</strong>
+			</div>
+
+			<div class="row crm-tab-item"
+				 ng-repeat="reference in controller.model.ttProdutoReferencia">
+
+				<div class="col-xs-5 col-sm-4 col-md-3 overflow-ellipsis">
+					{{ reference.cod_refer_erp }}
+				</div>
+
+				<div class="col-xs-7 col-sm-8 col-md-9 overflow-ellipsis">
+					{{ reference.nom_refer }}
+				</div>
+
+				<!--div class="col-xs-2 text-right">
+					<a class="clickable"
+					   ng-click="controller.removeVersion(rule, $index);">
+						<span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+						<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+					</a>
+				</div-->
+
+			</div>
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

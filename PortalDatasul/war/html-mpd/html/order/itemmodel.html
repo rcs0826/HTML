@@ -1,0 +1,36 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{ 'l-add-items-from-model' | i18n }}</h3>
+</div>
+<div class="modal-body">
+	<style type="text/css" scoped>
+		.field .field-container, field .field-container {
+			margin: 0;
+		}
+	</style>
+	<div class="page-content" style="border: 0;">
+		<totvs-page-form>
+		<totvs-list-item ng-repeat="item in controller.itens"
+						 totvs-custom-element="customListItem">
+			<totvs-list-item-content>
+				
+				<div class="col-xs col-sm-12 col-md-9" style="padding: 0;">
+
+					<totvs-list-item-info title="{{ 'l-cod-item' | i18n }}" class="col-xs col-sm-6 col-md-3">{{item['it-codigo']}}</totvs-list-item-info>
+					<totvs-list-item-info title="{{ 'l-cod-refer' | i18n }}" class="col-xs col-sm-6 col-md-3">{{item['cod-refer']}}</totvs-list-item-info>
+					<totvs-list-item-info title="{{ 'l-descricao' | i18n }}" class="col-xs col-sm-12 col-md-6">{{item['itemDesc']}}</totvs-list-item-info>
+					<totvs-list-item-info title="{{ 'l-vl-preuni' | i18n }}" class="col-xs col-sm-6 col-md-3">{{item['vl-preuni'] | currency}}</totvs-list-item-info>
+					<totvs-list-item-info title="{{ 'l-inventory' | i18n }}" class="col-xs col-sm-6 col-md-3">{{item.hasBalance ? 'Dispon&iacute;vel' : 'Indispon&iacute;vel'}}</totvs-list-item-info>
+					<totvs-list-item-info title="{{ 'l-un' | i18n }}" class="col-xs col-sm-6 col-md-3">{{item['cod-un']}}</totvs-list-item-info>
+				</div>
+				<field type="decimal" ng-model="item['qt-un-fat']" class="col-xs col-sm-6 col-md-3">
+					<label>{{ 'l-quantity' | i18n }}</label>
+				</field>
+			</totvs-list-item-content>
+		</totvs-list-item>
+		</totvs-page-form>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" ng-click="controller.addItens()">{{ 'l-add-items' | i18n }}</button>
+	<button class="btn btn-warning" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n }}</button>
+</div>

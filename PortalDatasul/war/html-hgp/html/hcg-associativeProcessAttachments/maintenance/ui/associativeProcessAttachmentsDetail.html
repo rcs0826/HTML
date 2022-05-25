@@ -1,0 +1,174 @@
+<totvs-page type="detail">   
+
+    <totvs-page-navbar>
+
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hcg-associativeProcessAttachments/">Manutenção Associativa Processos x Anexos</breadcrumb>
+                <breadcrumb></breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Manutencao Associativa Processos x Anexos" >
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action on-back="controller.onCancel"
+                                                    on-cancel="controller.onCancel"
+                                                    hide-edit="true"
+                                                    hide-remove="true"
+                                                    hide-save-new="{{controller.action === 'INSERT' ? false : true }}">
+                </totvs-page-header-operation-action>
+
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+
+        <totvs-page-form>
+            <fieldset>
+                
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-page-form>
+						<field
+							type="input"
+							ng-model="controller.associativeProcessAttachments.rotuloProcesso"
+							label="Processo:"
+							class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+							ng-disabled="controller.action == 'DETAIL' || controller.action == 'EDIT'">
+						</field>
+					</totvs-page-form>
+				</div>
+				
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					
+					<totvs-page-form>
+						<field
+							type="checkbox"
+							ng-model="controller.associativeProcessAttachments.logHabilitaAnexo"
+							class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+							label="Armazenamento de Anexos"
+							ng-disabled="controller.action == 'DETAIL'">
+						</field>
+					</totvs-page-form>
+				</div>
+				
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<field
+						type="combo"
+						ng-model="controller.cdnTipGravac"
+						class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+						label="Tipo de Armazenamento:"
+						ng-disabled="controller.action == 'DETAIL' || !controller.associativeProcessAttachments.logHabilitaAnexo"
+						ng-options="TipGravac as TipGravac.label for TipGravac in controller.TipGravacao">
+					</field>
+				</div>
+				
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-page-form>
+						<field
+							type="input" required
+							ng-model="controller.associativeProcessAttachments.desLocalGravac"
+							label="Caminho Armazenado:"
+							class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+							ng-disabled="controller.action == 'DETAIL'"
+							ng-show="controller.cdnTipGravac.id == '2'">
+							<validator key="required">Informe o caminho de armazenamento.</validator>
+						</field>
+					</totvs-page-form>
+				</div>
+
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-page-form>
+						<field
+							type="number" required
+							ng-model="controller.associativeProcessAttachments.idiDoctoFluig"
+							label="Caminho Pasta ECM:"
+							class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+							ng-disabled="controller.action == 'DETAIL'"
+							ng-show="controller.cdnTipGravac.id == '3'">
+							<validator key="required">Informe o caminho de armazenamento ECM.</validator>
+						</field>
+					</totvs-page-form>
+				</div>
+				
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					
+					<totvs-page-form>
+						<field
+							type="checkbox"
+							ng-model="controller.associativeProcessAttachments.logCompAnexo"
+							class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+							label="Compactar Arquivos"
+							ng-disabled="controller.action == 'DETAIL'">
+						</field>
+					</totvs-page-form>
+				</div>
+				
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					
+					<totvs-page-form>
+						<field
+							type="checkbox"
+							ng-model="controller.associativeProcessAttachments.logPermiteExcluir"
+							class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+							label="Permite Excluir Anexos"
+							ng-disabled="controller.action == 'DETAIL'">
+						</field>
+					</totvs-page-form>
+				</div>
+				
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height">
+				
+					<a class="btn btn-info" role="button"  style="left"
+						class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+						ng-click="controller.btTiposAnexos()"
+						ng-if="controller.action == 'DETAIL' || controller.action == 'EDIT'">
+						Tipos de Anexo
+				    </a>
+				</div>
+				
+				<div class="restrictionDiv" style="border: 2px solid #424c4e;; width: 50%; height: auto; position: absolute; margin-left: 320px;
+							margin-top: 40px; visibility: visible; display: block; background-color: white; z-index:10">
+							
+					<totvs-modal-header>
+						Tipos de Anexo
+					</totvs-modal-header>
+
+					<totvs-modal-body>
+						<div class="divBody" style="max-height: 200px; overflow-y: auto;">
+						
+							<totvs-page-content>
+								<totvs-table
+									items="controller.restrictionsList"
+									items-as="restriction"
+									type-select="OFF">
+					
+									<column title="Selecionado">
+										<input type="checkbox" name="lgTipAnexo" 
+											ng-model="restriction.lgTipAnexo"
+											ng-disabled="true">
+									</column>
+									<column title="Tipo de Anexo">
+										{{restriction.cdnTipAnexo + " - " + restriction.desTipAnexo}}
+									</column>
+								</totvs-table>
+							</totvs-page-content>
+
+							<h5 ng-if="controller.restrictionsList.length == 0"> Não existem anexos para seram mostrados</h5>
+						</div>
+					</totvs-modal-body>
+            
+					<totvs-modal-footer>
+						<button class="btn col-sm-height" ng-click="controller.closeTipoAnexo()">Cancelar</button>
+					</totvs-modal-footer>
+				</div>
+                
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>	
+</totvs-page>

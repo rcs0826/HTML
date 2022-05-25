@@ -1,0 +1,41 @@
+<totvs-modal-header>
+	{{ 'btn-new-prfv-form' | i18n: []: 'dts/crm' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+		<field type="select"
+			   ng-model="controller.model.ttPRFVForma"
+			   canclean="undefined"
+			   ng-required="true">
+
+			<label>{{ 'l-prfv-form' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-prfv-form' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_form }}
+				</ui-select-match>
+				<ui-select-choices repeat="color in controller.prfvForms | filter: $select.search track by $index">
+					<span ng-bind-html="color.nom_form | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+	</fieldset>
+
+
+</totvs-modal-body>
+<totvs-modal-footer>
+	<button class="btn btn-default"
+			ng-click="controller.cancel()">
+		{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-default"
+			ng-click="controller.save(true)">
+		{{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-primary"
+			ng-click="controller.save(false)">
+		{{ 'btn-save' | i18n: []: 'dts/crm' }}
+	</button>
+</totvs-modal-footer>

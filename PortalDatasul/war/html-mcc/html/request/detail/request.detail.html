@@ -1,0 +1,91 @@
+<totvs-page type="detail" totvs-custom-element="customRequest_detail">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb ng-if="!controller.isJustForView">
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/{{module}}/request">{{'l-requests' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb>
+                <span class="hidden-xs">{{'l-request-detail' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-detail' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb> 
+
+        <totvs-page-breadcrumb ng-if="controller.isJustForView && !controller.cd1409 && !controller.cd1410">
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/{{module}}/request/search">{{'l-requests' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb>
+                <span class="hidden-xs">{{'l-request-detail' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-detail' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <!-- BREADCRUMB | CD1409 -->
+        <totvs-page-breadcrumb ng-if="controller.isJustForView && controller.cd1409">
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/mce/cd1409">{{'l-realization' | i18n: []: 'dts/mcc'}} {{'l-request' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb>
+                <span class="hidden-xs">{{'l-request-detail' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-detail' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+        
+        <!-- BREADCRUMB | CD1410 -->
+        <totvs-page-breadcrumb ng-if="controller.isJustForView && controller.cd1410">
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/mce/cd1410">{{'l-return-mce' | i18n: []: 'dts/mcc'}} {{'l-request' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb>
+                <span class="hidden-xs">{{'l-request-detail' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-detail' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            <totvs-page-header-title title="{{controller.translateRequestType(controller.model['tp-requis'])}}" ng-if="controller.requestNumber"></totvs-page-header-title> 
+
+            <totvs-page-header-title title="{{ 'l-invalid-request' | i18n: []: 'dts/mcc' }}" ng-if="!controller.model['nr-requisicao'] && controller.loaded"></totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action on-back="controller.back"
+                                                    on-edit-link="#/dts/{{module}}/request/edit/{{controller.model['nr-requisicao']}}"
+                                                    hide-remove="true"
+                                                    ng-if="controller.enableUpdate && !controller.isJustForView"
+                                                    on-remove="controller.onRemove">
+                </totvs-page-header-operation-action>
+
+                <totvs-page-header-operation-action on-back="controller.back"
+                                                    hide-edit="true"
+                                                    hide-remove="true"
+                                                    ng-if="!controller.enableUpdate || controller.isJustForView"
+                                                    on-remove="controller.onRemove">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-detail>        
+            <div ng-if="controller.requestNumber && controller.isValidRequest">
+                <totvs-page-detail-info title="{{ 'l-number' | i18n: []: 'dts/mcc' }}" class="col-md-4 col-sm-4"
+                    value="{{controller.model['nr-requisicao'] | number}}"></totvs-page-detail-info>     
+                <totvs-page-detail-info title="{{ 'l-status' | i18n: []: 'dts/mcc' }}" class="col-md-4 col-sm-4"
+                    value="{{controller.model['situacao-desc']}}"></totvs-page-detail-info>            
+                <totvs-page-detail-info title="{{ 'l-approved-gen' | i18n: []: 'dts/mcc' }}" class="col-md-4 col-sm-4"
+                    value="{{controller.model['estado-desc']}}"></totvs-page-detail-info>   
+            
+           
+                <totvs-page-detail-info class="col-md-8 col-sm-8"
+                                        title="{{ 'l-requester' | i18n: []: 'dts/mcc' }}"
+                                        value="{{controller.model['nome-abrev']}} - {{controller.model['nome-abrev-desc']}}"></totvs-page-detail-info>
+                <totvs-page-detail-info class="col-md-4 col-sm-4"
+                                        title="{{ 'l-date' | i18n: []: 'dts/mcc' }}"
+                                        value="{{controller.model['dt-requisicao'] | date :'dd/MM/yyyy'}}"></totvs-page-detail-info>
+                <totvs-page-detail-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                        title="{{ 'l-delivery-place' | i18n: []: 'dts/mcc' }}"
+                                        value="{{controller.model['loc-entrega']}}"></totvs-page-detail-info>
+                <totvs-page-detail-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-justify"
+                                        title="{{ 'l-comments' | i18n: []: 'dts/mcc' }}"
+                                        value="{{controller.model['narrativa']}}"></totvs-page-detail-info>
+
+                <div ng-include="'/dts/mcc/html/request/detail/request.detail.items.html'"></div>                     
+            </div>
+        </totvs-page-detail>          
+    </totvs-page-content>
+</totvs-page>

@@ -1,0 +1,49 @@
+
+<totvs-modal-header>
+	{{ 'l-advanced-search' | i18n }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<totvs-page-form>
+    	<fieldset>  
+            <!-- DEPOSITO BLOQUADO -->
+            <field type="checkbox"
+				   data-ng-model="controller.model.warehouseBlock"
+                   ng-change="controller.onlyBlocked()"    
+				   label="{{ 'l-view-block-warehouse' | i18n }}"
+				   class="col-md-12">  
+            </field>
+            <!-- ITEM -->
+            <field type="inputrange"                    
+                   data-ng-model="controller.model['it-codigo']"  
+                   start-placeholder="{{ 'l-start' | i18n }}"
+                   end-placeholder="{{ 'l-end' | i18n }}"
+                   ng-disabled = "!controller.enableItem"                  
+                   class="col-md-12" 
+                   label="{{ 'l-item' | i18n }}">
+            </field> 
+            <!-- DEPOSITO -->
+            <field type="inputrange"
+                   class="col-md-12"
+                   ng-model="controller.model['cod-depos']"
+                   start-placeholder="{{ 'l-start' | i18n }}"
+                   end-placeholder="{{ 'l-end' | i18n }}"
+                   label="{{ 'l-warehouse' | i18n }}">                                      
+            </field> 
+            <!-- ESTABELECIMENTO -->
+            <field type="inputrange"
+                  class="col-md-12 col-lg-12 col-sm-12"
+                   ng-model="controller.model['cod-estabel']"
+                   start-placeholder="{{ 'l-start' | i18n }}"
+                   end-placeholder="{{ 'l-end' | i18n }}"
+                   label="{{ 'l-site' | i18n }}">                                     
+            </field>  
+		</fieldset>
+	</totvs-page-form>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply()">{{ 'btn-apply' | i18n }}</button>
+</totvs-modal-footer>
+

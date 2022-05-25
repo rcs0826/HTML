@@ -1,0 +1,223 @@
+<totvs-page type="list">
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-production-appointment' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+			<totvs-page-header-title 
+				title="{{ 'l-production-appointment' | i18n }}" 
+				total="{{controller.totalRecords}}">
+			</totvs-page-header-title>
+			
+			<totvs-page-header-operation>
+				<div class="col-md-7 col-lg-7 hidden-xs hidden-sm">
+					<field
+						type="combo"
+						ng-model="controller.ttAppointmentParam.iListType"
+						ng-change="controller.loadData()"
+						label="{{ 'l-iListType' | i18n }}">
+						<totvs-options>
+							<totvs-option value="1">{{ 'l-production' | i18n }}</totvs-option>
+							<totvs-option value="2">{{ 'l-shop-floor' | i18n }}</totvs-option>
+						</totvs-options>
+					</field>
+				</div>
+
+				<!-- PESQUISA -->
+				<div style="padding-top: 20px">
+					<totvs-page-header-operation-filter 
+						placeholder="{{ 'l-search-appointment-description' | i18n }}" 
+						ng-submit="controller.search()"
+						ng-model="controller.quickSearchText" 
+						advanced-search="controller.openAdvancedSearch">
+					</totvs-page-header-operation-filter>
+				</div>
+			</totvs-page-header-operation>
+
+			<totvs-page-tags>
+				<tag class="tag-1">Em dia</tag>
+				<tag class="tag-2">Em atraso</tag>
+				<tag class="tag-3">Futuro</tag>
+			</totvs-page-tags>
+
+			<totvs-page-disclaimers 
+				disclaimer-list="controller.disclaimers" 
+				ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-alert ng-if="controller.listResult.length <= 0" type="info" message="{{ 'msg-search-not-found' | i18n }}">
+		</totvs-page-alert>
+
+		<totvs-list-item id="ordem{{ordem['prodOrderCode']}}" ng-repeat="ordem in controller.listResult" class="tag-{{ordem['progressOrder']}}">
+
+			<!-- chave da ordem/split -->
+			<totvs-list-item-header>
+				<div class="row hidden-xs hidden-sm">
+					<!-- CABECALHO (APENAS MODO FULLSCREEN) -->
+					<div class="col-md-12">
+						<div class="col-md-3" style="padding-left: 0px;">
+							<totvs-list-item-title id="info-label" title="{{controller.formatOrdemLabel(ordem['logSfc'])}}" />
+						</div>
+						<div class="col-md-9" style="padding-left: 0px;">
+							<totvs-list-item-title id="info-label" title="{{controller.formatItemLabel(ordem['itemRefer'])}}" />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: -5px;">
+						<!-- ORDEM DE PRODUCAO -->
+						<div class="col-lg-3 col-md-3 col-sm-10 col-xs-10" style="padding-left: 0px; float: left">
+							<div class="col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px; padding-right: 0px;">
+								<totvs-list-item-title id="info-destaque" title="{{ordem['productionOrderString']}}" />
+							</div>
+							<!-- ITEM EM MODO MOBILE -->
+							<div class="col-md-12 col-sm-12 col-xs-12 hidden-md hidden-lg" 
+								style="padding-left: 0px;">
+								<totvs-list-item-info class="col-md-12"
+									title="{{ 'l-item' | i18n }}"
+									value="{{controller.formatItemCode(ordem['itemCode'], ordem['itemRefer'])}}">
+								</totvs-list-item-info>
+								<totvs-list-item-info class="col-md-12"
+									title="{{ 'l-workcenter' | i18n }}"
+									ng-if="ordem['logSfc']"
+									value="{{controller.formatCT(ordem['machineCode'])}}">
+								</totvs-list-item-info>
+								<totvs-list-item-info class="col-md-12"
+									title="{{ 'l-made' | i18n }}"
+									value="{{controller.formartNumber(ordem['prtProd'], 1)}}%">
+								</totvs-list-item-info>
+							</div>
+							<!-- CENTRO DE TRABALHO (APENAS MODO FULLSCREEN) -->
+							<div class="row col-md-12 col-sm-12 col-xs-12 hidden-xs hidden-sm" 
+								ng-if="ordem['logSfc']" 
+								style="padding-left: 0px; float: left">
+								<div class="col-md-12" style="margin-top: -2px;">
+									<totvs-list-item-title id="info-label" title="{{ 'l-workcenter' | i18n }}" />
+								</div>
+								<div class="col-md-12" style="margin-top: -5px;">
+									<totvs-list-item-title id="info-normal" title="{{controller.formatCT(ordem['machineCode'])}}" />
+								</div>
+							</div>
+						</div>
+						<!-- ITEM (MODO FULLSCREEN)-->
+						<div class="col-lg-6 col-md-5 col-sm-7 col-xs-7 hidden-xs hidden-sm" style="padding-left: 0px; float: left">
+							<div style="padding-left: 0px; padding-right: 0px">
+								<totvs-list-item-title id="info-normalG" title="{{controller.formatItemCode(ordem['itemCode'], ordem['itemRefer'])}}" />
+							</div>
+							<br>
+							<div class="row col-md-12 " style="padding-left: 0px;margin-top: -2px;">
+								<div class="col-md-12">
+									<totvs-list-item-title id="info-label" title="{{ 'l-description' | i18n }}" />
+								</div>
+								<div class="col-md-12">
+									<totvs-list-item-title id="info-normal" title="{{ordem['itemDescription']}}" />
+								</div>
+							</div>
+						</div>
+						<!-- PERCENTUAL (APENAS MODO FULLSCREEN) + REPORTAR -->
+						<div class="col-lg-3 col-md-4 col-sm-2 col-xs-2">
+							<div class="col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px;padding-right: 0px;">
+								<div class="col-md-10 hidden-xs hidden-sm">
+									<totvs-list-item-title id="info-normal" title="{{ 'l-made' | i18n }}" />
+									<br>
+									<totvs-list-item-title id="info-destaque" title="{{controller.formartNumber(ordem['prtProd'], 1)}}%" />
+								</div>
+								<div class="col-md-2 col-sm-12 col-xs-12" 
+									 style="padding-left: 0px;padding-right: 0px; margin-top: 10px">
+									<totvs-list-item-action class="col-md-12 col-sm-12 col-xs-12" 
+										limit-primary-action="1">
+
+										<action class="btn btn-primary btn-lg btn-block" 
+										ng-click="controller.openDetail(ordem['prodOrderCode'],ordem['opSfcCode'],ordem['splitCode'],ordem['machineCode'],ordem['machineGroup'])" 
+										style="font-size: 15px"
+										icon="glyphicon glyphicon-check">{{ 'l-point' | i18n }}</action>
+										<!--action class="btn btn-lg btn-block" 
+											icon="glyphicon glyphicon-check">{{ 'l-detailed' | i18n }}</action-->
+										
+									</totvs-list-item-action>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</totvs-list-item-header>
+
+			<!-- Informações extras -->
+			<totvs-list-item-content>
+			</totvs-list-item-content>
+
+			<!-- Informações adicionais -->
+			<totvs-list-item-content-detail>
+				<div class="col-md-12" style="padding-left: 0px;">
+					<div class="col-md-3" ng-if="ordem[ 'logSfc']">
+						<totvs-list-item-info class="col-md-12" title="{{ 'l-operation' | i18n }}" value="{{ordem['opCode']}}"></totvs-list-item-info>
+						<totvs-list-item-info class="col-md-12" title="{{ 'l-machine-group' | i18n }}" value="{{ordem['machineGroup']}}"></totvs-list-item-info>
+						<totvs-list-item-info class="col-md-12" title="{{ 'l-forecast' | i18n }}" value="{{controller.formartNumber(ordem['balanceTimeActivity'], 2)}} ({{ 'l-hours' | i18n }})"></totvs-list-item-info>
+						<totvs-list-item-info class="col-md-12" title="{{ 'l-preparation' | i18n }}" value="{{controller.formartNumber(ordem['balanceTimeSetup'], 2)}} ({{ 'l-hours' | i18n }})"></totvs-list-item-info>
+					</div>
+					<div class="col-md-3">
+						<totvs-list-item-info class="col-md-12" title="{{ 'l-site' | i18n }}" value="{{ordem['siteCode']}}"></totvs-list-item-info>
+						<totvs-list-item-info class="col-md-12" title="{{ 'l-start-date' | i18n }}" value="{{controller.formatDateChar(ordem['iniDate'])}}"></totvs-list-item-info>
+						<totvs-list-item-info class="col-md-12" title="{{ 'l-end-date' | i18n }}" value="{{controller.formatDateChar(ordem['endDate'])}}"></totvs-list-item-info>
+					</div>
+					<div class="col-md-3">
+						<totvs-list-item-info class="col-md-12" title="{{ 'l-productionorder-quantity' | i18n }}" value="{{controller.formartNumber(ordem['qtdOrd'], 4)}}"></totvs-list-item-info>
+						<totvs-list-item-info class="col-md-12" title="{{ 'l-prodction-quantity' | i18n }}" value="{{controller.formartNumber(ordem['qtdProd'], 4)}}"></totvs-list-item-info>
+						<totvs-list-item-info class="col-md-12" title="{{ 'l-scrap-quantity' | i18n }}" value="{{controller.formartNumber(ordem['qtdScrap'], 4)}}"></totvs-list-item-info>
+					</div>
+					<div class="col-md-3">
+						<totvs-list-item-info class="col-md-12" title="{{ 'l-order' | i18n }}" value="{{ordem['nrOrder']}}"></totvs-list-item-info>
+						<totvs-list-item-info class="col-md-12" title="{{ 'l-customer' | i18n }}" value="{{ordem['customer']}}"></totvs-list-item-info>
+					</div>
+				</div>
+			</totvs-list-item-content-detail>
+		</totvs-list-item>
+	</totvs-page-content>
+</totvs-page>
+
+<style>
+	.page-head .page-tags .tag-1:before {
+		background-color: #6ace39;
+	}
+
+	.page-content .list-item.tag-1 {
+		border-left: 5px solid #6ace39;
+	}
+
+	.page-head .page-tags .tag-2:before {
+		background-color: #f15a22;
+	}
+
+	.page-content .list-item.tag-2 {
+		border-left: 5px solid #f15a22;
+	}
+
+	#info-normal .title {
+		font-size: 18px;
+	}
+
+	#info-normalG .title {
+		font-size: 25px;
+	}
+
+	#info-label .title {
+		font-size: 12px;
+		color: #cccccc;
+	}
+
+	#info-destaque .title {
+		font-size: 25px;
+		font-weight: bold;
+	}
+
+	.lg-font .item-field {
+		font-size: 26px !important;
+	}
+</style>

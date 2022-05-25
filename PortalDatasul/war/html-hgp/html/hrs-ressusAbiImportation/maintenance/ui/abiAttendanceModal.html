@@ -1,0 +1,107 @@
+
+
+
+<style>
+    .extra-large .modal-dialog {
+        width :90%;
+        min-width: 800px;
+    }
+
+    .list-item.tag-1 {
+        border-left: 5px solid #D7DF01 !important;
+    }
+
+    .tag-1:before {
+        background-color: #D7DF01 !important;
+    }
+
+    .list-item.tag-2 {
+        border-left: 5px solid #4385F5 !important;
+    }
+
+    .tag-2:before {
+        background-color: #4385F5 !important;
+    }
+
+    .list-item.tag-3 {
+        border-left: 5px solid #5F04B4 !important;
+    }
+
+    .tag-3:before {
+        background-color: #5F04B4 !important;
+    }
+
+    .list-item.tag-4 {
+        border-left: 5px solid #5FB404 !important;
+    }
+
+    .tag-4:before {
+        background-color: #5FB404 !important;
+    }
+
+    .list-item.tag-5 {
+        border-left: 5px solid #FE9A2E !important;
+    }
+
+    .tag-5:before {
+        background-color: #FE9A2E !important;
+    }
+
+    .list-item.tag-6 {
+        border-left: 5px solid #FF0000 !important;
+    }
+
+    .tag-6:before {
+        background-color: #FF0000 !important;
+    }
+
+    
+</style>
+
+
+<totvs-modal-header>
+    Atendimentos da Abi ({{modalController.ressusAbiAttendanceListCount}})
+</totvs-modal-header>
+<totvs-modal-body style="height: 500px; overflow-y: auto;">
+
+	<totvs-page type="list">
+		<totvs-page-navbar>
+		 	<totvs-page-header>
+				<totvs-page-tags>
+			        <tag class="tag-4">Atendimento Importado</tag>
+			        <tag class="tag-6">Atendimento com Erro na Importação</tag>
+			    </totvs-page-tags>
+			<totvs-page-header>
+		<totvs-page-navbar>
+	 	
+	 
+        <totvs-page-content>
+            <totvs-list-item class="tag-{{attendance.codSit}}"
+                ng-repeat="attendance in modalController.ressusAbiAttendanceList">
+
+                <totvs-list-item-header>
+                    <totvs-list-item-title
+                        title="{{attendance.codTipAtendim}} - {{attendance.cddAtendim}} ">
+                    </totvs-list-item-title>
+                </totvs-list-item-header>
+
+                <totvs-list-item-content>
+                	<totvs-list-item-info title="Beneficiário" value="{{attendance.rotuloBeneficiario}}"></totvs-list-item-info>
+                	<totvs-list-item-info title="Prestador" value="{{attendance.rotuloPrestador}}"></totvs-list-item-info>
+                	<totvs-list-item-info title="Endereço" value="{{attendance.rotuloEndereco}}"></totvs-list-item-info>
+
+                    <totvs-list-item-info title="Data Internação" value="{{attendance.datInicAtendim | date : 'dd/MM/yyyy'}} - {{attendance.datFimAtendim | date : 'dd/MM/yyyy'}}"></totvs-list-item-info>
+                    <totvs-list-item-info title="Valor Total" value="{{attendance.valTotal}}"></totvs-list-item-info>
+                </totvs-list-item-content>
+            </totvs-list-item>
+
+            <totvs-list-pagination
+	            ng-if="modalController.ressusAbiAttendanceList.length < modalController.ressusAbiAttendanceListCount && modalController.ressusAbiAttendanceList.length"
+	            ng-click="modalController.search(true);">
+        	</totvs-list-pagination>
+        </totvs-page-content>
+    </totvs-page>
+</totvs-modal-body>
+<totvs-modal-footer>  
+    <button class="btn" ng-click="modalController.cancel()">Fechar</button>
+</totvs-modal-footer>

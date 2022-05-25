@@ -1,0 +1,36 @@
+<totvs-page-alert ng-if="controller.model.lastVendorItemPurchases.length <= 0"
+                  type="info"
+                  message="{{ 'l-not-last-purchases' | i18n }}">
+</totvs-page-alert>
+
+<totvs-table t-items="controller.model.lastVendorItemPurchases" 
+             id="gridLastVendorItemPurchase"
+             t-selectable="off"
+             t-items-as="item"
+             t-resizable="true"
+             ng-if="controller.model.lastVendorItemPurchases.length > 0">
+    <column title="{{:: 'l-unit-price' | i18n }}" width="120">
+        {{item.price | currency: item.currencyShorthand+" "}}
+    </column>
+    <column title="{{:: 'l-measure-unit' | i18n }}" width="120">
+        <span title="{{item.unitOfMeasure}} - {{item.unitOfMeasureDescription}}">{{item.unitOfMeasure}} - {{item.unitOfMeasureDescription}}</span>
+    </column>
+    <column title="{{:: 'l-date' | i18n }}" width="90">
+        {{item.purchaseDate | date:'dd/MM/yyyy'}}
+    </column>
+    <column title="{{:: 'l-pay-cond' | i18n }}" width="160">
+        <span title="{{item.paymentCondition}}">{{item.paymentCondition}}</span>
+    </column>
+    <column title="{{:: 'l-purchase-orderline' | i18n }}" width="120">
+        {{item.purchaseRequisitionId}}
+    </column>
+    <column title="{{:: 'l-vendor' | i18n }}" width="90">
+        {{item.supplierId}}
+    </column>
+    <column title="{{:: 'l-vendor-name' | i18n }}" width="250">
+        <span title="{{item.supplierDescription}}"> {{item.supplierDescription}}</span>
+    </column>
+    <column title="{{:: 'l-cnpj-cpf' | i18n }}" width="140">
+        {{item.supplierCNPJ}}
+    </column>
+</totvs-table>

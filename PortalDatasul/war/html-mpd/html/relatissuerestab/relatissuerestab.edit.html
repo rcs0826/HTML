@@ -1,0 +1,82 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">Home</breadcrumb>
+            <breadcrumb link="#/dts/mpd/relatissuerestab">{{'l-relac-customer-establishment' | i18n}}</breadcrumb>
+            <breadcrumb>{{'l-editar' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-editar' | i18n}}"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new="true"></totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form>
+            <fieldset>
+                <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <totvs-field totvs-select class="col-lg-6 col-md-6 col-sm-6 col-xs-6" data-ng-model="controller.model['cod-estabel']" select-id="cod-estabel"
+                        select-description="nome" select-service="mpd.estabelecSE.select" zoom-service="mpd.estabelecSE.zoom"
+                        select-init="{noCount: true}" ng-disabled="true" required canclean label="{{'l-estabel' | i18n }}" placeholder="{{'l-estabel' | i18n }}">
+                    </totvs-field>
+                </div>
+                <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <totvs-field totvs-select class="col-lg-6 col-md-6 col-sm-6 col-xs-6" return-object ng-change="controller.changeEmitente()"
+                        ng-model="controller.emitente" select-init="{filter: {'identific': '1|3'}}" select-id="nome-abrev" select-description="cod-emitente"
+                        select-service="mpd.emitente.zoom" zoom-service="mpd.emitente.zoom" zoom-init="{filter: {'identific': '1|3'}, setDefaultValue: false }"
+                        required canclean label="{{'l-emitente' | i18n }}" placeholder="{{'l-emitente' | i18n }}" ng-disabled="true">
+                    </totvs-field>
+                </div>
+                <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <totvs-field totvs-select class="col-lg-6 col-md-6 col-sm-6 col-xs-6" data-ng-model="controller.model['nat-operacao']" select-id="nat-operacao"
+                        select-description="denominacao" select-service="mpd.natur-oper.zoom" select-init="{noCount: true}" zoom-service="mpd.natur-oper.zoom"
+                        focus required canclean label="{{'l-natur-oper' | i18n }}" placeholder="{{'l-natur-oper' | i18n }}">
+                    </totvs-field>
+                </div>
+                <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <totvs-field totvs-select class="col-lg-6 col-md-6 col-sm-6 col-xs-6" data-ng-model="controller.model['nat-oper-ext']" select-id="nat-operacao"
+                        select-description="denominacao" select-service="mpd.natur-oper.zoom" select-init="{noCount: true}" zoom-service="mpd.natur-oper.zoom"
+                        required canclean label="{{'l-natur-oper-ext' | i18n }}" placeholder="{{'l-natur-oper-ext' | i18n }}">
+                    </totvs-field>
+                </div>
+                <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <totvs-field totvs-select class="col-lg-6 col-md-6 col-sm-6 col-xs-6" data-ng-model="controller.model['nr-tabpre']" select-id="nr-tabpre"
+                        select-description="descricao" select-service="mpd.tb-preco-inter.zoom" select-init="{noCount: true}"
+                        zoom-service="mpd.tb-preco-inter.zoom" canclean label="{{'l-price-table' | i18n }}" placeholder="{{'l-price-table' | i18n }}">
+                    </totvs-field>
+                </div>
+                <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <field type="decimal" class="col-lg-6 col-md-6 col-sm-6 col-xs-6" data-v-max="999.99" data-m-dec="2" required ng-model="controller.model['val-perc-desc-clien']"
+                        label="{{ 'l-per-des-item' | i18n }}" placeholder="{{ 'l-per-des-item' | i18n }}">
+                    </field>
+                </div>
+                <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <totvs-field totvs-select class="col-lg-6 col-md-6 col-sm-6 col-xs-6" data-ng-model="controller.model['cod-cond-pag']" select-id="cod-cond-pag"
+                        select-description="descricao" select-service="mpd.cond-pagto-inter.zoom" select-init="{noCount: true}"
+                        zoom-service="mpd.cond-pagto-inter.zoom" required canclean label="{{'l-cdn-cond-pag' | i18n }}" placeholder="{{'l-cdn-cond-pag' | i18n }}">
+                    </totvs-field>
+                </div>
+                <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <totvs-field totvs-select class="col-lg-6 col-md-6 col-sm-6 col-xs-6" data-ng-model="controller.model['cod-entrega']" select-match='[{"field":"cod-entrega"}]'
+                        select-id="cod-entrega" select-init="controller.model['nome-abrev']" select-service="mpd.loc-entr.zoom"
+                        zoom-service="mpd.loc-entr.zoom" zoom-init="controller.model['nome-abrev']" required canclean label="{{'l-local-entreg' | i18n }}"
+                        placeholder="{{'l-local-entreg' | i18n }}">
+                    </totvs-field>
+                </div>
+                <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <totvs-field totvs-select class="col-lg-6 col-md-6 col-sm-6 col-xs-6" data-ng-model="controller.model['cod-rep']" select-id="cod-rep"
+                        select-description="nome" select-service="mpd.repres.zoom" select-init="{noCount: true}" zoom-service="mpd.repres.zoom"
+                        required canclean label="{{'l-nome-ab-rep' | i18n }}" placeholder="{{'l-nome-ab-rep' | i18n }}">
+                    </totvs-field>
+                </div>
+                <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <totvs-field totvs-select class="col-lg-6 col-md-6 col-sm-6 col-xs-6" data-ng-model="controller.model['cod-canal-venda']"
+                        select-id="cod-canal-venda" select-description="descricao" select-service="mpd.canal-venda.zoom" select-init="{noCount: true}"
+                        zoom-service="mpd.canal-venda.zoom" required canclean label="{{'l-canal-venda' | i18n }}" placeholder="{{'l-canal-venda' | i18n }}">
+                    </totvs-field>
+                </div>
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

@@ -1,0 +1,39 @@
+<totvs-modal-header>
+    {{programacaoBacklogCtrl.model.cdEquipto}} - {{programacaoBacklogCtrl.model.ttSprintSelecionada.dataInicial | date:'dd/MM/yy'}} a {{programacaoBacklogCtrl.model.ttSprintSelecionada.dataFinal | date:'dd/MM/yy'}} 
+</totvs-modal-header >
+
+<totvs-modal-body>
+    <div class="row">
+        <totvs-page-child>
+            <totvs-page-content>
+                <totvs-tabset class="col-xs-12">
+                    <totvs-tab heading="{{ 'l-requisitions' | i18n }}" ng-click="programacaoBacklogCtrl.abaEventosAberto = false">
+                        <div ng-include="'/dts/mmi/html/sprint/backlog/programacao.backlog.ordens.html'"></div>
+                    </totvs-tab>
+                    <totvs-tab heading="{{ 'l-events' | i18n }}" ng-click="programacaoBacklogCtrl.buscaEventos()">
+                        <div ng-include="'/dts/mmi/html/sprint/backlog/programacao.backlog.eventos.html'"></div>
+                    </totvs-tab>
+                </totvs-tabset>
+            </totvs-page-content>
+        </totvs-page-child>
+    </div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" 
+            class="btn btn-default" 
+            data-ng-click="programacaoBacklogCtrl.fechar()">{{ 'l-close' | i18n }}
+    </button>
+
+    <button type="button"
+            class="btn btn-primary" 
+            data-ng-click="programacaoBacklogCtrl.confirmarOrdens()"
+            ng-if="!programacaoBacklogCtrl.abaEventosAberto">{{ 'l-include-period' | i18n }}
+    </button>
+    
+    <button type="button"
+            class="btn btn-primary" 
+            ng-if="programacaoBacklogCtrl.abaEventosAberto"
+            ng-click="programacaoBacklogCtrl.confirmarEventos()">{{ 'l-confirm' | i18n }}
+    </button>
+</totvs-modal-footer>

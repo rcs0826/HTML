@@ -1,0 +1,67 @@
+<totvs-page type="list">
+    <totvs-page-navbar>        
+
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{ 'l-ggf-by-cost-center' | i18n }}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title
+                title="{{i18n('l-ggf-by-cost-center', [], 'dts/mcs')}}">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-filter
+                                placeholder="{{i18n('l-cc-codigo', [], 'dts/mcs')}}"
+                                ng-submit="controller.listcostcenter()"
+                                ng-model="controller.quickSearchTextCCCode"
+                                advanced-search="controller.openAdvancedSearch" >
+                </totvs-page-header-operation-filter>
+                <div class="col-xs-12 col-md-7 col-lg-7" style="text-align: right;">
+                    <button class="btn btn-default"
+                            ng-click="controller.exportListCsv()">
+                            <span class="glyphicon glyphicon-export"></span>
+                            &nbsp;{{i18n('l-gerar-csv', [], 'dts/mcs')}}</button>                            
+                    <button class="btn btn-primary"
+                            ng-click="controller.openCcustoDetail(ccusto)" 
+                            ng-disabled="!controller.selectedItem">
+                            <span class="glyphicon glyphicon-stats"></span>
+                            &nbsp;{{i18n('l-detail', [], 'dts/mcs')}}</button>
+                </div>                                                    
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+        
+    <totvs-page-content>
+        <totvs-page-alert
+			ng-if="controller.ttctlist.length === 0"
+			type="info"
+			message="{{i18n('msg-record-not-found', [], 'dts/mcs')}}">
+        </totvs-page-alert>
+                
+        <totvs-page-detail  ng-if="controller.ttctlist.length != 0">
+
+                <totvs-grid
+                    grid-data="controller.ttctlist"
+                    grid-selected-item="controller.selectedItem"
+                    grid-options="controller.gridOptions"                    
+                    sortable="{ allowUnsort: true, mode: 'single'}"                    
+                    grid-height="600">                       
+                    <totvs-grid-detail>
+                        <totvs-grid                         
+                        grid-options="dataItem.gridggfOptions"
+                        grid-data="dataItem.ttDetalheGGF"                                                 
+                        grid-height="undefined"
+                        sortable="{ allowUnsort: true, mode: 'single'}">
+                        </totvs-grid>
+                    </totvs-grid-detail>
+                    
+                </totvs-grid>
+                            
+        </totvs-page-detail>
+
+    </totvs-page-content>
+
+</totvs-page>

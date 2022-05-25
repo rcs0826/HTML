@@ -1,0 +1,168 @@
+<totvs-page type="list" totvs-custom-element="customPage">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{ 'l-production-plan-item' | i18n }}</breadcrumb>
+        </totvs-page-breadcrumb>   
+		      
+        <totvs-page-header>
+            <totvs-page-header-title>
+                <div>
+                    <!-- DEFINIR ITENS DO PLANO -->
+                	<span>{{'l-production-plan-item' | i18n}}</span>
+                </div>
+            </totvs-page-header-title>
+            
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+            	 style="padding-top: 10px; padding-left: 0px;">
+            	 
+            	<fieldset class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <!-- PLANO DE PRODUÇÃO -->
+                    <totvs-field totvs-combo
+                                 label="{{ 'l-production-plan' | i18n }}"
+                                 t-options="controller.listSelectedProductionPlan"
+                                 ng-model="controller.productionPlanCode"
+                                 ng-change="controller.selectProductionPlan()"
+                                 class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                                 style="padding-left: 0px;"
+                                 canclean>
+                    </totvs-field>
+	            </fieldset>
+	            
+	            <div class="custom-filters-field col-lg-8 col-md-8 col-sm-12 col-xs-12">
+	                <!-- TIPO DO PLANO -->
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4"
+	                     style="padding-right: 0; text-align: right;">
+	                    <strong>{{ 'l-type-plan' | i18n }}:</strong>
+	                </div>
+	                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-8"
+	                     style="padding-right: 0;">
+	                    <span>{{controller.productionPlanSelectedObject.planType}}</span>
+	                </div>
+                    <!-- MULTI ESTABELECIMENTO -->
+	                <div class="col-lg-3 col-md-6 col-sm-3 col-xs-4"
+	                     style="padding-right: 0; text-align: right;">
+	                    <strong>{{ 'l-multi-site' | i18n }}:</strong>
+	                </div>
+	                <div class="col-lg-2 col-md-1 col-sm-1 col-xs-8"
+	                     style="padding-right: 0;">
+	                    <span>
+	                        {{controller.traduzLog(controller.productionPlanSelectedObject.isMultiSites)}}
+	                    </span>
+	                </div>
+	            </div>
+	                       
+	            <div class="custom-filters-field col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <!-- PERIODO INICIAL -->
+	                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4"
+	                     style="padding-right: 0; text-align: right;">
+	                    <strong>{{ 'l-initial-period' | i18n }}:</strong>
+	                </div>
+	                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8"
+	                     style="padding-right: 0;">
+	                    <span> {{controller.formatPeriod(controller.productionPlanSelectedObject.initialPeriod,controller.productionPlanSelectedObject.initialPeriodYear)}}   {{controller.formatDateRange(controller.iniPerDtIni,controller.iniPerDtFin)}}
+	                    </span>
+	                </div>
+	            </div>
+	            
+	            <div class="custom-filters-field col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <!-- PERIODO FINAL -->
+	                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4"
+	                     style="padding-right: 0; text-align: right;">
+	                    <strong>{{ 'l-end-period' | i18n }}:</strong>
+	                </div>
+	                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8"
+	                     style="padding-right: 0;">
+	                    <span>{{controller.formatPeriod(controller.productionPlanSelectedObject.finalPeriod,controller.productionPlanSelectedObject.finalPeriodYear)}}   {{controller.formatDateRange(controller.fimPerDtIni,controller.fimPerDtFin)}}
+	                    </span>
+	                </div>
+	            </div>
+			</div>
+			
+            <totvs-page-header-operation>
+            	<div class="col-xs-7 col-md-7 col-lg-7">
+           			<div class="operations ng-scope ng-isolate-scope">
+                        <!-- ADICIONAR -->
+           				<a class="btn btn-primary clickable"
+                           role="button"
+              			   style="display: table-cell;"
+                           ng-click="controller.setParamAdd()"
+                           ng-disabled="!controller.productionPlanCode">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            {{ 'btn-add' | i18n }}
+                        </a>
+                        <!-- IMPORTAR -->
+                        <a class="btn btn-default clickable"
+                           role="button"
+              			   style="display: table-cell;"
+                           ng-click="controller.openModalImport()"
+                           ng-disabled="!controller.productionPlanCode">
+                            <span class="glyphicon glyphicon-save-file"></span>
+                            {{ 'btn-import' | i18n }}
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- PESQUISA -->
+                <totvs-page-header-operation-filter placeholder="{{ 'l-search' | i18n }}"
+                                                    ng-submit="controller.loadDataItems(false,controller.productionPlanCode, true)"
+                                                    ng-model="controller.quickSearchTextItems"
+                                                    advanced-search="controller.openAdvancedSearchItem">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers"
+                                    ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+        </totvs-page-header>     
+    </totvs-page-navbar> 
+    
+    <totvs-page-content>
+        <totvs-page-alert
+            ng-if="controller.listItem.length === 0"
+            type="info"
+            message="{{ 'msg-record-not-found' | i18n }}">
+        </totvs-page-alert>
+        
+        <totvs-list-item ng-repeat="item in controller.listItem"
+                         totvs-custom-element="customListItem">
+            <totvs-list-item-header>
+                <!-- CODIGO DO ITEM -->
+                <totvs-list-item-title title="{{item['itemCode']}} - {{item['itemDescription']}}"
+                					   ng-click="controller.openModalAddNeeds(item['itemCode'], item['itemDescription'], item['reference'], item['siteCode'])"
+                                       style="cursor: pointer;">
+                </totvs-list-item-title>
+                <totvs-list-item-action limit-primary-action="1">
+                    <!-- NECESSIDADES -->
+                    <action ng-click="controller.openModalAddNeeds(item['itemCode'], item['itemDescription'], item['reference'], item['siteCode'])"
+                            class="btn-primary"
+                            ng-disabled="!controller.productionPlanCode">
+                        {{ 'l-needs' | i18n }}
+                    </action>
+                    <!-- EXCLUIR -->
+                    <action ng-click="controller.deleteItem(item)"
+                            icon="glyphicon glyphicon-trash">
+                    </action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+            
+            <!-- REFERENCIA -->
+            <totvs-list-item-info title="{{ 'l-reference' | i18n }}"
+                                  value="{{item['reference']}}">
+            </totvs-list-item-info>
+            
+            <!-- UNIDADE DE MEDIDA -->
+            <totvs-list-item-info title="{{ 'l-unit-of-measure' | i18n }}"
+                                  value="{{item['unitOfMeasure']}}">
+            </totvs-list-item-info>
+            
+            <!-- ESTABELECIMENTO -->
+            <totvs-list-item-info title="{{ 'l-site' | i18n }}"
+                                  value="{{item['siteCode']}}"
+                                  ng-if="controller.isMultiSites">
+            </totvs-list-item-info>
+        </totvs-list-item>
+        <totvs-list-pagination ng-if="controller.listItem.length < controller.totalRecordsItems && controller.listItem.length && controller.hasMoreItems"
+                               ng-click="controller.loadDataItems(true,controller.productionPlanCode, false);">
+        </totvs-list-pagination>
+    </totvs-page-content>
+</totvs-page>

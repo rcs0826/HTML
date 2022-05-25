@@ -1,0 +1,54 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>  
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mmi/event">{{'l-event' | i18n}}</breadcrumb>
+            <breadcrumb>{{ controller.breadcrumbTitle }}</breadcrumb>
+        </totvs-page-breadcrumb>   
+        <totvs-page-header>
+            <totvs-page-header-title title="{{controller.headerTitle}}"></totvs-page-header-title>       
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new="{{controller.idDisabled}}">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>   
+    </totvs-page-navbar>
+    <totvs-page-content>     
+        <totvs-page-form>
+            <fieldset>
+                <field type="input"
+                	   name-id="cod-evento"
+                	   data-ng-disabled="controller.idDisabled"
+                       class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                       data-ng-model="controller.model['cod-evento']"
+                       maxlength="8"
+                       required 
+                       focus>
+                    <label>{{ 'l-event' | i18n }}</label>
+                </field>
+                <field type="input"
+                	   name-id="des-evento"
+                       class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                       data-ng-model="controller.model['des-evento']"
+                       maxlength="30"
+                       required>
+                    <label>{{ 'l-description' | i18n }}</label>
+                </field>                
+                <field type="combo" 
+                	   ng-model="controller.model['idi-evento']"	
+                	   class="col-lg-4 col-md-4 col-sm-4 col-xs-12"				
+					   ng-options="item.codigo as item.descricao for item in controller.listaTipoEvento"
+					   required>
+					<label>{{'l-event-type' | i18n}}</label>
+				</field>				
+				<field type="combo" 
+                	   ng-model="controller.model['idi-valor']"		
+                	   class="col-lg-4 col-md-4 col-sm-4 col-xs-12"			
+					   ng-options="item.codigo as item.descricao for item in controller.listaTipoValor"
+					   required>
+					<label>{{'l-value-type' | i18n}}</label>
+				</field>
+            </fieldset>                       
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

@@ -1,0 +1,140 @@
+<totvs-modal-header>
+	{{ controller.editMode === true ? controller.model.nom_quest : 'btn-new-question' | i18n : [] : 'dts/crm' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<div class="row">
+
+		<totvs-tabset>
+
+			<tabset>
+
+				<tab heading="{{ 'l-question' | i18n: []: 'dts/crm' }}">
+
+					<br/>
+
+					<fieldset class="row">
+
+						<field type="select"
+								class="{{ (controller.model.ttTipo.num_id === 9) ? 'col-xs-12' : 'col-xs-10' }}"
+                                canclean="undefined"
+								ng-model="controller.model.ttTipo"
+								ng-change="controller.changeQuestionType(controller.model)"
+								ng-disabled="controller.editMode === true && controller.disabledEditionTypes(controller.model.ttTipo.num_id)"
+								required>
+
+							<label>{{ 'l-type' | i18n : [] : 'dts/crm' }}</label>
+
+							<include>
+								<ui-select-match placeholder="{{ 'l-type' | i18n : [] : 'dts/crm' }}">
+									{{ $select.selected.nom_component }}
+								</ui-select-match>
+								<ui-select-choices repeat="type in controller.types | filter: $select.search track by $index">
+									<span ng-bind-html="type.nom_component | highlight: $select.search"></span>
+								</ui-select-choices>
+							</include>
+
+						</field>
+
+						<field type="checkbox"
+								class="col-xs-2"
+								ng-model="controller.model.log_obrig"
+								ng-if="controller.model.ttTipo.num_id !== 9">
+							<label>{{ 'l-required' | i18n: []: 'dts/crm' }} </label>
+						</field>
+
+						<field type="input"
+								class="col-xs-12"
+								canclean="undefined"
+								ng-model="controller.model.nom_quest"
+								maxlength="100"
+								placeholder="{{ (controller.model.ttTipo.num_id === 9 ? 'l-title' : 'l-question') | i18n: [] : 'dts/crm' }}"
+								ng-required="controller.model.ttTipo.num_id !== 9">
+							<label>{{ (controller.model.ttTipo.num_id === 9 ? 'l-title' : 'l-question') | i18n: [] : 'dts/crm' }}</label>
+						</field>
+
+						<field type="textarea"
+								class="col-xs-12"
+								ng-model="controller.model.dsl_quest"
+								maxlength="1000"
+								ng-required="controller.model.ttTipo.num_id === 9">
+							<label>{{ 'l-description' | i18n: []: 'dts/crm' }} </label>
+						</field>
+
+					</fieldset>
+
+				</tab>
+
+				<tab heading="{{ 'l-attribute' | i18n: []: 'dts/crm' }}"
+					ng-click="controller.selectedTab = 'col';"
+					ng-if="controller.model.ttTipo.is_multi_value === true &&
+						   (controller.model.ttTipo.num_id !== 8 &&
+						   controller.model.ttTipo.num_id !== 12 &&
+						   controller.model.ttTipo.num_id !== 13 &&
+						   controller.model.ttTipo.num_id !== 14) ">
+
+					<ng-include src="'/dts/crm/html/script/page/question/attribute/attribute.form.html'"></ng-include>
+
+					<totvs-page-alert type="info"
+										ng-if="!controller.model.ttQuestionarioQuestaoAtributo.length"
+										message="{{ 'msg-not-found-attributes' | i18n: []: 'dts/crm' }}">
+					</totvs-page-alert>
+
+				</tab>
+
+				<tab heading="{{ 'l-colunm' | i18n: []: 'dts/crm' }}"
+					ng-click="controller.selectedTab = 'col';"
+					ng-if="(controller.model.ttTipo.num_id === 8
+						   || controller.model.ttTipo.num_id === 12
+						   || controller.model.ttTipo.num_id === 13
+						   || controller.model.ttTipo.num_id === 14)">
+
+					<ng-include src="'/dts/crm/html/script/page/question/attribute/attribute.form.html'"></ng-include>
+
+					<totvs-page-alert type="info"
+										ng-if="!controller.model.ttQuestionarioQuestaoAtributo || (controller.model.ttQuestionarioQuestaoAtributo | filter: controller.isColunmFilter).length <= 0"
+										message="{{ 'msg-not-found-colunms' | i18n: []: 'dts/crm' }}">
+					</totvs-page-alert>
+
+				</tab>
+
+				<tab heading="{{ 'l-rows' | i18n: []: 'dts/crm' }}"
+					ng-click="controller.selectedTab = 'row';"
+					ng-if="(controller.model.ttTipo.num_id === 8
+						   || controller.model.ttTipo.num_id === 12
+						   || controller.model.ttTipo.num_id === 13
+						   || controller.model.ttTipo.num_id === 14)">
+
+					<ng-include src="'/dts/crm/html/script/page/question/attribute/attribute.form.html'"></ng-include>
+
+					<totvs-page-alert type="info"
+										ng-if="!controller.model.ttQuestionarioQuestaoAtributo || (controller.model.ttQuestionarioQuestaoAtributo | filter: controller.isRowFilter).length <= 0"
+										message="{{ 'msg-not-found-rows' | i18n: []: 'dts/crm' }}">
+					</totvs-page-alert>
+
+				</tab>
+
+			</tabset>
+
+		</totvs-tabset>
+
+	</div>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default"
+			ng-click="controller.cancel()">
+		{{ 'btn-cancel' | i18n }}
+	</button>
+	<button class="btn btn-default"
+			ng-click="controller.save(true)"
+			ng-if="controller.editMode === false;">
+		{{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-primary"
+			ng-click="controller.save()">
+		{{ 'btn-save' | i18n: []: 'dts/crm' }}
+	</button>
+</totvs-modal-footer>

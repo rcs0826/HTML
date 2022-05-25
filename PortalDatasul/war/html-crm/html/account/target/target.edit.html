@@ -1,0 +1,58 @@
+<style scoped="true">
+
+	.page-disclaimers .label {
+		padding: 4px;
+		margin-right: 5px;
+		margin-bottom: 5px;
+		display: inline-block !important;
+	}
+
+</style>
+
+<totvs-modal-header>
+	{{'l-target' | i18n : [] : 'dts/crm/' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<totvs-field totvs-input
+					 class="col-xs-12"
+					 label="{{'l-name' | i18n : [] : 'dts/crm'}}"
+					 ng-model="controller.model.nom_public_alvo"
+					 maxlength="40"
+					 ng-required="true"
+					 canclean="undefined">
+		</totvs-field>
+
+		<br/>
+
+		<totvs-divider></totvs-divider>
+
+		<totvs-page-detail class="crm-page-details">
+
+			<totvs-page-detail-info
+				class="col-xs-12"
+				title="{{ l-target-size | i18n : [] : 'dts/crm' }}"
+				value-break="false">
+
+				{{ 'l-target-size' | i18n : [] : 'dts/crm' }}: {{ controller.accountsSize }}
+
+			</totvs-page-detail-info>
+
+		</totvs-page-detail>
+
+		<totvs-page-disclaimers class="col-xs-12"
+								ng-if="controller.disclaimers.length > 0"
+								disclaimer-list="controller.disclaimers">
+		</totvs-page-disclaimers>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-primary" ng-click="controller.save()" ng-if="controller.isInvalidDisclaimersControl === false">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

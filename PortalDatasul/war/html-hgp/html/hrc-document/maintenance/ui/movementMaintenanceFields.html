@@ -1,0 +1,915 @@
+
+<totvs-page-form>
+    <div style="float: left; width: 100%">
+        <field  type="combo" required
+                data-ng-model="controller.movement.cdTipoInsumo"
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                ng-change="controller.onInputTypeChange()"
+                ng-disabled="controller.movement.isEditMovement == true
+                          && controller.movement.tpMovimento != 'INSU'"
+                ng-if="!(controller.transaction.lgProcedimentoUnico == true)"
+                ng-options="o.cdTipoInsumo as o.rotulo for o in controller.inputTypes"
+                label="Tipo">
+        </field>
+
+        <totvs-field totvs-select id="movementZoom"
+                name-id="movementZoom"
+                ng-model="controller.movementReturnObject"
+                return-object
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-10"
+                label="Movimento" 
+                canclean
+                select-service="hrc.movementZoomController"
+                select-init="{filters: controller.movementFixedFilters}"
+                zoom-service="hrc.movementZoomController"
+                zoom-init="{filters: controller.movementFixedFilters}"
+                select-id="formattedCodeWithType" 
+                select-description="dsMovimento"
+                select-match='[{"field": "formattedCodeWithType", "separator": " - "}, {"field": "dsMovimento"}]'
+                ng-change="controller.onMovementSelect()" required
+                ng-disabled="controller.isMovementEnabled == false
+                           || controller.action == 'DETAIL'
+                           || (controller.movement.isEditMovement == true
+                           && controller.selectedMovement.tpMovimento === 'PACOTE')"
+                ng-if="(controller.action != 'DETAIL' 
+                     || controller.transaction.lgProcedimentoUnico == true)
+                    && !(controller.consultationMovementList.length > 0)"> 
+        </totvs-field>
+
+        <span class="input-group-btn" ng-if="controller.selectedMovement.tpMovimento === 'PACOTE'">
+            <button class="btn btn-default" role="button" type="button"
+                           title="Itens do Pacote"
+                           data-ng-click="controller.openPackageMovements(controller.movement, true)" 
+                           style="margin-top: 30px; margin-left: -18px;">
+                <span class="glyphicon glyphicon-list-alt"></span>
+            </button>
+        </span>
+
+        </div>
+<!-- && controller.movement.isEditMovement != true -->
+    <div ng-if="controller.action != 'DETAIL'
+            && controller.selectedMovement.cdMovimento > 0
+            && controller.transaction.lgProcedimentoUnico == false
+            && controller.transaction.lgTransacaoConsulta == false"
+         class="row col-lg-12 col-md-12 col-sm-12 col-xs-12"
+         style="padding-right: 0px;" totvs-custom-element="customMovmentItem">
+
+        <field  type="input" maxlength="80" required
+                label="Descrição de Insumo Genérico"
+                data-ng-model="controller.movement.dsInsumoGenerico"
+                class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                ng-if="controller.selectedMovement.movementObject.lgGenericoPTU === true">
+        </field>  
+
+        <field  type="input"
+                label="fake" style="visibility: hidden"
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                ng-if="controller.selectedMovement.movementObject.lgGenericoPTU === true">
+        </field>
+
+        <totvs-field
+            totvs-decimal
+            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+            ng-model="controller.movement.qtMovimento"
+            m-dec="0"                    
+            v-max="8"
+            ng-if="controller.selectedMovement.tpMovimento == 'PACOTE'"
+            label="Quantidade" 
+            required>
+        </totvs-field> 
+
+        <field type="date"
+                class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                data-ng-model="controller.movement.dtRealizacao"
+                ng-show="controller.transaction.lgDataRealizacaoUnica === false"
+                ng-change="controller.onRealizationDateChange()"
+                label="Data de {{controller.selectedMovement.tpMovimento == 'PACOTE' ? 'Execução' : 'Realização'}}" required
+                start-date="controller.movementReturnObject.dtInicioVigencia"
+                end-date="controller.today">
+        </field>
+
+        <field type="time"
+               class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+               data-ng-model="controller.movement.hrRealizacao"
+               ng-if="controller.transaction.lgDataRealizacaoUnica === false"
+               ng-change="controller.onRealizationTimeChange()"
+               ng-model-options="{ debounce: 0 }"
+               label="Hora de {{controller.selectedMovement.tpMovimento == 'PACOTE' ? 'Execução' : 'Realização Inicial'}}" required>
+        </field>
+
+        <field type="time"
+               class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+               data-ng-model="controller.movement.hrRealizacaoFim"
+               ng-if="controller.transaction.lgDataRealizacaoUnica === false
+                   && controller.selectedMovement.tpMovimento !== 'PACOTE'"    
+               label="Hora Realização Final" required>
+        </field>
+
+        <field  type="input"
+                label="fake" style="visibility: hidden"
+                ng-if="controller.transaction.lgDataRealizacaoUnica === false
+                    && controller.transaction.inTrataUrgencia !== 7"
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        </field>
+
+        <field  type="combo"
+                ng-if="controller.selectedMovement.tpMovimento === 'PROC'"
+                data-ng-model="controller.movement.cdViaAcesso"
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                ng-options="o.cdViaAcesso as o.rotulo for o in controller.accessWays"
+                ng-change="controller.recalculateMovementValues(null, 'cdViaAcesso')"
+                label="Via de Acesso" required
+                ng-disabled="controller.action === 'DETAIL'">
+        </field>
+
+        <field  type="combo"
+                ng-if="controller.selectedMovement.tpMovimento === 'PACOTE'
+                    && controller.selectedMovement.movementObject.lgPedeViaAcesso == true"
+                data-ng-model="controller.movement.cdViaAcesso"
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                ng-options="o.cdViaAcesso as o.rotulo for o in controller.accessWaysOptional"
+                label="Via de Acesso"
+                ng-disabled="controller.action === 'DETAIL'">
+        </field>
+
+        <field  type="combo"
+                ng-if="controller.selectedMovement.tpMovimento === 'PROC'"
+                data-ng-model="controller.movement.tpTecUtil"
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                ng-options="o.cdnTec as o.rotulo for o in controller.tissTechniques"
+                label="Técnica Utilizada"
+                ng-disabled="controller.action === 'DETAIL'">
+        </field>
+
+        <field  type="input"
+                label="fake" style="visibility: hidden"
+                ng-if="controller.transaction.lgDataRealizacaoUnica === false
+                    && controller.transaction.inTrataUrgencia !== 7
+                    && controller.selectedMovement.tpMovimento === 'PROC'"
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        </field>  
+
+        <field  type="combo"
+                ng-if="controller.transaction.lgUtilizaPercentual === true 
+                && controller.paramrc.lgNovaValorizacao === false
+                && controller.selectedMovement.tpMovimento === 'PROC'
+                && controller.movement.fatoresRedAcres !== undefined
+                && (controller.document.dtRealizacao > 0
+                || controller.movement.dtRealizacao > 0)"
+                data-ng-model="controller.movement.cdTipoPercentual"
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                ng-options="o.cdTipoPercentual as o.rotuloTipPerc for o in controller.movement.fatoresRedAcres"
+                ng-change="controller.recalculateMovementValues(null, 'cdTipoPercentual')"
+                label="Fator de Redução/Acréscimo"
+                ng-disabled="controller.action === 'DETAIL'">
+        </field> 
+
+        <div ng-if="controller.selectedMovement.tpMovimento === 'INSU'
+                 && controller.selectedMovement.movementObject.lgOpme === true">
+
+            <field type="input"
+                   class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                   data-ng-model="controller.movement.cdAnvisa"
+                   label="Código Anvisa"
+                   ng-disabled="controller.selectedMovement.movementObject.lgGenericoPTU === false
+                            || (controller.selectedMovement.movementObject.lgGenericoPTU === true
+                             && controller.selectedMovement.movementObject.lgOpme === false)">
+            </field>
+
+            <field type="input"
+                   class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                   data-ng-model="controller.movement.desReferMaterFabrican"
+                   label="Referência Material Fabricante"
+                   ng-disabled="controller.selectedMovement.movementObject.lgGenericoPTU === false
+                            || (controller.selectedMovement.movementObject.lgGenericoPTU === true
+                             && controller.selectedMovement.movementObject.lgOpme === false)">
+            </field>            
+        
+
+            <field type="input"
+                   class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                   data-ng-model="controller.movement.nrNotaFornecedor"
+                   label="Número Nota Fornecedor">
+            </field>
+        </div>
+
+    </div>
+
+    <div ng-if="controller.selectedMovement.cdMovimento > 0
+                && (controller.document.dtRealizacao > 0
+                 || controller.movement.dtRealizacao > 0)
+                && controller.transaction.lgProcedimentoUnico == false
+                && controller.transaction.lgTransacaoConsulta == false">
+        <div style="padding-left: 20px">
+            <legend style="font-size: 15px; font-weight: bold;">Prestador(es)</legend>    
+        </div>
+
+        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11"
+             style="padding-top: 10px; padding-bottom: 25px; border: 2px solid #d0d0d0; 
+                    border-radius: 25px; margin-left: 35px; margin-bottom: 10px;"
+             ng-repeat="prov in controller.movement.providers track by $index">
+
+           <totvs-field totvs-select label="Prestador" 
+                  id="movementProvider{{$index}}"      
+                  name-id="movementProvider{{$index}}"
+                  required canclean
+                    ng-model="prov.cdUnidCdPrestador"
+                    select-service="global.providerZoomController"
+                    zoom-service="global.providerZoomController"
+                    select-id="cdUnidCdPrestador" 
+                    select-description="nmPrestador"
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-change="controller.onMovementProviderSelect(prov, $index)"
+                    ng-disabled="controller.transaction.lgPrestadorUnico === true">
+            </totvs-field>
+
+            <field  type="input"
+                    label="fake" style="visibility: hidden"
+                    ng-if="controller.selectedMovement.tpMovimento === 'PACOTE'"
+                    class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+            </field> 
+
+            <totvs-field
+                totvs-decimal 
+                id="providerQuantity{{$index}}"
+                name-id="providerQuantity{{$index}}"
+                class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                ng-model="prov.qtCobrado"
+                m-dec="0"                    
+                v-max="8"
+                ng-if="controller.selectedMovement.tpMovimento == 'PROC'
+                    && (!(prov.nrProcesso > 0)
+                       || controller.transaction.lgPedeValorCobradoProced == true)"
+                label="Quantidade {{(prov.nrProcesso > 0 ? 'Cobrada' : '')}}" 
+                required>
+            </totvs-field>
+
+            <totvs-field
+                totvs-decimal
+                id="providerQuantity{{$index}}"
+                name-id="providerQuantity{{$index}}"
+                class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                ng-model="prov.qtCobrado"
+                m-dec="4"                    
+                v-max="3"
+                ng-if="controller.selectedMovement.tpMovimento == 'INSU'
+                    && (!(prov.nrProcesso > 0)
+                        || controller.transaction.lgPedeValorCobradoInsumo == true)"
+                label="Qtd Cobrada ({{controller.selectedMovement.movementObject.umInsumo}})" 
+                required>
+            </totvs-field> 
+
+            <div ng-if="(controller.paramrc.lgSeparaValoresInterc == false
+                     || prov.cdUnidade == controller.paramecp.cdUnimed)
+                     && ((controller.selectedMovement.tpMovimento == 'PROC'
+                       && controller.transaction.lgPedeValorCobradoProced == true)
+                      || (controller.selectedMovement.tpMovimento == 'INSU'
+                       && controller.transaction.lgPedeValorCobradoInsumo == true))">
+
+                <totvs-field
+                    totvs-decimal
+                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                    ng-model="prov.vlCobrado"
+                    m-dec="2"                    
+                    v-max="9"
+                    ng-change="controller.calculateProviderOtherValues(prov)"
+                    ng-blur="controller.calculateProviderOtherValues(prov)"
+                    label="Valor Cobrado">
+                </totvs-field>
+
+                <totvs-field
+                    totvs-decimal
+                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                    ng-model="prov.vlTaxaCobrado"
+                    m-dec="2"
+                    v-max="9"                    
+                    ng-if="prov.cdPrestador > 0
+                        && prov.cdUnidade != controller.paramecp.cdUnimed"
+                    ng-change="controller.calculateProviderOtherValues(prov)"
+                    ng-blur="controller.calculateProviderOtherValues(prov)"
+                    label="Valor Taxa Cobrado">
+                </totvs-field>
+            </div>
+            
+            <div style="float: left"
+                 ng-if="controller.paramrc.lgSeparaValoresInterc == true
+                     && prov.cdPrestador > 0
+                    &&  prov.cdUnidade != controller.paramecp.cdUnimed
+                     && controller.selectedMovement.tpMovimento == 'PROC'
+                     && controller.transaction.lgPedeValorCobradoProced == true">              
+				
+				<totvs-field
+                    totvs-decimal
+                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                    ng-model="prov.valHonorariosCobrado"
+                    m-dec="2"
+                    v-max="9"  
+                    ng-change="controller.calculateProviderOtherValues(prov)"
+                    ng-blur="controller.calculateProviderOtherValues(prov)"                     
+                    label="Valor Serviço Cobrado">
+                </totvs-field>                            
+
+                <totvs-field
+                    totvs-decimal
+                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                    ng-model="prov.valTaxaHonoCobrado"
+                    m-dec="2"
+                    v-max="9"    
+                    ng-change="controller.calculateProviderOtherValues(prov)"
+                    ng-blur="controller.calculateProviderOtherValues(prov)"                
+                    label="Valor Taxa Serv. Cobrado">
+                </totvs-field>                              
+
+                <totvs-field
+                    totvs-decimal
+                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                    ng-model="prov.valOperacionalCobrado"
+                    m-dec="2"
+                    v-max="9"
+                    ng-change="controller.calculateProviderOtherValues(prov)"
+                    ng-blur="controller.calculateProviderOtherValues(prov)"                    
+                    label="Valor CO Cobrado">
+                </totvs-field>
+
+                <totvs-field
+                    totvs-decimal
+                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                    ng-model="prov.valTaxaOperCobrado"
+                    m-dec="2"
+                    v-max="9" 
+                    ng-change="controller.calculateProviderOtherValues(prov)"
+                    ng-blur="controller.calculateProviderOtherValues(prov)"                    
+                    label="Valor Taxa CO Cobrado">
+                </totvs-field>
+
+                <totvs-field
+                    totvs-decimal
+                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                    ng-model="prov.valFilmeCobrado"
+                    m-dec="2"
+                    v-max="9"      
+                    ng-change="controller.calculateProviderOtherValues(prov)"
+                    ng-blur="controller.calculateProviderOtherValues(prov)"                 
+                    label="Valor Filme Cobrado">
+                </totvs-field>
+
+                <totvs-field
+                    totvs-decimal
+                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                    ng-model="prov.valTaxaFilmeCobrado"
+                    m-dec="2"
+                    v-max="9" 
+                    ng-change="controller.calculateProviderOtherValues(prov)"
+                    ng-blur="controller.calculateProviderOtherValues(prov)"                    
+                    label="Valor Taxa Filme Cobrado">
+                </totvs-field>
+            </div>
+
+            <!-- Atencao: Existem dois campos de cbo-especialidade -->
+            <field  type="combo"
+                    data-ng-model="prov.cdCboEspecialid"
+                    ng-if="(controller.selectedMovement.tpMovimento == 'PROC'
+                        && controller.transaction.lgPedeValorCobradoProced == true)
+                        || (controller.selectedMovement.tpMovimento == 'INSU'
+                        && controller.transaction.lgPedeValorCobradoInsumo == true)"
+                    label="Código CBO X Especialidade"
+                    class="col-lg-6 col-md-6 col-sm-6 col-md-12"
+                    ng-change="controller.recalculateMovementValues($index, 'cdCboEspecialid')"
+                    ng-options="o.cdCboEspecialid as o.dsCboEspecialid for o in prov.cbosSpecialties"
+                    ng-disabled="(!(prov.cbosSpecialties.length > 0))">
+            </field>
+
+            <totvs-field
+                totvs-decimal
+                class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                ng-model="prov.qtMovimento"
+                m-dec="0"
+                v-max="8"                    
+                ng-blur="controller.recalculateMovementValues($index, 'qtMovimento')"
+                ng-if="prov.nrProcesso > 0 
+                    && controller.selectedMovement.tpMovimento == 'PROC'"
+                label="Quantidade" 
+                required>
+            </totvs-field>
+
+            <totvs-field
+                totvs-decimal
+                class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                ng-model="prov.qtMovimento"
+                m-dec="4"
+                v-max="8"                    
+                ng-blur="controller.recalculateMovementValues($index, 'qtMovimento')"
+                ng-if="prov.nrProcesso > 0 
+                    && controller.selectedMovement.tpMovimento == 'INSU'"
+                label="Quantidade ({{controller.selectedMovement.movementObject.umInsumo}})" 
+                required>
+            </totvs-field>
+
+            <div ng-if="prov.nrProcesso > 0">
+
+                <totvs-field
+                    totvs-decimal
+                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                    ng-model="prov.vlMovimento"
+                    ng-blur="controller.recalculateMovementValues($index, 'vlMovimento')"
+                    m-dec="2"
+                    v-max="9"                    
+                    ng-if="(controller.paramrc.lgSeparaValoresInterc == false
+                         || prov.cdUnidade == controller.paramecp.cdUnimed)
+                         && ((controller.selectedMovement.tpMovimento == 'PROC'
+                           && controller.transaction.lgPedeValorCobradoProced == true)
+                          || (controller.selectedMovement.tpMovimento == 'INSU'
+                           && controller.transaction.lgPedeValorCobradoInsumo == true))"
+                    ng-change="controller.calculateProviderOtherValues(prov)"
+                    ng-blur="controller.calculateProviderOtherValues(prov)"   
+                    ng-disabled="(!(controller.originalMovement.lgManual))"
+                    label="Valor {{controller.selectedMovement.tpMovimento == 'PROC' ? 'Procedimento' : 'Insumo'}}">
+                </totvs-field>
+
+                <totvs-field
+                    totvs-decimal
+                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                    ng-model="prov.vlTaxaMovimento"
+                    m-dec="2"
+                    v-max="9"                    
+                    ng-if="prov.preserv.lgAlteraValorTaxa == true"
+                    ng-disabled="(!(controller.originalMovement.lgManual))"
+                    label="Valor Taxa {{controller.selectedMovement.tpMovimento == 'PROC' ? 'Procedimento' : 'Insumo'}}">
+                </totvs-field>
+
+                <div style="float: left"
+                     ng-if="controller.paramrc.lgSeparaValoresInterc == true
+                         && prov.cdUnidade != controller.paramecp.cdUnimed
+                         && controller.selectedMovement.tpMovimento == 'PROC'
+                         && controller.transaction.lgPedeValorCobradoProced == true">
+
+                    <totvs-field
+                        totvs-decimal
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        ng-model="prov.valHonorariosMovimento"
+                        m-dec="2"
+                        v-max="9"
+                        ng-change="controller.calculateProviderOtherValues(prov)"
+                        ng-blur="controller.calculateProviderOtherValues(prov)"
+                        label="Valor Serviço">
+                    </totvs-field>
+
+                    <totvs-field
+                        totvs-decimal
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        ng-model="prov.valTaxaHonoMovimento"
+                        m-dec="2"
+                        v-max="9"
+                        ng-change="controller.calculateProviderOtherValues(prov)"
+                        ng-blur="controller.calculateProviderOtherValues(prov)" 
+                        label="Valor Taxa Serviço">
+                    </totvs-field>
+
+                    <totvs-field
+                        totvs-decimal
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        ng-model="prov.valOperacionalMovimento"
+                        m-dec="2"
+                        v-max="9"
+                        ng-change="controller.calculateProviderOtherValues(prov)"
+                        ng-blur="controller.calculateProviderOtherValues(prov)"   
+                        label="Valor CO">
+                    </totvs-field>
+
+                    <totvs-field
+                        totvs-decimal
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        ng-model="prov.valTaxaOperMovimento"
+                        m-dec="2"
+                        v-max="9"
+                        ng-change="controller.calculateProviderOtherValues(prov)"
+                        ng-blur="controller.calculateProviderOtherValues(prov)"   
+                        label="Valor Taxa CO">
+                    </totvs-field>
+
+                    <totvs-field
+                        totvs-decimal
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        ng-model="prov.valFilmeMovimento"
+                        m-dec="2"
+                        v-max="9"
+                        ng-change="controller.calculateProviderOtherValues(prov)"
+                        ng-blur="controller.calculateProviderOtherValues(prov)" 
+                        label="Valor Filme">
+                    </totvs-field>
+
+                    <totvs-field
+                        totvs-decimal
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        ng-model="prov.valTaxaFilmeMovimento"
+                        m-dec="2"
+                        v-max="9"
+                        ng-change="controller.calculateProviderOtherValues(prov)"
+                        ng-blur="controller.calculateProviderOtherValues(prov)"
+                        label="Valor Taxa Filme">
+                    </totvs-field>
+                </div>
+            </div>
+
+            <!-- Atencao: Existem dois campos de cbo-especialidade -->
+            <field  type="combo"
+                    data-ng-model="prov.cdCboEspecialid"
+                    ng-if="!((controller.selectedMovement.tpMovimento == 'PROC'
+                        && controller.transaction.lgPedeValorCobradoProced == true)
+                        || (controller.selectedMovement.tpMovimento == 'INSU'
+                        && controller.transaction.lgPedeValorCobradoInsumo == true))"
+                    label="Código CBO X Especialidade"
+                    class="col-lg-6 col-md-6 col-sm-6 col-md-12"
+                    ng-change="controller.recalculateMovementValues($index, 'cdCboEspecialid')"
+                    ng-options="o.cdCboEspecialid as o.dsCboEspecialid for o in prov.cbosSpecialties"
+                    ng-disabled="(!(prov.cbosSpecialties.length > 0))">
+            </field>
+
+            <field  type="combo" id="providerLevel{{$index}}"
+                    name-id="providerLevel{{$index}}"
+                    ng-if="controller.selectedMovement.tpMovimento === 'PACOTE'
+                    || controller.selectedMovement.tpMovimento === 'PROC'"
+                    data-ng-model="prov.cdnNivTiss"
+                    class="{{prov.nrProcesso > 0 ? 'col-lg-6 col-md-6 col-sm-6' : 'col-lg-5 col-md-5 col-sm-5'}} col-xs-12"
+                    ng-change="controller.onProviderLevelChange(prov, $index)"
+                    ng-options="o.cdnNivTiss as o.rotulo for o in controller.tissProviderLevels"
+                    label="Grau de Participação">
+            </field>                        
+
+            <a ng-if="controller.movement.providers.length > 1" href=""
+               role="button" class="btn btn-favorite pull-right" style="margin-top: 25px;"
+               ng-click="controller.removeProvider($index, controller.movement)">
+                <span class="glyphicon glyphicon-remove" ></span>
+            </a>
+
+            <div ng-if="prov.nrProcesso > 0
+                    && controller.transaction.lgMudaQtRepasse == true
+                    && controller.selectedMovement.tpMovimento == 'PROC'">
+
+                <totvs-field
+                    totvs-decimal
+                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                    ng-model="prov.qtVezesTabelaPag"
+                    m-dec="2"
+                    v-max="9"
+                    ng-disabled="controller.action == 'DETAIL'"
+                    ng-blur="controller.recalculateMovementValues($index, 'qtVezesTabelaPag')"
+                    label="Qtd. Vezes Tabela Pag.">
+                </totvs-field>
+
+                <totvs-field
+                    totvs-decimal
+                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                    ng-model="prov.qtVezesTabelaCob"
+                    m-dec="2"
+                    v-max="9"
+                    ng-disabled="controller.action == 'DETAIL'"
+                    label="Qtd. Vezes Tabela Cob.">
+                </totvs-field>
+            </div>
+
+            <field  type="input"
+                    ng-if="prov.nrProcesso > 0
+                        && controller.selectedMovement.tpMovimento == 'PROC'
+                        && controller.transaction.lgPedeValorCobradoProced == true
+                        && controller.transaction.lgMudaQtRepasse == false"
+                    label="fake" style="visibility: hidden"
+                   class="{{prov.nrProcesso > 0 ? 'col-lg-5 col-md-5 col-sm-5' : 'col-lg-6 col-md-6 col-sm-6'}} col-xs-12">
+            </field> 
+
+            <totvs-field totvs-select label="Porte Anestesico Pagamento" 
+                    required canclean
+                    ng-model="prov.cdPorteAnestesico"
+                    select-service="hrc.anestheticMeasureZoomController"
+                    zoom-service="hrc.anestheticMeasureZoomController"
+                    select-id="cdPorteAnestesico" 
+                    select-description="dsPorteAnestesico"
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-change="controller.onPortanesSelect(prov)"
+                    ng-blur="controller.onPortanesSelect(prov)"
+                    ng-if="prov.cdnNivTiss == 6
+                        || prov.cdnNivTiss == 7">
+            </totvs-field>
+
+            <totvs-field totvs-select label="Porte Anestesico Cobrança" 
+                    required canclean
+                    ng-model="prov.cdPorteAnestesicoCob"
+                    select-service="hrc.anestheticMeasureZoomController"
+                    zoom-service="hrc.anestheticMeasureZoomController"
+                    select-id="cdPorteAnestesico" 
+                    select-description="dsPorteAnestesico"
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-change="controller.onPortanesCobSelect(prov)"
+                    ng-blur="controller.onPortanesCobSelect(prov)"
+                    ng-if="prov.cdnNivTiss == 6
+                        || prov.cdnNivTiss == 7">
+            </totvs-field>
+
+            <totvs-field totvs-select 
+                    id="professionalZoom"
+                    name-id="professionalZoom"
+                    ng-model="prov.professional"
+                    return-object
+                    required
+                    canclean
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-10"
+                    label="Profissional Executante" 
+                    select-service="hcg.professionalZoomController"
+                    zoom-service="hcg.professionalZoomController"
+                    zoom-init="{filters: controller.getProfessionalFixedFilters(prov)}"
+                    select-id="nom-profis"
+                    select-match='[{"field": "nom-profis"}]' 
+                    ng-change="controller.onChangeNmProfissionalExec(prov)" 
+                    ng-disabled="controller.movement.lgPTU"
+                    ng-blur="controller.onChangeNmProfissionalExec(prov)"
+                    zoom-selected="controller.onProfessionalSelect(prov, selected)"
+                    select-init="{filters: controller.getProfessionalFixedFilters(prov)}"
+                    ng-if="prov.preserv.inTipoPessoa === 'J'
+                        && controller.selectedMovement.tpMovimento != 'INSU'
+                        && (!prov.addProfessional && !prov.detailProfessional)"> 
+            </totvs-field>
+
+            <field type="input"
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-10"
+                    data-ng-model="prov.nmProfissionalExec"
+                    label="Nome do Profissional Executante"
+                    maxlength="70"
+                    ng-if="prov.preserv.inTipoPessoa === 'J'
+                        && controller.selectedMovement.tpMovimento != 'INSU'
+                        && (prov.addProfessional || prov.detailProfessional)"
+                    required
+                    ng-disabled="controller.movement.lgPTU || prov.detailProfessional">
+            </field>
+
+            <button 
+                class="btn col-lg-2 col-md-2 col-sm-2 col-xs-2" 
+                style="margin-top: 30px;"
+                ng-click="controller.setProfessionalAction(prov,'ADD')"
+                ng-if="prov.preserv.inTipoPessoa === 'J'
+                && controller.selectedMovement.tpMovimento != 'INSU'
+                && !prov.addProfessional
+                && !controller.movement.lgPTU">
+                    {{prov.detailProfessional == true ? 
+                        'Alterar Profissional' :'Novo Profissional'}}
+            </button>
+            <button 
+                class="btn col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                style="margin-top: 30px;"
+                ng-click="controller.setProfessionalAction(prov,'GET')"
+                ng-if="prov.preserv.inTipoPessoa === 'J'
+                && controller.selectedMovement.tpMovimento != 'INSU'
+                && prov.addProfessional">
+                    Cancelar Profissional
+            </button>
+
+            <field  type="input"
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    data-ng-model="prov.codCPFProfissionalExec"
+                    label="CPF"
+                    maxlength="70"
+                    ui-mask="999.999.999-99"
+                    numbers-only
+                    ng-if="prov.preserv.inTipoPessoa === 'J' && controller.selectedMovement.tpMovimento != 'INSU'"
+                    ng-disabled="controller.disableMovementPerformerInfo(prov) === true
+                                || controller.movement.lgPTU === true">
+            </field>          
+
+            <div ng-if="controller.selectedMovement.tpMovimento != 'INSU'">                                    
+                <totvs-field totvs-select
+                        ng-model="prov.cdConselho"
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        label="Conselho Profissional" canclean
+                        select-service="hcg.providerCouncilZoomController"
+                        select-id="cdConselho" 
+                        select-description="dsConselho"
+                        zoom-service="hcg.providerCouncilZoomController"
+                        ng-disabled="controller.disableMovementPerformerInfo(prov) === true
+                                || controller.movement.lgPTU === true">
+                </totvs-field>
+
+                <field type="input"
+                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                    data-ng-model="prov.nrRegistro"
+                    label="Número no Conselho"
+                    maxlength="15"
+                    ng-disabled="controller.disableMovementPerformerInfo(prov) === true
+                                || controller.movement.lgPTU === true">
+                </field>
+
+                <field  type="combo"
+                        data-ng-model="prov.cdUfConselho"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        ng-options="o.enUf as o.enUf for o in controller.ufs"
+                        label="UF"
+                        ng-disabled="controller.disableMovementPerformerInfo(prov) === true
+                                || controller.movement.lgPTU === true">
+                </field>
+            </div>
+
+            <div ng-if="controller.selectedMovement.movementObject.gruProDAO.lgCooperado == true
+                      && prov.preserv.lgDivisaoHonorario == true">
+                <totvs-field totvs-select label="Prestador Divisão" 
+                        required canclean 
+                        id="divisionProvider{{$index}}" 
+                        name-id="divisionProvider{{$index}}"
+                        ng-model="prov.cdUnidCdPrestadorHono"
+                        select-service="global.providerZoomController"
+                        zoom-service="global.providerZoomController"
+                        select-id="cdUnidCdPrestador" 
+                        select-description="nmPrestador"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        ng-change="controller.onDivisionProviderSelect(prov, $index)"
+                        ng-disabled="controller.transaction.lgPrestadorUnico === true">
+                </totvs-field>
+
+                <div ng-if="controller.transaction.lgPedeValorCobradoProced == true
+                        && (controller.paramrc.lgSeparaValoresInterc == false
+                         || controller.getDivisionProviderUnit(prov) == controller.paramecp.cdUnimed)">
+
+				    <totvs-field
+                        totvs-decimal
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        ng-model="prov.vlCobradoHono"
+                        m-dec="2"
+                        v-max="9"
+                        label="Valor Cobrado Divisão">
+                    </totvs-field>
+
+                    <totvs-field
+                        totvs-decimal
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        ng-model="prov.vlTaxaCobradoHono"
+                        m-dec="2"
+                        v-max="9"
+                        ng-if="controller.getDivisionProviderUnit(prov) != controller.paramecp.cdUnimed
+                           &&  controller.getDivisionProviderUnit(prov) > 0"
+                        label="Valor Taxa Cobrado Div.">
+                    </totvs-field>                                 
+				</div>
+
+				<field  type="combo"
+						data-ng-model="prov.cdCboEspecialidHono"
+						label="Código CBO X Especialidade Prestador Divisão"
+						class="col-lg-6 col-md-6 col-sm-6 col-md-12"
+						ng-change="controller.recalculateMovementValues($index, 'cdCboEspecialidHono')"
+						ng-options="o.cdCboEspecialid as o.dsCboEspecialid for o in prov.honoProvCbosSpecialties"
+						ng-disabled="(!(prov.honoProvCbosSpecialties.length > 0))">
+				</field>
+
+				<div ng-if="controller.transaction.lgPedeValorCobradoProced == true">
+
+					<totvs-field
+						totvs-decimal
+						class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+						ng-model="prov.vlMovimentoHono"
+						m-dec="2"
+						v-max="9"
+						ng-disabled="controller.action == 'DETAIL'"
+						ng-if="(controller.paramrc.lgSeparaValoresInterc == false
+							 || controller.getDivisionProviderUnit(prov) == controller.paramecp.cdUnimed)
+							&& prov.nrProcesso > 0"
+						ng-change="controller.calculateProviderOtherValues(prov)"
+						ng-blur="controller.calculateProviderOtherValues(prov)"
+						label="Valor Procedimento">
+					</totvs-field>
+                        
+					<div style="float: left"
+						ng-if="controller.paramrc.lgSeparaValoresInterc == true
+							&& controller.getDivisionProviderUnit(prov) != controller.paramecp.cdUnimed
+							&& controller.getDivisionProviderUnit(prov) > 0">
+
+						<totvs-field
+							totvs-decimal
+							class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+							ng-model="prov.valHonorariosCobradoHono"
+							m-dec="2"
+							v-max="9"
+							label="Valor Serviço Cobrado">
+						</totvs-field> 
+
+						<totvs-field
+							totvs-decimal
+							class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+							ng-model="prov.valTaxaHonoCobradoHono"
+							m-dec="2"
+							v-max="9"
+							label="Valor Taxa Serv. Cobrado">
+						</totvs-field> 
+
+						<totvs-field
+							totvs-decimal
+							class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+							ng-model="prov.valOperCobradoHono"
+							m-dec="2"
+							v-max="9"
+							label="Valor CO Cobrado">
+						</totvs-field> 
+
+						<totvs-field
+							totvs-decimal
+							class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+							ng-model="prov.valTaxaOperCobradoHono"
+							m-dec="2"
+							v-max="9"
+							label="Valor Taxa CO Cobrado">
+						</totvs-field> 
+
+						<totvs-field
+							totvs-decimal
+							class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+							ng-model="prov.valFilmeCobradoHono"
+							m-dec="2"
+							v-max="9"
+							label="Valor Filme Cobrado">
+						</totvs-field>
+
+						<totvs-field
+							totvs-decimal
+							class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+							ng-model="prov.valTaxaFilmeCobradoHono"
+							m-dec="2"
+							v-max="9"
+							label="Valor Taxa Filme Cobrado">
+						</totvs-field>
+                            
+						<div ng-if="prov.nrProcesso > 0">
+
+							<totvs-field
+								totvs-decimal
+								class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+								ng-model="prov.valHonorariosMovimHono"
+								m-dec="2"
+								v-max="9"
+								label="Valor Serviço">
+							</totvs-field>
+
+							<totvs-field
+								totvs-decimal
+								class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+								ng-model="prov.valTaxaHonoMovimHono"
+								m-dec="2"
+								v-max="9"
+								label="Valor Taxa Serviço">
+							</totvs-field>
+
+							<totvs-field
+								totvs-decimal
+								class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+								ng-model="prov.valOperacionalMovimHono"
+								m-dec="2"
+								v-max="9"
+								label="Valor CO">
+							</totvs-field>
+
+							<totvs-field
+								totvs-decimal
+								class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+								ng-model="prov.valTaxaOperMovimHono"
+								m-dec="2"
+								v-max="9"
+								label="Valor Taxa CO">
+							</totvs-field>
+
+							<totvs-field
+								totvs-decimal
+								class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+								ng-model="prov.valFilmeMovimHono"
+								m-dec="2"
+								v-max="9"
+								label="Valor Filme">
+							</totvs-field>
+
+							<totvs-field
+								totvs-decimal
+								class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+								ng-model="prov.valTaxaFilmeMovimHono"
+								m-dec="2"
+								v-max="9"
+								label="Valor Taxa Filme">
+							</totvs-field>
+						</div>                		    
+            		</div>   
+                </div>
+            </div>  <!-- fim divisao de honorarios-->
+        </div>  <!-- fim prestador--> 
+
+        <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12"
+         style="padding-top: 15px; padding-bottom: 15px;">
+            <button class="btn btn-default pull-right" 
+                    id="addMovementButton"
+                    ng-click="controller.addMovement();"
+                    ng-if="controller.movement.isEditMovement != true
+                         && ((controller.transaction.lgDataRealizacaoUnica === true
+                            && controller.document.dtRealizacao > 0)
+                            || controller.movement.dtRealizacao > 0)">
+                Adicionar Movimento
+            </button>
+
+            <a role="button" class="btn btn-favorite pull-right" href=""
+                ng-click="controller.addMovementProvider(true)"
+                ng-if="controller.selectedMovement.tpMovimento !== 'PACOTE'">
+                + Adicionar Prestador
+            </a>
+        </div>
+    </div>
+</totvs-page-form>

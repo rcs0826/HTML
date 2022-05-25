@@ -1,0 +1,41 @@
+<totvs-modal-header>{{ 'l-cancellation-of-service-request' | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+    <div class="row">
+        <form class="form-horizontal" role="form">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 row" style="padding-right: 0px;">
+                <field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" 
+                    style="padding-right: 0px;"
+                    type="textarea"
+                    ng-model="controller.justificativa"
+                    maxlength="15000"
+                    rows="4"
+                    required
+                    autofocus>
+                    <label class="field-label">{{ 'l-justification' | i18n }}:</label>
+                </field>
+            </div>
+            &nbsp;
+            <div class="col-md-12 col-sm-12 col-lg-12">
+                <h5><b>{{ 'l-confirm-generate-order' | i18n }}</b></h5>
+                <totvs-grid
+                    on-change="controller.seleciona(event)"
+                    grid="controller.gridOrder"
+                    grid-data="controller.list"	
+                    grid-selected-item="controller.selectedOrder"
+                    grid-height="260"
+                    navigatable="true"
+                    selectable="multiple"
+                    scrollable="true"
+                    resizable="true"
+                    sortable="true"
+                    auto-resize-content="false">
+                    <totvs-grid-column field="nrSoliServ" style="text-align: right" width="120px">{{'l-solic-serv' | i18n}}</totvs-grid-column>
+                    <totvs-grid-column field="descricao" width="350px">{{'l-description' | i18n}}</totvs-grid-column>
+            </div>
+        </form>
+    </div>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'l-no' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="controller.cancelamento();">{{ 'l-yes' | i18n }}</button>
+</totvs-modal-footer>

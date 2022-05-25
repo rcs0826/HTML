@@ -1,0 +1,383 @@
+<totvs-modal-header>
+    Busca Avançada
+</totvs-modal-header>
+<totvs-modal-body style="height: 500px; overflow-y: auto;">
+       <totvs-tabset>
+              <totvs-tab heading="Documento" active="true">                                   
+                     <fieldset>
+                            <totvs-row>
+                                   <totvs-field totvs-radio
+                                          label="Tipo de Exibição"
+                                          class="col-lg-6 col-md-6 col-sm-6 col-xs-12" 
+                                          t-options="[{value: 0, label: 'Por Documento'},
+                                                               {value: 1, label: 'Por Movimento'}]"
+                                          ng-model="afController.listaPorMovimento">
+                                   </totvs-field>
+
+                                   <field type="combo"
+                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                          ng-model="afController.model.beneficiaryType"
+                                          ng-options="a.data as a.label for a in BENEFICIARY_TYPE_ENUM.VALUES_WITH_ALL_OPTION"
+                                          ng-change="afController.onBeneficiaryTypeSelect()"
+                                          label="Tipo Beneficiário">
+                                   </field>
+
+                                   <field type="input"
+                                          canclean
+                                          min="0"
+                                          max="9999"
+                                          maxlength="4"
+                                          numbers-only
+                                          ng-if="afController.model.beneficiaryType == BENEFICIARY_TYPE_ENUM.EXCHANGE"
+                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                          data-ng-model="afController.model.beneficiaryUnit"                   
+                                          label="Unidade Carteira">
+                                   </field>
+                            </totvs-row>
+
+                            <totvs-field totvs-select canclean
+                                          id="contractingPartyCodeZoom"
+                                          name-id="contractingPartyCodeZoom"
+                                          ng-model="afController.model.contractingPartyCode"
+                                          class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                                          label="Contratante" 
+                                          select-service="hvp.contractingPartyCodeZoomController"
+                                          zoom-service="hvp.contractingPartyCodeZoomController"
+                                          select-id="cdContratante" 
+                                          select-description="nmContratante"
+                                          ng-change="afController.onContractingPartyChanged()">
+                            </totvs-field>
+
+
+                            <totvs-field totvs-select 
+                                   id="modalityZoom"
+                                   name-id="modalityZoom"
+                                   ng-model="afController.model.modalityCode"
+                                   class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                                   label="Modalidade" canclean
+                                   select-service="hpr.modalityZoomController"
+                                   zoom-service="hpr.modalityZoomController"
+                                   select-id="cdModalidade" 
+                                   select-description="dsModalidade"
+                                   ng-change="afController.onModalityChanged()">
+                            </totvs-field>
+                     
+                            <totvs-row>
+                                   <totvs-field totvs-select 
+                                          id="adhesionContractZoom"
+                                          name-id="adhesionContractZoom"
+                                          select-match='[{"field": "nrTerAdesao"}]'
+                                          ng-model="afController.model.adhesionContractReturnObject"
+                                          class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                                          label="Termo Adesão" canclean
+                                          return-object
+                                          select-service="global.adhesionContractZoomController"
+                                          zoom-service="global.adhesionContractZoomController"
+                                          select-id="nrTerAdesao" 
+                                          select-description="nmContratante"
+                                          ng-change="afController.adhesionContractChanged()"
+                                          select-init ="{filters: afController.adhesionContractFixedFilters}"
+                                          zoom-init = "{filters: afController.adhesionContractFixedFilters}"
+                                          ng-if="afController.model.modalityCode > 0">
+                                   </totvs-field>
+                            </totvs-row>
+                     
+                            <totvs-field totvs-select canclean
+                                   ng-model="afController.model.cdUnidCdCarteiraUsuario"
+                                   class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                   label="Beneficiário"
+                                   select-service="hvp.beneficiaryZoomController"
+                                   zoom-service="hvp.beneficiaryZoomController"
+                                   select-init ="{filters: afController.benefFixedFilters}"
+                                   zoom-init = "{filters: afController.benefFixedFilters}"
+                                   select-id="cdUnidCdCarteiraInteira"
+                                   select-description="nmUsuario">
+                            </totvs-field>
+
+                            <totvs-field totvs-select
+                                   canclean
+                                   ng-model="afController.model.cdUnidCdPrestador"
+                                   class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                   label="Prestador"
+                                   select-service="global.providerZoomController"
+                                   zoom-service="global.providerZoomController"
+                                   select-id="cdUnidCdPrestador"
+                                   select-description="nmPrestador"
+                                   ng-change="afController.onProviderSelect()">
+                            </totvs-field>
+
+                            <totvs-field totvs-select
+                                   label="Fatura" canclean
+                                   ng-model="afController.model.aaFaturaCdSerieNfCodFaturAp"
+                                   select-service="hrc.notapresZoomController"
+                                   zoom-service="hrc.notapresZoomController"
+                                   select-init ="{filters: afController.invoiceFixedFilters}"
+                                   zoom-init = "{filters: afController.invoiceFixedFilters}"
+                                   select-id="aaFaturaCdSerieNfCodFaturAp"
+                                   select-match='[{"field": "aaFaturaCdSerieNfCodFaturAp"}]'
+                                   ng-if="afController.model.cdUnidCdPrestador > 0"
+                                   class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            </totvs-field>
+
+                            <totvs-field totvs-select
+                                   label="Lote de Importação" canclean
+                                   ng-model="afController.model.nrLoteNrSequencia"
+                                   select-service="hrc.loteimpZoomController"
+                                   zoom-service="hrc.loteimpZoomController"
+                                   select-init ="{filters: afController.batchFixedFilters}"
+                                   zoom-init="{filters: afController.batchFixedFilters}"
+                                   select-id="nrLoteNrSequencia"
+                                   select-match='[{"field": "nrLoteNrSequencia"}]'
+                                   ng-if="afController.model.cdUnidCdPrestador > 0"
+                                   ng-change="afController.onLoteSelect()"
+                                   class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            </totvs-field>
+
+                            <field type="input"
+                                   canclean
+                                   min="0"
+                                   max="9999"
+                                   maxlength="4"
+                                   numbers-only
+                                   class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                   data-ng-model="afController.model.periodYear"
+                                   label="Ano">
+                            </field>
+
+                            <field type="input"
+                                   canclean
+                                   min="0"
+                                   max="999"
+                                   maxlength="3"
+                                   numbers-only
+                                   class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                   data-ng-model="afController.model.periodNumber"
+                                   label="Período">
+                            </field>
+
+                            <field type="date"
+                                   class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                   data-ng-model="afController.model.dtStartDigitation"
+                                   end-date="afController.today"
+                                   label="Data Inicial Digitação">
+                            </field>
+
+                            <field type="date"
+                                   class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                   data-ng-model="afController.model.dtEndDigitation"
+                                   end-date="afController.today"
+                                   label="Data Final Digitação">
+
+                     <!--            start-date="afController.model.dtStartDigitation"-->
+                            </field>
+
+                            <field type="number"
+                                   canclean
+                                   min="0"
+                                   max="9999"
+                                   class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                   data-ng-model="afController.model.documentProviderUnit"
+                                   label="Unidade Prestadora">
+                            </field>
+
+                            <totvs-field totvs-select
+                            id="transactionZoom"
+                            ng-model="afController.model.documentTransaction"
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            label="Transação"
+                            canclean
+                            select-service="hrc.transactionZoomController"
+                            zoom-service="hrc.transactionZoomController"
+                            select-id="cdTransacao"
+                            select-description="dsTransacao">
+                            </totvs-field>
+
+                            <field type="input"
+                                   canclean
+                                   class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                   data-ng-model="afController.model.documentSerie"
+                                   maxlength="4"
+                                   label="Série">
+                            </field>
+
+                            <field type="input"
+                                   canclean
+                                   maxlength="8"
+                                   class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                   data-ng-model="afController.model.document"
+                                   label="Documento">
+                            </field>
+
+                            <totvs-field totvs-select
+                                   canclean
+                                   ng-model="afController.model.clinic"
+                                   class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                   label="Clínica"
+                                   select-service="hac.clinicZoomController"
+                                   zoom-service="hac.clinicZoomController"
+                                   select-id="cdClinica"
+                                   select-description="dsClinica">
+                            </totvs-field>
+
+                            <totvs-field totvs-select
+                                   ng-model="afController.model.nrAutorizacao"
+                                   class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                   label="Autorização" canclean
+                                   select-service="hat.guideZoomController"
+                                   zoom-service="hat.guideZoomController"
+                                   select-id="aaNrGuiaAtendimento"
+                                   select-match='[{"field": "aaNrGuiaAtendimento"}]'
+                                   zoom-init="{filters: {'SEARCH_OPTION': 'DataFromComplemTable@@descriptions'}}">
+                            </totvs-field>
+
+                            <field type="combo"
+                                   class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                   ng-model="afController.model.documentStatus"
+                                   ng-options="v.data as v.label for v in DOCUMENT_STATUS_ENUM.VALUES_WITH_ALL_OPTION"
+                                   label="Status">
+                            </field>
+
+                            <field type="input"
+                                   canclean
+                                   class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                   data-ng-model="afController.model.userDigitation"
+                                   label="Usuário Digitação">
+                            </field>
+                     </fieldset>
+              </totvs-tab>
+              <totvs-tab heading="Movimento">
+                     <totvs-row>
+                            <totvs-field totvs-select 
+                                   id="providerGroupZoom"
+                                   name-id="providerGroupZoom"
+                                   ng-model="afController.model.providerGroupCode"
+                                   class="col-lg-8 col-md-8 col-sm-10 col-xs-12"
+                                   label="Grupo Prestador" canclean
+                                   select-service="hcg.providerGroupZoomController"
+                                   zoom-service="hcg.providerGroupZoomController"
+                                   select-id="cdGrupoPrestador" 
+                                   select-description="dsGrupoPrestador"
+                                   ng-disabled="afController.model.cdUnidCdPrestadorExecutante > 0"
+                                   >
+                            </totvs-field> 
+                     </totvs-row>
+                     <totvs-row>   
+                            <totvs-field totvs-select
+                                   canclean
+                                   id="performProviderZoom"
+                                   name="performProviderZoom"
+                                   ng-model="afController.model.cdUnidCdPrestadorExecutante"
+                                   class="col-lg-8 col-md-8 col-sm-10 col-xs-12"
+                                   label="Prestador Executante"
+                                   select-service="global.providerZoomController"
+                                   zoom-service="global.providerZoomController"
+                                   select-id="cdUnidCdPrestador"
+                                   select-description="nmPrestador"
+                                   ng-disabled="afController.model.providerGroupCode > 0"
+                                   >
+                            </totvs-field>     
+                     </totvs-row>
+                     <totvs-row>
+                            <totvs-field canclean
+                                   class="col-lg-8 col-md-8 col-sm-10 col-xs-12"
+                                   label="Classe Erro"
+                                   name-id="restrictionClassZoom"
+                                   ng-model="afController.model.restrictionClassReturnObject"
+                                   return-object
+                                   select-id="cdClasseErro"
+                                   select-description="dsClasseErro"
+                                   select-service="hrc.restrictionClassZoomController"
+                                   totvs-select id="restrictionClassZoom"
+                                   zoom-service="hrc.restrictionClassZoomController"
+                                   ng-change="afController.restrictionClassChanged()">
+                            </totvs-field>                            
+                     </totvs-row>            
+                     <totvs-row>
+                            <field type="date"
+                                   class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                   data-ng-model="afController.model.initialPerformDate"
+                                   end-date="afController.today"
+                                   label="Data Inicial Realização">
+                            </field>
+
+                            <field type="date"
+                                   class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                   data-ng-model="afController.model.finalPerformDate"
+                                   start-date="afController.model.initialPerformDate"
+                                   label="Data Final Realização">
+                            </field>                            
+                     </totvs-row>             
+                     <totvs-row>
+                            <field type="combo"
+                                   class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                   ng-model="afController.model.movementStatus"
+                                   ng-options="v.data as v.label for v in DOCUMENT_STATUS_ENUM.VALUES_WITH_ALL_OPTION"
+                                   label="Status do Movimento">
+                            </field>   
+                            <field type="combo"
+                                   class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                   ng-model="afController.model.serviceType"
+                                   ng-options="v.data as v.label for v in SERVICE_TYPE_ENUM.VALUES_WITH_ALL_OPTION"
+                                   label="Tipo do Serviço"
+                                   ng-change="afController.onServiceTypeChanged()">
+                            </field>                               
+                     </totvs-row>      
+                     <totvs-row>                            
+                            <totvs-field  totvs-select name-id="procedureZoom"
+                                   ng-model="afController.model.cdProcedimento"
+                                   class="col-lg-8 col-md-8 col-sm-10 col-xs-12"
+                                   label="Procedimento"
+                                   ng-show="afController.model.serviceType == 1"
+                                   canclean
+                                   select-service="hrc.movementZoomController"
+                                   zoom-service="hrc.movementZoomController"
+                                   select-init="{filters: afController.movementFixedFilters}"
+                                   zoom-init="{filters: afController.movementFixedFilters}"
+                                   select-id="formattedCodeWithType" 
+                                   select-description="dsMovimento"> 
+                            </totvs-field>              
+                            <field class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                   data-ng-model="afController.model.cdTipoInsumo"
+                                   label="Tipo de Insumo"
+                                   ng-options="o.cdTipoInsumo as o.rotulo for o in afController.inputTypesArray"
+                                   ng-show="afController.model.serviceType == 2"
+                                   ng-change="afController.onInputTypeChange()"
+                                   type="combo">
+                            </field>                            
+                            <totvs-field  totvs-select name-id="inputZoom"
+                                   ng-model="afController.model.cdInsumo"
+                                   class="col-lg-8 col-md-8 col-sm-10 col-xs-12"
+                                   label="Insumo"
+                                   ng-show="afController.model.serviceType == 2"
+                                   canclean
+                                   select-service="hrc.movementZoomController"
+                                   zoom-service="hrc.movementZoomController"
+                                   select-init="{filters: afController.movementFixedFilters}"
+                                   zoom-init="{filters: afController.movementFixedFilters}"
+                                   select-id="formattedCodeWithType" 
+                                   select-description="dsMovimento"
+                                   ng-disabled="afController.model.cdTipoInsumo == 0"> 
+                            </totvs-field>              
+                            <totvs-field  totvs-select name-id="packageZoom"
+                                   ng-model="afController.model.cdPacote"
+                                   class="col-lg-8 col-md-8 col-sm-10 col-xs-12"
+                                   label="Pacote"
+                                   ng-show="afController.model.serviceType == 3"
+                                   canclean
+                                   select-service="hrc.movementZoomController"
+                                   zoom-service="hrc.movementZoomController"
+                                   select-init="{filters: afController.movementFixedFilters}"
+                                   zoom-init="{filters: afController.movementFixedFilters}"
+                                   select-id="formattedCodeWithType" 
+                                   select-description="dsMovimento"> 
+                            </totvs-field>                     
+                     </totvs-row>                                 
+              </totvs-tab>
+       </totvs-tabset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn" ng-click="afController.cleanFieldsAdvancedFilter()">Limpar Campos</button>
+    <button class="btn" ng-click="afController.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-click="afController.search()">Buscar</button>
+</totvs-modal-footer>

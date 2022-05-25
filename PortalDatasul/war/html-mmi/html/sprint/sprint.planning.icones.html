@@ -1,0 +1,61 @@
+<link rel="stylesheet" href="/dts/mmi/css/font-awesome.css">
+
+<div>
+    <!-- Esconder Arvore-->
+    <a class="btn" ng-show="planningCtrl.arvoreAtivos" tooltip="{{ 'l-hide-assets-tree' | i18n }}"
+    tooltip-placement="right" ng-click="planningCtrl.esconderArvoreAtivos()">
+      <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+    </a>
+    
+    <!-- Exibir Arvore-->
+    <a class="btn" ng-show="!planningCtrl.arvoreAtivos" tooltip="{{ 'l-show-assets-tree' | i18n }}"
+       tooltip-placement="right" ng-click="planningCtrl.exibirArvoreAtivos()" ng-disabled="planningCtrl.hh || planningCtrl.materiais">
+      <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>
+    </a>
+    
+    <!-- Cards-->
+    <a class="btn" 
+        ng-click="planningCtrl.exibirPagina(false, false, true, false, false)"
+        tooltip="{{ 'l-show-card-mode' | i18n }}"
+        tooltip-placement="right"
+        ng-style="planningCtrl.cardsSelecionado()">
+      <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+    </a>
+
+    <!-- Resumo-->
+    <a class="btn" 
+        ng-click="planningCtrl.exibirPagina(false, false, false, false, true)"
+        tooltip="{{ 'l-show-resume-mode' | i18n }}"
+        tooltip-placement="right"
+        ng-style="planningCtrl.resumoSelecionado()">
+      <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
+    </a>
+    
+    <!-- Calendario-->
+    <a class="btn" 
+        ng-click="planningCtrl.exibirPagina(false, true, false, false, false)"
+        ng-style="planningCtrl.acompanhamentoSelecionado()"
+        tooltip="{{ 'l-show-calendar' | i18n }}"
+        tooltip-placement="right"
+        ng-if="planningCtrl.model.ttOrdem.length > 0">
+      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+    </a>
+    
+    <!-- Backlog -->
+    <a class="btn" 
+        ng-click="planningCtrl.exibirPagina(true, false, false, false, false)"
+        ng-style="planningCtrl.hhSelecionado()"
+        tooltip="{{ 'l-specialty-backlog' | i18n }}"
+        tooltip-placement="right">
+      <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+    </a>
+
+    <!-- Visao Materiais -->
+    <a class="btn" 
+       ng-click="planningCtrl.exibirPagina(false, false, false, true, false)"
+       ng-style="planningCtrl.materiaisSelecionado()"
+       tooltip-placement="right"
+       tooltip="{{ 'l-show-material-view' | i18n }}">
+       <span class="fa fa-cubes"></span>
+    </a>
+</div>

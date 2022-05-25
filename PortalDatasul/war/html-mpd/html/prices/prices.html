@@ -1,0 +1,69 @@
+<totvs-page type="list" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#{{defaultPageHome}}">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-search-pricetable' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		
+		<totvs-page-header>
+     
+            <totvs-page-header-title title="{{currentuser['user-entity']}} ({{controller.totalRecords}} {{ 'l-tables-qtd' | i18n }})"></totvs-page-header-title>
+									 
+			<totvs-page-header-operation>
+			
+				<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12"></div>
+                <totvs-page-header-operation-filter placeholder="{{ 'l-fast-search-pricetable' | i18n }}"
+                                                    ng-submit="controller.search();"
+                                                    ng-model="controller.quickSearchText"
+													advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+			<totvs-page-disclaimers disclaimer-list="controller.filterBy"
+								    ng-click="controller.removeSelectedFilter"></totvs-page-disclaimers>
+		</totvs-page-header>	
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+
+		<totvs-list-item ng-repeat="priceTable in controller.listResult"
+						 totvs-custom-element="customListItem">
+			<totvs-list-item-header>
+				<totvs-list-item-title>{{ 'l-price-table' | i18n }}: {{priceTable['nr-tabpre']}}</totvs-list-item-title>
+				<totvs-list-item-action limit-primary-action="1">
+					<action link="#/dts/mpd/priceItem/{{priceTable['nrTabpre']}}" icon="glyphicon-list">{{ 'l-item-list' | i18n }}</action>
+				</totvs-list-item-action>
+			</totvs-list-item-header>
+			<totvs-list-item-content>
+				<totvs-list-item-info title="{{ 'l-descricao' | i18n }}" class="col-xs-12 col-sm-2 col-md-3">
+					{{priceTable.descricao}}
+				</totvs-list-item-info>
+
+				<totvs-list-item-info title="{{ 'l-price-table-start-date' | i18n }}" class="col-xs-6 col-sm-2 col-md-2">
+					{{priceTable['dt-inival'] | date : ('l-date-format' | i18n) : 'UTC': 'shortDate'}}
+				</totvs-list-item-info>
+
+				<totvs-list-item-info title="{{ 'l-price-table-end-date' | i18n }}" class="col-xs-6 col-sm-2 col-md-2">
+					{{priceTable['dt-fimval'] | date : ('l-date-format' | i18n) : 'UTC'}}
+				</totvs-list-item-info>
+
+				<totvs-list-item-info title="{{ 'l-discount' | i18n }}" class="col-xs-6 col-sm-2 col-md-1">
+					{{priceTable.desconto | number : 0}} %
+				</totvs-list-item-info>
+
+				<totvs-list-item-info title="{{ 'l-mo-codigo' | i18n }}" class="col-xs-6 col-sm-2 col-md-2">
+					{{priceTable['mo-codigo']}} - {{priceTable['mo-desc']}}
+				</totvs-list-item-info>
+			</totvs-list-item-content>
+
+			
+		</totvs-list-item>
+
+	</totvs-page-content>
+
+	<totvs-list-pagination ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+							   ng-click="controller.loadMore()">
+		</totvs-list-pagination>		
+		
+
+</totvs-page>

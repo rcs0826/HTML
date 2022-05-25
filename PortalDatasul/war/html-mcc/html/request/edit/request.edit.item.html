@@ -1,0 +1,314 @@
+<totvs-page type="edit" totvs-custom-element="customRequest_editItem">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb ng-if="controller.showDetail && !controller.showItemDetail">
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/{{module}}/request">{{'l-requests' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/{{module}}/request/detail/{{controller.model.ttRequest['nr-requisicao']}}">
+            	<span class="hidden-xs">{{'l-request-detail' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-detail' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+            <breadcrumb>
+            	<span class="hidden-xs">{{ 'l-request-item' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-item' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-breadcrumb ng-if="!controller.showDetail && !controller.showItemDetail">
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/{{module}}/request">{{'l-requests' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb>
+            	<span class="hidden-xs">{{ 'l-request-item' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-item' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+		<totvs-page-breadcrumb ng-if="controller.showItemDetail">
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/{{module}}/request">{{'l-requests' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/{{module}}/request/item/detail?req={{controller.model.ttRequest['nr-requisicao']}}&seq={{controller.model['ttRequestItemDefault']['sequencia']}}&item={{controller.model['ttRequestItemDefault']['it-codigo']}}">
+            	<span class="hidden-xs">{{'l-request-item-detail' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-item-detail' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+            <breadcrumb>
+            	<span class="hidden-xs">{{ 'l-request-item' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-item' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-new-item-of' | i18n: []: 'dts/mcc'}} {{controller.model.ttRequest['tp-requis-desc']}}" ng-if="!controller.isUpdate"></totvs-page-header-title>
+            <totvs-page-header-title title="{{'l-edit-item-of' | i18n: []: 'dts/mcc'}} {{controller.model.ttRequest['tp-requis-desc']}}" ng-if="controller.isUpdate"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new="{{controller.isUpdate}}">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+    	<totvs-page-detail>
+	        <totvs-page-detail-info-group>{{'l-request' | i18n: []: 'dts/mcc'}}</totvs-page-detail-info-group>
+	        <totvs-page-detail-info class="col-md-4 col-sm-4" title="{{'l-request' | i18n: []: 'dts/mcc'}}"
+	            value="{{controller.model.ttRequest['nr-requisicao'] | number}}"></totvs-page-detail-info>
+	        <totvs-page-detail-info class="col-md-4 col-sm-4" title="{{'l-status' | i18n: []: 'dts/mcc'}}"
+	            value="{{controller.model.ttRequest['situacao-desc']}}"></totvs-page-detail-info>
+	        <totvs-page-detail-info class="col-md-4 col-sm-4" title="{{'l-approved-gen' | i18n: []: 'dts/mcc'}}"
+	            value="{{controller.model.ttRequest['estado-desc']}}"></totvs-page-detail-info>
+        </totvs-page-detail>
+
+        <totvs-page-form>
+            <fieldset>
+      			<form>
+      				<totvs-page-detail-info-group>{{'l-necessity-identification' | i18n: []: 'dts/mcc'}}</totvs-page-detail-info-group>
+  					<div class="col-md-12">
+			            <field type="select"
+			            	   name-id="it-codigo"
+			            	   class="col-md-6"
+			            	   canclean
+			            	   ng-init="controller.initSelects($select, 'it-codigo')"
+			            	   ng-disabled="controller.enableFields && !controller.enableFields['it-codigo']"
+			            	   ng-change='controller.fieldLeave("it-codigo", controller.itemZoomField)'
+			                   ng-model="controller.itemZoomField">
+		                    <zoom zoom-service="men.item.zoom"
+		                    	  zoom-selected='controller.fieldLeave("it-codigo", selected)'></zoom>
+		                    <label>{{'l-item' | i18n: []: 'dts/mcc'}}</label>
+			                <include>
+			                    <ui-select-match placeholder="">{{$select.selected['it-codigo']}} - {{$select.selected['desc-item']}}</ui-select-match>
+			                    <ui-select-choices repeat="item in controller.serviceItem.listOfItems | filter: $select.search track by $index"
+	            					refresh="controller.refreshLists($select.search, 'it-codigo');"
+	        						refresh-delay="500">
+			                    	<span ng-bind-html="item['it-codigo'] + (item['desc-item'] ? ' - ' + item['desc-item']: '') | highlight: $select.search"></span>
+			                    </ui-select-choices>
+			                </include>
+			            </field>
+                  	</div>
+				    <div class="col-md-12">
+			            <field type="select"
+			            	   class="col-md-4"
+			            	   canclean
+			            	   name-id="cod-refer"
+			            	   ng-init="controller.initSelects($select, 'cod-refer')"
+			            	   ng-disabled="controller.enableFields && !controller.enableFields['cod-refer']"
+			                   ng-model="controller.referenceZoomField">
+		                    <zoom zoom-service="mcc.referencia.zoom"></zoom>
+		                    <label>{{'l-reference' | i18n: []: 'dts/mcc'}}</label>
+			                <include>
+			                    <ui-select-match placeholder="">{{$select.selected['cod-refer']}} {{$select.selected.descricao ? ' - ' + $select.selected.descricao : ''}}</ui-select-match>
+			                    <ui-select-choices repeat="reference in controller.serviceReference.listOfReferences | filter: $select.search track by $index"
+			                    					refresh="controller.refreshLists($select.search, 'cod-refer');"
+		                    						refresh-delay="500">
+			                    	<span ng-bind-html="reference['cod-refer'] + (reference.descricao ? ' - ' + reference.descricao : '') | highlight: $select.search"></span>
+			                    </ui-select-choices>
+			                </include>
+			            </field>
+		            </div>
+                  	<div class="col-md-12">
+	                  	<field type="decimal"
+	                  		   class="col-md-3"
+	                  		   data-m-dec="4"
+	                  		   name-id="requestQuantity"
+	                  		   data-v-max="9999999.9999"
+	                 		   ng-model="controller.model.ttRequestItemDefault['qt-a-atender']"
+	             			   required	             			   
+	             			   ng-model-options="{ updateOn: 'blur' }">
+	          				<label>{{'l-quantity' | i18n: []: 'dts/mcc'}}</label>
+	                  	</field>
+                  	</div>
+                  	<div class="col-md-12">
+			            <field type="select"
+			            	   class="col-md-4"
+			            	   ng-disabled="controller.enableFields && !controller.enableFields['un']"
+            				   ng-init="controller.initSelects($select, 'un')"
+			            	   canclean
+			            	   name-id="un"
+			                   ng-model="controller.UMZoomField">
+		                    <zoom zoom-service="mcc.tab-unidade.zoom"></zoom>
+		                    <label>{{'l-measure-unit' | i18n: []: 'dts/mcc'}}</label>
+			                <include>
+			                    <ui-select-match placeholder="">{{$select.selected['un']}} - {{$select.selected.descricao}}</ui-select-match>
+			                    <ui-select-choices repeat="unit in controller.serviceUM.listOfUMs | filter: $select.search track by $index"
+                						refresh="controller.refreshLists($select.search, 'un');"
+                						refresh-delay="500">
+			                    	<span ng-bind-html="unit['un'] + (unit.descricao ? ' - ' + unit.descricao : '') | highlight: $select.search"></span>
+			                    </ui-select-choices>
+			                </include>
+			            </field>
+                  	</div>
+              		<div class="col-md-12">
+						<field type="date"
+				           	ng-model="controller.model.ttRequestItemDefault['dt-entrega']"
+				           	class="col-md-2 col-sm-4"
+				           	name-id="requestDeliveryDate"
+							required>
+					        <label>{{'l-delivery-date' | i18n: []: 'dts/mcc'}}</label>
+					    </field>
+
+						<field type="time"
+							ng-if="controller.model.ttRequest['tp-requis'] == 1"
+							ng-model="controller.model.ttRequestItemDefault['hra-entrega']"
+							label="{{'l-delivery-hour' | i18n: []: 'dts/mcc'}}"
+							class="col-md-2 col-sm-4">
+						</field>
+                  	</div>
+                  	<div class="col-md-12" ng-if="!controller.model.hidePrice || (parseInt(controller.model.ttRequestItemDefault['preco-unit']) == 0 || controller.model.ttRequestItemDefault['preco-unit'] == '0')">
+	                  	<field type="decimal"
+	                     	class="col-md-3 col-sm-5"
+	                     	data-m-dec="5"
+	                     	data-v-max="99999999999.99999"
+	                     	ng-disabled="controller.enableFields && !controller.enableFields['preco-unit']"
+	                 		ng-model="controller.model.ttRequestItemDefault['preco-unit']"
+	                 		ng-model-options="{ updateOn: 'blur' }">
+	          				<label>{{'l-unit-price' | i18n: []: 'dts/mcc'}}</label>
+	                  	</field>
+                  	</div>                  	
+                  	<div class="col-md-12">
+						<field type="textarea"
+							   class="col-md-12 col-sm-12"
+					           ng-model="controller.model.ttRequestItemDefault['narrativa']"
+					           maxlength="2000">
+					        <label>{{'l-supplementary-description' | i18n: []: 'dts/mcc'}}</label>
+					    </field>
+				    </div>
+				    <totvs-page-detail-info-group>{{'l-investments' | i18n: []: 'dts/mcc'}}</totvs-page-detail-info-group>
+                  	<div class="col-md-12">
+	                     <field type="input"
+	                            class="col-md-6"
+		                     	ng-disabled="controller.enableFields && !controller.enableFields['num-ord-inv']"
+		                 		ng-model="controller.model.ttRequestItemDefault['num-ord-inv']"
+	                            ng-change="controller.fieldLeave('num-ord-inv', controller.model.ttRequestItemDefault['num-ord-inv'])"
+	                            canclean
+	                            ng-model-options='{ debounce: 500}'
+	                            zoom
+	                            zoom-service="mcc.sub-div-ordem.zoom"
+	                            zoom-selected="controller.fieldLeave('num-ord-inv', selected['num-ord-magnus'])">
+	                        <label>{{ 'l-investment-order' | i18n: []: 'dts/mcc' }}</label>
+	                    </field>
+		                <totvs-page-detail-info class="col-md-6"
+		                                        title="{{ 'l-company' | i18n: []: 'dts/mcc' }}"
+		                                        value="{{controller.model.ttRequestItemDefault['ep-codigo']}} - {{controller.model.ttRequestItemDefault['desc-ep']}}"></totvs-page-detail-info>
+                  	</div>
+                  	<totvs-page-detail-info-group>{{'l-posting' | i18n: []: 'dts/mcc'}}</totvs-page-detail-info-group>
+                  	<div class="col-md-12">
+			            <field type="select"
+			            	   class="col-md-6"
+			            	   name-id="cod-utiliz"
+			            	   ng-init="controller.initSelects($select, 'cod-utiliz')"
+			            	   canclean
+			            	   ng-disabled="controller.enableFields && !controller.enableFields['utilizationCode']"
+			            	   ng-change='controller.fieldLeave("cod-utiliz", controller.utilizationZoomField)'
+			                   ng-model="controller.utilizationZoomField">
+		                    <zoom zoom-service="mcc.utiliz-natu-despes.zoom"
+		                          zoom-init="controller.utilizationCodeInit"
+		                          zoom-selected="controller.fieldLeave('cod-utiliz', selected)"></zoom>
+		                    <label>{{'l-utility-code' | i18n: []: 'dts/mcc'}}</label>
+			                <include>
+			                    <ui-select-match placeholder="">{{$select.selected['cod-utiliz']}} {{$select.selected['des-utiliz'] ? ' - ' + $select.selected['des-utiliz'] : ''}}</ui-select-match>
+			                    <ui-select-choices repeat="utiliz in controller.serviceUtilizationCode.listOfUtilizations | filter: $select.search track by $index"
+			                    					refresh="controller.refreshLists($select.search, 'cod-utiliz');"
+		                    						refresh-delay="500">
+			                    	<span ng-bind-html="utiliz['cod-utiliz'] + (utiliz['des-utiliz'] ? ' - ' + utiliz['des-utiliz'] : '') | highlight: $select.search"></span>
+			                    </ui-select-choices>
+			                </include>
+			            </field>
+                  	</div>
+                  	<div class="col-md-12">
+			            <field type="select"
+			            	   class="col-md-6"
+			            	   canclean
+			            	   name-id="ct-codigo"
+			            	   ng-init="controller.initSelects($select, 'ct-codigo')"
+			                   ng-model="controller.integrationAccountZoomField"
+			                   ng-change='controller.fieldLeave("ct-codigo", controller.integrationAccountZoomField)'
+							   ng-disabled="controller.enableFields && !controller.enableFields['ct-codigo']">
+		                    <zoom zoom-service="utb.cta-ctbl-integr.zoom"
+		                      	  zoom-selected='controller.fieldLeave("ct-codigo", selected)'
+		                    	  zoom-init="controller.integrationAccountInit"></zoom>
+		                    <label>{{'l-account-book' | i18n: []: 'dts/mcc'}}</label>
+			                <include>
+		                        <ui-select-match placeholder="{{'l-integration-account-pch' | i18n: []: 'dts/mcc'}}">
+		                            {{$select.selected.objSelected ? $select.selected.toString() :
+		                              $select.selected.cod_cta_ctbl_select}}
+		                        </ui-select-match>
+			                    <ui-select-choices repeat="integrAcct in controller.serviceIntegrAcct.integrationAccounts | filter: $select.search track by $index"
+			                    					refresh="controller.refreshLists($select.search, 'ct-codigo');"
+		                    						refresh-delay="500">
+			                    	<span ng-bind-html="integrAcct.cod_cta_ctbl_select | highlight: $select.search"></span>
+			                    </ui-select-choices>
+			                </include>
+			            </field>
+
+		                <field type="select"
+		                       ng-model="controller.costCenterZoomField"
+		                       name-id="sc-codigo"
+       	                       ng-change='controller.fieldLeave("sc-codigo", controller.costCenterZoomField)'
+       	                       ng-init="controller.initSelects($select, 'sc-codigo')"
+       	                       ng-disabled="controller.enableFields && !controller.enableFields['sc-codigo']"
+		                       canclean>
+		                    <label>{{'l-cost-center' | i18n: []: 'dts/mcc'}}</label>
+		                    <zoom zoom-service="utb.ccusto.zoom"
+		                    	  zoom-selected='controller.fieldLeave("sc-codigo", selected)'
+		                          zoom-init="controller.costCenterInit"></zoom>
+		                    <include>
+		                        <ui-select-match placeholder="{{'l-cost-center-pch' | i18n: []: 'dts/mcc'}}">
+		                            {{$select.selected.objSelected ? $select.selected.toString() :
+		                              $select.selected.cod_ccusto_select}}
+		                        </ui-select-match>
+		                        <ui-select-choices repeat="costCenter in controller.serviceCostCenter.costCenters | filter: $select.search track by $index"
+		                        				   refresh="controller.refreshLists($select.search, 'sc-codigo');"
+		                                           refresh-delay="500">
+		                            <span ng-bind-html="costCenter.cod_ccusto_select | highlight: $select.search"></span>
+		                        </ui-select-choices>
+		                    </include>
+		                </field>
+                  	</div>
+
+                  	<totvs-page-detail-info-group>{{'l-indicators' | i18n: []: 'dts/mcc'}}</totvs-page-detail-info-group>
+                  	<div class="col-md-12">
+                  		<div class="col-md-4 col-sm-4">
+	                  		<span>{{'l-urgent' | i18n: []: 'dts/mcc'}}</span>
+							<br>
+							<input type="checkbox"
+								class="col-md-3"
+								style="box-shadow:none !important;"
+						        ng-model="controller.model.ttRequestItemDefault['log-1']"
+						        bsswitch>
+						    </input>
+						</div>
+						<div class="col-md-4 col-sm-4">
+							<span>{{'l-certify-supplier' | i18n: []: 'dts/mcc'}}</span>
+							<br>
+						    <input type="checkbox"
+								class="col-md-3"
+								style="box-shadow:none !important;"
+						        ng-model="controller.model.ttRequestItemDefault['log-2']"
+						        bsswitch>
+						    </input>
+						</div>
+						<div class="col-md-4 col-sm-4">
+							<span>{{'l-quality-impact' | i18n: []: 'dts/mcc'}}</span>
+							<br>
+						    <input type="checkbox"
+								class="col-md-3"
+								style="box-shadow:none !important;"
+						        ng-model="controller.model.ttRequestItemDefault['impactsQuality']"
+						        bsswitch>
+						    </input>
+						</div>
+						<div class="col-md-5 col-sm-5" style="margin-top:5px;">
+							<span>{{'l-approval-priority' | i18n: []: 'dts/mcc'}}</span>
+							<br>
+				            <field type="combo"
+				                ng-model="controller.model.ttRequestItemDefault['prioridade-aprov']"
+				                ng-options="priority.value as priority.name for priority in controller.priorities"
+				                class="col-sm-12"
+				                style="padding:0px;">
+				            </field>
+				        </div>
+                  	</div>
+                  	<div ng-if="controller.model.showBusinessUnit"
+                  		 class="col-md-12 col-sm-12"
+                  		 ng-include="'/dts/mcc/html/request/detail/businessunit.detail.html'"></div>
+    			</form>
+			</fieldset>
+		</totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

@@ -1,0 +1,99 @@
+<totvs-page type="list">
+
+    <script>
+        $("a.tips").tooltip();
+    </script>
+
+    <totvs-page-navbar>
+
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{'l-home' | i18n:[] : 'dts/cmg'}}</breadcrumb>
+            <breadcrumb>{{'l-inquire-exchange-variation' | i18n:[] : 'dts/cmg'}}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title title="{{'l-inquire-exchange-variation' | i18n:[] : 'dts/cmg'}}">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+
+                <totvs-page-header-operation-action limit-primary-action="2">
+                    <action link="#/dts/cmg/calculateexchangevariation/" icon="glyphicon glyphicon-usd">
+                        {{ 'l-calculate-variation' | i18n:[] : 'dts/cmg'}}
+                    </action>
+                </totvs-page-header-operation-action>
+
+                <totvs-page-header-operation-filter advanced-search="controller.openAdvancedSearch">
+                    <field type="select" ng-model="controller.model.listCheckingAcct" ng-change="controller.onChangeCheckingAcct()" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" canclean>
+                        <zoom zoom-service="cmg.cta-corren.zoom" zoom-multiple zoom-selected="controller.onChangeCheckingAcct(selected, oldValue)"></zoom>
+                        <include>
+                            <ui-select-match placeholder="{{ 'l-checking-account' | i18n:[] : 'dts/cmg'}}">
+                                {{$select.selected.objSelected ? $select.selected.toString() : ($select.selected.cod_cta_corren + ' - ' + $select.selected.nom_abrev)}}
+                            </ui-select-match>
+                            <ui-select-choices repeat="checkingAcct in
+                                                       controller.serviceCheckingAcct.selectResultList 
+                                                       track by $index" refresh="controller.serviceCheckingAcct.getSelectResultList(
+                                                        $select.search, undefined)" refresh-delay="500">
+                                <span ng-bind-html="checkingAcct.cod_cta_corren + ' - ' + 
+                                                    checkingAcct.nom_abrev | highlight: $select.search">
+                                </span>
+                            </ui-select-choices>
+                        </include>
+                    </field>
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers" ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+
+        <totvs-page-alert ng-if="!controller.listResult || controller.listResult.length === 0" type="{{controller.typeMsgSearch}}" message="{{controller.msgSearchNotFound}}">
+        </totvs-page-alert>
+
+        <div ng-if="controller.listResult && controller.listResult.length > 0">
+            <totvs-grid grid-data="controller.listResult" grid-options="controller.gridOptions" grid-height="200" resizable="true" sortable="true" selectable="row" auto-resize-content="true">
+
+                <totvs-grid-column field="companyCodeF" width="100px" group-header-template="controller.groupHeaderTemplate()" hide-grouped="true">
+                    {{:: 'l-company' | i18n : [] : 'dts/cmg'}}
+
+                </totvs-grid-column>
+
+                <totvs-grid-column field="checkingAcctCodeF" width="100px" group-header-template="controller.groupHeaderTemplate()" hide-grouped="true">
+                    {{:: 'l-checking-account' | i18n : [] : 'dts/cmg'}}
+                </totvs-grid-column>
+
+                <totvs-grid-column field="transactionDate" width="70px" template="controller.cellRendererCompanyCheckingAcc">
+                    {{:: 'l-date-movement' | i18n : [] : 'dts/cmg'}}
+                </totvs-grid-column>
+
+                <totvs-grid-column field="transactionSequence" width="40px" style="text-align: right;">
+                    {{:: 'l-seq' | i18n : [] : 'dts/cmg'}}
+                </totvs-grid-column>
+
+                <totvs-grid-column field="transactionValue" width="150px" template="controller.cellRendererTransactionValue" group-footer-template="controller.priceFooterTemplate()" filter="currency">
+                    {{:: 'l-value' | i18n : [] : 'dts/cmg'}}
+                </totvs-grid-column>
+
+                <totvs-grid-column field="transactionFlow" width="80px" template="controller.cellRendererTransactionFlow">
+                    {{:: 'l-flow' | i18n : [] : 'dts/cmg'}}
+                </totvs-grid-column>
+                <totvs-grid-column field="cashTransactionTypeF" width="250px">
+                    {{:: 'l-cash-trans-type' | i18n : [] : 'dts/cmg'}}
+                </totvs-grid-column>
+                <totvs-grid-column field="postedToGl" width="50px" template="controller.cellRendererPostedToGl">
+                    {{:: 'l-posted-to-gl' | i18n : [] : 'dts/cmg'}}
+                </totvs-grid-column>
+
+                <totvs-grid-group field="companyCodeF">
+                    <totvs-grid-group-aggregate t-field="transactionValue" t-totals="count"></totvs-grid-group-aggregate>
+                </totvs-grid-group>
+                <totvs-grid-group field="checkingAcctCodeF" aggregate="count">
+                    <totvs-grid-group-aggregate t-field="transactionValue" t-totals="count"></totvs-grid-group-aggregate>
+                </totvs-grid-group>
+
+            </totvs-grid>
+        </div>
+    </totvs-page-content>
+</totvs-page>

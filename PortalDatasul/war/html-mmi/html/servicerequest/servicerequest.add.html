@@ -1,0 +1,440 @@
+<link rel="stylesheet" href="/dts/mmi/css/mmi.css" />
+<totvs-modal-header>{{controller.title}}</totvs-modal-header>
+<totvs-modal-body>
+    <totvs-page-form ng-if="controller.data === 'new'">
+        <fieldset>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <totvs-field totvs-select
+                                canclean="undefined"
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                ng-model="controller.model['cd-equipto']"
+                                ng-disabled="controller.model['estado'] == 4"
+                                select-id="cd-equipto"
+                                select-description="descricao"
+                                select-service="mmi.equipto.zoom"
+                                zoom-service="mmi.equipto.zoom"
+                                zoom-selected="controller.leaveCdEquipto()"
+                                ng-change="controller.leaveCdEquipto()"
+                                return-object="select-id"
+                                zoom-init="{}"
+                                label="{{ 'l-equipment' | i18n }}"
+                                id="cd-equipto"
+                                >
+                    </totvs-field>
+                    <totvs-field totvs-select
+                                canclean="undefined"
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                ng-model="controller.model['cd-tag']"
+                                ng-disabled="controller.model['estado'] == 4"
+                                select-id="cd-tag"
+                                select-description="descricao"
+                                select-service="mmi.tag.zoom"
+                                zoom-service="mmi.tag.zoom"
+                                zoom-selected="controller.leaveCdTag()"
+                                return-object="select-id"
+                                zoom-init="{}"
+                                label="{{ 'l-tag' | i18n }}"
+                                ng-change="controller.leaveCdTag()">
+                    </totvs-field>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <totvs-field totvs-select
+                                canclean="undefined"
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                ng-model="controller.model['cd-manut']"
+                                ng-disabled="controller.model['estado'] == 4"
+                                select-id="cd-manut"
+                                select-description="descricao"
+                                select-service="mmi.manut.zoom"
+                                zoom-service="mmi.manut.zoom"
+                                zoom-selected="controller.leaveCdManut()"
+                                return-object="select-id"
+                                zoom-init="{}"
+                                label="{{ 'l-maintenance' | i18n }}"
+                                ng-change="controller.leaveCdManut()">
+                    </totvs-field>
+                    <totvs-field totvs-select
+                                canclean="undefined"
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                ng-model="controller.model['cd-sint-padr']"
+                                select-id="cd-sint-padr"
+                                select-description="descricao"
+                                select-service="mmi.sintoma.zoom"
+                                zoom-service="mmi.sintoma.zoom"
+                                return-object="select-id"
+                                zoom-init="{}"
+                                label="{{ 'l-sympthom' | i18n }}">
+                    </totvs-field>
+                    <totvs-field totvs-select
+                                canclean="undefined"
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                ng-model="controller.model['cd-equip-res']"
+                                select-id="cd-equipe"
+                                select-description="desc-equipe"
+                                select-service="mmi.equipe.zoom"
+                                zoom-service="mmi.equipe.zoom"
+                                return-object="select-id"
+                                zoom-init="{}"
+                                label="{{ 'l-team' | i18n }}">
+                    </totvs-field>
+                    <totvs-field totvs-input
+                                 numbers-only
+                                 class="col-lg-2 col-md-2 col-sm-6 col-xs-12"
+                                 label="{{ 'l-priority' | i18n }}"
+                                 ng-model="controller.model['prioridade']"
+                                 ng-maxlength="3">
+                        <validator key="maxlength">{{ 'l-invalid-priority' | i18n }}</validator>
+                    </totvs-field>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <field type="input"
+                            name-id="descricao"
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        data-ng-model="controller.model['descricao']"
+                        maxlength="50">
+                        <label>{{ 'l-description' | i18n }}</label>
+                    </field>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <field class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        type="textarea"
+                        ng-model="controller.model['des-narrativa']"
+                        maxlength="15000"
+                        rows="4">
+                        <label class="field-label">{{ 'l-narrative' | i18n }}</label>
+                    </field>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <totvs-field totvs-upload
+                                label="{{ 'l-attached-document' | i18n }}"
+                                ng-model="controller.model.files"
+                                ng-hide="controller.model['estado'] == 4"
+                                name="file"
+                                name-id="file"
+                                t-show-file-list="false"
+                                t-remove="{{ 'l-remove' | i18n }}"
+                                t-select="{{ 'l-select-file' | i18n }}"
+                                t-drop-files-here="{{ 'l-drop-files' | i18n }}"
+                                t-status-uploaded="{{ 'l-status-uploaded' | i18n }}"
+                                t-status-uploading="{{ 'l-status-uploading' | i18n }}"
+                                t-upload-selected-files="{{ 'l-upload-selected-files' | i18n }}"
+                                t-retry="{{ 'l-retry' | i18n }}"
+                            	t-auto-upload="false"
+                                t-multiple="true"
+                                t-save-url="controller.saveUrl"
+                                t-on-success="controller.onSuccess"
+                                t-on-select="controller.onSelect"
+                                t-on-error="controller.onError"
+                                t-on-remove="controller.remover"
+                            	t-remove-url="controller.removeUrl"
+                                t-on-complete="controller.uploadCompleto"
+                                t-on-upload="controller.upload"
+                                t-on-cancel="controller.onCancel"
+                            	class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    </totvs-field>
+                </div>
+            </div>
+        </fieldset>
+    </totvs-page-form>
+    <div class="row" ng-if="controller.data != 'new'">
+        <totvs-page-child>
+            <totvs-page-content>
+                <totvs-tabset class="col-xs-12">
+                    <totvs-tab heading="{{ 'l-general' | i18n }}">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <totvs-field totvs-select
+                                                canclean="undefined"
+                                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                                ng-model="controller.model['cd-equipto']"
+                                                ng-disabled="controller.model['estado'] == 4"
+                                                select-id="cd-equipto"
+                                                select-description="descricao"
+                                                select-service="mmi.equipto.zoom"
+                                                zoom-service="mmi.equipto.zoom"
+
+                                                ng-change="controller.leaveCdEquipto()"
+                                                return-object="select-id"
+                                                zoom-init="{}"
+                                                label="{{ 'l-equipment' | i18n }}"
+                                                id="cd-equipto"
+                                                >
+                                </totvs-field>
+                                <totvs-field totvs-select
+                                            canclean="undefined"
+                                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                            ng-model="controller.model['cd-tag']"
+                                            ng-disabled="controller.model['estado'] == 4"
+                                            select-id="cd-tag"
+                                            select-description="descricao"
+                                            select-service="mmi.tag.zoom"
+                                            zoom-service="mmi.tag.zoom"
+
+                                            ng-change="controller.leaveCdTag()"
+                                            return-object="select-id"
+                                            zoom-init="{}"
+                                            label="{{ 'l-tag' | i18n }}">
+                                </totvs-field>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <totvs-field totvs-select
+                                            canclean="undefined"
+                                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                            ng-model="controller.model['cd-manut']"
+                                            ng-disabled="controller.model['estado'] == 4"
+                                            ng-change="controller.leaveCdManut()"
+                                            select-id="cd-manut"
+                                            select-description="descricao"
+                                            select-service="mmi.manut.zoom"
+                                            zoom-service="mmi.manut.zoom"
+
+                                            return-object="select-id"
+                                            zoom-init="{}"
+                                            label="{{ 'l-maintenance' | i18n }}">
+                                </totvs-field>
+                                <totvs-field totvs-select
+                                            canclean="undefined"
+                                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                            ng-model="controller.model['cd-sint-padr']"
+                                            select-id="cd-sint-padr"
+                                            select-description="descricao"
+                                            select-service="mmi.sintoma.zoom"
+                                            zoom-service="mmi.sintoma.zoom"
+                                            return-object="select-id"
+                                            zoom-init="{}"
+                                            label="{{ 'l-sympthom' | i18n }}">
+                                </totvs-field>
+                                <totvs-field totvs-select
+                                            canclean="undefined"
+                                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                            ng-model="controller.model['cd-equip-res']"
+                                            select-id="cd-equipe"
+                                            select-description="desc-equipe"
+                                            select-service="mmi.equipe.zoom"
+                                            zoom-service="mmi.equipe.zoom"
+                                            return-object="select-id"
+                                            zoom-init="{}"
+                                            label="{{ 'l-team' | i18n }}">
+                                </totvs-field>
+                                <totvs-field totvs-input
+                                             numbers-only
+                                             class="col-lg-2 col-md-2 col-sm-6 col-xs-12"
+                                             label="{{ 'l-priority' | i18n }}"
+                                             ng-model="controller.model['prioridade']"
+                                             ng-maxlength="3">
+                                    <validator key="maxlength">{{ 'l-invalid-priority' | i18n }}</validator>
+                                </totvs-field>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <field type="input"
+                                        name-id="descricao"
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                        data-ng-model="controller.model['descricao']"
+                                        maxlength="50">
+                                    <label>{{ 'l-description' | i18n }}</label>
+                                </field>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <field class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                        type="textarea"
+                                        ng-model="controller.model['des-narrativa']"
+                                        maxlength="15000"
+                                        rows="4">
+                                    <label class="field-label">{{ 'l-narrative' | i18n }}</label>
+                                </field>
+                            </div>
+                        </div>
+                    </totvs-tab>
+                    <totvs-tab heading="{{ 'l-dates' | i18n }}/{{ 'l-maintenance' | i18n }}">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <totvs-list-item-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                            title="{{ 'l-date-hour-opening' | i18n }}"
+                                            value="{{controller.model.dataStr}} {{ 'l-at' | i18n }} {{controller.model.hora}}"
+                                            style="margin-top: 15px;">
+                                </totvs-list-item-info>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <field type="date"
+                                    class="col-md-8 col-lg-8 col-sm-8 col-xs-12"
+                                    ng-model="controller.model['dt-inicio']"
+                                    placeholder="{{'l-start-date' | i18n}}"
+                                    canclean="undefined">
+                                    <label>{{'l-start-date' | i18n}}</label></field>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 row">
+                                <field type="date"
+                                    class="col-md-8 col-lg-8 col-sm-8 col-xs-12"
+                                    ng-model="controller.model['dt-termino']"
+                                    placeholder="{{'l-end-date' | i18n}}"
+                                    canclean="undefined">
+                                    <label>{{'l-end-date' | i18n}}</label></field>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <totvs-field
+                                    totvs-select
+                                    canclean="undefined"
+                                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                    ng-model="controller.model['cd-causa-padr']"
+                                    select-id="cd-causa-padr"
+                                    select-description="descricao"
+                                    select-service="mmi.causa.zoom"
+                                    zoom-service="mmi.causa.zoom"
+                                    label="{{ 'l-cause' | i18n }}"
+                                    canclean="undefined">
+                                </totvs-field>
+                                <totvs-field
+                                    totvs-select
+                                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                    ng-model="controller.model['cd-interv-padr']"
+                                    select-id="cd-interv-padr"
+                                    select-description="descricao"
+                                    select-service="mmi.intervencao.zoom"
+                                    zoom-service="mmi.intervencao.zoom"
+                                    label="{{ 'l-intervention' | i18n }}"
+                                    canclean="undefined">
+                                </totvs-field>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <field type="input"
+                                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                    ng-model="controller.model['nr-ord-produ']"
+                                    zoom
+                                    zoom-id="nr-ord-produ"
+                                    zoom-description="des-man-corr"
+                                    zoom-service="mmi.ord-manut.zoom"
+                                    label="{{ 'l-maintenance-order' | i18n }}"
+                                    ng-disabled="true">
+                                </field>
+                                <field type="input"
+                                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                        data-ng-model="controller.model['cd-parada']"
+                                        zoom 
+                                        zoom-id="cd-parada"
+                                        zoom-description="descricao"
+                                        zoom-service="mmi.parada.zoom"
+                                        ng-disabled="true">
+                                    <label>{{ 'l-stop-plan' | i18n }}</label> 
+                                </field>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <totvs-field
+                                    totvs-select
+                                    canclean="undefined"
+                                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                    ng-model="controller.model['cd-planejado']"
+                                    select-id="cd-planejado"
+                                    select-description="nome"
+                                    select-service="mmi.mntplanejador.zoom"
+                                    zoom-service="mmi.mntplanejador.zoom"
+                                    label="{{ 'l-planner' | i18n }}"
+                                    required>
+                                </totvs-field>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <field type="input"
+                                    ng-model="controller.model['nr-ord-orig']"
+                                    numbers-only
+                                    zoom
+                                    zoom-id="nr-ord-produ"
+                                    zoom-description="des-man-corr"
+                                    zoom-service="mmi.ord-manut.zoom"
+                                    zoom-selected="controller.atualizaOrdemOrigem()"
+                                    ng-blur="controller.atualizaOrdemOrigem()"
+                                    label="{{ 'l-origin-order' | i18n }}"
+                                    canclean="0">
+                                </field>
+                                <field type="input"
+                                        ng-model="controller.model['cd-tarefa-orig']"
+                                        numbers-only
+                                        zoom
+                                        zoom-id="cd-tarefa"
+                                        zoom-description="descricao"
+                                        zoom-service="mmi.ord-taref.zoom"
+                                        label="{{ 'l-origin-task' | i18n }}"
+                                        canclean="0">
+                                </field>
+                            </div>
+                        </div>
+                    </totvs-tab>
+                    <totvs-tab heading="{{ 'l-budget' | i18n }}">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <totvs-field totvs-decimal
+                                    numbers-only
+                                    ng-model="controller.model['vl-orcado-mat']"
+                                    class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                                    m-dec="2"
+                                    ng-maxlength="14"
+                                    label="{{ 'l-budget-material' | i18n }}"
+                                    ng-blur="controller.atualizaTotalOrcado()">
+                                    <validator key="maxlength">{{ 'l-invalid-value' | i18n }}</validator>
+                                </totvs-field>
+                                <totvs-field totvs-decimal
+                                    numbers-only
+                                    ng-model="controller.model['vl-orcado-mob']"
+                                    class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                                    m-dec="2"
+                                    ng-maxlength="14"
+                                    ng-blur="controller.atualizaTotalOrcado()"
+                                    label="{{ 'l-budget-labor' | i18n }}">
+                                    <validator key="maxlength">{{ 'l-invalid-value' | i18n }}</validator>
+                                </totvs-field>
+                                <totvs-field totvs-decimal
+                                    numbers-only
+                                    ng-model="controller.model['vl-orcado-ggf']"
+                                    class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                                    m-dec="2"
+                                    ng-maxlength="14"
+                                    ng-blur="controller.atualizaTotalOrcado()"
+                                    label="{{ 'l-budget-overhead' | i18n }}">
+                                    <validator key="maxlength">{{ 'l-invalid-value' | i18n }}</validator>
+                                </totvs-field>
+                                <totvs-field totvs-decimal
+                                    class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                                    value="1"
+                                    m-dec="2"
+                                    ng-model="controller.totalOrcamento"
+                                    ng-disabled="true"
+                                    label="{{ 'l-total-budget' | i18n }}">
+                                </totvs-field>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <totvs-field totvs-input
+                                    class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                                    label="{{ 'l-cost-center' | i18n }}"
+                                    ng-model="controller.model['cc-codigo']"
+                                    canclean="undefined"
+                                    zoom-id="cod_ccusto"
+                                    zoom-description="des_tit_ctbl"
+                                    zoom-service="utb.ccusto.zoom"
+                                    required>
+                                </totvs-field>
+                                <totvs-field totvs-input
+                                    class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                                    label="{{ 'l-business-unit' | i18n }}"
+                                    ng-model="controller.model['cod-unid-negoc']"
+                                    canclean="undefined"
+                                    zoom-id="cod-unid-negoc"
+                                    zoom-description="des-unid-negoc"
+                                    zoom-service="mce.unid-negoc.zoom"
+                                    required>
+                                </totvs-field>
+                            </div>
+                        </div>
+                    </totvs-tab>
+                </totvs-tabset>
+            </totvs-page-content>
+        </totvs-page-child>
+    </div>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button data-ng-click="controller.close();" class="btn btn-default">{{ 'l-cancel' |i18n }}</button>
+    <button data-ng-click="controller.saveNew();" class="btn btn-default" 
+            ng-disabled="controller.carregandoArquivos"
+            ng-if="controller.data === 'new'">{{ 'l-save-new' |i18n }}</button>
+    <button data-ng-click="controller.save();"
+            ng-disabled="controller.carregandoArquivos"
+            class="btn btn-primary">{{ 'l-save' |i18n }}</button>
+</totvs-modal-footer>

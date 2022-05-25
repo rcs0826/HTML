@@ -1,0 +1,96 @@
+<totvs-modal-header>
+    {{ 'l-parameters' | i18n }}
+</totvs-modal-header>
+
+<totvs-modal-body>    
+
+    <totvs-page-content style="border:0px">
+        <totvs-page-detail style="padding-top:0px">
+        
+        	<div class="no-gutter ng-scope
+	       				col-lg-12 col-md-12 col-sm-12 col-xs-12"
+	       		 style="padding-top:10px">
+		        <a class="clickable"
+			 	   ng-click="paramCtrl.mostraParametrosApontamento()">
+			 	   {{ 'l-reports-mpo' | i18n}}
+			 	   <span class="dropdown-menu-right glyphicon"
+					   ng-class="{'glyphicon-chevron-down': paramCtrl.parametrosApontamento,
+							      'glyphicon-chevron-right': !paramCtrl.parametrosApontamento}">
+			 		</span>
+				</a>
+			</div>
+			
+			<div ng-if="paramCtrl.parametrosApontamento">
+				<totvs-field totvs-checkbox
+                    t-bsswitch 
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    label="{{ 'l-suggest-last-order' | i18n }}"
+                    ng-model="paramCtrl.model.ultimaOrdem">                    
+                </totvs-field>
+                <totvs-field totvs-checkbox
+                    t-bsswitch 
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    label="{{ 'l-suggest-last-technician' | i18n }}"
+                    ng-model="paramCtrl.model.ultimoTecnico">                    
+				</totvs-field>
+				<totvs-field totvs-checkbox
+                    t-bsswitch 
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    label="{{ 'l-enable-cost-center' | i18n}}"
+                    ng-model="paramCtrl.model.informaCentroCusto">                    
+                </totvs-field>
+			</div>
+        	
+        	<div>
+		        <div class="no-gutter ng-scope
+		       				col-lg-12 col-md-12 col-sm-12 col-xs-12"
+		       		 style="padding-top:20px">
+			        <a class="clickable"
+				 	   ng-click="paramCtrl.mostraParametrosEncerramento()">
+				 	   {{ 'l-work-order-closing' | i18n}}
+				 	   <span class="dropdown-menu-right glyphicon"
+						   ng-class="{'glyphicon-chevron-down': paramCtrl.parametrosEncerramento,
+								      'glyphicon-chevron-right': !paramCtrl.parametrosEncerramento}">
+				 		</span>
+					</a>
+				</div>         
+	
+	            <div ng-if="paramCtrl.parametrosEncerramento">
+	                <totvs-field totvs-checkbox
+	                    t-bsswitch 
+	                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+	                    label="{{ 'l-close-pending-accept' | i18n }}"
+	                    ng-model="paramCtrl.model.lAceitePendente">                    
+	                </totvs-field>
+	
+	               <totvs-field totvs-checkbox
+	                    t-bsswitch 
+	                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+	                    label="{{ 'l-close-pending-task' | i18n }}"
+	                    ng-model="paramCtrl.model.lTarefaPendente">
+	                </totvs-field>
+	                
+	               <totvs-field totvs-checkbox
+	                    t-bsswitch 
+	                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+	                    label="{{ 'l-close-pending-requests' | i18n }}"
+	                    ng-model="paramCtrl.model.lReqPendente">
+	                </totvs-field>
+	
+	                <totvs-field totvs-checkbox
+	                    t-bsswitch 
+	                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+	                    label="{{ 'l-close-pending-purchase' | i18n }}"
+	                    ng-model="paramCtrl.model.locPendente">
+	                </totvs-field>                          
+	            </div>
+            </div>
+                                
+        </totvs-page-detail>
+    </totvs-page-content>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-primary" data-ng-click="paramCtrl.close()" style="padding-left:25px; padding-right:25px">Ok</button>
+</totvs-modal-footer>

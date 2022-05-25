@@ -1,0 +1,26 @@
+<div ng-controller="rep.dashboard.selectedhier.Controller as controller">
+	<totvs-widget>
+		<totvs-widget-header title="{{ 'l-team-rule' | i18n: []: 'dts/mpd/' }}"></totvs-widget-header>
+		<totvs-widget-body style="padding-top: 0px;">
+			<div style="height:369px;">
+				<totvs-page-form style="padding-top: 0px;">
+					<p>{{ 'l-select-filter-by-repres' | i18n : [] : 'dts/mpd/'}}</p>
+					<button ng-if="currentuser['user-hiearchy']" class="btn btn-default" ng-model="controller.selectedRepresentatives" ng-change="controller.onZoomSelectRepresentatives();"
+						zoom zoom-multiple zoom-init="currentuser['listSubord']" zoom-service="mpd.repres.zoom">
+						<span class="glyphicon glyphicon-plus"></span>
+						{{ 'l-bt-repres' | i18n: []: 'dts/mpd/' }}
+					</button>
+					<a role="button" class="btn btn-default pull-right" ng-if="controller.selectedRep"
+					   ng-click="controller.clearDisclaimer()" title="{{ 'l-filters-delete' | i18n: []: 'dts/mpd/' }}">
+						<span class="glyphicon glyphicon-trash"></span>
+					</a>
+					<div ng-if="!controller.selectedRep">
+						<br>
+						<alert type="danger">{{ 'l-no-repres' | i18n : [] : 'dts/mpd/'}}</alert>
+					</div>
+					<totvs-page-disclaimers disclaimer-list="controller.disclaimers" ng-click="controller.removeDisclaimer"></totvs-page-disclaimers>
+				</totvs-page-form>
+			</div>
+		</totvs-widget-body>
+	</totvs-widget>
+</div>

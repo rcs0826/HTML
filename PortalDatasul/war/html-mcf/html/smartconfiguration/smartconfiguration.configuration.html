@@ -1,0 +1,435 @@
+<link rel="stylesheet" href="/dts/mcf/js/utils/bootstrap-treeview.css"/>
+<totvs-modal-header ng-if="controller.isModal">{{ 'l-productconfigured' | i18n: []: 'dts/mcf' }}</totvs-modal-header>
+<totvs-page type="edit" totvs-custom-element="smartConfigurationCustom">
+    <totvs-page-navbar >
+        <totvs-page-breadcrumb  class="hidden-xs" ng-if="!controller.isModal" >
+            <breadcrumb link="#/">{{ 'l-home' | i18n: []: 'dts/mcf' }}</breadcrumb>
+            <breadcrumb link="#/dts/mcf/smartconfiguration">{{ 'l-productconfigured' | i18n: []: 'dts/mcf'}}</breadcrumb>
+            <breadcrumb>{{ 'l-configuration' | i18n: []: 'dts/mcf' }}</breadcrumb>            
+        </totvs-page-breadcrumb>
+        <totvs-page-header ng-if="!controller.btnConfigurar">
+            <totvs-page-header-title title="{{ 'l-nova-config' | i18n: []: 'dts/mcf' }}" ng-if="(!controller.tgReconfig || controller.isModal)" ></totvs-page-header-title>
+            <totvs-page-header-title title="{{ 'l-reconfigurando' | i18n: []: 'dts/mcf' }}" ng-if="(controller.tgReconfig && !controller.isModal)" ></totvs-page-header-title>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="operations page-detail-actions">
+						<action class="btn btn-primary ng-binding ng-scope"
+								ng-if="(!controller.tgReconfig || controller.isModal)" 
+								ng-click="controller.configurar(1);" 
+								>{{ 'l-configure' | i18n: []: 'dts/mcf' }}</action>
+						<action class="btn btn-primary ng-binding ng-scope"
+								ng-if="(controller.tgReconfig && !controller.isModal)" 
+								ng-click="controller.configurar(2);" 
+								>{{ 'l-reconfigure' | i18n: []: 'dts/mcf' }}</action>
+								
+						<action class="btn btn-default ng-binding ng-scope" ng-click="controller.cancel();" ng-disabled="controller.model.ttTree.length == 0" >{{ 'l-cancel' | i18n: []: 'dts/mcf' }}</action>
+                	</div>
+               	</div>
+            </div>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content ng-if="!controller.btnConfigurar">
+		<totvs-page-form>
+            <fieldset>  
+            	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	            	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<field					        
+							class="col-lg-3 col-md-5 col-sm-8 col-xs-12"
+							type="input"
+							id=idItemCriado
+							ng-model="controller.itemCriado"
+							ng-blur="controller.getModeloCFG('T',1, controller.itemCriado)"
+							label="{{ 'l-item' | i18n: []: 'dts/mcf' }}"
+							ng-disabled="controller.isModal"
+					        zoom
+					        zoom-id="item-criado"
+					        zoom-service="mcf.modelo-cf.zoom"
+					        zoom-selected="controller.changeField(1, controller.itemCriado)">
+						</field>
+						<field					        
+							class="col-lg-6 col-md-5 col-sm-8 col-xs-12"
+							type="input"
+							ng-model="controller.descItem"
+							label="{{ 'l-desc-item' | i18n: []: 'dts/mcf' }}"
+							ng-disabled=true>
+						</field>
+			    	</div>
+		    	</div>
+				<!-- 
+				-->
+            	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	            	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					   <field					        
+							class="col-lg-3 col-md-5 col-sm-8 col-xs-12"
+							type="input"
+							id=idMoCodigo
+							ng-model="controller.moCodigo"
+							ng-blur="controller.getModeloCFG('T',2, controller.moCodigo)"
+							label="{{ 'l-model-cf' | i18n: []: 'dts/mcf' }}"
+							ng-disabled="controller.isModal"
+					        zoom
+					        zoom-id="mo-codigo"
+					        zoom-service="mcf.modelo-cf.zoom"
+					        zoom-selected="controller.changeField(2, controller.moCodigo)">
+					    </field>
+						<field					        
+							class="col-lg-6 col-md-5 col-sm-8 col-xs-12"
+							type="input"
+							ng-model="controller.descModelo"
+							label="{{ 'l-desc-modelo' | i18n: []: 'dts/mcf' }}"
+							ng-disabled=true>
+						</field>
+			    	</div>
+		    	</div>
+            	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	            	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					   <field					        
+				            class="col-lg-9 col-md-5 col-sm-8 col-xs-12"
+				            type="input"
+					        ng-model="controller.descConfigur"
+					        ng-blur="controller.changeDescConfigur()"
+					        label="{{ 'l-desc-config' | i18n: []: 'dts/mcf' }}">
+					    </field>
+			    	</div>
+		    	</div>
+   			</fieldset>
+   		</totvs-page-form>
+    </totvs-page-content>
+    <totvs-page-content ng-if="controller.btnConfigurar">
+        <totvs-page-header>
+			<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+				<totvs-page-header-title title="{{ 'l-config' | i18n: []: 'dts/mcf' }}: {{controller.numCFG}}"></totvs-page-header-title>
+			</div>
+			<div class="col-lg-4 col-md-3 col-sm-3 col-xs-12">
+            	<totvs-page-header-title id="idNivel" title="{{ 'l-level' | i18n: []: 'dts/mcf' }}: {{controller.pNivel}}"></totvs-page-header-title>
+			</div>
+			
+			<br class="hidden-lg hidden-md hidden-sm">
+			<br class="hidden-lg hidden-md hidden-sm">
+
+			<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12" class="operations page-detail-actions">
+				<action class="pull-right col-lg-4 col-md-4 col-sm-4 col-xs-4 btn btn-primary ng-binding ng-scope" 
+						id="idBtnAdvance"
+						style="padding-left: 0px; padding-right: 0px; margin-left: 0px"
+						ng-click="controller.advanced();" 
+						ng-if="controller.tgAvancar" 
+						ng-disabled="false">{{ 'l-advance' | i18n: []: 'dts/mcf' }}</action>
+				<action class="pull-right col-lg-3 col-md-4 col-sm-4 col-xs-4 btn btn-success ng-binding ng-scope" 
+						id="idBtnSave"
+						style="padding-left: 0px; padding-right: 0px; margin-left: 0px"
+						ng-click="controller.save(1);" 
+						ng-if="controller.tgAvancar && controller.pNivel > 1" 
+						ng-disabled="false">{{ 'l-save' | i18n: []: 'dts/mcf' }}</action>
+				<action class="pull-right col-lg-3 col-md-3 col-sm-3 col-xs-3 btn btn-default ng-binding ng-scope" ng-click="controller.back();"
+						id="idBtnBack"
+						style="padding-left: 0px; padding-right: 0px; margin-left: 0px"
+						ng-if="controller.tgAvancar" 
+						ng-disabled="false" >{{ 'l-back' | i18n: []: 'dts/mcf' }}</action>
+				<action class="pull-right col-sm-6 col-xs-12 btn btn-default ng-binding ng-scope" 
+						id="idBtnCancel"
+						style="padding-left: 0px; padding-right: 0px; margin-left: 0px"
+						ng-click="controller.cancel();" 
+						ng-if="!controller.tgAvancar" 
+						ng-disabled="false" >{{ 'l-cancel' | i18n: []: 'dts/mcf' }}</action>
+				<action class="pull-right col-sm-6 col-xs-12 btn btn-success ng-binding ng-scope" 
+						id="idBtnConfirm"
+						style="padding-left: 0px; padding-right: 0px; margin-left: 0px"
+						ng-click="controller.save(5);" 
+						ng-if="!controller.tgAvancar" 
+						ng-disabled="false" >{{ 'l-confirm' | i18n: []: 'dts/mcf' }}</action>
+            </div>
+        </totvs-page-header>
+		<totvs-page-detail>
+			<totvs-list-item-content-detail class="col-lg-12 col-md-10 col-sm-10 col-xs-12">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12 details"
+											title="{{ 'l-item' | i18n: []: 'dts/mcf' }}"
+											value="{{controller.itemCriado}} - {{controller.descItem}}">
+					</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12 details"
+											title="{{ 'l-desc-config' | i18n: []: 'dts/mcf' }}"
+											value="{{controller.descConfigur}}">
+					</totvs-page-detail-info>
+				</div>
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-page-detail-info class="col-lg-12 col-md-6 col-sm-12 col-xs-12 details"
+											title="{{ 'l-model-cf' | i18n: []: 'dts/mcf' }}"
+											value="{{controller.moCodigo}} - {{controller.descModelo}}">
+					</totvs-page-detail-info>
+				</div>
+			</totvs-list-item-content-detail>	
+		</totvs-page-detail>
+		<!--
+		-->
+    </totvs-page-content>
+
+	<!--
+		ESPAÇO VINCULADO AO GRID
+		-->
+	<totvs-page-content ng-if="controller.btnConfigurar"
+						class="col-lg-12 col-md-12 col-sm-12 col-xs-12" 
+						style="padding-top: 15px;padding-right: 5px;padding-left: 0px;">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom: 15px;">
+			<totvs-list-item 
+				ng-repeat="config in controller.ListField | orderBy: 'seq'"
+				class="imagem-{{config.imagem}}"
+				ng-if="controller.tgAvancar"
+				style="border-left-width: 0px;">
+				<div ng-if="config.imagem == 3">
+					<button class="btn {{ config.icon }} btnImg"></button>
+					<label>{{ 'l-model-cf' | i18n: []: 'dts/mcf' }} : {{ config.textHTML }}</label>
+				</div> 
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+					 ng-if="config.imagem != 3"
+					 style="padding-bottom: 5px;padding-top: 5px;">
+					 <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12" style="margin-bottom: 5px;">
+						<button class="btn {{ config.icon }} btnImg" 
+								ng-click="controller.clickEditar(true,config)"></button>
+						<label ng-click="controller.clickEditar(true,config)" 
+							   style="cursor: pointer;">{{ config.textHTML }} </label>
+					</div> 
+					<div class="col-lg-5 col-md-4 col-sm-4 col-xs-10" ng-if="config.imagem == 6 || config.imagem == 7">
+						<label 	class="col-lg-8" 
+								style="color:rgb(153, 153, 153);padding-left: 0px;" 
+								id="{{config.chaveFilho}}Tooltip"
+								tooltip="{{config.infComplementarFilho}}">Qtd Total: <span style="color: green;">{{config.qtdTotalCompon}}</span></label>
+						<label 	class="col-lg-4" 
+								style="color:rgb(153, 153, 153);padding-left: 0px;"
+							  	tooltip="{{config.infComplementar}}">Qtd Compon: <span style="color: green;">{{config.qtdCompon}}</span></label>
+					</div>	
+					<div ng-if="(config.imagem != 6 && config.imagem != 7)">
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-10">
+							<label 	id="{{config.chaveFilho}}label" 
+									ng-click="controller.clickEditar(true,config)" 
+									style="color: blue; cursor: pointer; margin-top: 5px;">{{ config.valueHTML }}</label>
+							<input 	id="{{config.chaveFilho}}Input" 
+									class="form-control inputType"
+									ng-keypress="controller.checkIfEnterKeyWasPressed($event,config,config);"
+									style="padding-right: 4px; padding-left: 1px; height: 30px;">
+						</div> 
+						<div class="col-lg-1 col-md-1 col-sm-1 col-xs-2">
+							<span class="right">
+								<a id="{{config.chaveFilho}}Editar"
+								class="btn btn-link" 
+								ng-click="controller.clickEditar(true,config)"
+								ng-if="controller.tgAvancar" 
+								tabindex="-1"
+								style="padding-top: 0px; padding-bottom: 0px;">{{ 'l-edit' | i18n: []: 'dts/mcf' }}</a>
+								<a id="{{config.chaveFilho}}Salvar"
+								class="btn btn-link"
+								ng-if="controller.tgAvancar" 
+								ng-click="controller.clickEditar(false, config)"
+								tabindex="-1"
+								style="padding-top: 0px; padding-bottom: 0px;">{{ 'l-save' | i18n: []: 'dts/mcf' }}</a>
+								<a id="{{config.chaveFilho}}Fechar"
+								class="btn btn-link"
+								ng-if="controller.tgAvancar" 
+								ng-click="controller.fecharCampo(config.chaveFilho);"
+								tabindex="-1"
+								style="padding-top: 0px; padding-bottom: 0px;">{{ 'l-close' | i18n: []: 'dts/mcf' }}</a>
+							<span>
+						</div> 
+					</div>
+					<totvs-list-item 
+							ng-repeat='detalharEditar in controller.ListFieldEditar'
+							ng-if="detalharEditar.chavePai == config.chaveFilho"
+							class="imagem-{{detalharEditar.imagem}}"
+							style="border-left-width: 0px;">
+						<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12" style="padding-left: 20px;margin-bottom: 5px;margin-top: 5px;">
+							
+							<button class="col-lg-1 col-md-1 col-sm-1 col-xs-3 btn btn-default glyphicon glyphicon-plus"
+									id="{{detalharEditar.chaveFilho}}Button" 
+									ng-click="controller.selectItemFamily(detalharEditar,config);"
+									ng-if="(detalharEditar.imagem == 12 && (config.imagem == 6 || config.imagem == 7))"
+									tooltip="{{ 'l-add' | i18n }}"
+									style="background-color: #f8f8f8;border-color: #f8f8f8;
+										   padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;
+										   border-top-width: 0px;border-bottom-width: 0px;border-right-width: 0px;border-left-width: 0px;
+										   top: 5px;width: 25px;
+										   margin-right: 10px;">
+							</button>
+							<button class="col-lg-1 col-md-1 col-sm-1 col-xs-3 btn btn-default glyphicon glyphicon-ok"
+									id="{{detalharEditar.chaveFilho}}ButtonOk" 
+									ng-click="controller.selectItemFamily(detalharEditar,config);"
+									ng-if="(detalharEditar.imagem == 9 && (config.imagem == 6 || config.imagem == 7))"
+									tooltip="{{ 'l-remove' | i18n }}"
+									style="background-color: #f8f8f8;border-color: #f8f8f8;
+										   padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;
+										   border-top-width: 0px;border-bottom-width: 0px;border-right-width: 0px;border-left-width: 0px;
+										   top: 5px;width: 25px;
+										   margin-right: 10px;">
+							</button>
+							<button class="btn {{ detalharEditar.icon }} btnImg"
+									ng-click="controller.itemSelecionado(detalharEditar);"
+									ng-if="(config.imagem != 6 && config.imagem != 7)"></button>
+							<label 	ng-click="controller.itemSelecionado(detalharEditar);"
+									ng-if="(config.imagem != 6 && config.imagem != 7)"
+							       	style="cursor: pointer;margin-top: 5px;margin-bottom: 5px;">{{ detalharEditar.textHTML }}</label>
+							<label 	ng-click="controller.clickEditar(true,detalharEditar,config);"
+									ng-if="(config.imagem == 6 || config.imagem == 7)"
+							       	style="cursor: pointer;margin-top: 5px;margin-bottom: 5px;">{{ detalharEditar.textHTML }}</label>
+						</div> 
+
+						<div class="col-lg-4 col-md-4 col-sm-4 col-xs-10">
+							<label 	id="{{detalharEditar.chaveFilho}}label" 
+									ng-click="controller.clickEditar(true,detalharEditar,config)"
+									ng-if="(config.imagem == 6 || config.imagem == 7) && detalharEditar.imagem == 9 || detalharEditar.imagem == 12"
+									style="color: blue; cursor: pointer; margin-top: 5px;">{{ detalharEditar.valueHTML }}</label>
+							<input 	id="{{detalharEditar.chaveFilho}}Input" 
+									class="form-control inputType"
+									ng-keypress="controller.checkIfEnterKeyWasPressed($event,detalharEditar,config);"
+									ng-if="(config.imagem == 6 || config.imagem == 7)"
+									style="padding-right: 4px; padding-left: 1px;padding-bottom: 5px;  height: 30px; margin-top: 5px; margin-bottom: 5px;">
+						</div> 
+
+						<div class="col-lg-1 col-md-1 col-sm-1 col-xs-2" >
+							<span class="right">
+								<a id="{{detalharEditar.chaveFilho}}Editar"
+								   class="btn btn-link" 
+								   ng-click="controller.clickEditar(true,detalharEditar,config)"
+								   ng-if="(config.imagem == 6 || config.imagem == 7)" 
+								   tabindex="-1"
+								   style="padding-top: 0px; padding-bottom: 0px;">{{ 'l-edit' | i18n: []: 'dts/mcf' }}</a>
+
+								<a id="{{detalharEditar.chaveFilho}}Salvar"
+								   class="btn btn-link"
+								   ng-if="(config.imagem == 6 || config.imagem == 7)" 
+								   ng-click="controller.clickEditar(false, detalharEditar,config)"
+								   tabindex="-1"
+								   style="padding-top: 0px; padding-bottom: 0px;">{{ 'l-save' | i18n: []: 'dts/mcf' }}</a>
+
+								<a id="{{detalharEditar.chaveFilho}}Cancel"
+								   class="btn btn-link" 
+								   ng-click="controller.cancelEdicao(detalharEditar)"
+								   ng-if="(config.imagem == 6 || config.imagem == 7)" 
+								   tabindex="-1"
+								   style="padding-top: 0px; padding-bottom: 0px;">{{ 'l-cancel' | i18n: []: 'dts/mcf' }}</a>
+								   
+								<a id="{{detalharEditar.chaveFilho}}Fechar"
+								   class="btn btn-link"
+								   ng-if="(config.imagem == 6 || config.imagem == 7)" 
+								   ng-click="controller.fecharCampo(detalharEditar.chaveFilho);"
+								   tabindex="-1"
+								   style="padding-top: 0px; padding-bottom: 0px;">{{ 'l-close' | i18n: []: 'dts/mcf' }}</a>
+							<span>
+						</div> 
+					</totvs-list-item>
+				</div> 
+			</totvs-list-item>
+
+		</div>
+		<div ng-if="!controller.tgAvancar">
+			<div class="col-lg-9 col-md-10 col-sm-12 col-xs-12" style="padding-bottom: 15px;">
+				<div id="treeList"></div>
+			</div>
+			<div class="col-lg-3 col-md-2 col-sm-12 col-xs-12" 
+				style="padding-left: 0px;padding-right: 0px;">
+				<div>
+					<accordion>
+						<accordion-group is-open=true style="margin-bottom: 0px;">
+							<accordion-heading>
+								{{'l-parameters' | i18n }}
+							</accordion-heading>
+							<div ng-if="!controller.isModal" class="col-lg-12 col-md-12" style="padding-left: 0px;padding-right: 0px;">
+								<totvs-field totvs-checkbox  
+									class="col-lg-4 col-md-12 col-sm-4 col-xs-4"                              
+									ng-change="controller.montaTreeFinal('oper')"
+									ng-model="controller.lOperations"
+									label="{{ 'l-operations' | i18n: []: 'dts/mcf' }}"
+									style="padding-left: 0px;padding-right: 0px;"
+									t-bsswitch>                                
+								</totvs-field>	
+								<totvs-field totvs-checkbox  
+									class="col-lg-4 col-md-12 col-sm-4 col-xs-4"                              
+									ng-change="controller.montaTreeFinal('data')"
+									ng-model="controller.lData"
+									label="{{ 'l-data' | i18n: []: 'dts/mcf' }}"
+									style="padding-left: 0px;padding-right: 0px;"
+									t-bsswitch>
+								</totvs-field>	
+								<totvs-field totvs-checkbox  
+									class="col-lg-4 col-md-12 col-sm-4 col-xs-4"                              
+									ng-change="controller.montaTreeFinal('forms')"
+									ng-model="controller.lForms"
+									label="{{ 'l-formulas' | i18n: []: 'dts/mcf' }}" 
+									style="padding-left: 0px;padding-right: 0px;"
+									t-bsswitch>                                
+								</totvs-field>	
+							</div>
+							<div ng-if="controller.isModal">
+								<div class="col-lg-12 col-md-12" style="padding-left: 0px;padding-right: 0px;">
+									<totvs-field totvs-checkbox  
+										class="col-lg-4 col-md-12 col-sm-4 col-xs-4"                              
+										ng-change="controller.montaTreeFinal('oper')"
+										ng-model="controller.lOperations"
+										label="{{ 'l-operations' | i18n: []: 'dts/mcf' }}"
+										style="padding-left: 0px;padding-right: 0px;"
+										t-bsswitch>                                
+									</totvs-field>	
+								</div>
+								<div class="col-lg-12 col-md-12" style="padding-left: 0px;padding-right: 0px;">
+									<totvs-field totvs-checkbox  
+										class="col-lg-4 col-md-12 col-sm-4 col-xs-4"                              
+										ng-change="controller.montaTreeFinal('data')"
+										ng-model="controller.lData"
+										label="{{ 'l-data' | i18n: []: 'dts/mcf' }}"
+										style="padding-left: 0px;padding-right: 0px;"
+										t-bsswitch>
+									</totvs-field>	
+								</div>
+								<div class="col-lg-12 col-md-12" style="padding-left: 0px;padding-right: 0px;">
+									<totvs-field totvs-checkbox
+										class="col-lg-4 col-md-12 col-sm-4 col-xs-4"                              
+										ng-change="controller.montaTreeFinal('forms')"
+										ng-model="controller.lForms"
+										label="{{ 'l-formulas' | i18n: []: 'dts/mcf' }}" 
+										style="padding-left: 0px;padding-right: 0px;"
+										t-bsswitch>                                
+									</totvs-field>	
+								</div>
+							</div>
+						</accordion-group>
+					</accordion>
+					<accordion>
+						<accordion-group is-open=true style="margin-bottom: 0px;">
+							<accordion-heading>
+								{{'l-narrative' | i18n }}
+							</accordion-heading>
+							<p>{{controller.narrativa}}</p>	
+						</accordion-group>
+					</accordion>
+				</div>
+			</div>
+		</div>
+	</totvs-page-content>	  
+</totvs-page>
+
+<style>
+	@media only screen and (max-width: 768px) {
+		.details {
+			margin-left: 10px;
+		}
+	}
+
+	.btnImg {
+		background-color:transparent;
+		border-color: transparent;
+		padding-top: 0px;
+		padding-right: 0px;
+		padding-bottom: 0px;
+		padding-left: 0px;
+		border-top-width: 0px;
+		border-bottom-width: 0px;
+		border-right-width: 0px;
+		border-left-width: 0px;
+		top: 5px;
+		width: 36px;
+		margin-right: 10px;
+		margin-bottom: 10px;
+	}
+	.btnImg:active{
+		background-color:transparent;
+		border-color: transparent;
+	}
+
+</style>

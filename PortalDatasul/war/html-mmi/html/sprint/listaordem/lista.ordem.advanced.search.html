@@ -1,0 +1,285 @@
+<totvs-modal-header>{{ 'l-advanced-search' | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+	<div class="row">
+		<form class="form-horizontal" role="form">
+			<accordion class="col-lg-12" 
+					   close-others="listaOmSearchCtrl.closeOther">
+
+				<accordion-group is-open="listaOmSearchCtrl.model.advancedSearch.accord.period">
+					<accordion-heading>
+						{{'l-period' | i18n }}
+						<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': listaOmSearchCtrl.model.advancedSearch.accord.period, 'glyphicon-chevron-right': !listaOmSearchCtrl.model.advancedSearch.accord.period}"></i>
+					</accordion-heading>
+
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+						<totvs-field totvs-date-range
+												 class="col-md-8 no-padding" 
+												 ng-model="listaOmSearchCtrl.model.periodo" 
+												 label="{{ 'l-enter-date' | i18n }}"
+												 t-mask-date 
+												 canclean>
+						</totvs-field>
+					</div>
+				</accordion-group>
+
+				<accordion-group is-open="listaOmSearchCtrl.model.advancedSearch.accord.filtro">
+					<accordion-heading >
+						{{'l-filter' | i18n }}
+						<i class="pull-right glyphicon" 
+							ng-class="{'glyphicon-chevron-down': listaOmSearchCtrl.model.advancedSearch.accord.filtro, 'glyphicon-chevron-right': !listaOmSearchCtrl.model.advancedSearch.accord.filtro}">
+						</i>
+					</accordion-heading>
+
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+						<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+							<totvs-field  totvs-input
+														class="col-xs-12 no-padding"
+														ng-model="listaOmSearchCtrl.model.ttFiltro.estabelInicial"
+														ng-blur="listaOmSearchCtrl.sugereFinal(1)"
+														label="{{ 'l-site' | i18n }}"
+														>
+							</totvs-field>
+						</div>
+
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" 
+								 style="margin-top: 35px; text-align: center;">
+											{{'l-to' | i18n}}
+						</div>
+
+						<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+							<totvs-field  totvs-input
+														class="col-xs-12 no-padding"
+														ng-model="listaOmSearchCtrl.model.ttFiltro.estabelFinal"
+														label="{{ 'l-site' | i18n }}">
+							</totvs-field>
+						</div>
+					</div>
+
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+						<div class="col-lg-5 col-md-5 col-sm-5 col-xs-11 no-padding">
+							<totvs-field  totvs-input
+														class="col-xs-12 no-padding"
+														ng-model="listaOmSearchCtrl.model.ttFiltro.oficinaInicial"
+														ng-blur="listaOmSearchCtrl.sugereFinal(2)"
+														label="{{ 'l-workshop' | i18n }}">
+							</totvs-field>
+						</div>
+
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" 
+								 style="margin-top: 35px; text-align: center;">
+											{{'l-to' | i18n}}
+						</div>
+
+						<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+							<totvs-field  totvs-input
+														class="col-xs-12 no-padding"
+														ng-model="listaOmSearchCtrl.model.ttFiltro.oficinaFinal"
+														label="{{ 'l-workshop' | i18n }}">
+							</totvs-field>
+						</div>	
+					</div>
+
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+						<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+							<totvs-field  totvs-input
+														class="col-xs-12 no-padding"
+														ng-model="listaOmSearchCtrl.model.ttFiltro.planejadorInicial"
+														ng-blur="listaOmSearchCtrl.sugereFinal(3)"
+														label="{{ 'l-planner' | i18n }}">
+							 </totvs-field>
+						</div>
+
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" 
+								 style="margin-top: 35px; text-align: center;">
+											{{'l-to' | i18n}}
+						</div>
+
+						<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+							<totvs-field  totvs-input
+														class="col-xs-12 no-padding"
+														ng-model="listaOmSearchCtrl.model.ttFiltro.planejadorFinal"
+														label="{{ 'l-planner' | i18n }}">
+							</totvs-field>
+						</div>
+					</div>
+
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+						<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+							<totvs-field totvs-input
+														class="col-xs-12 no-padding"
+														ng-model="listaOmSearchCtrl.model.ttFiltro.equipamentoInicial"
+														ng-blur="listaOmSearchCtrl.sugereFinal(4)"
+														label="{{'l-equipment' | i18n }}">
+							</totvs-field>
+						</div>
+
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" 
+								 style="margin-top: 35px; text-align: center; text-align: center">
+											{{'l-to' | i18n}}
+						</div>
+
+						<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+							 <totvs-field totvs-input
+														class="col-xs-12 no-padding"
+														ng-model="listaOmSearchCtrl.model.ttFiltro.equipamentoFinal"
+														label="{{'l-equipment' | i18n }}">
+							 </totvs-field>
+						</div>	 	 
+					</div>
+
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+						<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+							<totvs-field  totvs-input
+														class="col-xs-12 no-padding"
+														ng-model="listaOmSearchCtrl.model.ttFiltro.tagInicial"
+														ng-blur="listaOmSearchCtrl.sugereFinal(5)"
+														label="{{ 'l-tag' | i18n }}">
+							</totvs-field>
+						</div>
+
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" 
+								 style="margin-top: 35px; text-align: center;">
+											{{'l-to' | i18n}}
+						</div>
+
+						<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+							<totvs-field  totvs-input
+														class="col-xs-12 no-padding"
+														ng-model="listaOmSearchCtrl.model.ttFiltro.tagFinal"
+														label="{{ 'l-tag' | i18n }}">
+						 </totvs-field>
+						</div>	 	 
+					</div>
+
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+						<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+							<totvs-field  totvs-input
+														class="col-xs-12 no-padding"
+														ng-model="listaOmSearchCtrl.model.ttFiltro.planoInicial"
+														ng-blur="listaOmSearchCtrl.sugereFinal(6)"
+														label="{{'l-maintenance-plan' | i18n }}">
+							</totvs-field>
+						</div>
+
+						<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" 
+								 style="margin-top: 35px; text-align: center;">
+											{{'l-to' | i18n}}
+						</div>
+
+						<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+							<totvs-field  totvs-input
+														class="col-xs-12 no-padding"
+														ng-model="listaOmSearchCtrl.model.ttFiltro.planoFinal"
+														label="{{'l-maintenance-plan' | i18n }}">
+							</totvs-field>
+						</div>	 	 
+					</div>
+
+
+				</accordion-group>
+				<accordion-group is-open="listaOmSearchCtrl.model.advancedSearch.accord.statusOmProg">
+					<accordion-heading>
+						{{'l-status-programming' | i18n }}
+						<i class="pull-right glyphicon" 
+							 ng-class="{'glyphicon-chevron-down': listaOmSearchCtrl.model.advancedSearch.accord.statusOmProg, 'glyphicon-chevron-right': !listaOmSearchCtrl.model.advancedSearch.accord.statusOmProg}">
+							</i>
+					</accordion-heading>
+
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding no-padding">
+							<totvs-field  totvs-checkbox
+														class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding" 
+														ng-model="listaOmSearchCtrl.model.ttFiltro.planejamento" 
+														label="{{'l-in-planning'| i18n}}"
+														t-bsswitch>
+							</totvs-field>
+
+							<totvs-field  totvs-checkbox
+														class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding" 
+														ng-model="listaOmSearchCtrl.model.ttFiltro.naoIniciada" 
+														label="{{'l-not-started' | i18n}}"
+														t-bsswitch>
+							</totvs-field>
+
+							<totvs-field  totvs-checkbox
+														class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding" 
+														ng-model="listaOmSearchCtrl.model.ttFiltro.emExecucao" 
+														label="{{'l-in-execution' | i18n}}"
+														t-bsswitch>
+							</totvs-field>
+
+							<totvs-field  totvs-checkbox
+														class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding" 
+														ng-model="listaOmSearchCtrl.model.ttFiltro.finalizada" 
+														label="{{'l-finished' | i18n}}"
+														t-bsswitch>
+							</totvs-field>
+
+							<totvs-field  totvs-checkbox
+														class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding" 
+														ng-model="listaOmSearchCtrl.model.ttFiltro.reprogramada" 
+														label="{{'l-rescheduled' | i18n}}"
+														t-bsswitch>
+							</totvs-field>
+
+							<totvs-field  totvs-checkbox
+														class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding" 
+														ng-model="listaOmSearchCtrl.model.ttFiltro.impedimento" 
+														label="{{'l-has-impediment' | i18n}}"
+														t-bsswitch>
+							</totvs-field>
+					</div>
+				</accordion-group>
+				<accordion-group is-open="listaOmSearchCtrl.model.advancedSearch.accord.statisticsOmProg">
+					<accordion-heading>
+						{{'l-statistic' | i18n }}
+						<i class="pull-right glyphicon" 
+							 ng-class="{'glyphicon-chevron-down': listaOmSearchCtrl.model.advancedSearch.accord.statisticsOmProg, 'glyphicon-chevron-right': !listaOmSearchCtrl.model.advancedSearch.accord.statisticsOmProg}">
+							</i>
+					</accordion-heading>
+
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding no-padding">
+							<totvs-field  totvs-checkbox
+														class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding" 
+														ng-model="listaOmSearchCtrl.model.ttFiltro.preventiva" 
+														label="{{'l-preventive'| i18n}}"
+														t-bsswitch>
+							</totvs-field>
+
+							<totvs-field  totvs-checkbox
+														class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding" 
+														ng-model="listaOmSearchCtrl.model.ttFiltro.corretiva" 
+														label="{{'l-corrective' | i18n}}"
+														t-bsswitch>
+							</totvs-field>
+
+							<totvs-field  totvs-checkbox
+														class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding" 
+														ng-model="listaOmSearchCtrl.model.ttFiltro.preditiva" 
+														label="{{'l-predictive' | i18n}}"
+														t-bsswitch>
+							</totvs-field>
+
+							<totvs-field  totvs-checkbox
+														class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding" 
+														ng-model="listaOmSearchCtrl.model.ttFiltro.outros" 
+														label="{{'l-others' | i18n}}"
+														t-bsswitch>
+							</totvs-field>
+
+					</div>
+				</accordion-group>
+			</accordion>
+		</form>
+	</div>
+</totvs-modal-body>
+<totvs-modal-footer>
+	<button type="button" class="btn btn-default" data-ng-click="listaOmSearchCtrl.close();">{{ 'l-cancel' | i18n }}</button>
+	<button type="button" class="btn btn-primary" data-ng-click="listaOmSearchCtrl.search();">{{ 'l-search' | i18n }}</button>
+</totvs-modal-footer>
+
+<style>
+	.no-padding {
+		padding-left: 0;
+		padding-right: 0;
+	}
+</style>

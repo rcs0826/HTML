@@ -1,0 +1,69 @@
+<style>
+
+.label-field{
+	font-family: 'Arial';
+	margin-bottom: 5px;
+	font-weight: 200;
+	font-size: 12px;
+	color: gray;
+}
+
+.tooltip-inner{	
+	margin-top: 34px;	
+}
+
+.tooltip-arrow{	
+	margin-top: 34px;
+	margin-left: -95px !important;
+}
+
+</style>
+
+<div class="modal-header">
+	<h3 class="modal-title">{{:: 'l-delivery-windowns-otif' | i18n : [] : 'dts/mpd' }}</h3>
+</div>
+
+<div class="modal-body">		
+	<div class="row">		
+		
+		<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+				type="input"
+				ng-model="controller.customer"
+				ng-disabled="true">
+			<label>{{ 'l-nome-abrev' | i18n : [] : 'dts/mpd' }}</label>
+		</field>
+
+		<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+				type="input"
+				ng-model="controller.item"
+				ng-disabled="true">
+			<label>{{ 'l-cod-item' | i18n : [] : 'dts/mpd' }}</label>
+		</field>
+		
+		<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+				type="input"
+				ng-model="controller.referencia"
+				ng-disabled="true"
+				ng-hide="controller.referHide">
+			<label>{{ 'l-cod-refer' | i18n : [] : 'dts/mpd' }}</label>
+		</field>			
+							
+		<field class="col-lg-6 col-md-6 col-sm-6 col-xs-6" type="number" ng-model="controller.diasantes" min="0" max="9999">
+			<label>{{:: 'l-days-before' | i18n : [] : 'dts/mpd'}}</label>
+			<validator key="min">{{$fieldLabel}} {{:: 'deve ser pelo menos' | i18n : [] : 'dts/mpd' }} 0</validator>
+			<validator key="max">{{$fieldLabel}} {{:: 'deve ser menor que' | i18n : [] : 'dts/mpd' }} 9999</validator>
+		</field>
+		
+		<field class="col-lg-6 col-md-6 col-sm-6 col-xs-6" type="number" ng-model="controller.diasdepois" min="0" max="9999">
+			<label>{{:: 'l-days-after' | i18n : [] : 'dts/mpd'}}</label>
+			<validator key="min">{{$fieldLabel}} {{:: 'deve ser pelo menos' | i18n : [] : 'dts/mpd' }} 0</validator>
+			<validator key="max">{{$fieldLabel}} {{:: 'deve ser menor que' | i18n : [] : 'dts/mpd' }} 9999</validator>
+		</field>
+		
+	</div>
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-default" ng-click="controller.close();">{{:: 'l-cancel' | i18n : [] : 'dts/mpd'}}</button>
+	<button type="button" class="btn btn-primary" ng-click="controller.save();">{{:: 'l-save' | i18n : [] : 'dts/mpd'}}</button>
+</div>

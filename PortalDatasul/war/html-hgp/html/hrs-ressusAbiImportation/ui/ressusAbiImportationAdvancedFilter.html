@@ -1,0 +1,71 @@
+<totvs-modal-header>
+    Busca Avançada
+</totvs-modal-header>
+<totvs-modal-body style="height: 180px; overflow-y: auto;">
+    <fieldset ng-form="afController.modelForm">
+        <totvs-row>
+            <totvs-field 
+                totvs-input
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                label="Número ABI inicial"
+                t-maxlength="20"
+                numbers-only
+                ng-model="afController.model.codAbiIni">
+            </totvs-field>
+            <totvs-field 
+                totvs-input
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                label="Número ABI final"
+                t-maxlength="20"
+                numbers-only
+                ng-model="afController.model.codAbiFim">
+            </totvs-field>
+            <totvs-field
+                totvs-datepicker
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                label='Data importação inicial'
+                ng-model='afController.model.datRecebtoIni'
+                canclean>
+            </totvs-field>
+            <totvs-field
+                totvs-datepicker
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                label='Data importação final'
+                ng-model='afController.model.datRecebtoFim'
+                canclean>
+            </totvs-field>
+        </totvs-row>
+        <totvs-row>
+            <totvs-field 
+                totvs-input
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                label="Número ofício inicial"
+                t-maxlength="20"
+                numbers-only
+                ng-model="afController.model.codOficioIni">
+            </totvs-field>
+            <totvs-field 
+                totvs-input
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                label="Número ofício final"
+                t-maxlength="20"
+                numbers-only
+                ng-model="afController.model.codOficioFim">
+            </totvs-field>
+            <field type="combo"
+                   class="col-lg-6 col-md-6 col-sm-6 col-xs-6"
+                   ng-model="afController.model.idiStatus"
+                   ng-options="v.data as v.label for v in ABI_STATUS_ENUM.DETAILED_ENUMERATION_VALUES"
+                   label="Status da ABI"
+                   canclean>
+            </field>
+        </totvs-row>
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn" ng-click="afController.cleanFields()">Limpar Campos</button>
+    <button class="btn" ng-click="afController.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-click="afController.search()">Buscar</button>
+</totvs-modal-footer>
+

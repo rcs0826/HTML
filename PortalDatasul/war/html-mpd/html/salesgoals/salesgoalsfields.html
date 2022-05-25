@@ -1,0 +1,132 @@
+<totvs-page type="list" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#{{defaultPageHome}}">{{'l-home' | i18n}}</breadcrumb>
+			<breadcrumb>{{ 'l-sales-goals' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		
+		<totvs-page-header>
+     
+            <totvs-page-header-title title="{{ 'l-sales-goals-of' | i18n }} {{currentuser['user-entity']}} ({{controller.totalRecords}} {{'l-products' | i18n}})"></totvs-page-header-title>
+									 
+			<totvs-page-header-operation>
+			
+				<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12"></div>
+                <totvs-page-header-operation-filter placeholder="{{ 'l-fast-search-product' | i18n }}"
+                                                    ng-submit="controller.search();"
+                                                    ng-model="controller.quickSearchText"
+													advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+			<totvs-page-disclaimers disclaimer-list="controller.filterBy"
+								    ng-click="controller.removeSelectedFilter"></totvs-page-disclaimers>
+
+			<totvs-page-tags>
+				<tag class="tag-1 btn btn-link" ng-click="controller.setQuickFilter('reachedTarget');">{{ 'l-sales-goals-reached' | i18n }}</tag>
+				<tag class="tag-2 btn btn-link" ng-click="controller.setQuickFilter('openTarget');">{{ 'l-sales-goals-open' | i18n }}</tag>
+			</totvs-page-tags>		
+
+		</totvs-page-header>	
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+	
+		<totvs-list-item ng-class="{'tag-1':goal.percentege >= 100, 'tag-2':goal.percentege < 100}"
+						 ng-repeat="goal in controller.listResult"
+						 totvs-custom-element="customListItem">
+			<totvs-list-item-header>
+<%				
+	_.forEach(data, function(metasRepresVisibleFields) {
+
+		if (metasRepresVisibleFields.fieldName == "cd-produto") {	
+			%>                    
+				<totvs-list-item-title>{{'l-product' | i18n}}: {{goal.itemId}} - {{goal.descrip}}</totvs-list-item-title>
+			<%
+		}
+	});
+%>				
+			</totvs-list-item-header>
+			<totvs-list-item-content>
+<%				
+_.forEach(data, function(metasRepresVisibleFields) {
+
+		if (metasRepresVisibleFields.fieldName == "dt-inicial") {
+			%>                    
+				<totvs-list-item-info title="{{ 'l-dat-inic' | i18n }}" class="col-xs-6 col-sm-2 col-md-2">
+					{{goal.dateIni | date : ('l-date-format' | i18n) : 'UTC'}}
+				</totvs-list-item-info>
+			<%
+		}
+
+		if (metasRepresVisibleFields.fieldName == "qt-prevista") {
+			%>                    
+				<totvs-list-item-info title="{{ 'l-forecast' | i18n}}" class="col-xs-6 col-sm-2 col-md-2">
+					{{goal.planned | number : 0}}
+				</totvs-list-item-info>
+			<%
+		}
+
+		if (metasRepresVisibleFields.fieldName == "per-real") {
+			%>                    
+				<totvs-list-item-info title="{{ 'l-perc-accomp' | i18n }}" class="col-xs-6 col-sm-2 col-md-2">
+					{{goal.percentege | number : 0}}%
+				</totvs-list-item-info>
+			<%
+		}
+
+		if (metasRepresVisibleFields.fieldName == "qt-pedida") {
+			%>                    
+				<totvs-list-item-info title="{{ 'l-order-accomp' | i18n }}" class="col-xs-6 col-sm-2 col-md-2">
+					{{goal.order | number : 0}}
+				</totvs-list-item-info>
+			<%
+		}
+
+		if (metasRepresVisibleFields.fieldName == "qt-faturada") {
+			%>                    
+				<totvs-list-item-info title="{{ 'l-invoice-accomp' | i18n }}" class="col-xs-6 col-sm-2 col-md-2">
+					{{goal.realBilled | number : 0}}
+				</totvs-list-item-info>
+			<%
+		}
+
+		if (metasRepresVisibleFields.fieldName == "qt-ped-canc") {
+			%>                    
+				<totvs-list-item-info title="{{ 'l-cancelled' | i18n }}" class="col-xs-6 col-sm-2 col-md-2">
+					{{goal.orderCanceled | number : 0}}
+				</totvs-list-item-info>
+			<%
+		}
+
+		if (metasRepresVisibleFields.fieldName == "qt-ped-reprov") {
+			%>                    
+				<totvs-list-item-info title="{{ 'l-disapproved' | i18n }}" class="col-xs-6 col-sm-2 col-md-2">
+					{{goal.orderDisapproved | number : 0}}
+				</totvs-list-item-info>
+			<%
+		}
+
+		if (metasRepresVisibleFields.fieldName == "qt-ped-susp") {
+			%>                    
+				<totvs-list-item-info title="{{ 'l-suspended' | i18n }}" class="col-xs-6 col-sm-2 col-md-2">
+					{{goal.orderSuspend | number : 0}}
+				</totvs-list-item-info>
+			<%
+		}
+
+		if (metasRepresVisibleFields.fieldName == "qt-fat-canc") {
+			%>                    
+				<totvs-list-item-info title="{{ 'l-cancelled-invoice' | i18n }}" class="col-xs-6 col-sm-3 col-md-2">
+					{{goal.billedCanceled | number : 0}}
+				</totvs-list-item-info>
+			<%
+		}
+	});
+%>				
+			</totvs-list-item-content>
+		</totvs-list-item>
+	</totvs-page-content>
+	<totvs-list-pagination ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+							   ng-click="controller.loadMore()">
+	</totvs-list-pagination>		
+</totvs-page>

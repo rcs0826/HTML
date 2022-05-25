@@ -1,0 +1,42 @@
+<totvs-modal-header>
+	{{ 'l-remove-from-schedule' | i18n }} - {{ retirarProgramacaoCtrl.model.ttOrdem.nrOrdProdu | orderNumberMask }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<div class="row">
+		<totvs-page-child>        
+	        <totvs-page-content>
+				<div class="col-xs-12">
+					<totvs-field
+						totvs-select
+						class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+						ng-model="retirarProgramacaoCtrl.model.ttOrdem['cod-motivo']"
+						select-id="cd-pend-padr"
+						id="cd-pend-padr"
+						select-description="descricao"
+						select-service="mmi.pendencia.zoom"
+						zoom-service="mmi.pendencia.zoom"
+						label="{{ 'l-motive' | i18n }}"
+						canclean="undefined"
+						required>
+					</totvs-field>	
+					<field
+						class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+	                    type="textarea"
+	                    ng-model="retirarProgramacaoCtrl.model.ttOrdem['des-obs']"
+	                    maxlength="2000"
+	                    rows="4">
+                    	<label class="field-label">{{ 'l-observations' | i18n }}</label>
+					</field>				
+				</div>			   
+	        </totvs-page-content>
+	    </totvs-page-child>
+	</div>
+	
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="retirarProgramacaoCtrl.cancelar()">{{ 'l-cancel' | i18n }}</button>
+	<button type="button" class="btn btn-primary" data-ng-click="retirarProgramacaoCtrl.confirmar()">{{ 'l-confirm' | i18n }}</button>        
+</totvs-modal-footer>

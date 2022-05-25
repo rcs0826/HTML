@@ -1,0 +1,172 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+	
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-item-calculation-statement' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+			
+		<totvs-page-header>
+
+			<totvs-page-header-title 
+			title="{{ 'l-item-calculation-statement' | i18n }}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<div class="col-xs-7 col-md-7 col-lg-7">
+					
+					<totvs-field class="col-xs-8 col-md-8 col-lg-8"
+						label="{{'l-scenar' | i18n}}"
+						totvs-combo
+						canclean
+						t-options="controller.listCombo"
+						ng-model="controller.selectedScenario"
+						ng-change="controller.onChangeScenario()">
+					</totvs-field>
+
+					<totvs-field class="col-xs-4 col-md-4 col-lg-4"
+						label="{{'l-simulate' | i18n}}"
+						totvs-combo
+						t-options="controller.listComboSimulation"
+						ng-model="controller.selectedSimulation"
+						ng-change="controller.onChangeSimulation()">
+					</totvs-field>
+
+					<!-- Botão de CSV -->					
+					<totvs-page-header-operation-action class="col-xs-4 col-md-4 col-lg-4" style="padding-top: 18px">
+
+						<action icon="glyphicon-export"
+								ng-click="controller.items.length == 0 || controller.exportListCsv()"
+								ng-disabled="controller.items.length == 0">{{ 'l-gerar-csv' | i18n }}</action>
+					</totvs-page-header-operation-action>
+				</div>
+				
+				<!-- PESQUISA -->
+				<div  style="padding-top: 20px">
+					<totvs-page-header-operation-filter
+									placeholder="{{ 'l-code-description-item' | i18n }}"
+									ng-submit="controller.loadItemsFilter(false)"
+									ng-model="controller.quickSearchTextItems"
+									advanced-search="controller.openAdvancedSearchItem">
+					</totvs-page-header-operation-filter>
+				</div>
+				
+				<div class="row col-xs-12 col-md-12 col-lg-12" style="padding-top: 8px; padding-left: 30px">
+					<div class="col-xs-2 col-md-2 col-lg-2">
+						<label>{{i18n('l-date', [], 'dts/mdb')}}</label><br>
+						<span>{{controller.dateScenario | date: 'dd/MM/yyyy HH:mm'}}</span>
+					</div>				
+					<div class="col-xs-2 col-md-2 col-lg-2">
+						<label>{{i18n('l-user', [], 'dts/mdb')}} </label><br>
+						<span>{{controller.userScenario}}</span>
+					</div>
+					<div class="col-xs-2 col-md-2 col-lg-2">
+						<label>{{i18n('l-stage', [], 'dts/mdb')}} </label><br>
+						<span>{{controller.stageScenario}}</span>
+					</div>
+				</div>
+					
+			</totvs-page-header-operation>
+			<totvs-page-disclaimers 
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+		</totvs-page-header>
+						
+	</totvs-page-navbar>
+	
+	<totvs-page-content>
+
+		<totvs-page-alert
+            ng-if="controller.items.length === 0"
+            type="info"
+            message="{{ 'msg-record-not-found' | i18n }}">
+        </totvs-page-alert>
+        
+        <totvs-list-item ng-repeat="item in controller.items">
+             <totvs-list-item-header>
+                <totvs-list-item-title
+					title="{{item['cabecalho-item']}}"
+					ng-click="controller.openItemDetail(item)"
+					style="cursor: pointer;">
+                </totvs-list-item-title>                
+			</totvs-list-item-header> 
+			
+			<totvs-list-item-content>
+				<totvs-list-item-info
+					style="text-align:right"
+	                title="{{i18n('l-initial-balance', [], 'dts/mdb')}}"
+	                class="col-md-2 col-sm-2"
+					value="{{item['qtde-saldo-ini'] | number:4}}"
+					value-break="false">
+				</totvs-list-item-info>
+				<totvs-list-item-info
+				 	style="text-align:right"
+					title="{{i18n('l-requisitions', [], 'dts/mdb')}}"		
+	                class="col-md-2 col-sm-2"
+					value="{{item['qtde-ordens'] | number:4}}"
+					value-break="false">
+				</totvs-list-item-info>
+				<totvs-list-item-info
+					style="text-align:right"
+					title="{{i18n('l-reservations', [], 'dts/mdb')}}"
+	                class="col-md-2 col-sm-2"
+					value="{{item['qtde-reservas'] | number:4}}"
+					value-break="false">
+				</totvs-list-item-info>
+				<totvs-list-item-info
+					style="text-align:right"
+					title="{{i18n('l-orders', [], 'dts/mdb')}}"
+	                class="col-md-2 col-sm-2"
+					value="{{item['qtde-pedidos'] | number:4}}"
+					value-break="false">
+				</totvs-list-item-info>
+				<totvs-list-item-info
+					style="text-align:right"
+					title="{{i18n('l-scenar-prediction-more-order', [], 'dts/mdb')}}"
+	                class="col-md-2 col-sm-2"
+					value="{{item['qtde-ped-prev-cenar'] | number:4}}"
+					value-break="false">
+				</totvs-list-item-info>
+				<totvs-list-item-info
+					style="text-align:right"
+                    title="{{i18n('l-available', [], 'dts/mdb')}}"
+                    ng-if="!controller.multiEstab"
+	                class="col-md-2 col-sm-2"
+					value="{{item['qtde-dispon'] | number:4}}"
+					value-break="false">
+				</totvs-list-item-info>	
+				<totvs-list-item-info
+					style="text-align:right"
+					ng-if="controller.multiEstab"
+					title="{{i18n('l-production-request', [], 'dts/mdb')}}"
+	                class="col-md-4 col-sm-8"
+					value="{{item['qtde-solic-prod'] | number:4}}"
+					value-break="false">
+				</totvs-list-item-info>
+				<totvs-list-item-info
+					style="text-align:right"
+					ng-if="controller.multiEstab"
+					title="{{i18n('l-prog-receiv', [], 'dts/mdb')}}"
+	                class="col-md-2 col-sm-4"
+					value="{{item['qtde-prog-receb'] | number:4}}"
+					value-break="false">
+				</totvs-list-item-info>
+				<totvs-list-item-info
+					style="text-align:right"
+                    title="{{i18n('l-available', [], 'dts/mdb')}}"
+                    ng-if="controller.multiEstab"
+	                class="col-md-6 col-sm-2"
+					value="{{item['qtde-dispon'] | number:4}}"
+					value-break="false">
+				</totvs-list-item-info>
+			</totvs-list-item-content>
+		</totvs-list-item>
+
+		<totvs-list-pagination ng-if="controller.hasMore" ng-click="controller.loadItemsFilter(true);">
+		</totvs-list-pagination>
+		
+    </totvs-page-content>
+		
+</totvs-page>

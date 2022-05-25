@@ -1,0 +1,23 @@
+div(ng-controller="kbn.dashboard.frequencyItem.ctrl as frequencyItemCtrl")
+    link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+    link(rel="stylesheet" href="/dts/kbn/css/font-awesome.css")
+    totvs-widget
+        totvs-widget-header(settings="frequencyItemCtrl.showParams()", title="{{ frequencyItemCtrl.chart.titleWidget | i18n : [] : 'dts/kbn'}}")
+            i(ng-if="frequencyItemCtrl.chart.titleWidget == 'l-frequency-item'", class="glyphicon glyphicon-info-sign hidden-xs", tooltip-placeholder="rigth", tooltip-html="frequencyItemCtrl.tooltip")
+        span.dashboard-padding-right.pull-right.fa.fa-sort-amount-desc.is-pointer(title="{{'l-invert-pareto-order' | i18n : [] : 'dts/kbn'}}",
+             ng-class="{'fa-sort-amount-desc':frequencyItemCtrl.paretoOrderDesc, 'fa-sort-amount-asc': !frequencyItemCtrl.paretoOrderDesc}",
+             ng-click="frequencyItemCtrl.changeOrder()",
+             ng-if="frequencyItemCtrl.chart.titleWidget == 'l-frequency-item'") &nbsp;
+        totvs-widget-body
+            ol.dashboard.breadcrumb
+                li(ng-repeat="chart in frequencyItemCtrl.chartArray" ng-class="{ 'active' : $last, 'is-pointer': !$last }") 
+                    span(ng-click="frequencyItemCtrl.navigate($index)") {{ chart.titleBreadcrumb }}
+            totvs-chart(
+                t-categories="frequencyItemCtrl.chart.categories",
+                t-series='frequencyItemCtrl.chart.series',
+                t-type-chart="{{frequencyItemCtrl.chart.typeChart}}",
+                t-chart-tooltip="false",
+                t-on-click="frequencyItemCtrl.chart.onClick")
+        totvs-widget-footer
+            totvs-widget-footer-actions
+                action(ng-click="frequencyItemCtrl.sendDataToReport()") {{ 'l-detail' | i18n : [] : 'dts/kbn/' }}

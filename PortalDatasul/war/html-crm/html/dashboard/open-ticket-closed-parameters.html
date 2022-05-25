@@ -1,0 +1,117 @@
+<totvs-modal-header>
+	{{ 'l-parameters' | i18n: []: 'dts/crm' }} {{'l-ticket-open-closed' | i18n : [] : 'dts/crm/' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<fieldset class="row">
+
+		<field type="select"
+			   required
+			   class="col-xs-12 col-md-6"
+			   ng-change="controller.onChangePeriod(true)"
+			   ng-model="controller.config.ttPeriodType">
+			<label>{{ 'l-opening-period' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-opening-period' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.name }}
+				</ui-select-match>
+				<ui-select-choices repeat="item in controller.listOfPeriod | filter: $select.search track by $index">
+					<span data-ng-bind-html="item.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   required
+			   class="col-xs-12 col-md-6"
+			   ng-model="controller.config.ttDisplayType">
+			<label>{{ 'l-display-type-chart' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-display-type-chart' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.name }}
+				</ui-select-match>
+				<ui-select-choices repeat="item in controller.listOfDisplay | filter: $select.search track by $index">
+					<span data-ng-bind-html="item.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-rating' | i18n: []: 'dts/crm' }} {{ controller.listOfRating.length ? '(' + controller.listOfRating.length + ')' : '' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.config.ttRating"
+			 t-multi-id="num_id"
+			 t-multi-description="nom_classif_ocor"
+			 t-data="controller.listOfRating">
+		</totvs-field>
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-origin' | i18n: []: 'dts/crm' }} {{ controller.listOfOrigin.length ? '(' + controller.listOfOrigin.length + ')' : '' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.config.ttOrigin"
+			 t-multi-id="num_id"
+			 t-multi-description="nom_orig_ocor"
+			 t-data="controller.listOfOrigin">
+		</totvs-field>
+
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-priority' | i18n: []: 'dts/crm' }} {{ controller.listOfPriority.length ? '(' + controller.listOfPriority.length + ')' : '' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.config.ttPriority"
+			 t-multi-id="num_id"
+			 t-multi-description="nom_priorid_ocor"
+			 t-data="controller.listOfPriority">
+		</totvs-field>
+
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }} {{ controller.listOfResponsible.length ? '(' + controller.listOfResponsible.length + ')' : '' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.config.ttResponsible"
+			 t-multi-id="num_id"
+			 t-multi-description="nom_usuar"
+			 t-data="controller.listOfResponsible">
+		</totvs-field>
+
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-type' | i18n: []: 'dts/crm' }} {{ controller.listOfType.length ? '(' + controller.listOfType.length + ')' : '' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.config.ttType"
+			 t-multi-id="num_id"
+			 t-multi-description="nom_tip_ocor"
+			 t-data="controller.listOfType">
+		</totvs-field>
+
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-flow' | i18n: []: 'dts/crm' }} {{ controller.listOfFlow.length ? '(' + controller.listOfFlow.length + ')' : '' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.config.ttFlow"
+			 t-multi-id="num_id"
+			 t-multi-description="nom_ocor_fluxo"
+			 t-data="controller.listOfFlow">
+		</totvs-field>
+	</fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-primary" ng-click="controller.apply(true)">{{ 'btn-apply' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>
+

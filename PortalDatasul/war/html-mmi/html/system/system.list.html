@@ -1,0 +1,51 @@
+<totvs-page type="list">
+	<totvs-page-navbar>	
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-system' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>			
+		<totvs-page-header>
+			<totvs-page-header-title title="{{ 'l-systems' | i18n }}" 
+									 total="{{controller.totalRecords}}">
+			</totvs-page-header-title>
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action>
+                    <action link="#/dts/mmi/system/new" class="glyphicon-plus">{{ 'l-add' | i18n }}</action>
+                </totvs-page-header-operation-action>
+				<totvs-page-header-operation-filter placeholder="{{ 'l-code-description' | i18n }}"
+													ng-submit="controller.search()"
+													ng-model="controller.quickSearchText"
+													advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>								
+			</totvs-page-header-operation>
+			<totvs-page-disclaimers
+					disclaimer-list="controller.disclaimers"
+					ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+		</totvs-page-header>
+	</totvs-page-navbar>
+	<totvs-page-content>
+		<totvs-page-alert
+			ng-if="controller.listResult.length <= 0"
+			type="info"
+			message="{{ 'msg-search-not-found' | i18n }}">			
+		</totvs-page-alert>
+        <totvs-list-item id="sistema{{sistema['cod-sistema']}}"
+						 ng-repeat="sistema in controller.listResult">
+			<totvs-list-item-header>
+                <totvs-list-item-title
+                	title="{{sistema['cod-sistema']}} - {{sistema['des-sistema']}}"
+                	link="#/dts/mmi/system/detail/{{ sistema['cod-sistema'] }}">
+                </totvs-list-item-title>
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/mmi/system/edit/{{sistema['cod-sistema']}}" icon="glyphicon-pencil">{{ 'l-edit' | i18n }}</action>
+                    <action ng-click="controller.delete(sistema)" icon="glyphicon-trash">{{ 'l-remove' | i18n }}</action>
+               	</totvs-list-item-action>               											
+			</totvs-list-item-header>
+        </totvs-list-item>
+		<totvs-list-pagination
+            ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+            ng-click="controller.loadData(true);">
+        </totvs-list-pagination>
+    </totvs-page-content>	
+</totvs-page>

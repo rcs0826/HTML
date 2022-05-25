@@ -1,0 +1,49 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{:: 'l-confirm-quotation' | i18n : [] : 'dts/mpd' }}</h3>
+</div>
+<div class="modal-body">
+    <totvs-page-form ng-show="modalConfirmQuotationcontroller.validationLoaded">
+
+        <field type="input" class="col-sm-4" ng-model="modalConfirmQuotationcontroller.customerWithNumber"
+            ng-class="{'col-md-6': modalConfirmQuotationcontroller.validInvoiceExport}"
+            ng-disabled="true">
+            <label>{{ 'l-customer' | i18n : [] : 'dts/mpd' }}</label>
+        </field>
+
+        <field type="input" class="col-sm-4" ng-model="modalConfirmQuotationcontroller.order['nr-pedcli']"
+            ng-class="{'col-md-6': modalConfirmQuotationcontroller.validInvoiceExport}"
+            ng-disabled="true">
+            <label>{{ 'l-quotation-client' | i18n : [] : 'dts/mpd' }}</label>
+        </field>
+
+        <field 	type="input"
+            class="col-sm-4" 
+            ng-class="{'col-md-6': modalConfirmQuotationcontroller.validInvoiceExport}"
+            ng-model="modalConfirmQuotationcontroller.newNrPedCli"
+            canclean
+            ng-change="modalConfirmQuotationcontroller.validatorNrPedCli()"
+            required
+            ng-required="true">
+            <label>{{ 'l-nr-pedcli' | i18n : [] : 'dts/mpd' }}</label>
+        </field>
+
+        <field 	type="input"
+            class="col-sm-4" 
+            ng-class="{'col-md-6': modalConfirmQuotationcontroller.validInvoiceExport}"
+            ng-if="modalConfirmQuotationcontroller.validInvoiceExport"
+            ng-model="modalConfirmQuotationcontroller.nrInvoiceExport"
+            canclean
+            ng-change="modalConfirmQuotationcontroller.validatorExportProcess()"
+            required
+            ng-required="true">
+            <label>{{ 'l-export-process' | i18n : [] : 'dts/mpd' }}</label>        
+        </field>
+
+    </totvs-page-form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary"
+        ng-click="modalConfirmQuotationcontroller.confirm()">{{:: 'l-confirmar' | i18n : [] : 'dts/mpd' }}</button>
+    <button class="btn btn-warning"
+        ng-click="modalConfirmQuotationcontroller.close()">{{:: 'l-close' | i18n : [] : 'dts/mpd' }}</button>
+</div>

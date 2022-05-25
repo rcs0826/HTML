@@ -1,0 +1,55 @@
+<totvs-modal-header>
+    {{ 'l-item-return' | i18n: []: 'dts/mce' }} {{controller.dataItem['it-codigo']}}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+    <totvs-page-form>
+        <fieldset>
+            <totvs-field totvs-input 
+                         label="{{ 'l-processed-quantity-short' | i18n: []: 'dts/mce' }}" 
+                         ng-model="controller.dataItem['qt-atendida']" 
+                         class="retirarPadding col-md-3" 
+                         ng-disabled="true">
+            </totvs-field>
+
+            <totvs-field totvs-datepicker 
+                         depth="month" 
+                         format="dd/MM/yyyy" 
+                         ng-model="controller.dataItem['dt-atend']"
+                         culture='pt'                          
+                         class="col-md-3" 
+                         ng-required="true"
+                         label="{{ 'l-date' | i18n : [] : 'dts/mce' }} {{ 'l-return-mce' | i18n : [] : 'dts/mce' }}">
+                         <validator key="required">{{'l-this-field-required' | i18n : [] : 'dts/mce' }}</validator>
+            </totvs-field>
+
+            <totvs-field totvs-checkbox
+                        ng-change="" 
+                        label="{{ 'l-keep-request-closed-question' | i18n : [] : 'dts/mce' }}" 
+                        ng-model="controller.manterFechada" 
+                        class="col-md-6"
+                        ng-if="controller.dataItem['sit'] == 3">
+            </totvs-field>
+        </fieldset>
+    </totvs-page-form>
+    
+    <div style="padding-left: 20px; padding-right: 20px; padding-top: 0px;">
+
+        <div ng-if="controller.tipoConEst < 3"
+             ng-include="'/dts/mce/html/cd1410/grid/grid.html'"></div>
+
+        <div ng-if="controller.tipoConEst == 4"
+             ng-include="'/dts/mce/html/cd1410/grid/grid.reference.html'"></div>
+
+        <div ng-if="controller.tipoConEst == 3"
+             ng-include="'/dts/mce/html/cd1410/grid/grid.lote.html'"></div>
+    </div>
+    <totvs-divider></totvs-divider>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n }}</button>
+    <button class="btn btn-primary" ng-disabled="!controller.dataItem['dt-atend']" ng-click="controller.apply()">{{ 'btn-apply' | i18n }}</button>
+</totvs-modal-footer>

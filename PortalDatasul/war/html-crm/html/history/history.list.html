@@ -1,0 +1,29 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb>{{'l-history' | i18n: []: 'dts/crm'}}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title
+				title="{{'l-history' | i18n: []: 'dts/crm'}}"
+				total="{{controllerHistroyList.listOfHistoryCount}}"
+				settings="controllerHistroyList.userSettings();"				>
+			</totvs-page-header-title>
+        
+            <totvs-lodash-template src="/dts/crm/html/history/history.list.header.html"
+							   template-data="controllerHistroyList.accessRestriction"/>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+
+	<totvs-lodash-template src="/dts/crm/html/history/history.list.content.html"
+							   template-data="controllerHistroyList.accessRestriction"/>
+
+</totvs-page>

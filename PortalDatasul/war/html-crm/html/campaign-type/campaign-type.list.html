@@ -1,0 +1,94 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb>{{ 'nav-campaign-type' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'nav-campaign-type' | i18n: []: 'dts/crm' }}"
+									 total="{{ controller.listCount }}"
+									 settings="controller.userSettings();">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<totvs-page-header-operation-action>
+					<action icon="glyphicon-plus"
+							ng-click="controller.addEdit();">
+						{{ 'btn-new-campaign-type' | i18n: []: 'dts/crm' }}
+					</action>
+				</totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter placeholder="{{ 'l-search-generic' | i18n: []: 'dts/crm' }}"
+													ng-submit="controller.search()"
+													ng-model="controller.quickSearchText">
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}"
+						  ng-if="controller.list.length <= 0">
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addEdit();">
+				<span class="glyphicon glyphicon-plus"></span>
+				&nbsp;&nbsp;{{ 'btn-new-campaign-type' | i18n: []: 'dts/crm' }}
+			</button>
+		</totvs-page-alert>
+
+		<totvs-list-item id="item{{ item.num_id }}"
+						 ng-repeat="item in controller.list">
+
+			<totvs-list-item-header>
+
+				<totvs-list-item-title>
+					{{ item.nom_tip_campanha }}
+				</totvs-list-item-title>
+
+				<totvs-list-item-action limit-primary-action="3">
+
+					<action icon="glyphicon-pencil"
+							ng-click="controller.addEdit(item)">
+						{{ 'btn-edit' | i18n: []: 'dts/crm' }}
+					</action>
+
+					<action icon="glyphicon-trash"
+							ng-click="controller.remove(item)">
+						{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+					</action>
+
+				</totvs-list-item-action>
+
+			</totvs-list-item-header>
+
+			<totvs-list-item-content>
+
+				<totvs-list-item-info class="col-xs-12"
+									  title="{{ 'l-classification' | i18n: []: 'dts/crm' }}"
+									  value="{{ item.nom_classif_campanha }}"
+									  value-break="false">
+				</totvs-list-item-info>
+
+			</totvs-list-item-content>
+
+		</totvs-list-item>
+
+		<totvs-list-pagination ng-click="controller.search(true);"
+							   ng-if="controller.list.length < controller.listCount && controller.list.length">
+		</totvs-list-pagination>
+
+	</totvs-page-content>
+
+</totvs-page>

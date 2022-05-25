@@ -1,0 +1,154 @@
+<!--<healthcare-workarea>-->
+<totvs-page type="list">
+
+        <link type="text/css" rel="stylesheet" href="/dts/hgp/html/assets/css/hvp.css"/>
+        <totvs-page-navbar id="navBar" >               
+                
+            <totvs-page-breadcrumb id="breadcrumb">
+                    <breadcrumb>&#193rea de Trabalho</breadcrumb>
+					
+                    <!--  tem o segundo breadcumb para que eles fiquem centralizados verticalmente -->
+                    <breadcrumb></breadcrumb>
+            </totvs-page-breadcrumb>
+
+            <totvs-page-header>
+
+                <totvs-page-header-title title="Auditoria Declaração de Saúde" 
+                                         total="{{controller.qtdRegistrosBusca}}"
+                                         settings="controller.openConfigWindow()">
+                </totvs-page-header-title>
+
+                <totvs-page-header-operation>
+
+                 <!--   <totvs-page-header-operation-action limit-primary-action="1" 
+                                                        items="controller.listOfHealthDeclarationPending"
+                                                        items-as="healthDeclarationPending">
+                        
+						
+						
+						<action class="glyphicon-plus"
+                                link="#/dts/hgp/hvp-healthDeclarationPending/new">
+                            Incluir Regra
+                        </action>
+                        <action class="glyphicon-upload"
+                                ng-click="controller.importFile()">
+                            Importar Arquivo
+                        </action> 
+						
+				
+                    </totvs-page-header-operation-action> -->
+
+                    <totvs-page-header-operation-filter placeholder="Beneficiário"
+                                                        ng-submit="controller.search()"
+                                                        ng-model="controller.searchInputText"
+                                                        advanced-search="controller.openAdvancedSearch">
+                    </totvs-page-header-operation-filter>
+
+                </totvs-page-header-operation>
+
+			
+                <totvs-page-tags>                    
+                </totvs-page-tags>
+
+                <totvs-page-disclaimers
+                    disclaimer-list="controller.disclaimers"
+                    ng-click="controller.removeDisclaimer">
+                </totvs-page-disclaimers>
+				
+			
+            </totvs-page-header>
+
+        </totvs-page-navbar>
+
+        <totvs-page-content id="pageContent">
+
+            
+            <totvs-page-alert ng-if="controller.hasDoneSearch == true && controller.listOfHealthDecla.length <= 0"
+                        type="info"
+                        message="Nenhum registro encontrado">
+            </totvs-page-alert>
+
+	
+      <totvs-list-item		
+                id="healthDeclarationPending{{healthDeclarationPending.id}}"               
+                ng-repeat="healthDeclarationPending in controller.listOfHealthDeclarationPending">
+			 
+				
+                <totvs-list-item-header>
+
+					
+					<totvs-list-item-title
+                        title="Auditoria Declaração de Saúde: {{healthDeclarationPending.id}}"
+                        link="#/dts/hgp/hvp-healthDeclarationPending/detail/{{healthDeclarationPending.id}}">
+                    </totvs-list-item-title>
+					
+					
+					<totvs-list-item-action limit-primary-action="1">
+            <action ng-click="controller.approve(healthDeclarationPending)" icon="glyphicon-ok">Aprovar</action>
+						<action ng-click="controller.disapprove(healthDeclarationPending)" icon="glyphicon-remove">Recusar</action>
+                        
+                    </totvs-list-item-action>
+               
+					
+                </totvs-list-item-header>
+
+                    <totvs-list-item-content>
+                        
+						<totvs-list-item-info title="Beneficiário"
+                                              value="{{healthDeclarationPending.nmBeneficiario}}"></totvs-list-item-info>
+                        
+                        <totvs-list-item-info title="Situação"
+                                              value="{{healthDeclarationPending.situacao}}"></totvs-list-item-info>
+						
+                        <totvs-list-item-info title="Modalidade"
+                                              value="{{healthDeclarationPending.cdModalidade}}"></totvs-list-item-info>
+                        
+                        <totvs-list-item-info title="Grau de Parentesco"
+                                              value="{{healthDeclarationPending.rotuloGrauParentesco}}"></totvs-list-item-info>
+                        
+                        <totvs-list-item-info title="Termo de Adesão"
+                                              value="{{healthDeclarationPending.nrTermo}}"></totvs-list-item-info>
+                        
+                        <totvs-list-item-info title="Proposta"
+                                              value="{{healthDeclarationPending.nrProposta}}"></totvs-list-item-info>
+													
+						<totvs-list-item-info title="Simulação"
+                                              value="{{healthDeclarationPending.lgSimulacao}}"></totvs-list-item-info>
+											  
+						<totvs-list-item-info title="Data de Nascimento"
+                                              value="{{healthDeclarationPending.rotuloDtNascimento}}"></totvs-list-item-info>						
+											  
+						<totvs-list-item-info title="Origem do Contratante"
+                                              value="{{healthDeclarationPending.rotuloOriContratante}}"></totvs-list-item-info>
+											  
+						<totvs-list-item-info title="Data de Inclusao"
+                                              value="{{healthDeclarationPending.rotuloDtInclusao}}"></totvs-list-item-info>							
+											  
+						<totvs-list-item-info title="Contratante"
+                                              value="{{healthDeclarationPending.cdContratante}}"></totvs-list-item-info>
+											  
+						<totvs-list-item-info title="Classe Hospitalar"
+                                              value="{{healthDeclarationPending.claHospitalar}}"></totvs-list-item-info>
+						
+						<totvs-list-item-info title="Carteira"
+                                              value="{{healthDeclarationPending.cdCarteira}}"></totvs-list-item-info>
+					
+						<totvs-list-item-info title="Último Parecer"
+                                              value="{{healthDeclarationPending.ultimoParecer}}"></totvs-list-item-info>
+					
+                    </totvs-list-item-content>
+                
+                <p></p>
+        </totvs-list-item>
+		
+
+            <totvs-list-pagination
+                ng-if="controller.listOfHealthDeclarationPending.length < controller.totalOfhealthDeclaCount && controller.listOfHealthDeclarationPending.length"
+                ng-click="controller.search(true,false);">
+            </totvs-list-pagination>
+			
+		
+
+        </totvs-page-content>
+    </totvs-page>
+<!--</healthcare-DeclaRules>-->

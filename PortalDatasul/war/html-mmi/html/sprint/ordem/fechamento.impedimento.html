@@ -1,0 +1,47 @@
+<totvs-modal-header>
+    {{ 'l-close-impediments' | i18n }}
+</totvs-modal-header >
+    
+<totvs-modal-body>
+    <div class="row">
+        <totvs-field totvs-datepicker
+                     t-mask-date
+                     ng-model="fechamentoImpedimentoCtrl.model.dataEncerramento"
+                     class="col-xs-5"
+                     label="{{ 'l-end-date' | i18n }}"
+                     output-format="date"
+                     canclean>
+        </totvs-field>
+        
+        <totvs-field totvs-time
+                label="{{ 'l-hour' | i18n }}"
+                class="col-xs-3"
+                ng-model="fechamentoImpedimentoCtrl.model.horaEncerramento">
+        </totvs-field>
+    </div>
+
+    <div class="row">
+        <field class="col-lg-12"
+               type="textarea"
+               ng-model="fechamentoImpedimentoCtrl.model.observacoes"
+               maxlength="2000"
+               rows="5">
+            <label class="field-label">{{ 'l-observation' | i18n }}</label>
+        </field>
+    </div>
+
+    <div class="row">
+        <totvs-field class="col-lg-12"
+                     totvs-input
+                     label="{{ 'l-user' | i18n }}"
+                     ng-model="fechamentoImpedimentoCtrl.model.username"
+                     ng-disabled="true">
+        </totvs-field>
+    </div>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="fechamentoImpedimentoCtrl.cancel()">{{ 'l-cancel' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="fechamentoImpedimentoCtrl.confirma()">{{ 'l-confirm' | i18n }}</button>
+</totvs-modal-footer>

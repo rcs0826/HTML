@@ -1,0 +1,71 @@
+link(rel="stylesheet" href="/dts/kbn/css/font-awesome.css")
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+
+totvs-page(type="list")
+    totvs-page-navbar
+        totvs-page-breadcrumb
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb {{ 'l-process-exceptions' | i18n }}
+        totvs-page-header
+            totvs-page-header-title(title="{{ 'l-process-exceptions' | i18n }}" total="{{controller.totalRecords}}")
+            totvs-page-header-operation
+                div.col-md-7.col-sm-7
+                totvs-page-header-operation-filter(placeholder="{{ 'l-code-description' | i18n}}", ng-submit="controller.quickSearch()", ng-model="controller.quickSearchText", advanced-search="controller.callAdvancedSearch")
+            totvs-page-disclaimers(disclaimer-list="controller.filtersApplied", ng-click="controller.removeFilter")
+    totvs-page-content
+        totvs-page-content-header
+            .row
+                .col-md-6
+                    .col-lg-5.col-md-5.col-sm-5.col-xs-2.actions-group(ng-if="controller.totalRecords")
+                        .btn-group.btn-group-sm.actions(role='group')
+                            .btn-group.btn-group-sm.ng-scope(role='group')
+                                a.btn.btn-primary.dropdown-toggle(data-toggle='dropdown', role='button', style="margin-top: 10px;margin-bottom: 10px;")
+                                    span.ng-binding {{ 'l-export-data' | i18n }}  
+                                    span.glyphicon.glyphicon-triangle-bottom
+                                ul.dropdown-menu(role='menu')
+                                    li
+                                        a(data-ng-click='controller.exportaConsulta("xlsx")')
+                                            span.fa.fa-file-excel-o
+                                            |  {{'l-summary' | i18n}} {{ 'l-excel-xlsx' | i18n }}
+                                    li
+                                        a(data-ng-click='controller.exportaConsulta("pdf")')
+                                            span.fa.fa-file-pdf-o
+                                            |  {{'l-summary' | i18n}} {{ 'l-pdf' | i18n }}
+                                    li
+                                        a(data-ng-click='controller.exportaConsultaDetalhado("xlsx")')
+                                            span.fa.fa-file-excel-o
+                                            |  {{'l-detailed' | i18n}} {{ 'l-excel-xlsx' | i18n }}
+                                    li
+                                        a(data-ng-click='controller.exportaConsultaDetalhado("pdf")')
+                                            span.fa.fa-file-pdf-o
+                                            |  {{'l-detailed' | i18n}} {{ 'l-pdf' | i18n }}
+                .col-md-6
+                    totvs-page-quick-filter(ng-if="controller.totalRecords", filters-list="controller.preSavedFilters", on-select-filter="controller.selectQuickFilter")
+        totvs-page-alert(ng-if="!controller.hasEstab()" type="info" message="{{ 'msg-estab-not-selected' | i18n }}")
+        totvs-page-alert(ng-if="controller.hasEstab() && controller.totalRecords === 0" type="info" message="{{ 'msg-not-found' | i18n }}")
+        totvs-list-item(data-ng-repeat="item in controller.listItens")
+            totvs-list-item-header
+                totvs-list-item-title.col-xs-12.col-lg-6.col-md-6.col-sm-6(title='{{item.ttItemExceptionDs | descGeneric:"{sku} - {desc} {ref} ({exp})"}}')
+                totvs-list-item-action.col-xs-12.col-lg-6.col-md-6.col-sm-6(limit-primary-action="1")
+                        action(icon="glyphicon-th-list", ng-click="controller.showItemDetails(item)")
+                            {{ 'l-details' | i18n }}
+                .col-xs-offset-5.col-xs-1
+                    span.span.fa.fa-desktop.fa-lg(tooltip="{{'l-lock-queue' | i18n}}") &nbsp;
+                    span {{item.bloqFila}}
+                .col-xs-1
+                    span.span.fa.fa-cogs.fa-lg(tooltip="{{'l-blocking-in-production' | i18n}}") &nbsp;
+                    span {{item.bloqProducao}}
+                .col-xs-1
+                    span.span.fa.fa-truck.fa-lg(tooltip="{{'l-lock-on-transport' | i18n}}") &nbsp;
+                    span {{item.bloqTransporte}}
+                .col-xs-1
+                    span.span.fa.fa-cubes.fa-lg(tooltip="{{'l-inventory-balance-adjust' | i18n}}") &nbsp;
+                    span {{item.ajusteSaldo}}
+                .col-xs-1
+                    span.span.fa.fa-tag.fa-lg.blue(tooltip="{{'l-extra-card-emission' | i18n}}") &nbsp;
+                    span {{item.cartaoExtraEmitido}}
+                .col-xs-1
+                    span(style="font-weight:bold" tooltip="{{'l-total-exceptions-item' | i18n}}") {{'l-total' | i18n}} &nbsp;
+                    span {{item.total}}
+        .container(align="center")
+            pagination.pagination-sm(total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages", items-per-page="controller.pageSize", previous-text="{{'l-previous' | i18n}}", next-text="{{'l-next' | i18n}}")

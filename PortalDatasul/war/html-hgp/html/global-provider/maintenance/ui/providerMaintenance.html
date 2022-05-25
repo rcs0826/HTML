@@ -1,0 +1,1770 @@
+<totvs-page type="edit"> 
+    <link type="text/css" rel="stylesheet" href="/dts/hgp/html/assets/css/hrc.css"/>
+
+    <totvs-page-navbar id="navBar">
+
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/global-provider/">Manutenção de Prestadores</breadcrumb>
+                <breadcrumb>Dados do Prestador</breadcrumb>
+        </totvs-page-breadcrumb>
+        
+        <totvs-page-header>
+
+            <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Prestador" >
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action on-back="controller.onCancel"
+                                                    on-cancel="controller.onCancel"
+                                                    hide-edit="true"
+                                                    hide-save-new="true"
+                                                    hide-remove="true">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+
+    <totvs-page-content id="pageContent">
+
+         <totvs-page-form style="">
+            <field  type="radio"
+                data-ng-model="controller.provider.inTipoPessoa"
+                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                label=""
+                ng-init="controller.provider.inTipoPessoa = 'F'"
+                ng-disabled="controller.action === 'DETAIL'"
+                ng-change="controller.onChangePersonType()">
+                <totvs-options>
+                    <totvs-option value="F">Pessoa Física</totvs-option>
+                    <totvs-option value="J">Pessoa Jurídica</totvs-option>
+                </totvs-options>
+            </field>
+
+            <totvs-field totvs-select 
+                    id="personZoom"
+                    name-id="personZoom"
+                    ng-model="controller.personReturnObject"
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    label="CPF"
+                    return-object
+                    canclean
+                    select-service="hvp.demographicZoomController"
+                    zoom-service="hvp.demographicZoomController"
+                    select-id="cdCpf" 
+                    select-description="nmPessoa"
+                    ng-change="controller.onPersonSelect()"
+                    ng-if="controller.provider.inTipoPessoa == 'F'"
+                    ng-disabled="controller.action === 'DETAIL'">
+            </totvs-field>
+
+            <totvs-field totvs-select 
+                    id="personZoom"
+                    name-id="personZoom"
+                    ng-model="controller.personReturnObject"
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    label="CNPJ"
+                    return-object
+                    canclean
+                    select-service="hvp.companyZoomController"
+                    zoom-service="hvp.companyZoomController"
+                    select-id="cdCnpj" 
+                    select-description="nmPessoa"
+                    ng-change="controller.onPersonSelect()"
+                    ng-if="controller.provider.inTipoPessoa == 'J'"
+                    ng-disabled="controller.action === 'DETAIL'">
+            </totvs-field>
+
+        </totvs-page-form>
+
+        <totvs-page-form ng-if="controller.provider.inTipoPessoa == 'F'">
+            <div ng-include="'/dts/hgp/html/hvp-demographic/maintenance/ui/demographicMaintenanceForm.html'"></div>
+        </totvs-page-form>
+
+        <totvs-page-form ng-if="controller.provider.inTipoPessoa == 'J'">
+            <div ng-include="'/dts/hgp/html/hvp-company/maintenance/ui/companyMaintenanceForm.html'"></div>
+        </totvs-page-form>
+    
+        <totvs-page-form>
+            <fieldset>
+                    <totvs-page-form>
+                    <!-- ng-controller="hvp.personMaintenanceController as controller" -->
+                        <div ng-include="'/dts/hgp/html/hvp-person/maintenance/ui/personMaintenanceForm.html'"></div>
+                    </totvs-page-form>
+
+                    <div>
+                        <legend style="font-size: 15px; font-weight: bold;">Dados de Endereço do Prestador</legend>    
+                    </div>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nrCnpj"
+                        label="CNPJ"
+                        ui-mask="99.999.999/9999-99"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nrSeqEndereco"
+                        label="Sequência do Endereço"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <!-- <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-sm-height">
+                    </field> -->
+
+                    <field type="checkbox"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        label="Filial"
+                        data-ng-model="controller.providerAddress.lgFilial"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="checkbox"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        label="Malote Médico"
+                        data-ng-model="controller.providerAddress.lgMalote"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="checkbox"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        label="Recebe Correspondência"
+                        data-ng-model="controller.providerAddress.lgRecebeCorresp"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                    </field>
+
+                    <field type="email"
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nmEmail"
+                        label="E-mail"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nmEndWeb"
+                        label="Endereço Web"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    </field>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.codLatitude"
+                        label="Latitude"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.codLongitude"
+                        label="Longitude"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                   <!--  <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-8 col-md-8 col-sm-8 col-xs-12 col-sm-height">
+                    </field> -->
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.cdCnes"
+                        label="CNES"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-5 col-md-5 col-sm-5 col-xs-12 col-sm-height">
+                    </field>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nrAcomodaHosDia"
+                        label="Nr. leitos disponíveis - dia"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nrLeitosTotais"
+                        label="Número de leitos totais"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <!-- <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-1 col-md-1 col-sm-1 col-xs-12 col-sm-height">
+                    </field> -->
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nrLeitosClinicos"
+                        label="Número de leitos clínicos"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nrLeitosPsiquiatria"
+                        label="Número de leitos psiquiatria"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-3 col-md-3 col-sm-3 col-xs-12 col-sm-height">
+                    </field>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nrLeitosCirurgicos"
+                        label="Nr. leitos cirúrgicos"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nrLeitosPediatria"
+                        label="Número de leitos pediatria"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <!-- <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-1 col-md-1 col-sm-1 col-xs-12 col-sm-height">
+                    </field> -->
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nrLeitosObstetricia"
+                        label="Número de leitos obstetricia"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nrLeitosContratados"
+                        label="Número de leitos contratados"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-3 col-md-3 col-sm-3 col-xs-12 col-sm-height">
+                    </field>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nrLeitosUtiAdultos"
+                        label="Nr. leitos UTI adultos"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nrLeitosUtiPsiquiatria"
+                        label="Número de leitos UTI psiquiatria"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <!-- <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-1 col-md-1 col-sm-1 col-xs-12 col-sm-height">
+                    </field> -->
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nrLeitosUtiNeonatal"
+                        label="Número de leitos UTI neonatal"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nrLeitosUtiPediatria"
+                        label="Número de leitos UTI pediatria"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-3 col-md-3 col-sm-3 col-xs-12 col-sm-height">
+                    </field>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nrLeitosUtiInterNeonatal"
+                        label="Nr. leitos UTI internação neonatal"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.providerAddress.nrLeitosUnidadeIntermediaria"
+                        label="Nr. leitos unidade intermediária"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-8 col-md-8 col-sm-8 col-xs-12 col-sm-height">
+                    </field>
+
+                    <div class="row col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <field type="time"
+                            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                            data-ng-model="controller.providerAddress.hrManEnt"
+                            label="Entrada Manhã"
+                            ng-disabled="controller.action === 'DETAIL'">
+                        </field> 
+
+                        <field type="time"
+                            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                            data-ng-model="controller.providerAddress.hrManSai"
+                            label="Saída Manhã"
+                            ng-disabled="controller.action === 'DETAIL'">
+                        </field>
+
+                        <field type="time"
+                            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                            data-ng-model="controller.providerAddress.hrTarEnt"
+                            label="Entrada Tarde"
+                            ng-disabled="controller.action === 'DETAIL'">
+                        </field>
+
+                        <field type="time"
+                            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                            data-ng-model="controller.providerAddress.hrTarSai"
+                            label="Saída Tarde"
+                            ng-disabled="controller.action === 'DETAIL'">
+                        </field>
+                        <field type="input"
+                               label="fake" style="visibility: hidden"
+                               class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height">
+                        </field>   
+                    </div>
+
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-5 col-md-5 col-sm-5 col-xs-12 col-sm-height">
+                    </field>
+
+                    <div>
+                        <legend style="font-size: 15px; font-weight: bold;">Horários</legend>    
+                    </div>
+
+                    <div class="row col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <field type="checkbox"
+                            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                            label="Segunda-feira"
+                            data-ng-model="controller.providerAddress.lgPrincipal"
+                            ng-disabled="controller.action === 'DETAIL'">
+                        </field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrManEntSegunda"
+                                     label="Entrada Manhã"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrManSaiSegunda"
+                                     label="Saída Manhã"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrTarEntSegunda"
+                                     label="Entrada Tarde"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrTarSaiSegunda"
+                                     label="Saída Tarde"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+                        
+                        <field type="input"
+                               label="fake" style="visibility: hidden"
+                               class="col-lg-2 col-md-2 col-sm-2 col-xs-12 col-sm-height">
+                        </field>      
+                    </div>
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-5 col-md-5 col-sm-5 col-xs-12 col-sm-height">
+                    </field> 
+
+                    <div class="row col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <field type="checkbox"
+                            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                            label="Terça-feira"
+                            data-ng-model="controller.providerAddress.lgPrincipal"
+                            ng-disabled="controller.action === 'DETAIL'">
+                        </field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrManEntTerca"
+                                     label="Entrada Manhã"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrManSaiTerca"
+                                     label="Saída Manhã"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrTarEntTerca"
+                                     label="Entrada Tarde"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrTarSaiTerca"
+                                     label="Saída Tarde"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <field type="input"
+                               label="fake" style="visibility: hidden"
+                               class="col-lg-2 col-md-2 col-sm-2 col-xs-12 col-sm-height">
+                        </field>      
+                    </div>
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-5 col-md-5 col-sm-5 col-xs-12 col-sm-height">
+                    </field> 
+
+                    <div class="row col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <field type="checkbox"
+                            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                            label="Quarta-feira"
+                            data-ng-model="controller.providerAddress.lgPrincipal"
+                            ng-disabled="controller.action === 'DETAIL'">
+                        </field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrManEntQuarta"
+                                     label="Entrada Manhã"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrManSaiQuarta"
+                                     label="Saída Manhã"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrTarEntQuarta"
+                                     label="Entrada Tarde"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrTarSaiQuarta"
+                                     label="Saída Tarde"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <field type="input"
+                               label="fake" style="visibility: hidden"
+                               class="col-lg-2 col-md-2 col-sm-2 col-xs-12 col-sm-height">
+                        </field>      
+                    </div>
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-5 col-md-5 col-sm-5 col-xs-12 col-sm-height">
+                    </field> 
+
+                    <div class="row col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <field type="checkbox"
+                            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                            label="Quinta-feira"
+                            data-ng-model="controller.providerAddress.lgPrincipal"
+                            ng-disabled="controller.action === 'DETAIL'">
+                        </field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrManEntQuinta"
+                                     label="Entrada Manhã"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrManSaiQuinta"
+                                     label="Saída Manhã"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrTarEntQuinta"
+                                     label="Entrada Tarde"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrTarSaiQuinta"
+                                     label="Saída Tarde"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <field type="input"
+                               label="fake" style="visibility: hidden"
+                               class="col-lg-2 col-md-2 col-sm-2 col-xs-12 col-sm-height">
+                        </field>      
+                    </div>
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-5 col-md-5 col-sm-5 col-xs-12 col-sm-height">
+                    </field> 
+
+                    <div class="row col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <field type="checkbox"
+                            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                            label="Sexta-feira"
+                            data-ng-model="controller.providerAddress.lgPrincipal"
+                            ng-disabled="controller.action === 'DETAIL'">
+                        </field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrManEntSexta"
+                                     label="Entrada Manhã"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrManSaiSexta"
+                                     label="Saída Manhã"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrTarEntSexta"
+                                     label="Entrada Tarde"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrTarSaiSexta"
+                                     label="Saída Tarde"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <field type="input"
+                               label="fake" style="visibility: hidden"
+                               class="col-lg-2 col-md-2 col-sm-2 col-xs-12 col-sm-height">
+                        </field>      
+                    </div>
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-5 col-md-5 col-sm-5 col-xs-12 col-sm-height">
+                    </field> 
+
+                    <div class="row col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <field type="checkbox"
+                            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                            label="Sábado"
+                            data-ng-model="controller.providerAddress.lgPrincipal"
+                            ng-disabled="controller.action === 'DETAIL'">
+                        </field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrManEntSabado"
+                                     label="Entrada Manhã"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrManSaiSabado"
+                                     label="Saída Manhã"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrTarEntSabado"
+                                     label="Entrada Tarde"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrTarSaiSabado"
+                                     label="Saída Tarde"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <field type="input"
+                               label="fake" style="visibility: hidden"
+                               class="col-lg-2 col-md-2 col-sm-2 col-xs-12 col-sm-height">
+                        </field>      
+                    </div>
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-5 col-md-5 col-sm-5 col-xs-12 col-sm-height">
+                    </field> 
+
+                    <div class="row col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                        <field type="checkbox"
+                            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                            label="Domingo"
+                            data-ng-model="controller.providerAddress.lgPrincipal"
+                            ng-disabled="controller.action === 'DETAIL'">
+                        </field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrManEntDomingo"
+                                     label="Entrada Manhã"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrManSaiDomingo"
+                                     label="Saída Manhã"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrTarEntDomingo"
+                                     label="Entrada Tarde"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <totvs-field totvs-time
+                                     class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                     ng-model="controller.providerAddress.hrTarSaiDomingo"
+                                     label="Saída Tarde"
+                                     ng-disabled="controller.action === 'DETAIL'">
+                        </totvs-field>
+
+                        <field type="input"
+                               label="fake" style="visibility: hidden"
+                               class="col-lg-2 col-md-2 col-sm-2 col-xs-12 col-sm-height">
+                        </field>      
+                    </div>
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-5 col-md-5 col-sm-5 col-xs-12 col-sm-height">
+                    </field>
+
+                <totvs-page-form>
+                    <legend>Dados do Prestador</legend>
+
+                    <totvs-field totvs-select 
+                        id="providerUnitZoom"
+                        name-id="providerUnitZoom"
+                        ng-model="controller.provider.cdUnidade"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Unidade do Prestador" canclean
+                        select-service="hcg.unitZoomController"
+                        zoom-service="hcg.unitZoomController"
+                        select-id="cdUnimed" 
+                        select-description="nmUnimed"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-sm-height">
+                    </field> 
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="8"
+                        data-ng-model="controller.provider.cdPrestador"
+                        label="Código do Prestador"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="input"
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.nmPrestador"
+                        label="Nome"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="input"
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.nomeAbrev"
+                        label="Nome Abreviado"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <totvs-field totvs-select 
+                        id="sectionalUnitZoom"
+                        name-id="sectionalUnitZoom"
+                        ng-model="controller.provider.cdUnidadeSeccional"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Unidade Seccional" canclean
+                        select-service="hcg.unitZoomController"
+                        zoom-service="hcg.unitZoomController"
+                        select-id="cdUnimed" 
+                        select-description="nmUnimed"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <totvs-field totvs-select 
+                        id="providerGroupZoom"
+                        name-id="providerGroupZoom"
+                        ng-model="controller.provider.cdGrupoPrestador"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Grupo do Prestador" canclean
+                        select-service="hcg.providerGroupZoomController"
+                        zoom-service="hcg.providerGroupZoomController"
+                        select-id="cdGrupoPrestador" 
+                        select-description="dsGrupoPrestador"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>                    
+                    <totvs-field totvs-select 
+                        id="emsProviderZoom"
+                        name-id="emsProviderZoom"
+                        ng-model="controller.provider.cdContratante"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Fornecedor" canclean
+                        select-service="global.emsProviderZoomController"
+                        zoom-service="global.emsProviderZoomController"
+                        select-id="cdnFornecedor" 
+                        zoom-init="{filters: controller.emsProviderFixedFilters}"
+                        select-init="{filters: controller.emsProviderFixedFilters}"
+                        select-description="nomPessoa"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <!-- VERIFICAR CAMPO-->
+                    <totvs-field totvs-select 
+                        id="emsProviderGroupZoom"
+                        name-id="emsProviderGroupZoom"
+                        ng-model="controller.provider.cdGrupoFornecedor"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Grupo do Fornecedor" canclean
+                        select-service="global.emsProviderGroupZoomController"
+                        zoom-service="global.emsProviderGroupZoomController"
+                        select-id="codGrpFornec" 
+                        select-description="desGrpFornec"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <field type="combo"
+                        data-ng-model="controller.provider.cdUfConselho"
+                           class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                           ng-options="o.enUf as o.enUf for o in controller.ufs"
+                        label="UF do Conselho"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <totvs-field totvs-select 
+                        id="providerCouncilZoom"
+                        name-id="providerCouncilZoom"
+                        ng-model="controller.provider.cdConselho"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Conselho" canclean
+                        select-service="hcg.providerCouncilZoomController"
+                        zoom-service="hcg.providerCouncilZoomController"
+                        select-id="cdConselho" 
+                        select-description="dsConselho"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <field type="input"
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.nrRegistro"
+                        label="Registro"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <totvs-field totvs-select 
+                        id="urgencyTimeZoom"
+                        name-id="urgencyTimeZoom"
+                        ng-model="controller.provider.cdTabUrge"
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        label="Horário de Urgência" canclean
+                        select-service="hcg.urgencyTimeZoomController"
+                        zoom-service="hcg.urgencyTimeZoomController"
+                        select-id="cdTabUrge" 
+                        select-description="dsTabUrge"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <totvs-field totvs-select 
+                        id="medicalSpecialtyZoom"
+                        name-id="medicalSpecialtyZoom"
+                        ng-model="controller.provider.cdEspTitulo"
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        label="Especialidade Título" canclean
+                        select-service="hcg.medicalSpecialtyZoomController"
+                        zoom-service="hcg.medicalSpecialtyZoomController"
+                        select-id="cdEspecialid" 
+                        select-description="dsEspecialid"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <totvs-field totvs-select 
+                        id="medicalSpecialtyZoom"
+                        name-id="medicalSpecialtyZoom"
+                        ng-model="controller.provider.cdEspResid"
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        label="Especialidade da Residência" canclean
+                        select-service="hcg.medicalSpecialtyZoomController"
+                        zoom-service="hcg.medicalSpecialtyZoomController"
+                        select-id="cdEspecialid" 
+                        select-description="dsEspecialid"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="6"
+                        data-ng-model="controller.provider.cdMatriculaPrestador"
+                        label="Matrícula do Prestador"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <totvs-field totvs-select 
+                        id="rejectionReasonZoom"
+                        name-id="rejectionReasonZoom"
+                        ng-model="controller.provider.cdMotivoCancel"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Motivo de Exclusão" canclean
+                        select-service="hcg.rejectionReasonZoomController"
+                        zoom-service="hcg.rejectionReasonZoomController"
+                        select-id="cdMotivo" 
+                        select-init ="{filters: controller.rejectionReasonFixedFilters}"
+                        zoom-init="{filters: controller.rejectionReasonFixedFilters}"
+                        select-description="dsMotivo"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+
+                    <field type="date"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="20"
+                        data-ng-model="controller.provider.dtExclusao"
+                        label="Data de Exclusão"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <totvs-page-detail class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <totvs-page-detail-info 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12" 
+                            title="Motivo de Suspensão"
+                            value="1 - Inadimplência">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12" 
+                            title="Período de Suspensão"
+                            value="01/03/2016  a  30/04/2016">
+                        </totvs-page-detail-info>
+                    </totvs-page-detail>
+                    <field type="date"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="20"
+                        data-ng-model="controller.provider.dtInclusao"
+                        label="Data de Inclusão"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <totvs-page-detail class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <totvs-page-detail-info 
+                            class="col-lg-12 col-md-12 col-sm-12 col-xs-12" 
+                            title="Data de Atualização"
+                            value="{{controller.provider.dtAtualizacao | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+                    </totvs-page-detail>
+
+                    <legend>Dados de Graduação</legend>
+
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Formação Médica"
+                        data-ng-model="controller.provider.lgMedico"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Diploma"
+                        data-ng-model="controller.provider.lgDiploma"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Indicação de Pós Graduação(360hs)"
+                        data-ng-model="controller.provider.lgIndicPosGraducao"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Participação em Programa de Certificação"
+                        data-ng-model="controller.provider.lgParticipProgCertif"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Residencia Médica"
+                        data-ng-model="controller.provider.lgResidenciaMedica"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field  type="combo"                        
+                        data-ng-model="controller.document.inTipoGrad"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        ng-options="tg.data as tg.label for tg in controller.graduationTypeValue"
+                        label="Tipo de Graduação"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+
+                    <legend>Indicadores Gerais</legend>
+
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Calcula Adiantamento da Produção"
+                        data-ng-model="controller.provider.lgCalculaAdto"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="date"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.dtCalculoAdto"
+                        label="Cálculo da Antecipação"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="input"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.nrDiasValidade"
+                        label="Dias para Reconsulta"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="input"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.qtDiasRecebDoctosBase"
+                        label="Dias p/ receber  doctos. da base"
+                        ng-disabled="controller.action === 'DETAIL'"
+                        ng-if="controller.provider.cdUnidade == controller.paramecp.cdUnimed">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Recolhe Participação"
+                        data-ng-model="controller.provider.lgRecolheParticipacao"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Verifica Vínculo do Insumo"
+                        data-ng-model="controller.provider.lgVerificaVincInsumo"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Cooperado"
+                        data-ng-model="controller.provider.lgCooperado"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="combo"
+                        data-ng-model="controller.provider.inTipoColeta"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        ng-options="tc.data as tc.label for tc in controller.collectTypeValue"
+                        label="Tipo de Coleta"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Representa Unidade"
+                        data-ng-model="controller.provider.lgRepresentaUnidade"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Divide Honorários"
+                        data-ng-model="controller.provider.lgDivisaoHonorario"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Representante Genérico"
+                        data-ng-model="controller.provider.lgRepresentaGenerico"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Pagamento para RH ou Contas a Pagar"
+                        data-ng-model="controller.provider.lgPrincipal"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Possui Formação Médica"
+                        data-ng-model="controller.provider.lgPrincipal"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Prestador de Reembolso"
+                        data-ng-model="controller.provider.lgPrestReembolso"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Fornecedor OPME"
+                        data-ng-model="controller.provider.lgFornecedorOpme"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Prestador SUS"
+                        data-ng-model="controller.provider.lgPrestadorSus"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Habilita Check-in Auto Gerados"
+                        data-ng-model="controller.provider.lgHabilitaCheckinAuto"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Prestador Caixa Único"
+                        data-ng-model="controller.provider.lgPrestadorCaixaUnico"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <legend>Impostos</legend>
+
+                    <div>
+                        <legend style="font-size: 15px; font-weight: bold;">INSS</legend>    
+                    </div>
+                    <field type="checkbox"
+                        class="col-lg-1 col-md-1 col-sm-1 col-xs-12"
+                        label="Recolhe INSS"
+                        data-ng-model="controller.provider.lgRecolheInss"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        label="Fonte Retentora de INSS Única"
+                        data-ng-model="controller.provider.lgRetentoraUnica"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Possui Vínculo Empregatício com Terceiros"
+                        data-ng-model="controller.provider.lgVincEmpreg"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-1 col-md-1 col-sm-1 col-xs-12"
+                        label="Registro INSS"
+                        data-ng-model="controller.provider.lgRegistro"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="input"
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.nrInscricaoInss"
+                        label="Inscrição do INSS"
+                        ui-mask="999.99999.99-9"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.nrUltInss"
+                        label="Último Mês Recolhimento INSS"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <totvs-field totvs-select 
+                        id="emsInssTaxZoom"
+                        name-id="emsInssTaxZoom"
+                        ng-model="controller.provider.cdImpostoInss"
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        label="Imposto do INSS" canclean
+                        select-service="global.emsTaxZoomController"
+                        zoom-service="global.emsTaxZoomController"
+                        select-id="codImposto" 
+                        zoom-init="{filters: controller.emsTaxFixedFilters}"
+                        select-init="{filters: controller.emsTaxFixedFilters}"
+                        select-description="desImposto"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <totvs-field totvs-select 
+                        id="emsInssTaxClassificationZoom"
+                        name-id="emsInssTaxClassificationZoom"
+                        ng-model="controller.provider.cdClassificacaoImpInss"
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        label="Classificação do Imposto do INSS" canclean
+                        select-service="global.emsTaxClassificationZoomController"
+                        zoom-service="global.emsTaxClassificationZoomController"
+                        select-id="codClassifImpto" 
+                        zoom-init="{filters: controller.emsInssTaxClassificationFixedFilters}"
+                        select-init="{filters: controller.emsInssTaxClassificationFixedFilters}"
+                        select-description="desClassifImpto"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+
+                    <div>
+                        <legend style="font-size: 15px; font-weight: bold;">IRRF e ISS</legend>    
+                    </div>
+                    <field type="checkbox"
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        label="Calcula IRRF no RC"
+                        data-ng-model="controller.provider.lgCalculaIr"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <field type="combo"
+                            data-ng-model="controller.provider.inIrAtosCooperados"
+                            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                            ng-options="ir.data as ir.label for ir in controller.irrfIndexValue"
+                            label="Índice do IRRF"
+                            ng-change="controller.onMaritalStatusChange()"
+                            ng-disabled="controller.action === 'DETAIL'">
+                        </field>
+                        <field type="input"
+                            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                            maxlength="60"
+                            data-ng-model="controller.provider.nrDependentes"
+                            label="Dependentes p/ Dedução IRRF"
+                            ng-disabled="controller.action === 'DETAIL'">
+                        </field>
+                    </div>
+                    <totvs-field totvs-select 
+                        id="emsIrrfTaxZoom"
+                        name-id="emsIrrfTaxZoom"
+                        ng-model="controller.provider.cdImposto"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="IRRF" canclean
+                        select-service="global.emsTaxZoomController"
+                        zoom-service="global.emsTaxZoomController"
+                        select-id="codImposto" 
+                        zoom-init="{filters: controller.emsTaxFixedFilters}"
+                        select-init="{filters: controller.emsTaxFixedFilters}"
+                        select-description="desImposto"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <totvs-field totvs-select 
+                        id="emsIrrfTaxClassificationZoom"
+                        name-id="emsIrrfTaxClassificationZoom"
+                        ng-model="controller.provider.cdClassificacaoImposto"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Classificação do IRRF" canclean
+                        select-service="global.emsTaxClassificationZoomController"
+                        zoom-service="global.emsTaxClassificationZoomController"
+                        select-id="codClassifImpto" 
+                        zoom-init="{filters: controller.emsIrrfTaxClassificationFixedFilters}"
+                        select-init="{filters: controller.emsIrrfTaxClassificationFixedFilters}"
+                        select-description="desClassifImpto"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Calcula ISS"
+                        data-ng-model="controller.provider.lgCalculaIss"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Deduz ISS da Produção"
+                        data-ng-model="controller.provider.lgDeduzIss"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <totvs-field totvs-select canclean
+                        ng-model="controller.provider.cdCidadeIss"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Cidade do ISS"
+                        select-service="hcg.cityZoomController"
+                        zoom-service="hcg.cityZoomController"
+                        select-id="cdCidade"
+                        select-description="nmCidade"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </totvs-field>
+                    <totvs-field totvs-select 
+                        id="emsIssTaxZoom"
+                        name-id="emsIssTaxZoom"
+                        ng-model="controller.provider.cdImpostoIss"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="ISS" canclean
+                        select-service="global.emsTaxZoomController"
+                        zoom-service="global.emsTaxZoomController"
+                        select-id="codImposto" 
+                        zoom-init="{filters: controller.emsTaxFixedFilters}"
+                        select-init="{filters: controller.emsTaxFixedFilters}"
+                        select-description="desImposto"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <totvs-field totvs-select 
+                        id="emsIssTaxClassificationZoom"
+                        name-id="emsIssTaxClassificationZoom"
+                        ng-model="controller.provider.cdClassificacaoImpIss"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Classificação do ISS" canclean
+                        select-service="global.emsTaxClassificationZoomController"
+                        zoom-service="global.emsTaxClassificationZoomController"
+                        select-id="codClassifImpto" 
+                        zoom-init="{filters: controller.emsIssTaxClassificationFixedFilters}"
+                        select-init="{filters: controller.emsIssTaxClassificationFixedFilters}"
+                        select-description="desClassifImpto"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+
+                    <!-- ARRUMAR AS COLUNAS -->
+                    <div>
+                        <legend style="font-size: 15px; font-weight: bold;">Único, PIS/PASEP, COFINS e CSLL </legend>    
+                    </div>
+                    <field type="checkbox"
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        label="Calcula PIS / PASEP, COFINS e CSLL dos Procedimentos"
+                        data-ng-model="controller.provider.lgRetemProc"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                        label="Calcula PIS / PASEP, COFINS e CSLL dos Insumos"
+                        data-ng-model="controller.provider.lgRetemInsu"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        label="Considerar Imposto Único"
+                        data-ng-model="controller.provider.lgImpostoUnico"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <totvs-field totvs-select 
+                        id="emsSingleTaxZoom"
+                        name-id="emsSingleTaxZoom"
+                        ng-model="controller.provider.cdImpostoUnico"
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        label="Imposto Único" canclean
+                        select-service="global.emsTaxZoomController"
+                        zoom-service="global.emsTaxZoomController"
+                        select-id="codImposto" 
+                        zoom-init="{filters: controller.emsTaxFixedFilters}"
+                        select-init="{filters: controller.emsTaxFixedFilters}"
+                        select-description="desImposto"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <totvs-field totvs-select 
+                        id="emsSingleTaxClassificationZoom"
+                        name-id="emsSingleTaxClassificationZoom"
+                        ng-model="controller.provider.cdClasImpostoUnico"
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        label="Classificação do Imposto Único" canclean
+                        select-service="global.emsTaxClassificationZoomController"
+                        zoom-service="global.emsTaxClassificationZoomController"
+                        select-id="codClassifImpto" 
+                        zoom-init="{filters: controller.emsSingleTaxClassificationFixedFilters}"
+                        select-init="{filters: controller.emsSingleTaxClassificationFixedFilters}"
+                        select-description="desClassifImpto"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <field type="checkbox"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        label="Calcula COFINS"
+                        data-ng-model="controller.provider.lgCofins"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <totvs-field totvs-select 
+                        id="emsCofinsTaxZoom"
+                        name-id="emsCofinsTaxZoom"
+                        ng-model="controller.provider.cdImpostoCofins"
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        label="COFINS" canclean
+                        select-service="global.emsTaxZoomController"
+                        zoom-service="global.emsTaxZoomController"
+                        select-id="codImposto" 
+                        zoom-init="{filters: controller.emsTaxFixedFilters}"
+                        select-init="{filters: controller.emsTaxFixedFilters}"
+                        select-description="desImposto"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <totvs-field totvs-select 
+                        id="emsCofinsTaxClassificationZoom"
+                        name-id="emsCofinsTaxClassificationZoom"
+                        ng-model="controller.provider.cdClasImpostoCofins"
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        label="Classificação do COFINS" canclean
+                        select-service="global.emsTaxClassificationZoomController"
+                        zoom-service="global.emsTaxClassificationZoomController"
+                        select-id="codClassifImpto" 
+                        zoom-init="{filters: controller.emsCofinsTaxClassificationFixedFilters}"
+                        select-init="{filters: controller.emsCofinsTaxClassificationFixedFilters}"
+                        select-description="desClassifImpto"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <field type="checkbox"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        label="Calcula PIS/PASEP"
+                        data-ng-model="controller.provider.lgPisPasep"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <totvs-field totvs-select 
+                        id="emsPisPasepTaxZoom"
+                        name-id="emsPisPasepTaxZoom"
+                        ng-model="controller.provider.cdImpostoPisPasep"
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        label="PIS/PASEP" canclean
+                        select-service="global.emsTaxZoomController"
+                        zoom-service="global.emsTaxZoomController"
+                        select-id="codImposto" 
+                        zoom-init="{filters: controller.emsTaxFixedFilters}"
+                        select-init="{filters: controller.emsTaxFixedFilters}"
+                        select-description="desImposto"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <totvs-field totvs-select 
+                        id="emsPisPasepTaxClassificationZoom"
+                        name-id="emsPisPasepTaxClassificationZoom"
+                        ng-model="controller.provider.cdClasImpostoPisPasep"
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        label="Classificação do PIS/PASEP" canclean
+                        select-service="global.emsTaxClassificationZoomController"
+                        zoom-service="global.emsTaxClassificationZoomController"
+                        select-id="codClassifImpto" 
+                        zoom-init="{filters: controller.emsPisPasepTaxClassificationFixedFilters}"
+                        select-init="{filters: controller.emsPisPasepTaxClassificationFixedFilters}"
+                        select-description="desClassifImpto"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <field type="checkbox"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        label="Calcula CSLL"
+                        data-ng-model="controller.provider.lgCsll"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <totvs-field totvs-select 
+                        id="emsCsllTaxZoom"
+                        name-id="emsCsllTaxZoom"
+                        ng-model="controller.provider.cdImpostoCsll"
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        label="CSLL" canclean
+                        select-service="global.emsTaxZoomController"
+                        zoom-service="global.emsTaxZoomController"
+                        select-id="codImposto" 
+                        zoom-init="{filters: controller.emsTaxFixedFilters}"
+                        select-init="{filters: controller.emsTaxFixedFilters}"
+                        select-description="desImposto"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <totvs-field totvs-select 
+                        id="emsCsllTaxClassificationZoom"
+                        name-id="emsCsllTaxClassificationZoom"
+                        ng-model="controller.provider.cdClasImpostoCsll"
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        label="Classificação do CSLL" canclean
+                        select-service="global.emsTaxClassificationZoomController"
+                        zoom-service="global.emsTaxClassificationZoomController"
+                        select-id="codClassifImpto" 
+                        zoom-init="{filters: controller.emsCsllTaxClassificationFixedFilters}"
+                        select-init="{filters: controller.emsCsllTaxClassificationFixedFilters}"
+                        select-description="desClassifImpto"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+
+
+                    <legend>Administrativo</legend>
+
+                    <totvs-field totvs-select 
+                        id="emsFinancialFlowTypeZoom"
+                        name-id="emsFinancialFlowTypeZoom"
+                        ng-model="controller.provider.cdTipoFluxo"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Tipo de Fluxo Financeiro" canclean
+                        select-service="global.emsFinancialFlowTypeZoomController"
+                        zoom-service="global.emsFinancialFlowTypeZoomController"
+                        select-id="codTipFluxoFinanc" 
+                        select-description="desTipFluxoFinanc"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <!-- <totvs-field totvs-select 
+                        id="emsBearerZoom"
+                        name-id="emsBearerZoom"
+                        ng-model="controller.provider.portador"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Portador" canclean
+                        select-service="global.emsBearerZoomController"
+                        zoom-service="global.emsBearerZoomController"
+                        select-id="codPortador" 
+                        select-description="des..........."
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field> -->
+                    <totvs-field totvs-select 
+                        id="modalityZoom"
+                        name-id="modalityZoom"
+                        ng-model="controller.provider.modalidade"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Modalidade" canclean
+                        select-service="hpr.modalityZoomController"
+                        zoom-service="hpr.modalityZoomController"
+                        select-id="cdModalidade" 
+                        select-description="dsModalidade"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <totvs-field totvs-select 
+                        id="emsBankZoom"
+                        name-id="emsBankZoom"
+                        ng-model="controller.provider.codBanco"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Banco" canclean
+                        select-service="global.emsBankZoomController"
+                        zoom-service="global.emsBankZoomController"
+                        select-id="codBanco" 
+                        select-description="nomBanco"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>                    
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.agencia"
+                        label="Agência"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="input"
+                        class="col-lg-1 col-md-1 col-sm-1 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.digAgencia"
+                        label="Dig"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>  
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.contaCorren"
+                        label="Conta Corrente"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="input"
+                        class="col-lg-1 col-md-1 col-sm-1 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.digContaCorren"
+                        label="Dig"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>    
+                    <totvs-field totvs-select 
+                        id="emsPaymentFormZoom"
+                        name-id="emsPaymentFormZoom"
+                        ng-model="controller.provider.codFormaPagto"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Forma de Pagamento" canclean
+                        select-service="global.emsPaymentFormZoomController"
+                        zoom-service="global.emsPaymentFormZoomController"
+                        select-id="codFormaPagto" 
+                        select-description="desFormaPagto"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>  
+
+                    <legend>TISS / Intercâmbios</legend>
+
+                    <div>
+                        <legend style="font-size: 15px; font-weight: bold;">Informações Gerais</legend>    
+                    </div>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Sistema NOTIVISA"
+                        data-ng-model="controller.provider.lgNotivisa"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Sistema QUALISS"
+                        data-ng-model="controller.provider.lgQualiss"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Recebe Malote"
+                        data-ng-model="controller.provider.lgMalote"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Pertence à Rede de Acidente de Trabalho"
+                        data-ng-model="controller.provider.lgPertenceRedeAcidentTrab"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Publicado no Guia Médico"
+                        data-ng-model="controller.provider.lgGuiaMedico"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="É uma cooperativa médica"
+                        data-ng-model="controller.provider.lgCooperativa"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Possui Diploma"
+                        data-ng-model="controller.provider.lgDiploma"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Prestador(Hospital) Pratica a Tabela Própria"
+                        data-ng-model="controller.provider.lgTabelaPropria"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Possui Alvará"
+                        data-ng-model="controller.provider.lgAlvara"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Publica na ANS"
+                        data-ng-model="controller.provider.lgPublicaAns"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Prestador Próprio"
+                        data-ng-model="controller.provider.lgPrestadorProprio"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        label="Envia p/ Manutenção de Login do WSD-TISS"
+                        data-ng-model="controller.provider.lgEnviaManutWsdTiss"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        label="Envia para CADU"
+                        data-ng-model="controller.provider.lgEnviaCadu"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field> 
+                    <field type="input"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.cdInscUnimed"
+                        label="Inscrição Credenciado na Unidade"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field> 
+                    <field type="input"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.qtProdutividade"
+                        label="Fator de Produtividade"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field> 
+
+                    <!-- GERSON VAI OLHAR -->
+                    <field type="input"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.dsBairro"
+                        label="Registro Qualificação Especialista 1"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field> 
+
+                    <!-- GERSON VAI OLHAR -->
+                    <field type="input"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.dsBairro"
+                        label="Registro Qualificação Especialista 2"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="input"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.cdSituacSindic"
+                        label="Situação do Credenciado no Sindicato"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field  type="combo"                        
+                        data-ng-model="controller.provider.inClassEstabelec"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        ng-options="ces.data as ces.label for ces in controller.healthEstablishmentClassificationValue"
+                        label="Classificação do Estab. de Saúde"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="input"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.dtIniContrato"
+                        label="Data de início da contratualização"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="input"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.cdCnes"
+                        label="Código Nacional Estab. Saúde (CNES)"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="input"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.inTipoDisponibilidade"
+                        label="Tipo de Disponibilidade"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field  type="combo"                        
+                        data-ng-model="controller.provider.inPerfilAssistencial"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        ng-options="pa.data as pa.label for pa in controller.assistanceProfileValue"
+                        label="Perfil Assistencial"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field  type="combo"                        
+                        data-ng-model="controller.provider.inTipoProdutoAtende"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        ng-options="o.tpLogradouro as o.rotulo for o in controller.tpLogradouro"
+                        label="Tipo Produto que o prestador atende"
+                        ng-change="controller.onTpLogradouroChange()"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field  type="combo"                        
+                        data-ng-model="controller.provider.inAtendeUrgenciaEmergencia"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        ng-options="o.tpLogradouro as o.rotulo for o in controller.tpLogradouro"
+                        label="Atende Urgência/Emergência"
+                        ng-change="controller.onTpLogradouroChange()"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="input"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.nmFantasia"
+                        label="Nome Fantasia"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <div>
+                        <legend style="font-size: 15px; font-weight: bold;">Diretor Técnico</legend>    
+                    </div>
+                    <field type="input"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.nmDiretorTecnico"
+                        label="Nome do Diretor"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field  type="combo"                        
+                        data-ng-model="controller.provider.inTipoRede"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        ng-options="o.tpLogradouro as o.rotulo for o in controller.tpLogradouro"
+                        label="Tipo de Rede"
+                        ng-change="controller.onTpLogradouroChange()"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="checkbox"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        label="Diretor Técnico como Prof.Solic."
+                        data-ng-model="controller.provider.lgDiretorTecnProfSolic"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-1 col-md-1 col-sm-1 col-xs-12 col-sm-height">
+                    </field> 
+                    <field type="input"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.nrRegistroConselho"
+                        label="Número de Registro no Conselho"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field> 
+                    <field type="combo"
+                           data-ng-model="controller.provider.cdUfConselhoProfissional"
+                           class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                           ng-options="o.enUf as o.enUf for o in controller.ufs"
+                           label="UF do Conselho Profissional"
+                           ng-disabled="controller.action === 'DETAIL'">
+                    </field> 
+                    <field type="combo"
+                           data-ng-model="controller.provider.cdSiglaConselhoProfissional"
+                           class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                           ng-options="o.enUf as o.enUf for o in controller.ufs"
+                           label="Sigla do Conselho Profissional"
+                           ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                    <legend>Outras Informações</legend>
+
+                    <field type="input"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.cdSenha"
+                        label="Senha"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="date"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        maxlength="60"
+                        data-ng-model="controller.provider.dtSenha"
+                        label="Atualização da Senha"
+                        ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-sm-height">
+                    </field>
+                    <field type="textarea"
+                           class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                           data-ng-model="controller.provider.desObservacao"
+                           label="Observações"
+                           ng-disabled="controller.action === 'DETAIL'">
+                    </field>
+
+                </totvs-page-form>
+
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>   
+</totvs-page>

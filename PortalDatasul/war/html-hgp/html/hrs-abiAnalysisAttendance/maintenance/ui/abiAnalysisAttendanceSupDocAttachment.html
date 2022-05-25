@@ -1,0 +1,67 @@
+<totvs-modal-header>
+    Documentos Comprobatórios
+</totvs-modal-header>
+<totvs-modal-body style="height: 320px; overflow-y: auto;">
+    <fieldset ng-form="controller.modelForm">
+<!-- 
+'cdSituacoes','dsMotivo'     -->
+
+            <totvs-row>
+                 <legend>Anexo do Documento</legend>
+            </totvs-row>          
+            <totvs-row>                
+                <totvs-field
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    totvs-upload
+                    ng-model="controller.arqImportacao"
+                    t-show-drag-drop="true"
+                    t-drop-files-here="Arraste o arquivo aqui"
+                    t-remove="Remove"
+                    t-multiple="false"
+                    t-with-credentials="false"
+                    t-select="Selecione o arquivo comprobatório"
+                    t-show-file-list="false"
+                    t-save-field="Importar"
+                    t-status-uploaded="Upload realizado com sucesso"
+                    t-status-uploading="Realizando upload do arquivo"
+                    t-on-select="controller.onUploadSelect"
+                    id="uploadDocPadrao"
+                    ng-if="controller.maintenancePermission">
+                </totvs-field>
+                <totvs-field
+                  class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                  totvs-input
+                  label="Arquivo"
+                  ng-model="controller.dataItem.nmArquivo"
+                  ng-disabled="!controller.maintenancePermission"
+                  ng-if="!controller.maintenancePermission"
+                  >
+                </totvs-field>
+            </totvs-row>   
+    </fieldset>
+</totvs-modal-body>
+                    
+<totvs-modal-footer>
+		<div class="col-md-10 col-sm-9">				 
+        <totvs-button
+                  class="col-md-2 col-sm-3"
+                  ng-if="controller.dataItem.idDocto"
+                  ng-show="controller.dataItem.idDocto != ''"
+                  t-click="controller.download(controller.dataItem.idDocto)"
+                  t-label="Download">
+        </totvs-button>    
+        <totvs-button
+                  class="col-md-2 col-sm-3"
+                  ng-if="controller.dataItem.idDocto && controller.maintenancePermission"
+                  ng-show="controller.dataItem.idDocto != ''"
+                  t-click="controller.remover(controller.dataItem.idDocto)"
+                  t-label="Remover">
+        </totvs-button>  
+    </div>                    
+
+    <totvs-button
+              class="col-md-2 col-sm-3"
+              t-click="controller.cancel()"
+              t-label="Fechar">
+    </totvs-button>                                
+</totvs-modal-footer>

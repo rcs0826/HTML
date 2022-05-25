@@ -1,0 +1,48 @@
+<totvs-modal-header>
+   	Informar Valor
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<totvs-page-content style="border:0px">
+        <totvs-page-detail style="padding-top:0px">
+			<div class="row">
+				<div class="col-xs-12">	
+					<totvs-field 
+						totvs-input
+						class="col-xs-10"
+						label="{{ 'l-capacity' | i18n }}" 
+						ng-model="alterarValorHHCtrl.capacidadeSelecionada"
+						ng-disabled="true">
+					</totvs-field>
+				</div>
+				<div class="col-xs-12">
+					<totvs-field 
+						totvs-input
+						class="col-xs-6"
+						label="{{ 'l-type-value' | i18n }}" 
+						ng-model="alterarValorHHCtrl.model.tipoValor"
+						ng-disabled="true">
+					</totvs-field>
+				</div>
+				<div class="col-xs-12">
+					<totvs-field
+						totvs-decimal
+						focus
+						required
+			            class="col-xs-4"
+			            m-dec="2"
+			            label="{{ 'l-value' | i18n }}"
+						ng-model="alterarValorHHCtrl.model.valor"
+						ng-maxlength="{{alterarValorHHCtrl.maxlength}}">
+						<validator key="maxlength">{{ 'l-invalid-value' | i18n }}</validator>
+			        </totvs-field>
+				</div>
+			</div>
+		</totvs-page-detail>
+	</totvs-page-content>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button type="button" class="btn btn-default" data-ng-click="alterarValorHHCtrl.cancelar()">{{ 'l-cancel' | i18n }}</button>
+	<button type="button" class="btn btn-primary" data-ng-click="alterarValorHHCtrl.confirmar()">{{ 'l-apply' | i18n }}</button>
+</totvs-modal-footer>

@@ -1,0 +1,61 @@
+<totvs-modal-header>{{'l-copy-reg' | i18n}}</totvs-modal-header>
+<totvs-modal-body>
+    <div class="row">
+        
+        <form class="form-horizontal" role="form">
+            <field type="select2"
+                   canclean="true"
+                   ng-model="controller.idPortalConfigur"
+                   select-conector="{{'l-portal-config-clien-rep' | i18n}}"
+                   select-init="controller.myParams.idiTipConfig"
+                   select-id="idi-seq"
+                   select-description="descricao"
+                   select-service="mpd.configClienRep.Zoom"
+                   ng-change="controller.changeZoomConfigClienRep(controller.idPortalConfigur)"
+                   class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <zoom zoom-service="mpd.configClienRep.Zoom"
+                      zoom-init="controller.myParams.idiTipConfig"></zoom>
+                <label>{{'l-portal-config-clien-rep' | i18n}}</label>
+                <validator key="required">{{$fieldLabel}} {{'l-required' | i18n}}</validator>
+            </field>
+        </form>
+        
+        <form class="form-horizontal" role="form">  
+            <field type="checkbox"                               
+                   ng-model="controller.checkItem"
+                   label="{{'l-cod-item' | i18n}}">                
+            </field>
+        </form>
+        <form class="form-horizontal" role="form">  
+            <field type="checkbox"                               
+                   ng-model="controller.checkCondPagto"
+                   label="{{'l-cdn-cond-pag' | i18n}}">                
+            </field>
+        </form>
+        <form class="form-horizontal" role="form">  
+            <field type="checkbox"                               
+                   ng-model="controller.checkTbPreco"
+                   label="{{'l-price-table' | i18n}}"
+                   ng-hide="controller.hideTbPreco">
+            </field>
+        </form>
+        <form class="form-horizontal" role="form">  
+            <field type="checkbox"                               
+                   ng-model="controller.checkTpOperacao"
+                   label="{{'l-operation-type' | i18n}}"
+                   ng-hide="controller.hideTpOperacao">
+            </field>
+        </form>
+		<form class="form-horizontal" role="form">  
+            <field type="checkbox"                               
+                   ng-model="controller.checkCanalVenda"
+                   label="{{'l-canal-venda' | i18n}}"
+                   ng-hide="controller.hideCanalVenda">
+            </field>
+        </form>
+    </div>    
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button type="button" class="btn btn-primary" data-ng-click="controller.confirm();" data-ng-disabled="controller.idDisabledBtnCopy">{{ 'l-copy' | i18n }}</button>
+    <button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'btn-cancel' | i18n }}</button>
+</totvs-modal-footer>

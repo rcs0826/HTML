@@ -1,0 +1,93 @@
+<totvs-modal-header>
+	{{ 'l-parameters' | i18n: []: 'dts/crm' }} {{'l-ticket-summary' | i18n : [] : 'dts/crm/' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<fieldset class="row">
+		<field type="select"
+			   required
+			   class="col-xs-12 col-md-6"
+			   ng-model="controller.ttPeriodType">
+			<label>{{ 'l-opening-period' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-opening-period' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.label }}
+				</ui-select-match>
+				<ui-select-choices repeat="item in controller.periods | filter: $select.search track by $index">
+					<span data-ng-bind-html="item.label | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<totvs-field totvs-combo
+					 label="{{ 'l-view-by' | i18n: []: 'dts/crm' }}"
+					 ng-model="controller.model.idi_agrupador"
+					 t-options="controller.groups"
+					 ng-required="true">
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</totvs-field>
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-status' | i18n: []: 'dts/crm' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.ttStatus"
+			 t-multi-id="value"
+			 t-multi-description="label"
+			 t-data="controller.status">
+		</totvs-field>
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-resource' | i18n: []: 'dts/crm' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.ttRecurso"
+			 t-multi-id="value"
+			 t-multi-description="label"
+			 t-data="controller.resources">
+		</totvs-field>
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-priority' | i18n: []: 'dts/crm' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.ttPrioridade"
+			 t-multi-id="value"
+			 t-multi-description="label"
+			 t-data="controller.priorities">
+		</totvs-field>
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-origin' | i18n: []: 'dts/crm' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.ttOrigem"
+			 t-multi-id="value"
+			 t-multi-description="label"
+			 t-data="controller.origins">
+		</totvs-field>
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-flow' | i18n: []: 'dts/crm' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.ttFluxo"
+			 t-multi-id="value"
+			 t-multi-description="label"
+			 t-data="controller.flows">
+		</totvs-field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-primary" ng-click="controller.apply()">{{ 'btn-apply' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

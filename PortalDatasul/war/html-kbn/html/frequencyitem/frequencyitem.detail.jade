@@ -1,0 +1,16 @@
+totvs-modal-header
+	span.initialwrap.title.link {{controller.item | descGeneric:"{sku} - {desc} {ref} ({exp})"}}
+totvs-modal-body
+	totvs-page-content
+		totvs-page-alert(ng-if="controller.detailItems.length == 0",
+						 type="info",
+						 message="{{ 'msg-not-found' | i18n }}")
+		totvs-table(ng-if="controller.detailItems.length > 0",
+				    items="controller.detailItems",
+					items-as="detItem",
+					type-select="off")
+			column(title="{{'l-date-movement' | i18n}}") {{detItem.dtm_movto | date:'dd-MM-yyyy HH:mm:ss'}}
+			column(title="{{'l-cards' | i18n}}") {{detItem.totalCards}}
+			column(title="{{'l-quantity' | i18n}}") {{detItem.qti_tam_kanban * detItem.totalCards}} {{detItem.cod_un_med_erp}} 
+totvs-modal-footer
+	button.btn.btn-default(ng-click="controller.close()") {{ 'l-close' | i18n }}

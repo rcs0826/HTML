@@ -1,0 +1,83 @@
+<totvs-page type="detail" totvs-custom-element="customPage">
+    <totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{:: 'l-delivery-windowns-otif' | i18n : [] : 'dts/mpd' }}</breadcrumb>            
+		</totvs-page-breadcrumb>
+		<totvs-page-header>
+			<totvs-page-header-title title="{{'l-delivery-windowns-otif-item-cust' | i18n : [] : 'dts/mpd/'}}"
+                total="{{controller.deliveries.length}}/{{controller.deliveriesCount}}">
+            </totvs-page-header-title>
+			<totvs-page-header-operation>                
+                <div class="col-xs-12">
+                    <div class="col-lg-6 col-md-6 col-ms-6 col-xs-12" style="margin-top: 10px; padding-left: 0px; ">
+                        <button class="btn btn-primary" ng-click="controller.addDeliveries();">{{:: 'l-add-deliveries' | i18n : [] : 'dts/mpd' }}</button>
+                        <button class="btn btn-default" ng-click="controller.updateDeliveries(controller.customerListSelectedCust);">{{:: 'l-update-deliveries' | i18n : [] : 'dts/mpd' }}</button>
+                        <button class="btn btn-default" ng-click="controller.copyDeliveries(controller.customerListSelectedCust);">{{:: 'l-copy' | i18n : [] : 'dts/mpd' }}</button>
+                        <button class="btn btn-default" ng-click="controller.deleteDeliveries(controller.customerListSelectedCust)">{{:: 'l-delete-deliveries' | i18n : [] : 'dts/mpd' }}</button>
+                    </div>
+                    <form ng-submit="controller.applySimpleFilter();">
+                        <div class="col-lg-6 col-md-6 col-ms-6 col-xs-12 pull-right" style="margin-top: 10px; padding-left: 0px; padding-right: 5px;">
+                            <div class="input-group">                                
+                                <input type="text" 
+                                       class="form-control"                                       
+                                       ng-model="controller.quickSearch"
+                                       placeholder="{{:: 'l-fast-search-deliveries' | i18n }}">
+                                <span class="input-group-btn">
+                                    <button ng-click="controller.removeSimpleFilter();" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+                                    <button ng-click="controller.applySimpleFilter();" class="btn btn-default" type="button"><span class="glyphicon glyphicon-filter"></span></button>
+                                </span>                                
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+		</totvs-page-header>
+	</totvs-page-navbar>
+    
+    <totvs-page-content>
+        
+        <totvs-page-content-header>
+            <totvs-page-quick-filter filters-list="controller.quickFilters"
+                                     on-select-filter="controller.setQuickFilter"
+                                     filters-list-custom="controller.listOfCustomFilters"
+                                     on-remove-custom="controller.removeCustomFilter"
+                                     on-add-edit-custom="controller.addEditCustomFilters">
+           </totvs-page-quick-filter>
+        </totvs-page-content-header> 
+        
+        <div class="row">       
+            <div style="margin-left: 25px; margin-right: 25px;">
+                <totvs-grid grid-data="controller.deliveries"
+                            grid="controller.grid"
+                            navigatable="true"
+                            resizable="true"    
+                            selectable="row"
+                            grid-selected-item="controller.customerListSelectedCust"
+                            resizable="true"
+                            reorderable="true"
+                            sortable="true">
+                            <totvs-grid-column field="cdn-otif-excec-id" width="60">{{:: 'l-seq' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="nome-abrev" width="150">{{:: 'l-nome-abrev' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="it-codigo-and-desc" width="400">{{:: 'l-it-codigo' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>                    
+                    <totvs-grid-column field="cod-refer-and-desc" width="170">{{:: 'l-cod-refer' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="cdn-quant-dias-ant-praz" width="150">{{:: 'l-days-before' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="cdn-quant-dias-depois-praz" width="150">{{:: 'l-days-after' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>                                                            
+                </totvs-grid> 
+            </div>                        
+            <div class="more-results" style="margin-left: 15px; margin-right: 15px;" ng-show="controller.deliveries.length && controller.deliveries.length < controller.deliveriesCount" >
+                <button ng-click="controller.search(true)"  
+                        class="btn btn-primary col-xs-12" 
+                        style="padd">
+                    {{'l-more' | i18n}}
+                </button>
+            </div> 
+        </div>
+
+    </totvs-page-content>
+        
+</totvs-page>

@@ -1,0 +1,37 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_tip_ocor : ('btn-new-ticket-type' | i18n )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="input"
+			   class="col-xs-12"
+			   ng-model="controller.model.nom_tip_ocor"
+			   maxlength="50"
+			   required
+			   canclean>
+			<label>{{ 'l-description' | i18n }}</label>
+		</field>
+
+		<field type="checkbox"
+			   class="col-xs-12 col-sm-6"
+			   ng-model="controller.model.log_suspenso">
+			<label>{{ 'l-suspended' | i18n }}</label>
+		</field>
+
+		<field type="checkbox"
+			   class="col-xs-12 col-sm-6"
+			   ng-model="controller.model.log_reg_acao">
+			<label>{{ 'l-register-action' | i18n }}</label>
+		</field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n }}</button>
+</totvs-modal-footer>

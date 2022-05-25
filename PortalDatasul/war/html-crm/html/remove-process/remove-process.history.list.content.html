@@ -1,0 +1,120 @@
+<totvs-page-content style="border-top: 1px dotted #e4e4e4;">
+
+	<totvs-page-content-header style="border-bottom: 0px;">
+		<fieldset>
+			<field type="input"
+				canclean="undefined"
+				maxlength="8"
+				numbers-only
+			    class="col-xs-12 col-sm-4 col-md-4"
+				ng-model="controllerRemoveProcess.basicFilter.history.num_id"
+				placeholder="{{ 'l-code' | i18n: []: 'dts/crm' }}">
+				<label>{{ 'l-code' | i18n: []: 'dts/crm' }}</label>
+			</field>
+			<field type="daterange"
+				canclean="undefined"
+				class="col-xs-12 col-sm-6 col-md-7"
+				ng-model="controllerRemoveProcess.basicFilter.history.dat_inic"
+				start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+				end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+				<label>{{ 'l-date-start' | i18n: []: 'dts/crm' }}</label>
+			</field>
+			<div class="col-xs-12 col-sm-2 col-md-1" style="margin-top: 27px;">
+				<button class="btn btn-default pull-right"
+						ng-click="controllerRemoveProcess.search(false, true);">{{ 'btn-apply' | i18n: []: 'dts/crm' }}
+				</button>
+			</div>
+		</fieldset>
+	</totvs-page-content-header>
+
+	<totvs-page-content-header>
+		<totvs-page-quick-select
+			title="{{ 'l-select-all' | i18n: []: 'dts/crm' }} (Selecionados {{(controllerRemoveProcess.listOfHistories | filter:{$selected:'true'}).length}} de {{controllerRemoveProcess.listOfHistoriesCount}})"
+			list="controllerRemoveProcess.listOfHistories">
+		</totvs-page-quick-select>
+	</totvs-page-content-header>
+
+	<totvs-page-alert
+		ng-if="controllerRemoveProcess.listOfHistories.length <= 0"
+		type="info"
+		message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+	</totvs-page-alert>
+
+	<totvs-list-item
+		id="history{{history.num_id}}"
+		class="crm-default"
+		ng-repeat="history in controllerRemoveProcess.listOfHistories"
+		selected="history">
+
+		<totvs-list-item-header>
+			<totvs-list-item-title>
+				{{ history.num_id }} - {{ history.ttAcao.nom_acao }}
+			</totvs-list-item-title>
+		</totvs-list-item-header>
+
+		<totvs-list-item-content>
+			<totvs-list-item-info
+				value-break="false"
+				class="col-xs-12 col-sm-4"
+				title="{{ 'l-campaign' | i18n: []: 'dts/crm' }}"
+				value="{{ (history.ttCampanha ? history.ttCampanha.nom_campanha : '') }}">
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				value-break="false"
+				class="col-xs-12 col-sm-4"
+				title="{{ 'l-result' | i18n: []: 'dts/crm' }}"
+				value="{{ history.ttResultado.nom_restdo }}">
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-4"
+				title="{{ 'l-date' | i18n: []: 'dts/crm' }}">
+				{{ history.dat_inic | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+				<span ng-if="history.dat_fim">
+					- {{ history.dat_fim  | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+				</span>
+				{{ 'l-as' | i18n: []: 'dts/crm' }}
+				{{ history.hra_inic }}
+				<span ng-if="history.hra_fim">
+					-  {{ history.hra_fim  }}
+				</span>
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-4"
+				title="{{ 'l-account' | i18n: []: 'dts/crm' }}"
+				value="{{ (history.ttConta.nom_razao_social ? history.ttConta.nom_razao_social : '') }}">
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				value-break="false"
+				class="col-xs-12 col-sm-4"
+				title="{{ 'l-contact' | i18n: []: 'dts/crm' }}"
+				value="{{ (history.ttContato ? history.ttContato.nom_razao_social : '') }}">
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				value-break="false"
+				class="col-xs-12 col-sm-4"
+				title="{{ 'l-user-open' | i18n: []: 'dts/crm' }}"
+				value="{{ history.ttUsuarioAbertura.nom_usuar }}">
+			</totvs-list-item-info>
+		</totvs-list-item-content>
+
+		<totvs-list-item-content-detail ng-click="controllerRemoveProcess.loadItemDetail(history);">
+			<totvs-list-item-info
+				class="col-xs-12 description"
+				title="{{ 'l-description' | i18n: []: 'dts/crm' }}"
+				value="{{ history.dsl_histor_acao }}">
+			</totvs-list-item-info>
+		</totvs-list-item-content-detail>
+
+	</totvs-list-item>
+
+	<totvs-list-pagination
+		ng-if="controllerRemoveProcess.listOfHistories.length < controllerRemoveProcess.listOfHistoriesCount && controllerRemoveProcess.listOfHistories.length"
+		ng-click="controllerRemoveProcess.search(true);">
+	</totvs-list-pagination>
+
+</totvs-page-content>

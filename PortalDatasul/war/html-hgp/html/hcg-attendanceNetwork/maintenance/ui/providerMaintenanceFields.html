@@ -1,0 +1,168 @@
+<totvs-page-form>
+
+    <field type="checkbox"
+           class="{{controller.provider.isEdit? 'col-lg-3 col-md-3 col-sm-3' : 'col-lg-2 col-md-2 col-sm-2' }} col-xs-12"
+           label="Todas Unidades"
+           name-id="allUnits"
+           id="allUnits"
+           data-ng-model="controller.provider.lgTodasUnidades"
+           ng-change="controller.onChangeAllUnits()"
+           ng-disabled="controller.provider.cdnRede > 0"
+           ng-if="controller.action != 'DETAIL'">
+    </field>
+
+    <totvs-field totvs-select 
+                 id="providerUnitZoom"
+                 name-id="providerUnitZoom"
+                 ng-model="controller.provider.cdUnidadePres"
+                 class="{{controller.provider.isEdit? 'col-lg-9 col-md-9 col-sm-9' : 'col-lg-5 col-md-5 col-sm-5'}} col-xs-12"
+                 label="Unidade do Prestador" canclean
+                 select-service="hcg.unitZoomController"
+                 zoom-service="hcg.unitZoomController"
+                 ng-change="controller.onUnitSelect();"
+                 select-id="cdUnimed"
+                 select-description="nmUnimed"
+                 ng-disabled="controller.provider.cdnRede > 0"
+                 ng-if="controller.action != 'DETAIL'
+                     && controller.provider.lgTodasUnidades != true">
+    </totvs-field>
+
+    <field type="input"
+           label="fake" style="visibility: hidden"
+           class="{{!controller.provider.lgTodasUnidades 
+                    ? 'col-lg-5 col-md-5 col-sm-5'
+                    : controller.provider.isEdit ? 'col-lg-9 col-md-9 col-sm-9'
+                                                 : 'col-lg-10 col-md-10 col-sm-10' }} 
+                    col-xs-12 col-sm-height"
+           ng-if="!controller.provider.isEdit || (controller.provider.isEdit && controller.provider.lgTodasUnidades)">
+    </field>
+
+    <field type="checkbox"
+           class="{{controller.provider.isEdit? 'col-lg-3 col-md-3 col-sm-3' : 'col-lg-2 col-md-2 col-sm-2' }} col-xs-12"
+           label="Todos Prestadores"
+           name-id="allProviders"
+           id="allProviders"
+           data-ng-model="controller.provider.lgTodosPrestadores"
+           ng-change="controller.onChangeAllProviders()"
+           ng-disabled="controller.provider.cdnRede > 0
+                     || controller.provider.lgTodasUnidades"
+           ng-if="controller.action != 'DETAIL'">
+    </field>
+
+    <totvs-field totvs-select
+                 name-id="providerZoom"
+                 id="providerZoom"
+                 label="Prestador" canclean
+                 class="{{controller.provider.isEdit? 'col-lg-9 col-md-9 col-sm-9' : 
+                                                      'col-lg-5 col-md-5 col-sm-5'}} col-xs-12"
+                 ng-model="controller.provider.cdUnidCdPrestador"
+                 select-service="global.providerZoomController"
+                 zoom-service="global.providerZoomController"
+                 select-id="cdUnidCdPrestador" 
+                 select-description="nmPrestador"
+                 zoom-init="{filters: controller.fixedFiltersProvider}"
+                 select-init="{filters: controller.fixedFiltersProvider}"
+                 ng-change="controller.onProviderSelect()"
+                 ng-disabled="controller.provider.cdnRede > 0
+                           || !(controller.provider.cdUnidadePres > 0)"
+                 ng-if="controller.action != 'DETAIL'
+                     && controller.provider.lgTodosPrestadores != true"
+                 >
+    </totvs-field>
+
+    <field type="input"
+           label="fake" style="visibility: hidden"
+           class="col-lg-9 col-md-9 col-sm-9 col-xs-12 col-sm-height"
+           ng-if="controller.provider.isEdit && controller.provider.lgTodosPrestadores">
+    </field>
+
+
+    <field  type="combo"
+            name-id="providerType"
+            data-ng-model="controller.provider.cdTipoPrestador"
+            class="{{controller.provider.isEdit? 'col-lg-6 col-md-6 col-sm-6' : 
+                                                 'col-lg-2 col-md-2 col-sm-2'}} col-xs-12"
+            ng-options="p.data as p.label for p in controller.providerTypes"
+            label="Tipo do Prestador"
+            ng-if="controller.action != 'DETAIL'"
+            ng-disabled="controller.provider.cdnRede > 0">
+    </field>
+
+    <field type="input"
+           label="fake" style="visibility: hidden"
+           class="{{controller.provider.lgTodosPrestadores 
+                    ? controller.provider.isEdit ? 'col-lg-6  col-md-6 col-sm-6'
+                                                 : 'col-lg-8  col-md-8 col-sm-8'
+                    : controller.provider.isEdit ? 'col-lg-6  col-md-6 col-sm-6'
+                                                 : 'col-lg-3  col-md-3 col-sm-3'}}  
+                                                    col-xs-12 col-sm-height">
+    </field>
+
+    <field type="checkbox"
+           class="{{controller.provider.isEdit? 'col-lg-3 col-md-3 col-sm-3' : 'col-lg-2 col-md-2 col-sm-2' }} col-xs-12"
+           label="Todos Grupos"
+           name-id="allGroups"
+           id="allGroups"
+           data-ng-model="controller.provider.lgTodosGrupos"
+           ng-change="controller.onChangeAllGroups()"
+           ng-disabled="controller.provider.cdnRede > 0                     
+                     || (controller.provider.cdUnidadePres > 0
+                     && controller.provider.cdUnidCdPrestador > 0)"
+           ng-if="controller.action != 'DETAIL'">
+    </field>
+
+    <totvs-field totvs-select 
+                 id="providerGroupZoom"
+                 name-id="providerGroupZoom"
+                 ng-model="controller.provider.codGrpPrestdor"
+                 class="{{controller.provider.isEdit? 'col-lg-9 col-md-9 col-sm-9' : 'col-lg-5 col-md-5 col-sm-5'}} col-xs-12"
+                 label="Grupo do Prestador" canclean
+                 select-service="hcg.providerGroupZoomController"
+                 zoom-service="hcg.providerGroupZoomController"
+                 ng-change="controller.onGroupSelect();"
+                 select-id="cdGrupoPrestador"
+                 select-description="dsGrupoPrestador"
+                 ng-disabled="controller.provider.cdnRede > 0         
+                     || (controller.provider.cdUnidadePres > 0
+                     && controller.provider.cdUnidCdPrestador > 0)"
+                 ng-if="controller.action != 'DETAIL'
+                     && controller.provider.lgTodosGrupos != true">
+    </totvs-field> 
+
+    <field type="input"
+           label="fake" style="visibility: hidden"
+           class="{{controller.provider.lgTodosGrupos 
+                  ? controller.provider.isEdit ? 'col-lg-9  col-md-9  col-sm-9'
+                                               : 'col-lg-10 col-md-10 col-sm-10'
+                  : 'col-lg-5  col-md-5  col-sm-5 '}}
+                     col-xs-12 col-sm-height"
+           ng-if="!controller.provider.isEdit || (controller.provider.isEdit && controller.provider.lgTodosGrupos)">>
+    </field>
+
+    <field type="checkbox"
+           class="{{controller.provider.isEdit? 
+                   (controller.provider.lgTodosPrestadores ? 'col-lg-4 col-md-4 col-sm-4':
+                                                             'col-lg-6 col-md-6 col-sm-6') :
+                   'col-lg-2 col-md-2 col-sm-2'}} col-xs-12 col-sm-height"
+           label="Permite Atendimento"
+           data-ng-model="controller.provider.logPermiteAtendim"
+           ng-if="controller.action != 'DETAIL'">
+    </field>
+
+     <field type="input"
+           label="fake" style="visibility: hidden"
+           class="col-lg-10 col-md-10 col-sm-10 col-xs-12 col-sm-height"
+           ng-if="!controller.provider.isEdit">
+    </field>
+
+    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+         style="padding-top: 15px; padding-bottom: 15px;">
+        <button class="btn btn-default" 
+                id="addProviderButton"
+                ng-click="controller.addProvider();"
+                ng-if="controller.action != 'DETAIL'
+                    && controller.provider.isEdit != true">
+            Adicionar Prestador
+        </button>
+    </div>
+</totvs-page-form>

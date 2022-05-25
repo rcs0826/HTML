@@ -1,0 +1,56 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<link rel="stylesheet" href="/dts/kbn/css/font-awesome.css"/>
+<totvs-page type="list">
+  <totvs-page-navbar>
+    <totvs-page-breadcrumb>
+      <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+      <breadcrumb>{{ 'l-quantity-produced' | i18n }}</breadcrumb>
+    </totvs-page-breadcrumb>
+    <totvs-page-header>
+      <totvs-page-header-title title="{{ 'l-quantity-produced' | i18n }}" total="{{controller.totalRecords}}"></totvs-page-header-title>
+      <totvs-page-header-operation>
+        <totvs-page-header-operation-action></totvs-page-header-operation-action>
+        <div class="col-md-7 col-sm-7"></div>
+        <totvs-page-header-operation-filter placeholder="{{ 'l-code-description' | i18n}}" ng-submit="controller.quickSearch()" ng-model="controller.quickSearchText" advanced-search="controller.callAdvancedSearch"></totvs-page-header-operation-filter>
+      </totvs-page-header-operation>
+      <totvs-page-disclaimers disclaimer-list="controller.filtersApplied" ng-click="controller.removeFilter"></totvs-page-disclaimers>
+    </totvs-page-header>
+  </totvs-page-navbar>
+  <totvs-page-content>
+    <totvs-page-content-header ng-if="(controller.items || []).length &gt; 0">
+      <div class="col-md-3">
+        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-2 actions-group">
+          <div role="group" class="btn-group btn-group-sm actions">
+            <div role="group" class="btn-group btn-group-sm ng-scope"><a data-toggle="dropdown" role="button" style="margin-top: 10px;margin-bottom: 10px;" class="btn btn-primary dropdown-toggle"><span class="ng-binding">{{ 'l-export-data' | i18n }}  </span><span class="glyphicon glyphicon-triangle-bottom"></span></a>
+              <ul role="menu" class="dropdown-menu">
+                <li><a data-ng-click="controller.exportaConsulta(&quot;xlsx&quot;)"><span class="fa fa-file-excel-o"></span>  {{ 'l-excel-xlsx' | i18n }}</a></li>
+                <li><a data-ng-click="controller.exportaConsulta(&quot;pdf&quot;)"><span class="fa fa-file-pdf-o"></span>  {{ 'l-pdf' | i18n }}</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <totvs-page-quick-filter filters-list="controller.preSavedFilters" on-select-filter="controller.selectQuickFilter"></totvs-page-quick-filter>
+    </totvs-page-content-header>
+    <totvs-page-alert ng-if="!controller.hasEstab()" type="info" message="{{ 'msg-estab-not-selected' | i18n }}">       </totvs-page-alert>
+    <totvs-page-alert ng-if="controller.hasEstab() &amp;&amp; (controller.items || []).length == 0" type="info" message="{{ 'msg-not-found' | i18n }}"></totvs-page-alert>
+    <totvs-list-item data-ng-repeat="item in controller.items">
+      <totvs-list-item-header>
+        <totvs-list-item-title title="{{item | descGeneric:&quot;{sku} - {desc} {ref} ({exp})&quot;}}" class="col-md-9 col-lg-9"></totvs-list-item-title>
+        <totvs-list-item-action limit-primary-action="1" class="col-md-3 col-lg-3">
+          <action icon="glyphicon-th-list" ng-click="controller.showItemDetails(item)">{{ 'l-details' | i18n }}</action>
+        </totvs-list-item-action>
+      </totvs-list-item-header>
+      <totvs-list-item-content>
+        <totvs-list-item-info title="{{'l-produced-cards' | i18n}}" value="{{item.cartoesProduzidos}}" class="col-md-3"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-quantity-produced' | i18n}}" value="{{item.qtdProduzida}}" class="col-md-3"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-un' | i18n}}" value="{{item.cod_un_med_erp}}" class="col-md-2"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-cell' | i18n}}" value="{{item | descGeneric: &quot;{codeErpCell} {descCell}&quot;}}" class="col-md-4"></totvs-list-item-info>
+      </totvs-list-item-content>
+    </totvs-list-item>
+    <div align="center" class="container">
+      <pagination total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" ng-change="controller.changePage()" num-pages="numPages" items-per-page="controller.pageSize" previous-text="{{'l-previous' | i18n}}" next-text="{{'l-next' | i18n}}" class="pagination-sm"></pagination>
+    </div>
+  </totvs-page-content>
+</totvs-page>

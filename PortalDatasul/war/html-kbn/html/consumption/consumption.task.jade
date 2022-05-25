@@ -1,0 +1,57 @@
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+link(rel="stylesheet" href="/dts/kbn/css/field-addon.css")
+totvs-page(type='list')
+    totvs-page-navbar
+        totvs-page-breadcrumb
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb {{ 'l-card-consumption' | i18n }}
+        totvs-page-header
+            totvs-page-header-title(title="{{ 'l-card-consumption' | i18n }}" total="{{controller.totalRecords}}")
+            totvs-page-header-operation
+                div.col-md-7.col-sm-7
+                totvs-page-header-operation-filter(
+                    align = "right", 
+                    placeholder="{{ 'l-code-description' | i18n}}",
+                    ng-submit="controller.quickSearch()",
+                    ng-model="controller.quickSearchText",
+                    advanced-search="controller.callAdvancedSearch")
+            totvs-page-disclaimers(disclaimer-list="controller.filtersApplied", ng-click="controller.removeFilter")
+    totvs-page-content
+        totvs-page-content-header
+            totvs-page-quick-filter(filters-list="controller.preSavedFilters",
+                                    on-select-filter="controller.selectQuickFilter")
+        totvs-page-alert(ng-if="!controller.hasEstab()" type="info" message="{{ 'msg-estab-not-selected' | i18n }}")        
+        totvs-page-alert(ng-if="controller.hasEstab() && controller.totalRecords === 0" type="info" message="{{ 'msg-not-found' | i18n }}")
+        totvs-list-item(ng-repeat="tag in controller.listTag" 
+                        class="{{controller.colorTag(tag.faixa_kbn)}}")
+            totvs-list-item-header
+                    totvs-list-item-title.col-md-12.col-lg-12(title="{{tag | descGeneric:'{sku} - {desc} {ref} ({exp})'}}")
+            totvs-list-item-content.col-lg-12
+                    totvs-list-item-info.col-lg-3.col-md-3(title="{{'l-warehouse' | i18n}}",
+                                                  value="{{tag.cod_depos_erp}}")
+                    totvs-list-item-info.col-lg-3.col-md-3(title="{{'l-location' | i18n}}",
+                                                  value="{{tag.cod_localiz}}")
+                    totvs-list-item-info.col-lg-3.col-md-3(title="{{'l-un' | i18n}}",
+                                                            value="{{tag.ttItemDS.cod_un_med_erp}}")
+            
+            totvs-list-item-content.col-lg-12
+                totvs-page-form
+                    field.col-lg-3(type="input",
+                                   ng-disabled="true",
+                                   label="{{ 'l-available-cards' | i18n }}",
+                                   ng-model="tag.qtd_cartoes")
+
+                    field.col-lg-3(type="input",ng-change="controller.validNumbers(tag,'cardsToConsume') && controller.calculateCardsAtItemUnit(tag)",label="{{ 'l-cards-to-consume' | i18n }}",integer,required,ng-model="tag.qtd_consumo")
+
+                    field-addon.col-lg-3(type="number",
+                                        ng-model="tag.qtd_calc",
+                                        min="1",
+                                        integer,
+                                        ng-disabled="true",
+                                        addon="{{tag.ttItemDS.cod_un_med_erp}}",
+                                        label="{{'l-quantity' | i18n}}")
+                    .col-xs-2.col-sm-3.consumeButton
+                        button.btn.btn-primary(ng-click="controller.consumeSelectedItem(tag)") {{ 'l-consume' | i18n }}
+                        
+        .container(align="center")
+            pagination.pagination-sm(total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages", items-per-page="controller.pageSize", previous-text="{{'l-previous' | i18n}}", next-text="{{'l-next' | i18n}}")

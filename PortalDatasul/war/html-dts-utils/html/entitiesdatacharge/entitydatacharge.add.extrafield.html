@@ -1,0 +1,82 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{:: 'l-add-extra-field' | i18n : [] : 'dts/dts-utils' }}</h3>
+</div>
+<div class="modal-body">
+
+	<div class="row">
+		<field class="col-md-12" 
+			type="combo"  
+			ng-model="controller.fieldstype.model.typeId" 
+			ng-change="controller.changeFieldType()" 
+			required
+			ng-options="type.typeId as type.descType for type in controller.fieldstype.types" 
+			ng-required="true">
+			<label>{{'l-field-type'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>
+	</div>   
+
+	<div class="row" ng-if="controller.hasSearch">
+		<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="input" canclean required ng-model="controller.model.field"
+		    placeholder="{{'l-field-help'| i18n : [] : 'dts/dts-utils' }}" ng-required="true">
+			<label>{{'l-field'| i18n : [] : 'dts/dts-utils' }}</label>
+			<validator key="pattern">{{ 'l-special-character' | i18n }}</validator>
+			<validator key="required">{{ 'l-required' | i18n }}</validator>
+		</field>
+	</div>
+	<div class="row" ng-if="!controller.hasSearch">
+		<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="input" canclean required ng-model="controller.model.field"
+		    placeholder="{{'l-id-help'| i18n : [] : 'dts/dts-utils' }}" ng-required="true">
+			<label>{{'l-id'| i18n : [] : 'dts/dts-utils' }}</label>
+			<validator key="pattern">{{ 'l-special-character' | i18n }}</validator>
+			<validator key="required">{{ 'l-required' | i18n }}</validator>
+		</field>
+	</div>
+	<div class="row">
+		<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="input" canclean required ng-model="controller.model.label"
+		    placeholder="{{'l-field-title-help'| i18n : [] : 'dts/dts-utils' }}" ng-required="true">
+			<label>{{'l-field-title'| i18n : [] : 'dts/dts-utils' }}</label>
+			<validator key="required">{{ 'l-required' | i18n }}</validator>
+		</field>
+	</div>
+	<div class="row">
+		<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="input" canclean required ng-pattern="/(^[a-zA-Z0-9-_%&,]+(\s*[a-zA-Z0-9-_%&,])*$)|(^$)/"
+		    ng-show="controller.hasSearch" ng-model="controller.model.zoomDescription" placeholder="{{'l-field-zoom-description-help'| i18n : [] : 'dts/dts-utils' }}"
+		    ng-required="true">
+			<label>{{'l-field-zoom-description'| i18n : [] : 'dts/dts-utils' }}</label>
+			<validator key="pattern">{{ 'l-special-character' | i18n }}</validator>
+			<validator key="required">{{ 'l-required' | i18n }}</validator>
+		</field>
+	</div>
+	<div class="row">
+		<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="input" canclean required ng-pattern="/(^[a-zA-Z0-9-_%&,]+(\s*[a-zA-Z0-9-_%&,])*$)|(^$)/"
+		    ng-show="controller.hasSearch" ng-model="controller.model.zoomTable" placeholder="{{'l-table-zoom-help'| i18n : [] : 'dts/dts-utils' }}"
+		    ng-required="true">
+			<label>{{'l-table-zoom-help'| i18n : [] : 'dts/dts-utils' }}</label>
+			<validator key="pattern">{{ 'l-special-character' | i18n }}</validator>
+			<validator key="required">{{ 'l-required' | i18n }}</validator>
+		</field>
+	</div>
+	<div class="row">
+		<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="input" canclean required ng-pattern="/(^[a-zA-Z0-9-_%&,]+(\s*[a-zA-Z0-9-_%&,])*$)|(^$)/"
+		    ng-show="controller.hasSearch" ng-model="controller.model.zoomDataBase" placeholder="{{'l-database-zoom-help'| i18n : [] : 'dts/dts-utils' }}"
+		    ng-required="true">
+			<label>{{'l-database-zoom-help'| i18n : [] : 'dts/dts-utils' }}</label>
+			<validator key="pattern">{{ 'l-special-character' | i18n }}</validator>
+			<validator key="required">{{ 'l-required' | i18n }}</validator>
+		</field>
+	</div>
+	<div class="row">
+		<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" 
+			canclean required ng-model="controller.model.sequence"
+			numbers-only
+			maxlength="6"
+		    placeholder="{{'l-field-sequence-help'| i18n : [] : 'dts/dts-utils' }}" ng-required="true">
+			<label>{{'l-field-sequence'| i18n : [] : 'dts/dts-utils' }}</label>
+			<validator key="required">{{ 'l-required' | i18n }}</validator>
+		</field>
+	</div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" ng-click="controller.save();">{{:: 'l-save' | i18n : [] : 'dts/mpd'}}</button>
+	<button type="button" class="btn btn-default" ng-click="controller.close();">{{:: 'l-cancel' | i18n : [] : 'dts/mpd'}}</button>
+</div>

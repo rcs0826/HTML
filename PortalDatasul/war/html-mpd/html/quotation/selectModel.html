@@ -1,0 +1,83 @@
+<style type="text/css">
+
+	.top-favorite-xs {
+		padding-top: 5px
+	}
+
+	.list-models-search {
+		margin-top: 5px;
+    	margin-left: 5px;
+    	margin-right: 5px;
+	}
+
+	.list-models {
+    	margin-left: 15px;
+    	margin-right: 15px;
+    	margin-bottom: 15px;
+	}
+
+	.modal-body-models {
+    	padding: 0px; 
+	}
+
+
+</style>
+
+<div class="modal-header">
+	<h3 class="modal-title">{{ 'l-quotation-models' | i18n}}</h3>
+</div>
+
+<div class="modal-body modal-body-models">
+
+	<div class="row list-models-search">
+		<field type="input" class="col-md-6 col-sm-6 col-xs-12" ng-model="controller.quickSearchText"
+			canclean ng-change="controller.search()" required ng-required="true"
+			placeholder="{{ 'l-fast-search-model' | i18n : [] : 'dts/mpd' }}">
+		</field>
+
+		<div class="col-md-2 col-sm-3 col-xs-12 top-favorite-xs">
+			<span class="btn btn-default btn-block-on-xs"
+				ng-click="controller.setQuickFilter(!controller.quickFilter['log-favorito'])">
+				<span class="glyphicon" aria-hidden="true"
+					ng-class="{'glyphicon-star': controller.quickFilter['log-favorito'], 'glyphicon-star-empty':controller.quickFilter['log-favorito'] == undefined}">
+				</span>
+				{{:: 'l-favorite-models' | i18n : [] : 'dts/mpd' }}
+			</span>
+		</div>
+	</div>	
+	</br>
+	<div class="row list-models">	
+		<totvs-page-content>
+			<totvs-page-header-operation ng-if="controller.models.length <= 0">
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<h4 style="margin-top: 15px;">
+						{{"l-model-not-available" | i18n : [] : 'dts/mpd'}}
+					</h4>
+				</div>
+			</totvs-page-header-operation>
+
+			<div class="padding-models">
+				<totvs-list-item ng-repeat="model in controller.models | filter:controller.quickFilter:strict"
+					totvs-custom-element="customListItem">
+					<totvs-list-item-header>
+						<totvs-list-item-title>{{model['nom-model']}}</totvs-list-item-title>
+						<totvs-list-item-action limit-primary-action="2">
+							<action ng-click="controller.selectOrderModel(model)" icon="glyphicon-plus">
+								{{:: 'l-use-template' | i18n : [] : 'dts/mpd' }}</action>
+							<action ng-click="controller.setFavoriteModel(model['idi-model'], model['log-favorito']);"
+								icon="{{ model['log-favorito'] ? 'glyphicon-star' : 'glyphicon-star-empty' }}">
+								{{"btn-favorite" | i18n : [] : 'dts/mpd'}}</action>
+						</totvs-list-item-action>
+					</totvs-list-item-header>
+					<totvs-list-item-content>
+						<totvs-list-item-info class="col-xs-12">{{model['nom-desc']}}</totvs-list-item-info>
+					</totvs-list-item-content>
+				</totvs-list-item>
+			</div>
+		</totvs-page-content>
+	</div>
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'btn-cancel' | i18n }}</button>
+</div>

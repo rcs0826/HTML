@@ -1,0 +1,126 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{controller.showOnlyLinkedDocuments == false ? 'Documentos a Vincular na Internação' : 'Documentos Vinculados'}}</h3>
+</div>
+<div class="modal-body">  
+    <totvs-page-form>
+        
+        <totvs-page-detail class="col-lg-12 col-md-12 col-sm-12 col-xs-12" 
+                           style="padding-top: 0px; padding-bottom: 0px;" 
+                           ng-if="controller.documentKey !== null">
+            <totvs-page-detail-info 
+                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                title="Internação"
+                value="{{controller.document.dsChave}}">
+            </totvs-page-detail-info>
+
+             <totvs-page-detail-info 
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                title="Período de Internação"
+                value="{{controller.document.dtInternacao | date : 'dd/MM/yyyy'}} a {{controller.document.dtAlta | date : 'dd/MM/yyyy'}}">
+            </totvs-page-detail-info>
+            
+            <totvs-page-detail-info 
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                title="Período do Documento"
+                value="{{controller.document.dtAnoref}}/{{(StringTools.fill(controller.document.nrPerref.toString(),'0',3))}}">
+            </totvs-page-detail-info>
+
+             <totvs-page-detail-info 
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                title="Beneficiário"
+                value="{{controller.document.rotuloBenef}}">
+            </totvs-page-detail-info>
+
+             <totvs-page-detail-info 
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                title="Prestador Principal"
+                value="{{controller.document.rotuloPrestador}}">
+            </totvs-page-detail-info>
+        </totvs-page-detail>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height" 
+             style="max-height: 250px; height: auto; overflow-y: auto;">
+            <totvs-page-content>
+                <div ng-if="controller.showOnlyLinkedDocuments == false">
+                    <totvs-table
+                        items="controller.documentsList"
+                        items-as="document"
+                        selected="true">
+
+                        <column title="Tipo">
+                            {{document.tpDocumento}}
+                        </column>
+                        
+                        <column title="Unidade Prestadora">
+                            {{document.cdUnidadePrestadora}}
+                        </column>
+
+                        <column title="Transação">
+                            {{document.cdTransacao}}
+                        </column>
+
+                        <column title="Série">
+                            {{document.nrSerieDocOriginal}}
+                        </column>
+
+                        <column title="Número">
+                            {{document.nrDocOriginal}}
+                        </column>
+
+                        <column title="Sequência">
+                            {{document.nrDocSistema}}
+                        </column>
+
+                        <column title="Data de Realização">
+                            {{document.dtRealizacao | date : 'dd/MM/yyyy'}}
+                        </column>
+
+                        <column title="Hora de Realização">
+                            {{document.hrRealizacao}}
+                        </column>
+
+                        <column title="Movimento">
+                            {{document.rotuloMovimento}}
+                        </column>
+                    </totvs-table>
+                </div>
+
+                <div ng-if="controller.showOnlyLinkedDocuments == true">
+                    <totvs-table
+                        items="controller.documentsList"
+                        items-as="document">
+                        
+                        <column title="Unidade Prestadora">
+                            {{document.cdUnidadePrestadora}}
+                        </column>
+
+                        <column title="Transação">
+                            {{document.cdTransacao}}
+                        </column>
+
+                        <column title="Série">
+                            {{document.nrSerieDocOriginal}}
+                        </column>
+
+                        <column title="Número">
+                            {{document.nrDocOriginal}}
+                        </column>
+
+                        <column title="Sequência">
+                            {{document.nrDocSistema}}
+                        </column>
+                    </totvs-table>
+                </div>
+            </totvs-page-content>
+            
+            <h5 ng-if="controller.documentsList.length == 0"> Não existem documentos para serem mostrados</h5>
+        </div>   
+    </totvs-page-form>
+</div>
+<div class="modal-footer">
+    <button class="btn" ng-click="controller.cancel()">Cancelar</button>
+    <button class="btn btn-primary" 
+            ng-if="controller.showOnlyLinkedDocuments == false"
+            ng-disabled="controller.documentsList.length == 0" 
+            ng-click="controller.linkDocuments()">Vincular</button>
+</div>

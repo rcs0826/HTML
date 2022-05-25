@@ -1,0 +1,48 @@
+<totvs-modal-header>
+	{{ 'l-advanced-search' | i18n: []: 'dts/cmg'}}
+</totvs-modal-header>	
+
+<totvs-modal-body>
+    
+    <totvs-page-form>
+        <fieldset>
+         
+            <field type="combo"
+                       ng-model="controller.model.app"
+                       ng-options="record.cod_aplicat_dtsul as 
+                                  (record.cod_aplicat_dtsul + ' - ' + record.nom_aplicat_dtsul_menu) 
+                                   for record in controller.ttShowAplicatDtsul"
+                       ng-change="controller.onChangeApp()"
+                       canclean>
+                    <label>{{'l-app' | i18n: []: 'dts/hub'}}</label>
+            </field>
+            
+            <field type="combo"
+                       ng-model="controller.model.module"
+                       ng-options="record.cod_modul_dtsul as 
+                                  (record.cod_modul_dtsul + ' - ' + record.nom_modul_dtsul_menu) 
+                                   for record in controller.ttShowModulDtsul"
+                       canclean>
+                    <label>{{'l-module' | i18n: []: 'dts/hub'}}</label>
+            </field>
+
+            <field type="combo"
+                       ng-model="controller.model.showFunction"
+                         label="{{'l-show-function' | i18n: []: 'dts/hub'}}">
+              <totvs-options>
+                
+                <totvs-option value="0">{{'l-all' | i18n: []: 'dts/hub'}}</totvs-option>
+                <totvs-option value="1">{{'l-activated' | i18n: []: 'dts/hub'}}</totvs-option>
+                <totvs-option value="2">{{'l-disabled' | i18n: []: 'dts/hub'}}</totvs-option>
+
+              </totvs-options>    
+            </field>
+
+        </fieldset>
+    </totvs-page-form>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n: []: 'dts/cmg'}}</button>	
+	<button class="btn btn-primary" ng-click="controller.apply()">{{ 'l-apply' | i18n: []: 'dts/cmg'}}</button>
+</totvs-modal-footer>

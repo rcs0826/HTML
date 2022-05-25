@@ -1,0 +1,42 @@
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+totvs-modal-header
+    {{'l-configure-urls' | i18n}}
+totvs-modal-body
+    totvs-page-form(role="form", id="urlForm", name="urlModel", novalidate)
+        .row
+            ng-form(name="urlForm")
+                field.col-xs-8(
+                    ng-model="controller.server.serverName",
+                    required, 
+                    label=" {{ 'l-server' | i18n }}")
+                field.col-xs-4(
+                    ng-model="controller.server.serverPort",
+                    required, 
+                    label="{{ 'l-port' | i18n }}")
+                field.col-xs-4(
+                    ng-model="controller.server.serverUser",
+                    required, 
+                    label="{{ 'l-user' | i18n }}")
+                field.col-xs-4(
+                    ng-model="controller.server.serverPassword",
+                    required, 
+                    label="{{ 'l-senha' | i18n }}",
+                    type="password")
+                totvs-tabset
+                    totvs-tab(heading="{{'l-integration-urls' | i18n}}" style="margin-top: 15px;")
+                        totvs-list-item(ng-repeat="url in (controller.integratedDatasul ? [] : controller.urls)" )
+                            totvs-list-item-header
+                                div
+                                    .col-xs-12
+                                        label.parametersIntegrationLabel(for='{{url.key_param}}', tooltip-placement='top') {{ url.label }} 
+                                        span.pull-right.status-icon.fa.fa-check(ng-if="url.urlError === false")
+                                        span.pull-right.status-icon.fa.fa-times(ng-if="url.urlError === true")
+                                        input.form-control(type='text', ng-model='url.value_param', name='{{url.key_param}}')
+                            totvs-list-item-content-detail
+                                .col-xs-12
+                                    totvs-page-alert(type="info" message="{{url.info}}")
+totvs-modal-footer
+    button.btn.btn-default(data-ng-click="controller.cancel();")
+        {{ 'l-cancel' | i18n }}
+    button.btn.btn-primary(data-ng-click="controller.save();")
+        {{ 'l-save' | i18n }}

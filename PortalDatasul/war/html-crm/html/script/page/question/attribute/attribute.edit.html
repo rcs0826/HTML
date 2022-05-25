@@ -1,0 +1,44 @@
+<totvs-modal-header>
+	{{ 'l-script-quick-attribute-inclusion' | i18n : [] : 'dts/crm' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+		<p class="col-xs-12">
+			{{ 'msg-script-how-to-use-fast-inclusion' | i18n: []: 'dts/crm' }}
+		</p>
+
+		<field type="select"
+			   class="col-xs-12"
+			   ng-model="controller.model.delimiter"
+			   required>
+
+			<label>{{ 'l-delimiter' | i18n : [] : 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-delimiter' | i18n : [] : 'dts/crm' }}">
+					{{ $select.selected.name }}
+				</ui-select-match>
+				<ui-select-choices repeat="item in controller.ttDelimiter | filter: $select.search track by $index">
+					<span ng-bind-html="item.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+
+		</field>
+
+		<field type="textarea"
+			   class="col-md-12"
+			   required
+			   ng-model="controller.model.nom_description">
+			<label>{{ 'l-description' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n }}</button>
+	<button class="btn btn-primary" ng-click="controller.add()">{{ 'btn-add' | i18n }}</button>
+</totvs-modal-footer>

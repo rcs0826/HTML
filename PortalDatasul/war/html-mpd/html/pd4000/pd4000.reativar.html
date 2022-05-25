@@ -1,0 +1,30 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{:: 'Reativar Pedido' | i18n : [] : 'dts/mpd' }}</h3>
+</div>
+<div class="modal-body">
+    
+    <div class="row">
+        <totvs-field totvs-select
+                label="{{:: 'Motivo de Reativação' | i18n : [] : 'dts/mpd'}}"
+                ng-model="modalReativarcontroller.codSuspend"
+                class="col-xs-6"
+                return-object
+                ng-change="modalReativarcontroller.selectMotivo()"
+                select-id="cod-motivo"
+                select-description="descricao"
+                select-init="{gotomethod: 'gotonomeabrev'}"
+                select-service="mpd.motivoReativacao.Zoom"
+                zoom-service="mpd.motivoReativacao.Zoom">
+        </totvs-field>
+        
+        
+        <field type="textarea" ng-model="modalReativarcontroller.motivo" class="col-xs-12">
+            <label>{{:: 'Observação' | i18n : [] : 'dts/mpd'}}</label>
+        </field>
+    </div>
+    
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="modalReativarcontroller.confirm()">{{:: 'Reativar' | i18n : [] : 'dts/mpd' }}</button>    
+    <button class="btn btn-warning" ng-click="modalReativarcontroller.close()">{{:: 'Fechar' | i18n : [] : 'dts/mpd' }}</button>
+</div>

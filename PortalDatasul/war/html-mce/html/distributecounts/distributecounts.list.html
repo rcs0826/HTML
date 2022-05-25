@@ -1,0 +1,43 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{'l-distribute-counts' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        
+        <totvs-page-header>
+            
+            <div ng-include="'/dts/mce/html/distributecounts/distributecounts.list.header.html'"></div> 
+            
+            <totvs-page-tags>
+                <tag class="tag-1">{{ 'l-updated' | i18n }}</tag>
+                <tag class="tag-2">{{ 'l-not-update' | i18n }}</tag>
+                <tag class="tag-3">{{ 'l-inventory-ok' | i18n }}</tag>  
+                <tag class="tag-4">{{ 'l-ok-to-inventory' | i18n }}</tag>                  
+            </totvs-page-tags>
+            
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers" 
+                                    ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+            
+            <div id="divAlert">
+                <br/>
+                <div class = "alert alert-danger" 
+                      role = "alert" 
+                     ng-if = "controller.totalRecords == 0">
+                    {{ 'l-sheet-not-found' | i18n }}
+                </div>
+            </div>
+            
+        </totvs-page-header>
+        
+    </totvs-page-navbar>
+		
+    <totvs-page-content>
+        <div ng-include="'/dts/mce/html/distributecounts/distributecounts.list.content.html'"></div> 
+    </totvs-page-content>
+    <totvs-list-pagination ng-if="controller.listofDistributeCountsCount < controller.totalRecords && controller.listofDistributeCountsCount" ng-click="controller.loadMore()">
+    </totvs-list-pagination>   
+    
+</totvs-page>

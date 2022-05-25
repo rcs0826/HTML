@@ -1,0 +1,355 @@
+<totvs-page type="list" totvs-custom-element="customPage" page-hotkeys="controller.hotKeysPage">
+
+	<totvs-page-navbar ng-show="controller.fullSize === false">
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-budget-manager' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+			<totvs-page-header-title class="col-lg-7 col-md-7 col-sm-7 col-xs-12" style="margin-right: 0px; margin-left: -30px; padding-top: 10px;"
+				title="{{ 'l-budget-manager' | i18n }} ({{controller.listResult.length}}/{{controller.totalRecords}})"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-filter tyle="margin-right: 0px;" placeholder="{{ 'l-fast-search' | i18n }}" ng-submit="controller.search();" ng-model="controller.quickSearchText"
+					advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+			</totvs-page-header-operation>
+			<totvs-page-disclaimers disclaimer-list="controller.filterBy" ng-click="controller.removeSelectedFilter"></totvs-page-disclaimers>
+
+			<totvs-page-tags>
+				<tag class="btn btn-link list-budgetmanagementapp-yellow-tag" ng-click="controller.setQuickFilter(1);">{{ 'l-status-budget-1' | i18n }}</tag>
+				<tag class="btn btn-link list-budgetmanagementapp-dark-tag" ng-click="controller.setQuickFilter(2);">{{ 'l-status-budget-2' | i18n }}</tag>
+				<tag class="btn btn-link list-budgetmanagementapp-green-tag" ng-click="controller.setQuickFilter(3);">{{ 'l-status-budget-3' | i18n }}</tag>
+				<tag class="btn btn-link list-budgetmanagementapp-red-tag"  ng-click="controller.setQuickFilter(4);">{{ 'l-status-budget-4' | i18n }} </tag>
+				<!--<tag class="btn btn-link list-budgetmanagementapp-blue-tag" ng-click="controller.setQuickFilter(5);">{{ 'l-status-budget-5' | i18n }}</tag>-->
+				<tag class="btn btn-link list-budgetmanagementapp-gray-tag" ng-click="controller.setQuickFilter(7);">{{ 'l-status-budget-7' | i18n }}</tag>
+			</totvs-page-tags>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-detail ng-show="controller.listResult.length > 0">
+
+			<div class="row" ng-show="controller.showWithGrid == 'false'">				
+				<div class="col-md-12">
+					<button class="btn btn-default" ng-click="controller.openBudgetProblem()" icon="glyphicon-ok" ng-disabled="controller.listBudgetProblem.length == 0">
+						<span class="glyphicon glyphicon-wrench"></span> &nbsp; {{ 'l-budget-pending-actions' | i18n }}
+						<span class="badge">{{controller.listBudgetProblem.length}}</span>
+					</button>
+					<a class="btn btn-default pull-right" style="margin-right: 1px" title="{{'l-full-min' | i18n}}" role="button" ng-click="controller.changeSize()">
+						<span ng-class="controller.fullSize ? 'glyphicon glyphicon-resize-small' : 'glyphicon glyphicon-resize-full'"></span>
+					</a>
+					<!--<div class="btn-group pull-right hidden-sm hidden-xs" style="margin-right: 1px">
+						<label class="btn btn-default" ng-class="{active: controller.showWithGrid == 'false'}" ng-click="controller.setShowWithGrid('false')"
+							title="{{ 'l-show-list' | i18n }}">
+							<span class="glyphicon glyphicon-align-justify"></span>
+						</label>
+						<label class="btn btn-default" ng-class="{active: controller.showWithGrid == 'true'}" ng-click="controller.setShowWithGrid('true')"
+							title="{{ 'l-show-grid' | i18n }}">
+							<span class="glyphicon glyphicon-th"></span>
+						</label>
+					</div>-->
+				</div>
+			</div>
+
+			<!--<div ng-show="controller.showWithGrid == 'false'">
+
+				</br>
+
+				<totvs-list-item ng-class="{'list-budgetmanagementapp-yellow': budget['cdn-sit-orcto'] == '1',
+											'list-budgetmanagementapp-dark':   budget['cdn-sit-orcto'] == '2',
+											'list-budgetmanagementapp-green':  budget['cdn-sit-orcto'] == '3',
+											'list-budgetmanagementapp-red':    budget['cdn-sit-orcto'] == '4',
+											'list-budgetmanagementapp-blue':   budget['cdn-sit-orcto'] == '5'}" ng-repeat="budget in controller.listResult" totvs-custom-element="customListItem">
+					<totvs-list-item-header>
+
+						<totvs-list-item-title ng-show= "budget['cdn-sit-orcto'] == '1'" title="{{budget['desc-sit-orcto']}}"></totvs-list-item-title>
+						<totvs-list-item-title ng-show= "budget['cdn-sit-orcto'] == '2'" title="{{budget['desc-sit-orcto']}} ({{budget['nr-pedido']}})" link="#/dts/mpd/internalorderdetail/{{budget['nr-pedido']}}"></totvs-list-item-title>
+						<totvs-list-item-title ng-show= "budget['cdn-sit-orcto'] == '3'" title="{{budget['desc-sit-orcto']}} ({{budget['nr-pedido']}})" link="#/dts/mpd/internalorderdetail/{{budget['nr-pedido']}}"></totvs-list-item-title>
+						<totvs-list-item-title ng-show= "budget['cdn-sit-orcto'] == '4'" title="{{budget['desc-sit-orcto']}}"></totvs-list-item-title>
+						<totvs-list-item-title ng-show= "budget['cdn-sit-orcto'] == '7'" title="{{budget['desc-sit-orcto']}}"></totvs-list-item-title>
+
+
+						<div class="btn-group pull-right" ng-show="budget['cdn-sit-orcto'] == '1'">
+							<button class="btn btn-default btn-sm" ng-show="budget['nr-pedido'] == 0" ng-click="controller.openGenerateOrderView(budget)" icon="glyphicon-ok"><span class="glyphicon glyphicon-ok"></span>  {{ 'l-budget-generate' | i18n }}</button>
+                            <button class="btn btn-default btn-sm" ng-show="budget['nr-pedido'] != 0" ng-click="controller.setBudgetLiberate(budget)" icon="glyphicon-ok"><span class="glyphicon glyphicon-ok"></span>  {{ 'l-budget-liberate' | i18n }}</button>
+							<button class="btn btn-default btn-sm" ng-click="controller.openCommunicationView(budget)" icon="glyphicon-comment"><span class="glyphicon glyphicon-comment"></span>  {{ 'l-budget-customer-communication' | i18n }}  <span class="badge" ng-show="budget['nr-msg-nao-lida'] > 0">{{budget['nr-msg-nao-lida']}}</span></button>
+							<button class="btn btn-default btn-sm" ng-click="controller.cancelBudgetView(budget)" icon="glyphicon-remove"><span class="glyphicon glyphicon-remove"></span>  {{ 'l-budget-cancel' | i18n }}</button>
+						</div>
+
+						<div class="btn-group pull-right" ng-show="budget['cdn-sit-orcto'] == '2' || budget['cdn-sit-orcto'] == '5'">
+                            <button class="btn btn-default btn-sm" ng-click="controller.setBudgetLiberate(budget)" icon="glyphicon-ok"><span class="glyphicon glyphicon-ok"></span>  {{ 'l-budget-liberate' | i18n }}</button>
+							<button class="btn btn-default btn-sm" ng-click="controller.openCommunicationView(budget)"><span class="glyphicon glyphicon-comment"></span>  {{ 'l-budget-customer-communication' | i18n }}  <span class="badge" ng-show="budget['nr-msg-nao-lida'] > 0">{{budget['nr-msg-nao-lida']}}</span></button>
+							<button class="btn btn-default btn-sm" ng-click="controller.cancelBudgetView(budget)" icon="glyphicon-ok"><span class="glyphicon glyphicon-remove"></span>  {{ 'l-budget-cancel' | i18n }}</button>
+						</div>
+
+						<div class="btn-group pull-right" ng-show="budget['cdn-sit-orcto'] == '3' || budget['cdn-sit-orcto'] == '4' || budget['cdn-sit-orcto'] == '7'">
+							<button class="btn btn-default btn-sm" ng-disabled="true"><span class="glyphicon glyphicon-comment"></span>  {{ 'l-budget-customer-communication' | i18n }}</button>
+							<button class="btn btn-default btn-sm" ng-disabled="true" icon="glyphicon-ok"><span class="glyphicon glyphicon-remove"></span>  {{ 'l-budget-cancel' | i18n }}</button>
+						</div>
+
+					</totvs-list-item-header>
+
+					<totvs-list-item-content>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-code-budget' | i18n}}">{{budget["cod-orcto"]}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{ 'l-date-budget' | i18n }}">{{budget["dat-orcto"] | date : ('l-date-format' | i18n) : 'UTC'}} - {{budget["hra-orcto"]}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{ 'l-budget-expiration-date' | i18n }}">{{budget["dat-valid"] | date : ('l-date-format' | i18n) : 'UTC'}}</totvs-list-item-info>
+						
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-date-synced-budget' | i18n}}">{{budget["dt-implant"] | date : ('l-date-format' | i18n) : 'UTC'}} - {{budget["hra-impl"]}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-repres' | i18n}}">{{budget["nom-repres"]}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-nr-pedvenda-start' | i18n}}">{{budget["nr-pedido"] != '' ? budget["nr-pedido"] : 'Pedido não gerado'}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-nr-pedcli-start' | i18n}}">{{budget["nr-pedcli"] != '' ? budget["nr-pedcli"] : 'Pedido não gerado'}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-short-name-client' | i18n}}">{{budget["nome-abrev"]}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-dt-entrega' | i18n}}">{{budget["dt-entrega"] | date : ('l-date-format' | i18n) : 'UTC'}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-budget-val' | i18n}}">{{budget["val-orcto"] | number: 2}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-val-frete' | i18n}}">{{budget["val-frete"] | number: 2}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-val-desconto' | i18n}}">{{budget["val-desconto-total"] | number: 2}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-endereco' | i18n}}">{{budget["endereco"]}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-bairro' | i18n}}">{{budget["bairro"]}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-cidade' | i18n}}">{{budget["cidade"]}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-estado' | i18n}}">{{budget["estado"]}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-pais' | i18n}}">{{budget["pais"]}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-cep' | i18n}}">{{budget["cep"]}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-caixa-postal' | i18n}}">{{budget["caixa-postal"]}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-e-mail' | i18n}}">{{budget["e-mail"]}}</totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-observation' | i18n}}" ng-hide="budget['observacao'] == null"><a href="" ng-click="controller.showObs(budget)">Ver Observação</a></totvs-list-item-info>
+						<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-motive-cancel' | i18n}}" ng-hide="budget['cdn-sit-orcto'] != '4'"><a href="" ng-click="controller.showCancel(budget)">Ver Motivo</a></totvs-list-item-info>
+
+					</totvs-list-item-content>
+
+						<totvs-list-item-content-detail open="controller.getBudgetItems(budget)">
+							<totvs-list-item ng-repeat="item in budget.orderItens">
+								<totvs-list-item-content>
+									<totvs-list-item-info title="{{'l-sequencia' | i18n}}" class="col-xs col-sm-3 col-md-4">{{item['nr-sequencia']}}</totvs-list-item-info>
+									<totvs-list-item-info title="{{'l-it-codigo' | i18n}}" class="col-xs col-sm-3 col-md-4">{{item['it-codigo']}}</totvs-list-item-info>
+									<totvs-list-item-info title="{{'l-cod-refer' | i18n}}" class="col-xs col-sm-3 col-md-4">{{item['cod-refer']}}</totvs-list-item-info>
+									<totvs-list-item-info title="{{'l-requested-quantity' | i18n}}" class="col-xs col-sm-3 col-md-4">{{item['qt-pedida'] | number: 4}}</totvs-list-item-info>
+									<totvs-list-item-info title="{{'l-price' | i18n}}" class="col-xs col-sm-3 col-md-4">{{item['vl-preori'] | number: 5}}</totvs-list-item-info>
+									<totvs-list-item-info title="{{'l-unidade-medida' | i18n}}" class="col-xs col-sm-3 col-md-4">{{item['un']}}</totvs-list-item-info>
+								</totvs-list-item-content>
+							</totvs-list-item>
+						</totvs-list-item-content-detail>
+
+				</totvs-list-item>
+			</div>-->
+
+			<!--<div ng-show="controller.showWithGrid == 'true'">-->
+
+				<div class="row">
+					<div class="col-md-12">
+
+						<button class="btn btn-primary" ng-show="controller.selectedBudget['nr-pedido'] == 0" ng-click="controller.openGenerateOrderView(controller.selectedBudget)" ng-disabled="controller.selectedBudget['cdn-sit-orcto'] == 3 || controller.selectedBudget['cdn-sit-orcto'] == 4 || controller.selectedBudget['cdn-sit-orcto'] == 7"
+							icon="glyphicon-ok">
+						<span class="glyphicon glyphicon-ok"></span> &nbsp; {{ 'l-budget-generate' | i18n }} </button>
+                        
+                        <button class="btn btn-primary" ng-show="controller.selectedBudget['nr-pedido'] != 0" ng-click="controller.setBudgetLiberate(controller.selectedBudget)" ng-disabled="controller.selectedBudget['cdn-sit-orcto'] == 3 || controller.selectedBudget['cdn-sit-orcto'] == 4 || controller.selectedBudget['cdn-sit-orcto'] == 7"
+							icon="glyphicon-ok">
+						<span class="glyphicon glyphicon-ok"></span> &nbsp; {{ 'l-budget-liberate' | i18n }} </button>
+
+						<button class="btn btn-default" ng-click="controller.openCommunicationView(controller.selectedBudget)" icon="glyphicon-minus">
+							<span class="glyphicon glyphicon-comment"></span> &nbsp; {{ 'l-budget-customer-communication' | i18n }}  <span class="badge" ng-show="controller.selectedBudget['nr-msg-nao-lida'] > 0">{{controller.selectedBudget['nr-msg-nao-lida']}}</span>
+						</button>
+
+						<button ng-disabled="controller.selectedBudget['cdn-sit-orcto'] == 3 || controller.selectedBudget['cdn-sit-orcto'] == 4" class="btn btn-default" ng-click="controller.cancelBudgetView(controller.selectedBudget)" icon="glyphicon-minus">
+							<span class="glyphicon glyphicon-remove"></span> &nbsp; {{ 'l-budget-cancel' | i18n }}
+						</button>
+
+						<button class="btn btn-default" ng-click="controller.openBudgetProblem()" icon="glyphicon-ok" ng-disabled="controller.listBudgetProblem.length == 0">
+							<span class="glyphicon glyphicon-wrench"></span> &nbsp; {{ 'l-budget-pending-actions' | i18n }} 
+							<span class="badge">{{controller.listBudgetProblem.length}}</span>
+						</button>						
+
+						<a class="btn btn-default pull-right" style="margin-right: 1px" title="{{'l-full-min' | i18n}}" role="button" ng-click="controller.changeSize()">
+								<span ng-class="controller.fullSize ? 'glyphicon glyphicon-resize-small' : 'glyphicon glyphicon-resize-full'"></span>
+						</a>
+						<!--<div class="btn-group pull-right hidden-sm hidden-xs" style="margin-right: 1px">
+							<label class="btn btn-default" ng-class="{active: controller.showWithGrid == 'false'}" ng-click="controller.setShowWithGrid('false')"
+								title="{{ 'l-show-list' | i18n }}">
+								<span class="glyphicon glyphicon-align-justify"></span>
+							</label>
+							<label class="btn btn-default" ng-class="{active: controller.showWithGrid == 'true'}" ng-click="controller.setShowWithGrid('true')"
+								title="{{ 'l-show-grid' | i18n }}">
+								<span class="glyphicon glyphicon-th"></span>
+							</label>
+						</div>-->
+
+					</div>
+				</div>
+
+				</br>
+				<totvs-grid grid-data="controller.listResult" 
+							grid="controller.budgetGrid" 
+							grid-selected-item="controller.selectedBudget"
+							navigatable="true" 
+							editable="true" 
+							selectable="multiple,row" 
+							sortable="true" 
+							reorderable="true" 
+							resizable="true" 
+							grid-height="400"
+							grid-dirty-items="controller.dirtyBudgets"
+							on-edit="controller.itemsGridEdit(event, column)"
+							on-save="controller.itemsGridSave(event, column, value, original, currentIndex)">
+
+					<totvs-grid-column field="cod-orcto" width="160">
+						{{:: 'l-code-budget' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column field="nr-pedido" width="140">
+						<template>
+							<p ng-show="dataItem['nr-pedido'] == 0">{{dataItem['nr-pedido']}}</p>
+							<a ng-show="dataItem['nr-pedido'] > 0 && controller.isUserAnalyst" href="\\#/dts/mpd/internalorderdetail/{{dataItem['nr-pedido']}}">{{dataItem["nr-pedido"]}}</a>
+							<a ng-show="dataItem['nr-pedido'] > 0 && !controller.isUserAnalyst" href="\\#/dts/mpd/orderdetail/{{dataItem['nr-pedido']}}">{{dataItem["nr-pedido"]}}</a>
+						</template>
+						{{:: 'l-nr-pedvenda-start' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+					
+					<totvs-grid-column field="val-orcto" width="150" filter="number : 2" >
+						{{:: 'l-budget-val' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column field="nome-abrev" width="190">
+						{{:: 'l-short-name-client' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column field="desc-sit-orcto" width="200">
+						{{:: 'l-sit-budget' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column width="50" editable="false">{{:: 'l-observation' | i18n : [] : 'dts/mpd' }}
+						<template>
+							<span><span ng-disabled="dataItem.observacao === null" style="padding: 2px 6px; padding-top: 0px; padding-bottom: 0px;" class="btn btn-default" ng-click="controller.showObs(dataItem)"><span class="glyphicon glyphicon-info-sign"></span>
+						</template>
+					</totvs-grid-column>
+										
+					<totvs-grid-column field="desc-dat-hour-orcto" width="140" filter="date : shortDate">
+						{{:: 'l-date-budget' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column field="desc-dat-hour-implant" width="140" filter="date : shortDate">
+						{{:: 'l-date-synced-budget' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column field="desc-dat-hour-sync" width="140" filter="date : shortDate">
+						{{:: 'l-date-budget-sync' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column field="dat-valid" editable="true" width="140" filter="date : dd/MM/yyyy">
+						{{:: 'l-budget-expiration-date' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column width="50" editable="false">{{:: 'l-motive-cancel' | i18n : [] : 'dts/mpd' }}
+						<template>
+							<span><span ng-disabled="controller.budgetNotSelected" style="padding: 2px 6px; padding-top: 0px; padding-bottom: 0px;" class="btn btn-default" ng-click="controller.showCancel(dataItem)"><span class="glyphicon glyphicon-info-sign"></span>
+						</template>
+					</totvs-grid-column>
+
+					<totvs-grid-column field="val-desconto" width="140" filter="number : 2">
+						{{:: 'l-val-desconto' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column field="val-frete" width="140" filter="number : 2">
+						{{:: 'l-val-frete' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>					
+
+					<totvs-grid-column field="dt-entrega" width="140" filter="date : shortDate">
+						{{:: 'l-dt-entrega' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column field="nom-repres" width="140">
+						{{:: 'l-repres' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column field="e-mail" width="140">
+						{{:: 'l-e-mail' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column field="nr-pedcli" width="140">
+						{{:: 'nr-pedcli' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+																																												
+					<totvs-grid-column field="endereco" width="140">
+						{{:: 'l-endereco' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column field="bairro" width="140">
+						{{:: 'l-bairro' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column field="cidade" width="140">
+						{{:: 'l-cidade' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column field="estado" width="140">
+						{{:: 'l-estado' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column field="pais" width="140">
+						{{:: 'l-pais' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column field="cep" width="140">
+						{{:: 'l-cep' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+
+					<totvs-grid-column field="caixa-postal" width="140">
+						{{:: 'l-caixa-postal' | i18n : [] : 'dts/mpd'}}
+					</totvs-grid-column>
+					
+					<!--
+						<totvs-grid-column field="hra-orcto" width="140">
+							{{:: 'l-time-budget' | i18n : [] : 'dts/mpd'}}
+						</totvs-grid-column>
+										
+						<totvs-grid-column field="cod-rep" width="140">
+							{{:: 'l-cdn-repres' | i18n : [] : 'dts/mpd'}}
+						</totvs-grid-column>
+										
+						<totvs-grid-column field="hra-impl" width="210">
+							{{:: 'l-time-synced-budget' | i18n : [] : 'dts/mpd'}}
+						</totvs-grid-column>
+					-->
+					
+					<totvs-grid-detail size="table">
+							<div class="row" style="margin: 0;" ng-init="controller.getBudgetItems(dataItem)">
+								<totvs-grid grid-data="dataItem.orderItens" grid-height="250" navigatable="true" selectable="row" reorderable="false" resizable="true">
+
+									<totvs-grid-column field="nr-sequencia" width="40">
+										{{:: 'l-seq' | i18n : [] : 'dts/mpd'}}
+									</totvs-grid-column>
+
+									<totvs-grid-column field="it-codigo" width="100">
+											{{:: 'l-it-codigo' | i18n : [] : 'dts/mpd'}}
+										</totvs-grid-column>
+
+										<totvs-grid-column field="cod-refer" width="240">
+											{{:: 'l-cod-refer' | i18n : [] : 'dts/mpd'}}
+										</totvs-grid-column>
+
+										<totvs-grid-column field="qt-pedida" width="100" filter="number : 4">
+											{{:: 'l-requested-quantity' | i18n : [] : 'dts/mpd'}}
+										</totvs-grid-column>
+
+										<totvs-grid-column field="un" width="160">
+											{{:: 'l-unidade-medida' | i18n : [] : 'dts/mpd'}}
+										</totvs-grid-column>
+
+										<totvs-grid-column field="vl-preori" width="160" filter="number : 5" style="text-align: right;">
+											{{:: 'l-net-price' | i18n : [] : 'dts/mpd'}}
+										</totvs-grid-column>
+								</totvs-grid>
+							</div>
+					</totvs-grid-detail>
+				</totvs-grid>
+			<!--</div>-->
+			<div class="more-results" style="height: 35px">
+				<button ng-show="controller.listResult.length < controller.totalRecords && controller.listResult.length" ng-click="controller.loadMore()"
+					class="btn btn-primary col-xs-12" style="padd">
+					{{'l-more' | i18n}}
+				</button>
+			</div>
+		</totvs-page-detail>
+
+	</totvs-page-content>
+</totvs-page>

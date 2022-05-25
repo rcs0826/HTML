@@ -1,0 +1,44 @@
+<style>
+
+    .local-error {
+        color:#fd2929;
+    }
+
+    .local-alert {
+        color:#ffca00;
+    }
+    .local-success {
+        color:#336db0;
+    }
+</style>
+
+
+<totvs-modal-header>
+    {{ i18n('l-message') }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <totvs-page-content>
+
+        <totvs-page-alert ng-if="controller.model.length == 0" type="info" message="{{ 'msg-not-found' | i18n }}"></totvs-page-alert>
+
+        <totvs-table ng-if="controller.model.length &gt; 0" t-items="controller.model" t-items-as="modelItem" t-selectable="off"
+        t-highlight-selected="true" >
+            <column width="40" title="">
+                <span class="{{controller.classe[modelItem.errType]}}">
+                </span>
+            </column>
+
+            <column width="120" title="{{'l-code' | i18n}}">{{modelItem.errCode}}</column>
+            <column title="{{'l-message' | i18n}}">{{modelItem.errMessage}}</column>                
+        </totvs-table>
+
+    </totvs-page-content>
+</totvs-modal-body>
+
+
+<totvs-modal-footer>
+    
+    <button class="btn btn-default" ng-click="controller.apply()">{{ i18n('l-close') }}</button>
+    
+</totvs-modal-footer>

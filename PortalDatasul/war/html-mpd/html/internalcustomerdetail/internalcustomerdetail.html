@@ -1,0 +1,79 @@
+<style>
+
+.btn-settings-custom{
+   padding: 0px 0px !important;
+   font-size: 24px !important;
+   margin-right: -15px !important;       
+}
+
+.btn-settings-custom:active:focus:hover{
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: #23527c !important;  
+}
+
+</style>
+<totvs-page type="detail" totvs-custom-element="customPage" >
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-customer-detail' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		<totvs-page-header>
+			<totvs-page-header-title>
+				{{'l-customer-detail' | i18n}}: {{controller.ttDetalheCliente['cod-emitente']}}
+				<span class="label"
+					ng-class="{'label-success': controller.isActive == true,
+					'label-danger': controller.isActive == false }"
+					style="font-size: 18px;">
+					{{(controller.isActive === true ? ('l-ativ' | i18n) : ('l-inativo' | i18n) )}}
+				</span>
+			</totvs-page-header-title>
+			<totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-remove='true' hide-edit='true' hide-back='true'>
+                    <action ng-click="controller.openOrders()" icon="glyphicon-file">{{ 'l-orders-customer' | i18n }}</action>
+                    <action ng-click="controller.settings()" class="btn-link btn-settings-custom" icon="glyphicon-cog"></action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-detail>
+			<div class="row" style="padding-left: 15px; padding-right: 15px;">
+				<totvs-page-detail-info-group>
+					{{'l-informacoes-cliente' | i18n}}
+				</totvs-page-detail-info-group>
+				<div class="col-xs-12">
+					<totvs-page-detail-info title="{{'l-cdn-clien' | i18n}}">{{controller.ttDetalheCliente['cod-emitente']}}</totvs-page-detail-info>
+					<totvs-page-detail-info title="{{'l-nome-abrev' | i18n}}">{{controller.ttDetalheCliente['nome-abrev']}}</totvs-page-detail-info>
+					<totvs-page-detail-info title="{{'l-nome' | i18n}}">{{controller.ttDetalheCliente['nome-emit']}}</totvs-page-detail-info>
+					<totvs-page-detail-info title="{{'l-matriz' | i18n}}">{{controller.ttDetalheCliente['nome-matriz']}}</totvs-page-detail-info>
+					<totvs-page-detail-info title="{{'l-contato' | i18n}}">{{controller.ttDetalheCliente['contato'][0]}} - {{controller.ttDetalheCliente['contato'][1]}}</totvs-page-detail-info>
+					<totvs-page-detail-info title="{{'l-telefones' | i18n}}">{{controller.ttDetalheCliente['telefone'][0]}} {{controller.ttDetalheCliente['ramal'][0]}} - {{controller.ttDetalheCliente['telefone'][1]}} {{controller.ttDetalheCliente['ramal'][1]}}</totvs-page-detail-info>
+					<totvs-group-content id="tgcOrderDetail" title="   {{ 'l-more-groups-details' | i18n }}">
+						<totvs-lodash-template src="/dts/mpd/html/internalcustomerdetail/customer-detail-fields.html" template-data="controller.listGroups"/></totvs-lodash-template>
+					</totvs-group-content>
+				</div>
+			</div>
+			<br>
+			<totvs-tabset totvs-tabset-hotkey>
+				<totvs-tab heading="{{'l-delivery-places' | i18n}}">
+					<ng-include src="'/dts/mpd/html/internalcustomerdetail/customer-detail-delivery-places-grid.html'"/>
+				</totvs-tab>
+				<totvs-tab heading="{{'l-customer-products' | i18n}}">
+					<ng-include src="'/dts/mpd/html/internalcustomerdetail/customer-detail-items-grid.html'"/>
+				</totvs-tab>
+				<totvs-tab heading="{{'l-informantes-cliente' | i18n}}">
+					<ng-include src="'/dts/mpd/html/internalcustomerdetail/customer-detail-informers-grid.html'" />
+				</totvs-tab>
+				<totvs-tab heading="{{'l-sites' | i18n}}">
+					<ng-include src="'/dts/mpd/html/internalcustomerdetail/customer-detail-sites-grid.html'" />
+				</totvs-tab>
+				<totvs-tab heading="{{'l-contatos' | i18n}}">
+					<ng-include src="'/dts/mpd/html/internalcustomerdetail/customer-detail-contacts-grid.html'" />
+				</totvs-tab>
+			</totvs-tabset>
+		</totvs-page-detail>
+	</totvs-page-content>
+</totvs-page>

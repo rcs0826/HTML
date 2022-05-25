@@ -1,0 +1,111 @@
+<totvs-list-item class="tag-{{movtoSUS.logErroMovto ? 1 : 2}}"> 
+    <totvs-list-item-header>
+        <totvs-list-item-title >
+
+          <span class="title col-md-10" style="color: #0e9abd;font-size: 18px;    text-decoration: none; padding-left: 0px !important;">
+            {{movtoSUS.movtoRC.codMovimento}} - {{movtoSUS.movtoRC.dsMovimento}} 
+          </span>
+          <span ng-if="controller.procInsu == true && movtoSUS.indTipMovto !== '2'  "
+                class="col-md-1 glyphicon glyphicon-user"
+                title="Procedimento">                          
+          </span>
+
+          <span ng-if="controller.procInsu == true && movtoSUS.indTipMovto === '2'"
+                class="col-md-1 glyphicon glyphicon-scissors"
+                title="Insumo">                          
+          </span>
+
+          <span ng-if="controller.princSec == true && movtoSUS.indTipServRessus === 'P'"
+                class="col-md-1 glyphicon glyphicon-bookmark"
+                title="Principal">                          
+          </span>
+
+          <span ng-if="controller.princSec == true && movtoSUS.indTipServRessus === 'E'"
+                class="col-md-1 glyphicon glyphicon-star"
+                title="Especial">                          
+          </span>
+
+        </totvs-list-item-title>
+          
+        
+        <totvs-list-item-action limit-primary-action="3"> 
+
+            <action icon="glyphicon-exclamation-sign"
+                    ng-click="controller.openMovementImpugnationMotive(movtoSUS)"
+                    >Motivos
+            </action>
+
+            <action ng-click="controller.openMovementErrors(movtoSUS.cddRessusAbiProced)"
+                    ng-if="movtoSUS.logErroMovto == true"
+                    icon="glyphicon glyphicon-alert">Erros
+            </action>
+
+            <action icon="glyphicon-thumbs-down"
+                    ng-if="movtoSUS.logGlosas == true"
+                    ng-click="controller.openMovementRestrictions(movtoSUS)">
+                    Glosas
+            </action>
+
+            <action 
+                ng-if="controller.buscaPermissao()"           
+                ng-click="controller.editMovement(movtoSUS)" 
+                title="Editar" 
+                icon="glyphicon glyphicon-list-alt">
+                    {{controller.abiAnalysisAttendance.idiStatus < ATTENDANCE_STATUS_ENUM.AGUARDANDO_PAGAMENTO && controller.abiAnalysisAttendance.documentKey != '' ? 'Editar' : 'Detalhar'}}
+             </action>  
+        </totvs-list-item-action>  
+    </totvs-list-item-header>
+
+    <totvs-list-item-content>  
+        <totvs-row>
+            <totvs-list-item-info  title="Código SUS"          
+                                   value="{{movtoSUS.cddServRessus}} - {{movtoSUS.desProcedimento}}" 
+                                   class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-xs-12">
+            </totvs-list-item-info>                      
+
+            <totvs-list-item-info  title="Motivos de Impugnação"
+                                   ng-if="movtoSUS.desMotivoImpugnacao != ''"
+                                   value="{{movtoSUS.desMotivoImpugnacao}}" 
+                                   class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            </totvs-list-item-info>
+
+        </totvs-row>
+        <totvs-row>
+            <totvs-list-item-info  title="Quantidade Cobrada"          
+                                   value="{{movtoSUS.qtdProcedimento}}" 
+                                   class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            </totvs-list-item-info>
+
+            <totvs-list-item-info  title="Valor Cobrado"          
+                                   value="{{movtoSUS.valProcedimento  | currency : 'R$'}}" 
+                                   class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            </totvs-list-item-info>
+
+            <totvs-list-item-info  title="Quantidade Reconhecida"        
+                                   value="{{movtoSUS.qtdDeferido}}" 
+                                   class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            </totvs-list-item-info>
+
+            <totvs-list-item-info  title="Valor Reconhecido"          
+                                   value="{{movtoSUS.valDeferido  | currency : 'R$'}}" 
+                                   class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            </totvs-list-item-info>
+
+            <totvs-list-item-info  title="Valor Participação"          
+                                   value="{{movtoSUS.valParticip  | currency : 'R$'}}" 
+                                   class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            </totvs-list-item-info>
+
+            <totvs-list-item-info  title="Valor Glosado"          
+                                   value="{{movtoSUS.valGlosado  | currency : 'R$'}}" 
+                                   class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            </totvs-list-item-info>
+
+            <totvs-list-item-info  title="Valor Pago"          
+                                   value="{{movtoSUS.valPago  | currency : 'R$'}}" 
+                                   class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            </totvs-list-item-info>        
+
+        </totvs-row> 
+    </totvs-list-item-content>    
+</totvs-list-item>

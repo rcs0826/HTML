@@ -1,0 +1,99 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_campanha : ('btn-new-campaign' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="input"
+			   class="col-md-12"
+			   ng-required="true"
+			   ng-model="controller.model.nom_campanha"
+			   canclean="undefined"
+			   placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<totvs-field
+			totvs-date-range
+			class="col-xs-6"
+			label="{{ 'l-date' | i18n: []: 'dts/crm' }}"
+			ng-model="controller.model.initialDate"
+			ng-required="true"
+			canclean>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</totvs-field>
+
+
+		<field type="select"
+			   class="col-xs-11 col-sm-5 col-md-5"
+			   ng-required="true"
+			   ng-model="controller.model.ttTipoCampanha"
+			   canclean="undefined"
+			   placeholder="{{ 'l-type-campaign' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-type-campaign' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-type-campaign' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_tip_campanha }}
+				</ui-select-match>
+				<ui-select-choices repeat="type in controller.types | filter: $select.search track by $index">
+					<span ng-bind-html="type.nom_tip_campanha | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<div class="col-xs-1 col-sm-1 col-md-1 crm-field-extra-button">
+			<button class="btn btn-default"
+					ng-click="controller.addTypeCampaign();">
+				<span class="glyphicon glyphicon-plus"></span>
+			</button>
+		</div>
+
+		<field type="checkbox"
+			   class="col-sm-6"
+			   ng-model="controller.model.log_finaliza"
+			   label="{{ 'l-finished' | i18n: []: 'dts/crm' }}">
+		</field>
+
+		<field type="checkbox"
+			   class="col-sm-6"
+			   ng-model="controller.model.log_livre_1"
+			   label="{{ 'l-allows-unpaid-expenses' | i18n: []: 'dts/crm' }}">
+		</field>
+
+		<field type="checkbox"
+			   ng-if="controller.isIntegratedWithGpls == true"
+			   class="col-sm-6"
+			   ng-model="controller.model.log_padr_gpls"
+			   label="{{ 'l-default-campaign-gpls' | i18n: []: 'dts/crm' }}">
+		</field>
+
+	</fieldset>
+
+	<totvs-divider></totvs-divider>
+
+	<fieldset class="row">
+
+		<field type="textarea"
+			   class="col-md-12"
+			   maxlength="400"
+			   ng-model="controller.model.dsl_campanha">
+			<label>{{ 'l-description' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="textarea"
+			   class="col-md-12"
+			   maxlength="1500"
+			   ng-model="controller.model.dsl_motivo">
+			<label>{{ 'l-justification' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

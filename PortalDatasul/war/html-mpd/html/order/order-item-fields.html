@@ -1,0 +1,802 @@
+<totvs-page-detail-info-group>{{ 'l-order-item-identification' | i18n }}</totvs-page-detail-info-group>
+
+<totvs-page-detail>
+
+<%		
+	_.forEach(data, function(pedItemCadastroVisibleFields) {
+				
+		if (pedItemCadastroVisibleFields.fieldName == "nr-sequencia") {
+			%>
+			<totvs-page-detail-info title="{{ 'l-sequencia' | i18n }}" class="col-xs col-sm-12 col-md-3">
+					{{controller.item['nr-sequencia']}}
+			</totvs-page-detail-info>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "it-codigo") {
+
+			%>
+			<totvs-page-detail-info title="{{ 'l-cod-item' | i18n }}" class="col-xs col-sm-12 col-md-9">
+				{{controller.item['it-codigo']}} - {{controller.item.itemDesc}}
+			</totvs-page-detail-info>
+			<%
+		}
+				
+		if (pedItemCadastroVisibleFields.fieldName == "cod-refer") {
+
+			%>
+			<totvs-page-detail-info title="{{ 'l-cod-refer' | i18n }}" class="col-xs col-sm-6 col-md-6">
+				{{controller.item['cod-refer']}}
+			</totvs-page-detail-info>
+			<%
+		}
+		
+	});
+%>
+
+</totvs-page-detail>
+
+<totvs-page-detail-info-group>{{ 'l-quantities' | i18n }}</totvs-page-detail-info-group>
+
+<%		
+	_.forEach(data, function(pedItemCadastroVisibleFields) {
+		
+		if (pedItemCadastroVisibleFields.fieldName == "qt-un-fat") {
+
+			%>
+			<field type="decimal"  ng-model="controller.item['qt-un-fat']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>
+				ng-model-options="{ updateOn: 'blur' }"
+				ng-change="controller.applyLeaveItem('qt-un-fat',true)"
+				data-v-max="9999999.9999"
+				data-m-dec="4"
+				id="qt-un-fat">
+				<label>{{ 'l-invoice-UM-quantity' | i18n }}</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "qt-pedida") {
+
+			%>
+			<field type="decimal"
+				   ng-model="controller.item['qt-pedida']" 
+				   disabled="true"
+				   data-m-dec="4">
+				<label>{{ 'l-requested-quantity' | i18n }}</label>
+			</field>
+			<%
+		}
+				
+		if (pedItemCadastroVisibleFields.fieldName == "des-un-medida") {
+
+			%>
+			<field  type="select2"
+					ng-model="controller.item['des-un-medida']"
+					ng-disabled=
+					<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+						"true"
+					<% }else{ %>
+						"controller.itemDisabled"							
+					<% } %>
+					select-conector="{{ 'l-invoicing-UM' | i18n }}"
+					select-id="un"
+					select-description="descricao"
+					select-service="salesorder.zoomUnidadeMedida.Service"
+					ng-change="controller.applyLeaveItem('des-un-medida',true)">
+				<zoom zoom-service="salesorder.zoomUnidadeMedida.Service"></zoom>
+				<label>{{ 'l-invoicing-UM' | i18n }}</label>
+			</field>
+			<%
+		}
+				
+		if (pedItemCadastroVisibleFields.fieldName == "cod-un") {
+
+			%>				
+			<field type="input" ng-model="controller.item['cod-un']" ng-disabled="true">
+				<label>{{ 'l-unidade-medida' | i18n }}</label>
+			</field>
+			<%
+		}
+
+	});
+
+%>
+
+<totvs-page-detail-info-group>{{ 'l-prices' | i18n }}</totvs-page-detail-info-group>
+
+<%		
+	_.forEach(data, function(pedItemCadastroVisibleFields) {
+		
+		if (pedItemCadastroVisibleFields.fieldName == "vl-preori") {
+
+			%>
+			<field type="decimal" ng-model="controller.item['vl-preori']" 
+				ng-disabled=
+					<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+						"controller.tpPreco > 1"
+					<% }else{ %>
+						"controller.itemDisabled || controller.tpPreco > 1"
+					<% } %>
+					ng-model-options="{ updateOn: 'blur' }"
+					data-m-dec="4">
+				<label>{{ 'l-original-price' | i18n }}</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "vl-preori-un-fat") {
+
+			%>
+			<field type="decimal" ng-model="controller.item['vl-preori-un-fat']" ng-disabled="true"
+				data-m-dec="4">
+				<label>{{ 'l-original-price-invoice-UM' | i18n }}</label>
+			</field>
+			<%
+		}
+				
+		if (pedItemCadastroVisibleFields.fieldName == "vl-pretab") {
+
+			%>
+			<field type="decimal" ng-model="controller.item['vl-pretab']" ng-disabled="true"
+				data-m-dec="4">
+				<label>{{ 'l-table-price' | i18n }}</label>
+			</field>
+			<%
+		}
+				
+		if (pedItemCadastroVisibleFields.fieldName == "vl-preuni") {
+
+			%>
+			<field type="decimal" ng-model="controller.item['vl-preuni']" ng-disabled="true"
+				data-m-dec="4">
+				<label>{{ 'l-net-price' | i18n }}</label>
+			</field>
+			<%
+		}
+				
+		if (pedItemCadastroVisibleFields.fieldName == "nr-tabpre") {
+
+			%>				
+			<totvs-field totvs-select style="font-size: 14px"
+				label="{{:: 'l-nr-tabpre' | i18n : [] : 'dts/mpd'}}"
+				ng-model="controller.item['nr-tabpre']"
+				ng-disabled=
+					<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+						"true"
+					<% }else{ %>
+						"controller.itemDisabled"							
+					<% } %>
+				canclean
+				select-id="nr-tabpre"
+				select-description="descricao"
+				select-service="mpd.tb-preco-pv.zoom"
+				zoom-init="{setDefaultValue: false}"
+				zoom-service="mpd.tb-preco-pv.zoom">
+				<validator key="required">{{$fieldLabel}} {{:: 'l-required' | i18n }}</validator>
+			</totvs-field>
+			<%
+		}
+
+	});
+
+%>
+
+<totvs-page-detail-info-group>{{ 'l-fiscal-data' | i18n }}</totvs-page-detail-info-group>
+
+<%		
+	_.forEach(data, function(pedItemCadastroVisibleFields) {
+		
+		if (pedItemCadastroVisibleFields.fieldName == "nat-operacao") {
+
+			%>
+				<field
+					type="select2"
+					ng-model="controller.item['nat-operacao']"
+					select-conector="{{ 'l-natur-oper' | i18n }}"
+					select-id="nat-operacao"
+					select-description="denominacao"
+					select-service="salesorder.zoomNatOperacao.Service"
+					ng-disabled=
+					<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+						"true"
+					<% }else{ %>
+						"controller.itemDisabled"							
+					<% } %>
+				>
+					<zoom
+						zoom-service="salesorder.zoomNatOperacao.Service"
+						zoom-init="{ setDefaultValue: false }"
+					>
+					</zoom>
+					<label>{{ 'l-natur-oper' | i18n }}</label>
+				</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "cod-class-fis") {
+
+			%>
+			
+			<field  type="select2"
+					ng-model="controller.item['cod-class-fis']"
+					ng-disabled="controller.enabledClassFiscal"
+					select-conector="{{'l-classificacao-fiscal' | i18n}}"
+					select-id="class-fiscal"
+					select-description="descricao"
+					select-service="salesorder.zoomClassificacaoFiscal.Service">
+				<zoom zoom-service="salesorder.zoomClassificacaoFiscal.Service"></zoom>
+				<label>{{'l-classificacao-fiscal' | i18n}}</label>
+			</field>
+			<%
+		}
+							
+		if (pedItemCadastroVisibleFields.fieldName == "aliquota-ipi") {
+
+			%>
+			<field type="decimal"  ng-model="controller.item['aliquota-ipi']"
+					ng-disabled=
+					<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+						"true"
+					<% }else{ %>
+						"controller.itemDisabled"
+					<% } %>
+					ng-model-options="{ updateOn: 'blur' }"
+					data-v-max="999.99"    
+				data-m-dec="2">
+				<label>{{ 'l-aliquota-ipi' | i18n }}</label>
+			</field>
+			<%
+		}
+
+	});
+
+%>
+
+<totvs-page-detail-info-group>{{ 'l-attend-information' | i18n }}</totvs-page-detail-info-group>
+
+<%		
+	_.forEach(data, function(pedItemCadastroVisibleFields) {
+		
+		if (pedItemCadastroVisibleFields.fieldName == "tipo-atend") {
+
+			%>
+			<field type="combo" 
+				ng-model="controller.item['tipo-atend']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>
+				ng-options="aitem.id as aitem.desc for aitem in controller.tipoAtend">
+				<label>{{ 'l-tipo-atend' | i18n }}</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "dt-min-fat") {
+
+			%>
+			<field type="date" ng-model="controller.item['dt-min-fat']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>>
+				<label>{{ 'l-dt-minfat' | i18n }}</label>
+			</field>
+			<%
+		}
+				
+		if (pedItemCadastroVisibleFields.fieldName == "ind-fat-qtfam") {
+
+			%>
+			<field type="combo" 
+				ng-model="controller.item['ind-fat-qtfam']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>
+				ng-options="iitem.id as iitem.desc for iitem in controller.indFatQtfam">					
+				<label>{{ 'l-invoice-unit' | i18n }}</label>
+			</field>
+			<%
+		}
+				
+		if (pedItemCadastroVisibleFields.fieldName == "dt-max-fat") {
+
+			%>
+			<field type="date" ng-model="controller.item['dt-max-fat']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>>
+				<label>{{ 'l-dt-lim-fat' | i18n }}</label>
+			</field>
+			<%
+		}
+				
+		if (pedItemCadastroVisibleFields.fieldName == "per-minfat") {
+
+			%>
+			<field type="decimal"  ng-model="controller.item['per-minfat']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>
+				 ng-model-options="{ updateOn: 'blur' }"
+				 data-v-max="99.99"   
+				 data-m-dec="2">
+				<label>{{ 'l-per-minfat' | i18n }}</label>
+			</field>
+			<%
+		}
+				
+		if (pedItemCadastroVisibleFields.fieldName == "dt-entrega") {
+
+			%>
+			<field  type="date" ng-model="controller.item['dt-entrega']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>
+				ng-change="controller.applyLeaveItem('dt-entrega',true)"
+				id="dt-entrega">
+				<label>{{ 'l-dt-entrega' | i18n }}</label>
+			</field>
+			<%
+		}
+				
+		if (pedItemCadastroVisibleFields.fieldName == "log-canc-saldo") {
+
+			%>
+			
+			<field type="checkbox" ng-model="controller.item['log-canc-saldo']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>>
+				<label>{{ 'l-log-canc-saldo' | i18n }}</label>
+			</field>
+			<%
+		}
+
+	});
+
+%>
+
+<totvs-page-detail-info-group>{{ 'l-other-information' | i18n }}</totvs-page-detail-info-group>
+
+<%		
+	_.forEach(data, function(pedItemCadastroVisibleFields) {
+		
+		if (pedItemCadastroVisibleFields.fieldName == "cod-ord-compra") {
+
+			%>
+			<field  type="input" ng-model="controller.item['cod-ord-compra']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>>
+				<label>Nr Ordem Compra</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "parcela") {
+
+			%>
+			<field type="input" ng-model="controller.item.parcela"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>
+				maxlength="6" numbers-only>
+				<label>{{ 'l-parcela' | i18n }}</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "cod-unid-negoc") {
+
+			%>
+			<field  type="select2"
+					ng-model="controller.item['cod-unid-negoc']"
+					ng-disabled=
+					<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+						"true"
+					<% }else{ %>
+						"controller.itemDisabled"							
+					<% } %>
+					select-conector="{{'l-unidade-negocio' | i18n}}"
+					select-id="cod-unid-negoc"
+					select-description="des-unid-negoc"
+					select-service="salesorder.zoomUnidadeNegocio.Service">
+				<zoom zoom-service="salesorder.zoomUnidadeNegocio.Service"></zoom>
+				<label>{{'l-unidade-negocio' | i18n}}</label>
+			</field>
+
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "nr-config") {
+
+			%>
+			<field type="input" ng-model="controller.item['nr-config']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>>
+									   <label>{{ 'l-nr-config' | i18n }}</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "nr-ord-produ") {
+
+			%>
+			<field type="input" ng-model="controller.item['nr-ord-produ']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>>
+				<label>{{ 'l-nr-ord-produ' | i18n }}</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "nr-progcli") {
+
+			%>
+			<field type="input" ng-model="controller.item['nr-progcli']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>>
+				<label>{{ 'l-nr-progcli' | i18n }}</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "nr-programa") {
+
+			%>
+			<field type="input" ng-model="controller.item['nr-programa']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>>
+				<label>{{ 'l-nr-programa' | i18n }}</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "nr-versao") {
+
+			%>
+			<field type="input" ng-model="controller.item['nr-versao']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>>
+				<label>{{ 'l-nr-versao' | i18n }}</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "num-id-campanha-crm") {
+
+			%>
+			<field type="select2" ng-model="controller.item['num-id-campanha-crm']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>
+				select-conector="{{ 'l-campanh-crm' | i18n }}"
+				select-id="num_id"
+				select-description="nom_campanha"
+				select-service="salesorder.zoomCampanhaCrm.Service">
+				<zoom zoom-service="salesorder.zoomCampanhaCrm.Service"></zoom>
+				<label>{{ 'l-campanh-crm' | i18n }}</label>
+			</field>
+			<%
+		}
+				
+		if (pedItemCadastroVisibleFields.fieldName == "estab-atend-item") {
+
+			%>
+			<field  type="select2"
+					ng-model="controller.item['estab-atend-item']"
+					ng-disabled=
+					<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+						"true"
+					<% }else{ %>
+						"controller.orderDisabled"							
+					<% } %>
+					select-conector="{{'l-estabel-atend' | i18n}}"
+					select-init="controller.estabelecFilter"
+					select-id="cod-estabel"
+					select-description="nome"
+					select-service="salesorder.zoomEstabelecimento.Service"
+											ng-change="controller.applyLeaveEstabAtend('estab-atend')">
+				<zoom zoom-service="salesorder.zoomEstabelecimento.Service" 
+										zoom-init="controller.estabelecFilter"></zoom>
+				<label>{{'l-estabel-atend' | i18n}}</label>
+			</field>
+			<%
+
+		}
+
+
+	});
+
+%>
+
+<!--
+<totvs-page-detail-info-group>{{ 'l-observacoes' | i18n }}</totvs-page-detail-info-group>
+-->
+
+<%		
+	_.forEach(data, function(pedItemCadastroVisibleFields) {
+		
+		if (pedItemCadastroVisibleFields.fieldName == "observacao") {
+
+			%>
+			<field type="textarea" ng-model="controller.item.observacao" class="col-xs col-sm-12 col-md-12"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>>
+				<label>{{ 'l-observacoes' | i18n }}</label>
+			</field> 
+			<%
+		}
+
+	});
+
+%>
+
+<totvs-page-detail-info-group>{{ 'l-discounts' | i18n }}</totvs-page-detail-info-group>
+
+<%		
+	_.forEach(data, function(pedItemCadastroVisibleFields) {
+		
+		if (pedItemCadastroVisibleFields.fieldName == "log-usa-tabela-desconto") {
+
+			%>
+			<field type="checkbox" ng-model="controller.item['log-usa-tabela-desconto']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>>
+				<label>{{ 'l-log-usa-tabela-desconto' | i18n }}</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "des-pct-desconto-inform") {
+
+			%>
+			<field type="input" ng-model="controller.item['des-pct-desconto-inform']"
+				maxlength="50" 
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>>
+				<label>{{ 'l-des-pct-desconto-inform' | i18n }}</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "val-pct-desconto-tab-preco") {
+
+			%>
+			<field type="decimal"  ng-model="controller.item['val-pct-desconto-tab-preco']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>
+				ng-model-options="{ updateOn: 'blur' }"
+				data-v-max="99.99999"  
+				data-m-dec="5">
+				<label>{{ 'l-val-pct-desconto-tab-preco' | i18n }}</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "val-pct-desconto-periodo") {
+
+			%>
+			<field type="decimal"  ng-model="controller.item['val-pct-desconto-periodo']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>
+				ng-model-options="{ updateOn: 'blur' }"
+				data-m-dec="2">
+				<label>{{ 'l-val-pct-desconto-periodo' | i18n }}</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "val-pct-desconto-prazo") {
+
+			%>
+			<field type="decimal"  ng-model="controller.item['val-pct-desconto-prazo']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>
+				ng-model-options="{ updateOn: 'blur' }"
+				data-m-dec="2">
+				<label>{{ 'l-val-pct-desconto-prazo' | i18n }}</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "log-concede-bonif-qtd") {
+
+			%>
+			<field type="checkbox" ng-model="controller.item['log-concede-bonif-qtd']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>>
+				<label>{{ 'log-concede-bonif-qtd' | i18n }}</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "val-desconto[1]") {
+
+			%>
+			<field type="decimal"  ng-model="controller.item['val-desconto-1']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>
+				ng-model-options="{ updateOn: 'blur' }"
+				data-m-dec="2">
+				<label>{{ 'l-discount' | i18n }} 1</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "val-desconto[2]") {
+
+			%>
+			<field type="decimal"  ng-model="controller.item['val-desconto-2']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>
+				ng-model-options="{ updateOn: 'blur' }"
+				data-m-dec="2">
+				<label>{{ 'l-discount' | i18n }} 2</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "val-desconto[3]") {
+
+			%>
+			<field type="decimal"  ng-model="controller.item['val-desconto-3']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>
+				ng-model-options="{ updateOn: 'blur' }"
+				data-m-dec="2">
+				<label>{{ 'l-discount' | i18n }} 3</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "val-desconto[4]") {
+
+			%>
+			<field type="decimal"  ng-model="controller.item['val-desconto-4']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>
+				ng-model-options="{ updateOn: 'blur' }"
+				data-m-dec="2">
+				<label>{{ 'l-discount' | i18n }} 4</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "val-desconto[5]") {
+
+			%>
+			<field type="decimal"  ng-model="controller.item['val-desconto-5']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>
+				ng-model-options="{ updateOn: 'blur' }"
+				data-m-dec="2">
+				<label>{{ 'l-discount' | i18n }} 5</label>
+			</field>
+			<%
+		}
+		
+		if (pedItemCadastroVisibleFields.fieldName == "val-desconto-inform") {
+
+			%>
+			<field type="decimal"  ng-model="controller.item['val-desconto-inform']"
+				ng-disabled=
+				<% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+					"true"
+				<% }else{ %>
+					"controller.itemDisabled"
+				<% } %>
+				ng-model-options="{ updateOn: 'blur' }"
+				data-v-max="999999999.99"   
+				data-m-dec="2">
+				<label>{{ 'l-val-pct-desconto-inform' | i18n }} 5</label>
+			</field>
+			<%
+		}
+
+	});
+
+%>

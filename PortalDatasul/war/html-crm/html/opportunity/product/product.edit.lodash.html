@@ -1,0 +1,285 @@
+<totvs-modal-header>
+	{{ (productController.model.num_id > 0 ? ( productController.model.cod_item_erp + " - " + productController.model.nom_produt ) : ('nav-product' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+		<field
+			type="select"
+			ng-model="productController.model.ttTabelaPreco"
+			ng-change="productController.onChangePriceTable()"
+			ng-disabled="(productController.editMode === true)"
+			canclean="undefined"
+			ng-required="true"
+		>
+			<zoom
+				zoom-service="crm.crm_tab_preco.zoom"
+				zoom-selected="productController.onChangePriceTable(selected)"
+				zoom-init="{isValid: true}"
+			>
+			</zoom>
+			<label>{{ 'l-price-table' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-price-table' | i18n: []: 'dts/crm' }}">
+					<span
+						style="padding-left: 0 !important; max-width: 133px !important;"
+						class="col-xs-6 col-md-6"
+					>
+						{{ $select.selected.nom_tab_preco }}
+					</span>
+				</ui-select-match>
+				<ui-select-choices
+					repeat="priceTable in productController.priceTables | filter: $select.search track by $index"
+				>
+					<span ng-bind-html="priceTable.nom_tab_preco | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<span>
+			<field
+				type="select"
+				ng-model="productController.model.ttProduto"
+				ng-change="productController.onChangeProduct()"
+				ng-disabled="(!productController.model.ttTabelaPreco || (productController.editMode === true))"
+				canclean="undefined"
+				ng-required="true"
+				<% if ((!data["btn-selected-price-settings"] || data["btn-selected-price-settings"].log_visivel === true)) { %>
+					class="col-xs-10 col-md-5"
+				<% } else { %>
+					class="col-xs-12 col-md-6"
+				<% } %>
+			>
+				<zoom
+					zoom-service="crm.crm_produt.zoom"
+					zoom-init="productController.getProductZoomInit"
+					zoom-selected="productController.onChangeProduct(selected)"
+				>
+				</zoom>
+
+				<label>{{ 'l-product' | i18n: []: 'dts/crm' }}</label>
+
+				<include>
+					<ui-select-match placeholder="{{ 'l-product' | i18n: []: 'dts/crm' }}">
+						<span
+							style="padding-left: 0 !important; max-width: 133px !important;"
+							class="col-xs-6 col-md-6"
+						>
+							{{ $select.selected.nom_produt }} ({{ $select.selected.cod_item_erp }})
+						</span>
+					</ui-select-match>
+					<ui-select-choices
+						repeat="product in productController.products track by $index"
+						refresh="productController.getProducts($select.search)"
+						refresh-delay="500"
+					>
+						<span
+							ng-bind-html="product.nom_produt + ' (' + product.cod_item_erp + ')' | highlight: $select.search"
+						>
+						</span>
+					</ui-select-choices>
+				</include>
+
+				<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+			</field>
+
+			<% if ((!data["btn-selected-price-settings"] || data["btn-selected-price-settings"].log_visivel === true)) { %>
+				<div class="col-xs-2 col-md-1 crm-field-extra-button pull-right">
+					<button
+						class="btn btn-default"
+						ng-click="productController.showPriceSettings();"
+						ng-disabled="!productController.priceSettings || productController.priceSettings.length < 1"
+						style="width: 40px; margin: 2px 0 0 4px;"
+					>
+						<span class="glyphicon glyphicon-usd"></span>
+					</button>
+				</div>
+			<% } %>
+		</span>
+
+		<field type="select"
+				ng-required="(productController.model.ttProduto && productController.model.ttProduto.log_referencia)"
+				ng-model="productController.model.ttReferencia"
+				ng-change="productController.onChangeReferences()"
+				ng-disabled="(!productController.model.ttTabelaPreco || !productController.model.ttProduto || (productController.model.ttProduto && !productController.model.ttProduto.log_referencia))"
+				canclean="undefined">
+			<label>{{ 'l-reference' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-reference' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_refer }} {{ $select.selected.cod_refer_erp ? '(' + $select.selected.cod_refer_erp + ')' : '' }} </ui-select-match>
+				<ui-select-choices repeat="reference in productController.references | filter: $select.search track by $index">
+					<span ng-bind-html="reference.nom_refer + ' (' + reference.cod_refer_erp + ')' | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+				ng-model="productController.model.ttUnidadeMedida"
+				   ng-change="productController.onChangeUnitOfMeasures()"
+				ng-required="true"
+				ng-disabled="(!productController.model.ttProduto)">
+			<label>{{ 'l-unit-of-measurement' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-unit-of-measurement' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_unid_medid}} {{ $select.selected.cod_unid_medid_erp ? '(' + $select.selected.cod_unid_medid_erp + ')' : '' }} </ui-select-match>
+				<ui-select-choices repeat="un in productController.unitOfMeasures | filter: $select.search track by $index">
+					<span ng-bind-html="un.nom_unid_medid + ' (' + un.cod_unid_medid_erp + ')' | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<totvs-field
+			totvs-decimal
+			ng-model="productController.model.qtd_item"
+			ng-required="true"
+			m-dec="4"
+			label="{{ 'l-quantity' | i18n: []: 'dts/crm' }}"
+			canclean="0"
+			placeholder="{{ 'l-quantity' | i18n: []: 'dts/crm' }}">
+		</totvs-field>
+
+		<totvs-field
+			totvs-decimal
+			ng-model="productController.model.val_preco_unit"
+			m-dec="2"
+			ng-required="true"
+			label="{{ 'l-price-value' | i18n: []: 'dts/crm' }}"
+			canclean="0"
+			placeholder="{{ 'l-price-value' | i18n: []: 'dts/crm' }}">
+		</totvs-field>
+
+		<% if ((!data["l-customer-value"] || data["l-customer-value"].log_visivel === true)) { %>
+
+		<totvs-field
+			totvs-decimal
+			class="col-xs-6 col-md-6"
+			ng-model="productController.model.val_item_clien"
+			m-dec="2"
+			label="{{ 'l-customer-value' | i18n: []: 'dts/crm' }}"
+			canclean="undefined"
+			placeholder="{{ 'l-customer-value' | i18n: []: 'dts/crm' }}">
+		</totvs-field>
+		<% } %>
+
+		<% if ((!data["l-repres-value"] || data["l-repres-value"].log_visivel === true)) { %>
+		<totvs-field
+			totvs-decimal
+			class="col-xs-6 col-md-6"
+			ng-model="productController.model.val_item_repres"
+			m-dec="2"
+			canclean="undefined"
+			label="{{ 'l-repres-value' | i18n: []: 'dts/crm' }}"
+			placeholder="{{ 'l-repres-value' | i18n: []: 'dts/crm' }}">
+		</totvs-field>
+		<% } %>
+
+		<totvs-field
+			totvs-decimal
+			class="col-xs-6 col-md-6"
+			ng-model="productController.model.val_tot_itens"
+			m-dec="2"
+			ng-disabled="true"
+			ng-required="true"
+			label="{{ 'l-total-value' | i18n: []: 'dts/crm' }}"
+			placeholder="{{ 'l-total-value' | i18n: []: 'dts/crm' }}">
+		</totvs-field>
+
+		<field type="input"
+		    class="col-xs-6 col-md-6"
+		    ng-model="productController.model.purchase_order"
+		    placeholder="{{ 'l-purchase-order' | i18n: []: 'dts/crm' }}"
+			maxlength="15"
+			ng-change="validatorPurchaseOrder()"
+		    canclean="undefined">
+			<label>{{ 'l-purchase-order' | i18n: []: 'dts/crm' }}</label>
+			<validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 15</validator>
+		</field>
+
+		<% if ((!data["l-observation"] || data["l-observation"].log_visivel === true)) { %>
+		<field type="textarea"
+				ng-model="productController.model.dsl_observacao"
+				maxlength="2000"
+				class="col-md-12">
+			<label>{{ 'l-observation' | i18n: []: 'dts/crm' }}</label>
+		</field>
+		<% } %>
+
+
+	</fieldset>
+
+	<fieldset class="row" ng-if="productController.editMode === true">
+        <br/>
+        
+        <div class="crm-group-accordion">
+            <accordion close-others="false">
+
+                <accordion-group ng-init="productController.group.complement.open = true"
+                                is-open="productController.group.complement.open"
+                                ng-click="productController.onOpenComplementPanel()"
+                                class="crm-panel">
+
+                    <accordion-heading>
+                        {{ 'l-complement' | i18n: []: 'dts/crm' }}
+                        <i class="pull-right glyphicon"
+                            ng-class="{'glyphicon-chevron-down' :  productController.group.complement.open,
+                                        'glyphicon-chevron-right': !productController.group.complement.open}">
+                        </i>
+                    </accordion-heading>
+
+                    <fieldset class="row">
+                        <field
+							type="select"
+							ng-model="productController.model.ttMotivoGanhoPerda"
+							canclean="undefined"
+							class="col-xs-10 col-md-5"
+							ng-required="true"
+						>
+                            <label>{{ 'l-gain-loss-reason' | i18n: []: 'dts/crm' }}</label>
+
+							<include>
+                                <ui-select-match placeholder="{{ 'l-gain-loss-reason' | i18n: []: 'dts/crm' }}">
+									<span
+										style="padding-left: 0 !important; max-width: 133px !important;"
+										class="col-xs-6 col-md-6"
+									>
+										{{ $select.selected.des_motivo }} - {{ ($select.selected.log_ganho_motiv == true ? 'l-gain' : 'l-loss') | i18n: []: 'dts/crm' }}
+									</span>
+								</ui-select-match>
+                                <ui-select-choices
+									repeat="gainLoss in productController.gainLosses | filter: $select.search track by $index"
+								>
+                                    <span
+										ng-bind-html="gainLoss.des_motivo + ' - ' + ((gainLoss.log_ganho_motiv == true ? 'l-gain' : 'l-loss') | i18n: []: 'dts/crm') | highlight: $select.search"
+									>
+									</span>
+                                </ui-select-choices>
+                            </include>
+
+                            <validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+                        </field>
+
+                        <div class="col-xs-2 col-md-1 crm-field-extra-button pull-right">
+                            <button
+								class="btn btn-default"
+								ng-click="productController.saveGainLossAsk(productController.model.num_id);"
+								style="width: 40px; margin: 2px 0 0 4px;"
+							>
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </div>
+                    </fieldset>
+
+                </accordion-group>
+            </accordion>
+        </div>
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="productController.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-default" ng-click="productController.save(true)" ng-if="productController.editMode !== true">{{ 'btn-save-new' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="productController.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

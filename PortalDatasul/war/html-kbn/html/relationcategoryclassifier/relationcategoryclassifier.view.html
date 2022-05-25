@@ -1,0 +1,49 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<totvs-page type="list">
+  <totvs-page-navbar>
+    <totvs-page-breadcrumb>
+      <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+      <breadcrumb link="#/dts/kbn/relationcategoryclassifier">{{'l-relation-category-classifier' | i18n}}</breadcrumb>
+      <breadcrumb>{{'l-relac-item-clasdor' | i18n}}</breadcrumb>
+    </totvs-page-breadcrumb>
+    <totvs-page-header>
+      <totvs-page-header-title title="{{ controller.title | i18n }}" total=" {{controller.validateSizeRecords(controller.listItem || [])}}"></totvs-page-header-title>
+      <totvs-page-header-operation>
+        <div class="col-sm-offset-7">
+          <establishment-select ng-model="controller.establishment" callback="controller.establishmentChanged"></establishment-select>
+        </div>
+        <div style="padding: 10px;" class="col-md-7 col-sm-7"><a ng-click="controller.openLinkItemClassifierModal();" class="btn btn-primary"><span class="glyphicon glyphicon-link"></span><span>&nbsp; {{ 'l-link' | i18n }}</span></a><span>&nbsp;</span><a ng-href="/dts/datasul-rest/resources/api/fch/fchkb/fchkbmapping/downloadItemsEstab?cod_estab_erp={{controller.establishment}}" target="_blank" class="btn btn-default"><span class="glyphicon glyphicon-export"></span><span>&nbsp; {{'l-export-flow' | i18n}}</span></a>
+          <div ng-show="controller.barProgress" style="display: inline-block; vertical-align:middle;">
+            <div style="width: 110px; height: 34px; border-radius:4px; padding:6px 12px; font-family:&quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size:14px; " class="progress-bar progress-bar-striped active">{{'l-importing' | i18n}}</div>
+          </div>
+          <label role="button" for="file-input" ng-show="!controller.barProgress" class="btn btn-warning"><span class="glyphicon glyphicon-import"></span>&nbsp; {{'l-import-flow' | i18n}}<span class="file-text"></span>
+            <input id="file-input" type="file" style="position:fixed;top:-999px;" ngf-select="ngf-select" ngf-change="controller.uploadFiles($files);" ngf-multiple="false" ngf-allow-dir="false"/>
+          </label>
+        </div>
+        <totvs-page-header-operation-filter placeholder="{{ 'l-code-description' | i18n}}" ng-submit="controller.fillDataQuickSearch(controller.quickSearchTextTemp)" ng-model="controller.quickSearchTextTemp"></totvs-page-header-operation-filter>
+        <totvs-page-disclaimers disclaimer-list="controller.filtersApplied" ng-click="controller.removeFilter"></totvs-page-disclaimers>
+      </totvs-page-header-operation>
+    </totvs-page-header>
+  </totvs-page-navbar>
+  <totvs-page-content>
+    <totvs-page-content-header ng-if="controller.validateSizeRecords(controller.listItem) &gt; 0">
+      <div class="row field-addon-padding">
+        <div class="col-md-12">
+          <div class="col-md-6">
+            <button ng-click="controller.selectAllItems()" class="btn btn-primary">{{  'l-select-all' | i18n }}  </button>
+          </div>
+          <div class="col-md-6">
+            <button ng-click="controller.deleteItem()" ng-disable="!controller.listItem.selected" class="pull-right btn btn-warning">{{'l-to-exclude' | i18n}}</button>
+          </div>
+        </div>
+      </div>
+    </totvs-page-content-header>
+    <totvs-page-alert ng-if="controller.validateSizeRecords(controller.listItem) === 0" type="info" message="{{ 'msg-not-found' | i18n }}"></totvs-page-alert>
+    <totvs-list-item data-ng-repeat="item in controller.listItem | filter: controller.quickSearchFilter">
+      <totvs-list-item-header style="padding-left: 17px;">
+        <input type="checkbox" ng-model="item.selected"/><span class="title link">&nbsp; {{item | descGeneric:"{sku} - {desc} {ref} ({exp})"}} </span>
+      </totvs-list-item-header>
+    </totvs-list-item>
+  </totvs-page-content>
+</totvs-page>

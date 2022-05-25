@@ -1,0 +1,53 @@
+<totvs-page-child type="list">
+
+	<totvs-page-content class="crm-tab">
+
+		<div ng-include="'/dts/crm/html/background-routines/summary-schedule/summary-schedule.html'"
+			 ng-controller="birthday-person.control as controller"/>
+
+		<fieldset>
+
+			<field type="input"
+				   canclean="undefined"
+				   ng-model="controllerBirthdayPerson.model.nom_assunto"
+				   placeholder="{{ 'l-subject' | i18n: []: 'dts/crm' }}"
+				   class="col-xs-12 col-md-6">
+					<label>{{ 'l-subject' | i18n: []: 'dts/crm' }}</label>
+			</field>
+
+
+			<field type="select"
+				ng-model="controllerBirthdayPerson.model.num_id_public_layout"
+				canclean="undefined" class="col-xs-12 col-md-6" >
+					<label>{{ 'l-email-template' | i18n: []: 'dts/crm' }}</label>
+					<include>
+						<ui-select-match placeholder="{{ 'l-email-template' | i18n: []: 'dts/crm' }}">
+							{{ $select.selected.nom_layout }}
+						</ui-select-match>
+						<ui-select-choices repeat="item in controllerBirthdayPerson.templates | filter: $select.search track by $index">
+							<span ng-bind-html="item.nom_layout | highlight: $select.search"></span>
+						</ui-select-choices>
+					</include>
+			</field>
+
+		</fieldset>
+
+		<totvs-divider style="margin-top: 5px; margin-bottom: 5px;"></totvs-divider>
+
+		<div class="row">
+
+			<div class="col-xs-12"
+				 ng-animate="'animate-if'">
+
+				<button class="btn btn-primary pull-right"
+						ng-click="controllerBirthdayPerson.execute();">
+					{{ 'btn-execute' | i18n: []: 'dts/crm' }}
+				</button>
+
+			</div>
+
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

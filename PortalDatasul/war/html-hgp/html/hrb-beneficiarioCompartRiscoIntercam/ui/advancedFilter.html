@@ -1,0 +1,89 @@
+<totvs-modal-header>
+    Busca Avançada
+</totvs-modal-header>
+<totvs-modal-body style="height: 290px; overflow-y: auto;">
+    <fieldset>       
+        <field
+                class="col-lg-2 col-md-2 col-sm-4 col-xs-12"
+                type="input"
+                numbers-only
+                ng-model="afController.model.cdUnidCartInic"
+                placeholder="1"
+                maxlength="4"                
+                label="Unidade Inicial"
+                ng-blur="afController.changeRange('cdUnidCartInic', 'cdUnidCartFim')">
+        </field>
+        <field
+                class="col-lg-2 col-md-2 col-sm-4 col-xs-12"
+                type="input"
+                numbers-only
+                ng-model="afController.model.cdUnidCartFim"
+                placeholder="9999"
+                maxlength="4"                
+                label="Unidade Final"
+                ng-blur="afController.changeRange('cdUnidCartInic', 'cdUnidCartFim')">
+        </field>
+
+        <field type="input"
+                label="fake" style="visibility: hidden"
+                class="col-lg-8 col-md-8 col-sm-4 hidden-xs">
+        </field>
+
+        <field
+                class="col-lg-4 col-md-4 col-sm-5 col-xs-12"
+                type="input"
+                numbers-only
+                ng-model="afController.model.cdCartUsuarInic"
+                placeholder="1"
+                maxlength="13"                
+                label="Carteira Benef. Inicial"
+                ng-blur="afController.changeRange('cdCartUsuarInic', 'cdCartUsuarFim')">
+        </field>
+        <field
+                class="col-lg-4 col-md-4 col-sm-5 col-xs-12"
+                type="input"
+                numbers-only
+                ng-model="afController.model.cdCartUsuarFim"
+                placeholder="9999999999999"
+                maxlength="13"                
+                label="Carteira Benef. Final"
+                ng-blur="afController.changeRange('cdCartUsuarInic', 'cdCartUsuarFim')">
+        </field>
+        <field type="input"
+                label="fake" style="visibility: hidden"
+                class="col-lg-2 col-md-2 col-sm-1 hidden-xs">
+        </field>
+
+        <totvs-field totvs-datepicker
+               class="col-lg-3 col-md-3 col-sm-5 col-xs-12"
+               label="Data Inicial Repasse"
+               format="dd/MM/yyyy"
+               ng-model="afController.model.dtInicRepas"
+               culture="pt"
+               canclean
+               ng-show="true"
+               ng-blur="afController.changeRange('dtInicRepas','dtFimRepas')">
+        </totvs-field>
+        <totvs-field totvs-datepicker
+               class="col-lg-3 col-md-3 col-sm-5 col-xs-12"
+               label="Data Final Repasse"
+               format="dd/MM/yyyy"
+               ng-model="afController.model.dtFimRepas"
+               culture="pt"
+               canclean
+               ng-show="true"
+               ng-blur="afController.changeRange('dtInicRepas','dtFimRepas')">
+        </totvs-field>
+        <field type="input"
+                label="fake" style="visibility: hidden"
+                class="col-lg-6 col-md-6 col-sm-1 hidden-xs">
+        </field>        
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn" ng-click="afController.cleanFields()">Limpar Campos</button>
+    <button class="btn" ng-click="afController.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-click="afController.search()">Buscar</button>
+</totvs-modal-footer>
+

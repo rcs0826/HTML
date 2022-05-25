@@ -1,0 +1,90 @@
+<totvs-page-detail-info title="{{ 'l-company' | i18n}}" class="col-xs col-sm-12 col-md-12">
+	{{controller.request['tt-detalhe'][0]['empresa']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-site' | i18n}}" class="col-xs col-sm-12 col-md-12">
+	{{controller.request['tt-detalhe'][0]['estabelec']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-financial-closing' | i18n}}" class="col-xs col-sm-12 col-md-12">
+	{{controller.request['tt-detalhe'][0]['fechto-revis']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-closing-vendor' | i18n}}" class="col-xs col-sm-12 col-md-12">
+	{{controller.request['tt-detalhe'][0]['fornec-fechto']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-product' | i18n}}" class="col-xs col-sm-12 col-md-12">
+	{{controller.request['tt-detalhe'][0]['produto']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-gross-total-amt' | i18n}}" class="col-xs col-sm-12 col-md-12">
+	{{controller.request['tt-detalhe'][0]['tot-bruto']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-total-withheld-tax-value' | i18n}}" class="col-xs col-sm-12 col-md-12">
+	{{controller.request['tt-detalhe'][0]['tot-imposto-ret']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-net-total-amount' | i18n}}" class="col-xs col-sm-12 col-md-12">
+	{{controller.request['tt-detalhe'][0]['tot-liquido']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-total-fee-values' | i18n}}" class="col-xs col-sm-12 col-md-12">
+	{{controller.request['tt-detalhe'][0]['tot-taxas']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-total-amount-amortization' | i18n}}" class="col-xs col-sm-12 col-md-12">
+	{{controller.request['tt-detalhe'][0]['tot-amortizacao']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-total-payment-value' | i18n}}" class="col-xs col-sm-12 col-md-12">
+	{{controller.request['tt-detalhe'][0]['tot-pagamentos']}}
+</totvs-page-detail-info>
+
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	<accordion close-others="true">
+		<accordion-group>
+			<accordion-heading>
+				<div>{{ 'l-financial-closing-payments' | i18n}}</div>
+			</accordion-heading>
+			<totvs-list-item
+				    id="pagtos{{tt_pagtos['cont_pagtos']}}"
+				    ng-class="tab-1"
+				    ng-repeat="tt_pagtos in controller.request['tt-pagtos-fechto']"
+				    totvs-custom-element="customDetail33_listPagtos">
+				<totvs-list-item-header>
+					<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+						title="{{ 'l-contract' | i18n}}"
+						value="{{tt_pagtos['cod-contrat']}}">
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+						title="{{ 'l-value-payment' | i18n}}"
+						value="{{tt_pagtos['val-parc']}}">
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+						title="{{ 'l-expiration-date' | i18n}}"
+						value="{{tt_pagtos['dat-vencto']}}">
+					</totvs-list-item-info>
+                    <totvs-list-item-info class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+						title="{{ 'l-favored' | i18n}}"
+						value="{{tt_pagtos['favorecido']}}">
+					</totvs-list-item-info>
+                    <totvs-list-item-info class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+						title="{{ 'l-bank' | i18n}}"
+						value="{{tt_pagtos['num-bco-fornec']}}">
+					</totvs-list-item-info>
+                    <totvs-list-item-info class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+						title="{{ 'l-agencia' | i18n}}"
+						value="{{tt_pagtos['agenc-fornec']}}">
+					</totvs-list-item-info>
+                    <totvs-list-item-info class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+						title="{{ 'l-checking-account' | i18n}}"
+						value="{{tt_pagtos['cta-corren-fornec']}}">
+					</totvs-list-item-info>
+				</totvs-list-item-header>
+			</totvs-list-item>
+		</accordion-group>
+	</accordion>
+</div>

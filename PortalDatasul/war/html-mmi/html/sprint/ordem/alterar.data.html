@@ -1,0 +1,94 @@
+<totvs-modal-header>
+	{{ 'l-reschedule-order' | i18n }} {{ alterarDataCtrl.model.ttOrdem.nrOrdProdu | orderNumberMask}} - {{ alterarDataCtrl.model.ttOrdem.desEstado }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<div class="row">
+		<totvs-page-child>        
+	        <totvs-page-content>
+
+				<div class="col-xs-12" ng-if="alterarDataCtrl.mostraPeriodos">
+					<totvs-field totvs-combo	
+								class="col-xs-8"
+								label="{{ 'l-target-period' | i18n }}"	 
+								t-options="alterarDataCtrl.periodos"
+								ng-model="alterarDataCtrl.periodoSelecionado"
+								ng-change="alterarDataCtrl.validaPeriodoSelecionado()">
+					</totvs-field>
+				</div>
+						        
+	        	<div class="col-xs-12">
+					<totvs-field totvs-datepicker
+								 t-mask-date
+								 id="dataEntrada"
+								 class="col-xs-5"
+								 label="{{ 'l-document-in' | i18n }}"
+								 ng-model="alterarDataCtrl.model.ttOrdem.dtManut"
+								 output-format="date"
+								 canclean
+								 ng-blur="alterarDataCtrl.ajustaDataTermino()">
+					</totvs-field>
+					
+					<totvs-field totvs-time
+                           ng-model="alterarDataCtrl.model.ttOrdem.horaManut"
+                           label="{{ 'l-hour' | i18n }}"
+                           class="col-xs-3">
+                	</totvs-field>
+				</div>
+				
+				<div class="col-xs-12">
+					<totvs-field totvs-datepicker
+								 t-mask-date
+								 class="col-xs-5"
+								 label="{{ 'l-end-forecast' | i18n }}"
+								 ng-model="alterarDataCtrl.model.ttOrdem.dtTermino"
+								 output-format="date"
+								 canclean>
+					</totvs-field>
+					
+					<totvs-field totvs-time
+                           ng-model="alterarDataCtrl.model.ttOrdem.horaTermino"
+                           label="{{ 'l-hour' | i18n }}"
+                           class="col-xs-3">
+                	</field>
+					
+				</div>
+
+				<div class="col-xs-12" ng-if="alterarDataCtrl.mostraMotivo">
+					<totvs-field
+						totvs-select
+						class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+						ng-model="alterarDataCtrl.model.codMotivoTela"
+						select-id="cd-pend-padr"
+						id="cd-pend-padr"
+						select-description="descricao"
+						select-service="mmi.pendencia.zoom"
+						zoom-service="mmi.pendencia.zoom"
+						return-object="select-id"
+						label="{{ 'l-motive' | i18n }}"
+						canclean="undefined"
+						ng-disabled="!alterarDataCtrl.habilitaMotivo">
+					</totvs-field>	
+					<field
+						class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+	                    type="textarea"
+	                    ng-model="alterarDataCtrl.model.ttOrdem['des-obs']"
+	                    maxlength="2000"
+	                    rows="4"
+	                    ng-disabled="!alterarDataCtrl.habilitaMotivo">
+                    <label class="field-label">{{ 'l-observations' | i18n }}</label>
+					</field>				
+					
+				</div>			   
+
+	        </totvs-page-content>
+	    </totvs-page-child>
+	</div>
+	
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="alterarDataCtrl.cancelar()">{{ 'l-cancel' | i18n }}</button>
+	<button type="button" class="btn btn-primary" data-ng-click="alterarDataCtrl.alteraDataOrdem()">{{ 'l-save' | i18n }}</button>        
+</totvs-modal-footer>

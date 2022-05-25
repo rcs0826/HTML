@@ -1,0 +1,183 @@
+<style>
+    .tag-success:before {
+        background-color: #6ace39;
+        content: "S";
+    }
+    
+    .tag-failure:before {
+        background-color: #f15a22;
+        content: "F";
+    }
+    
+    .tag-warning:before {
+        background-color: #ffcb05;
+        content: "A";
+    }
+    
+    .undo-page-head{
+        padding-top: 0px;
+        padding-bottom: 0px;
+	    border: none;
+    }
+    
+    .success-list-item{
+        border-left-color: #6ace39 !important;
+    }
+    
+    .warning-list-item{
+        border-left-color: #ffcb05 !important;
+    }
+    
+    .failure-list-item{
+        border-left-color: #f15a22 !important;
+    }
+
+</style>
+
+<totvs-modal-header>
+    {{controller.configs.actionStr}} - Resultados
+</totvs-modal-header>
+
+<totvs-modal-body style="height: 500px; overflow-y: auto;">
+        
+        <totvs-page-detail>
+            
+            <totvs-page-detail-info 
+                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                title="Documentos"
+                value="{{controller.stats.doctsNumber}}">
+            </totvs-page-detail-info>
+            
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Doctos {{controller.configs.doneStr}} com Sucesso"
+                value="{{controller.stats.doctsWithSuccess}} ({{controller.stats.doctsSuccessPercent | currency : ''}}%)">
+            </totvs-page-detail-info>
+            
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Doctos com Alertas"
+                value="{{controller.stats.doctsWithWarning}} ({{controller.stats.doctsWarningPercent | currency : ''}}%)">
+            </totvs-page-detail-info>
+            
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Doctos com Erros"
+                value="{{controller.stats.doctsWithError}} ({{controller.stats.doctsErrorPercent | currency : ''}}%)">
+            </totvs-page-detail-info>
+        </totvs-page-detail>
+    
+        <div class="page-head undo-page-head">
+            <div class="page-tags">
+                <div class="tag legend tag-failure">Falha</div>
+                <div class="tag legend tag-warning">Alerta</div>
+                <div class="tag legend tag-success">Sucesso</div>
+            </div>
+        </div>
+            
+        <totvs-page-detail>
+            
+            <totvs-list-item style="margin-bottom: 10px"
+                ng-repeat="docto in controller.resultList track by $index"
+                ng-class="{'success-list-item': docto.inStatus==controller.SUCCESS_CONST,
+                           'warning-list-item': docto.inStatus==controller.WARNING_CONST,
+                           'failure-list-item': docto.inStatus==controller.ERROR_CONST}">
+                <totvs-list-item-header ng-if="docto.cdUnidadePrestadora != 0">
+                    <totvs-list-item-title
+                        title="{{docto.rotuloDocumento}}">
+                    </totvs-list-item-title>
+                </totvs-list-item-header>
+
+                <totvs-list-item-content ng-if="docto.cdUnidadePrestadora != 0">
+
+                    <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                          title="Benef."
+                                          value-break="false"
+                                          value="{{docto.rotuloBenef}}">
+                    </totvs-list-item-info>
+
+                    <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                          title="Prest."
+                                          value-break="false"
+                                          value="{{docto.rotuloPrestador}}">
+                    </totvs-list-item-info>
+
+                    <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                          title="Internação"
+                                          value-break="false"
+                                          value="{{docto.rotuloInternacao}}">
+                    </totvs-list-item-info>
+                </totvs-list-item-content>
+
+                <totvs-list-item-content>
+                    <totvs-list-item-info ng-repeat="res in docto.results"
+                                          ng-if="res.tpRegistro == 'ERROR'"
+                                          class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                          title="Mensagem"
+                                          value="{{res.dsErro}}">
+                    </totvs-list-item-info>
+                </totvs-list-item-content>   
+                
+                <totvs-page-child type="list"
+                                  ng-repeat="doctoChild in docto.children track by $index"
+                                  class="navbar-btn">
+
+                    <totvs-list-item 
+                        ng-class="{'success-list-item': doctoChild.inStatus==controller.SUCCESS_CONST,
+                                   'warning-list-item': doctoChild.inStatus==controller.WARNING_CONST,
+                                   'failure-list-item': doctoChild.inStatus==controller.ERROR_CONST}">
+                        <totvs-list-item-header>
+                            <totvs-list-item-title
+                                title="{{doctoChild.rotuloDocumento}}">
+                            </totvs-list-item-title>
+                        </totvs-list-item-header>
+
+                        <totvs-list-item-content>
+
+                            <totvs-list-item-info class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                                  title="Tipo"
+                                                  value-break="false"
+                                                  value="{{doctoChild.tpDocumento}}">
+                            </totvs-list-item-info>
+
+                            <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                  title="Data de Realização"
+                                                  value-break="false"
+                                                  value="{{doctoChild.dtRealizacao | date : 'dd/MM/yyyy'}}">
+                            </totvs-list-item-info>
+
+                            <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                                  title="Hora de Realização"
+                                                  value-break="false"
+                                                  value="{{doctoChild.hrRealizacao}}">
+                            </totvs-list-item-info>
+
+                            <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                                  title="Movimento"
+                                                  value-break="false"
+                                                  value="{{doctoChild.rotuloMovimento}}">
+                            </totvs-list-item-info>
+                          
+                        </totvs-list-item-content>
+
+                        <totvs-list-item-content>
+                            <totvs-list-item-info ng-repeat="resDoc in doctoChild.results"
+                                                  ng-if="resDoc.tpRegistro != 'SUCCESS'"
+                                                  class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                  title="Mensagem"
+                                                  value="{{resDoc.dsErro}}">
+                            </totvs-list-item-info>
+
+                        </totvs-list-item-content>
+                    </totvs-list-item>
+
+                </totvs-page-child>
+                
+            </totvs-list-item>
+
+        </totvs-page-detail>
+
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button class="btn" ng-click="controller.cancel()">Fechar</button>
+</totvs-modal-footer>

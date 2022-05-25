@@ -1,0 +1,50 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_grp_usuar : ('btn-new-group-user' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="input"
+			   class="col-md-12"
+			   ng-required="true"
+			   ng-model="controller.model.nom_grp_usuar"
+			   canclean="undefined"
+			   maxlength="60"
+			   placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+			   focus>
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="checkbox"
+			   class="col-xs-6"
+			   ng-model="controller.model.log_usuar_respons_tar"
+			   label="{{ 'l-only-responsible-execute-task' | i18n: []: 'dts/crm' }}">
+		</field>
+
+		<field type="checkbox"
+			   class="col-xs-6"
+			   ng-model="controller.model.log_livre_1"
+			   label="{{ 'l-restrict-delete-Attachments' | i18n: []: 'dts/crm' }}">
+		</field>
+
+		<field type="checkbox"
+			   class="col-xs-6"
+			   ng-model="controller.model.isSupervisor"
+			   label="{{ 'l-supervisor-privilege' | i18n: []: 'dts/crm' }}">
+		</field>
+		
+		<field type="checkbox"
+			   class="col-xs-6"
+			   ng-model="controller.model.log_permis_especial_con"
+			   label="{{ 'l-consult-any-ticket-gp' | i18n: []: 'dts/crm' }}">
+		</field>
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

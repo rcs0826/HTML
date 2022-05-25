@@ -1,0 +1,93 @@
+<iframe style="display:none;" name="hiddenIframe" id="hiddenIframe"></iframe>
+
+<totvs-page type="list" totvs-custom-element="customPage">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#{{defaultPageHome}}">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{ 'l-invoices' | i18n }}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            <totvs-page-header-title title="{{currentuser['user-entity']}} ({{controller.totalRecords}} {{ 'l-invoices' | i18n }})"></totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12"></div>
+                <totvs-page-header-operation-filter placeholder="{{ 'l-fast-search-invoice' | i18n }}" ng-submit="controller.search();" ng-model="controller.quickSearchText"
+                    advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers disclaimer-list="controller.filterBy" ng-click="controller.removeSelectedFilter"></totvs-page-disclaimers>
+
+            <totvs-page-tags>
+                <tag class="portal-list-invoices-green-tag btn btn-link" ng-click="controller.setQuickFilter('FATURADAS');">{{ 'l-nota-faturadas' | i18n }}</tag>
+                <tag class="portal-list-invoices-red-tag btn btn-link" ng-click="controller.setQuickFilter('CANCELADAS');">{{ 'l-nota-canceladas' | i18n }}</tag>
+            </totvs-page-tags>
+        </totvs-page-header>
+    </totvs-page-navbar>   
+
+    <totvs-page-content>
+
+        <totvs-list-item ng-class="{'portal-list-invoices-red-list':invoice['dt-cancela'] != null, 'portal-list-invoices-green-list':invoice['dt-cancela'] == null}"
+            ng-repeat="invoice in controller.listResult" totvs-custom-element="customListItem">
+            <totvs-list-item-header>
+                <totvs-list-item-title>{{ 'l-invoice-number' | i18n }}: {{invoice['nr-nota-fis']}}</totvs-list-item-title>
+                <div class="pull-right btn-group-sm btn-group">
+                    <div class="btn-group">
+
+                        <a ng-if="invoice.boleto != ''" role="button" class="btn btn-default" ng-disabled="invoice.boleto == ''" target="_blank" href="/dts/datasul-rest/resources/api/fch/fchdis/fchdis0043/boleto?boleto={{invoice.boleto}}">
+                            <span class="glyphicon glyphicon-barcode"></span> &nbsp; {{ 'l-ticket' | i18n }} &nbsp; </a>
+
+                        <button ng-if="invoice.boleto == ''" role="button" class="btn btn-default" ng-disabled="invoice.boleto == ''">
+                            <span class="glyphicon glyphicon-barcode"></span> &nbsp; {{ 'l-ticket' | i18n }} &nbsp; </button>     
+
+                        <a ng-if="invoice.danfe != ''" role="button" class="btn btn-default" ng-disabled="invoice.danfe == ''" target="_blank" href="/dts/datasul-rest/resources/api/fch/fchdis/fchdis0043/danfe?danfe={{invoice.danfe}}">
+                            <span class="glyphicon glyphicon-print"></span> &nbsp; {{ 'l-invoice-DANFE' | i18n }} &nbsp; </a>
+
+                        <button ng-if="invoice.danfe == ''" role="button" class="btn btn-default" ng-disabled="invoice.danfe == ''">
+                            <span class="glyphicon glyphicon-print"></span> &nbsp; {{ 'l-invoice-DANFE' | i18n }} &nbsp; </button>
+
+                        <a ng-if="invoice.xmlnfe != ''" role="button" class="btn btn-default" ng-disabled="invoice.xmlnfe == ''" target="_blank"
+                            href="/dts/datasul-rest/resources/api/fch/fchdis/fchdis0043/xml?xml={{invoice.xmlnfe}}">
+                            <span class="glyphicon glyphicon-file"></span> &nbsp; {{ 'l-invoice-xml-nfe' | i18n }} &nbsp; </a>
+
+                        <button ng-if="invoice.xmlnfe == ''" role="button" class="btn btn-default" ng-disabled="invoice.xmlnfe == ''" target="_blank"
+                            href="/dts/datasul-rest/resources/api/fch/fchdis/fchdis0043/xml?xml={{invoice.xmlnfe}}">
+                            <span class="glyphicon glyphicon-file"></span> &nbsp; {{ 'l-invoice-xml-nfe' | i18n }} &nbsp; </button>
+
+                    </div>
+                </div>
+            </totvs-list-item-header>
+
+            <totvs-list-item-content>
+                <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-3" title="{{ 'l-customer' | i18n }}">{{invoice['nome-ab-cli']}}</totvs-list-item-info>
+                <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-3" title="{{ 'l-invoice-series' | i18n }}">{{invoice.serie}}</totvs-list-item-info>
+                <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-3" title="{{ 'l-cod-estabel' | i18n }}">{{invoice['cod-estabel']}} - {{invoice['nome-estabel']}}</totvs-list-item-info>
+                <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-3" ng-if="invoice['nr-pedcli'] == ''" title="{{ 'nr-pedcli' | i18n }}">{{'l-not-reported' | i18n}}</totvs-list-item-info>
+                <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-3" ng-if="invoice['nr-pedcli'] != ''" title="{{ 'nr-pedcli' | i18n }}">{{invoice['nr-pedcli']}}</totvs-list-item-info>
+                <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-3" title="{{ 'l-dt-emissao' | i18n }}">{{invoice['dt-emis-nota'] | date : ('l-date-format' | i18n) : 'UTC'}}</totvs-list-item-info>
+                <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-3" ng-if="invoice['dt-entr-cli'] == null" title="{{ 'l-dt-entrega' | i18n }}">{{'l-not-reported' | i18n}}</totvs-list-item-info>
+                <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-3" ng-if="invoice['dt-entr-cli'] != null" title="{{ 'l-dt-entrega' | i18n }}">{{invoice['dt-entr-cli'] | date : ('l-date-format' | i18n) : 'UTC'}}</totvs-list-item-info>
+                <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-3" ng-if="invoice['dt-cancela'] == null" title="{{ 'l-dt-cancela' | i18n }}">{{'l-not-reported' | i18n}}</totvs-list-item-info>
+                <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-3" ng-if="invoice['dt-cancela'] != null" title="{{ 'l-dt-cancela' | i18n }}">{{invoice['dt-cancela'] | date : ('l-date-format' | i18n) : 'UTC'}}</totvs-list-item-info>
+                <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-3" title="{{ 'l-invoice-value' | i18n }}">{{invoice['vl-tot-nota'] | currency}}</totvs-list-item-info>
+                <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-3" ng-if="currentuser['user-hiearchy']" title="{{ 'l-repres' | i18n }}">{{invoice['cod-nome-repres']}}</totvs-list-item-info>
+            </totvs-list-item-content>
+            <totvs-list-item-content-detail open="controller.getInvoiceItens(invoice)">
+                <totvs-list-item class="tag-4" ng-repeat="item in invoice.invoiceItens">
+                    <totvs-list-item-content>
+                        <totvs-list-item-info title="{{ 'l-seq' | i18n }}" class="col-xs-6 col-sm-6 col-md-6">{{item['nr-seq-fat']}}</totvs-list-item-info>
+                        <totvs-list-item-info title="{{ 'l-quantity' | i18n }}" class="col-xs-6 col-sm-6 col-md-6">{{item['qt-faturada'] | number:4}} {{item.unfatur}}</totvs-list-item-info>
+                        <totvs-list-item-info title="{{ 'l-cod-item' | i18n }}" class="col-xs-6 col-sm-6 col-md-6">{{item['it-codigo']}} - {{item['des-it-codigo']}}</totvs-list-item-info>
+                        <totvs-list-item-info title="{{ 'l-item-value' | i18n }}" class="col-xs-6 col-sm-6 col-md-6">{{item['vl-tot-item'] | currency}}</totvs-list-item-info>
+                        <totvs-list-item-info title="{{ 'l-cod-refer' | i18n }}" ng-if="item['cod-refer'] == ''" class="col-xs-6 col-sm-6 col-md-6">{{'l-not-reported' | i18n}}</totvs-list-item-info>
+                        <totvs-list-item-info title="{{ 'l-cod-refer' | i18n }}" ng-if="item['cod-refer'] != ''" class="col-xs-6 col-sm-6 col-md-6">{{item['cod-refer']}} - {{item['des-cod-refer']}}</totvs-list-item-info>
+                        <totvs-list-item-info title="{{ 'l-natur-oper' | i18n}}" class="col-xs-6 col-sm-6 col-md-5">{{item['nat-operacao']}} - {{item['des-nat-operacao']}}</totvs-list-item-info>
+                        <totvs-list-item-info title="{{ 'l-narrativa' | i18n}}" class="col-xs-12 col-sm-12 col-md-12">{{item['narrativa']}}</totvs-list-item-info>
+                    </totvs-list-item-content>
+                </totvs-list-item>
+            </totvs-list-item-content-detail>
+        </totvs-list-item>
+    </totvs-page-content>
+    <totvs-list-pagination ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length" ng-click="controller.loadMore()">
+    </totvs-list-pagination>
+</totvs-page>

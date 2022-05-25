@@ -1,0 +1,107 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{'l-initial-page' | i18n}}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalconfigpdp/">{{'l-portal-config-clien-rep' | i18n}}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portaluserrelated/{{controller.father}}">{{'l-portal-user-related' | i18n}}</breadcrumb>
+            <breadcrumb>{{controller.title}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{controller.title}}"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new='true'>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form>
+            <fieldset>
+                    <form class="form-horizontal" role="form">
+                        <field type="input"
+                               class="col-lg-6 col-md-6 col-sm-12 col-xs-12 form-control-success"
+                               data-ng-model="controller.model.cod_usuario"
+                               data-ng-disabled="controller.idDisabled"
+                               maxlength="12"
+                               required
+                               canclean>
+                            <label>{{ 'l-user' | i18n }}</label>
+                            <validator key="required">{{ 'l-required' | i18n }}</validator>
+                        </field>                        
+                    </form>
+                    <form class="form-horizontal" role="form">
+                        <field type="input"
+                               class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                               data-ng-model="controller.model.nom_usuario"
+                               maxlength="32"
+                               required
+                               canclean>
+                            <label>{{ 'l-nom-user' | i18n }}</label>
+                            <validator key="required">{{ 'l-required' | i18n }}</validator>
+                        </field>                        
+                    </form>
+                    <form class="form-horizontal" role="form">
+                        <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                               type="email"                               
+                               maxlength="50"
+                               canclean
+                               required
+                               data-ng-model="controller.model.cod_e_mail_local"
+                               ng-required="true">
+                               <label>{{ 'l-email' | i18n }}</label>
+                               <validator key="required">{{ 'l-required' | i18n }}</validator>
+                               <validator key="email">{{ 'l-informa-valid-email' | i18n }}</validator>    
+                               <validator key="max">{{ 'l-max' | i18n }}</validator>
+                        </field>
+                    </form>                     
+                
+                    <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                            type="daterange"
+                            ng-model="controller.dateIniFimVal"
+                            required
+                            canclean
+                            ng-required="true">
+                        <label>{{'l-dt-val' | i18n}}</label>
+                        <validator key="required">{{ 'l-required' | i18n }}</validator>
+                    </field>
+                    <form class="form-horizontal" role="form">
+                        <field type="password"
+                               class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                               data-ng-model="controller.model.cod_senha"
+                               maxlength="16"
+                               required
+                               canclean
+                               ng-required="true">
+                            <label>{{ 'l-senha' | i18n }}</label>      
+                            <validator key="required">{{ 'l-required' | i18n }}</validator>
+                        </field>
+                    </form>
+                    <form class="form-horizontal" role="form">
+                        <field type="password"
+                               class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                               data-ng-model="controller.model.valid_senha"
+                               maxlength="16"
+                               required
+                               canclean
+                               ng-required="true">
+                            <label>{{ 'l-confirm-senha' | i18n }}</label>
+                            <validator key="required">{{ 'l-required' | i18n }}</validator>
+                        </field>                        
+                    </form>
+                    <!-- <form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-12" role="form">  
+                        <field type="checkbox"                               
+                               ng-model="controller.model.log_img_produto">
+                            <label>{{'l-exibir-imagem-produto' | i18n}}</label>
+                        </field>
+                    </form> -->
+					<form class="form-horizontal col-lg-6 col-md-6 col-sm-6 col-xs-12" role="form">  
+                        <field type="checkbox"                               
+                               ng-model="controller.model.log_novo_modelo">
+                            <label>{{'l-criar-modelo-pedido' | i18n}}</label>
+                        </field>
+                    </form>
+                </div>
+            </fieldset>
+        </totvs-page-form>       
+    </totvs-page-content>
+</totvs-page>

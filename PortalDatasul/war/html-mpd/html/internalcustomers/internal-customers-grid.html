@@ -1,0 +1,44 @@
+<totvs-grid grid-data="controller.orderList" 
+    grid="controller.grid" 
+    navigatable="true" 
+    selectable="row"
+    grid-height="275" 
+    auto-resize-content="true"
+    grid-selected-item="controller.customerListSelectedCust" 
+    resizable="true" 
+    reorderable="true"
+    sortable="true"
+    ng-click="controller.getSuspendedCustomers(controller.customerListSelectedCust['cod-emitente'], controller.customerListSelectedCust['identific'], controller.customerListSelectedCust['ind-cre-cli']);">
+    <totvs-grid-column field="cod-emitente" width="75">{{:: 'l-code' | i18n : [] : 'dts/mpd'}}
+        <template>
+            <a href="\\#/dts/mpd/internalcustomerdetail/{{dataItem['cod-emitente']}}">{{dataItem['cod-emitente']}}</a>
+        </template>
+    </totvs-grid-column>
+    <totvs-grid-column field="nome-abrev" width="250">{{:: 'l-short-name' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="nome-emit" width="400">{{:: 'l-nome-emit' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="e-mail" width="250">{{:: 'l-email' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="telefonelist" auto-resize-column="always" width="350">{{:: 'l-telefone' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="ramallist" auto-resize-column="always" width="250">{{:: 'l-ramal' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="contatolist" auto-resize-column="always" width="200">{{:: 'l-contato' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="endereco" width="350">{{:: 'l-endereco' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="cep" width="100">{{:: 'l-cep' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="bairro" width="250">{{:: 'l-bairro' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="caixa-postal" width="100">{{:: 'l-caixa-postal' | i18n : [] : 'dts/mpd'}} </totvs-grid-column>
+    <totvs-grid-column field="cidade" width="200">{{:: 'l-cidade' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="estado" width="100">{{:: 'l-estado' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="home-page" width="100">{{:: 'l-home-page' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="cod-gr-cli-desc" auto-resize-column="true" width="350">{{:: 'l-cod-gr-cli' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="natureza-desc" width="250">{{:: 'l-natureza' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="linha-produt" width="120">{{:: 'l-linha-produt' | i18n : [] : 'dts/mpd'}} </totvs-grid-column>
+    <totvs-grid-column field="nome-matriz" width="200">{{:: 'l-nome-matriz' | i18n : [] : 'dts/mpd'}} </totvs-grid-column>
+    <totvs-grid-column field="categoria" width="100">{{:: 'l-categoria' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="atividade" width="150">{{:: 'l-atividade' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="cgc" width="200">{{:: 'l-cgc-cli' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <% if (data.useRisk == true ) { %>
+    <totvs-grid-column field="statusMaisNegocios" width="200">{{:: 'l-supplier-partner-status' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <% } %>
+    <totvs-grid-column field="desc-sit-aval-cred" width="200">{{:: 'l-cod-sit-aval' | i18n : [] : 'dts/mpd'}} </totvs-grid-column>
+    <totvs-grid-column field="data-implant" filter="date : dd/MM/yyyy" width="150">{{:: 'l-dt-implant' | i18n :[] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="dt-ult-tit" filter="date : dd/MM/yyyy" width="150">{{:: 'l-dt-ult-tit' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+    <totvs-grid-column field="nr-mesina" width="150">{{:: 'l-nr-mesina' | i18n : [] : 'dts/mpd'}} </totvs-grid-column>
+</totvs-grid>

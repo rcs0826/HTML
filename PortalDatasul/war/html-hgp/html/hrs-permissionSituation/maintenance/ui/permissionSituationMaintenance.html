@@ -1,0 +1,150 @@
+
+<totvs-page type="base"> 
+<style type="text/css">
+    #custom-list-item{border: 0;background-color: #6e7d82;color: #fff;font-size: 14px;}    
+    #custom-list-item span{padding: 5px 0 5px 0;}    
+    .custom-center{text-align: center;}
+    .list-item{margin: 0 15px 0 15px;}
+</style>
+    <totvs-page-navbar >
+
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hrs-permissionSituation/">Permissões de Grupos de Usuário</breadcrumb>
+                <breadcrumb>Manutenção das Permissões de Grupos de Usuário</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Permissões do Grupo de Usuário">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                    <action class="btn-primary"
+                            ng-click="controller.save();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Fechar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content>     
+        <totvs-page-form t-name="controller.permissionSituationForm">
+            <fieldset>                                    
+                <totvs-row>                                                       
+                    <totvs-field totvs-select id="deGroupZoom" 
+                                 name-id="deGroupZoom" 
+                                 ng-model="controller.codGrp" 
+                                 label="Grupo de Usuários" 
+                                 class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                 required canclean 
+                                 select-service="global.groupZoomController"
+                                 zoom-service="global.groupZoomController"
+                                 ng-disabled="controller.action != 'INSERT'"
+                                 select-id="nmGrupo" 
+                                 select-description="dsDescricao">
+                    </totvs-field>                    
+                </totvs-row>        
+                <totvs-row style="padding-top: 30px;">
+                    <totvs-list-item id="custom-list-item">
+                        <totvs-list-item-content class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                            Status do Atendimento
+                        </totvs-list-item-content>
+
+                        <totvs-list-item-content class="custom-center col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                            Manutenção
+                        </totvs-list-item-content>
+
+                        <totvs-list-item-content class="custom-center col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                            Visualização
+                        </totvs-list-item-content>                        
+
+                        <totvs-list-item-content class="custom-center col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                            Sem Permissão
+                        </totvs-list-item-content>
+                    </totvs-list-item>                                    
+                    <totvs-list-item id="controller.codGrp" ng-repeat="status in controller.attendanceStatus">                              
+                        <totvs-list-item-content class="col-lg-9 col-md-9 col-sm-9 col-xs-12">{{status.label}}</totvs-list-item-content>
+
+                        <totvs-list-item-content class="custom-center col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                            <input type="radio"
+                                   ng-model="status.cdnPermis" 
+                                   name="status{{status.data}}" 
+                                   value="2"
+                                   ng-click="controller.onPermissionClick(status.data, status.cdnPermis)"
+                                   ng-disabled="controller.action == 'DETAIL'"/>
+                        </totvs-list-item-content>
+
+                        <totvs-list-item-content class="custom-center col-lg-1 col-md-1 col-sm-1 col-xs-12"> 
+                            <input type="radio" 
+                                   ng-model="status.cdnPermis" 
+                                   name="status{{status.data}}" 
+                                   value="1"
+                                   ng-click="controller.onPermissionClick(status.data, status.cdnPermis)"
+                                   ng-disabled="controller.action == 'DETAIL'"/>
+                        </totvs-list-item-content>
+                        
+                        <totvs-list-item-content class="custom-center col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                            <input type="radio"
+                                   ng-model="status.cdnPermis" 
+                                   name="status{{status.data}}" 
+                                   value="0"
+                                   ng-click="controller.onPermissionClick(status.data, status.cdnPermis)"
+                                   ng-disabled="controller.action == 'DETAIL'"/>
+                        </totvs-list-item-content>
+                    </totvs-list-item>                   
+                </totvs-row>                   
+            </fieldset>                
+        </totvs-page-form> 
+
+        <totvs-page-form ng-if="controller.permissionSituationList.length > 0">
+            <fieldset>                                    
+                <totvs-row>
+                    <totvs-list-item id="custom-list-item">
+                        <totvs-list-item-content class="col-lg-9 col-md-9 col-sm-9 col-xs-12">Status da Análise</totvs-list-item-content>
+                        <totvs-list-item-content class="custom-center col-lg-1 col-md-1 col-sm-1 col-xs-12">Manutenção</totvs-list-item-content>
+                        <totvs-list-item-content class="custom-center col-lg-1 col-md-1 col-sm-1 col-xs-12">Visualização</totvs-list-item-content>                        
+                        <totvs-list-item-content class="custom-center col-lg-1 col-md-1 col-sm-1 col-xs-12">Sem Permissão</totvs-list-item-content>                   
+                    </totvs-list-item>                                    
+                    <totvs-list-item id="controller.codGrp" ng-repeat="item in controller.permissionSituationList">                              
+                        <totvs-list-item-content class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                            {{item.idSituacao}} - {{item.nmSituacao}}
+                        </totvs-list-item-content>
+
+                        <totvs-list-item-content class="custom-center col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                            <input type="radio"
+                                   ng-model="item.cdnPermis" 
+                                   name="situacao{{item.idSituacao}}" 
+                                   value="2"
+                                   ng-disabled="controller.action == 'DETAIL'
+                                             || controller.disableAnalisysStatus == true"/>
+                        </totvs-list-item-content>
+
+                        <totvs-list-item-content class="custom-center col-lg-1 col-md-1 col-sm-1 col-xs-12"> 
+                            <input type="radio" 
+                                   ng-model="item.cdnPermis"
+                                   name="situacao{{item.idSituacao}}" 
+                                   value="1"
+                                   ng-disabled="controller.action == 'DETAIL'
+                                             || controller.disableAnalisysStatus == true"/>
+                        </totvs-list-item-content>
+                        
+                        <totvs-list-item-content class="custom-center col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                            <input type="radio"
+                                   ng-model="item.cdnPermis" 
+                                   name="situacao{{item.idSituacao}}" 
+                                   value="0"
+                                   ng-disabled="controller.action == 'DETAIL'
+                                             || controller.disableAnalisysStatus == true"/>
+                        </totvs-list-item-content>
+                    </totvs-list-item>                   
+                </totvs-row>                   
+            </fieldset>                
+        </totvs-page-form>        
+    </totvs-page-content>   
+</totvs-page>

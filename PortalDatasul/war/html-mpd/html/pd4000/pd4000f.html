@@ -1,0 +1,120 @@
+<div ng-controller="salesorder.pd4000AdvancePayment.Controller as advancePaymentController" totvs-custom-element="pd4000f">
+
+    <form novalidate>
+    <div class="row">
+
+		<div>
+			<div class="row col-md-12" style="margin-top:10px">
+				<div class="col-md-12">
+					<button class="btn btn-default" ng-click="advancePaymentController.save()"
+						ng-disabled="!advancePaymentController.enabledIndAntecip">
+						<span class="glyphicon glyphicon-save"></span>
+						<span class="hidden-xs ng-binding">&nbsp;&nbsp;Salvar</span>
+					</button>
+					<a class="btn btn-default" role="button" ng-click="advancePaymentController.cancel()" ng-if="!advancePaymentController.codEmit")
+						ng-disabled="!advancePaymentController.enabledIndAntecip">
+						<span class="glyphicon glyphicon-refresh"></span>
+						<span class="hidden-xs ng-binding">&nbsp;&nbsp;Descartar altera&ccedil;&otilde;es</span>
+					</a>
+					<a class="btn btn-default" role="button" ng-click="advancePaymentController.remove()" ng-if="!advancePaymentController.codEmit")
+						ng-disabled="!advancePaymentController.enabledIndAntecip">
+						<span class="glyphicon glyphicon-remove"></span>
+						<span class="hidden-xs ng-binding">&nbsp;&nbsp;Remover antecipa&ccedil;&otilde;es</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div style="overflow-y: auto;overflow-x: hidden; min-heigth: 280px" class="row pd4000atencipacoes">
+
+        <field type="checkbox"  class="col-xs-12" ng-model="advancePaymentController.order['ind-antecip']"
+               ng-disabled="!advancePaymentController.enabledIndAntecip" 
+               ng-change="advancePaymentController.changeIndAntecip()">
+            <label>{{:: 'Possui Antecipações' | i18n : [] : 'dts/mpd'}}</label>
+        </field>
+
+        <totvs-field totvs-datepicker ng-model="advancePaymentController.ttPrepaymentPD4000['data-antecip-1']" 
+            ng-disabled="!advancePaymentController.enabled"
+            label="{{:: 'Data Antecipa&ccedil;&atilde;o 1' | i18n : [] : 'dts/mpd' }}">            
+        </totvs-field>
+        
+        <field type="decimal" ng-model="advancePaymentController.ttPrepaymentPD4000['vl-antecip-1']" ng-model-options="{ updateOn: 'blur' }"
+            ng-disabled="!advancePaymentController.enabled"
+            data-v-max="999999999.99"
+            data-m-dec="2">
+            <label>{{:: 'Valor Antecipa&ccedil;&atilde;o 1' | i18n : [] : 'dts/mpd' }}</label>
+        </field>
+                
+        <totvs-field totvs-datepicker ng-model="advancePaymentController.ttPrepaymentPD4000['data-antecip-2']" 
+            ng-disabled="!advancePaymentController.enabled"
+            label="{{:: 'Data Antecipa&ccedil;&atilde;o 2' | i18n : [] : 'dts/mpd' }}">            
+        </totvs-field>
+        
+        <field type="decimal"  ng-model="advancePaymentController.ttPrepaymentPD4000['vl-antecip-2']" ng-model-options="{ updateOn: 'blur' }"
+            ng-disabled="!advancePaymentController.enabled"
+            data-v-max="999999999.99"
+            data-m-dec="2">
+            <label>{{:: 'Valor Antecipa&ccedil;&atilde;o 2' | i18n : [] : 'dts/mpd' }}</label>
+        </field>
+
+        <totvs-field  totvs-datepicker ng-model="advancePaymentController.ttPrepaymentPD4000['data-antecip-3']" 
+            ng-disabled="!advancePaymentController.enabled"
+            label="{{:: 'Data Antecipa&ccedil;&atilde;o 1' | i18n : [] : 'dts/mpd' }}">            
+        </totvs-field>
+        
+        <field type="decimal"  ng-model="advancePaymentController.ttPrepaymentPD4000['vl-antecip-3']" ng-model-options="{ updateOn: 'blur' }"
+            ng-disabled="!advancePaymentController.enabled"
+            data-v-max="999999999.99"
+            data-m-dec="2">
+            <label>{{:: 'Valor Antecipa&ccedil;&atilde;o 3' | i18n : [] : 'dts/mpd' }}</label>
+        </field>
+
+        <totvs-field totvs-datepicker ng-model="advancePaymentController.ttPrepaymentPD4000['data-antecip-4']" 
+            ng-disabled="!advancePaymentController.enabled"
+            label="{{:: 'Data Antecipa&ccedil;&atilde;o 4' | i18n : [] : 'dts/mpd' }}">            
+        </totvs-field>
+        
+        <field type="decimal"  ng-model="advancePaymentController.ttPrepaymentPD4000['vl-antecip-4']" ng-model-options="{ updateOn: 'blur' }"
+            ng-disabled="!advancePaymentController.enabled"
+            data-v-max="999999999.99"
+            data-m-dec="2">
+            <label>{{:: 'Valor Antecipa&ccedil;&atilde;o 4' | i18n : [] : 'dts/mpd' }}</label>
+        </field>
+
+        <totvs-field totvs-datepicker ng-model="advancePaymentController.ttPrepaymentPD4000['data-antecip-5']" 
+            ng-disabled="!advancePaymentController.enabled"
+            label="{{:: 'Data Antecipa&ccedil;&atilde;o 5' | i18n : [] : 'dts/mpd' }}">            
+        </totvs-field>
+        
+        <field type="decimal"  ng-model="advancePaymentController.ttPrepaymentPD4000['vl-antecip-5']" ng-model-options="{ updateOn: 'blur' }"
+            ng-disabled="!advancePaymentController.enabled"
+            data-v-max="999999999.99"
+            data-m-dec="2">
+            <label>{{:: 'Valor Antecipa&ccedil;&atilde;o 5' | i18n : [] : 'dts/mpd' }}</label>
+        </field>
+
+        <totvs-field totvs-datepicker ng-model="advancePaymentController.ttPrepaymentPD4000['data-antecip-6']" 
+            ng-disabled="!advancePaymentController.enabled"
+            label="{{:: 'Data Antecipa&ccedil;&atilde;o 6' | i18n : [] : 'dts/mpd' }}">            
+        </totvs-field>
+        
+        <field type="decimal"  ng-model="advancePaymentController.ttPrepaymentPD4000['vl-antecip-6']" ng-model-options="{ updateOn: 'blur' }"
+            ng-disabled="!advancePaymentController.enabled"
+            data-v-max="999999999.99"
+            data-m-dec="2">
+            <label>{{:: 'Valor Antecipa&ccedil;&atilde;o 6' | i18n : [] : 'dts/mpd' }}</label>
+        </field>
+        
+        <field type="textarea" class="col-xs col-sm-12 col-md-12" ng-required
+            ng-model="advancePaymentController.ttPrepaymentPD4000['observacoes']" 
+            ng-disabled="!advancePaymentController.enabled">
+            <label>{{:: 'Observações' | i18n : [] : 'dts/mpd'}}</label>
+            <validator key="required">Observação deve ser informada</validator>
+        </field>
+        
+        
+    </div>
+
+    </form>
+</div>

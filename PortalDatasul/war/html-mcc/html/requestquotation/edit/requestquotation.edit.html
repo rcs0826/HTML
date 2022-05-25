@@ -1,0 +1,441 @@
+<style type="text/css">
+    .status-1, .status-item-1{
+        background-color: #f15a22 !important;
+    }
+    .status-2, .status-item-2{
+        background-color: #faa61a !important;
+    }
+    .status-3, .status-item-3{
+        background-color: #6A5ACD !important;
+    }
+    .status-4, .status-item-4{
+        background-color: #04B404 !important;
+    }
+    .status-5{
+        background-color: #C9C50E !important;
+    }
+    .status-6, .status-item-5{
+        background-color: #0E81C9 !important;
+    }
+    totvs-button{
+        margin: 0 5px;
+        float: left;
+    }
+    h5{
+        margin-top: 15px !important;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #ddd;
+    }
+    .span-label{
+        font-family: 'Arial';
+        margin-bottom: 5px;
+        font-weight: 200;
+        font-size: 12px;
+        color: gray;
+    }
+    .list-item{
+        margin-bottom: 5px;
+    }
+    .bootstrap-switch{
+        margin-top: 5px;
+    }
+    #vendorReputation .item-field, #vendorReputation .item-field > *{
+        float: left;
+    }
+    #vendorReputation totvs-rating span{
+        font-size: 16px;
+    }
+
+    /* Customizar o tamanho do popover */
+    .popover{
+        max-width: 450px;
+    }
+
+    .btn-zoom-custom{
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+        z-index: 2 !important;
+        margin-left: -1px !important;
+    }
+    .field-custom{
+        padding: 0 !important;
+    }
+    .field-custom .field-container, .add-button-custom .field-container{
+        margin-top: 0 !important;
+    }
+    .field-custom input{
+        border-top-left-radius: 4px !important;
+        border-bottom-left-radius: 4px !important;
+    }
+
+</style>
+<totvs-page totvs-custom-element="customQuotationProcess_edit">
+    <totvs-page-navbar>  
+
+        <!-- Se for uma edição -->
+        <totvs-page-breadcrumb ng-if="controller.isUpdate">
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/mcc/requestquotation">{{'l-quotation-process' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb>{{'l-edit' | i18n: []: 'dts/mcc'}}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <!-- Se for uma inclusão -->
+        <totvs-page-breadcrumb ng-if="!controller.isUpdate">
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/mcc/requestquotation">{{'l-quotation-process' | i18n: []: 'dts/mcc'}}</breadcrumb>
+
+            <breadcrumb>
+                <span class="hidden-sm hidden-lg hidden-md">{{'l-new' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-xs">{{'l-new-quotation-process' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb> 
+
+      <totvs-page-header>
+
+        <totvs-page-header-title title="{{'l-quotation-process' | i18n: []: 'dts/mcc'}} {{controller.model.ttQuotationProcess['cdd-solicit']}}" ng-if="controller.isUpdate"></totvs-page-header-title>
+
+        <totvs-page-header-title title="{{'l-new-quotation-process' | i18n: []: 'dts/mcc'}}" ng-if="!controller.isUpdate"></totvs-page-header-title>
+
+        <totvs-page-header-operation>
+           <totvs-page-header-operation-action class="hidden-xs">
+                <action ng-click="controller.onCancel();">{{ 'l-close' | i18n: []: 'dts/mcc' }}</action>
+                <action ng-click="controller.onQuotationsAnswersProcess()" ng-disabled="!controller.enableAnswersQuotationButton">{{ 'l-answers' | i18n: []: 'dts/mcc' }}</action>
+                <action ng-click="controller.onSendRequest();" ng-disabled="!controller.enableSendButton" class="btn-primary">{{ 'l-send-request' | i18n: []: 'dts/mcc' }}</action>
+           </totvs-page-header-operation-action>
+
+           <div class="btn-group hidden-md hidden-lg hidden-sm col-xs-12">
+              <a class="btn btn-default dropdown-toggle pull-right" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top: 5px">
+                    <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    <span class="caret"></span>
+              </a>
+              
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="#" ng-click="controller.onCancel();">{{ 'l-close' | i18n: []: 'dts/mcc' }}</a></li>
+                <li><a href="#" ng-click="controller.onSendRequest();">{{ 'l-send-request' | i18n: []: 'dts/mcc' }}</a></li>
+              </ul>
+            </div>
+
+        </totvs-page-header-operation>
+      </totvs-page-header>   
+    </totvs-page-navbar>
+    <totvs-page-content>     
+        <totvs-page-form>
+            <totvs-field totvs-number
+                   class="col-lg-2 col-md-2 col-sm-4 col-xs-12 hide"
+                   label="{{ 'l-solicitation' | i18n: []: 'dts/mcc' }}"
+                   required
+                   name-id="solicitation"
+                   ng-maxlength="9"
+                   ng-model="controller.model.ttQuotationProcess['cdd-solicit']"
+                   ng-disabled="true">
+            </totvs-field>  
+            <div class="col-lg-3 col-md-2 col-sm-4 col-xs-12" style="padding-top: 2px">
+                {{ 'l-solicitation' | i18n: []: 'dts/mcc' }}: {{controller.model.ttQuotationProcess['cdd-solicit']}}
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12">
+                <totvs-editable value="{{ 'l-description' | i18n }}: {{controller.model.ttQuotationProcess['des-solicit']}}" 
+                                id="solicitationDescription" placement="bottom" on-complete="controller.updateEditable()">
+                    <totvs-field totvs-input
+                        name-id="description"
+                        maxlength="100"
+                        ng-disabled="controller.enableFields && !controller.enableFields['des-solicit']"
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        ng-model="controller.model.ttQuotationProcess['des-solicit']"
+                        label="{{ 'l-description' | i18n: []: 'dts/mcc' }}">
+                    </totvs-field>
+                </totvs-editable>
+            </div>
+
+
+            <div class="col-lg-3 col-md-4 col-sm-3 col-xs-12 text-right">
+                <span ng-class="controller.statusClass" class="badge"><!--style="margin-top: 20px !important;"-->
+                        {{controller.model.ttQuotationProcess['des-situacao']}}
+                </span>
+            </div>
+
+            <totvs-row>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <totvs-editable value="{{ 'l-buyer' | i18n }}: {{controller.model.ttQuotationProcess['cod-usuar-solic']}}" 
+                                id="buyerSolicitation" placement="auto left" on-complete="controller.updateEditable()">
+                    <totvs-field totvs-select
+                        id="buyer"
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        ng-model="controller.model.ttQuotationProcess['cod-usuar-solic']"
+                        label="{{ 'l-buyer' | i18n }}"
+                        select-id="cod-comprado"
+                        select-description="nome"
+                        select-match='[{"field":"cod-comprado", "separator":" - "}, {"field":"nome"}]'
+                        select-service="mcc.comprador.zoom"
+                        zoom-service="mcc.comprador.zoom"
+                        required
+                        canclean>
+                    </totvs-field>
+                </totvs-editable>
+            </div>
+            </totvs-row>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <totvs-editable value="{{ 'l-supplementary-description' | i18n }}: {{controller.model.ttQuotationProcess['dsl-compltar']}}"
+                                id="complementDescriptionSolicitation" placement="bottom" on-complete="controller.updateEditable()">
+                    <field  type="textarea"
+                            id="complementDescription"
+                            class="col-xs-12"
+                            rows="6"
+                            maxlength="2000"
+                            label="{{ 'l-supplementary-description' | i18n: []: 'dts/mcc' }}"
+                            ng-model="controller.model.ttQuotationProcess['dsl-compltar']">
+                    </field>
+                </totvs-editable>
+            </div>
+            <div class="col-xs-12 text-right" style="margin-top: 15px">
+                <button class="btn btn-default" ng-click="controller.onConfigureEmailHeader()">
+                    <span class="glyphicon glyphicon-envelope"></span>
+                    <span class="hidden-xs">&nbsp;{{ 'l-configure-emails' | i18n: []: 'dts/mcc' }}</span>
+                </button>
+                <button class="btn btn-default" ng-click="controller.onPrintSpreadsheetHeader()">
+                    <span class="glyphicon glyphicon-print"></span>
+                    <span class="hidden-xs">&nbsp;{{ 'l-spreadsheet-without-vendors' | i18n: []: 'dts/mcc' }}</span>
+                </button>
+                <!-- REMOVIDO DA PRIMEIRA VERSÃO A SER DISPONIBILIZADA-->
+                <!--<button class="btn btn-default" ng-click="controller.onPurchasePortal()">
+                    <span class="glyphicon glyphicon-shopping-cart"></span>
+                    <span class="hidden-xs">&nbsp;{{ 'l-purchase-portal' | i18n: []: 'dts/mcc' }}</span>
+                </button>-->
+            </div>
+        </totvs-page-form>
+        <totvs-page-form>
+            <!--Itens da solicitação de cotação-->
+            <div class="col-xs-12">
+                <h5>{{ 'l-solicitation-items' | i18n: []: 'dts/mcc' }}</h5>  
+            </div>
+
+            <!-- REMOVIDO DA PRIMEIRA VERSÃO A SER DISPONIBILIZADA-->
+            <!--div class="col-xs-12" style="margin-top: 5px" ng-show="controller.model.ttClicbusinessIntegration['param-clic']">
+              <span class="span-label">{{ 'l-clicbusiness-visible' | i18n: []: 'dts/mcc' }}</span>
+              <br>
+              <input id="clicbusinessVisible" type="checkbox"
+                  ng-model="controller.model.clicbusinessVisible"
+                  bsswitch                  
+                  class="col-sm-3">
+              </input>
+            </div-->
+            <div class="col-xs-12" style="padding: 0">
+              <div class="field">
+                <label class="col-xs-12 field-label">{{:: 'l-purchase-orderline' | i18n}}</label>
+                <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5">
+                    <field type="input"
+                        id="purchaseorderlineLink"
+                        class="field-custom col-xs-7 col-sm-8"
+                        ng-model="controller.purchaseorderlineAdd"
+                        numbers-only
+                        maxlength="8"
+                        ng-keypress="controller.onKeyPressOrderLine($event)"
+                        ng-blur="controller.onChangeOrderlineField()">
+                    </field>
+                    <button 
+                        class="btn-zoom-custom btn btn-default col-xs-2 col-sm-1 col-md-1"
+                        ng-model="controller.purchaseorderlineZoom"
+                        zoom
+                        zoom-service="mcc.ordem-compra.zoom"
+                        zoom-multiple="true"
+                        zoom-init="{filter : {'ordem-compra.situacao' : '1',
+                                              'ordem-compra.cod-comprado': controller.valorcomprador} }"						
+                        zoom-selected="controller.onChangeOrderline(selected)"
+                        ng-change="controller.onChangeOrderlineAux()">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                    <div class="hidden-xs col-sm-3"> 
+                        <totvs-button class="add-button-custom" t-click="controller.addPurchaseOrderline()" t-label="{{ 'l-link' | i18n: []: 'dts/mcc' }}" t-icon="glyphicon-plus"></totvs-button>
+                    </div>
+                    <div class="hidden-sm hidden-md hidden-lg col-xs-2"> 
+                        <totvs-button class="add-button-custom" t-click="controller.addPurchaseOrderline()" t-icon="glyphicon-plus"></totvs-button>
+                    </div>
+                </div>
+            </div>
+
+              
+            </div>
+        </totvs-page-form>
+        <div style="padding: 0 20px 15px">
+            <totvs-page-child type="list">
+                <totvs-list-item ng-repeat="orderline in controller.model.ttPurchRequisitionInfo" totvs-custom-element="customQuotationProcess_listOrderLine">
+                     <totvs-list-item-header>
+                         <totvs-list-item-title class="col-xs-10 col-sm-5 col-md-7 col-lg-7" title="{{ 'l-requisition' | i18n: []: 'dts/mcc' }}: {{orderline['numero-ordem']}} " link="#/dts/mcc/purchaseorderline/detail/{{orderline['numero-ordem']}}">
+                         <span class="badge" ng-class="orderline['itemStatusClass']">{{orderline['situacao-solic-desc']}}</span>
+                        </totvs-list-item-title>
+                        <totvs-list-item-action 
+                            limit-primary-action="2" 
+                            class="col-xs-2 col-sm-7 col-md-5 col-lg-5">
+                            <!-- REMOVIDO DA PRIMEIRA VERSÃO A SER DISPONIBILIZADA-->
+                            <!--action ng-click="controller.onSendQuotation(orderline['numero-ordem']);" icon="glyphicon-send">{{ 'l-send-request' | i18n: []: 'dts/mcc' }}</action-->
+
+                            <action icon="glyphicon-shopping-cart" ng-click="controller.onOrderVendors(orderline['numero-ordem'])">{{ 'l-vendors' | i18n: []: 'dts/mcc' }}</action>
+
+                            <action icon="glyphicon-trash" ng-click="controller.onUnlinkOrderLine(orderline['numero-ordem'])">{{ 'l-unlink' | i18n: []: 'dts/mcc' }}</action>
+
+                            <!-- REMOVIDO DA PRIMEIRA VERSÃO A SER DISPONIBILIZADA-->
+                            <!--action ng-click="controller.onAnswersOrder(orderline['numero-ordem'])">{{ 'l-answers' | i18n: []: 'dts/mcc' }}</action-->
+
+                            <action icon="glyphicon-list-alt" ng-click="controller.onSolicitationsOrder(orderline['numero-ordem']);">{{ 'l-solicitations' | i18n: []: 'dts/mcc' }}</action>
+                            
+                            <action icon="glyphicon-list-alt" ng-click="controller.onQuotationAnswers(orderline['numero-ordem']);" ng-if="orderline['situacao-solic'] != 1 && orderline['situacao-solic'] != 2">{{ 'l-answers' | i18n: []: 'dts/mcc' }}</action>
+                        </totvs-list-item-action>
+                    </totvs-list-item-header>
+                    <totvs-list-item-content>
+                        <totvs-list-item-info
+                            id="orderlineItem"
+                            title="{{ 'l-item' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-6 col-sm-6 col-xs-12"
+                            value="{{orderline['it-codigo']}} - {{orderline['it-codigo-desc']}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info
+                            id="orderlineUM"
+                            title="{{ 'l-um' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-6 col-sm-6 col-xs-12"
+                            value="{{orderline['un']}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info
+                            id="orderlineSite"
+                            title="{{ 'l-site' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-3 col-sm-6 col-xs-12"
+                            value="{{orderline['cod-estabel']}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info
+                            id="orderlineQuantity"
+                            title="{{ 'l-quantity' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-3 col-sm-6 col-xs-12"
+                            value="{{orderline['qt-solic'] | number : 4}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info
+                            id="orderlineDeliveryDate"
+                            title="{{ 'l-delivery-date' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-3 col-sm-6 col-xs-12"
+                            value="{{orderline['data-entrega-desc']}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info
+                            id="orderlineStatus"
+                            title="{{ 'l-status' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-3 col-sm-6 col-xs-12"
+                             value="{{orderline['situacao-desc']}}">
+                            
+                        </totvs-list-item-info>
+                    </totvs-list-item-content>
+                </totvs-list-item>
+            </totvs-page-child>
+        </div>
+        <totvs-page-form>
+            <div class="col-xs-12">
+                <h5>{{ 'l-vendors' | i18n: []: 'dts/mcc' }}</h5>  
+            </div>
+            <div class="col-xs-12">
+                <div class="alert alert-info" role="alert" style="margin-bottom: 5px">
+                    {{ 'l-suggested-vendor-quotation-process-msg' | i18n: []: 'dts/mcc' }}
+                </div>
+            </div>
+            <div class="col-xs-12" style="margin-top: 5px">
+              <span class="span-label">{{ 'l-suggest-vendor-related-msg' | i18n: []: 'dts/mcc' }}</span>
+              <br>
+              <input type="checkbox"
+                  id="suggestVendorRelated"
+                  ng-model="controller.suggestVendorRelated"
+                  ng-change="controller.onChangeSuggestVendorRelated()"
+                  bsswitch                  
+                  class="col-sm-3">
+              </input>
+            </div>
+            
+            <div class="col-xs-12" style="padding: 0">
+              <totvs-field totvs-select
+                    label="{{ 'l-vendor' | i18n }}"
+                    ng-model="controller.model.ttCotacaoItem['cod-emitente']"
+                    select-init="{gotomethod: 'gotocodemitenteonlyfornec', filter:{'identific': '2|3'}}"
+                    select-id="cod-emitente"
+                    select-description="nome-abrev"
+                    select-service="mpd.emitente.zoom"
+                    zoom-service="mpd.emitente.zoom"
+                    zoom-init="{filter:{'identific': '2|3'}}"
+                    ng-change="controller.getVendor(controller.model.ttCotacaoItem['cod-emitente']);controller.changeField('cod-emitente')"
+                    canclean
+                    ng-disabled="controller.enableFields && !controller.enableFields['cod-emitente']"
+                    style="padding-right:0px"
+					class="col-md-5 col-sm-6 col-xs-8 col-lg-4">
+                </totvs-field>
+
+              <div class="hidden-xs" style="margin-top: 29px; padding: 0"> 
+                <totvs-button t-click="controller.addVendor()" t-label="{{ 'l-link' | i18n: []: 'dts/mcc' }}" t-icon="glyphicon-plus"></totvs-button>
+                <!-- REMOVIDO DA PRIMEIRA VERSÃO A SER DISPONIBILIZADA-->
+                <!--<totvs-button t-click="controller.searchVendorClicbusiness()" t-label="{{ 'l-search-vendors' | i18n: []: 'dts/mcc' }}" t-icon="glyphicon-globe"></totvs-button>-->
+              </div>
+              <div class="hidden-sm hidden-md hidden-lg col-xs-4" style="margin-top: 29px; padding: 0"> 
+                <totvs-button t-click="controller.addVendor()" t-icon="glyphicon-plus"></totvs-button>
+                <!-- REMOVIDO DA PRIMEIRA VERSÃO A SER DISPONIBILIZADA-->
+                <!--<totvs-button t-click="controller.searchVendorClicbusiness()" t-icon="glyphicon-globe"></totvs-button>-->
+              </div>
+            </div>
+        </totvs-page-form>
+        <div style="padding: 0 20px 15px">
+            <totvs-page-child type="list">
+                <totvs-list-item ng-repeat="vendor in controller.model.ttVendorList" totvs-custom-element="customQuotationProcess_listVendors">
+                     <totvs-list-item-header>
+                         <totvs-list-item-title class="col-xs-10 col-sm-4 col-md-6 col-lg-7" title="{{vendor['cod-emitente']}} - {{vendor['nome-abrev']}}"
+                         ng-if="!vendor['l-fornec-clic']">
+                         </totvs-list-item-title>
+                         <totvs-list-item-title class="col-xs-10 col-sm-4 col-md-6 col-lg-7" title="(Clicbusiness) - {{vendor['nome-abrev']}}" ng-if="vendor['l-fornec-clic']">
+                        </totvs-list-item-title>
+
+                        <totvs-list-item-action 
+                            limit-primary-action="2" 
+                            class="col-xs-2 col-sm-8 col-md-6 col-lg-5">
+                            
+                            <action ng-click="controller.onUnlinkVendor(vendor)" icon="glyphicon-trash">{{ 'l-unlink' | i18n: []: 'dts/mcc' }}</action>
+
+                            <action ng-click="controller.onConfigureEmail(vendor);" icon="glyphicon-envelope">{{ 'l-configure-email' | i18n: []: 'dts/mcc' }}</action>
+
+                            <action ng-click="controller.onPrintSpreadsheet(vendor)" icon="glyphicon-print">{{ 'l-print-spreadsheet' | i18n: []: 'dts/mcc' }}</action>
+
+                        </totvs-list-item-action>
+                    </totvs-list-item-header>
+                    <totvs-list-item-content>
+                        <totvs-list-item-info
+                            id="vendorName"
+                            title="{{ 'l-name' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-6 col-sm-6 col-xs-12"
+                            value="{{vendor['nome-emit']}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info
+                            id="vendorCgc"
+                            title="{{ 'l-cnpj-cpf' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-6 col-sm-6 col-xs-12"
+                            value="{{vendor['cgc']}}">
+                        </totvs-list-item-info>
+                        <!-- REMOVIDO DA PRIMEIRA VERSÃO A SER DISPONIBILIZADA-->
+                        <!--<totvs-list-item-info
+                            id="vendorReputation"
+                            ng-if="controller.model.ttClicbusinessIntegration['param-clic'] && vendor['reputacao'] > 0"
+                            title="{{ 'l-reputation' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-6 col-sm-6 col-xs-12">
+                            <a target="_blank" ng-click="controller.openVendorProfile(vendor)" style="cursor: pointer;">
+                                <totvs-rating ng-model="vendor['reputacao']"></totvs-rating>
+                            </a>
+                        </totvs-list-item-info>-->
+
+                        <totvs-list-item-info
+                            id="vendorEmail"
+                            title="{{ 'l-email-to' | i18n: []: 'dts/mcc' }}"
+                            class="col-xs-12"
+                            value="{{vendor['e-mail']}}">
+                        </totvs-list-item-info>
+                    </totvs-list-item-content>
+                </totvs-list-item>
+            </totvs-page-child>
+        </div>
+
+    </totvs-page-content>
+</totvs-page>

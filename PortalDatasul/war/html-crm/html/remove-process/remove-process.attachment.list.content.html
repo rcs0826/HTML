@@ -1,0 +1,94 @@
+<totvs-page-content style="border-top: 1px dotted #e4e4e4;">
+
+	<totvs-page-content-header style="border-bottom: 0px;">
+		<fieldset>
+			<field type="input"
+				canclean="undefined"
+				maxlength="8"
+				numbers-only
+			    class="col-xs-12 col-sm-4 col-md-4"
+				ng-model="controllerRemoveProcess.basicFilter.attachment.num_id"
+				placeholder="{{ 'l-code' | i18n: []: 'dts/crm' }}">
+				<label>{{ 'l-code' | i18n: []: 'dts/crm' }}</label>
+			</field>
+			<field type="daterange"
+				canclean="undefined"
+				class="col-xs-12 col-sm-6 col-md-7"
+				ng-model="controllerRemoveProcess.basicFilter.attachment.dat_atualiz"
+				start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+				end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+				<label>{{ 'l-date-update' | i18n: []: 'dts/crm' }}</label>
+			</field>
+			<div class="col-xs-12 col-sm-2 col-md-1" style="margin-top: 27px;">
+				<button class="btn btn-default pull-right"
+						ng-click="controllerRemoveProcess.search(false, true);">{{ 'btn-apply' | i18n: []: 'dts/crm' }}
+				</button>
+			</div>
+		</fieldset>
+	</totvs-page-content-header>
+
+	<totvs-page-content-header>
+		<totvs-page-quick-select
+			title="{{ 'l-select-all' | i18n: []: 'dts/crm' }} (Selecionados {{(controllerRemoveProcess.listOfAttachments | filter:{$selected:'true'}).length}} de {{controllerRemoveProcess.listOfAttachmentsCount}})"
+			list="controllerRemoveProcess.listOfAttachments">
+		</totvs-page-quick-select>
+	</totvs-page-content-header>
+
+	<totvs-page-alert
+		ng-if="controllerRemoveProcess.listOfAttachments.length <= 0"
+		type="info"
+		message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+	</totvs-page-alert>
+
+	<totvs-list-item
+		id="attachment{{attachment.num_id}}"
+		ng-repeat="attachment in controllerRemoveProcess.listOfAttachments"
+		selected="attachment">
+		<totvs-list-item-header>
+			<totvs-list-item-title>
+				{{ attachment.num_id }} - {{ attachment.nom_arq }}
+			</totvs-list-item-title>
+		</totvs-list-item-header>
+		<totvs-list-item-content>
+			<totvs-list-item-info
+				value-break="false"
+				class="col-xs-12 col-sm-3"
+				title="{{ 'l-type' | i18n: []: 'dts/crm' }}">
+				{{ attachment.nom_tipo }}
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-3"
+				title="{{ 'l-date-update' | i18n: []: 'dts/crm' }}"
+				value="{{ attachment.dat_atualiz | date : ('l-date-format' | i18n: []: 'dts/crm') }}">
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				ng-if="attachment.num_livre_1 && attachment.num_livre_1 > 0"
+				class="col-xs-12 col-sm-3"
+				title="{{ 'l-code-fluig' | i18n: []: 'dts/crm' }}"
+				value="{{ attachment.num_livre_1 }}">
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-3"
+				title="{{ 'l-detected' | i18n: []: 'dts/crm' }}"
+				value="{{ (attachment.log_existe == true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}">
+			</totvs-list-item-info>
+		</totvs-list-item-content>
+
+		<!--totvs-list-item-content-detail>
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-3"
+				title="{{ 'l-description' | i18n: []: 'dts/crm' }}"
+				value="{{ attachment.dsl_arq_docto }}">
+			</totvs-list-item-info>
+		</totvs-list-item-content-detail-->
+
+	</totvs-list-item>
+
+	<totvs-list-pagination
+		ng-if="controllerRemoveProcess.listOfAttachments.length < controllerRemoveProcess.listOfAttachmentsCount && controllerRemoveProcess.listOfAttachments.length"
+		ng-click="controllerRemoveProcess.search(true);">
+	</totvs-list-pagination>
+</totvs-page-content>

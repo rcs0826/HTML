@@ -1,0 +1,306 @@
+<div ng-include="'/dts/mla/html/template/detail/doc-1.html'"></div>
+
+<span class="subtitulo" ng-if="controller.request['tt-cotacao'].length > 0">{{ 'l-quotations' | i18n}}</span>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">   
+    <totvs-list-item
+        id="cotacao{{::cotacao['cod-emitente']}}{{::cotacao['seq-cotac']}}"
+        ng-class="tab-1"
+        ng-repeat="cotacao in ::controller.request['tt-cotacao']"
+        totvs-custom-element="customDetail2_listItem">
+
+        <totvs-list-item-header>            
+            <totvs-list-item-info title="{{ 'l-approval-short' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                <span ng-bind="controller.checkLogValue(cotacao['aprovada'])"></span>
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-vendor-short' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['cod-emitente']}} - {{::cotacao['nome-abrev']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-currency' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['mo-codigo']}} - {{::cotacao['desc-mo-codigo']}}
+            </totvs-list-item-info>      
+            
+            <totvs-list-item-info title="{{ 'l-measure-unit-vendor' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['un']}} - {{::cotacao['desc-un']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-payment-term' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['cod-cond-pag']}} - {{::cotacao['desc-cond-pagto']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-time' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['prazo-entreg']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-unit-price-vendor' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['pre-unit-for']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-total-price-without-ipi' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['preco-total']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-total-price-with-ipi' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['preco-total-ipi']}}
+            </totvs-list-item-info>
+        </totvs-list-item-header>
+        
+
+        <totvs-list-item-content-detail>
+            <totvs-list-item-info title="{{ 'l-vendor-price' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['preco-fornec']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-average-price' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['preco-medio']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-calculated-total-price' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['preco-total-calc']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-discount' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['perc-descto']}}% - {{::cotacao['valor-descto']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-ipi-micro' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['aliquota-ipi']}}% - {{::cotacao['valor-ipi']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-included-ipi' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                <span ng-bind="controller.checkLogValue(cotacao['codigo-ipi'])"></span>
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-freight-value' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['valor-frete']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-included-freight' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                <span ng-bind="controller.checkLogValue(cotacao['frete'])"></span>
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-icm-perc' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['aliquota-icm']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-financial-incubencies' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                <span ng-bind="controller.checkLogValue(cotacao['taxa-financ'])"></span>
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-financial-tax-short' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['valor-taxa']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-days-tax' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['nr-dias-taxa']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-carrier' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['cod-transp']}} - {{::cotacao['desc-cod-transp']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-buyer' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['cod-comprado']}} - {{::cotacao['nome-comprador']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-quotation-date' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::cotacao['data-cotacao']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-manufacturer' | i18n}}" class="col-xs col-sm-12 col-md-12">
+                {{::cotacao['cdn-fabrican']}} - {{::cotacao['des-fabrican']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-narrative' | i18n}}" class="col-xs col-sm-12 col-md-12 text-justify">
+                {{::cotacao['narrativa']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-narrative-win-quotation' | i18n}}" class="col-xs col-sm-12 col-md-12 text-justify">
+                {{::cotacao['c-aprovada']}}
+            </totvs-list-item-info>
+
+            <div class="col-xs-12 col-sm-12 col-md-12" style="margin-top: 15px">
+                <a ng-click="controller.showDetail('detalhe_fornec_cotac___' + cotacao['cod-emitente'] + cotacao['seq-cotac'])" style="cursor:pointer; text-decoration: underline;">
+                    {{ 'l-vendor-information' | i18n}}
+                </a>
+            </div>
+            <div id="detalhe_fornec_cotac___{{::cotacao['cod-emitente']}}{{::cotacao['seq-cotac']}}" class="col-xs-12 col-sm-12 col-md-12" style="display: none; padding: 0; margin-top: 10px">
+                
+                <totvs-list-item-info title="{{ 'l-company-name' | i18n}}" class="col-xs col-sm-8 col-md-8">
+                    {{::cotacao['nome-emit']}}
+                </totvs-list-item-info>
+
+                <totvs-list-item-info title="{{ 'l-phone' | i18n}}" class="col-xs col-sm-4 col-md-4">
+                    {{::cotacao['fone-contato']}} ({{ 'l-branch' | i18n}}: {{::cotacao['ramal-contato']}})
+                </totvs-list-item-info>
+
+                <totvs-list-item-info title="{{ 'l-localization' | i18n}}" class="col-xs col-sm-12 col-md-12">
+                    {{::cotacao['cidade-estado']}}
+                </totvs-list-item-info>
+
+                <totvs-list-item-info title="{{ 'l-contact' | i18n}}" class="col-xs col-sm-12 col-md-12">
+                    {{::cotacao['nome-contato']}}
+                </totvs-list-item-info>
+            </div>
+
+        </totvs-list-item-content-detail> 
+    </totvs-list-item>
+</div>
+
+<span class="subtitulo" ng-if="controller.request['tt-ultima-compra'].length > 0">{{ 'l-last-purchase' | i18n}}</span>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">   
+    <totvs-list-item
+        id="ultima_compra"
+        ng-class="tab-1"
+        ng-repeat="ultimaCompra in ::controller.request['tt-ultima-compra']"
+        totvs-custom-element="customDetail3_listItem">
+
+        <totvs-list-item-header>        
+
+            <totvs-list-item-info title="{{ 'l-order' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['num-pedido']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-requisition' | i18n}}" class="col-xs col-sm-6 col-md-8">
+                {{::ultimaCompra['numero-ordem']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-quantity' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['qt-solic']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-vendor-short' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['cod-emitente']}} - {{::ultimaCompra['nome-abrev']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-currency' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['mo-codigo']}} - {{::ultimaCompra['desc-mo-codigo']}}
+            </totvs-list-item-info>      
+            
+            <totvs-list-item-info title="{{ 'l-measure-unit-vendor' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['un']}} - {{::ultimaCompra['desc-un']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-payment-term' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['cod-cond-pag']}} - {{::ultimaCompra['desc-cond-pagto']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-time' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['prazo-entreg']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-unit-price-vendor' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['pre-unit-for']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-total-price-without-ipi' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['preco-total']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-total-price-with-ipi' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['preco-total-ipi']}}
+            </totvs-list-item-info>
+        </totvs-list-item-header>
+        
+
+        <totvs-list-item-content-detail>
+            <totvs-list-item-info title="{{ 'l-vendor-price' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['preco-fornec']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-average-price' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['preco-medio']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-calculated-total-price' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['preco-total-calc']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-discount' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['perc-descto']}}% - {{::ultimaCompra['valor-descto']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-ipi-micro' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['aliquota-ipi']}}% - {{::ultimaCompra['valor-ipi']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-included-ipi' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                <span ng-bind="controller.checkLogValue(ultimaCompra['codigo-ipi'])"></span>
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-freight-value' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['valor-frete']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-included-freight' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                <span ng-bind="controller.checkLogValue(ultimaCompra['frete'])"></span>
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-icm-perc' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['aliquota-icm']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-financial-incubencies' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                <span ng-bind="controller.checkLogValue(ultimaCompra['taxa-financ'])"></span>
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-financial-tax-short' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['valor-taxa']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-days-tax' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['nr-dias-taxa']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-carrier' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['cod-transp']}} - {{::ultimaCompra['desc-cod-transp']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-buyer' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['cod-comprado']}} - {{::ultimaCompra['nome-comprador']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-quotation-date' | i18n}}" class="col-xs col-sm-6 col-md-4">
+                {{::ultimaCompra['data-cotacao']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-manufacturer' | i18n}}" class="col-xs col-sm-12 col-md-12">
+                {{::ultimaCompra['cdn-fabrican']}} - {{::ultimaCompra['des-fabrican']}}
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info title="{{ 'l-narrative' | i18n}}" class="col-xs col-sm-12 col-md-12 text-justify">
+                {{::ultimaCompra['narrativa']}}
+            </totvs-list-item-info>
+
+            <totvs-list-item-info title="{{ 'l-narrative-win-quotation' | i18n}}" class="col-xs col-sm-12 col-md-12 text-justify">
+                {{::ultimaCompra['c-aprovada']}}
+            </totvs-list-item-info>
+
+            <div class="col-xs-12 col-sm-12 col-md-12" style="margin-top: 15px">
+                <a ng-click="controller.showDetail('detalhe_fornec_ult_compra')" style="cursor:pointer; text-decoration: underline;">
+                    {{ 'l-vendor-information' | i18n}}
+                </a>
+            </div>
+            <div id="detalhe_fornec_ult_compra" class="col-xs-12 col-sm-12 col-md-12" style="display: none; padding: 0; margin-top: 10px">
+                
+                <totvs-list-item-info title="{{ 'l-company-name' | i18n}}" class="col-xs col-sm-8 col-md-8">
+                    {{::ultimaCompra['nome-emit']}}
+                </totvs-list-item-info>
+
+                <totvs-list-item-info title="{{ 'l-phone' | i18n}}" class="col-xs col-sm-4 col-md-4">
+                    {{::ultimaCompra['fone-contato']}} ({{ 'l-branch' | i18n}}: {{::ultimaCompra['ramal-contato']}})
+                </totvs-list-item-info>
+
+                <totvs-list-item-info title="{{ 'l-localization' | i18n}}" class="col-xs col-sm-12 col-md-12">
+                    {{::ultimaCompra['cidade-estado']}}
+                </totvs-list-item-info>
+
+                <totvs-list-item-info title="{{ 'l-contact' | i18n}}" class="col-xs col-sm-12 col-md-12">
+                    {{::ultimaCompra['nome-contato']}}
+                </totvs-list-item-info>
+            </div>
+
+        </totvs-list-item-content-detail> 
+    </totvs-list-item>
+</div>

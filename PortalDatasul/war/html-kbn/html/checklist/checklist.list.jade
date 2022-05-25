@@ -1,0 +1,22 @@
+totvs-page(type="list")
+    totvs-page-navbar 
+        totvs-page-breadcrumb
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb {{ 'l-checklist' | i18n }}
+        totvs-page-header
+            totvs-page-header-title(title="{{ 'l-checklist' | i18n }}" total="{{controller.totalRecords}}")
+            totvs-page-header-operation
+                totvs-page-header-operation-action(limit-primary-action="2")
+                    action(icon="glyphicon-plus", ng-click="controller.openModalChecklistNew(checklist);") {{ 'l-new-checklist' | i18n }}
+                totvs-page-header-operation-filter(placeholder="{{ 'l-checklist-search' | i18n}}", ng-submit="controller.quickSearch()", ng-model="controller.quickSearchText")
+            totvs-page-disclaimers(disclaimer-list="controller.filtersApplied" ng-click="controller.removeFilter")
+    totvs-page-content
+        totvs-page-alert(ng-if="controller.listChecklist.length === 0" type="info" message="{{ 'msg-not-found' | i18n }}")
+        totvs-list-item(data-ng-repeat="checklist in controller.listChecklist")
+            totvs-list-item-header
+                totvs-list-item-title(title="{{checklist.des_item_checklist}}")
+                totvs-list-item-action(limit-primary-action="1")
+                    action(icon="glyphicon-pencil", data-ng-click="controller.openModalChecklistEdit(checklist)") {{ 'l-edit' | i18n }}
+                    action(icon="glyphicon-remove", data-ng-click="controller.remove(checklist)") {{ 'l-to-exclude' | i18n }}
+        .container(align="center")
+            pagination.pagination-sm(total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages", items-per-page="controller.pageSize", previous-text="{{'l-previous' | i18n}}", next-text="{{'l-next' | i18n}}")

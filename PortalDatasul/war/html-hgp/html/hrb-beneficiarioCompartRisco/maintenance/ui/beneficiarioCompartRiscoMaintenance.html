@@ -1,0 +1,129 @@
+<totvs-page type="base"> 
+    <totvs-page-navbar >
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hrb-beneficiarioCompartRisco/">Compartilhamento de Riscos de Beneficiários</breadcrumb>
+                <breadcrumb>Manutenção de Compartilhamento de Riscos de Beneficiários</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+  
+           <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Compartilhamento de Riscos de Beneficiário">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                    <action ng-click="controller.save();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar</action>
+                    <action ng-click="controller.saveNew();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Novo</action>
+                    <action class="btn-primary"
+                            ng-click="controller.saveClose();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Fechar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.beneficiarioCompartRiscoForm">
+            <fieldset>
+                <totvs-row>
+
+                    <totvs-field totvs-select
+                        ng-model="controller.beneficiarioCompartRisco.cdUnidade"
+                        class="col-lg-4 col-md-6 col-sm-8 col-xs-12"
+                        label="Unidade Destino"
+                        select-service="hcg.unitZoomController"
+                        zoom-service="hcg.unitZoomController"                        
+                        select-id="cdUnimed" 
+                        select-description="nmUnimed"
+                        ng-disabled="controller.action != 'INSERT'"
+                        ng-change="controller.onUnitChange()"
+                        min="1"
+                        ng-required="true">
+                        <validator key="required">Este campo é obrigatório!</validator>
+                        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>                    
+                </totvs-row>
+
+                <totvs-row>
+                    <totvs-field totvs-number
+                            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                            label="Modalidade"
+                            ng-model="controller.beneficiarioCompartRisco.cdModalidade"
+                            min="1"
+                            ng-disabled="true">
+                    </totvs-field>
+
+                    <totvs-field totvs-number
+                            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                            label="Contrato"
+                            ng-model="controller.beneficiarioCompartRisco.cdContrato"
+                            min="1"
+                            ng-disabled="true">
+                    </totvs-field>
+
+                     <totvs-field totvs-select canclean
+                            ng-model="controller.beneficiarioReturnObject"
+                            ng-change="controller.onSelectBeneficiario()"
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            label="Beneficiário"
+                            select-service="hvp.beneficiaryZoomController"
+                            zoom-service="hvp.beneficiaryZoomController"
+                            select-init ="{filters: controller.benefFixedFilters}"
+                            zoom-init = "{filters: controller.benefFixedFilters}"
+                            select-id="cdUnidCdCarteiraInteira" 
+                            select-description="nmUsuario"
+                            return-object
+                            ng-required="true"
+                            select-match='[{"field": "cdUnidCdCarteiraInteira", "separator": " - "}, {"field": "nmUsuario"}]'
+                            ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                </totvs-row>
+                
+                <totvs-row>     
+                        <field type="date"
+                            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                            label="Data Início"
+                            ng-required="true"
+                            ng-model="controller.beneficiarioCompartRisco.dtInicio"
+                            format="dd/MM/yyyy"
+                            ng-disabled="controller.action != 'INSERT'">
+                            <validator key="required">Este campo é obrigatório!</validator>
+                        </field>
+
+                        <field type="date"
+                            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                            label="Data Fim"
+                            ng-model="controller.beneficiarioCompartRisco.dtFim"
+                            format="dd/MM/yyyy"
+                            ng-disabled="controller.action == 'DETAIL'">
+                        </field>
+
+                </totvs-row>                 
+
+                 <totvs-row ng-if="controller.action != 'INSERT'">
+                    <field type="date"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        label="Data de Atualização"
+                        ng-model="controller.beneficiarioCompartRisco.dtAtualizacao"
+                        format="dd/MM/yyyy"
+                        ng-disabled="true">
+                    </field>
+                    <totvs-field totvs-input
+                        class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+                        label="Usuário da última atualização"
+                        ng-model="controller.beneficiarioCompartRisco.codUsuarUltAtualiz"
+                        ng-disabled="true">
+                    </totvs-field>
+                 </totvs-row>
+                 
+            </fieldset>
+        </totvs-page-form>        
+    </totvs-page-content>   
+</totvs-page>
+
+

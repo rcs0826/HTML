@@ -1,0 +1,1105 @@
+<style>
+    .extra-large .modal-dialog {
+        width :90%;
+        min-width: 990px;
+        height: 550px;
+    }
+</style>
+<totvs-modal-header>
+    Detalhes
+</totvs-modal-header>
+
+<totvs-modal-body style="height: 550px; overflow-y:auto">
+    
+        <totvs-page-detail>
+            <totvs-tabset >
+                <totvs-tab heading="Tabelas e Moedas de Valorizações" active="true"
+                           ng-click="controller.selectMovementDetailsTab('TAB')">
+                    
+                    <totvs-page-detail>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                          <h5 style="font-weight:bold;"> Pagamento </h5>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                          <h5 style="font-weight:bold;"> Cobrança </h5>
+                        </div>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            title="Tabela Médica"
+                            value="{{controller.movementTablesDetails.rotuloTabMedicaPagto}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            title="Tabela Médica"
+                            value="{{controller.movementTablesDetails.rotuloTabMedicaCob}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            title="Tabela Moeda Carência"
+                            value="{{controller.movementTablesDetails.rotuloTabMoedaCarencia}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            title="Tabela Moeda Carência"
+                            value="{{controller.movementTablesDetails.rotuloTabMoedaCarenCob}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            title="Forma de Pagamento"
+                            value="{{controller.movementTablesDetails.rotuloFormaPagto}}">
+                        </totvs-page-detail-info>
+                      
+                        <totvs-page-detail-info 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            title="Forma Pagamento"
+                            value="{{controller.movementTablesDetails.rotuloFormaPagtoCob}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            title="Qt. Vezes da Tabela"
+                            ng-if="controller.procInsu.tpMovimento == 'PROC'"
+                            value="{{controller.movementTablesDetails.qtVezesTabela | currency : '' : 5}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            title="Qt. Vezes da Tabela"
+                            ng-if="controller.procInsu.tpMovimento == 'PROC'"
+                            value="{{controller.movementTablesDetails.qtVezesTabCob | currency : '' : 5}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            title="Regra de Pagamento"
+                            value="{{controller.movementTablesDetails.rotuloRegraPagamento}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            title="Regra de Faturamento"
+                            value="{{controller.movementTablesDetails.rotuloRegraFaturamento}}">
+                        </totvs-page-detail-info>                        
+
+                    </totvs-page-detail>
+                    
+                </totvs-tab>
+
+                <totvs-tab heading="Valores de Pagamento"
+                           ng-click="controller.selectMovementDetailsTab('VAL')">
+                    <totvs-page-detail>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Honorários"
+                            ng-if="controller.procInsu.tpMovimento == 'PROC'"
+                            value="{{controller.movementValuesDetails.vlHonorariosMedicos | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Operacional"
+                            ng-if="controller.procInsu.tpMovimento == 'PROC'"
+                            value="{{controller.movementValuesDetails.vlOperacional | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Filme"
+                            ng-if="controller.procInsu.tpMovimento == 'PROC'"
+                            value="{{controller.movementValuesDetails.vlFilme | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Sistema"
+                            value="{{controller.movementValuesDetails.vlBaseValorSistema | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Insumo"
+                            ng-if="controller.procInsu.tpMovimento == 'INSU'"
+                            value="{{controller.movementValuesDetails.vlInsumo | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Principal"
+                            ng-if="controller.procInsu.tpMovimento == 'PROC'"
+                            value="{{controller.movementValuesDetails.vlPrincipal | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Auxiliar"
+                            ng-if="controller.procInsu.tpMovimento == 'PROC'"
+                            value="{{controller.movementValuesDetails.vlAuxiliar | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Cobrado"
+                            value="{{controller.movementValuesDetails.vlCobrado | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Glosado"
+                            value="{{controller.movementValuesDetails.vlGlosado | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="{{controller.procInsu.tpMovimento == 'PROC' ? 'col-lg-4 col-md-4 col-sm-4 col-xs-12' :
+                                                                               'col-lg-8 col-md-8 col-sm-8 col-xs-12'}}"
+                            title="Valor Percentual Deflator"
+                            value="{{controller.movementValuesDetails.vlPercDeflator | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Qtde. Procedimentos"
+                            ng-if="controller.procInsu.tpMovimento == 'PROC'"
+                            value="{{controller.movementValuesDetails.qtProcedimentos}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Qtde. Insumos"
+                            ng-if="controller.procInsu.tpMovimento == 'INSU'"
+                            value="{{controller.movementValuesDetails.qtInsumos | currency : '' : 5}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Qtde. Cobrado"
+                            ng-if="controller.procInsu.tpMovimento == 'PROC'"
+                            value="{{controller.movementValuesDetails.qtCobrado}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Qtde. Glosado"
+                            ng-if="controller.procInsu.tpMovimento == 'PROC'"
+                            value="{{controller.movementValuesDetails.qtGlosado}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Qtde. Cobrado"
+                            ng-if="controller.procInsu.tpMovimento == 'INSU'"
+                            value="{{controller.movementValuesDetails.qtCobrado | currency : '' : 5}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Qtde. Glosado"
+                            ng-if="controller.procInsu.tpMovimento == 'INSU'"
+                            value="{{controller.movementValuesDetails.qtGlosado | currency : '' : 5}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Taxa Intercâmbio"
+                            ng-if="controller.procInsu.tpMovimento == 'INSU'"
+                            value="{{controller.movementValuesDetails.vlTaxaOutInsumo | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Vl. Taxa Intercâmbio Principal"
+                            ng-if="controller.procInsu.tpMovimento == 'PROC'"
+                            value="{{controller.movementValuesDetails.vlTaxaOutUniPrin | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Vl. Taxa Intercâmbio Auxiliar"
+                            ng-if="controller.procInsu.tpMovimento == 'PROC'"
+                            value="{{controller.movementValuesDetails.vlTaxaOutUniAuxi | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="{{controller.procInsu.tpMovimento == 'PROC' ? 'col-lg-4 col-md-4 col-sm-4 col-xs-12' :
+                                                                               'col-lg-8 col-md-8 col-sm-8 col-xs-12'}}"
+                            title="Vl. Taxa Intercâmbio Cobrado"
+                            value="{{controller.movementValuesDetails.vlTaxaOutUniCobrado | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Desconto Prestador"
+                            value="{{controller.movementValuesDetails.vlDescontoPrestador | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Diferença Pagamento Prestador"
+                            value="{{controller.movementValuesDetails.vlDifPagtoPrestador | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Rateio Prestador"
+                            value="{{controller.movementValuesDetails.vlRateioPrestador | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Real Pago"
+                            value="{{controller.movementValuesDetails.vlRealPago | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Real Pago Taxa"
+                            value="{{controller.movementValuesDetails.vlRealPagoTaxa | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                          <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Real Glosado"
+                            value="{{controller.movementValuesDetails.vlRealGlosado | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Real Glosado Taxa"
+                            value="{{controller.movementValuesDetails.vlRealGlosadoTaxa | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Abatimento"
+                            value="{{controller.movementValuesDetails.vlAbatimento | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Complemento"
+                            value="{{controller.movementValuesDetails.vlComplemento | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+						
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Valor Real Deflatores"
+                            value="{{controller.movementValuesDetails.vlRealDeflator | currency : '' : 2}}">
+                        </totvs-page-detail-info>               
+                        
+                        <totvs-divider></totvs-divider>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h5 style="font-weight:bold;"> Pagamento por Performance </h5>
+                        </div> 
+
+                        <totvs-row>
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Indicador"
+                                value="{{controller.indicUm}}">
+                            </totvs-page-detail-info>
+                            
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Percentual"
+                                value="{{controller.percUm}} %">
+                            </totvs-page-detail-info>
+                        
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="{{controller.performTitle}}"
+                                value="{{controller.valorUm | currency : '' : 2}}">
+                            </totvs-page-detail-info>
+                        </totvs-row>
+                        <totvs-row>
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Indicador"
+                                value="{{controller.indicDois}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Percentual"
+                                value="{{controller.percDois}} %">
+                            </totvs-page-detail-info>
+                            
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="{{controller.performTitle}}"
+                                value="{{controller.valorDois | currency : '' : 2}}">
+                            </totvs-page-detail-info>
+
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                 ng-if="controller.hasPartic">
+                                <h5>* descontado valor da participação</h5>
+                            </div>
+                        </totvs-row>
+                                       
+                </totvs-tab>
+
+                <totvs-tab heading="Valores de Cobrança"
+                           ng-click="controller.selectMovementDetailsTab('VALCOB')">
+
+                    <div ng-if="controller.movementValuesCobDetails == undefined">
+                        <h5>Não existem valores de cobrança para este movimento.</h5>
+                    </div>
+
+                    <totvs-page-detail ng-if="controller.movementValuesCobDetails != undefined">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <h5 style="font-weight:bold;"> Custo Operacional </h5>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <h5 style="font-weight:bold;"> Participação </h5>
+                        </div>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            title="Valor de Custo Operacional"
+                            value="{{controller.movementValuesCobDetails.vlCustoOperacional | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+                    
+                        <totvs-page-detail-info
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            title="Valor de Cobrança"
+                            value="{{controller.movementValuesCobDetails.vlCobrado | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            title=""
+                            value="">
+                        </totvs-page-detail-info>   
+
+                        <totvs-page-detail-info
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            title="Valor de Participação"
+                            value="{{controller.movementValuesCobDetails.vlParticipacao | currency : '' : 2}}">
+                        </totvs-page-detail-info>
+                    </totvs-page-detail>
+                </totvs-tab>
+
+                <totvs-tab heading="Dados PTU"
+                           ng-click="controller.selectMovementDetailsTab('PTU')">
+                    
+                    <div ng-if="controller.movementPtuData == undefined">
+                        <h5>Não existem Dados PTU para o movimento.</h5>
+                    </div>
+
+                    <div ng-if="controller.movementPtuData != undefined">
+                        <totvs-page-detail>
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Carteira"
+                                value="{{(StringTools.fill(controller.movementPtuData.cdUnidadePtu, '0', 4))}} {{(StringTools.fill(controller.movementPtuData.nrCarteiraPtu, '0', 13))}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                title="Beneficiário"
+                                value="{{controller.movementPtuData.nmUsuarioPtu}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Nota"
+                                value="{{controller.movementPtuData.nrNotaPtu}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Nota Principal"
+                                value="{{controller.movementPtuData.nrNotaPrincPtu}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Número Nota Fornecedor"
+                                value="{{controller.movementPtuData.nrNotaFiscalFornec}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Tipo Tabela"
+                                value="{{(StringTools.fill(controller.movementPtuData.tpTabelaPtu, '0', 2))}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Movimento"
+                                value="{{(StringTools.fill(controller.movementPtuData.cdMovimentoPtu, '0', 10))}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Descrição"
+                                value="{{controller.movementPtuData.dsDescricaoPtu.trim() == ''? '-' : controller.movementPtuData.dsDescricaoPtu.trim()}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Pacote"
+                                value="{{controller.movementPtuData.lgPacotePtu == true ? 'Sim' : 'Não'}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Código Pacote"
+                                value="{{(StringTools.fill(controller.movementPtuData.cdPacotePtu, '0', 8))}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Data Serviço"
+                                value="{{controller.movementPtuData.dtServicoPtu == null ? '-' : controller.movementPtuData.dtServicoPtu | date : 'dd/MM/yyyy'}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Hora Realização"
+                                value="{{controller.movementPtuData.hrRealizacaoPtu}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Tipo Paciente"
+                                value="{{controller.movementPtuData.dsTpPaciente}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Código Exceção"
+                                value="{{controller.movementPtuData.dsExcecao}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Fator Multiplicador de Serviço"
+                                value="{{controller.movementPtuData.ftMultServ | currency : '' : 2}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Nome Prestador"
+                                value="{{controller.movementPtuData.nmPrest}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Especialidade Prestador"
+                                value="{{controller.movementPtuData.nmEspPrest}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Tipo Participação"
+                                value="{{controller.movementPtuData.nmParticip}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Porte Anestésico"
+                                value="{{controller.movementPtuData.nmPorteAne}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Via de Acesso"
+                                value="{{controller.movementPtuData.nmViaAcesso}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Alto Custo"
+                                value="{{controller.movementPtuData.lgAltoCusto == true ?  'Sim' : 'Não'}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Tipo Autorização"
+                                value="{{controller.movementPtuData.nmTpAutoriz}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="CNPJ Fornecedor"
+                                value="{{controller.movementPtuData.nrCnpjFornec}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Pagamento Fornecedor"
+                                value="{{controller.movementPtuData.idPagtoFornec}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Nome Fornecedor"
+                                value="{{controller.movementPtuData.nmFornecedor}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Detentora do Registro na ANVISA"
+                                value="{{controller.movementPtuData.nmDetRegAnvisa}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Indicador de Aviso"
+                                value="{{controller.movementPtuData.lgAviso == true ?  'Sim' : 'Não'}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Benef. Compart. Risco"
+                                value="{{controller.movementPtuData.lgContinuado == true ?  'Sim' : 'Não'}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Nr. Lote Prestador"
+                                value="{{controller.movementPtuData.nrLotePrest}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Data de Conhecimento"
+                                value="{{controller.movementPtuData.dtConhecimento == null ? '-' : controller.movementPtuData.dtConhecimento | date : 'dd/MM/yyyy'}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Indicador de Aviso por Item"
+                                value="{{controller.movementPtuData.lgAvisoItem == true ?  'Sim' : 'Não'}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Nome do Hospital"
+                                value="{{controller.movementPtuData.nmHospital}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Unidade do Hospital"
+                                value="{{controller.movementPtuData.unHospital}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                title="Codigo do Hospital"
+                                value="{{controller.movementPtuData.cdHospital}}">
+                            </totvs-page-detail-info>
+                        </totvs-page-detail>
+                    </div>
+                </totvs-tab>
+
+                <totvs-tab heading="Prestadores"
+                           ng-click="controller.selectMovementDetailsTab('PREST')">
+
+                    <totvs-page-detail>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h5 style="font-weight:bold;"> Prestador Principal </h5>
+                        </div>
+
+                        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Unidade"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdUnidadePrincipal, '0', 4))}} - {{controller.movementProvidersDatails.nmUnimed}}">
+                            </totvs-page-detail-info>  
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Prestador"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdPrestadorPrincipal, '0', 8))}} - {{controller.movementProvidersDatails.nmPrestador}}">
+                            </totvs-page-detail-info>  
+                        </div>    
+
+                        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Vinculo"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdVinculoPrincipal, '0', 2))}} - {{controller.movementProvidersDatails.dsTipoVinculo}}">
+                            </totvs-page-detail-info>  
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h5 style="font-weight:bold;"> Prestador Solicitante </h5>
+                        </div>    
+
+                        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Unidade"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdUnidadeSolicitante, '0', 4))}} - {{controller.movementProvidersDatails.dsUnidadeSolic}}">
+                            </totvs-page-detail-info>      
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Prestador"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdPrestadorSolicitante, '0', 8))}} - {{controller.movementProvidersDatails.nmPrestSolic}}">
+                            </totvs-page-detail-info>      
+                        </div>
+
+                        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Vinculo"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdVinculoSolicitante, '0', 2))}} - {{controller.movementProvidersDatails.dsVincSolic}}">
+                            </totvs-page-detail-info>   
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Especialidade"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdEspecialid, '0', 3))}} - {{controller.movementProvidersDatails.dsEspecialid}}">
+                            </totvs-page-detail-info>
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h5 style="font-weight:bold;"> Prestador Executante </h5>
+                        </div>
+
+                        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Unidade"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdUnidadePrestador, '0', 4))}} - {{controller.movementProvidersDatails.dsUnidadeCob}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Prestador"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdPrestador, '0', 8))}} - {{controller.movementProvidersDatails.nmPrestCob}}">
+                            </totvs-page-detail-info>
+                        </div>
+
+                        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Vinculo"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdTipoVinculo, '0', 2))}} - {{controller.movementProvidersDatails.dsVincCob}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Especialidade"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdEspPrestExecutante, '0', 3))}} - {{controller.movementProvidersDatails.dsEspecialidCob}}">
+                            </totvs-page-detail-info>
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h5 style="font-weight:bold;"> Prestador de Pagamento </h5>
+                        </div>
+
+                        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Unidade"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdUnidadePagamento, '0', 4))}} - {{controller.movementProvidersDatails.dsUnidadePag}}">
+                            </totvs-page-detail-info>  
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Prestador"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdPrestadorPagamento, '0', 8))}} - {{controller.movementProvidersDatails.nmPrestPag}}">
+                            </totvs-page-detail-info>  
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                             ng-if="controller.procInsu.tpMovimento == 'PROC'">
+                            <h5 style="font-weight:bold;"> Prestador de Validade </h5>
+                        </div>
+
+                        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Unidade"
+                                ng-if="controller.procInsu.tpMovimento == 'PROC'"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdUnidadePrestValida, '0', 4))}} - {{controller.movementProvidersDatails.nmUnimedPrestValida}}">
+                            </totvs-page-detail-info>  
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Prestador"
+                                ng-if="controller.procInsu.tpMovimento == 'PROC'"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdPrestadorValida, '0', 8))}} - {{controller.movementProvidersDatails.nmPrestadorValida}}">
+                            </totvs-page-detail-info>  
+                        </div>
+
+                        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Especialidade"
+                                ng-if="controller.procInsu.tpMovimento == 'PROC'"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdEspPrestValida, '0', 3))}} - {{controller.movementProvidersDatails.dsEspecialidPrestValida}}">
+                            </totvs-page-detail-info>                         
+                        </div>
+
+                    </totvs-page-detail>
+
+                </totvs-tab>
+
+                <totvs-tab heading="Lotes"
+                           ng-click="controller.selectMovementDetailsTab('LOTE')">
+
+                    <div ng-if="controller.movementLoteImp == undefined 
+                             && controller.movementLoteExp == undefined
+                             && controller.tissProviderBatch == undefined">
+                        <h5>Não existem Lotes para o documento.</h5>
+                    </div>
+
+                    <div ng-if="controller.tissProviderBatch != undefined">
+
+                        <totvs-page-detail>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h5 style="font-weight:bold;"> Lote Prestador TISS </h5>
+                            </div>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Prestador"
+                                value="{{(StringTools.fill(controller.movementProvidersDatails.cdUnidadePrincipal, '0', 4))}} {{(StringTools.fill(controller.movementProvidersDatails.cdPrestadorPrincipal, '0', 8))}} - {{controller.movementProvidersDatails.nmPrestador}}">
+                            </totvs-page-detail-info>  
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Lote"
+                                value="{{controller.tissProviderBatch}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-divider ng-if="   controller.movementLoteImp != undefined
+                                                  || controller.movementLoteExp != undefined">
+                            </totvs-divider>
+
+                        </totvs-page-detail>
+                    </div>
+
+                    <div ng-if="controller.movementLoteImp != undefined">
+                        <totvs-page-detail>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h5 style="font-weight:bold;"> Lote de Importação </h5>
+                            </div>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                title="Prestador"
+                                value="{{(StringTools.fill(controller.movementLoteImp.cdUnidade, '0', 4))}} {{(StringTools.fill(controller.movementLoteImp.cdPrestador, '0', 8))}} - {{controller.movementLoteImp.nmPrestador}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Lote"
+                                value="{{(StringTools.fill(controller.movementLoteImp.nrLote, '0', 8))}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Sequência Lote"
+                                value="{{(StringTools.fill(controller.movementLoteImp.nrSequencia, '0', 3))}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Status Lote"
+                                value="{{controller.movementLoteImp.inStatusLote}} - {{controller.movementLoteImp.dsStatusLote}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Arquivo Lote"
+                                value="{{controller.movementLoteImp.nmArqLote}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Layout GPS"
+                                value="{{controller.movementLoteImp.lgLayoutSerious == true ? 'Sim' : 'Não'}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Layout Exportação CO"
+                                value="{{controller.movementLoteImp.cdLayoutei}} - {{controller.movementLoteImp.dsLayoutei}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Registros Informados"
+                                value="{{controller.movementLoteImp.qtDocLote}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Registros Importados"
+                                value="{{controller.movementLoteImp.qtDocImportados}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Motivo Cancelamento"
+                                value="{{(StringTools.fill(controller.movementLoteImp.cdMotivo, '0', 3))}} - {{controller.movementLoteImp.dsMotivo}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Data de Postagem"
+                                value="{{controller.movementLoteImp.dtPostagemArq == null ? 'Sem Data de Postagem' : controller.movementLoteImp.dtPostagemArq | date : 'dd/MM/yyyy'}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Usuário"
+                                value="{{controller.movementLoteImp.cdUsuarioSistema}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Atualização"
+                                value="{{controller.movementLoteImp.dtAtualizacao | date : 'dd/MM/yyyy'}}">
+                            </totvs-page-detail-info>
+
+                        </totvs-page-detail>
+                    </div>
+
+                    <totvs-divider ng-if="controller.movementLoteExp != undefined 
+                                       && controller.movementLoteImp != undefined">
+                    </totvs-divider>
+
+                    <div ng-if="controller.movementLoteExp != undefined">
+
+                        <totvs-page-detail>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h5 style="font-weight:bold;"> Lote de Exportação </h5>
+                            </div>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                title="Contratante"
+                                value="{{(StringTools.fill(controller.movementLoteExp.cdContratante, '0', 9))}} - {{controller.movementLoteExp.nmContratante}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Lote"
+                                value="{{(StringTools.fill(controller.movementLoteExp.nrLote, '0', 8))}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Sequência Lote"
+                                value="{{(StringTools.fill(controller.movementLoteExp.nrSequencia, '0', 3))}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Status Lote"
+                                value="{{controller.movementLoteExp.inStatusLote}} - {{controller.movementLoteExp.dsStatusLote}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Arquivo Lote"
+                                value="{{controller.movementLoteExp.nmArqLote}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Layout GPS"
+                                value="{{controller.movementLoteExp.lgLayoutSerious == true ? 'Sim' : 'Não'}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Layout Exportação CO"
+                                ng-if="controller.movementLoteExp.lgLayoutSerious == false"
+                                value="{{controller.movementLoteExp.cdLayoutei}} - {{controller.movementLoteExp.dsLayoutei}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Qtde Documentos"
+                                value="{{controller.movementLoteExp.qtDocLote}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Valor Total"
+                                value="{{controller.movementLoteExp.vlTotalDoctos | currency : 'R$' : '2'}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Tipo Exportação"
+                                value="{{(StringTools.fill(controller.movementLoteExp.cdTipoExportacao, '0', 2))}} - {{controller.movementLoteExp.dsTipoExportacao}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Intervalo Exportação"
+                                ng-if="controller.movementLoteExp.dsTipoIntervalo != ''"
+                                value="{{controller.movementLoteExp.cdTipoIntervaloExp }} - {{controller.movementLoteExp.dsTipoIntervalo}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Exportação"
+                                value="{{controller.movementLoteExp.dtExportacao | date : 'dd/MM/yyyy'}} - {{controller.movementLoteExp.hrExportacao | time}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Fatura Estornada"
+                                value="{{controller.movementLoteExp.lgFaturaEstornada == true ? 'Sim' : 'Não'}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Permite Reativar"
+                                value="{{controller.movementLoteExp.lgPermiteReativar == true ? 'Sim' : 'Não'}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Cabeçalho Fatura"
+                                value="{{controller.movementLoteExp.inTipoCabeFatura}} - {{controller.movementLoteExp.dsCabFatura}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Usuário Exportação"
+                                value="{{controller.movementLoteExp.cdUsuarioExportacao}}">
+                            </totvs-page-detail-info>
+
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Atualização"
+                                value="{{controller.movementLoteExp.dtAtualizacao | date : 'dd/MM/yyyy'}}">
+                            </totvs-page-detail-info>
+
+                        </totvs-page-detail>
+                    </div>
+                </totvs-tab>
+              
+                <totvs-tab heading="Dados TISS"
+                           ng-click="controller.selectMovementDetailsTab('TISS')">
+                    <totvs-page-detail>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h5 style="font-weight:bold;"> Documento </h5>
+                        </div>
+                        <totvs-row>
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Tipo de Consulta"
+                                value="{{controller.movementTissData.dsTpConsulta}}">
+                            </totvs-page-detail-info>  
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Tipo de Atendimento"
+                                value="{{controller.movementTissData.dsTpAtend}}">
+                            </totvs-page-detail-info>
+                        </totvs-row>
+                        <totvs-row>
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Tipo de Internação"
+                                value="{{controller.movementTissData.dsTpInter}}">
+                            </totvs-page-detail-info>
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Nome Profissional Solicitante"
+                                value="{{controller.movementTissData.nmProfSolic}}">
+                            </totvs-page-detail-info>
+                        </totvs-row>
+                        <totvs-row>
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Conselho"
+                                value="{{controller.movementTissData.consProfSolic}}">
+                            </totvs-page-detail-info>
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Número do Conselho"
+                                value="{{controller.movementTissData.nrConsProfSolic}}">
+                            </totvs-page-detail-info>
+                        </totvs-row>
+                        <totvs-row>
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="UF"
+                                value="{{controller.movementTissData.ufConsProfSolic}}">
+                            </totvs-page-detail-info>
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Grau de Participação"
+                                value="{{controller.movementTissData.dsGrauPart}}">
+                            </totvs-page-detail-info>
+                        </totvs-row>
+                        <totvs-row>
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Atendimento a RN"
+                                value="{{controller.movementTissData.dsAtendRN}}">
+                            </totvs-page-detail-info>
+                        </totvs-row>
+                        <totvs-divider></totvs-divider>
+                    </totvs-page-detail>                           
+                    <totvs-page-detail>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <h5 style="font-weight:bold;"> Movimento </h5>
+                        </div> 
+
+                        <totvs-row>
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Nome Profissional Executante"
+                                value="{{controller.movementTissData.nmProfExec}}">
+                            </totvs-page-detail-info>
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Conselho"
+                                value="{{controller.movementTissData.consProfExec}}">
+                            </totvs-page-detail-info>
+                        </totvs-row>
+                        <totvs-row>
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Número do Conselho"
+                                value="{{controller.movementTissData.nrConsProfExec}}">
+                            </totvs-page-detail-info>
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="UF"
+                                value="{{controller.movementTissData.ufConsProfExec}}">
+                            </totvs-page-detail-info>                        
+                        </totvs-row>
+                        <totvs-row>                        
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Técnica Utilizada"
+                                value="{{controller.movementTissData.dsTpTecUtil}}">
+                            </totvs-page-detail-info>                        
+                            <totvs-page-detail-info 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                title="Sequencial do Item"
+                                value="{{controller.movementTissData.seqItem}}">
+                            </totvs-page-detail-info> 
+                        </totvs-row>
+                    
+                    </totvs-page-detail>                                                   
+                </totvs-tab>                                           
+            </totvs-tabset>
+        </totvs-page-detail>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button class="btn" ng-click="controller.cancel()">Fechar</button>
+</totvs-modal-footer>

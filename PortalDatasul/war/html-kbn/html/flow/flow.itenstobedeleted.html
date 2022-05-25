@@ -1,0 +1,30 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<link rel="stylesheet" href="/dts/kbn/css/font-awesome.css"/>
+<totvs-modal-header>{{'l-remove-flow' | i18n}}</totvs-modal-header>
+<totvs-modal-body>{{'l-remove-flow-all-itens' | i18n}}
+  <totvs-page-content>		
+    <div class="table-content">
+      <div class="table-responsive">
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th>{{ 'l-item' | i18n: []: 'dts/kbn' }}</th>
+              <th>{{ 'l-type' | i18n: []: 'dts/kbn' }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="flow in controller.itens">
+              <td>{{ flow | descFlow }}</td>
+              <td>{{ flow.log_expedic ? 'l-expedition' : (flow.log_comprad ? 'l-bought' : 'l-process') | i18n: []: 'dts/kbn'}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </totvs-page-content>
+</totvs-modal-body>
+<totvs-modal-footer>
+  <button data-ng-click="controller.cancel()" class="btn btn-default">{{ 'l-cancel' | i18n }}</button>
+  <button data-ng-click="controller.confirm()" class="btn btn-primary">{{ 'l-to-exclude' | i18n }} </button>
+</totvs-modal-footer>

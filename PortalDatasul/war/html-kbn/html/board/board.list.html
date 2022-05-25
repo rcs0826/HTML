@@ -1,0 +1,70 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/font-awesome.css"/>
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<totvs-page type="list">
+  <totvs-page-navbar>
+    <totvs-page-breadcrumb>
+      <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+      <breadcrumb>{{ 'l-list-board' | i18n }}</breadcrumb>
+    </totvs-page-breadcrumb>
+    <totvs-page-header>
+      <totvs-page-header-title title="{{ 'l-board' | i18n }}" total="{{controller.totalRecords}}"></totvs-page-header-title>
+      <totvs-page-header-operation>
+        <div class="col-md-7 col-sm-7"></div>
+        <totvs-page-header-operation-filter placeholder="{{ 'l-code-description' | i18n}}" ng-submit="controller.quickSearch()" ng-model="controller.quickSearchText" advanced-search="controller.callAdvancedSearch"></totvs-page-header-operation-filter>
+      </totvs-page-header-operation>
+      <totvs-page-disclaimers disclaimer-list="controller.filtersApplied" ng-click="controller.removeFilter"></totvs-page-disclaimers>
+    </totvs-page-header>
+  </totvs-page-navbar>
+  <totvs-page-content>
+    <totvs-page-alert ng-if="!controller.hasEstab()" type="info" message="{{ 'msg-estab-not-selected' | i18n }}"></totvs-page-alert>
+    <totvs-page-alert ng-if="controller.hasEstab() &amp;&amp; controller.totalRecords === 0" type="info" message="{{ 'msg-not-found' | i18n }}"></totvs-page-alert>
+    <totvs-list-item data-ng-repeat="board in controller.listBoard">
+      <totvs-list-item-header>
+        <div>
+          <div title=" {{board.ttMasterCellDs | descGeneric:&quot;{codeErpCell} {descCell}&quot;}}" link="#/dts/kbn/board/{{board.num_id_cel_mestre}}" class="col-xs-10 col-sm-7 col-md-7 col-lg-7 ng-scope ng-isolate-scope"><a href="#/dts/kbn/board/{{board.num_id_cel_mestre}}" class="title link ng-binding">{{board.ttMasterCellDs | descGeneric:"{codeErpCell} {descCell}"}}</a></div>
+          <div class="col-lg-5 col-md-5 col-sm-5 col-xs-2 actions-group">
+            <div role="group" aria-label="item-actions" class="btn-group btn-group-sm actions pull-right"><a role="button" href="#/dts/kbn/board/{{board.num_id_cel_mestre}}" class="btn btn-default ng-binding"><span class="fa fa-desktop"></span>&nbsp; {{'l-show-board'|i18n: []: 'dts/kbn'}}</a></div>
+          </div>
+        </div>
+      </totvs-list-item-header>
+      <totvs-list-item-content-detail ng-click="controller.itensProduzidos(board)">
+        <totvs-divider></totvs-divider>
+        <totvs-list-item-info title="{{ 'l-group-machines' | i18n }}" value="{{board.cod_chave_erp}}" class="col-md-4"></totvs-list-item-info>
+        <totvs-list-item-info title="{{ 'l-programming-interval' | i18n }}" value="{{board.qtd_horiz | prettyTime}}" class="col-md-4"></totvs-list-item-info>
+        <totvs-list-item-info title="{{ 'l-simultaneous-card' | i18n }}" value="{{board.log_multiplos_itens | yesOrNo}}" class="col-md-4"></totvs-list-item-info>
+        <totvs-list-item-info title="{{ 'l-fixed-range' | i18n }}" value="{{board.qtd_faixa_fixa | prettyTime}}" class="col-md-4"></totvs-list-item-info>
+        <totvs-list-item-info title="{{ 'l-max-card-production' | i18n }}" value="{{board.qtd_cartoes}}" class="col-md-4"></totvs-list-item-info>
+        <accordion class="col-xs-12">
+          <accordion-group heading="{{ 'l-items' | i18n }}" is-open="true">
+            <div class="row">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <td class="col-md-4"><b>{{ 'l-item' | i18n }}</b></td>
+                    <td align="center" class="col-md-2"><b>{{ 'l-warehouse' | i18n }}</b></td>
+                    <td align="center" class="col-md-2"><b>{{ 'l-location' | i18n }}</b></td>
+                    <td align="center" class="col-md-2"><b>{{ 'l-kanban-size' | i18n }}</b></td>
+                    <td align="center" class="col-md-2"><b>{{ 'l-total-balance-cards' | i18n }}</b></td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-ng-repeat="item in board.itensProduzidos">
+                    <td>{{item.ttItemProduzDs | descGeneric:"{sku} - {desc} {ref} ({exp})"}}</td>
+                    <td align="center">{{item.cod_depos_erp}}</td>
+                    <td align="center">{{item.cod_localiz}}</td>
+                    <td align="center">{{item.qti_tam_kanban}} {{item.ttItemProduzDs.cod_un_med_erp}}</td>
+                    <td align="center">{{item.qti_verde_kanban + item.qti_amarela_kanban + item.qti_vermelha_kanban}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </accordion-group>
+        </accordion>
+      </totvs-list-item-content-detail>
+    </totvs-list-item>
+    <div align="center" class="container">
+      <pagination total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages" items-per-page="controller.pageSize" previous-text="{{'l-previous' | i18n}}" next-text="{{'l-next' | i18n}}" class="pagination-sm"></pagination>
+    </div>
+  </totvs-page-content>
+</totvs-page>

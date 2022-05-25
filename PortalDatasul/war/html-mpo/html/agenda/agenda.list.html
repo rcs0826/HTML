@@ -1,0 +1,187 @@
+<totvs-page type="list">
+	<totvs-page-navbar>	
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-agenda-technician' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>			
+		<totvs-page-header>
+			<totvs-page-header-title title="{{ 'l-agenda-technician' | i18n }}">
+			</totvs-page-header-title>
+			<totvs-page-header-operation>	
+				<totvs-page-header-operation-action class="f-left">
+                    <action ng-click="controller.openEnviaEmail()" class="glyphicon-envelope">{{ 'l-send-schedule' | i18n }}</action>
+                </totvs-page-header-operation-action>				
+				<div class="box-custom-filters col-lg-8 col-md-8 col-xs-12 f-right">
+	                <div class="custom-filters col-lg-6 col-md-6 col-xs-12 f-left p-right">
+		 				<field type="select"
+					           ng-model="controller.selectedTecnico" 
+					           ng-change="controller.selectTecnico()" 
+					           class="col-md-12 f-right">
+					       <include>
+					            <ui-select-match placeholder="{{ 'l-select-technician' | i18n }}">{{$select.selected.cdTecnico}} {{controller.hifen}} {{$select.selected.nomeCompl}}</ui-select-match>
+					            <ui-select-choices repeat="state in controller.listSelectTecnico track by $index"
+					                               refresh="controller.getListTecnico($select.search)"
+					                               refresh-delay="500">
+					                <span data-ng-bind-html="state.cdTecnico | highlight: $select.search"></span> - <span data-ng-bind-html="state.nomeCompl | highlight: $select.search"></span>
+					            </ui-select-choices>
+					        </include>
+					    </field>
+				    </div>
+				    <div class="custom-filters col-lg-6 col-md-6 col-xs-12 f-right">			    		
+						<div class="input-group-date col-xs-10">
+							<field type="daterange" class="col-md-12"
+						    	ng-model="controller.quickSearchText"
+						    	ng-change="controller.changeDate()">				    							   
+						    </field>
+					    	<button type="button" class="f-right btn btn-default glyphicon glyphicon-filter btn-filter-date" data-ng-click="controller.search();"></button>
+					    </div>							    				    				    
+	   			    	<totvs-page-header-operation-filter 
+				    			advanced-search="controller.openAdvancedSearch" 
+				    			class="col-xs-1" >
+						</totvs-page-header-operation-filter>	
+				    </div>
+		    	</div>							
+			</totvs-page-header-operation>					
+			<totvs-page-tags>
+				<tag class="tag-1">{{ 'l-in-day' | i18n }}</tag>
+				<tag class="tag-2">{{ 'l-late' | i18n }}</tag>
+				<tag class="tag-3">{{ 'l-finished' | i18n }}</tag>
+			</totvs-page-tags>			
+			<totvs-page-disclaimers
+					disclaimer-list="controller.disclaimers"
+					ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+		</totvs-page-header>						
+	</totvs-page-navbar>	
+	<totvs-page-content>
+		<totvs-page-alert
+			ng-if="controller.listResult.length <= 0"
+			type="info"
+			message="{{ 'msg-search-not-found' | i18n }}" >			
+		</totvs-page-alert>
+	        <totvs-list-item id="listTarefas{{listTarefas.cdTarefa}}"
+							 ng-repeat="listTarefas in controller.listResult"
+							 class="tag-{{listTarefas.situacao}}">							 
+				<totvs-list-item-header>
+	                <totvs-list-item-title title="{{listTarefas.nrOrdem | ordemMask }} - {{listTarefas.descOrdem}}" ng-click="controller.setParamDetail(listTarefas)" >
+	                </totvs-list-item-title>   
+                  	<totvs-list-item-action limit-primary-action="1" class="col-lg-5 col-md-5 col-sm-5 col-xs-2 h-action" >
+	                    <action ng-click="controller.setParamAponta(listTarefas)" ng-if="controller.isTecnico(controller.tecnico, listTarefas.situacao)"  icon="glyphicon-pencil">{{ 'l-point' | i18n }}</action>
+               		</totvs-list-item-action>
+               		<totvs-list-item-info
+	                	class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+	                    title="{{ 'l-task' | i18n }}"
+	                    value="{{listTarefas.cdTarefa}} - {{listTarefas.descTarefa}}">
+	                </totvs-list-item-info>
+	                <totvs-list-item-info
+	                	class="col-lg-4 col-md-4 col-sm-6 col-xs-12 lg-font"
+	                    title="{{ 'l-equipment' | i18n }}"
+	                    value="{{listTarefas.cdEquipto}} - {{listTarefas.descEquipto}}"/>
+	                </totvs-list-item-info>
+	                <totvs-list-item-info
+	                	class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-sm-12"
+	                    title="{{ 'l-date' | i18n }}"
+	                    value="{{listTarefas.datAgenda | date:'dd/MM/yyyy'}} - {{listTarefas.hraInicial}} {{ 'l-at' | i18n }} {{listTarefas.hraFinal}}">
+	                </totvs-list-item-info>             
+				</totvs-list-item-header>				
+       	</totvs-list-item>
+         <div class="more-results ng-scope" ng-if="controller.lPaginate && controller.listResult.length > 0 && controller.ttSelecaoConsultaAgenda == undefined" ng-click="controller.loadData(true)" >
+         	<a class="btn btn-primary col-xs-12 ng-binding">{{ 'l-displaying' | i18n }} {{ controller.totalRecords }} {{ 'l-results' | i18n }}. {{ 'msg-click-to-get-more' | i18n }}.</a>
+         </div>
+         <div class="more-results ng-scope" ng-if="controller.lPaginate && controller.listResult.length > 0 && controller.ttSelecaoConsultaAgenda != undefined" ng-click="controller.loadDataAdvancedSearch(true)" >
+         	<a class="btn btn-primary col-xs-12 ng-binding">{{ 'l-displaying' | i18n }} {{ controller.totalRecords }} {{ 'l-results' | i18n }}. {{ 'msg-click-to-get-more' | i18n }}.</a>
+         </div>
+         <div class="more-results ng-scope" ng-if="controller.totalRecords > 0 && !controller.lPaginate && controller.listResult.length > 0 && controller.isHide && controller.totalRecords > 1" ng-click="#" >
+         	<a ng-disabled="true" class="btn btn-primary col-xs-12 ng-binding">{{ 'l-total-of' | i18n }} {{ controller.totalRecords }} {{ 'l-results-found' | i18n }}.</a>
+         </div>
+         <div class="more-results ng-scope" ng-if="controller.totalRecords > 0 && !controller.lPaginate && controller.listResult.length > 0 && controller.isHide && controller.totalRecords == 0" ng-click="#" >
+         	<a ng-disabled="true" class="btn btn-primary col-xs-12 ng-binding">{{ 'l-total-of' | i18n }} {{ controller.totalRecords }} {{ 'l-result-found' | i18n }}.</a>
+         </div>
+    </totvs-page-content>			
+</totvs-page>
+<style>
+
+	.h-action { height: 30px; }
+
+	.custom-filters totvs-page-header-operation-filter { 
+		padding-left: 0px !important; 
+		padding-right: 0px; 
+		margin-right: 15px;
+	}
+	
+	.row .custom-filters > button { margin-top: 4px; }
+
+	.custom-filters totvs-page-header-operation-filter > div { padding: 0; }
+
+	.f-right { float: right; }
+	
+	.f-left { float: left; }
+
+	.p-right { padding-right: 30px !important;}
+
+	.custom-filters { 
+		padding-top: 5px; 
+	    padding-right: 0;
+	    padding-left: 0;
+    }
+	
+	.custom-filters > button { margin-top: 5px;}
+	
+	.custom-filters div > .filters { padding-top: 6px;}
+	
+	.custom-filters > field { 
+		padding-left: 0; 
+		padding-right: 0; 
+	}
+
+	.grid-agenda,
+	.content-box-left {
+		width: 50%;
+		float: left;
+	}
+
+	.page-head .page-tags .tag-1:before {
+		background-color: #6ace39;
+	}
+	.page-content .list-item.tag-1 {
+    	border-left: 5px solid #6ace39;
+	}
+	.page-head .page-tags .tag-2:before {
+		background-color: #f15a22;
+	}
+	.page-content .list-item.tag-2 {
+    	border-left: 5px solid #f15a22;
+	}
+	.page-head .page-tags .tag-3:before {
+		background-color: #ccc;
+	}
+	.page-content .list-item.tag-3 {
+    	border-left: 5px solid #ccc;
+	}
+	
+	.box-custom-filters .input-group-date button.btn-filter-date { 
+		position: absolute; 
+		z-index: 200; 
+		right: 0px;
+    	top: 5px;
+    }
+	.input-group-date {
+		position: relative; 
+		float: left;
+		padding-right: 0px;
+		padding-left: 0px;
+	}
+	
+	.custom-filters .input-group-date field { 
+		padding-right: 0px;
+		padding-left: 0px; 
+	}
+	
+	.btn-email { 
+		margin-left: 15px; 
+		margin-top: 10px; 
+	}
+	
+	.item-actions a { cursor: pointer; } 
+	
+</style>

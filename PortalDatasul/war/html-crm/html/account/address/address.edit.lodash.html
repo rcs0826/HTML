@@ -1,0 +1,198 @@
+<totvs-modal-header>
+	<span ng-if="controller.model.num_id >  0">
+		{{ controller.model.num_id }} - {{ controller.types[controller.model.idi_tip_ender -1].nom_tipo }}
+	</span>
+	<span ng-if="controller.model.num_id <= 0 || !controller.model.num_id">
+		{{ 'btn-new-address' | i18n: []: 'dts/crm' }}
+	</span>
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-type' | i18n: []: 'dts/crm' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.model.ttTipo"
+			 t-multi-id="num_id"
+			 t-multi-description="nom_tipo"
+			 t-placeholder="{{ 'l-type' | i18n: []: 'dts/crm' }}"
+			 ng-required="true"
+			 t-max-selected-items="{{ controller.maxTypes }}"
+			 t-data="controller.typesToSelect">
+		</totvs-field>
+
+		<field type="typeahead"
+			   placeholder="{{ 'l-zipcode' | i18n: []: 'dts/crm' }}"
+			   ng-model="controller.model.ttCep"
+			   ng-change="controller.onChangePostalCode()"
+			   ng-blur="controller.onBlurPostalCode()"
+			   ng-required="controller.postalCodeRequired"
+			   typeahead="zip as (zip.cod_cep | mask: '99.999-999') + ' (' + zip.ttCidade.nom_cidade + ')' for zip in controller.getZipcodes($viewValue)"
+			   typeahead-on-select="controller.onSelectPostalCode($item)"
+			   typeahead-wait-ms="750"	
+			   numbers-only
+			   canclean="undefined">
+			<label>{{ 'l-zipcode' | i18n: []: 'dts/crm' }}</label>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<% if ((!data["l-erp-zipcode"] || data["l-erp-zipcode"].log_visivel === true)) { %>
+		<field type="input"
+			   placeholder="{{ 'l-erp-zipcode' | i18n: []: 'dts/crm' }}"
+			   ng-model="controller.model.cod_zip_code"
+			   maxlength="12"
+			   canclean="undefined">
+			<label>{{ 'l-erp-zipcode' | i18n: []: 'dts/crm' }}</label>
+		</field>
+		<% } %>
+
+		<field type="select"
+			   ng-model="controller.model.ttPais"
+			   ng-change="controller.onChangeCountry()"
+			   ng-required="true"
+			   canclean="undefined">
+
+			<label>{{ 'l-country' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-country' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_pais }}
+				</ui-select-match>
+				<ui-select-choices repeat="country in controller.countries track by $index"
+								   refresh="controller.getCountries($select.search)"
+								   refresh-delay="500">
+					<span data-ng-bind-html="country.nom_pais | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttEstado"
+			   ng-disabled="!controller.model.ttPais"
+			   ng-change="controller.onChangeFederation()"
+			   ng-required="true"
+			   canclean="undefined">
+
+			<label>{{ 'l-uf' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-uf' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_unid_federac }} - {{  $select.selected.nom_complet_uf }}
+				</ui-select-match>
+				<ui-select-choices repeat="uf in controller.federations | filter: $select.search track by $index">
+					<span ng-bind-html="uf.nom_unid_federac + ' - ' + uf.nom_complet_uf | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttCidade"
+			   ng-disabled="!controller.model.ttEstado"
+			   ng-change="controller.onChangeCity()"
+			   ng-required="true"
+			   canclean="undefined">
+
+			<!--zoom zoom-service="crm.city.Zoom"></zoom-->
+
+			<label>{{ 'l-city' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-city' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_cidade }}
+				</ui-select-match>
+				<ui-select-choices repeat="city in controller.cities track by $index"
+								   refresh="controller.getCities($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="city.nom_cidade | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="typeahead"
+			   placeholder="{{ 'l-neighborhood' | i18n: []: 'dts/crm' }}"
+			   ng-model="controller.model.ttBairro"
+			   ng-disabled="!controller.model.ttCidade"
+			   ng-required="true"
+			   typeahead='neighborhood as neighborhood.nom_bairro for neighborhood in controller.getNeighborhoods($viewValue)'
+			   typeahead-wait-ms="500"
+			   canclean="undefined">
+			<label>{{ 'l-neighborhood' | i18n: []: 'dts/crm' }}</label>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="input"
+			   ng-model="controller.model.nom_lograd_ender"
+			   ng-disabled="!controller.model.ttBairro"
+			   class="col-xs-12"
+			   ng-class="{'col-md-12' : (  controller.isIntegratedWithEMS),
+						  'col-xs-10' : (! controller.isIntegratedWithEMS),
+						  'col-sm-10' : (! controller.isIntegratedWithEMS),
+						  'col-md-10' : (! controller.isIntegratedWithEMS)}"
+			   placeholder="{{ 'l-street' | i18n: []: 'dts/crm' }}"
+			   canclean="undefined"
+			   ng-required="true">
+			<label>{{ 'l-street' | i18n: []: 'dts/crm' }}</label>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="input"
+			   class="col-xs-2 col-sm-2 col-md-2"
+			   ng-if="!controller.isIntegratedWithEMS"
+			   ng-model="controller.model.num_lograd_ender"
+			   numbers-only
+			   maxlength="7"
+			   placeholder="{{ 'l-number' | i18n: []: 'dts/crm' }}"
+			   canclean="undefined">
+			<label>{{ 'l-number' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<% if ((!data["l-complement"] || data["l-complement"].log_visivel === true)) { %>
+
+		<field type="input"
+			   class="col-md-12"
+			   ng-model="controller.model.nom_compl_ender"
+
+			   <% if ((!data["l-complement"] || data["l-complement"].log_editavel === true)) { %>
+			   ng-disabled="!controller.model.ttBairro"
+			   <% } else { %>
+			   ng-disabled="true"
+			   <% } %>
+
+			   placeholder="{{ 'l-complement' | i18n: []: 'dts/crm' }}"
+			   maxlength="{{controller.isIntegratedWithLOGIX ? 36 : 2000 }}"
+			   canclean="undefined">
+			<label>{{ 'l-complement' | i18n: []: 'dts/crm' }}</label>
+			<validator key="maxlength">
+				{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} {{ controller.isIntegratedWithLOGIX ? 36 : 2000 }}
+			</validator>
+		</field>
+
+		<% } %>
+
+		<totvs-field class="col-md-12 "
+					 totvs-checkbox
+					 ng-if="controller.editMode === false;"
+					 ng-model="controller.log_campos_salvos"
+					 label="{{ 'l-save-fields' | i18n: []: 'dts/crm' }}"
+					 ng-disabled="false"
+					 t-bsswitch>
+		</totvs-field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-default" ng-click="controller.save(true)" ng-if="controller.editMode === false;">{{ 'btn-save-new' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

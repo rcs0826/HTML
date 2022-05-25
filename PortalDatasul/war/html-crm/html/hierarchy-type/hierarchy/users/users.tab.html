@@ -1,0 +1,98 @@
+<totvs-page-child type="list">
+
+	<totvs-page-content class="crm-tab">
+        <br/>
+		<div class="row">
+            <div class="col-xs-6 col-lg-6 col-md-6 col-sm-6">
+                <button type="button"
+                        class="btn btn-primary"
+                        ng-model="userController.selectedUsers"
+                        ng-change="userController.addUsers(userController.selectedUsers);"
+                        zoom
+                        zoom-multiple
+                        zoom-service="crm.usuar_mestre.zoom">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+                </button>
+            </div>
+
+            <div class="col-xs-6 col-lg-6 col-md-6 col-sm-6">
+
+                <div class="filters">
+                    <div class="search-field ng-scope">
+                        <div class="input-group pull-right">
+                            <input type="text"
+                                   class="form-control"
+                                   ng-model="userController.quickSearchText" 
+                                   on-key-enter="userController.search()"
+                                   placeholder="{{ 'l-search-generic' | i18n: []: 'dts/crm' }}">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="userController.quickSearchText = undefined">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                                <button class="btn btn-default" type="button" ng-click="userController.search()">
+                                    <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+		</div>
+        
+        <totvs-divider></totvs-divider>
+        
+        <totvs-page-alert type="info"
+						  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}"
+						  ng-if="!userController.ttUsuarios || userController.ttUsuarios.length <= 0">
+			<br>
+            <button type="button"
+                    class="btn btn-primary"
+                    ng-model="controller.selectedUsers"
+                    ng-change="controller.addUser(controller.selectedAction, controller.selectedUsers);"
+                    zoom
+                    zoom-multiple
+                    zoom-service="crm.usuar_mestre.zoom">
+                <span class="glyphicon glyphicon-plus"></span>
+                <span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+            </button>
+		</totvs-page-alert>
+        
+        <div class="crm-tab"
+			 ng-if="userController.ttUsuarios.length">
+
+			<div class="row crm-tab-item header hidden-xs">
+				<strong>
+					<div class="col-xs-2 col-sm-2">
+						{{ 'l-code' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-sm-8">
+						{{ 'l-name' | i18n: []: 'dts/crm' }}
+					</div>
+				</strong>
+			</div>
+
+			<div class="row crm-tab-item"
+				 ng-repeat="user in userController.ttUsuarios">
+
+				<div class="hidden-xs col-sm-2 overflow-ellipsis">
+					{{ user.cod_usuario }}
+				</div>
+
+				<div class="hidden-xs col-sm-8 overflow-ellipsis">
+					{{ user.nom_usuario }}
+				</div>
+
+				<div class="col-xs-2 col-sm-2 text-right">
+                    <a class="clickable"
+                       ng-click="userController.removeUser(user, $index);">
+                        <span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+                        <span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+                    </a>
+				</div>
+			</div>
+		</div>
+        
+        
+    </totvs-page-content>
+</totvs-page-child>

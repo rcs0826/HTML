@@ -1,0 +1,84 @@
+<totvs-page type="base"> 
+    <totvs-page-navbar >
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hrb-loteImportCompartRisco/">Lotes de Importação Compartilhamento de Riscos</breadcrumb>
+                <breadcrumb>Consulta Lotes de Importação Compartilhamento de Riscos</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+  
+           <totvs-page-header-title 
+                title="{{(controller.action === 'EDIT' ? 'Editar' : 'Detalhar')}} Lote de Importação Compartilhamento de Riscos">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.loteImportCompartRiscoForm">
+            <fieldset>
+                <totvs-page-detail class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <legend>Lote</legend>
+
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        title="Unidade Origem"
+                        value="{{controller.loteImportCompartRisco.RotuloUnidadeOrigem}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        title="Número do Lote"
+                        value="{{(StringTools.fill(controller.loteImportCompartRisco.nrLoteImp, '0', 8))}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        title="Usuario de Importação"
+                        value="{{controller.loteImportCompartRisco.cdUsuarioImportacao}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        title="Data de Importação"
+                        value="{{controller.loteImportCompartRisco.dtImportacaoIni | date : 'dd/MM/yyyy'}}">
+                    </totvs-page-detail-info>
+                </totvs-page-detail>
+            </fieldset>
+
+            <legend>Beneficiários ({{controller.loteImportCompartRisco.nrTotalBenefImp}})</legend>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <totvs-page-content>
+                    <totvs-table
+                        t-items="controller.loteImportBenefs"
+                        t-items-as="item"
+                        t-selectable="off"
+                        style="height: 400px; display:block; ">
+
+                        <column title="Beneficiário" width="100">
+                            {{item.beneficiario}}
+                        </column>
+                        <column title="Carteira" width="50">
+                            {{item.cdCarteiraOrigem}}
+                        </column>
+                        <column title="Dt. Inclusão" width="30" >
+                            {{item.dtInclusao | date : 'dd/MM/yyyy'}}
+                        </column>
+                        <column title="Dt. Exclusão" width="30" >
+                            {{item.dtExclusaoPlano | date : 'dd/MM/yyyy'}}
+                        </column>
+                    </totvs-table>
+                </totvs-page-content>
+            </div>
+        </totvs-page-form>        
+    </totvs-page-content>   
+</totvs-page>
+
+

@@ -1,0 +1,125 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<link rel="stylesheet" href="/dts/kbn/css/font-awesome.css"/>
+<link rel="stylesheet" href="/dts/kbn/css/field-addon.css"/>
+<totvs-modal-header>{{'l-supermarket-detail' | i18n}}</totvs-modal-header>
+<totvs-modal-body class="modalbody-supermarket-edit">
+  <totvs-page-form role="form" id="supermarketForm" name="supermarketForm" ng-init="controller.setFormScope(this)" novalidate="novalidate">
+    <div data-ng-repeat="item in controller.currentSupermarket track by $index" class="row">
+      <ng-form name="itemForm">
+        <accordion class="col-xs-12">                   
+          <accordion-group ng-init="status = {isOpen: false}" is-open="status.isOpen">
+            <accordion-heading>{{item.ds_kbn_item[0] | descFlow}}<i ng-class="{'glyphicon-chevron-down': status.isOpen, 'glyphicon-chevron-right': !status.isOpen}" class="pull-right glyphicon"></i></accordion-heading>
+            <totvs-page-detail style="padding-bottom: 0px;padding-top: 0px;">
+              <totvs-page-detail-info ng-if="item.cod_depos_erp" title="{{'l-warehouse' | i18n}}" value="{{item.cod_depos_erp}}" class="col-xs-12 col-sm-6"></totvs-page-detail-info>
+              <totvs-page-detail-info ng-if="item.cod_localiz" title="{{'l-location' | i18n}}" value="{{item.cod_localiz}}" class="col-xs-12 col-sm-6">
+                <required>,addon="{{'l-work-day' | i18n}}",label="{{'l-resupply-time' | i18n}}")</required>
+              </totvs-page-detail-info>
+            </totvs-page-detail>
+            <field-addon id="qti_tam_kanban" name="qti_tam_kanban" type="number" ng-model="item.qti_tam_kanban" ng-model-options="{ debounce: 500 }" min="1" ng-change="controller.changeValue(item)" required="true" addon="{{item.ds_kbn_item[0].cod_un_med_erp}}" ng-disabled="controller.mapping.idi_status === 4 || item.log_ativo == false || item.ds_kbn_item[0].idi_control_kanban === 0 &amp;&amp; controller.mapping.idi_status !== 1" label="{{'l-kanban-size' | i18n}}" class="col-lg-4"></field-addon>
+            <field-addon id="qti_estoq_segur" name="qti_estoq_segur" type="number" ng-model="item.qti_estoq_segur" ng-model-options="{ debounce: 500 }" ng-change="controller.changeValue(item)" integer="integer" required="required" addon="{{item.ds_kbn_item[0].cod_un_med_erp}}" ng-disabled="controller.mapping.idi_status === 4 || item.log_ativo == false || item.ds_kbn_item[0].idi_control_kanban === 0 &amp;&amp; controller.mapping.idi_status !== 1" label="{{'l-safety-storage' | i18n}}" class="col-lg-5"></field-addon>
+            <field-addon id="qti_lote_minimo" name="qti_lote_minimo" type="number" ng-model="item.qti_lote_minimo" ng-model-options="{ debounce: 500 }" ng-change="controller.changeValue(item)" integer="integer" required="required" addon="{{item.ds_kbn_item[0].cod_un_med_erp}}" ng-disabled="controller.mapping.idi_status === 4 || item.log_ativo == false || item.ds_kbn_item[0].idi_control_kanban === 0 &amp;&amp; controller.mapping.idi_status !== 1" label="{{'l-minimum-lot' | i18n}}" class="col-lg-3"></field-addon>
+            <field-addon id="qtd_demand" name="qtd_demand" type="number" ng-model="item.qtd_demand" ng-model-options="{ debounce: 500 }" ng-change="controller.changeValue(item)" integer="integer" required="required" addon="{{item.ds_kbn_item[0].cod_un_med_erp}} / {{'l-day' | i18n}}" ng-disabled="(controller.mapping.idi_status == 3 || !item.ds_kbn_item[0].log_expedic) || controller.mapping.idi_status === 4 || item.log_ativo == false || item.ds_kbn_item[0].idi_control_kanban === 0 &amp;&amp; controller.mapping.idi_status !== 1" label="{{'l-demand' | i18n}}" class="col-lg-4"></field-addon>
+            <field-addon id="val_tempo_ressup" name="val_tempo_ressup" type="number" ng-model="item.val_tempo_ressup" ng-model-options="{ debounce: 500 }" greater-than="0" ng-change="controller.changeValue(item)" required="required" addon="{{'l-work-day' | i18n}}" ng-disabled="controller.mapping.idi_status === 4 || item.log_ativo == false || item.ds_kbn_item[0].idi_control_kanban === 0 &amp;&amp; controller.mapping.idi_status !== 1" label="{{'l-resupply-time' | i18n}}" class="col-lg-8"></field-addon>
+            <field type="checkbox" ng-model="item.log_disparo" ng-disabled="controller.mapping.idi_status === 4 || item.log_ativo == false || (item.ds_kbn_item[0].idi_control_kanban === 0 &amp;&amp; !item.ds_kbn_item[0].log_expedic) &amp;&amp; controller.mapping.idi_status !== 1" label="{{'l-on-demand' | i18n}}" class="col-xs-12 col-md-4"></field>
+            <field type="checkbox" ng-model="item.log_calc_autom" ng-disabled="controller.mapping.idi_status === 4 || item.log_ativo == false || item.ds_kbn_item[0].idi_control_kanban === 0 &amp;&amp; controller.mapping.idi_status !== 1" label="{{'l-calculate-kanban-Ranges' | i18n}}" ng-change="controller.changeValue(item)" class="col-xs-12 col-md-6"></field>
+            <field type="checkbox" ng-model="item.log_prog_manual" ng-change="controller.producaoManual(item)" ng-disabled="controller.mapping.idi_status === 4 || item.log_ativo == false || item.ds_kbn_item[0].idi_control_kanban === 0 &amp;&amp; controller.mapping.idi_status !== 1" label="{{'l-allow-manual-schedule' | i18n}}" class="col-xs-12 col-md-4"></field>
+            <field type="checkbox" ng-model="item.log_aloca_autom" ng-disabled="controller.mapping.idi_status === 4 || !item.log_prog_manual || item.log_ativo == false || item.ds_kbn_item[0].idi_control_kanban === 0 &amp;&amp; controller.mapping.idi_status !== 1" label="{{'l-auto-allocation' | i18n}}" class="col-xs-12 col-md-6"></field>
+            <totvs-divider></totvs-divider>
+            <div class="row">
+              <div class="col-xs-12 col-md-4">
+                <div ng-class="{'has-error': itemForm.qti_verde_kanban.$invalid}" style="margin-top: 29px;" class="input-group">
+                  <div class="input-group-addon"><span tooltip="{{'l-green-range' | i18n}}" class="fa fa-tag fa-lg is-color-green"></span></div>
+                  <input ng-disabled="item.log_calc_autom || controller.mapping.idi_status === 4 || item.log_ativo == false || item.ds_kbn_item[0].idi_control_kanban === 0 &amp;&amp; controller.mapping.idi_status !== 1" id="qti_verde_kanban" name="qti_verde_kanban" type="number" ng-model="item.qti_verde_kanban" min="1" integer="integer" required="required" label="{{'l-green-range' | i18n}}" class="form-control input-sm"/>
+                  <div class="input-group-addon">{{'l-cards' | i18n}}</div>
+                </div>
+                <div ng-hide="itemForm.qti_verde_kanban.$valid" class="tooltip bottom in">
+                  <div class="tooltip-inner btn-danger">
+                    <div class="help-inline ng-binding ng-scope">{{'l-green-range' | i18n}} &nbsp; {{'l-is-required' | i18n}}</div>
+                  </div>
+                  <div class="tooltip-arrow arrow-danger"></div>
+                </div>
+              </div>
+              <div style="margin-top: 9px;" class="col-xs-12 col-md-8">
+                <div style="font-family: 'Arial';margin-bottom: 5px;font-weight: 200;font-size: 12px;color: gray;" required="required" class="label">{{'l-green-formula' | i18n}}</div>
+                <div ng-class="{'has-error': item.log_calc_autom &amp;&amp; !item.ds_kbn_formul_verde}" class="input-group col-md-12">
+                  <select name="formula_verde" id="formula_verde" ng-options="formula.num_id_formul + controller.space + formula.des_formula for formula in controller.formulas" required="required" ng-model="item.ds_kbn_formul_verde" ng-disabled="!item.log_calc_autom || controller.mapping.idi_status === 4 || item.log_ativo == false || item.ds_kbn_item[0].idi_control_kanban === 0 &amp;&amp; controller.mapping.idi_status !== 1" ng-change="controller.changeValue(item)" class="form-control">
+                    <option value="">{{'l-select-green-formula'| i18n}}</option>
+                  </select>
+                </div>
+                <div ng-if="item.log_calc_autom &amp;&amp; !item.ds_kbn_formul_verde" class="tooltip bottom in">
+                  <div class="tooltip-inner btn-danger">
+                    <div class="help-inline ng-binding ng-scope">{{'l-select-green-formula' | i18n }}</div>
+                  </div>
+                  <div class="tooltip-arrow arrow-danger"></div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-4">
+                <div ng-class="{'has-error': itemForm.qti_amarela_kanban.$invalid}" style="margin-top: 29px;" class="input-group">
+                  <div class="input-group-addon"><span tooltip="{{'l-yellow-range' | i18n}}" class="fa fa-tag fa-lg is-color-yellow"></span></div>
+                  <input ng-disabled="item.log_calc_autom || controller.mapping.idi_status === 4 || item.log_ativo == false || item.ds_kbn_item[0].idi_control_kanban === 0 &amp;&amp; controller.mapping.idi_status !== 1" id="qti_amarela_kanban" name="qti_amarela_kanban" type="number" ng-model="item.qti_amarela_kanban" min="1" integer="integer" required="required" label="{{'l-yellow-range' | i18n}}" class="form-control input-sm"/>
+                  <div class="input-group-addon">{{'l-cards' | i18n}}</div>
+                </div>
+                <div ng-hide="itemForm.qti_amarela_kanban.$valid" class="tooltip bottom in">
+                  <div class="tooltip-inner btn-danger">
+                    <div class="help-inline ng-binding ng-scope">{{'l-yellow-range' | i18n}} &nbsp; {{'l-is-required' | i18n}}</div>
+                  </div>
+                  <div class="tooltip-arrow arrow-danger"></div>
+                </div>
+              </div>
+              <div style="margin-top: 9px;" class="col-xs-12 col-md-8">
+                <div style="font-family: 'Arial';margin-bottom: 5px;font-weight: 200;font-size: 12px;color: gray;" required="required" class="label">{{'l-yellow-formula' | i18n}}</div>
+                <div ng-class="{'has-error': item.log_calc_autom &amp;&amp; !item.ds_kbn_formul_amarela}" class="input-group col-md-12">
+                  <select name="formula_amarela" id="formula_amarela" ng-options="formula.num_id_formul + controller.space + formula.des_formula for formula in controller.formulas" required="required" ng-model="item.ds_kbn_formul_amarela" ng-disabled="!item.log_calc_autom || controller.mapping.idi_status === 4 || item.log_ativo == false || item.ds_kbn_item[0].idi_control_kanban === 0 &amp;&amp; controller.mapping.idi_status !== 1" ng-change="controller.changeValue(item)" class="form-control">
+                    <option value="">{{'l-select-yellow-formula'| i18n}}</option>
+                  </select>
+                </div>
+                <div ng-if="item.log_calc_autom &amp;&amp; !item.ds_kbn_formul_amarela" class="tooltip bottom in">
+                  <div class="tooltip-inner btn-danger">
+                    <div class="help-inline ng-binding ng-scope">{{'l-select-yellow-formula' | i18n }}</div>
+                  </div>
+                  <div class="tooltip-arrow arrow-danger"></div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-4">
+                <div ng-class="{'has-error': itemForm.qti_vermelha_kanban.$invalid}" style="margin-top: 29px;" class="input-group">
+                  <div class="input-group-addon"><span tooltip="{{'l-red-range' | i18n}}" class="fa fa-tag fa-lg is-color-red"></span></div>
+                  <input ng-disabled="item.log_calc_autom || controller.mapping.idi_status === 4 || item.log_ativo == false || item.ds_kbn_item[0].idi_control_kanban === 0 &amp;&amp; controller.mapping.idi_status !== 1" id="qti_vermelha_kanban" name="qti_vermelha_kanban" type="number" ng-model="item.qti_vermelha_kanban" min="1" integer="integer" required="required" label="{{'l-red-range' | i18n}}" class="form-control input-sm"/>
+                  <div class="input-group-addon">{{'l-cards' | i18n}}</div>
+                </div>
+                <div ng-hide="itemForm.qti_vermelha_kanban.$valid" class="tooltip bottom in">
+                  <div class="tooltip-inner btn-danger">
+                    <div class="help-inline ng-binding ng-scope">{{'l-red-range' | i18n}} &nbsp; {{'l-is-required' | i18n}}</div>
+                  </div>
+                  <div class="tooltip-arrow arrow-danger"></div>
+                </div>
+              </div>
+              <div style="margin-top: 9px;" class="col-xs-12 col-md-8">
+                <div style="font-family: 'Arial';margin-bottom: 5px;font-weight: 200;font-size: 12px;color: gray;" required="required" class="label">{{'l-red-formula' | i18n}}</div>
+                <div ng-class="{'has-error': item.log_calc_autom &amp;&amp; !item.ds_kbn_formul_vermelha}" class="input-group col-md-12">
+                  <select name="formula_vermelha" id="formula_vermelha" ng-options="formula.num_id_formul + controller.space + formula.des_formula for formula in controller.formulas" required="required" ng-model="item.ds_kbn_formul_vermelha" ng-disabled="!item.log_calc_autom || controller.mapping.idi_status === 4 || item.log_ativo == false || item.ds_kbn_item[0].idi_control_kanban === 0 &amp;&amp; controller.mapping.idi_status !== 1" ng-change="controller.changeValue(item)" class="form-control">
+                    <option value="">{{'l-select-red-formula' | i18n }}</option>
+                  </select>
+                </div>
+                <div ng-if="item.log_calc_autom &amp;&amp; !item.ds_kbn_formul_vermelha" class="tooltip bottom in">
+                  <div class="tooltip-inner btn-danger">
+                    <div class="help-inline ng-binding ng-scope">{{'l-select-red-formula' | i18n }}</div>
+                  </div>
+                  <div class="tooltip-arrow arrow-danger"></div>
+                </div>
+              </div>
+            </div>
+          </accordion-group>
+        </accordion>
+      </ng-form>
+    </div>
+  </totvs-page-form>
+</totvs-modal-body>
+<totvs-modal-footer>
+  <button data-ng-click="controller.cancel();" class="btn btn-default">{{ 'l-cancel' | i18n }}</button>
+  <button data-ng-click="controller.save(controller.currentSupermarket);" class="btn btn-primary">{{ 'l-save' | i18n }}</button>
+</totvs-modal-footer>

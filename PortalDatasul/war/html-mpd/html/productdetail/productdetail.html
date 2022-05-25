@@ -1,0 +1,144 @@
+<totvs-page type="detail" totvs-custom-element="customPage">
+
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#{{defaultPageHome}}">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-product-details' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		
+		<totvs-page-header>
+     
+            <totvs-page-header-title title="{{'l-product' | i18n}} {{controller.model.ttProductDetails[0]['it-codigo']}}"></totvs-page-header-title>
+
+		</totvs-page-header>	
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		
+		<totvs-page-detail>
+            
+            <totvs-page-detail-info-group>{{'l-general-info' | i18n}}</totvs-page-detail-info-group>  
+
+            <img class="col-xs-3" alt="tst" ng-if="controller.model.ttProductDetails[0].imagem" ng-src="/dts/datasul-rest/resources/api/fch/fchdis/fchdis0038/imagem?imagem={{controller.model.ttProductDetails[0].imagem}}">
+            
+            <div class="col-sm-9">
+                <div ng-if="controller.isRepresentative">
+                    <totvs-page-detail-info title="{{'l-code' | i18n}}">{{controller.model.ttProductDetails[0]['it-codigo']}}</totvs-page-detail-info>
+                    <totvs-page-detail-info title="{{'l-descricao' | i18n}}">{{controller.model.ttProductDetails[0]['desc-item']}}</totvs-page-detail-info>
+                    <totvs-page-detail-info title="{{'l-ge-codigo' | i18n}}">{{controller.model.ttProductDetails[0]['ge-codigo']}}</totvs-page-detail-info>
+                    <totvs-page-detail-info title="{{'l-fm-codigo' | i18n}}">{{controller.model.ttProductDetails[0]['fm-codigo']}}</totvs-page-detail-info>
+                    <totvs-page-detail-info title="{{'l-fm-cod-com' | i18n}}">{{controller.model.ttProductDetails[0]['fm-cod-com']}}</totvs-page-detail-info>
+                    <totvs-page-detail-info title="{{'l-unidade-medida' | i18n}}">{{controller.model.ttProductDetails[0]['un']}}</totvs-page-detail-info>
+                    <totvs-page-detail-info title="{{'l-cod-estabel-padrao' | i18n}}">{{controller.model.ttProductDetails[0]['cod-estabel']}}</totvs-page-detail-info>
+                    <totvs-page-detail-info title="{{'l-tp-lot-econom' | i18n}}">{{controller.model.ttProductDetails[0]['tp-lote-econom'] | booleanI18N}}</totvs-page-detail-info>
+                    <totvs-page-detail-info title="{{'l-codigo-refer' | i18n}}">{{controller.model.ttProductDetails[0]['codigo-refer']}}</totvs-page-detail-info>
+                    <totvs-page-detail-info title="{{'l-inform-compl' | i18n}}">{{controller.model.ttProductDetails[0]['inform-compl']}}</totvs-page-detail-info>
+                </div>
+                
+                <div ng-if="controller.isCustomer">
+                    <totvs-page-detail-info title="{{'l-code' | i18n}}">{{controller.model.ttProductDetails[0]['it-codigo']}}</totvs-page-detail-info>
+                    <totvs-page-detail-info title="{{'l-descricao' | i18n}}">{{controller.model.ttProductDetails[0]['desc-item']}}</totvs-page-detail-info>
+                    <totvs-page-detail-info title="{{'l-narrativa' | i18n}}">{{controller.model.ttProductDetails[0]['narrativa']}}</totvs-page-detail-info>
+                    <totvs-page-detail-info title="{{'l-unidade-medida' | i18n}}">{{controller.model.ttProductDetails[0]['un']}}</totvs-page-detail-info>
+                </div>
+
+            </div>
+            <totvs-page-detail-info-group>{{'l-narrativa-produto' | i18n}}</totvs-page-detail-info-group>  
+            <totvs-page-detail-info class="col-xs-12" title="Narrativa">{{controller.model.ttProductDetails[0]['narrativa']}}</totvs-page-detail-info>
+            
+            <totvs-page-detail-info-group ng-if="controller.model.ttProductDescription && controller.model.ttProductDescription.length > 0">{{'l-product-specs' | i18n}}</totvs-page-detail-info-group>  
+            <div class="col-sm-9">
+                <ul ng-if="controller.model.ttProductDescription && controller.model.ttProductDescription.length > 0">
+                    <li ng-repeat="item in controller.model.ttProductDescription">{{item.descricao}}</li>
+                </ul>
+            </div>
+
+            <totvs-page-detail-info-group>{{'l-price-info' | i18n}}</totvs-page-detail-info-group>  
+
+            <div ng-repeat="price in controller.model.ttPricesRelatedByItem">
+                <div ng-if="controller.isRepresentative">
+                    <totvs-page-detail-info class="col-xs col-sm-2" title="{{'l-price-table' | i18n}}">{{price['nr-tabpre']}}</totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs col-sm-2" title="{{'l-vl-preuni' | i18n}}">{{price['preco-venda'] | number : 2}}</totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs col-sm-2" title="{{'l-unidade-medida' | i18n}}">{{price['cod-unid-med']}}</totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs col-sm-2" title="{{'l-quant-min' | i18n}}">{{price['quant-min'] | number : 4}}</totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs col-sm-2" title="{{'l-desconto-quantidade' | i18n}}">{{price['desco-quant'] | number : 5}}</totvs-page-detail-info>
+                </div>
+                
+                <div ng-if="controller.isCustomer">
+                    <totvs-page-detail-info class="col-xs col-sm-3" title="{{'l-vl-preuni' | i18n}}">{{price['preco-venda'] | number : 2}}</totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs col-sm-3" title="{{'l-unidade-medida' | i18n}}">{{price['cod-unid-med']}}</totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs col-sm-2" title="{{'l-quant-min' | i18n}}">{{price['quant-min'] | number : 4}}</totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs col-sm-2" title="{{'l-desconto-quantidade' | i18n}}">{{price['desco-quant'] | number : 5}}</totvs-page-detail-info>
+                </div>
+
+                <totvs-page-detail-info ng-if="controller.bussinessContexts && !controller.newOrderInclusionFlow" title="{{'l-quantity' | i18n}}" class="btn-group col-xs col-sm-2">
+                    <div class="input-group">
+                        <input onClick="this.setSelectionRange(0, this.value.length)" data-v-max="9999999.9999" type="text" data-a-sep="." data-a-dec="," autonumeric="" bind="" data-m-dec="4" class="form-control ng-pristine ng-valid ng-touched" ng-init="price.qtdToAddCart = 0" name="price_qtdtoaddcart" id="price_qtdtoaddcart" ng-model="price.qtdToAddCart"></input>
+                        <span class="input-group-btn">
+                            <a role="button" class="btn btn-default" class="clickable" ng-click="controller.addItemToShoppingCart(price)"><span class="glyphicon glyphicon-shopping-cart"><span class="glyphicon glyphicon glyphicon-plus"></span></span> </a>    
+                        </span>
+                    </div>
+                </totvs-page-detail-info>
+            </div>
+
+		</totvs-page-detail>		
+
+        <div ng-if="controller.isRepresentative">
+            <div class="row">
+                <div class="col-xs-12">
+                    <totvs-page-detail-info-group>{{'l-inventory-simulation' | i18n}}</totvs-page-detail-info-group>
+                </div>
+            </div>  
+            
+            <totvs-list-item ng-repeat="itemEstoque in controller.model.ttProductInventory">
+                <totvs-list-item-content>
+                    <totvs-list-item-info class="col-xs col-sm-2" title="{{'date' | i18n}}">{{itemEstoque.date | date : ('l-date-format' | i18n) : 'UTC'}}</totvs-list-item-info>
+                    <totvs-list-item-info class="col-xs col-sm-2" title="{{'l-salesorders' | i18n}}">{{itemEstoque.salesOrders | number : 4}}</totvs-list-item-info>
+                    <totvs-list-item-info class="col-xs col-sm-2" title="{{'l-reserves' | i18n}}">{{itemEstoque.reservation | number : 4}}</totvs-list-item-info>
+                    <totvs-list-item-info class="col-xs col-sm-2" title="{{'l-production-order' | i18n}}">{{itemEstoque.production | number : 4}}</totvs-list-item-info>
+                    <totvs-list-item-info class="col-xs col-sm-2" title="{{'l-purchase-order' | i18n}}">{{itemEstoque.purchaseOrder | number : 4}}</totvs-list-item-info>
+                    <totvs-list-item-info class="col-xs col-sm-2" title="{{'l-balance' | i18n}}">{{itemEstoque.calculatedInventory | number : 4}}</totvs-list-item-info>
+                </totvs-list-item-content>
+            </totvs-list-item>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <totvs-page-detail-info-group>{{'l-related-products' | i18n}}</totvs-page-detail-info-group>  
+            </div>
+        </div>  
+
+        <totvs-list-item ng-repeat="produtoRelacionado in controller.model.ttRelatedProduct">
+            <totvs-list-item-content>
+                <totvs-list-item-info class="col-xs col-sm-3" title="{{'l-cod-item' | i18n}}"><a href="#/dts/mpd/productdetail/{{produtoRelacionado['it-codigo']}}?codRefer={{produtoRelacionado['cod-refer']}}">{{produtoRelacionado['it-codigo']}}</a></totvs-list-item-info>
+                <totvs-list-item-info class="col-xs col-sm-3" title="{{'l-cod-refer' | i18n}}">{{produtoRelacionado['cod-refer']}}</totvs-list-item-info>
+                <totvs-list-item-info class="col-xs col-sm-3" title="{{'l-vl-preuni' | i18n}}">{{produtoRelacionado['vl-preuni'] | number : 4}}</totvs-list-item-info>
+                <totvs-list-item-info ng-if="controller.isRepresentative" class="col-xs col-sm-3" title="{{'l-inventory' | i18n}}">{{produtoRelacionado['vl-saldo'] | number : 4}}</totvs-list-item-info>
+                <totvs-list-item-info ng-if="controller.isCustomer" class="col-xs col-sm-3" title="{{'l-inventory' | i18n}}">
+                    <span ng-if="produtoRelacionado.hasBalance">{{'l-inventory-avail' | i18n}}</span>
+                    <span ng-if="!produtoRelacionado.hasBalance">{{'l-inventory-not-avail' | i18n}}</span>
+                </totvs-list-item-info>
+            </totvs-list-item-content>
+        </totvs-list-item>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <totvs-page-detail-info-group>{{'l-equivalent-products' | i18n}}</totvs-page-detail-info-group>
+            </div>
+        </div>  
+          
+        <totvs-list-item ng-repeat="equivalentProduct in controller.model.ttEquivalentProduct">
+            <totvs-list-item-content>
+                <totvs-list-item-info class="col-xs col-sm-3" title="{{'l-cod-item' | i18n}}"> <a href="#/dts/mpd/productdetail/{{equivalentProduct['it-codigo']}}?codRefer={{equivalentProduct['cod-refer']}}">{{equivalentProduct['it-codigo']}}</a></totvs-list-item-info>
+                <totvs-list-item-info class="col-xs col-sm-3" title="{{'l-cod-refer' | i18n}}">{{equivalentProduct['cod-refer']}}</totvs-list-item-info>
+                <totvs-list-item-info class="col-xs col-sm-3" title="{{'l-vl-preuni' | i18n}}">{{equivalentProduct['vl-preuni'] | number : 4}}</totvs-list-item-info>
+                <totvs-list-item-info ng-if="controller.isRepresentative" class="col-xs col-sm-3" title="{{'l-inventory' | i18n}}">{{equivalentProduct['vl-saldo'] | number : 4}}</totvs-list-item-info>
+                <totvs-list-item-info ng-if="controller.isCustomer" class="col-xs col-sm-3" title="{{'l-inventory' | i18n}}">
+                    <span ng-if="equivalentProduct.hasBalance">{{'l-inventory-avail' | i18n}}</span>
+                    <span ng-if="!equivalentProduct.hasBalance">{{'l-inventory-not-avail' | i18n}}</span>
+                </totvs-list-item-info>
+            </totvs-list-item-content>
+        </totvs-list-item>
+             
+	</totvs-page-content>
+</totvs-page>

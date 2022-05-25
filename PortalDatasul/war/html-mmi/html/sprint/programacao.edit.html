@@ -1,0 +1,212 @@
+<totvs-modal-header>
+    {{ programacaoCtrl.headerTitle }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<div class="row">
+		<totvs-page-child>
+			<totvs-page-content>
+				<totvs-tabset class="col-xs-12">
+					<totvs-tab heading="{{ 'l-schedule' | i18n }}">
+						<div class="row">
+							<div class="col-xs-12">
+								<totvs-field totvs-input
+											 class="col-sm-6"
+											 label="{{ 'l-code' | i18n }}"
+											 ng-model="programacaoCtrl.model.ttProgramacao['cod-programac']"
+											 id="cod-programac"
+											 t-maxlength="12"
+											 required>
+								</totvs-field>
+							</div> 
+							<div class="col-xs-12">
+								<totvs-field totvs-input
+											 class="col-sm-12"
+											 label="{{ 'l-description' | i18n }}"
+											 ng-model="programacaoCtrl.model.ttProgramacao['des-programac']"
+											 t-maxlength="60"
+											 required
+											 canclean>
+								</totvs-field>
+							</div> 
+							<div class="col-xs-12">
+								<totvs-field totvs-combo	
+								  			 class="col-sm-6"
+								 			 label="{{ 'l-schedule-type' | i18n }}"	 
+											 ng-disabled="programacaoCtrl.model.ttProgramacao['idi-tip-programac'] === 2"
+											 t-options="programacaoCtrl.opcaoTipoPlanejamento"
+											 ng-model="programacaoCtrl.model.ttProgramacao['idi-tip-programac']">
+								</totvs-field>
+							</div>
+							<div class="col-xs-12">
+								<totvs-field totvs-combo	
+											 class="col-sm-6"
+											 label="{{ 'l-frequency' | i18n }}"	
+											 t-options="programacaoCtrl.opcaoPlanejamento"
+											 ng-disabled="programacaoCtrl.model.naoPermiteAlteracao"
+											 ng-model="programacaoCtrl.model.ttProgramacao['idi-tip-programac-sprint']">
+								</totvs-field>
+								<totvs-field totvs-input
+										 	 id="num-dias-sprint"
+											 ng-if="programacaoCtrl.model.ttProgramacao['idi-tip-programac-sprint'] === 3"
+											 class="col-sm-4"
+											 label="{{ 'l-duration-calendar-days' | i18n }}" 
+											 t-maxlength="3"
+											 ng-model="programacaoCtrl.model.ttProgramacao['num-dias-sprint']"
+											 ng-disabled="programacaoCtrl.model.naoPermiteAlteracao"
+											 numbers-only
+											 required>
+								</totvs-field>
+							</div> 
+							<div class="col-xs-12">
+								<totvs-field totvs-datepicker
+											 t-mask-date
+											 class="col-sm-6"
+											 label="{{ 'l-reference-date' | i18n }}"
+											 ng-model="programacaoCtrl.model.ttProgramacao['dat-inicial-programac']"
+											 culture='pt'
+											 required
+											 output-format="date"
+											 placeholder="{{ 'l-choose-date' | i18n }}"
+											 canclean
+											 ng-disabled="programacaoCtrl.model.naoPermiteAlteracao"
+											 ng-change='programacaoCtrl.changeDatepicker()' >
+								</totvs-field>
+							</div>
+							<div class="col-xs-12">
+								<totvs-field totvs-combo	
+											 class="col-sm-6"
+											 label="{{ 'l-period-numbers' | i18n }}" 
+											 t-options="programacaoCtrl.opcaoInteracao"
+											 ng-model="programacaoCtrl.model.ttProgramacao['num-dias-interac']">
+								</totvs-field>
+								<totvs-field totvs-combo	
+										 	 class="col-sm-4"
+											 label="{{ 'l-status' | i18n }}"
+											 ng-disabled="programacaoCtrl.model.ttProgramacao['idi-status-programac'] === 1"  
+											 t-options="programacaoCtrl.opcaoStatus"
+											 ng-model="programacaoCtrl.model.ttProgramacao['idi-status-programac']">
+								</totvs-field>
+							</div>
+						</div>
+					</totvs-tab>
+					<totvs-tab heading="{{ 'l-localization' | i18n }}">
+						<div class="row col-xs-12">
+							<totvs-field totvs-input
+										 class="col-xs-12"
+										 ng-model="programacaoCtrl.model.ttParametros.estabelec"
+										 zoom-id="cod-estabel"
+										 zoom-description="nome"
+										 zoom-service="mpd.estabelecSE.zoom"
+										 zoom-multiple
+										 label="{{ 'l-site' | i18n }}"
+										 canclean
+										 required>
+							</totvs-field>
+							<totvs-field totvs-input
+										 class="col-xs-12"
+										 ng-model="programacaoCtrl.model.ttParametros.oficina"
+										 zoom-id="cod-ofici"
+										 zoom-description="des-ofici"
+										 zoom-service="mab.oficina.zoom"
+										 zoom-multiple
+										 label="{{ 'l-workshop' | i18n }}"
+										 canclean
+										 required>
+							</totvs-field>
+							<totvs-field totvs-input
+										 class="col-xs-12"
+										 ng-model="programacaoCtrl.model.ttParametros.tag"
+										 zoom-id="cd-tag"
+										 zoom-description="descricao"
+										 zoom-service="mmi.tag.zoom"
+										 zoom-multiple
+										 label="{{ 'l-tag' | i18n }}"
+										 canclean>
+							</totvs-field>
+							<totvs-field totvs-input
+										 class="col-xs-12"
+										 ng-model="programacaoCtrl.model.ttParametros.planejador"
+										 zoom-id="cod-plandor"
+										 zoom-description="nom-plandor"
+										 zoom-service="mab.mmv-plandor.zoom"
+										 zoom-multiple
+										 label="{{ 'l-planner' | i18n }}"
+										 canclean>
+							</totvs-field>
+							<totvs-field totvs-input
+				                         class="col-xs-12"
+										 ng-model="programacaoCtrl.model.ttParametros.setor"
+										 zoom-id="cod-setor-ofici"
+									 	 zoom-description="des-setor-ofici"
+										 zoom-service="mab.mmvSetorOfici.zoom"
+										 zoom-multiple
+										 label="{{'l-sector' | i18n }}"
+										 canclean>
+							</totvs-field>
+						</div>
+					</totvs-tab>
+					<totvs-tab heading="{{ 'l-maintenance' | i18n }}">
+						<div class="row col-xs-12">
+							<totvs-field totvs-input
+										 class="col-xs-12"
+										 ng-model="programacaoCtrl.model.ttParametros.tipoManut"
+										 zoom-id="cd-tipo"
+										 zoom-description="descricao"
+										 zoom-service="mmi.tipo-manut.zoom"
+										 zoom-multiple
+										 label="{{ 'l-maintenance-type' | i18n }}"
+										 canclean>
+							</totvs-field>
+							<totvs-field totvs-input
+				                	 	 class="col-xs-12"
+										 ng-model="programacaoCtrl.model.ttParametros.modelo"
+										 zoom-id="cod-model"
+										 zoom-description="des-model"
+										 zoom-service="mab.mab-model.zoom"
+										 zoom-multiple
+										 label="{{'l-model-cf' | i18n }}"
+				                	 	 canclean>
+							</totvs-field>
+							<totvs-field totvs-input
+										 class="col-xs-12"
+										 ng-model="programacaoCtrl.model.ttParametros.plano"
+										 zoom-id="cod-plano"
+										 zoom-description="des-plano-manut"
+										 zoom-service="mab.mmv-plano-prevent.zoom"
+										 zoom-multiple
+										 label="{{'l-maintenance-plan' | i18n }}"
+										 canclean>
+							</totvs-field>
+							<totvs-field totvs-input
+										 class="col-xs-12"
+										 ng-model="programacaoCtrl.model.ttParametros.grupo"
+										 zoom-id="cod-grp-eqpto"
+										 zoom-description="des-grp-eqpto"
+										 zoom-service="mab.mab-grp-eqpto.zoom"
+										 zoom-multiple
+										 label="{{'l-equipment-group' | i18n }}"
+										 canclean>
+							</totvs-field>
+							<totvs-field totvs-input
+										 class="col-xs-12"
+										 ng-model="programacaoCtrl.model.ttParametros.equipamento"
+										 zoom-id="cod-eqpto"
+										 zoom-description="cod-model"
+										 zoom-service="mab.mab-eqpto.zoom"
+										 zoom-multiple
+										 label="{{'l-equipment' | i18n }}"
+										 canclean>
+							</totvs-field>
+						</div>
+					</totvs-tab>
+				</totvs-tabset>
+			</totvs-page-content>
+		</totvs-page-child>
+	</div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button type="button" class="btn btn-default" data-ng-click="programacaoCtrl.cancelar()">{{ 'l-cancel' | i18n }}</button>
+	<button type="button" class="btn btn-primary" data-ng-click="programacaoCtrl.salvar()">{{ 'l-save' | i18n }}</button>
+</totvs-modal-footer>

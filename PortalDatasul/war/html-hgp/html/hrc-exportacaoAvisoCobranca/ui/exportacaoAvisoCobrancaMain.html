@@ -1,0 +1,188 @@
+<totvs-page type="list"> 
+    <totvs-page-navbar>
+        <totvs-page-header>
+            <totvs-page-header-title title="Exportação Aviso de Cobrança">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="4">
+
+                    <action class="btn btn-default" ng-click="controller.irPara('parametros');" style="color: #333;
+                    background-color: #fff;
+                    border-color: #ccc; padding-right: 15px;">
+                        Parâmetros
+                    </action>
+                    <action class="btn btn-default" ng-click="controller.irPara('selecao');" style="padding-right: 15px;">
+                        Seleção
+                    </action>
+                    <action class="btn btn-default" ng-click="controller.irPara('execucao');" style="padding-right: 15px;">
+                        Execução
+                    </action>
+                    <action class="btn btn-primary" ng-click="controller.generate();" style="padding-right: 15px;">
+                        Enviar
+                    </action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.filtersForm">
+
+            <a name="parametros" id="parametros" style="display: block;
+            position: relative;
+            top: -170px;
+            visibility: hidden;"></a>
+            <legend>
+                Parâmetros
+            </legend>
+            <totvs-row>
+                <totvs-field totvs-combo class="col-lg-3 col-md-3 col-sm-6 col-xs-12" label="Tipo de Arquivo" ng-model="controller.dadosTela.tipoArquivo"
+                    ng-required="true" t-options="controller.options.tipoArquivo" ng-change="controller.changeTipoArquivo()">
+                    <validator key="required">Este campo deve ser preenchido.</validator>
+                </totvs-field>
+                <totvs-field totvs-combo class="col-lg-3 col-md-3 col-sm-6 col-xs-12" label="Tipo de Intercâmbio" ng-model="controller.dadosTela.tipoIntercambio"
+                    ng-required="true" t-options="controller.options.tipoIntercambio">
+                    <validator key="required">Este campo deve ser preenchido.</validator>
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-combo class="col-lg-4 col-md-4 col-sm-8 col-xs-12" label="Cobrar valores alterados após valorização para" ng-model="controller.dadosTela.inCobValorAlt"
+                    ng-required="true" t-options="controller.options.cobValorAlt">
+                    <validator key="required">Este campo deve ser preenchido.</validator>
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row ng-show="controller.dadosTela.tipoArquivo == 1">
+                <field  type="checkbox" 
+                        class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                        ng-model="controller.dadosTela.exportaA520"
+                        label="Exportar Avisos de Cobrança">
+                </field>
+                <field  type="checkbox" 
+                        class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                        ng-model="controller.dadosTela.validaEnviaA520"
+                        label="Efetuar Upload para CMB">
+                </field>
+            </totvs-row>
+
+
+            <a name="selecao" id="selecao" style="display: block;
+            position: relative;
+            top: -170px;
+            visibility: hidden;"></a>
+            <legend name="selecao" id="selecao">
+                Seleção
+            </legend>
+            <totvs-row>
+                 <totvs-field
+                    totvs-datepicker
+                    ng-model='controller.dadosTela.dataInicial'
+                    label="Data Inicial de Conhecimento"
+                    culture='pt'
+                    placeholder='Selecione a data'
+                    class="col-lg-3 col-md-4 col-sm-5 col-xs-6" 
+                    canclean
+                    t-mask-date="99/99/9999"
+                    ng-required="true"
+                    ng-change='controller.changeDatepicker()' >
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+                <totvs-field
+                    totvs-datepicker
+                    ng-model='controller.dadosTela.dataFinal'
+                    label="Data Final de Conhecimento"
+                    culture='pt'
+                    placeholder='Selecione a data'
+                    class="col-lg-3 col-md-4 col-sm-5 col-xs-6" 
+                    canclean
+                    t-mask-date="99/99/9999"
+                    ng-required="true"
+                    ng-change='controller.changeDatepicker()' >
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+             </totvs-row>
+
+            <div ng-show="controller.dadosTela.tipoArquivo == 1">
+                <legend style="font-size: 15px; font-weight: bold;">Unidades</legend>
+            </div>
+            <totvs-row ng-show="controller.dadosTela.tipoArquivo == 1" style="padding-bottom: 30px;">
+                <totvs-field totvs-input numbers-only placeholder="1" ng-disabled="controller.dadosTela.tipoArquivo != 1"
+                    ng-change="controller.onChangeRangeUnidade(event)"
+                    maxlength="4" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Unidade Inicial" ng-model="controller.dadosTela.cdUnidadeInic">
+                </totvs-field>
+                <totvs-field totvs-input numbers-only placeholder="1" ng-disabled="controller.dadosTela.tipoArquivo != 1"
+                    ng-change="controller.onChangeRangeUnidade(event)"
+                    maxlength="4" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Unidade Final" ng-model="controller.dadosTela.cdUnidadeFim">
+                </totvs-field>
+            </totvs-row>
+            <totvs-row ng-show="controller.dadosTela.tipoArquivo == 1">
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <totvs-page-content>
+                        <totvs-table
+                            ng-show="controller.dadosTela.tipoArquivo == 1"
+                            t-items="controller.tmpUnidadeFiltrada"
+                            t-items-as="item"
+                            style="height: 200px; display:block; ">
+
+                            <column title="Código" width="30" >
+                                {{item.cdUnidade}}
+                            </column>
+
+                            <column title="Descrição" width="200">
+                                {{item.dsUnidade}}
+                            </column>
+
+                        </totvs-table>
+                    </totvs-page-content>
+                </div>
+            </totvs-row>
+            <div ng-show="controller.dadosTela.tipoArquivo == 1">
+                <legend style="font-size: 15px; font-weight: bold;">Transações</legend>
+            </div>
+            <totvs-row ng-show="controller.dadosTela.tipoArquivo == 1" style="padding-bottom: 30px;">
+                <totvs-field totvs-input numbers-only placeholder="1" ng-disabled="controller.dadosTela.tipoArquivo != 1"
+                    ng-change="controller.onChangeRangeTransacao(event)"
+                    maxlength="4" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Transacao Inicial" ng-model="controller.dadosTela.cdTransacaoInic">
+                </totvs-field>
+                <totvs-field totvs-input numbers-only placeholder="1" ng-disabled="controller.dadosTela.tipoArquivo != 1"
+                    ng-change="controller.onChangeRangeTransacao(event)"
+                    maxlength="4" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Transacao Final" ng-model="controller.dadosTela.cdTransacaoFim">
+                </totvs-field>
+            </totvs-row>
+            <totvs-row ng-show="controller.dadosTela.tipoArquivo == 1">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <totvs-page-content>
+                        <totvs-table
+                            ng-show="controller.dadosTela.tipoArquivo == 1"
+                            t-items="controller.tmpTransacaoFiltrada"
+                            t-items-as="item"
+                            style="height: 200px; display:block; ">
+
+                            <column title="Código" width="30" >
+                                {{item.cdTransacao}}
+                            </column>
+
+                            <column title="Descrição" width="200">
+                                {{item.dsTransacao}}
+                            </column>
+
+                        </totvs-table>
+                    </totvs-page-content>
+                </div>
+            </totvs-row>
+            <a name="execucao" id="execucao" style="display: block;
+            position: relative;
+            visibility: hidden;"></a>
+            <totvs-execution hide-repeat="true" ng-model="controller.execution">
+                <totvs-execution-item type="execution">
+                    <gps-totvs-schedule program-name="exportacaoAvisoCobranca" ng-model="controller.schedule">
+                    </gps-totvs-schedule>
+                    <totvs-field totvs-select ng-model="controller.dadosTela.servidor" label="Servidor de Execução" t-no-data="Sem dados" placeholder="Selecione.."
+                        select-id="cdServidor" select-description="dsServidor" t-data-source="controller.options.servidores"
+                        canclean>
+                    </totvs-field>
+                </totvs-execution-item>
+            </totvs-execution>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

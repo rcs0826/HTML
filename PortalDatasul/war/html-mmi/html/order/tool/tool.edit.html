@@ -1,0 +1,68 @@
+<totvs-modal-header>
+    {{ toolEditCtrl.headerTitle }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-page-content style="border:0px">           
+	              
+    	<totvs-page-detail style="padding-top:0px">
+			<div class="row">
+	            <div class="col-sm-12">	           
+		            <totvs-field totvs-select
+				                 class="col-sm-12"
+				                 ng-model="toolEditCtrl.tool['cd-tarefa']"
+				                 select-id="cd-tarefa"
+				                 id="cd-tarefa"
+				                 ng-disabled="!toolEditCtrl.tool.isNew"
+				                 select-description="descricao"
+				                 select-service="mmi.ord-taref.zoom"
+				                 zoom-service="mmi.ord-taref.zoom"
+				                 label="{{ 'l-task' | i18n }}"
+				                 focus
+				                 required
+				                 canclean>
+	              	</totvs-field>               
+	            </div>
+	            <div class="col-sm-12">
+		            <totvs-field totvs-select
+				                 class="col-sm-12"
+				                 ng-model="toolEditCtrl.tool.ferramenta"
+				                 select-id="cd-tp-ferr"
+				                 id="cd-tp-ferr"
+				                 ng-disabled="!toolEditCtrl.tool.isNew"
+				                 select-description="descricao"
+				                 select-service="mmi.tp-ferr.zoom"
+				                 zoom-service="mmi.tp-ferr.zoom"
+				                 return-object="select-id"
+				                 label="{{ 'l-tool-type' | i18n }}"
+				                 required
+				                 canclean>
+	              </totvs-field>              
+	            </div> 
+	    
+	            <div class="col-sm-12">
+				    <totvs-field totvs-decimal
+				                 name-id = "tempo"
+				                 id="tempo"
+				                 class="col-lg-4 col-md-6 col-sm-6 col-xs-12"
+				        		 ng-model="toolEditCtrl.tool['tempo']"
+				        		 ng-maxlength="15"
+				        		 required
+				    		     m-dec="4"
+				                 label="{{ 'l-time-2' | i18n }}">
+	                <validator key="maxlength">{{ 'l-invalid-time' | i18n }}</validator>
+				    </totvs-field>
+		        </div> 
+      		</div>          
+		</totvs-page-detail>
+				
+	</totvs-page-content>
+	
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="toolEditCtrl.cancel()">{{ 'l-cancel' | i18n }}</button>
+    <button ng-if="toolEditCtrl.tool.isNew" type="button" class="btn btn-default" data-ng-click="toolEditCtrl.save(true);">{{ 'l-save-new' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="toolEditCtrl.save(false)">{{ 'l-save' | i18n }}</button>        
+</totvs-modal-footer>

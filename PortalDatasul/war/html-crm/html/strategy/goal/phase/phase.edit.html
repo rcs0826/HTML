@@ -1,0 +1,87 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.des_fase : ('btn-new-strategy-phase-goal' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<fieldset class="row">
+		<field
+			type="select"
+			ng-required="true"
+			ng-model="controller.model.ttFase"
+			canclean="undefined"
+		>
+			<label>{{ 'l-phase' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-phase' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.des_fase }}
+				</ui-select-match>
+
+				<ui-select-choices repeat="phase in controller.phases | filter: $select.search track by $index">
+					<span ng-bind-html="phase.des_fase | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+	</fieldset>
+
+	<totvs-divider></totvs-divider>
+
+	<fieldset class="row">
+		<totvs-field
+			totvs-decimal
+			class="col-md-4"
+			ng-model="controller.model.val_meta"
+			ng-required="true"
+			m-dec="2"
+			placeholder="{{ 'l-value' | i18n: []: 'dts/crm' }}"
+			label="{{ 'l-value' | i18n: []: 'dts/crm' }}"
+			canclean="undefined"
+		>
+		</totvs-field>
+	
+		<totvs-field
+			totvs-decimal
+			class="col-md-4"
+			ng-model="controller.model.qtd_meta"
+			ng-required="true"
+			m-dec="2"
+			maxlength="15"
+			placeholder="{{ 'l-quantity' | i18n: []: 'dts/crm' }}"
+			label="{{ 'l-quantity' | i18n: []: 'dts/crm' }}"
+			numbers-only
+			canclean="undefined"
+		>
+		</totvs-field>
+
+		<field
+			type="input"
+			class="col-md-4"
+			maxlength="15"
+			ng-model="controller.model.qti_nume_vida"
+			ng-required="true"
+			placeholder="{{ controller.isIntegratedWithGP ? 'l-number-of-lifes-accomplished' : 'l-items' | i18n: []: 'dts/crm' }}"
+			numbers-only
+			canclean="undefined"
+		>
+			<label>{{ controller.isIntegratedWithGP ? 'l-number-of-lifes-accomplished' : 'l-items' | i18n: []: 'dts/crm' }}</label>
+		</field>
+	</fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.close()">
+		{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+	</button>
+
+	<button
+		class="btn btn-default"
+		ng-click="controller.save(true)"
+		ng-if="controller.editMode === false;"
+	>
+		{{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+	</button>
+
+	<button class="btn btn-primary" ng-click="controller.save()">
+		{{ 'btn-save' | i18n: []: 'dts/crm' }}
+	</button>
+</totvs-modal-footer>

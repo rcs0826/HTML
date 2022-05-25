@@ -1,0 +1,49 @@
+<totvs-modal-header>
+    {{ 'l-advanced-search' | i18n }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <totvs-page-form>
+        <legend>{{ 'l-parameters' | i18n }}</legend>
+        <fieldset class="form-horizontal" role="form">
+            <field 
+                type="date"
+                class="col-md-12"
+                ng-model="controller.model.dtTrans"
+                required>
+                <label>{{ 'l-transaction-date' | i18n }}</label>
+            </field>
+            <field 
+                type="select2"
+                class="col-lg-12 col-md-5 col-sm-4 col-xs-12"
+                data-ng-model="controller.model.site"
+                select-conector="{{'l-site' | i18n}}"
+                select-id="cod-estabel"
+                select-description="nome"
+                select-service="mpd.estabelecSE.zoom"
+                ng-if="controller.model.closingType == 2">
+                <zoom zoom-service="mpd.estabelecSE.zoom"
+                      required></zoom>
+                <label>{{ 'l-site' | i18n }}</label>
+            </field>
+        </fieldset>
+
+        <legend>{{ 'l-selection' | i18n }}</legend>
+        <fieldset class="form-horizontal" role="form">
+            <field
+                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                type="inputrange"
+                ng-model="controller.model.itemCodeRange"
+                start-placeholder="{{'l-start' | i18n}}"
+                start-maxlength="16"
+                end-maxlength="16"
+                label="{{'l-item' | i18n}}">
+            </field>
+        </fieldset>
+    </totvs-page-form>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()">{{ 'btn-apply' | i18n }}</button>
+</totvs-modal-footer>

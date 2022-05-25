@@ -1,0 +1,84 @@
+<style type="text/css" scoped="true">
+	h5 {
+		margin: 0 15px !important;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+	}
+</style>
+<totvs-page type="list">
+	
+	<totvs-page-navbar>
+		<totvs-page-header>
+			<totvs-page-header-title  title="{{controller.param.orderNumber}} - {{controller.param.itemVendor.length > 0 ? controller.param.itemVendor : controller.param.item}}">
+      </totvs-page-header-title>
+      
+      <totvs-page-content-header style="padding-top: 10px;">
+        <totvs-list-item-info class="col-md-6" style="padding-left: 1px !important;" title="{{ 'l-description' | i18n: []: i18nContext}}" value="{{:: controller.param.descItem}}"></totvs-list-item-info>
+        <totvs-list-item-info class="col-md-3" title="{{ 'l-quantity' | i18n: []: i18nContext}}" value="{{:: controller.param.quantity | number:4 }}"></totvs-list-item-info>
+        <totvs-list-item-info class="col-md-3" title="{{ 'l-internal-unit-metric' | i18n: []: i18nContext}}" value="{{:: controller.param.unitMetric}}"></totvs-list-item-info>
+      </totvs-page-content-header>
+
+      <totvs-page-header-operation>
+        <totvs-page-header-operation-action>
+          <action ng-click="controller.addQuotation()" icon="glyphicon-plus" tooltip="{{ 'l-add' | i18n: []: i18nContext }}">{{ 'l-add' | i18n: []: i18nContext }}</action>
+          <action ng-click="controller.back()" icon="glyphicon-menu-left" tooltip="{{ 'l-back' | i18n: []: i18nContext }}">{{ 'l-back' | i18n: []: i18nContext }}</action>
+        </totvs-page-header-operation-action>
+      </totvs-page-header-operation>
+    </totvs-page-header>
+    
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+    <totvs-list-item ng-repeat="quote in controller.quotesList">
+      
+        <totvs-list-item-header>
+          <totvs-list-item-title title="{{ 'l-sequence' | i18n: []: i18nContext }} - {{:: quote['seq-cotac'] }}"
+                                 ng-click="controller.edit(quote)"
+                                 style="cursor:pointer">
+          </totvs-list-item-title>
+          <totvs-list-item-action limit-primary-action="3">
+            <action ng-click="controller.edit(quote)" icon="glyphicon-pencil">{{ 'l-edit' | i18n: []: i18nContext }}</action>
+            <action ng-click="controller.delete(quote)" icon="glyphicon-trash">{{ 'l-remove' | i18n: []: i18nContext }}</action>
+          </totvs-list-item-action>
+        </totvs-list-item-header>
+        
+        <totvs-list-item-content>
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-unit-price' | i18n: []: i18nContext}}" value="{{:: quote['preco-fornec'] | number: 5}}"></totvs-list-item-info>
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-pay-cond' | i18n: []: i18nContext}}" value="{{:: quote['cod-cond-pag']}} - {{:: quote['cod-cond-pag-desc']}}"></totvs-list-item-info>
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-deadline' | i18n: []: i18nContext}}" value="{{:: quote['prazo-entreg']}}"></totvs-list-item-info>
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-vendor-um' | i18n: []: i18nContext}}" value="{{:: quote['un']}} - {{:: quote['un-desc']}}"></totvs-list-item-info>
+        </totvs-list-item-content>
+        
+        <totvs-list-item-content-detail>
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-freight' | i18n: []: i18nContext}}" ng-if="quote['frete']" value="{{ 'l-included' | i18n: []: i18nContext }}"></totvs-list-item-info>
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-freight' | i18n: []: i18nContext}}" ng-if="!quote['frete']" value="{{ 'l-not-included' | i18n: []: i18nContext }}"></totvs-list-item-info>
+          
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-freight-value' | i18n: []: i18nContext}}" value="{{:: quote['valor-frete'] | number: 5}}"></totvs-list-item-info>
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-ipi-perc' | i18n: []: i18nContext}}" value="{{:: quote['aliquota-ipi']}}%"></totvs-list-item-info>
+          
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-ipi-micro' | i18n: []: i18nContext}}" ng-if="quote['codigo-ipi']" value="{{ 'l-included' | i18n: []: i18nContext }}"></totvs-list-item-info>
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-ipi-micro' | i18n: []: i18nContext}}" ng-if="!quote['codigo-ipi']" value="{{ 'l-not-included' | i18n: []: i18nContext }}"></totvs-list-item-info>
+          
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-icm-perc' | i18n: []: i18nContext}}" value="{{:: quote['aliquota-icm']}}%"></totvs-list-item-info>
+
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-discount-perc-short' | i18n: []: i18nContext}}" value="{{:: quote['perc-descto']}}%"></totvs-list-item-info>
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-discount' | i18n: []: i18nContext}}" value="{{:: quote['valor-descto'] | number: 5}}"></totvs-list-item-info>
+          
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-tax-value' | i18n: []: i18nContext}}" ng-if="quote['taxa-financ']" value="{{ 'l-included' | i18n: []: i18nContext }}"></totvs-list-item-info>
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-tax-value' | i18n: []: i18nContext}}" ng-if="!quote['taxa-financ']" value="{{ 'l-not-included' | i18n: []: i18nContext }}"></totvs-list-item-info>
+          
+          <totvs-list-item-info class="col-md-3" title="% {{ 'l-tax-value' | i18n: []: i18nContext}}" value="{{:: quote['valor-taxa']}}%"></totvs-list-item-info>
+
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-tax-days' | i18n: []: i18nContext}}" value="{{:: quote['nr-dias-taxa']}}"></totvs-list-item-info>
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-carrier' | i18n: []: i18nContext}}" value="{{:: quote['cod-transp']}} - {{:: quote['cod-transp-desc']}}"></totvs-list-item-info>
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-manufacturer' | i18n: []: i18nContext}}" ng-if="quote['manufacturer'] !== 0" value="{{:: quote['manufacturer'] }} - {{:: quote['manufacturerDescription'] }}"></totvs-list-item-info>
+
+          <totvs-list-item-info class="col-md-3" title="{{ 'l-total-price' | i18n: []: i18nContext}}" value="{{:: quote['preco-total'] | number: 5 }}"></totvs-list-item-info>
+
+        </totvs-list-item-content-detail>
+
+    </totvs-list-item>
+
+	</totvs-page-content>
+</totvs-page>

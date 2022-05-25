@@ -1,0 +1,50 @@
+<totvs-page>
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb>{{ 'nav-report' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title
+				title="{{'nav-report' | i18n: []: 'dts/crm'}}"
+				total="{{controller.listOfModuleReportCount}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<div class="col-sm-7"></div>
+
+				<totvs-page-header-operation-filter
+					placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+					ng-model="controller.filterReport"
+					ng-if="controller.isModal !== true">
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+
+	<totvs-page-content>
+
+		<br/>
+
+		<div class="row no-gutters">
+			<div class="col-xs-12">
+				<div class="col-xs-12"
+					 ng-include="'/dts/crm/html/report/report.available.content.html'">
+				</div>
+			</div>
+		</div>
+
+		<br/>
+
+	</totvs-page-content>
+
+</totvs-page>

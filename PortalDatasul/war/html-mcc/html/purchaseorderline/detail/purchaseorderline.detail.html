@@ -1,0 +1,391 @@
+<totvs-page type="detail" totvs-custom-element="customPurchaseOrderline_detail">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{ 'l-view-purchaseorderline' | i18n }}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            <totvs-page-header-title title="{{ 'l-requisition' | i18n }}: {{controller.order[0]['numero-ordem'] | number:0}}"></totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-remove='true' hide-edit='true' hide-back='true' hide>
+                    <action  icon="glyphicon-list" ng-click="controller.changeCurrency()">{{ 'l-change-currency' | i18n }}</action>
+                    <action icon="glyphicon-list-alt" ng-disabled="controller.numOrdem == undefined || controller.numOrdem == 'undefined'" ng-click="controller.followUp(4, controller.order[0]['numero-ordem'], '', 0, 0, 0);">{{ 'l-followup' | i18n: []: 'dts/mcc' }}</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+        <totvs-page-detail>
+            <div class="col-xs col-sm-6 col-md-4">
+            <totvs-editable value="{{ 'l-requisition' | i18n}}: {{controller.numOrdem}}" id="OrderLineZoomBox" on-complete="controller.applyZoom" placement="auto left">
+                <form>
+                    <field type="input"
+                           ng-model="controller.numOrdem"
+                           class="col-md-12"
+                           numbers-only
+                           maxlength="8"
+                           canclean>
+                        <zoom zoom-id="numero-ordem"
+                            zoom-service="mcc.ordem-compra.zoom"
+                            zoom-selected="controller.load(controller.numOrdem, controller.dataConversao, controller.moeda)">
+                        </zoom>
+                        <label>{{'l-number' | i18n}}</label>
+                    </field>
+                </form>
+                </totvs-editable>
+            </div>
+
+            <div class="col-xs col-sm-6 col-md-8" ng-if="!controller.numOrdem">
+                <span>{{ 'l-enter-a-purchase-orderline' | i18n}}</span>
+            </div>
+
+            <div ng-if="controller.numOrdem">
+
+                <totvs-page-detail-info title="{{ 'l-type-mcc' | i18n }}" class="col-xs col-sm-6 col-md-4"
+                    value="{{controller.order[0]['natureza-desc']}}">
+                </totvs-page-detail-info>
+                <totvs-page-detail-info title="{{ 'l-status' | i18n }}" class="col-xs col-sm-6 col-md-4"
+                    value="{{controller.order[0]['situacao-desc']}}">
+                </totvs-page-detail-info>
+                <totvs-page-detail-info title="{{ 'l-item' | i18n }}" class="col-xs col-sm-12 col-md-12"
+                    value="{{controller.order[0]['it-codigo']}} - {{controller.order[0]['it-codigo-desc']}}">
+                </totvs-page-detail-info>
+
+                <div>
+                    <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-quantity' | i18n }}"
+                        value="{{controller.order[0]['qt-solic'] | number: 4}}"></totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-measure-unit' | i18n }}"
+                        value="{{controller.order[0]['ttPrazoCompra'][0]['un']}} - {{controller.order[0]['ttPrazoCompra'][0]['un-desc']}}"></totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-sm-6 col-md-4" title="{{ 'l-received-quantity' | i18n }}"
+                        value="{{controller.order[0]['qtd-recbda-fut'] | number:4}}"></totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-sm-6 col-md-4" title="{{ 'l-site' | i18n }}"
+                        value="{{controller.order[0]['cod-estabel']}} - {{controller.order[0]['cod-estabel-desc']}}"></totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-warehouse' | i18n }}"
+                        value="{{controller.order[0]['dep-almoxar']}} - {{controller.order[0]['dep-almoxar-desc']}}"></totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-emission-date' | i18n }}"
+                        value="{{controller.order[0]['data-emissao'] | date:'dd/MM/yyyy'}} "></totvs-page-detail-info>
+                </div>
+                <totvs-page-detail-info-group>{{ 'l-authorities' | i18n }}</totvs-page-detail-info-group>
+                    <totvs-page-detail-info class="col-xs col-sm-6 col-md-6" title="{{ 'l-requester' | i18n }}"
+                        value="{{controller.order[0]['requisitante']}} - {{controller.order[0]['requisitante-desc']}}">
+                    </totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs col-sm-6 col-md-6" title="{{ 'l-buyer' | i18n }}"
+                        value="{{controller.order[0]['cod-comprado']}} - {{controller.order[0]['cod-comprado-desc']}}">
+                    </totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs col-sm-6 col-md-6" title="{{ 'l-original-buyer' | i18n }}"  ng-if="controller.order[0]['cod-comprado-orig']"
+                        value="{{controller.order[0]['cod-comprado-orig']}} - {{controller.order[0]['cod-comprado-orig-desc']}}">
+                    </totvs-page-detail-info>
+                </totvs-page-detail-info-group>
+
+                <totvs-page-detail-info-group>{{ 'l-others' | i18n }}</totvs-page-detail-info-group>
+                    <totvs-page-detail-info class="col-xs col-sm-6 col-md-6" title="{{ 'l-purchase-order' | i18n }}">
+                        <a href="#/dts/mcc/purchaseorder/detail/{{controller.order[0]['num-pedido']}}" ng-if="controller.order[0]['num-pedido'] != 0">{{controller.order[0]['num-pedido'] | number}}</a>
+                        <span ng-if="controller.order[0]['num-pedido'] == 0">{{controller.order[0]['num-pedido'] | number}}</span>
+                    </totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs col-sm-6 col-md-6" title="{{ 'l-purchase-package' | i18n }}"
+                        value="{{controller.order[0]['nr-processo'] | number}}">
+                    </totvs-page-detail-info>
+                </totvs-page-detail-info-group>
+
+                <totvs-group-content title="{{ 'l-more-details' | i18n }}">
+                    <div>
+                        <totvs-page-detail-info-group>{{ 'l-integrations' | i18n }}</totvs-page-detail-info-group>
+                        <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-investment-order' | i18n }}"
+                            value="{{controller.order[0]['num-ord-inv'] | number:0}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-company' | i18n }}"
+                            value="{{controller.order[0]['ep-codigo']}} - {{controller.order[0]['ep-codigo-desc']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-service-order' | i18n }}"
+                            value="{{controller.order[0]['ordem-servic'] | number:0}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-operation' | i18n }}"
+                            value="{{controller.order[0]['op-codigo'] | number:0}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-account-book' | i18n }}"
+                            value="{{controller.order[0]['ct-codigo']}} - {{controller.order[0]['ct-codigo-desc']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-cost-center' | i18n }}"
+                            value="{{controller.order[0]['sc-codigo']}} - {{controller.order[0]['sc-codigo-desc']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-expense-type' | i18n }}"
+                            value="{{controller.order[0]['tp-despesa']}} - {{controller.order[0]['tp-despesa-desc']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-manager-site' | i18n }}"
+                            value="{{controller.order[0]['cod-estab-gestor']}} - {{controller.order[0]['cod-estab-gestor-desc']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-purchase-expectation' | i18n }}">
+                            <span ng-if="controller.order[0]['expectativa'] == true">{{ 'l-yes' | i18n }}</span>
+                            <span ng-if="controller.order[0]['expectativa'] == false">{{ 'l-no' | i18n }}</span>
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-approval-priority' | i18n }}" value="{{controller.order[0]['prioridade-aprov-desc']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-rejected' | i18n }}">
+                            <span ng-if="controller.order[0]['rejeitada'] == true">{{ 'l-yes' | i18n }}</span>
+                            <span ng-if="controller.order[0]['rejeitada'] == false">{{ 'l-no' | i18n }}</span>
+                        </totvs-page-detail-info>
+
+                        <div ng-if="controller.order[0]['nr-contrato'] != 0">
+                            <totvs-page-detail-info-group>{{ 'l-contract' | i18n }}</totvs-page-detail-info-group>
+                            <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-number' | i18n }}"
+                                value="{{controller.order[0]['nr-contrato'] | number:0}}"></totvs-page-detail-info>
+                            <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-description' | i18n }}"
+                                value="{{controller.order[0]['des-contrat']}}"></totvs-page-detail-info>
+                            <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-modality' | i18n }}"
+                                value="{{controller.order[0]['cod-tipo-contrat-desc']}}"></totvs-page-detail-info>
+                            <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-status' | i18n }}"
+                                value="{{controller.order[0]['ind-sit-item-desc']}}"></totvs-page-detail-info>
+                        </div>
+
+                        <totvs-page-detail-info-group>{{ 'l-contract-item' | i18n }}</totvs-page-detail-info-group>
+                        <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-sequence' | i18n }}"
+                            value="{{controller.order[0]['num-seq-item'] | number:0}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-control-type' | i18n }}"
+                            value="{{controller.order[0]['ind-tipo-control-desc']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-xs col-sm-6 col-md-4" title="{{ 'l-event-control' | i18n }}">
+                            <span ng-if="controller.order[0]['log-control-event'] == true">{{ 'l-yes' | i18n }}</span>
+                            <span ng-if="controller.order[0]['log-control-event'] == false">{{ 'l-no' | i18n }}</span>
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info-group>{{ 'l-supplementary-description' | i18n }}</totvs-page-detail-info-group>
+                        <totvs-page-detail-info class="col-xs col-sm-6 col-md-4"
+                            value="{{controller.order[0]['narrativa']}}">
+                        </totvs-page-detail-info>
+                    </div>
+                </totvs-group-content>
+
+                <br>
+
+                <totvs-tabset>
+                    <tabset>
+                        <tab heading="{{ 'l-quotations' | i18n }} ({{controller.qtdCotacao}})" >
+                           <totvs-list-item ng-repeat="cotacao in controller.order[0]['ttCotacaoItem']" totvs-custom-element="customPurchaseOrderline_quoteList">
+                                <totvs-list-item-content>
+                                    <totvs-list-item-info class="col-sm-4 col-md-3" title="{{ 'l-approved-gen' | i18n }}">
+                                        <span ng-if="cotacao['cot-aprovada'] == true">{{ 'l-yes' | i18n }}</span>
+                                        <span ng-if="cotacao['cot-aprovada'] == false">{{ 'l-no' | i18n }}</span>
+                                    </totvs-list-item-info>
+                                    <totvs-list-item-info class="col-sm-4 col-md-3" title="{{ 'l-date' | i18n }}">
+                                       <span ng-if="cotacao['data-cotacao'] != null"> {{cotacao['data-cotacao'] | date:'dd/MM/yyyy'}}</span>
+                                       <span ng-if="cotacao['data-cotacao'] == null">{{ 'l-pending' | i18n }}</span>
+                                    </totvs-list-item-info>
+                                    <totvs-list-item-info class="col-sm-12 col-md-6" title="{{ 'l-vendor' | i18n }}">
+                                        {{cotacao['cod-emitente']}} - {{cotacao['nome-abrev']}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-sm-4 col-md-3" title="{{ 'l-currency' | i18n }}">
+                                        {{cotacao['mo-codigo']}} - {{cotacao['mo-codigo-desc']}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-sm-4 col-md-3" title="{{ 'l-final-unit-price' | i18n }}">
+                                        {{cotacao['pre-unit-for'] | number:5}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-sm-4 col-md-3" title="{{ 'l-ipi-perc' | i18n }}">
+                                        {{cotacao['aliquota-ipi']|number:2}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-sm-4 col-md-3" title="{{ 'l-discount-perc-short' | i18n }}">
+                                        {{cotacao['perc-descto']|number:2}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-sm-8 col-md-3" title="{{ 'l-contact' | i18n }}">
+                                        {{cotacao['contato']}}</totvs-list-item-info>
+                                    <div class="clearfix"></div>
+                                    <!-- - - - - - - - - - - - DETALHE DA COTAÇÃO - - - - - - - - - - -->
+                                    <totvs-list-item-content-detail class="col-md-12" open="controller.QuoteDetail(cotacao);">
+                                        <totvs-list-item-info class="col-md-6" title="{{ 'l-vendor-name' | i18n }}">
+                                            {{cotacao['cod-emitente-desc']}}</totvs-list-item-info>
+                                        <totvs-list-item-info ng-if="cotacao['activeHisFunction'] == true" class="col-md-6"       title="{{'l-manufacturer'| i18n }}">{{cotacao['manufacturer']}} - {{cotacao[       'manufacturerDescription']}}</totvs-list-item-info>
+                                        <totvs-list-item-info class="col-sm-4 col-md-3" title="{{ 'l-internal-um' | i18n }}">
+                                            {{cotacao['internalUM']}} - {{cotacao['internalUMDescription']}}</totvs-list-item-info>
+                                        <totvs-list-item-info class="col-sm-4 col-md-3" title="{{ 'l-vendor-um' | i18n }}">
+                                            {{cotacao['un']}} - {{cotacao['un-desc']}}</totvs-list-item-info>
+                                        <totvs-page-detail-info-group>{{ 'l-values' | i18n }}</totvs-page-detail-info-group>
+                                        <totvs-list-item-info class="col-xs col-sm-6 col-md-3" title="{{ 'l-internal-um-price' | i18n }}">
+                                            {{cotacao['internalPrice'] | number:5}}</totvs-list-item-info>
+                                        <totvs-list-item-info class="col-xs col-sm-6 col-md-3" title="{{ 'l-vendor-um-price' | i18n }}">
+                                            {{cotacao['preco-fornec'] | number:5}}</totvs-list-item-info>
+                                        <totvs-list-item-info class="col-xs col-sm-6 col-md-3" title="{{ 'l-currency-quote' | i18n }}">
+                                            {{cotacao['cotacao-moeda'] | number : 5}}</totvs-list-item-info>
+                                        <totvs-list-item-info class="col-xs col-sm-6 col-md-3" title="{{ 'l-discount-value' | i18n }}">
+                                            {{cotacao['valor-descto'] | number:2}}</totvs-list-item-info>
+
+                                        <totvs-page-detail-info-group>{{ 'l-freight' | i18n }}</totvs-page-detail-info-group>
+                                        <totvs-list-item-info class="col-sm-12 col-md-6" title="{{ 'l-carrier' | i18n }}">
+                                            {{cotacao['cod-transp']}} - {{cotacao['cod-transp-desc']}}</totvs-list-item-info>
+                                        <totvs-list-item-info class="col-sm-4 col-md-3" title="{{ 'l-freight-value' | i18n }}">
+                                            {{cotacao['valor-frete'] | number: 5}}</totvs-list-item-info>
+                                        <totvs-list-item-info class="col-xs col-sm-3 col-md-3" title="{{ 'l-included-freight' | i18n }}">
+                                            <span ng-if="cotacao['frete'] == true">{{ 'l-yes' | i18n }}</span>
+                                            <span ng-if="cotacao['frete'] == false">{{ 'l-no' | i18n }}</span>
+                                        </totvs-list-item-info>
+
+                                        <totvs-page-detail-info-group>{{ 'l-fiscal' | i18n }}</totvs-page-detail-info-group>
+                                        <totvs-list-item-info class="col-sm-3 col-md-3" title="{{ 'l-ipi-value' | i18n }}">
+                                            {{cotacao['valor-ipi'] | number: 5}}</totvs-list-item-info>
+                                        <totvs-list-item-info class="col-xs col-sm-3 col-md-3" title="{{ 'l-included-ipi' | i18n }}">
+                                            <span ng-if="cotacao['codigo-ipi'] == true">{{ 'l-yes' | i18n }}</span>
+                                            <span ng-if="cotacao['codigo-ipi'] == false">{{ 'l-no' | i18n }}</span>
+                                        </totvs-list-item-info>
+                                        <totvs-list-item-info class="col-sm-3 col-md-3" title="{{ 'l-icms-tax' | i18n }}">
+                                            {{cotacao['aliquota-icm'] | number: 2}}</totvs-list-item-info>
+                                        <totvs-list-item-info class="col-xs col-sm-3 col-md-3" title="{{ 'l-icms' | i18n }}">
+                                            {{cotacao['codigo-icm-desc']}}</totvs-list-item-info>
+                                    </totvs-list-item-content-detail>
+                                </totvs-list-item-content>
+                            </totvs-list-item>
+                            <span ng-if="!controller.order[0]['ttCotacaoItem'].length"><br>{{ 'l-theres-nothing' | i18n }}</span>
+                        </tab>
+
+                        <tab heading="{{ 'l-deliveries' | i18n }} ({{controller.qtdEntrega}})">
+                            <div class="row" ng-if="controller.order[0]['qtd-receb']">
+                                <br>
+                                <totvs-list-item-info class="col-md-12" title="{{ 'l-quantity-to-receive' | i18n }}">
+                                    {{controller.order[0]['qtd-receb'] | number: 4}}</totvs-list-item-info>
+                            </div>
+                            <div class="clearfix"></div>
+                            <totvs-list-item ng-repeat="entrega in controller.order[0]['ttPrazoCompra']" totvs-custom-element="customPurchaseOrderline_deliveryList">
+                                <totvs-list-item-content>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-part' | i18n }}">
+                                        {{entrega['parcela'] | number: 0}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-delivery' | i18n }}">
+                                        {{entrega['data-entrega'] | date:'dd/MM/yyyy'}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-status' | i18n }}">
+                                        {{entrega['situacao-desc']}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-quantity' | i18n }}">
+                                        {{entrega['quantidade'] | number: 4}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-received-qty' | i18n }}">
+                                        {{entrega['quant-receb'] | number: 4}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-return-quantity-short' | i18n }}">
+                                        {{entrega['quant-rejeit'] | number: 4}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-quantity-balance' | i18n }}">
+                                        {{entrega['quant-saldo'] | number: 4}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-allocated-qty-inst' | i18n }}">
+                                        {{entrega['quant-alocada'] | number: 4}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-measure-unit' | i18n }}">
+                                        {{entrega['un']}} - {{entrega['un-desc']}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-reference' | i18n }}">
+                                        {{entrega['cod-refer']}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-concessory-act' | i18n }}">
+                                        {{entrega['cod-ato-concessor']}}</totvs-list-item-info>
+                                </totvs-list-item-content>
+                            </totvs-list-item>
+                            <span ng-if="!controller.order[0]['ttPrazoCompra'].length"><br>{{ 'l-theres-nothing' | i18n }}</span>
+                        </tab>
+
+                        <tab heading="{{ 'l-purchase-requisitions' | i18n }} ({{controller.qtdRequisicao}})">
+                           <totvs-list-item ng-repeat="requisicao in controller.order[0]['ttItRequisicao']" totvs-custom-element="customPurchaseOrderline_requestList">
+                                <totvs-list-item-header>
+                                    <totvs-list-item-title
+                                        title="{{requisicao['nr-requisicao']}}"
+                                        link="#/dts/mcc/request/search/item/detail?req={{requisicao['nr-requisicao']}}&seq={{requisicao['sequencia']}}&item={{requisicao['it-codigo']}}">
+                                    </totvs-list-item-title>
+                                </totvs-list-item-header>
+                                <totvs-list-item-content>
+                                    <totvs-list-item-info class="col-xs col-sm-3 col-md-3" title="{{ 'l-necessity' | i18n }}">
+                                        {{requisicao['dt-entrega'] | date:'dd/MM/yyyy'}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-3 col-md-3" title="{{ 'l-realization' | i18n }}">
+                                        {{requisicao['dt-atend'] | date:'dd/MM/yyyy'}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-3 col-md-3" title="{{ 'l-status' | i18n }}">
+                                        {{requisicao['situacao-desc']}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-3 col-md-3" title="{{ 'l-quantity' | i18n }}">
+                                        {{requisicao['qt-requisitada'] | number: 4}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-md-6" title="{{ 'l-account-book' | i18n }}">
+                                        {{requisicao['ct-codigo']}} - {{requisicao['ct-codigo-desc']}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-md-6" title="{{ 'l-cost-center' | i18n }}">
+                                        {{requisicao['sc-codigo']}} - {{requisicao['sc-codigo-desc']}}</totvs-list-item-info>
+                                </totvs-list-item-content>
+                            </totvs-list-item>
+                            <span ng-if="!controller.order[0]['ttItRequisicao'].length"><br>{{ 'l-theres-nothing' | i18n }}</span>
+                        </tab>
+
+                        <tab heading="{{ 'l-business-units' | i18n }} ({{controller.qtdUnidadeNegocio}})">
+                           <totvs-list-item ng-repeat="unidade in controller.order[0]['ttUnidNegoc']" totvs-custom-element="customPurchaseOrderline_businessUnitList">
+                                <totvs-list-item-content>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-code' | i18n }}">
+                                        {{unidade['cod_unid_negoc']}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-description' | i18n }}">
+                                        {{unidade['des-unid-negoc']}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-percentage' | i18n }}">
+                                        {{unidade['perc-unid-neg'] | number : 2}}</totvs-list-item-info>
+                                </totvs-list-item-content>
+                            </totvs-list-item>
+                            <span ng-if="!controller.order[0]['ttUnidNegoc'].length"><br>{{ 'l-theres-nothing' | i18n }}</span>
+                        </tab>
+
+                        <tab heading="{{ 'l-receivings-returns' | i18n }} ({{controller.qtdRecebimento}})">
+                           <totvs-list-item ng-repeat="receb in controller.order[0]['ttRecebimento']" totvs-custom-element="customPurchaseOrderline_receivingList">
+                                <totvs-list-item-content>
+                                    <totvs-list-item-info class="col-xs col-sm-3 col-md-3" title="{{ 'l-date' | i18n }}">
+                                        {{receb['data-movto'] | date:'dd/MM/yyyy'}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-3 col-md-3" title="{{ 'l-part' | i18n }}">
+                                        {{receb['parcela'] | number:0}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-3 col-md-3" title="{{ 'l-series' | i18n }}">
+                                        {{receb['serie-docto']}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-3 col-md-3" title="{{ 'l-document' | i18n }}">
+                                        {{receb['numero-nota']}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-3 col-md-3" title="{{ 'l-operation-type' | i18n }}">
+                                        {{receb['nat-operacao']}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-3 col-md-3" title="{{ 'l-type' | i18n }}">
+                                        {{receb['cod-movto-desc']}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-3 col-md-3" title="{{ 'l-quantity' | i18n }}">
+                                        {{receb['quant-receb'] | number: 4}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-3 col-md-3" title="{{ 'l-total-value' | i18n }}">
+                                        {{receb['valor-total'] | number: 5}}</totvs-list-item-info>
+                                </totvs-list-item-content>
+                            </totvs-list-item>
+                            <span ng-if="!controller.order[0]['ttRecebimento'].length"><br>{{ 'l-theres-nothing' | i18n }}</span>
+                        </tab>
+
+                        <tab heading="{{ 'l-updates' | i18n }} ({{controller.qtdAlteracao}})">
+                           <totvs-list-item ng-repeat="alteracao in controller.order[0]['ttAltPed']" totvs-custom-element="customPurchaseOrderline_updateList">
+                                <totvs-list-item-content>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-part' | i18n }}">
+                                        {{alteracao['parcela'] | number: 0}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-update' | i18n }}">
+                                        {{alteracao['data'] | date:'dd/MM/yyyy'}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-hour' | i18n }}">
+                                        {{alteracao['hora']}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-user' | i18n }}">
+                                        {{alteracao['usuario']}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-unit-price' | i18n }}">
+                                        {{alteracao['preco'] | number: 5}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-new-price' | i18n }}">
+                                        {{alteracao['preco-novo'] | number: 5}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-quantity' | i18n }}">
+                                        {{alteracao['quantidade'] | number: 4}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-new-quantity' | i18n }}">
+                                        {{alteracao['quantidade-nova'] | number: 4}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-payment-term' | i18n }}">
+                                        {{alteracao['cod-cond-pag'] | number: 0}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-new-payment-method' | i18n }}">
+                                        {{alteracao['cod-cond-pag-nova'] | number: 0}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-delivery-date' | i18n }}">
+                                        {{alteracao['data-entrega'] | date:'dd/MM/yyyy'}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-3" title="{{ 'l-new-delivery-date' | i18n }}">
+                                        {{alteracao['data-entrega-nova'] | date:'dd/MM/yyyy'}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs-12 col-sm-12 col-md-12" title="{{ 'l-comments' | i18n }}">
+                                        {{alteracao['observacao']}}</totvs-list-item-info>
+                                </totvs-list-item-content>
+                            </totvs-list-item>
+                            <span ng-if="!controller.order[0]['ttAltPed'].length"><br>{{ 'l-theres-nothing' | i18n }}</span>
+                        </tab>
+
+                        <tab heading="{{ 'l-events' | i18n }} ({{controller.qtdEvento}})">
+                           <totvs-list-item ng-repeat="evento in controller.order[0]['ttEventoPed']" totvs-custom-element="customPurchaseOrderline_eventList">
+                                <totvs-list-item-content>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-2" title="{{ 'l-event' | i18n }}">
+                                        {{evento['dt-evento'] | date:'dd/MM/yyyy'}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-2" title="{{ 'l-seq' | i18n }}">
+                                        {{evento['seq-evento'] | number:0}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-4 col-md-2" title="{{ 'l-execution' | i18n }}">
+                                        {{evento['dat-realiz'] | date:'dd/MM/yyyy'}}</totvs-list-item-info>
+                                    <totvs-list-item-info class="col-xs col-sm-12 col-md-6" title="{{ 'l-description' | i18n }}">
+                                        {{evento['des-event']}}</totvs-list-item-info>
+                                </totvs-list-item-content>
+                            </totvs-list-item>
+                            <span ng-if="!controller.order[0]['ttEventoPed'].length"><br>{{ 'l-theres-nothing' | i18n }}</span>
+                        </tab>
+                    </tabset>
+                </totvs-tabset>
+            </div>
+        </totvs-page-detail>
+    </totvs-page-content>
+</totvs-page>

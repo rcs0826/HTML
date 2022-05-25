@@ -1,0 +1,113 @@
+<totvs-modal-header>
+	{{ ('nav-next-actions' | i18n: []: 'dts/crm' ) + ': ' + ((controller.model.ttAcao && controller.model.ttAcao.num_id) ? controller.model.ttAcao.nom_acao : '') }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="select"
+			   class="col-xs-12"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-model="controller.model.ttAcao">
+
+			<label>{{ 'l-action' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-action' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_acao }}
+				</ui-select-match>
+				<ui-select-choices repeat="action in controller.actions | filter: $select.search track by $index">
+					<span ng-bind-html="action.nom_acao | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+	</fieldset>
+
+	<fieldset class="row">
+		<field type="checkbox"
+			   class="col-xs-6 col-sm-6"
+			   ng-model="controller.model.log_livre_1">
+			<label>{{ 'l-required' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="checkbox"
+			   class="col-xs-6 col-sm-6"
+			   ng-model="controller.model.log_livre_2">
+			<label>{{ 'l-automatic' | i18n: []: 'dts/crm' }}</label>
+		</field>
+	</fieldset>
+
+	<fieldset class="row" ng-if="controller.model.log_livre_2 == true">
+
+        <totvs-field totvs-decimal
+                     ng-model="controller.model.val_tempo_apos"
+                     placeholder="{{ 'l-start-after' | i18n: []: 'dts/crm' }}"
+                     canclean="undefined"
+                     label="{{ 'l-start-after' | i18n: []: 'dts/crm' }}"
+                     m-dec="0"
+                     v-max="9">
+		</totvs-field>			
+
+		<field type="select"
+			   class="col-xs-6 col-sm-6 crm-field-no-label"
+			   canclean="undefined"
+			   ng-model="controller.model.ttInitialTime">
+			<include>
+				<ui-select-match placeholder="{{ 'l-select-value' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.value }}
+				</ui-select-match>
+				<ui-select-choices repeat="item in controller.optionsTime | filter: $select.search track by $index">
+					<span ng-bind-html="item.value | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>	
+			
+	</fieldset>
+
+	<fieldset class="row" ng-if="controller.model.log_livre_2 == true">
+
+        <totvs-field totvs-decimal
+                     ng-model="controller.model.val_tempo_durac"
+					 placeholder="{{ 'l-duration' | i18n: []: 'dts/crm' }}"
+					 label="{{ 'l-duration' | i18n: []: 'dts/crm' }}"
+                     canclean="undefined"
+                     m-dec="0"
+                     v-max="9">
+		</totvs-field>			
+
+		<field type="select"
+			   class="col-xs-6 col-sm-6 crm-field-no-label"
+			   canclean="undefined"
+			   ng-model="controller.model.ttFinalTime">
+			<include>
+				<ui-select-match placeholder="{{ 'l-select-value' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.value }}
+				</ui-select-match>
+				<ui-select-choices repeat="item in controller.optionsTime | filter: $select.search track by $index">
+					<span ng-bind-html="item.value | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>	
+			
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" 
+			ng-click="controller.close()">
+		{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-default" 
+			ng-click="controller.save(true)"
+			ng-if="controller.editMode === false;">
+		{{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-primary" 
+			ng-click="controller.save()">
+		{{ 'btn-save' | i18n: []: 'dts/crm' }}
+	</button>
+</totvs-modal-footer>

@@ -1,0 +1,60 @@
+<style type="text/css">
+    .page-details{
+        padding: 0 !important;
+    }
+</style>
+<totvs-modal-header>
+	{{ 'l-send-vendor-detail-title' | i18n: []: 'dts/mcc' }} ({{controller.model.vendorNumber}}) - {{ 'l-dispatch' | i18n: []: 'dts/mcc'}} ({{controller.model.seq}}) 
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <totvs-page-detail>
+        <totvs-page-detail-info-group>{{ 'l-email' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+        
+        <totvs-page-detail-info title="{{ 'l-subject-mail' | i18n: []: 'dts/mcc' }}" class="col-xs-12"
+                    value="{{controller.model.detailSend['assunto-email']}}"></totvs-page-detail-info>  
+        <totvs-page-detail-info title="{{ 'l-text' | i18n: []: 'dts/mcc' }}" class="col-xs-12"
+                    value="{{controller.model.detailSend['dsl-texto']}}"></totvs-page-detail-info>     
+        
+        <totvs-page-detail-info-group>{{ 'l-quotation-answer' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+        <totvs-page-detail-info title="{{ 'l-send-quotation-spreadsheet' | i18n: []: 'dts/mcc' }}" class="col-xs-6">
+            <span ng-if="controller.model.detailSend['log-planilha-envda'] == true">{{ 'l-yes' | i18n }}</span>
+            <span ng-if="controller.model.detailSend['log-planilha-envda'] == false">{{ 'l-no' | i18n }}</span>
+        </totvs-page-detail-info>
+
+        <totvs-page-detail-info title="{{ 'l-vendor-answer-by-web' | i18n: []: 'dts/mcc' }}" class="col-xs-6">
+            <span ng-if="controller.model.detailSend['log-responde-via-web'] == true">{{ 'l-yes' | i18n }}</span>
+            <span ng-if="controller.model.detailSend['log-responde-via-web'] == false">{{ 'l-no' | i18n }}</span>
+        </totvs-page-detail-info>
+
+        <totvs-page-detail-info-group>{{ 'l-sended-to' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>    
+        <totvs-page-detail-info title="{{ 'l-sended-to' | i18n: []: 'dts/mcc' }}" class="col-xs-12"
+                    value="{{controller.model.detailSend['des-e-mail']}}"></totvs-page-detail-info>  
+    
+        <totvs-page-detail-info-group>{{ 'l-purchase-orderlines' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>    
+
+    </totvs-page-detail>
+
+    <totvs-grid grid-selected-items="controller.mrSelected"
+                grid-height="210"
+                grid-data="controller.model.purchaseOrderLines"
+                grid="controller.mrGrid"		            
+                auto-resize-content="true"
+                auto-resize-column="false"
+                reorderable="true"
+                resizable="true">    
+
+        <totvs-grid-column field="numero-ordem" width="80">{{:: 'l-requisition' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+        <totvs-grid-column field="it-codigo" width="170">{{:: 'l-item' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+        <totvs-grid-column field="it-codigo-desc" class="text-nowrap" width="242">{{:: 'l-description' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+        <totvs-grid-column field="cod-estabel" width="66">{{:: 'l-site-short' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+        <totvs-grid-column field="qt-solic" filter="number : 4" width="132">{{:: 'l-quantity' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+        <totvs-grid-column field="un" width="42">{{:: 'l-um' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+        <totvs-grid-column field="data-entrega-desc" width="101">{{:: 'l-delivery-date' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+        
+    </totvs-grid>	
+</totvs-modal-body>
+
+<totvs-modal-footer>	
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-close' | i18n: []: 'dts/mcc' }}</button> 	
+</totvs-modal-footer>

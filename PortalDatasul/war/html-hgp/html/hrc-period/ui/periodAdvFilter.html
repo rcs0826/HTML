@@ -1,0 +1,81 @@
+<totvs-modal-header>
+    Busca Avançada
+</totvs-modal-header>
+<totvs-modal-body style="height: 280px; overflow-y: auto;">
+    <fieldset>
+       
+        <field type="number"
+               canclean
+               min="0"
+               max="9999"
+               class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+               data-ng-model="afController.model.dtAnorefIni"
+               label="Ano inicial">
+        </field>
+        <field type="number"
+               canclean
+               min="0"
+               max="9999"
+               class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+               data-ng-model="afController.model.dtAnorefFim"
+               label="Ano Final">
+        </field>
+        
+        
+        <field type="number"
+               canclean
+               min="0"
+               max="999"
+               class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+               data-ng-model="afController.model.nrPerrefIni"
+               label="Período inicial">
+        </field>
+        <field type="number"
+               canclean
+               min="0"
+               max="999"
+               class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+               data-ng-model="afController.model.nrPerrefFim"
+               label="Período final">
+        </field>
+        
+         <totvs-field totvs-select 
+               ng-model="afController.model.cdSitPer"
+               class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+               label="Situação"
+               canclean
+               select-id="cdSitPer"
+               select-description="dsSitPer"
+               select-service="hrc.sitPerZoomController"
+               zoom-service="hrc.sitPerZoomController">                      
+        </totvs-field>
+        
+        <totvs-field totvs-datepicker
+               class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+               label="Data Inicial"
+               format="dd/MM/yyyy"
+               ng-model="afController.model.dtInicioPerIni"
+               culture="pt"
+               canclean
+               ng-show="true"
+               required>
+        </totvs-field>
+                        
+        <totvs-field totvs-datepicker
+              class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+               label="Data Final"
+               format="dd/MM/yyyy"
+               ng-model="afController.model.dtInicioPerFim"
+               culture="pt"
+               canclean
+               ng-show="true"
+               required>
+        </totvs-field>
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn" ng-click="afController.cleanFields()">Limpar Campos</button>
+    <button class="btn" ng-click="afController.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-click="afController.search()">Buscar</button>
+</totvs-modal-footer>

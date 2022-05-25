@@ -1,0 +1,46 @@
+<totvs-page-child type="list">
+
+	<totvs-page-content class="crm-tab">
+
+		<div ng-include="'/dts/crm/html/background-routines/summary-schedule/summary-schedule.html'"
+			 ng-controller="supplementary-account-data.control as controller"/>
+
+		<div ng-animate="'animate-if'">
+
+			<field type="select"
+				   ng-model="controllerSupAccData.model.ttPublic"
+				   canclean="undefined">
+				<label>{{ 'l-public' | i18n: []: 'dts/crm' }}</label>
+				<include>
+					<ui-select-match placeholder="{{ 'l-public' | i18n: []: 'dts/crm' }}">
+						{{$select.selected.nom_public_alvo}}
+					</ui-select-match>
+					<ui-select-choices repeat="item in controllerSupAccData.targets track by $index"
+									   refresh="controllerSupAccData.getTargets($select.search)"
+									   refresh-delay="500">
+						<span ng-bind-html="item.nom_public_alvo | highlight: $select.search"></span>
+					</ui-select-choices>
+				</include>
+			</field>
+
+		</div>
+
+		<totvs-divider style="margin-top: 5px; margin-bottom: 5px;"></totvs-divider>
+
+		<div class="row">
+
+			<div class="col-xs-12"
+				 ng-animate="'animate-if'">
+
+				<button class="btn btn-primary pull-right"
+						ng-click="controllerSupAccData.execute();">
+					{{ 'btn-execute' | i18n: []: 'dts/crm' }}
+				</button>
+
+			</div>
+
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

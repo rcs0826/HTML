@@ -1,0 +1,156 @@
+<br>
+<div class="row"
+     style="padding-bottom: 10px; padding-left: 0px; padding-right: 0px;">
+     
+     <div class="col-xs-7">
+        <div class="col-md-2" style="padding-left: 0px;">
+            <totvs-field class="col-md-2"
+                        totvs-checkbox 
+                        t-bsswitch
+                        label="{{'l-lubrification' | i18n }}"
+                        style="padding-left: 0px"
+                        ng-model="programacaoBacklogCtrl.lubrificacoes"
+                        ng-change="programacaoBacklogCtrl.lubrificacoes = !programacaoBacklogCtrl.lubrificacoes;programacaoBacklogCtrl.filtraEventos()">
+            </totvs-field>
+        </div>
+        <div class="col-md-2" style="padding-left: 0px;">
+            <totvs-field class="col-md-2"
+                        totvs-checkbox 
+                        t-bsswitch
+                        label="Plano"
+                        style="padding-left: 0px"
+                        ng-model="programacaoBacklogCtrl.planosManutencoes"
+                        ng-change="programacaoBacklogCtrl.planosManutencoes = !programacaoBacklogCtrl.planosManutencoes;programacaoBacklogCtrl.filtraEventos()">
+            </totvs-field>
+        </div>
+        <div class="col-md-2" style="padding-left: 0px;">
+            <totvs-field class="col-md-2" 
+                        totvs-checkbox 
+                        t-bsswitch
+                        label="{{ 'l-event' | i18n }}"
+                        style="padding-left: 0px"
+                        ng-model="programacaoBacklogCtrl.eventos"
+                        ng-change="programacaoBacklogCtrl.eventos = !programacaoBacklogCtrl.eventos;programacaoBacklogCtrl.filtraEventos()">
+            </totvs-field>
+        </div>
+        <div class="col-md-2" style="padding-left: 0px;">
+            <totvs-field class="col-md-2" 
+                        totvs-checkbox 
+                        t-bsswitch
+                        label="{{ 'l-component' | i18n }}"
+                        style="padding-left: 0px"
+                        ng-model="programacaoBacklogCtrl.componentes"
+                        ng-change="programacaoBacklogCtrl.componentes = !programacaoBacklogCtrl.componentes;programacaoBacklogCtrl.filtraEventos()">
+            </totvs-field>
+        </div>
+    </div>
+     
+    <div class="filters col-xs-5"
+    	 style="padding-top:18px">
+        <div class="search-field ng-scope">
+            <form class="ng-pristine ng-valid ng-submitted">
+                <div class="input-group">
+                    <input type="text"
+                           class="form-control ng-pristine ng-valid ng-scope ng-touched" 
+                           ng-model="programacaoBacklogCtrl.textoBuscaEventos"
+                           ng-disabled="!programacaoBacklogCtrl.pesquisarTarefa"
+                           placeholder="{{ 'l-search-task' | i18n }}"/>
+
+                    <span class="input-group-btn">
+
+                        <button class="btn btn-default ng-scope" 
+                                type="button" 
+                                ng-click="programacaoBacklogCtrl.textoBuscaEventos = ''">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+
+                         <button class="btn btn-default" 
+                                type="submit" 
+                                ng-click="programacaoBacklogCtrl.pesquisarEventos()">
+                            <span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+                        </button> 
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="padding-top:5px">
+    <totvs-page-alert ng-if="programacaoBacklogCtrl.listaEventos.length <= 0"
+                      ng-animate="'animate-if'"
+                      type="info"
+                      message="{{ 'msg-search-not-found' | i18n }}"
+                      style="margin:0">
+    </totvs-page-alert>
+    
+    <div ng-if="programacaoBacklogCtrl.listaEventos.length > 0">
+	    
+	    <totvs-page-content style="padding-left: 15px;padding-right: 15px; padding-top: 5px">							                                  		
+			<totvs-grid
+				    grid="programacaoBacklogCtrl.gridEventos"
+					grid-data="programacaoBacklogCtrl.listaEventos"
+					add-select-column="separate"
+					selectable="multiple, row" 
+			        grid-height="350" 
+			        navigatable="true" 
+			        selectable="row"
+			        scrollable="true"
+		        	sortable="true"
+		        	resizable="true"
+		        	editable="true">
+                <totvs-grid-column width="58" field="detail" style="text-align: center">{{ 'l-observation' | i18n }}  
+                        <template>
+                            <a class="glyphicon glyphicon-list-alt btn-default" 
+                            style="cursor: pointer"
+                            data-toggle="tooltip" 
+                            title="{{ 'l-observation' | i18n }}"
+                            ng-click="programacaoBacklogCtrl.detalhar(dataItem.narrativa, dataItem['cod-tarefa'])"></a>
+                        </template>                   
+                </totvs-grid-column>
+		        <totvs-grid-column field="cod-tarefa" width="150">{{ 'l-task' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="cod-descri" width="400">{{ 'l-description' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="uso-real" width="100" style="text-align: right">{{ 'l-real-use' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="uso-padrao" width="100" style="text-align: right">{{ 'l-padr-use' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="c-un" width="80">{{ 'l-un' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="dat-vencto" width="150" filter="date : dd/MM/yyyy">{{ 'l-due-date' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="origem" width="180">{{ 'l-origin' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="cod-plano" width="180">{{ 'l-plan' | i18n }}</totvs-grid-column>
+				<totvs-grid-column field="desc-tipo" width="300">{{ 'l-maintenance-type' | i18n }}</totvs-grid-column>
+			</totvs-grid>
+		</totvs-page-content>
+	</div>   
+</div>
+
+<div class="row" style="padding-top: 5px;padding-bottom: 5px; padding-left: 0px; padding-right: 0px;"
+	 ng-if="programacaoBacklogCtrl.listaEventos.length > 0">
+
+	<totvs-field
+		class="col-lg-5 col-md-5 col-sm-12 col-xs-12"
+        label="{{ 'l-action' | i18n }}"
+        totvs-combo
+        t-options="programacaoBacklogCtrl.acoesEvento"
+        ng-model="programacaoBacklogCtrl.acaoSelecionada">
+    </totvs-field>
+	           
+</div>
+<div class="row"
+	 ng-if="programacaoBacklogCtrl.listaEventos.length > 0">
+	<totvs-field totvs-input
+			 	 class="col-lg-5 col-md-5 col-sm-12 col-xs-12"
+			 	 ng-disabled="programacaoBacklogCtrl.acaoSelecionada===1"
+			 	 ng-model="programacaoBacklogCtrl.nrOrdProdu"
+				 zoom-service="mab.mmvOrdManut.zoom"
+				 zoom-id="nr-ord-produ"
+				 zoom-description=""
+				 label="{{'l-orderline-number' | i18n }}"
+				 canclean="undefined"
+				 numbers-only>
+	</totvs-field>
+</div>
+
+<style>
+.k-state-selected a {
+    color: #0c0c0c;
+}
+</style>

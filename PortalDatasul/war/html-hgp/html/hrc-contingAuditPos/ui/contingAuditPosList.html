@@ -1,0 +1,133 @@
+<totvs-page type="list">
+
+    <totvs-page-navbar>
+        <style>
+            .page-head .page-tags .tag-1:before {
+                background-color: green !important;
+                content: "1";
+            }
+        </style>
+        <totvs-page-breadcrumb id="breadcrumb">
+                <breadcrumb>Contigencia/Envio Auditoria POS</breadcrumb>
+        </totvs-page-breadcrumb>
+        
+        <totvs-page-header>
+
+            <totvs-page-header-title title="Documentos" 
+                                     total="{{controller.listOfContingAuditPosCount}}"
+                                     settings="controller.openConfigWindow()">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <div class="panel-body">
+                    <div class="panel panel-default col-lg-12 col-md-12 col-sm-12 ">
+                            <div class="form-group col-lg-6 col-md-6 col-sm-12 ">
+                                <label for="sel1">Tipo Seleção:</label>
+                                <br/>
+                                <button type="button" class="btn btn-primary" ng-click="controller.openAdvancedSearch('periodo')">Por Período</button>
+                                <button type="button" class="btn btn-primary" ng-click="controller.openAdvancedSearch('fatura')">Por Fatura</button>
+                                <button type="button" class="btn btn-primary" ng-click="controller.openAdvancedSearch('lote')">Por Lote</button>
+                            </div>
+                            
+                            <div class="form-group col-lg-6 col-md-6 col-sm-12" style="padding-top: 25px;">
+                                <button type="button" class="btn btn-success btn-md pull-right" style="display:none" id="btnEnviar" ng-click="controller.sendContingAuditPos()">Enviar Selecionados</button>
+                                <button type="button" class="btn btn-success btn-md pull-right" id="btnLiberar" ng-click="controller.removeContingAuditPos()">Liberar Selecionados</button>
+                            </div>
+                    </div>
+
+                    <totvs-field  
+                        totvs-checkbox ng-model="controller.bsswitch" id="selecionaTodos" 
+                        t-bsswitch label="Selecionar todos" ng-change="controller.selecionaTodos()">
+                    </totvs-field>    
+                    
+               </div>
+
+            </totvs-page-header-operation>   
+
+        </totvs-page-header>
+    </totvs-page-navbar>
+        
+    <totvs-page-content>
+      <totvs-page-alert ng-if="controller.listOfContingAuditPos.length <= 0"
+                    type="info"
+                    message="Nenhum registro encontrado">
+        </totvs-page-alert>
+        <style>
+            .linhaVerde {
+                border-left-color: green !important;
+            }
+        </style>
+        <totvs-list-item class="listaItem" 
+            ng-repeat="contingAuditPos in controller.listOfContingAuditPos"  
+            ng-click="controller.selecionaItem(contingAuditPos)" 
+            id="{{contingAuditPos.$$hashKey}}"
+            selected="contingAuditPos"> 
+            
+            <totvs-list-item-header>
+                <totvs-list-item-title>
+                        <b>Unidade</b> {{(StringTools.fill(contingAuditPos.cd_unidade, "0", 4))}} 
+                    |   <b>Unidade Prestadora</b> {{(StringTools.fill(contingAuditPos.cd_unidade_prestadora, "0", 4))}}
+                    |   <b>Trans</b> {{(StringTools.fill(contingAuditPos.cd_transacao, "0", 4))}}
+                    |   <b>Série</b> {{contingAuditPos.nr_serie_doc_original}}
+                    |   <b>Número</b> {{(StringTools.fill(contingAuditPos.nr_doc_original, "0", 8))}}
+                    |   <b>Sequência</b> {{(StringTools.fill(contingAuditPos.nr_doc_sistema, "0", 9))}}
+                </totvs-list-item-title>
+            </totvs-list-item-header>
+
+            <totvs-list-item-content>
+                <totvs-list-item-info title="Beneficiário"
+                                      class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                      value="{{ contingAuditPos.ds_beneficiario }}">
+                </totvs-list-item-info>
+
+                <totvs-list-item-info title="Quantidade Movimentos"
+                                      class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                      value="{{ contingAuditPos.qtde_mov }}">
+                </totvs-list-item-info>
+                
+                <!-- <totvs-list-item-info title="Prestador Principal"
+                                      class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                      value="{{ contingAuditPos.cd_unid_prestador_principal }} {{ contingAuditPos.cd_nm_prestador_principal }}">
+                </totvs-list-item-info> -->
+
+                <totvs-list-item-info title="Unidade Principal"
+                                      class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                      value="{{ contingAuditPos.cd_unid_prestador_principal }}"></totvs-list-item-info>    
+                
+                <totvs-list-item-info title="Prestador Principal"
+                    value="{{ contingAuditPos.cd_nm_prestador_principal }}"></totvs-list-item-info>
+                
+                
+
+            </totvs-list-item-content>
+
+        </totvs-list-item>
+
+        <div id="justificativaModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <totvs-modal-header>
+                    Atenção!
+                </totvs-modal-header>
+                <totvs-modal-body>
+                    Esse é um processo de contingência, estes movimentos ainda necessitarão serem liberados normalmente pelos processos de liberação do módulo Revisão de Contas. <br> Para continuar, informe uma justificativa.
+                        <field style="float: none !important;" maxlength="100" type="textarea" ng-model="controller.valueTextarea">
+                </field>      
+                </totvs-modal-body>
+                <totvs-modal-footer>      
+                    <button type="button" class="btn" ng-click="controller.cancel()">Cancelar</button>
+                    <button type="button" class="btn btn-primary" ng-click="controller.libera()">Liberar</button>
+                </totvs-modal-footer>
+            </div>
+        </div>
+
+        <totvs-list-pagination
+            ng-if="controller.listOfContingAuditPos.length < controller.listOfContingAuditPosCount && controller.listOfContingAuditPos.length"
+            ng-click="controller.search(true);">            
+        </totvs-list-pagination>
+
+    </totvs-page-content>
+</totvs-page>
+
+
+
+

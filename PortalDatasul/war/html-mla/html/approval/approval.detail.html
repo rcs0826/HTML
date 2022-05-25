@@ -1,0 +1,119 @@
+<style type="text/css" scoped="true">
+	.subtitulo{
+		padding-left: 15px;
+	    margin: 15px 0px 5px 0px;
+	    font-size: 16px;
+	    font-weight: bold;	    
+	    float: left;
+	    color: #337ab7;
+	    width: 100%;
+	}
+
+	#template{
+		margin-top: 45px;
+		margin-bottom: 10px;
+	}
+</style>
+<totvs-page type="detail" totvs-custom-element="customApprovalDetail">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mla/approval/">
+                <span class="hidden-xs">{{ 'l-documents-approval' | i18n }}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{ 'l-approval-short' | i18n }}</span>
+            </breadcrumb>
+            <breadcrumb link="#/dts/mla/approval/list/{{controller.documentId}}">
+                <span class="hidden-xs">{{controller.documentName}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{ 'l-document-micro' | i18n }} {{controller.documentId}}</span>
+            </breadcrumb>
+            <breadcrumb>{{controller.requestId}}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+		<totvs-page-header>
+            <totvs-page-header-title title="{{controller.documentName}}" id="pageTitle"></totvs-page-header-title> 
+            <totvs-page-header-operation> 
+                <totvs-page-header-operation-action limit-primary-action="3"
+                		hide-edit="true"
+                		hide-remove="true"
+                        on-back-link="#/dts/mla/approval/list/{{controller.documentId}}">
+                    <action ng-click="controller.openDetailPending(controller.requestId)" icon="glyphicon-list-alt" class="btn-default" tooltip="{{ controller.isTouchDevice ? null : 'l-pending-detail' | i18n }}" ng-if="controller.documentRequestsCount > 0">{{ 'l-pending-detail' | i18n }}</action>
+                    <action ng-click="controller.approve(controller.requestId)" icon="glyphicon-ok-circle" class="btn-success" tooltip="{{ controller.isTouchDevice ? null : 'l-approve' | i18n }}" ng-if="controller.documentRequestsCount > 0">{{ 'l-approve' | i18n }}</action>
+                    <action ng-click="controller.reject(controller.requestId)" icon="glyphicon-remove-circle" class="btn-danger" tooltip="{{ controller.isTouchDevice ? null : 'l-reprove' | i18n }}" ng-if="controller.documentRequestsCount > 0">{{ 'l-reprove' | i18n }}</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation> 
+        </totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-detail ng-if="controller.documentRequestsCount > 0">
+			<!-- ### Template de acordo com o tipo de documento ### -->
+			<div ng-include="controller.documentDetailTemplate" 
+				 ng-if="controller.loadComplete" 
+				 id="template"></div>
+
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin:15px 0px;">
+				<h3 ng-show="controller.approvalLog.length > 0"> {{ 'l-history' | i18n }} </h3>
+				<totvs-list-item
+		            id="log{{log['data-aprovacao']}}{{log['hora-aprovacao']}}"	            
+		            ng-class="tab-1"
+		            ng-repeat="log in controller.approvalLog"
+		            totvs-custom-element="customApprovalDetail_historic">            
+
+		            <totvs-list-item-header>
+						<totvs-list-item-info class="col-lg-2 col-md-2 col-sm-6 col-xs-12"
+						    title="{{ 'l-date' | i18n}}"
+						    value="{{log['data-aprovacao'] | date:'dd/MM/yyyy'}}">
+						</totvs-list-item-info>
+
+						<totvs-list-item-info class="col-lg-2 col-md-2 col-sm-6 col-xs-12"
+						    title="{{ 'l-hour' | i18n}}"
+						    value="{{log['hora-aprovacao']}}">
+						</totvs-list-item-info>
+
+						<totvs-list-item-info class="col-lg-8 col-md-8 col-sm-12 col-xs-12"
+						    title="{{ 'l-user' | i18n}}"
+						    value="{{log['cod-aprovador']}} - {{log['nome-aprovador']}}">
+						</totvs-list-item-info>
+
+						<totvs-list-item-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+						    title="{{ 'l-level' | i18n}}"
+						    value="{{log['nivel']}} - {{log['desc-nivel']}}">
+						</totvs-list-item-info>
+
+						<totvs-list-item-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-justify"
+						    title="{{ 'l-narrative' | i18n}}"
+						    value="{{log['narrativa']}}">
+						</totvs-list-item-info>
+		            </totvs-list-item-header>
+	        	</totvs-list-item>
+			</div>
+ 
+			<br>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" totvs-custom-element="buttonBar">
+				<div class="pull-right">
+					<button class="btn btn-default" ng-click="controller.goBack('#/dts/mla/approval/list/')" id="btVoltar">
+						<span class="glyphicon glyphicon-menu-left"></span>
+						<span class="hidden-xs"> &nbsp; {{ "l-back" | i18n }} &nbsp; </span>
+					</button>
+					<button class="btn btn-default" ng-click="controller.openDetailPending(controller.requestId)">
+						<span class="glyphicon glyphicon-list-alt"></span>
+						<span class="hidden-xs"> &nbsp; {{ "l-pending-detail" | i18n }} &nbsp; </span>
+					</button>
+					<button class="btn btn-success" ng-click="controller.approve(controller.requestId)">
+						<span class="glyphicon glyphicon-ok-circle"></span>
+						<span class="hidden-xs"> &nbsp; {{ "l-approve" | i18n }} &nbsp; </span>
+					</button>
+					<button class="btn btn-danger" ng-click="controller.reject(controller.requestId)">
+						<span class="glyphicon glyphicon-remove-circle"></span>
+						<span class="hidden-xs"> &nbsp; {{ "l-reprove" | i18n }} &nbsp; </span>
+					</button>
+				</div>
+			</div>
+		</totvs-page-detail>
+
+		<totvs-page-alert ng-if="controller.documentRequestsCount <= 0"
+				          type="info"
+				          message="{{ 'l-msg-not-found' | i18n }}">
+        </totvs-page-alert>
+	</totvs-page-content>
+</totvs-page>

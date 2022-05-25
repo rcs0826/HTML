@@ -1,0 +1,572 @@
+<style>
+    .list-item-gray{
+        border-left-color: #337ab7;
+    }
+    .extra-large .modal-dialog {
+        width :90%;
+        min-width: 800px;
+    }
+</style>
+
+<totvs-modal-header>
+    Pacote {{'(' + pmController.package.rotulo + ')'}}
+</totvs-modal-header>
+
+<totvs-modal-body style="height: 500px; overflow-y: auto;">
+    
+        <totvs-page-detail>
+
+            <totvs-page-detail-info title="Quantidade"
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    ng-if="pmController.isEditable === true">
+                <totvs-editable value="{{pmController.package.qtMovimento}}"
+                          on-complete="pmController.setValueLabels(pmController.package.movementObject.nmTipoValorizacao, undefined)">
+                    <field type="decimal"
+                        class="col-md-12"
+                        ng-model="pmController.package.qtMovimento"
+                        label="Quantidade"
+                        data-v-max="99999999"
+                        m-dec="0">
+                    </field>
+                </totvs-editable>               
+            </totvs-page-detail-info>
+            <!-- min="1"
+                max="9999" -->
+
+            <totvs-page-detail-info 
+                class="col-lg-11 col-md-11 col-sm-11 col-xs-12"
+                title="Quantidade"
+                value="{{pmController.package.qtMovimento}}"
+                ng-if="pmController.isEditable === false">
+            </totvs-page-detail-info>
+
+            <a role="button" 
+               class="btn btn-default btn-xs glyphicon glyphicon-th-large col-lg-1 col-md-1 col-sm-1 col-xs-12"
+               href="#/menu-html/program-html/hat.queryPackageSoftware/#/detail/{{pmController.package.cdPrestSispac}}/{{pmController.package.cdPacoteSispac}}/{{pmController.package.cdTipoAcomodacaoSispac}}/{{!!pmController.package.cnpjcpfSispac > 11 ? StringTools.fill(pmController.package.cnpjcpfSispac, '0', 14) : StringTools.fill(pmController.package.cnpjcpfSispac, '0', 11)}}"
+               ng-click="pmController.cancel()"
+               ng-if="pmController.package.movementObject.lgPacoteIntercambio === true">
+                Sispac
+            </a>
+
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Data de Realização"
+                value="{{pmController.package.dtRealizacao | date : 'dd/MM/yyyy'}}"
+                ng-if="pmController.package.movementObject.lgPacoteIntercambio === true"> 
+            </totvs-page-detail-info>
+            
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="CPF/CNPJ"
+                value="{{pmController.package.movementObject.nrDocumento }}"
+                ng-if="pmController.package.movementObject.lgPacoteIntercambio === true"> 
+            </totvs-page-detail-info>
+
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Tipo de Acomodação"
+                value="{{pmController.package.movementObject.dsTipoAcomodacao }}"
+                ng-if="pmController.package.movementObject.lgPacoteIntercambio === true"> 
+            </totvs-page-detail-info>
+
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Agrupador"
+                value="{{pmController.package.movementObject.lgAgrupador === true ? 'Sim' : 'Não'}}"
+                ng-if="pmController.package.movementObject.lgPacoteIntercambio === false">
+            </totvs-page-detail-info>
+            
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Data Início"
+                value="{{pmController.package.movementObject.dtInicioVigencia | date : 'dd/MM/yyyy'}}"
+                ng-if="pmController.package.movementObject.lgPacoteIntercambio === false">
+            </totvs-page-detail-info>
+            
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Data Fim"
+                value="{{pmController.package.movementObject.dtLimite | date : 'dd/MM/yyyy'}}"
+                ng-if="pmController.package.movementObject.lgPacoteIntercambio === false"> 
+            </totvs-page-detail-info>
+
+            <div ng-if="pmController.package.movementObject.lgAgrupador == false">       
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Tipo Valorização"
+                    value="{{pmController.package.movementObject.nmTipoValorizacao}}"
+                    ng-if="pmController.package.movementObject.lgPacoteIntercambio === false">
+                </totvs-page-detail-info>
+                
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Valor Total Pacote Pagamento"
+                    value="{{pmController.package.paymentTotalValueLabel}}"
+                    ng-if="pmController.package.movementObject.lgPacoteIntercambio === false">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Valor Total Pacote Cobrança"
+                    value="{{pmController.package.chargingTotalValueLabel}}"
+                    ng-if="pmController.package.movementObject.lgPacoteIntercambio === false">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Valor Cobrado"
+                    value="{{pmController.package.vlCobrado | currency : 'R$'}}"
+                    ng-if="pmController.package.movementObject.lgPacoteIntercambio === true">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                    title="Valor Taxa Cobrado"
+                    value="{{pmController.package.vlTaxaCobrado | currency : 'R$'}}"
+                    ng-if="pmController.package.movementObject.lgPacoteIntercambio === true">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Valor Sistema"
+                    value="{{pmController.package.vlMovimento | currency : 'R$'}}"
+                    ng-if="pmController.package.movementObject.lgPacoteIntercambio === true">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info 
+                    class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                    title="Valor Taxa Sistema"
+                    value="{{pmController.package.vlTaxaMovimento | currency : 'R$'}}"
+                    ng-if="pmController.package.movementObject.lgPacoteIntercambio === true">
+                </totvs-page-detail-info>
+            </div>
+            
+            <totvs-tabset >
+                <totvs-tab heading="Procedimentos ({{pmController.package.packageProcedures.length}})"
+                           ng-if="pmController.package.movementObject.lgTrataProcedimento === true
+                               && pmController.package.packageProcedures.length > 0"
+                           active="true">
+
+                    <totvs-page-child class="list-item-gray"
+                        ng-repeat="procedure in pmController.package.packageProcedures">
+                        <totvs-list-item>
+                            <totvs-list-item-header>
+                                <totvs-list-item-title
+                                    class="col-lg-9 col-md-9 col-sm-9 col-xs-12"
+                                    title="{{procedure.rotulo}}">
+                                    <span 
+                                        ng-if="procedure.providers[0].lgTemGlosa == true"
+                                        style="color: black; float: right"
+                                        class="glyphicon glyphicon-exclamation-sign"
+                                        title="Possui Glosas"
+                                        ></span>
+                                </totvs-list-item-title>
+
+                                <totvs-list-item-action limit-primary-action="1"
+                                                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                                        ng-if="procedure.providers[0].nrProcesso > 0">
+                                    <action icon="glyphicon glyphicon-thumbs-down"
+                                            ng-click="pmController.openMovementRestrictions(procedure)"
+                                            >Glosas</action>
+                                    <action icon="glyphicon glyphicon-modal-window"
+                                            ng-click="pmController.openMovementDetails(procedure)"
+                                            >Detalhes</action>
+                                </totvs-list-item-action>
+                            </totvs-list-item-header>
+
+                            <totvs-list-item-content>
+                                <div ng-if="pmController.package.movementObject.lgAgrupador == false">
+                                    <totvs-row>
+                                        
+                                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                              title="Valor Pagamento"
+                                                              value="{{pmController.package.paymentTotalValueLabel === 'Sistema' ? 'Sistema' : ((procedure.vlPagamento * pmController.package.qtMovimento) | currency : 'R$')}}"
+                                                              ng-if="pmController.package.movementObject.lgPacoteIntercambio === false">
+                                        </totvs-list-item-info>
+                                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                              title="Valor Cobrança"
+                                                              value="{{pmController.package.chargingTotalValueLabel === 'Sistema' ? 'Sistema' : ((procedure.vlCobranca * pmController.package.qtMovimento) | currency : 'R$')}}"
+                                                              ng-if="pmController.package.movementObject.lgPacoteIntercambio === false">
+                                        </totvs-list-item-info>
+
+                                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                              title="Valor Procedimento"
+                                                              value="{{procedure.vlMovimento | currency : 'R$'}}"
+                                                              ng-if="procedure.vlMovimento != undefined
+                                                                  && procedure.vlMovimento != 0
+                                                                  && pmController.package.movementObject.lgPacoteIntercambio === false">
+                                        </totvs-list-item-info>                                        
+
+                                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                              title="Valor Cobrado"
+                                                              value="{{procedure.providers[0].vlCobrado | currency : 'R$'}}"
+                                                              ng-if="pmController.package.movementObject.lgPacoteIntercambio === true">
+                                        </totvs-list-item-info>
+
+                                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                              title="Valor Taxa Cobrado"
+                                                              value="{{procedure.providers[0].vlTaxaCobrado | currency : 'R$'}}"
+                                                              ng-if="pmController.package.movementObject.lgPacoteIntercambio === true">
+                                        </totvs-list-item-info>
+
+                                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                              title="Quantidade"
+                                                              value="{{(procedure.qtMovimento * pmController.package.qtMovimento)}}">
+                                        </totvs-list-item-info>
+
+                                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                              title="Valor Procedimento"
+                                                              value="{{procedure.providers[0].vlMovimento | currency : 'R$'}}"
+                                                              ng-if="pmController.package.movementObject.lgPacoteIntercambio === true">
+                                        </totvs-list-item-info>
+
+                                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                              title="Valor Taxa Procedimento"
+                                                              value="{{procedure.providers[0].vlTaxaMovimento | currency : 'R$'}}"
+                                                              ng-if="pmController.package.movementObject.lgPacoteIntercambio === true">
+                                        </totvs-list-item-info>
+
+                                        
+                                    </totvs-row>
+                                </div>
+                                <totvs-list-item-info title="Via de Acesso"
+                                                      ng-if="pmController.isEditable === true"
+                                                      class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                    <totvs-editable value="{{pmController.documentController.getAccessWayLabel(procedure)}}">
+                                        <field type="select"
+                                            class="col-md-12"   
+                                            ng-model="procedure.cdViaAcesso"
+                                            label="Via de Acesso">
+                                            <include>
+                                                <ui-select-match placeholder="Selecione a Via de Acesso">{{$select.selected.rotulo}}</ui-select-match>
+                                                <ui-select-choices repeat="accessWay.cdViaAcesso as accessWay in pmController.documentController.accessWays | filter: $select.search track by $index">
+                                                    <span data-ng-bind-html="accessWay.rotulo | highlight: $select.search"></span>
+                                                </ui-select-choices>
+                                            </include>
+                                        </field>
+                                    </totvs-editable>
+                                </totvs-list-item-info>
+
+                                <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                      title="Via de Acesso"
+                                                      value="{{pmController.documentController.getAccessWayLabel(procedure)}}"
+                                                      ng-if="pmController.isEditable === false">
+                                </totvs-list-item-info>
+
+                                <totvs-list-item-info title="Técnica Utilizada"
+                                                      ng-if="pmController.isEditable === true"
+                                                      class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                    <totvs-editable value="{{pmController.documentController.getTechniqueLabel(procedure)}}">
+                                        <field type="select"
+                                            class="col-md-12"
+                                            ng-model="procedure.tpTecUtil"
+                                            label="Técnica Utilizada">
+                                            <include>
+                                                <ui-select-match placeholder="Selecione a Técnica Utilizada">{{$select.selected.rotulo}}</ui-select-match>
+                                                <ui-select-choices repeat="tissTechnique.cdnTec as tissTechnique in pmController.documentController.tissTechniques | filter: $select.search track by $index">
+                                                    <span data-ng-bind-html="tissTechnique.rotulo | highlight: $select.search"></span>
+                                                </ui-select-choices>
+                                            </include>
+                                        </field>
+
+                                    </totvs-editable>
+                                </totvs-list-item-info>
+                                <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                      title="Técnica Utilizada"
+                                                      value="{{pmController.documentController.getTechniqueLabel(procedure)}}"
+                                                      ng-if="pmController.isEditable === false">
+                                </totvs-list-item-info> 
+
+                                <totvs-list-item-info title="Fator de Redução/Acréscimo"
+                                                      ng-if="pmController.isEditable === true
+                                                          && pmController.package.movementObject.lgPacoteIntercambio === false"
+                                                      class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                    <totvs-editable value="{{pmController.documentController.getPercentageTypeLabel(procedure)}}">
+                                        <field type="select"
+                                            class="col-md-12"
+                                            ng-model="procedure.cdTipoPercentual"
+                                            label="Fator de Redução/Acréscimo">
+                                            <include>
+                                                <ui-select-match placeholder="Selecione Fator de Redução/Acréscimo">{{$select.selected.rotulo}}</ui-select-match>
+                                                <ui-select-choices repeat="fatorRedAcres.cdTipoPercentual as fatorRedAcres in procedure.fatoresRedAcres | filter: $select.search track by $index">
+                                                    <span data-ng-bind-html="fatorRedAcres.rotuloTipPerc | highlight: $select.search"></span>
+                                                </ui-select-choices>
+                                            </include>
+                                        </field>
+                                    </totvs-editable>
+                                </totvs-list-item-info>
+
+                                <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                      title="Fator de Redução/Acréscimo"
+                                                      value="{{pmController.documentController.getPercentageTypeLabel(procedure)}}"
+                                                      ng-if="pmController.isEditable === false
+                                                          && pmController.package.movementObject.lgPacoteIntercambio === false">
+                                </totvs-list-item-info>
+
+                                <totvs-list-item-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                    <totvs-list-item
+                                            ng-repeat="prov in procedure.providers track by $index"
+                                            class="tag-{{prov.inStatus}}">
+                                        <totvs-list-item-header>
+                                            <totvs-list-item-title
+                                                title="{{prov.preserv.rotulo}}">
+                                            </totvs-list-item-title>
+                                        </totvs-list-item-header>
+
+                                        <div ng-if="procedure.movementObject.gruProDAO.lgCooperado == true
+                                                && prov.preserv.lgDivisaoHonorario == true">
+
+                                            <totvs-list-item-info title="Prestador Divisão"
+                                                          class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                                          ng-if="pmController.isEditable === true">
+                                                <totvs-editable value="{{prov.rotuloPrestDivHono}}"
+                                                            on-complete="pmController.onDivisionProviderSelect(prov)">
+                                                    <totvs-field totvs-select 
+                                                               label="Prestador Divisão" 
+                                                               required canclean focus
+                                                               ng-model="prov.cdUnidCdPrestadorHono"
+                                                               select-service="global.providerZoomController"
+                                                               zoom-service="global.providerZoomController"
+                                                               select-id="cdUnidCdPrestador" 
+                                                               select-description="nmPrestador"
+                                                               class="col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                                                    </totvs-field>
+                                                </totvs-editable>
+                                            </totvs-list-item-info>
+
+                                            <totvs-list-item-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                                      title="Prestador Divisão"
+                                                      value="{{prov.rotuloPrestDivHono}}"
+                                                      ng-if="pmController.isEditable === false">
+                                            </totvs-list-item-info>
+
+                                            <totvs-list-item-info title="CBO X Especialidade"
+                                                                  class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                                                  ng-if="pmController.isEditable === true
+                                                                      && prov.cdUnidCdPrestadorHono != '' ">
+                                                <totvs-editable value="{{pmController.getCbosSpecialtiesLabel(prov)}}">
+                                                    <field type="select"
+                                                        class="col-md-12"
+                                                        ng-model="prov.cdCboEspecialidHono"
+                                                        label="CBO X Especialidade">
+                                                        <include>
+                                                            <ui-select-match placeholder="Selecione CBO X Especialidade">{{$select.selected.dsCboEspecialid}}</ui-select-match>
+                                                            <ui-select-choices repeat="cbosSpecialties.cdCboEspecialid as cbosSpecialties in prov.honoProvCbosSpecialties | filter: $select.search track by $index">
+                                                                <span data-ng-bind-html="cbosSpecialties.dsCboEspecialid | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </include>
+                                                    </field>
+                                                </totvs-editable>
+                                            </totvs-list-item-info>
+
+                                            <totvs-list-item-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                                      title="CBO X Especialidade"
+                                                      value="{{pmController.getCbosSpecialtiesLabel(prov)}}"
+                                                      ng-if="pmController.isEditable === false
+                                                          || prov.cdUnidCdPrestadorHono == '' ">
+                                            </totvs-list-item-info>
+                                        </div>
+                                    </totvs-list-item>
+
+                                </totvs-list-item-info>
+                            </totvs-list-item-content>
+                        </totvs-list-item>
+                    </totvs-page-child>
+                </totvs-tab>
+
+                <totvs-tab heading="Insumos ({{pmController.package.packageInputs.length}})"
+                             ng-if="pmController.package.packageInputs.length > 0">
+                    
+                    <totvs-page-child class="list-item-gray"
+                        ng-repeat="input in pmController.package.packageInputs">
+                        <totvs-list-item>
+                            <totvs-list-item-header>
+                                <totvs-list-item-title
+                                    class="col-lg-9 col-md-9 col-sm-9 col-xs-12"
+                                    title="{{StringTools.fill(input.cdTipoInsumo,'0',2) + input.rotulo}}">
+                                    <span 
+                                        ng-if="input.providers[0].lgTemGlosa == true"
+                                        style="color: black; float: right"
+                                        class="glyphicon glyphicon-exclamation-sign"
+                                        title="Possui Glosas"
+                                        ></span>
+                                </totvs-list-item-title>
+
+                                <totvs-list-item-action limit-primary-action="1"
+                                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                        ng-if="input.providers[0].nrProcesso > 0">
+                                    <action icon="glyphicon glyphicon-thumbs-down"
+                                            ng-click="pmController.openMovementRestrictions(input)"
+                                            >Glosas</action>
+                                    <action icon="glyphicon glyphicon-modal-window"
+                                            ng-click="pmController.openMovementDetails(input)"
+                                            >Detalhes</action>
+                                </totvs-list-item-action>
+                            </totvs-list-item-header>
+
+                            <totvs-list-item-content>
+                                <totvs-list-item-info title="Descrição de Insumo Genérico"
+                                                      ng-if="input.movementObject.lgGenericoPTU == true
+                                                          && pmController.isEditable == true"
+                                                      class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <totvs-editable value="{{input.dsInsumoGenerico}}">
+                                        <field type="input"
+                                            class="col-md-12"
+                                            ng-model="input.dsInsumoGenerico"
+                                            label="Descrição de Insumo Genérico">
+                                        </field>
+                                    </totvs-editable>
+                                </totvs-list-item-info>
+
+                                <totvs-list-item-info title="Código Anvisa"
+                                                      ng-if="input.movementObject.lgOpme == true
+                                                          && pmController.isEditable == true"
+                                                      class="col-lg-4 col-md-4 col-sm-4 col-xs-4">                                   
+                                    <totvs-editable value="{{input.cdAnvisa}}">
+                                        <field type="input"
+                                            class="col-md-12"
+                                            ng-model="input.cdAnvisa"
+                                            label="Código Anvisa"
+                                            ng-disabled="input.movementObject.lgGenericoPTU === false
+                                                        || (input.movementObject.lgGenericoPTU === true
+                                                         && input.movementObject.lgOpme === false)">
+                                        </field>
+                                    </totvs-editable>
+                                </totvs-list-item-info>
+
+                                <totvs-list-item-info title="Referência Material Fabricante"
+                                                      ng-if="input.movementObject.lgOpme == true
+                                                          && pmController.isEditable == true"
+                                                      class="col-lg-4 col-md-4 col-sm-4 col-xs-4">  
+                                    <totvs-editable value="{{input.desReferMaterFabrican}}">
+                                        <field type="input"
+                                            class="col-md-12"
+                                            ng-model="input.desReferMaterFabrican"
+                                            ng-disabled="input.movementObject.lgGenericoPTU === false
+                                                        || (input.movementObject.lgGenericoPTU === true
+                                                         && input.movementObject.lgOpme === false)"
+                                            label="Referência Material Fabricante">
+                                        </field>
+                                    </totvs-editable>
+                                </totvs-list-item-info>
+
+                                <totvs-list-item-info title="Número Nota Fornecedor"
+                                                      ng-if="input.movementObject.lgOpme == true
+                                                          && pmController.isEditable == true"
+                                                      class="col-lg-4 col-md-4 col-sm-4 col-xs-4">  
+                                    <totvs-editable value="{{input.nrNotaFornecedor}}">
+                                        <field type="input"
+                                            class="col-md-12"
+                                            ng-model="input.nrNotaFornecedor"
+                                            label="Número Nota Fornecedor">
+                                        </field>
+                                    </totvs-editable>
+                                </totvs-list-item-info>
+                                
+
+                                <totvs-list-item-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                      title="Descrição de Insumo Genérico"
+                                                      value="{{input.dsInsumoGenerico}}"
+                                                      ng-if="input.movementObject.lgGenericoPTU == true
+                                                          && pmController.isEditable == false">
+                                </totvs-list-item-info>
+
+                                <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                                                      title="Código Anvisa"
+                                                      value="{{input.cdAnvisa}}"
+                                                      ng-if="input.movementObject.lgOpme == true
+                                                          && pmController.isEditable == false">
+                                </totvs-list-item-info>
+
+                                <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                                                      title="Referência Material Fabricante"
+                                                      value="{{input.desReferMaterFabrican}}"
+                                                      ng-if="input.movementObject.lgOpme == true
+                                                          && pmController.isEditable == false">
+                                </totvs-list-item-info>
+
+                                <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                                                      title="Número Nota Fornecedor"
+                                                      value="{{input.nrNotaFornecedor}}"
+                                                      ng-if="input.movementObject.lgOpme == true
+                                                          && pmController.isEditable == false">
+                                </totvs-list-item-info>
+
+                                <div ng-if="pmController.package.movementObject.lgAgrupador == false">
+                                    <totvs-row>                                        
+                                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                              title="Valor Pagamento"
+                                                              value="{{pmController.package.paymentTotalValueLabel === 'Sistema' ? 'Sistema' : 
+                                                              ((input.vlPagamento * pmController.package.qtMovimento) | currency : 'R$')}}"
+                                                              ng-if="pmController.package.movementObject.lgPacoteIntercambio === false">
+                                        </totvs-list-item-info>
+                                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                              title="Valor Cobrança"
+                                                              value="{{pmController.package.chargingTotalValueLabel === 'Sistema' ? 'Sistema' : 
+                                                              ((input.vlCobranca * pmController.package.qtMovimento) | currency : 'R$')}}"
+                                                              ng-if="pmController.package.movementObject.lgPacoteIntercambio === false">
+                                        </totvs-list-item-info>
+
+                                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                              title="Valor Insumo"
+                                                              value="{{input.vlMovimento | currency : 'R$'}}"
+                                                              ng-if="input.vlMovimento != undefined
+                                                                  && input.vlMovimento != 0
+                                                                  && pmController.package.movementObject.lgPacoteIntercambio === false">
+                                        </totvs-list-item-info>
+
+                                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                              title="Valor Cobrado"
+                                                              value="{{input.providers[0].vlCobrado | currency : 'R$'}}"
+                                                              ng-if="pmController.package.movementObject.lgPacoteIntercambio === true">
+                                        </totvs-list-item-info>
+
+                                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                              title="Valor Taxa Cobrado"
+                                                              value="{{input.providers[0].vlTaxaCobrado | currency : 'R$'}}"
+                                                              ng-if="pmController.package.movementObject.lgPacoteIntercambio === true">
+                                        </totvs-list-item-info>
+
+                                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                              title="Quantidade"
+                                                              value="{{(input.qtMovimento * pmController.package.qtMovimento) | currency : '' : 4}}">
+                                        </totvs-list-item-info>
+
+                                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                              title="Valor Insumo"
+                                                              value="{{pmController.package.paymentTotalValueLabel === 'Sistema' ? 'Sistema' : 
+                                                              ((input.providers[0].vlMovimento) | currency : 'R$')}}"
+                                                              ng-if="pmController.package.movementObject.lgPacoteIntercambio === true">
+                                        </totvs-list-item-info>
+
+                                        <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                              title="Valor Taxa Insumo"
+                                                              value="{{input.providers[0].vlTaxaMovimento | currency : 'R$'}}"
+                                                              ng-if="pmController.package.movementObject.lgPacoteIntercambio === true">
+                                        </totvs-list-item-info>
+                                        
+                                    </totvs-row>
+                                </div>
+                                <totvs-list-item-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <totvs-list-item
+                                            ng-repeat="prov in input.providers track by $index"
+                                            class="tag-{{prov.inStatus}}">
+                                        <totvs-list-item-header>
+                                            <totvs-list-item-title
+                                                title="{{prov.preserv.rotulo}}">
+                                            </totvs-list-item-title>
+                                        </totvs-list-item-header>
+
+                                    </totvs-list-item>
+                                </totvs-list-item-info>
+                            </totvs-list-item-content>
+                        </totvs-list-item>
+                    </totvs-page-child>
+                </totvs-tab>
+            </totvs-tabset>
+        </totvs-page-detail>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button class="btn" ng-click="pmController.cancel()">Fechar</button>
+</totvs-modal-footer>

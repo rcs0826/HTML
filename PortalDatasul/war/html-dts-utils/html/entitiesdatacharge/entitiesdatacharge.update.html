@@ -1,0 +1,145 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{:: 'l-update-entity' | i18n : [] : 'dts/dts-utils' }} <b ng-if="controller.defaultIntegrationId > 0">({{:: 'l-default-entity' | i18n : [] : 'dts/dts-utils'}})</b> <b ng-if="controller.defaultIntegrationId == 0">({{:: 'l-custom-entity' | i18n : [] : 'dts/dts-utils'}})</b></h3>
+</div>
+
+<div class="modal-body">	
+	<div class="row">
+		<field class="col-md-11" type="input" autocomplete="off" canclean required ng-model="controller.entityName" ng-required="true" ng-disabled="controller.integrationType == 1 && controller.defaultIntegrationId > 0">
+			<label>{{'l-name'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>
+	</div>
+	<div class="row">
+		<field class="col-md-11" type="input" autocomplete="off" canclean required ng-model="controller.entityTransaction" ng-required="true" ng-disabled="controller.integrationType == 1 && controller.defaultIntegrationId > 0">
+			<label>{{'l-transaction'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>
+	</div>
+	<div class="row">
+		<field class="col-md-11" type="input" autocomplete="off" canclean required ng-model="controller.entityTransactionversion" ng-required="true" ng-disabled="controller.integrationType == 1 && controller.defaultIntegrationId > 0">
+			<label>{{'l-version-transaction'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>
+	</div>
+	<div class="row">
+		<field class="col-md-11" type="input" autocomplete="off" canclean required ng-model="controller.entityApiExec" ng-required="true" ng-disabled="controller.integrationType == 1 && controller.defaultIntegrationId > 0">
+			<label>{{'l-api-exec'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>
+	</div>	
+	<div class="row">
+			<field class="col-md-11" type="input" autocomplete="off" canclean required ng-model="controller.database" ng-required="false" ng-disabled="controller.integrationType == 1 && controller.defaultIntegrationId > 0">
+				<label>{{'l-database'| i18n : [] : 'dts/dts-utils' }}</label>
+			</field>
+		</div>	
+	<div class="row">
+		<field class="col-md-11" type="combo" ng-model="controller.modesupported.model.typeId" ng-disabled="controller.integrationType == 1" ng-change="controller.changeModeSupported()" required
+		 ng-options="tipo.typeId as tipo.descMode for tipo in controller.modesupported.types" ng-required="true">
+			<label>{{'l-mode-supported'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>
+	</div>
+	<div class="row">
+		<div class="col-xs-4 col-sm-4 col-xs-4" style="font-family: 'Arial'; margin-top: 7px; font-weight: bold; font-size: 12px; color: gray; padding-left: 15px; padding-right: 0px" required ng-required="true">
+			{{'l-mode-enabled'| i18n : [] : 'dts/dts-utils' }}					
+			<i ng-if="controller.integrationType == 1" class="glyphicon glyphicon-question-sign" tooltip-placement="top" tooltip-html="controller.help"></i>					
+			<span style="color: red">*</span>
+		</div>
+
+		<field class="col-md-11" type="combo" ng-model="controller.modeenabled.model.typeId" ng-disabled="controller.integrationType == 1" required
+			   ng-options="tipo.typeId as tipo.descEnabled for tipo in controller.modeenabled.types" ng-required="true">			   
+		</field>
+	</div>
+	<div class="row">
+		<div class="btn-group" style="margin-top: 15px; margin-bottom: 5px;margin-left: 15px;" class="col-md-11"
+		 ng-show="true">
+			<label class="btn btn-default">
+				<input type="checkbox" ng-change="controller.checkActiveEntity()" ng-model="controller.activeEntity" class="ng-valid ng-dirty ng-valid-parse ng-touched">
+				<span class="ng-binding"> &nbsp; {{'l-active' | i18n: [] : 'dts/dts-utils'}}</span>				
+			</label>
+		</div>		
+	</div>
+
+	<div ng-repeat="extraField in controller.entityExtraFields | orderBy:'sequence'" class="row extra-fields-{{extraField.field}}">		
+		<div ng-if="extraField.fieldType == 1">   
+			<field class="col-md-11" 
+				autocomplete="off"
+			    type="input"
+				id="application-extra-field-{{extraField.field}}"
+				canclean
+				ng-model="extraField.value">
+				<label>{{extraField.label}}</label>
+			</field>
+		</div>
+
+		<div class="col-md-11" ng-if="extraField.fieldType == 2">
+			<mpd-zoom
+				style="margin-top: -2px;"
+				id="application-extra-field-{{extraField.zoomDataBase}}&{{extraField.zoomTable}}&{{extraField.field}}"
+				database="{{extraField.zoomDataBase}}"
+				table="{{extraField.zoomTable}}"
+				fieldcode="{{extraField.field}}"
+				fieldcodelabel="{{extraField.label}}"
+				fielddescription="{{extraField.zoomDescription}}"
+				ng-model="extraField.value"
+				placeholder="{{ ' ' | i18n: []: 'dts/mpd' }}"
+				multiselectable="false"
+				disabled="false"
+				canclean="true"
+				label="{{extraField.label}}"
+			></mpd-zoom> 
+		</div>
+
+		<div ng-if="extraField.fieldType == 3">   
+			<field class="col-md-11" 
+				numbers-only
+				maxlength="30"			
+				canclean 	
+				autocomplete="off"			
+				id="application-extra-field-{{extraField.field}}"
+				ng-model="extraField.value">
+				<label>{{extraField.label}}</label>
+			</field>
+		</div>
+		
+		<div ng-if="extraField.fieldType == 4">   
+			<field class="col-md-11" 
+				autocomplete="off"
+			    type="date"
+				id="application-extra-field-{{extraField.field}}"
+				canclean
+				ng-model="extraField.value">
+				<label>{{extraField.label}}</label>
+			</field>
+		</div>		
+
+		<div ng-if="extraField.fieldType == 5">   
+			<div class="btn-group col-md-11" style="padding-top: 20px;">
+				<label class="btn btn-default">
+					<input type="checkbox" 
+						style="margin: 0px 0 0;" 
+						ng-model="extraField.value">
+					<span class="ng-binding"> &nbsp; {{extraField.label}}</span>
+				</label>
+		   </div>
+		</div>		
+			
+		<button ng-if="controller.defaultIntegrationId < 1" 
+			tabindex="-1"
+			style="margin-top: 30px; margin-left: -4px;" 
+			class="btn btn-danger"
+			ng-click="controller.removeExtraField(extraField, $index)">
+			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+		</button>
+	</div>
+
+	</br>
+
+	<div class="row" ng-show="controller.defaultIntegrationId < 1">	
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">	
+			<button class="btn btn-success" ng-click="controller.addExtraField()">{{'l-add-extra-field'| i18n : [] : 'dts/dts-utils' }}</button>
+		</div>	
+	</div>	
+
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" ng-click="controller.save(controller.integDesc.model.idDefaultIntegration);">{{:: 'l-save' | i18n : [] : 'dts/mpd'}}</button>
+	<!-- <button type="button" class="btn btn-primary" ng-click="controller.saveandnew($event);">{{:: 'Salvar e Novo' | i18n : [] : 'dts/mpd'}}</button> -->
+	<button type="button" class="btn btn-default" ng-click="controller.close();">{{:: 'l-cancel' | i18n : [] : 'dts/mpd'}}</button>
+</div>

@@ -1,0 +1,137 @@
+<totvs-page type="list">
+    <link type="text/css" rel="stylesheet" href="/dts/hgp/html/assets/css/notice.css"/>
+    <totvs-page-navbar>        
+        <totvs-page-breadcrumb id="breadcrumb">
+            <breadcrumb>Manutenção Aviso Cobrança Importados</breadcrumb>
+        </totvs-page-breadcrumb>        
+        <totvs-page-header>
+            <totvs-page-header-title title="Avisos de Cobrança Importados" 
+                                     total="{{controller.listOfNoticeBillingImportCount}}"
+                                     settings="controller.openConfigWindow()">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="1">
+                    <action style="display:none;"></action> <!-- Por nao haver botões de ação, colocado apenas para a linhar a busca na direita -->
+                </totvs-page-header-operation-action>
+                <totvs-page-header-operation-filter placeholder="Guia Prestador"
+                                                    ng-submit="controller.search()"
+                                                    ng-model="controller.searchInputText"
+                                                    advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+            <totvs-page-tags>
+                <tag class="tag-{{$index + 1}}" ng-repeat="item in DOCUMENTOS_AVISOS_STATUS_IMP_ENUM.ENUMERATION_VALUES">{{item.label}}</tag>
+            </totvs-page-tags>
+            <totvs-page-disclaimers
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>            
+        </totvs-page-header>
+    </totvs-page-navbar>    
+    <totvs-page-content>
+        <totvs-page-alert ng-if="controller.listOfNoticeBillingImport.length <= 0"
+                    type="info"
+                    message="Nenhum registro encontrado">
+        </totvs-page-alert>
+        <totvs-list-item id="noticeBillingImport{{$index}}"
+                         class="tag-{{DOCUMENTOS_AVISOS_STATUS_IMP_ENUM.getIndexByKey(noticeBillingImport.indSit) + 1}}"
+                         ng-repeat="noticeBillingImport in controller.listOfNoticeBillingImport | filter:{ codGuiaPrestdor: controller.searchInputText}">
+            <totvs-list-item-header>
+                <totvs-list-item-title>
+                    <span>
+                        <a href="#/dts/hgp/hrc-noticeBillingImport/detail/{{noticeBillingImport.cddSeq}}" 
+                            id="linkNoticeBillingImportTitle"> 
+                            <b>Unidade</b>     {{(StringTools.fill(noticeBillingImport.cdnUnidOrig, "0", 4))}} 
+                            | <b>Data</b>      {{noticeBillingImport.datConhecto | date : 'dd/MM/yyyy'}} 
+                            | <b>Prestador</b> {{noticeBillingImport.codPrestdorExecutMask}} 
+                            | <b>Lote</b>      {{noticeBillingImport.codLotePrestdor}} 
+                            | <b>Guia</b>      {{noticeBillingImport.codGuiaPrestdor}} 
+                    </a>
+                    </span>
+                </totvs-list-item-title>
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/hgp/hrc-noticeBillingImport/edit/{{noticeBillingImport.cddSeq}}"
+                        icon="glyphicon-pencil">Editar</action>
+                    <action ng-click="controller.searchHistSituation(noticeBillingImport.cddSeq)" 
+                        icon="glyphicon-list"          
+                        id=" documentImportSituationNoticesEvents">Histórico</action>
+                        <action ng-click="controller.searchErrorMessages(noticeBillingImport.cddSeq)" 
+                        ng-if="noticeBillingImport.indSit == 13"
+                        icon="glyphicon-list"
+                        id=" documentImportErrorMessages">Mensagens de Erro</action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+            <totvs-list-item-content>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Tipo Guia"
+                                      value="{{noticeBillingImport.tpGuia === 'CONSULTA' ? 'Consulta'
+                                            : (noticeBillingImport.tpGuia === 'SADT' ? 'SP/SADT'
+                                            : (noticeBillingImport.tpGuia === 'INTERNACAO' ? 'Resumo de Internação'
+                                            : (noticeBillingImport.tpGuia === 'HONORARIOS' ? 'Hononario Individual' : '')))}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}" 
+                                      title="Beneficiário" 
+                                      value-break="false">
+                                      
+                    <a ng-if="noticeBillingImport.idPessoa != 0" 
+                        href="#/menu-html/program-html/hvp.personInformation/#/F/{{noticeBillingImport.idPessoa}}">
+                        {{noticeBillingImport.rotuloBenef}}
+                    </a>
+
+                    <a ng-if="noticeBillingImport.idPessoa == 0"
+                        href="#/menu-html/program-html/hvp.personInformation/#/I/{{(StringTools.fill(noticeBillingImport.cdUnidadeCarteira, '0', 4))}}{{(StringTools.fill(noticeBillingImport.cdCarteiraUsuario, '0', 13))}}">
+                        {{noticeBillingImport.rotuloBenef}}
+                    </a>
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}" 
+                                      title="fake" 
+                                      style="visibility: hidden"
+                                      value-break="false">
+                </totvs-list-item-info>
+                
+                <div style="color: darkgray;
+                            border-bottom-style: solid;
+                            border-bottom-width: 1px;
+                            margin-bottom: 7px;
+                            margin-left: 15px;
+                            width: 90%;"> 
+                    <h6 style="margin-bottom: 0px">Documento</h6>
+                </div>
+
+                <totvs-list-item-info
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Unidade Prestadora"
+                    value="{{noticeBillingImport.rotuloUnidPrestdra}}">
+                </totvs-list-item-info>  
+                <totvs-list-item-info
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Transação"
+                    value="{{noticeBillingImport.rotuloTrans}}">
+                </totvs-list-item-info> 
+                <totvs-list-item-info
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Série"
+                    value="{{noticeBillingImport.codSerDoctoOrigin}}">
+                </totvs-list-item-info> 
+                <totvs-list-item-info
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Documento Original"
+                    value="{{noticeBillingImport.numDoctoOrigin}}">
+                </totvs-list-item-info> 
+                <totvs-list-item-info
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="Documento Sistema"
+                    value="{{noticeBillingImport.numDoctoSist}}">
+                </totvs-list-item-info>                
+            </totvs-list-item-content>
+        </totvs-list-item>
+
+        <totvs-list-pagination
+            ng-if="controller.listOfNoticeBillingImport.length < controller.listOfNoticeBillingImportCount && controller.listOfNoticeBillingImport.length"
+            ng-click="controller.search(true);">
+        </totvs-list-pagination>
+
+    </totvs-page-content>
+</totvs-page>
+
+

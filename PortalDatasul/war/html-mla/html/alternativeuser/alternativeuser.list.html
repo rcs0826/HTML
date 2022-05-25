@@ -1,0 +1,65 @@
+<totvs-page type="list" totvs-custom-element="customAlternativeuser_list">    
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>
+                <span class="hidden-xs">{{'l-alternative-users' | i18n}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{ 'l-alternative-users-short' | i18n }}</span>
+            </breadcrumb>            
+        </totvs-page-breadcrumb>
+
+		<totvs-page-header>
+			<totvs-page-header-title title="{{'l-alternative-users' | i18n}}" 
+									 total="{{controller.listOfAlternativeUsersCount}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action>
+					<action link="#/dts/mla/alternativeuser/new" icon="glyphicon-plus">{{ 'btn-add' | i18n }}</action>
+                    <action link="#/dts/mla/approval/" icon="glyphicon-ok-circle" ng-if="controller.isFluig">{{ 'l-documents-approval' | i18n }}</action>
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+			<totvs-page-disclaimers
+					ng-if="controller.disclaimers.length > 0"
+					disclaimer-list="controller.disclaimers"
+					ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+		</totvs-page-header>
+	</totvs-page-navbar>
+		
+	<totvs-page-content>		
+		<totvs-list-item			            
+            ng-if="showAsTable !== 'true'"            
+            ng-repeat="user in controller.listOfAlternativeUsers"
+            id="user{{user['cod-usuar']}}"
+            totvs-custom-element="customAlternativeuser_listUser">
+            <totvs-list-item-header>
+                <totvs-list-item-title
+                    title="{{user['cod-usuar-altern']}}  - {{user['nome-usuar']}} "
+                    link="#/dts/mla/alternativeuser/detail/{{user['cod-usuar-altern']}}"
+                    class="col-xs-7 col-sm-6">
+                </totvs-list-item-title>                
+
+                <totvs-list-item-action limit-primary-action="1" class="col-xs-5 col-sm-6">		  
+                    <action link="#/dts/mla/alternativeuser/edit/{{user['cod-usuar-altern']}}" icon="glyphicon-pencil">{{ 'btn-edit' | i18n }}</action>
+                    <action ng-click="controller.removeRecord(user)" icon="glyphicon-trash">{{ 'btn-remove' | i18n }}</action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+
+            <totvs-list-item-content>
+                <totvs-list-item-info
+                	class="col-sm-6 col-md-4"
+                    title="{{'l-initial-validity' | i18n}}"
+                    value="{{ user['validade-ini'] | date : 'dd/MM/yyyy'}}">
+                </totvs-list-item-info>
+            
+            	<totvs-list-item-info
+            		class="col-sm-6 col-md-4"
+                    title="{{'l-final-validity' | i18n}}"
+                    value="{{ user['validade-fim'] | date : 'dd/MM/yyyy'}}">
+                </totvs-list-item-info>
+            </totvs-list-item-content>
+        </totvs-list-item>		
+	</totvs-page-content>
+</totvs-page>

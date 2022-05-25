@@ -1,0 +1,21 @@
+<% _.forEach(data, function(field, index) { %>
+
+	<% if((field['nom-campo'] !=  "movdis&val-sugest-nat&cdd-id-regra")&&(field['nom-campo'] !=  "mgdis&tip-ped-cia&descricao")){  %>
+
+		<!-- Campo de pesquisa inicial-->
+		<field type="input"
+			ng-model="controller.dataToFilterRules['<%=field['nom-campo']%>&start&<%=field['cod-tipo-format-campo']%>']"
+			canclean>
+			<label><%=field['des-label-campo']%></label>
+		</field>
+
+		<!-- Campo de pesquisa final-->
+		<field type="input"
+			ng-model="controller.dataToFilterRules['<%=field['nom-campo']%>&end&<%=field['cod-tipo-format-campo']%>']"
+			canclean>
+			<label>{{:: 'l-nr-pedcli-end' | i18n: []: 'dts/mpd'}}</label>
+		</field>
+
+	<%  } %>
+
+<% } )%>

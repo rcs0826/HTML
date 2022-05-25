@@ -1,0 +1,69 @@
+<totvs-page-detail>
+    <div class="crm-group-accordion">
+        <accordion close-others="false">
+
+            <accordion-group is-open="controller.summaryOpen"
+                            class="crm-panel">
+                <accordion-heading>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <b>{{ 'l-summary-executions' | i18n: []: 'dts/crm' }} </b>
+                            <i class="pull-right glyphicon"
+                            ng-class="{'glyphicon-chevron-down' :  controller.summaryOpen,
+                                        'glyphicon-chevron-right': !controller.summaryOpen}"></i>
+                        </div>
+                    </div>
+                </accordion-heading>
+
+                <totvs-page-alert
+                    ng-if="!controller.summary || controller.summary.length < 1"
+                    type="info"
+                    message="{{ 'msg-not-found-data' | i18n }}">
+                </totvs-page-alert>
+
+                <div class="col-xs-12 no-gutter" ng-repeat="info in controller.summary track by $index">
+
+                    <totvs-page-detail-info
+                        class="col-xs-12 col-sm-3"
+                        title="{{ 'l-status' | i18n }}">
+                        <span class="label label-warning" ng-if="info.statusCode == 1">
+                            {{ 'l-next-run' | i18n: []: 'dts/crm' }}
+                        </span>
+                        <span class="label label-primary" ng-if="info.statusCode == 2">
+                            {{ 'l-running' | i18n: []: 'dts/crm' }}
+                        </span>
+                        <span class="label label-success" ng-if="info.statusCode == 3">
+                            {{ 'l-last-run' | i18n: []: 'dts/crm' }}
+                        </span>
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-xs-12 col-sm-3"
+                        title="{{ 'l-number' | i18n }}">
+                        {{ info.nrSchedule }}
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-xs-12 col-sm-3"
+                        title="{{ 'l-date' | i18n }}">
+                        {{ (info.statusCode == 1 ? info.dtSchedule : (info.statusCode == 2 ? info.initialDate : info.endDate)) | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+
+                        {{ 'l-as' | i18n: []: 'dts/crm' }}
+
+                        {{ (info.statusCode == 1 ? info.hrSchedule : (info.statusCode == 2 ? info.initialHour : info.endHour )) }}
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-xs-12 col-sm-3"
+                        title="{{ 'l-rpw-server' | i18n }}">
+                        {{ info.serverCode }}
+                    </totvs-page-detail-info>
+
+                </div>
+
+            </accordion-group>
+
+        </accordion>
+    </div>
+</totvs-page-detail>

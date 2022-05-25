@@ -1,0 +1,44 @@
+totvs-modal-header
+    span {{ 'l-general-parmeters' | i18n : [] : 'dts/kbn'}}
+totvs-modal-body
+    totvs-page-form
+        .col-md-6
+            establishment-select-adv(ng-model="settingsController.settings.establishment" pre-init="settingsController.noop" pre-estab-selected="settingsController.noop")
+
+        field(
+            ng-class="{'has-error': settingsController.settings.dateRange.$invalid}",
+            type="daterange",
+            ng-model="settingsController.settings.dateRange",
+            label="{{'l-initial-date' | i18n : [] : 'dts/kbn'}} - {{'l-final-date' | i18n : [] : 'dts/kbn'}}"
+        )
+        .tooltip.bottom.in(
+            ng-if="settingsController.settings.dateRange.$invalid",
+            style="left: 620px;top: 80px;"
+        )
+            .tooltip-inner.btn-danger
+                .help-inline.ng-binding.ng-scope {{'l-cannot-select-future-date' | i18n : [] : 'dts/kbn'}}
+            .tooltip-arrow.arrow-danger
+
+        .col-xs-6
+            field.col-xs-12(
+                type="combo",
+                ng-model="settingsController.settings.itemExpedited",
+                label="{{ 'l-type' | i18n : [] : 'dts/kbn'}}"
+            )
+                totvs-options
+                    totvs-option(value="2") {{ 'l-both' | i18n : [] : 'dts/kbn'}}
+                    totvs-option(value="0") {{ 'l-flow-process' | i18n : [] : 'dts/kbn'}}
+                    totvs-option(value="1") {{ 'l-flow-expedition' | i18n : [] : 'dts/kbn'}}
+        .row
+        &nbsp;
+        .col-md-12
+            accordion.classifiers-panel
+                accordion-group(is-open="settingsController.accordionClassifier")
+                    accordion-heading {{'l-relation-category-classifier' | i18n : [] : 'dts/kbn'}}
+                        i(class="pull-right glyphicon", ng-class="{'glyphicon-chevron-down': settingsController.accordionClassifier, 'glyphicon-chevron-right': !settingsController.accordionClassifier}")
+                    .row
+                        kanban-classifier-select-adv(ng-model="settingsController.settings.classifierSelected")
+totvs-modal-footer
+    button.btn.btn-default(data-ng-click="settingsController.cancel();")
+        {{ 'l-cancel' | i18n : [] : 'dts/kbn' }}
+    button.btn.btn-primary(ng-click="settingsController.apply()") {{ 'l-apply' | i18n : [] : 'dts/kbn'}}

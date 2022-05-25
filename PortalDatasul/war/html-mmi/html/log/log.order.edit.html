@@ -1,0 +1,138 @@
+
+
+<totvs-modal-header >{{'l-holdover' | i18n}}: {{controller.model.programa}}</totvs-modal-header>
+<totvs-modal-body>		
+    <totvs-page-content style="border:0px">
+        <totvs-page-detail>            
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <totvs-field
+                    totvs-input
+                    ng-disabled="controller.model.consulta"
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-model="controller.model.codEqpto"
+                    zoom-id="cd-equipto"
+                    zoom-description="descricao"
+                    zoom-service="mmi.equipto.zoom"
+                    label="{{'l-equipment' | i18n }}"
+                    id="cd-equipto"
+                    canclean="undefined">             
+                </totvs-field>
+                <totvs-field
+                    totvs-input
+                    ng-disabled="controller.model.consulta"
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-model="controller.model.cdManut"
+                    zoom-id="cd-manut"
+                    zoom-description="descricao"
+                    zoom-service="mmi.manut.zoom"
+                    label="{{ 'l-maintenance' | i18n }}"
+                    canclean="undefined">                        
+                </totvs-field> 
+                <totvs-field
+                    totvs-input
+                    ng-disabled="controller.model.consulta"
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-model="controller.model.tpManut"
+                    zoom-id="cd-tipo"
+                    zoom-description="descricao"
+                    zoom-service="mmi.tipo-manut.zoom"
+                    label="{{ 'l-maintenance-type' | i18n }}"
+                    canclean="undefined">
+                </totvs-field>
+                <totvs-field
+                    totvs-input
+                    ng-disabled="controller.model.consulta"
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-model="controller.model.cdEquipe"
+                    zoom-id="cd-equipe"
+                    zoom-description="desc-equipe"
+                    zoom-service="mmi.equipe.zoom"
+                    label="{{ 'l-team' | i18n }}"
+                    canclean="undefined">                      
+                </totvs-field>
+                <totvs-field
+                    totvs-datepicker
+                    ng-disabled="controller.model.consulta"
+                    t-mask-date
+                    label="{{ 'l-expected-maintenance-date' | i18n }}"
+                    culture='pt'
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-model="controller.model.dtManut"
+                    canclean="undefined"
+                    ng-show=true>
+                </totvs-field>		                
+                <field 
+                    type="input"
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    data-ng-model="controller.model.descricao"
+                    maxlength="50"
+                    ng-disabled="controller.model.consulta"
+                    canclean>
+                    <label>{{ 'l-description' | i18n }}</label>
+                </field>                                        
+                <field 
+                    type="textarea"
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"                        
+                    ng-model="controller.model.narrativa"
+                    maxlength="2000"
+                    ng-disabled="controller.model.consulta"
+                    style="padding-bottom: 10px"
+                    rows="4">
+                    <label class="field-label">{{ 'l-narrative' | i18n }}</label>
+                </field>                    
+            </div>
+                        
+            <div class="paddingGrid col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom: 10px">
+                <totvs-grid grid-data="controller.model.ttLogErroLin" 
+                            grid-height="200" 
+                            navigatable="true" 
+                            editable="false" 
+                            auto-resize-content="true"
+                            selectable="row"
+                            scrollable="true"
+                            resizable="true"
+                            ng-if="controller.habilitaGrid"
+                            ng-disabled="controller.model.consulta">
+                    <totvs-grid-column field="num-erro" width="30"style="text-align: right"> {{ 'l-error-code' | i18n }} </totvs-grid-column>                    
+                    <totvs-grid-column field="des-erro" width="100"> {{ 'l-description' | i18n }}</totvs-grid-column>
+                    <totvs-grid-column field="des-help-erro" width="100">{{ 'l-help' | i18n }}</totvs-grid-column>
+                </totvs-grid>
+            </div>
+           
+            <div class="paddingGrid col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <totvs-grid grid-data="controller.model.ttAnexo" 
+                            grid-height="200" 
+                            navigatable="true" 
+                            editable="false" 
+                            auto-resize-content="true"
+                            selectable="row"
+                            scrollable="true"
+                            resizable="true"
+                            ng-if="controller.model.ttAnexo.length > 0">
+                    <totvs-grid-column field="nomeAnexo" width="100"> {{ 'l-attached-document' | i18n }} </totvs-grid-column>                    
+                    <totvs-grid-column field="usuarioAnexo" width="40"> {{ 'l-user' | i18n }}</totvs-grid-column>
+                </totvs-grid>
+            </div>
+
+        </totvs-page-detail>        
+    </totvs-page-content>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="controller.fechar()">{{ 'l-cancel' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="controller.reprocessar()">{{ 'l-reprocess' | i18n }}</button>
+</totvs-modal-footer>
+
+<style>
+    .brokeLine {
+        white-space: pre-line;
+    }
+    .page-details {
+        padding: 0;
+    }
+
+    .paddingGrid {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+</style>

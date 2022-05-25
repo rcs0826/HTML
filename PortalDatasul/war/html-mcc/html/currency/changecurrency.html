@@ -1,0 +1,42 @@
+<totvs-modal-header>
+    {{ 'l-change-currency' | i18n }} 
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <div class="row">
+		<form class="form-horizontal" role="form">
+            <field type="select"
+                   name-id="modalCurrency"
+                   ng-model="controller.moeda">
+                <include>
+                    <ui-select-match placeholder="{{ 'l-currency' | i18n }}">{{$select.selected['mo-codigo']}} - {{$select.selected.descricao}}</ui-select-match>
+                    <ui-select-choices repeat="currency in controller.currencyList | filter: $select.search track by $index"> 
+                        <span ng-bind-html="currency['mo-codigo'] + (currency.descricao ? ' - ' + currency.descricao : '') | highlight: $select.search"></span>                     
+                    </ui-select-choices>                    
+                </include>
+            </field>             
+            
+            <field type="radio" 
+                   class="col-xs col-sm-12 col-md-12"
+                   ng-model="controller.opcaoConversao"                   
+                   ng-change="controller.mudouConversao()" >
+                <label>{{ 'l-convert-to' | i18n }}</label>
+                <totvs-options>
+                    <totvs-option value="1">{{ 'l-vendor-quote-date' | i18n }}</totvs-option>
+                    <totvs-option value="2">{{ 'l-entered-date' | i18n }}</totvs-option>
+                </totvs-options>
+            </field>
+            
+            <field type="date" class="col-xs col-sm-6 col-md-4"
+                   ng-model="controller.dataConversao" 
+                   data-ng-disabled="controller.opcaoConversao != 2">
+                <label>{{ 'l-quote-date' | i18n }}</label>
+            </field>
+        </form> 
+    </div>      
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()">{{ 'l-apply' | i18n }}</button>
+</totvs-modal-footer>

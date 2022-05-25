@@ -1,0 +1,71 @@
+<style ng-if="controllerTaskList.isActiveMultipleSelection">
+	.custom-col-1{
+		padding-top: 30px;
+		width: 50px !important;
+		padding-bottom: 25px;
+	}
+
+	.custom-col-11{
+		width: 95% !important;
+        padding-left: 0px;
+        padding-right: 0px;
+	}
+</style>
+
+<totvs-page-content>
+	<totvs-page-content-header ng-if="controllerTaskList.isChild !== true">
+		<totvs-page-quick-filter filters-list="controllerTaskList.quickFilters"
+					 on-select-filter="controllerTaskList.selectQuickFilter"
+					 orderby-list="controllerTaskList.listOfOrderBy"
+					 on-select-orderby="controllerTaskList.selectOrderBy"
+					 filters-list-custom="controllerTaskList.listOfCustomFilters"
+					 on-remove-custom="controllerTaskList.removeCustomFilter"
+					 on-add-edit-custom="controllerTaskList.addEditCustomFilters">
+		 </totvs-page-quick-filter>
+	</totvs-page-content-header>
+
+	<totvs-page-alert
+		ng-if="controllerTaskList.listOfTask.length <= 0"
+		type="info"
+		message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+
+		<% if ((!data["btn-new-task"] || data["btn-new-task"].log_visivel === true)) { %>
+		<br>
+		<button type="button"
+				class="btn btn-primary"
+				ng-click="controllerTaskList.addEdit();">
+			<span class="glyphicon glyphicon-plus"></span>
+			&nbsp;&nbsp;{{ 'btn-new-task' | i18n: []: 'dts/crm' }}
+		</button>
+		<% } %>
+	</totvs-page-alert>
+
+	<totvs-list-item
+		 id="task{{task.num_id}}"
+		 ng-class="task.nom_cor"
+		 ng-repeat="task in controllerTaskList.listOfTask">
+
+		<div class="row" ng-if="controllerTaskList.isActiveMultipleSelection == true">
+			<div class="col-md-1 custom-col-1" ng-click="controllerTaskList.onClickSelected($index);">
+				<input type="checkbox"
+					   ng-model="task.checked"
+					   ng-if="(task.log_executa === true) && (task.idi_status_tar !== 3) && (task.ttConta.log_acesso === true)">
+			</div>
+			<div class="col-md-11 custom-col-11">
+				<totvs-lodash-template src="/dts/crm/html/task/task.list.item.content.html"
+						   template-data="controllerTaskList.accessRestriction"></totvs-lodash-template>
+			</div>
+		</div>
+
+		<totvs-lodash-template src="/dts/crm/html/task/task.list.item.content.html"
+							   ng-if="controllerTaskList.isActiveMultipleSelection == false"
+							   template-data="controllerTaskList.accessRestriction"/>
+
+	</totvs-list-item>
+
+	<totvs-list-pagination
+		ng-if="controllerTaskList.listOfTask.length < controllerTaskList.listOfTaskCount && controllerTaskList.listOfTask.length"
+		ng-click="controllerTaskList.search(true);">
+	</totvs-list-pagination>
+
+</totvs-page-content>

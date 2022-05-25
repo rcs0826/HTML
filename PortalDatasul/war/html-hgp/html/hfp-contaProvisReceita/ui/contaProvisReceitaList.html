@@ -1,0 +1,140 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb id="breadcrumb">
+            <breadcrumb>Contas de Provisionamento de Receita</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="Contas de Provisionamento de Receita" 
+                                     total="{{controller.listOfContaProvisReceitaCount}}"
+                                     settings="controller.openConfigWindow()">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="2">
+                    <action class="glyphicon-plus"
+                            link="#/dts/hgp/hfp-contaProvisReceita/new">
+                        Incluir Conta de Provisionamento de Receita
+                    </action>
+                    <action class="btn btn-default" 
+                            ng-click="controller.export();" 
+                            style="padding-right: 15px;">
+                        Exportar
+                    </action>
+                </totvs-page-header-operation-action>
+                <totvs-page-header-operation-filter placeholder="Evento"
+                                                    ng-submit="controller.search()"
+                                                    ng-model="controller.searchInputText"
+                                                    advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-alert ng-if="controller.listOfContaProvisReceita.length <= 0"
+                    type="info"
+                    message="Nenhum registro encontrado">
+        </totvs-page-alert>
+        <totvs-list-item ng-repeat="contaProvisReceita in controller.listOfContaProvisReceita">
+            <totvs-list-item-header>
+                <totvs-list-item-title>
+                    <span>
+                        <a href="#/dts/hgp/hfp-contaProvisReceita/detail/{{contaProvisReceita.inEntidade}}/{{contaProvisReceita.inTipoConta}}/{{contaProvisReceita.cdModalidade}}/{{contaProvisReceita.cdPlano}}/{{contaProvisReceita.cdTipoPlano}}/{{contaProvisReceita.cdModulo}}/{{contaProvisReceita.cdFormaPagto}}/{{contaProvisReceita.cdGrupoPrestador}}/{{contaProvisReceita.cdEvento}}/{{contaProvisReceita.inMovto}}/{{contaProvisReceita.inTipoAto}}/{{contaProvisReceita.cdGrupoTipo}}/{{contaProvisReceita.cdProcInsu}}/{{contaProvisReceita.aaValidade}}/{{contaProvisReceita.mmValidade}}" 
+                            id="linkContaProvisReceitaTitle"> 
+                            <b>Modalidade</b>      {{contaProvisReceita.rotuloModalidade}} 
+                            | <b>Plano</b>         {{contaProvisReceita.rotuloPlano}} 
+                            | <b>Tipo de Plano</b> {{contaProvisReceita.rotuloTipoPlano}} 
+                            | <b>Evento</b>        {{contaProvisReceita.rotuloEvento}} 
+                    </a>
+                    </span>
+                </totvs-list-item-title>
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/hgp/hfp-contaProvisReceita/edit/{{contaProvisReceita.inEntidade}}/{{contaProvisReceita.inTipoConta}}/{{contaProvisReceita.cdModalidade}}/{{contaProvisReceita.cdPlano}}/{{contaProvisReceita.cdTipoPlano}}/{{contaProvisReceita.cdModulo}}/{{contaProvisReceita.cdFormaPagto}}/{{contaProvisReceita.cdGrupoPrestador}}/{{contaProvisReceita.cdEvento}}/{{contaProvisReceita.inMovto}}/{{contaProvisReceita.inTipoAto}}/{{contaProvisReceita.cdGrupoTipo}}/{{contaProvisReceita.cdProcInsu}}/{{contaProvisReceita.aaValidade}}/{{contaProvisReceita.mmValidade}}" 
+                        icon="glyphicon-pencil">Editar</action>
+                    <action ng-click="controller.removeContaProvisReceita(contaProvisReceita)" 
+                        icon="glyphicon-trash">Remover</action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+            <totvs-list-item-content>                 
+
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Forma de Pagamento"
+                    value="{{contaProvisReceita.rotuloFormaPagto}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Módulo"
+                    value="{{contaProvisReceita.rotuloModulo}}">
+                </totvs-list-item-info>
+
+                <!-- Procedimentos -->
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Grupo de Procedimentos"
+                    value="{{contaProvisReceita.rotuloGrupoTipo}}"
+                    ng-if="contaProvisReceita.inMovto == 'P'">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Procedimento"
+                    value="{{contaProvisReceita.rotuloProcInsu}}"
+                    ng-if="contaProvisReceita.inMovto == 'P'">
+                </totvs-list-item-info>
+
+                <!-- Insumos -->
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Tipo de Insumo"
+                    value="{{contaProvisReceita.rotuloGrupoTipo}}"
+                    ng-if="contaProvisReceita.inMovto == 'I'">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Insumo"
+                    value="{{contaProvisReceita.rotuloProcInsu}}"
+                    ng-if="contaProvisReceita.inMovto == 'I'">
+                </totvs-list-item-info>
+
+                <!-- Pacote -->
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Pacote"
+                    value="{{contaProvisReceita.cdProcInsu}}"
+                    ng-if="contaProvisReceita.inMovto == 'C' && contaProvisReceita.cdProcInsu != 0">
+                </totvs-list-item-info>          
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Pacote"
+                    value="Todos Pacotes"
+                    ng-if="contaProvisReceita.inMovto == 'C' && contaProvisReceita.cdProcInsu == 0">
+                </totvs-list-item-info>                       
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Tipo de Movimento"
+                    value="Pacote"
+                    ng-if="contaProvisReceita.inMovto == 'C'">
+                </totvs-list-item-info>
+
+                <!-- Ambos -->
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Tipo de Movimento"
+                    value="Todos"
+                    ng-if="contaProvisReceita.inMovto == 'A'">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Validade"
+                    value="{{(StringTools.fill(contaProvisReceita.mmValidade, '0', 2))}}/{{contaProvisReceita.aaValidade}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Conta Contábil"
+                    value="{{contaProvisReceita.rotuloCtCodigo}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                    title="Centro de Custo"
+                    value="{{contaProvisReceita.scCodigo}}">
+                </totvs-list-item-info>
+            </totvs-list-item-content>
+        </totvs-list-item>
+
+        <totvs-list-pagination
+            ng-if="controller.listOfContaProvisReceita.length < controller.listOfContaProvisReceitaCount && controller.listOfContaProvisReceita.length"
+            ng-click="controller.search(true);">
+        </totvs-list-pagination>
+    </totvs-page-content>
+</totvs-page>
+
+

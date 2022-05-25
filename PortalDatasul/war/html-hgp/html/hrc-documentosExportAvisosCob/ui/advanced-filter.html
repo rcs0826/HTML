@@ -1,0 +1,147 @@
+<totvs-modal-header>
+    Busca Avançada
+</totvs-modal-header>
+<totvs-modal-body style="height: 420px; overflow-y: auto;">
+    <fieldset>      
+        <field type="number"
+            canclean
+            min="0"
+            max="9999"
+            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+            data-ng-model="afController.model.numLote"
+            label="Número Lote">
+        </field>
+        <field type="input"
+                label="fake" style="visibility: hidden"
+                class="col-lg-8 col-md-8 col-sm-8 hidden-xs">
+        </field>        
+        <totvs-field totvs-select 
+                ng-model="afController.model.cdUnidade"
+                data-ng-disabled="afController.disabledFieldUnidade"
+                ng-change="afController.changeCdUnidade()"
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                label="Unidade Beneficiario" canclean
+                select-service="hcg.unitZoomController"
+                zoom-service="hcg.unitZoomController"
+                select-id="cdUnimed" 
+                select-description="nmUnimed">
+        </totvs-field>
+
+        <totvs-field totvs-select canclean
+               data-ng-model="afController.model.cdUnidCdCarteiraUsuario"
+               data-ng-disabled="afController.disabledFieldBenef"               
+               ng-change="afController.changeCarteira()"
+               class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+               label="Beneficiário"
+               select-service="hvp.beneficiaryZoomController"
+               zoom-service="hvp.beneficiaryZoomController"
+               select-init ="{filters: afController.benefFixedFilters}"
+               zoom-init = "{filters: afController.benefFixedFilters}"
+               select-id="cdUnidCdCarteiraInteira" 
+               select-description="nmUsuario">
+        </totvs-field>
+
+
+        <totvs-field totvs-datepicker
+                class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                label="Data Inicial Geração"
+                format="dd/MM/yyyy"
+                ng-model="afController.model.datGeracIni"
+                culture="pt"
+                canclean
+                ng-show="true"
+                ng-blur="afController.changeRange('datGeracIni','datGeracFim')">
+        </totvs-field>
+        <totvs-field totvs-datepicker
+                class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                label="Data Final Geração"
+                format="dd/MM/yyyy"
+                ng-model="afController.model.datGeracFim"
+                culture="pt"
+                canclean
+                ng-show="true"
+                ng-blur="afController.changeRange('datGeracIni','datGeracFim')">
+        </totvs-field>
+        <totvs-field totvs-datepicker
+                class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                label="Data Inicial Conhecimento"
+                format="dd/MM/yyyy"
+                ng-model="afController.model.datConhectoIni"
+                culture="pt"
+                canclean
+                ng-show="true"
+                ng-blur="afController.changeRange('datConhectoIni','datConhectoFim')">
+        </totvs-field>
+        <totvs-field totvs-datepicker
+                class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                label="Data Final Conhecimento"
+                format="dd/MM/yyyy"
+                ng-model="afController.model.datConhectoFim"
+                culture="pt"
+                canclean
+                ng-show="true"
+                ng-blur="afController.changeRange('datConhectoIni','datConhectoFim')">
+        </totvs-field>
+        
+        <totvs-field totvs-select 
+                ng-model="afController.model.cdnUnidPrestdra"
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                label="Unidade Prestadora" canclean
+                select-service="hcg.unitZoomController"
+                zoom-service="hcg.unitZoomController"
+                select-id="cdUnimed" 
+                select-description="nmUnimed">
+        </totvs-field>
+        <totvs-field totvs-select
+            id="transactionZoom"
+            ng-model="afController.model.cdTransacao"
+            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+            label="Transação"
+            canclean
+            select-service="hrc.transactionZoomController"
+            zoom-service="hrc.transactionZoomController"
+            select-id="cdTransacao"
+            select-description="dsTransacao">
+        </totvs-field>
+        <field type="input"
+               canclean
+               class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+               data-ng-model="afController.model.nrSerieDocOriginal"
+               maxlength="4"
+               label="Série">
+        </field>
+        <field type="input"
+               canclean
+               maxlength="8"
+               class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+               data-ng-model="afController.model.nrDocOriginal"
+               label="Documento">
+        </field>
+        
+        <field  type="number"
+                class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                data-ng-model="afController.model.nrCPF"
+                label="CPF/CNPJ Prestador">
+        </field>                
+        <field  type="number"
+                class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                data-ng-model="afController.model.nrGuiaPrestador"
+                label="Guia Prestador">
+        </field>
+
+        <field type="combo"
+               class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+               ng-model="afController.model.nrSituacao"
+               ng-options="v.data as v.label for v in DOCUMENTOS_AVISOS_STATUS_EXP_ENUM.VALUES_WITH_ALL_OPTION"
+               label="Status">
+        </field>        
+        
+
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn" ng-click="afController.cleanFields()">Limpar Campos</button>
+    <button class="btn" ng-click="afController.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-click="afController.search()">Buscar</button>
+</totvs-modal-footer>

@@ -1,0 +1,334 @@
+<totvs-modal-header>
+    {{taskEditControl.headerTitle}}
+</totvs-modal-header>
+
+<totvs-modal-body>    
+	<div class="row">
+		<totvs-page-child>        
+	        <totvs-page-content>
+				<totvs-tabset class="col-xs-12">									
+					<totvs-tab heading="{{ 'l-task' | i18n }}">          
+	          			<div class="row">          
+				            <div class="col-sm-12">
+					            <field type="decimal"
+					                   name-id="cd-tarefa"
+					                   class="col-lg-2 col-md-2 col-sm-12 col-xs-12"
+					                   data-ng-model="taskEditControl.task['cd-tarefa']"
+					                   value="10"
+					                   m-dec="0"
+					                   ng-disabled="!taskEditControl.task.isNew"
+					                   required>
+					                <label>{{ 'l-task' | i18n }}</label>
+					            </field>               
+				            </div>
+				            <div class="col-sm-12">
+					            <field type="input"
+					                   name-id="descricao"
+					                   class="col-lg-9 col-md-9 col-sm-12 col-xs-12"
+					                   maxlength="60"
+					                   data-ng-model="taskEditControl.task['descricao']"
+					                   required
+					                   focus>
+					                <label>{{ 'l-description' | i18n }}</label>
+					            </field>
+				            </div>
+				            <div class="col-sm-12">
+					            <totvs-field totvs-checkbox
+					                t-bsswitch
+					                class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+					                ng-disabled="false"
+					                label="{{ 'l-accept' | i18n }}"
+					                ng-model="taskEditControl.task['aceite']"
+					                ng-change="taskEditControl.task['nome-abrev'] = ''">
+					            </totvs-field>
+				            </div>
+				            <div class="col-sm-12">
+				              <totvs-field
+				                  totvs-select
+				                  class="col-lg-9 col-md-9 col-sm-12 col-xs-12"
+				                  ng-model="taskEditControl.task['nome-abrev']"
+				                  select-id="cod-usuario"
+				                  id="cod-usuario"
+				                  select-description="nome-usuar"
+				                  select-service="mce.material-usuar-1.zoom"
+				                  zoom-service="mce.material-usuar-1.zoom"
+				                  ng-disabled="!taskEditControl.task['aceite']"
+				                  min-length="2"
+				                  label="{{ 'l-short-name' | i18n }}"
+				                  canclean>
+				              </totvs-field>              
+				            </div>
+				            <div class="col-sm-12">
+					            <totvs-field totvs-decimal
+					                   name-id="tempo"
+					                   class="col-lg-2 col-md-2 col-sm-12 col-xs-12"
+					                   value="1"
+					                   m-dec="4"
+					                   data-ng-model="taskEditControl.task['tempo']"
+					                   label="{{ 'l-total-time' | i18n }}"
+					                   ng-maxlength="15">
+					                   <validator key="maxlength">{{ 'l-invalid-time' | i18n }}</validator>
+					            </totvs-field>
+				            </div>
+				            <div class="col-sm-12">
+					            <totvs-field totvs-checkbox
+					                t-bsswitch
+					                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+					                ng-disabled="false"
+					                label="{{ 'l-concurrent-exec' | i18n }}"
+					                ng-model="taskEditControl.task['exec-simul']">
+					            </totvs-field>
+				            </div>
+				            <div class="col-sm-12">           
+					            <totvs-field totvs-checkbox
+					                t-bsswitch
+					                class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+					                ng-disabled="false"
+					                label="{{ 'l-mandatory-task' | i18n }}"
+					                ng-model="taskEditControl.task['tar-obrigatoria']">
+					            </totvs-field>
+							</div> 
+						</div>
+					</totvs-tab>
+					<!-- LUBRIFICACAO -->	
+					<totvs-tab ng-if="taskEditControl.task['tp-manut'] === 4"
+							   heading="{{ 'l-lubrification' | i18n }}">          
+	          			<div class="row">
+			            	<div class="col-xs-12 form-box">
+								<totvs-field totvs-radio
+									class="col-xs-12"
+							   		label="{{ 'l-maintenance-task' | i18n }}"
+							   		t-options="taskEditControl.optionsTask"
+							   		ng-model="taskEditControl.task['local-taref']">
+								</totvs-field>
+				            </div>				            
+			            	<div class="col-xs-12 form-box">
+								<totvs-field totvs-radio
+									class="col-xs-12"
+							   		label="{{ 'l-operation' | i18n }}"
+							   		t-options="taskEditControl.optionsOperation"
+							   		ng-model="taskEditControl.task['tipo-oper']">
+								</totvs-field>
+				            </div>
+				            <div class="col-xs-12">
+				            	<totvs-field
+								    totvs-input
+								    class="col-lg-3 col-md-4 col-sm-6 col-xs-12"
+								    label="{{ 'l-lubrication-points' | i18n }}"
+								    ng-model="taskEditControl.task['nr-pontos']"
+								    numbers-only
+								    ng-maxlength="6">
+					                <validator key="maxlength">{{ 'l-invalid-value' | i18n }}</validator>
+								</totvs-field>					            
+				            </div>				            
+	          			</div>
+	    			</totvs-tab>	
+	    			<!-- PREDITIVA -->	
+					<totvs-tab ng-if="taskEditControl.task['tp-manut'] === 2"
+					 		   heading="{{ 'l-predictive' | i18n }}">
+	          			<div class="row">	          				
+	          				<div class="col-xs-12">
+		          				<totvs-field
+									  totvs-select
+					                  class="col-lg-8 col-md-8 col-sm-12 col-xs-12"
+					                  ng-model="taskEditControl.task['cod-tecnica']"
+					                  select-id="cod-tecnica"
+					                  id="cod-tecnica"
+					                  select-description="des-tecnica"
+					                  select-service="mmi.mip-tecnica.zoom"
+					                  zoom-service="mmi.mip-tecnica.zoom"
+					                  label="{{ 'l-technique' | i18n }}"					                  
+							   		  ng-change="taskEditControl.changeTechinique()"
+										 ng-disabled="taskEditControl.task['estado-taref'] > 1 || ( 
+																									taskEditControl.task['nr-ord-apoio'] != ''
+																								&&  taskEditControl.task['nr-ord-apoio'] != undefined
+																								&&  taskEditControl.task['nr-ord-apoio'] != null
+										 															)"
+					                  canclean>
+				            	</totvs-field>
+							</div>
+							<div class="col-xs-12 form-box" style="margin-top:10px">
+								<totvs-field totvs-radio
+									class="col-lg-8 col-md-8 col-sm-12 col-xs-12"
+							   		label="{{ 'l-need-maintenance-support' | i18n }}"
+							   		t-options="taskEditControl.optionsSupp"
+							   		ng-model="taskEditControl.task['idi-acao-apoio']"
+							   		ng-change="taskEditControl.changeAction()"
+							   		ng-disabled="taskEditControl.task['cod-tecnica'] == undefined || taskEditControl.task['cod-tecnica'] == '' || taskEditControl.task['estado-taref'] > 1 || taskEditControl.task['nr-ord-apoio'] != ''">
+								</totvs-field>	
+				            </div>
+				            <div class="col-xs-12">     			
+					            <totvs-field totvs-select
+	                               class="col-lg-8 col-md-8 col-sm-12 col-xs-12"
+	                               ng-model="taskEditControl.task['cd-manut-apoio']"
+	                               select-id="cd-manut"
+	                               select-description="descricao"
+	                               select-service="mmi.manut.zoom"
+	                               zoom-service="mmi.manut.zoom"
+	                               label="{{ 'l-maintenance' | i18n }}"
+	                               ng-disabled="taskEditControl.task['idi-acao-apoio'] == 1 || taskEditControl.task['estado-taref'] > 1 || taskEditControl.task['nr-ord-apoio'] != ''"
+	                               canclean>
+	                  			</totvs-field>
+	                  		</div>
+	                  		<div class="col-xs-12" 
+								 ng-if="taskEditControl.task['idi-acao-apoio'] == 2">     			
+					            <totvs-field
+								    totvs-input
+								    class="col-lg-8 col-md-8 col-sm-12 col-xs-12"
+								    label="{{ 'l-service-request' | i18n }}"
+								    ng-model="taskEditControl.task['nr-ord-apoio']"
+								    ng-disabled="true">					                
+								</totvs-field>
+	                  		</div>	
+	                  		<div class="col-xs-12" 
+								 ng-if="taskEditControl.task['idi-acao-apoio'] == 3">     			
+					            <totvs-field
+								    totvs-input
+								    class="col-lg-8 col-md-8 col-sm-12 col-xs-12"
+								    label="{{ 'l-maintenance-order' | i18n }}"
+								    ng-model="taskEditControl.task['nr-ord-apoio']"
+								    ng-disabled="true">					                
+								</totvs-field>
+	                  		</div>
+	          			</div>
+					  </totvs-tab>
+
+					<!--Aferição-->
+					<totvs-tab ng-if="taskEditControl.task['tp-manut'] === 3"
+					heading="{{ 'l-calib' | i18n }}">          
+						<div class="row">
+							<div class="col-xs-8 form-box">
+							<field type="input"
+									name-id="var-afer"
+									class="col-lg-7 col-md-9 col-sm-12 col-xs-12"
+									maxlength="30"
+									data-ng-model="taskEditControl.task['var-afer']"
+									focus
+									canclean>
+								 <label>{{ 'l-variable-checked' | i18n }}</label>
+							 </field>
+							</div>	
+							<div class="col-sm-12">
+								<totvs-field totvs-checkbox
+								    t-bsswitch
+									class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+									ng-disabled="false"
+									label="{{'l-enter-standard' | i18n }}"
+									ng-model="taskEditControl.task['inf-padrao']">
+								</totvs-field>
+							</div>
+							<div class="col-xs-12 form-box">
+								<totvs-field totvs-radio
+									class="col-xs-12"
+										label="{{ 'l-variable-type' | i18n }}"
+										t-options="taskEditControl.optionsVariable"
+										ng-model="taskEditControl.task['tp-variavel']">
+								</totvs-field>
+							</div>
+							<div class="col-sm-12">
+								<totvs-field totvs-decimal
+										name-id="vl-padrao"
+										class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+										value="1"
+										m-dec="4"
+										data-ng-model="taskEditControl.task['vl-padrao']"
+										label="{{ 'l-default' | i18n }}"
+										ng-maxlength="16">
+										<validator key="maxlength">{{ 'l-invalid-value' | i18n }}</validator>
+								</totvs-field>
+							</div>
+							<div class="col-sm-12">
+								<totvs-field totvs-decimal
+										name-id="var-menor"
+										class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+										value="1"
+										m-dec="4"
+										data-ng-model="taskEditControl.task['var-menor']"
+										label="{{ 'l-variation-lower' | i18n }}"
+										ng-maxlength="16">
+										<validator key="maxlength">{{ 'l-invalid-value' | i18n }}</validator>
+								</totvs-field>
+							</div>
+							<div class="col-sm-12">
+								<totvs-field totvs-decimal
+										name-id="var-maior"
+										class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+										value="1"
+										m-dec="4"
+										data-ng-model="taskEditControl.task['var-maior']"
+										label="{{ 'l-variation-greater' | i18n }}"
+										ng-maxlength="16">
+										<validator key="maxlength">{{ 'l-invalid-value' | i18n }}</validator>
+								</totvs-field>
+							</div>
+							<div class="col-sm-12">
+								<totvs-field
+										totvs-input
+										name-id="un-medida"
+								    	class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+								    	label="{{ 'l-measure-unit' | i18n }}"
+								    	ng-model="taskEditControl.task['un-medida']"
+										ng-maxlength="12">
+					                <validator key="maxlength">{{ 'l-invalid-value' | i18n }}</validator>
+								</totvs-field>				
+						 	</div>
+						</div>
+					 </totvs-tab>
+					<totvs-tab heading="{{ 'l-documentation' | i18n }}">
+						<div class="row">				            
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+									   type="textarea"
+									   ng-model="taskEditControl.task['narrativa']"
+									   maxlength="2000"
+									   rows="5">
+									   <label class="field-label">{{ 'l-narrative' | i18n }}</label>
+							   </field>
+							</div>
+				            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<field type="input"
+										ng-change="taskEditControl.leaveDocAnexo()"
+										class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+										data-ng-model="taskEditControl.task['cod-docto-anexo']"
+										canclean>
+										<label>{{ 'l-attached-document' | i18n }}</label>
+								</field>
+							</div>
+							<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								<totvs-field totvs-upload
+												label="{{ 'l-upload' | i18n }}"
+												ng-model="taskEditControl.task.files"
+												name="file"
+												name-id="file"
+												t-show-file-list="false"
+												t-remove="{{ 'l-remove' | i18n }}"
+												t-select="{{ 'l-select-file' | i18n }}"
+												t-drop-files-here="{{ 'l-drop-files' | i18n }}"
+												t-status-uploaded="{{ 'l-status-uploaded' | i18n }}"
+												t-status-uploading="{{ 'l-status-uploading' | i18n }}"
+												t-upload-selected-files="{{ 'l-upload-selected-files' | i18n }}"
+												t-retry="{{ 'l-retry' | i18n }}"
+												t-auto-upload="true"
+												t-multiple="false"
+												t-on-select="taskEditControl.onSelect"
+												t-save-url="taskEditControl.saveUrl"
+												t-on-success="taskEditControl.onSuccess"
+												t-on-error="taskEditControl.onError"
+												t-manual-upload="true"
+												class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+								</totvs-field>
+							</div>
+						</div>
+				    </totvs-tab>		          	
+				</totvs-tabset>
+			</totvs-page-content>
+		</totvs-page-child>
+	</div>			
+</totvs-modal-body>
+
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="taskEditControl.cancel()">{{ 'l-cancel' | i18n }}</button>
+    <button ng-if="taskEditControl.task.isNew" type="button" class="btn btn-default" data-ng-click="taskEditControl.save(true);">{{ 'l-save-new' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="taskEditControl.save(false)">{{ 'l-save' | i18n }}</button>       
+</totvs-modal-footer>

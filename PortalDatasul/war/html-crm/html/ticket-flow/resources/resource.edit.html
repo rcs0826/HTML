@@ -1,0 +1,76 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.ttRecurso.nom_usuar : ('btn-new-resource' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="select"
+			   class="col-xs-12 col-sm-12"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-model="controller.model.ttRecurso"
+			   ng-disabled="controller.editMode">
+
+			<label>{{ 'l-resource' | i18n: []: 'dts/crm' }}</label>
+            <zoom zoom-service="crm.crm_recur.zoom"></zoom>
+            
+            <include>
+                <ui-select-match placeholder="{{ 'l-resource' | i18n: []: 'dts/crm' }}">
+                    {{ $select.selected.nom_usuar }} ({{ $select.selected.cod_usuario }})
+                </ui-select-match>
+                <ui-select-choices repeat="item in controller.resourceList track by $index"
+                                   refresh="controller.getResources($select.search)"
+                                   refresh-delay="500">
+                    <span ng-bind-html="item.nom_usuar + ' (' + item.cod_usuario + ')' | highlight: $select.search"></span>
+                </ui-select-choices>
+            </include>            
+            
+		</field>   
+
+		<field type="select"
+			   class="col-xs-12 col-sm-12"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-model="controller.model.ttNivelRecurso">
+
+			<label>{{ 'l-resource-level' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-resource-level' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_niv_recur }}
+				</ui-select-match>
+				<ui-select-choices repeat="item in controller.resourceLevelList | filter: $select.search track by $index">
+					<span ng-bind-html="item.nom_niv_recur | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<totvs-field class="col-xs-12 col-sm-12"
+					 totvs-checkbox
+					 ng-model="controller.model.log_padr"
+					 label="{{ 'l-default' | i18n: []: 'dts/crm' }}"
+					 ng-disabled="false"
+					 t-bsswitch>
+		</totvs-field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default"
+			ng-click="controller.cancel()">
+		{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-default"
+			ng-click="controller.save(true)"
+			ng-if="!controller.editMode">
+		{{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-primary"
+			ng-click="controller.save()">
+		{{ 'btn-save' | i18n: []: 'dts/crm' }}
+	</button>
+</totvs-modal-footer>

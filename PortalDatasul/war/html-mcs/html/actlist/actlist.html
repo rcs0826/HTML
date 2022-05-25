@@ -1,0 +1,73 @@
+<totvs-page type="list">
+    
+    <totvs-page-navbar>
+        
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{ 'l-act-list' | i18n }}</breadcrumb>
+        </totvs-page-breadcrumb>
+        
+        <totvs-page-header>
+
+            <totvs-page-header-title class="col-md-6 col-sm-6 col-xs-12"
+                                     title="{{ 'l-act-list' | i18n }}"
+                                     total="{{controller.totalRecords}}">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action>
+                       
+                   <action icon="glyphicon-list-alt"
+                            link="#/dts/mce/ce0814/{{controller.selectItCodigo}}/{{controller.selectedSiteCode}}"
+                            tooltip="{{ 'l-item-movement' | i18n }}"
+                            ng-disabled="!controller.enabledButtons">{{ 'l-to-detail' | i18n }}</action>
+                    <action icon="glyphicon-export"
+                            ng-click="controller.exportCSV()"
+                            ng-disabled="!controller.enabledButtons">{{ 'l-base-calculation' | i18n }}</action>
+                    <action icon="glyphicon-export"
+                            ng-click="controller.acts.length == 0 || controller.exportListCsv()"
+                            ng-disabled="controller.acts.length == 0">{{ 'l-gerar-csv' | i18n }}</action>
+                </totvs-page-header-operation-action>
+                                
+                <totvs-page-header-operation-filter>
+                    <totvs-field
+                        class="col-md-10 col-sm-10 col-xs-10"
+                        totvs-combo
+                        canclean
+                        t-options="controller.actTypes"
+                        ng-model="controller.actTypeSelected"
+                        ng-change="controller.onActTypeChange()">
+                    </totvs-field>
+
+                    <span>
+                        <a ng-click="controller.openAdvancedSearch()" 
+                        class="ng-binding col-md-2 col-sm-2 col-xs-2"
+                        style="font-size: 12px; padding-left: 0px; margin-top: 5px; cursor:pointer"> 
+                            {{ 'l-advanced-search' | i18n}}
+                        </a>
+                    </span>
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+
+
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers" 
+                                    ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+            
+        </totvs-page-header>
+        
+    </totvs-page-navbar>
+    
+    
+    <totvs-page-content>
+        <totvs-grid grid-data="controller.acts"
+                    resizable="true"
+                    grid-options="controller.gridOptions"
+                    sortable="{ allowUnsort: true, mode: 'single'}"
+                    grid="controller.myGrid"
+                    on-change="controller.onChange(event)">
+        </totvs-grid>
+        
+    </totvs-page-content>
+    
+</totvs-page>

@@ -1,0 +1,83 @@
+<totvs-modal-header>
+    Complemento Dados da Internação
+</totvs-modal-header>
+
+<totvs-modal-body style="height: 340px; overflow-y:auto" id="modalMedicalNurseAuditor">
+    <totvs-page-detail>
+
+        <totvs-page-form>    
+            <field type="checkbox"
+                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                data-ng-model="controller.lgSobrescrMedicAuditor"
+                label="{{controller.document != undefined ? 
+                        'Sobrescrever Médico Auditor caso esse campo já esteja preenchido' : 
+                        'Sobrescrever Médico Auditor em documentos em que esse campo já esta preenchido'}}">
+            </field>
+
+            <field type="checkbox"
+                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                data-ng-model="controller.lgSobrescrEnfAuditor"
+                label="{{controller.document != undefined ? 
+                        'Sobrescrever Enfermeiro Auditor caso esse campo já esteja preenchido' : 
+                        'Sobrescrever Enfermeiro Auditor em documentos em que esse campo já esta preenchido'}}">
+            </field>
+
+            <field type="input"
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                label="Nome do Médico Auditor"
+                data-ng-model="controller.nmMedicoAuditor"
+                ng-keyup="controller.onAuditorDoctorChange()">
+            </field>
+
+            <field type="input"
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                label="CRM do Médico Auditor"
+                data-ng-model="controller.cdCrmMedicoAuditor"
+                ng-required="controller.nmMedicoAuditor.length > 0"
+                ng-disabled="!(controller.nmMedicoAuditor.length > 0)">
+            </field>
+
+            <field type="combo"
+                class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                label="UF"
+                ng-options="o.enUf as o.enUf for o in controller.ufs"
+                data-ng-model="controller.cdUfMedicoAuditor"
+                ng-required="controller.nmMedicoAuditor.length > 0"
+                ng-disabled="!(controller.nmMedicoAuditor.length > 0)">
+            </field>
+            
+            <field type="input"
+                   label="fake" style="visibility: hidden"
+                   class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
+            </field>
+
+            <field type="input"
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                label="Nome do Enfermeiro Auditor"
+                data-ng-model="controller.nmEnfermAuditor"
+                ng-keyup="controller.onAuditorNurseChange()">
+            </field>
+
+            <field type="input"
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                label="COREN do Enferm. Auditor"
+                data-ng-model="controller.cdCorenEnfermAuditor"
+                ng-required="controller.nmEnfermAuditor.length > 0"
+                ng-disabled="!(controller.nmEnfermAuditor.length > 0)">
+            </field>
+
+            <field type="combo"
+                class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                label="UF"
+                ng-options="o.enUf as o.enUf for o in controller.ufs"
+                data-ng-model="controller.cdUfEnfermAuditor"
+                ng-required="controller.nmEnfermAuditor.length > 0"
+                ng-disabled="!(controller.nmEnfermAuditor.length > 0)">
+            </field>
+        </totvs-page-form>
+    </totvs-page-detail>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button class="btn" ng-click="controller.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-click="controller.informAuditors()">Salvar</button>
+</totvs-modal-footer>

@@ -1,0 +1,40 @@
+<%		
+	_.forEach(data.fields, function(salesOrdersVisibleFields) {
+
+		if (salesOrdersVisibleFields.fieldName == "nr-sequencia") {
+		%>                   
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-seq' | i18n}}">{{item['nr-sequencia']}}</totvs-list-item-info>
+			<%
+		}
+
+		if (salesOrdersVisibleFields.fieldName == "qt-un-fat") {	
+			%>                    
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-quantity' | i18n}}">{{item['qt-un-fat']| number:4}}  {{item.codUn}}</totvs-list-item-info>                    
+			<%
+		}
+
+		if (salesOrdersVisibleFields.fieldName == "vl-tot-it") {
+			%>                    
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-item-value' | i18n}}">{{item['vl-tot-it'] | currency:''}}</totvs-list-item-info>                    
+			<%
+		}
+
+		if (salesOrdersVisibleFields.fieldName == "it-codigo") {			
+			%>                    			
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-cod-item' | i18n}}">{{item['it-codigo']}} - {{item.itemDesc}}</totvs-list-item-info>                    
+			<%
+		}
+
+		if (salesOrdersVisibleFields.fieldName == "cod-refer") {			
+			%>                    					
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-cod-refer' | i18n}}">{{item['cod-refer']}} - {{item['desc-cod-refer']}}</totvs-list-item-info>                    
+			<%
+		}
+
+		if (salesOrdersVisibleFields.fieldName == "estab-atend-item") {				
+			%>                    
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-estabel-atend' | i18n}}">{{item['estab-atend-item']}} - {{item['desc-estab-atend-item']}}</totvs-list-item-info>
+			<%
+		}								
+	});     
+%>

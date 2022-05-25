@@ -1,0 +1,48 @@
+
+<!-- SE A SITUAÇÃO DA FICHA ESTIVER COMO NAO ATUALIZA(2) OU OK P/ INVENTARIO(4), 
+     MOSTRA O COMPONENTE TOTVS EDITABLE PARA DIGITAÇÃO DO CONFERENTE  --> 
+
+<!-- INICIO TOVS EDITABLE -->
+<totvs-list-item-info title= "{{ 'l-checker' | i18n }} 2"   
+                      class="col-md-4 col-sm-6 col-xs-12"  
+                      ng-if="list.habilitaConf2">
+    <totvs-editable value=" {{list.codConfteContag2}} - {{list.nomeConfteContag2}}" 
+                    on-complete="controller.applyConfCont(editable.newValue, list, '2');" >
+        <field type="select"			            	   
+               class="col-md-12"			            	   
+               ng-model="constroller.ConfteContag2ZoomField"
+               canclean>
+            <zoom zoom-service="mce.material-usuar-2.zoom"></zoom>
+            <label>{{ 'l-checker' | i18n: []: 'dts/mce' }} 2</label>
+            <include>
+                <ui-select-match placeholder="">{{$select.selected['cod-usuario']}} - {{$select.selected['nome-usuar']}}</ui-select-match>
+                <ui-select-choices repeat="list in controller.serviceZoomUsuarMateriais2.usuarMaterialList | filter: $select.search track by $index"
+                                    refresh="controller.serviceZoomUsuarMateriais2.getUsuarMaterial($select.search)"
+                                    refresh-delay="1000">
+                    <span ng-bind-html="list['cod-usuario'] + (list['nome-usuar'] ? ' - ' + list['nome-usuar'] : '') | highlight: $select.search"></span>
+                </ui-select-choices>
+            </include>
+        </field>                        
+
+    </totvs-editable>
+</totvs-list-item-info>
+
+<!-- FIM TOVS EDITABLE -->
+
+<!-- SE A SITUAÇÃO DA FICHA ESTIVER COMO ATUALIZADO(1) OU INVENTARIO Ok(3), NAO 
+     PERMITE EDICAO DOS CONFERENTES, ESCONDENDO O COMPONENTE TOTVS EDITABLE  E APENAS MOSTRANDO
+     A INFORMAÇÃO --> 
+<totvs-list-item-info title= "{{ 'l-checker' | i18n }} 2"   
+                      class="col-md-4 col-sm-6 col-xs-12" 
+                      ng-if="!list.habilitaConf2"
+                      value=" {{list.codConfteContag2}} - {{list.nomeConfteContag2}}" >
+
+</totvs-list-item-info>        
+
+ 
+
+
+
+
+
+

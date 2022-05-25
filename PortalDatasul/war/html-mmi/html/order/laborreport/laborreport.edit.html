@@ -1,0 +1,218 @@
+<totvs-modal-header>
+    {{laborController.taskReport['cd-tarefa']}} - {{laborController.taskReport['descricao']}}
+</totvs-modal-header>
+
+<totvs-modal-body style="padding-top:0px">
+            
+    <totvs-page-content style="border:0px">
+        <totvs-page-detail>         
+
+            <div class="row">
+
+                <field  type="select"
+                    data-ng-model="laborController.userTechnician"
+                    ng-change="laborController.buscaDados();"
+                    ng-blur="laborController.calculaPeriodo"
+                    label="{{ 'l-technician' | i18n }}"
+                    class="field-label col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-select-technician' | i18n }}">{{laborController.userTechnician.cdTecnico}} {{laborController.hifen}} {{laborController.userTechnician.nomeCompl}}</ui-select-match>
+                        <ui-select-choices repeat="tech in laborController.listOfTechnician track by $index"
+                                           refresh="laborController.filterTechnician($select.search)"
+                                           refresh-delay="500">
+                            <span data-ng-bind-html="tech.cdTecnico | highlight: $select.search"></span> - <span data-ng-bind-html="tech.nomeCompl | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+            </div>
+
+            <div class="row">
+
+                <field  type="input"
+                        data-ng-model="laborController.specialty"
+                        ng-change="laborController.validaCalculoPercent();"
+                        ng-blur="laborController.calculaPeriodo();"
+                        zoom-selected="laborController.calculaPeriodo();"
+                        label="{{ 'l-specialty' | i18n }}"
+                        class="field-label col-lg-9 col-md-9 col-sm-12 col-xs-12"
+                        zoom
+                        zoom-service="mmi.mi-espec.zoom"
+                        zoom-id="tp-especial"
+                        zoom-description="descricao"
+                        canclean>
+                </field>
+            </div>
+
+            <div class="row">
+                <field  type="input"
+                        data-ng-model="laborController.shift"
+                        label="{{ 'l-shift' | i18n }}"
+                        class="field-label col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                        zoom
+                        zoom-service="mmi.mi-turno.zoom"
+                        zoom-id="cd-turno"
+                        zoom-description="descricao"
+						numbers-only
+						canclean>
+                </field>
+            </div>
+
+            <div class="row">
+
+                <totvs-field totvs-checkbox
+                    t-bsswitch 
+                    ng-disabled="false"
+                    class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                    label="{{ 'l-points-during-break' | i18n }}"
+                    ng-model="laborController.lApontaIntervalo">
+                </totvs-field>
+
+                <totvs-field totvs-checkbox
+                    t-bsswitch
+                    ng-disabled="false"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    label="{{ 'l-end-task' | i18n }}"
+                    ng-model="laborController.lEncerraTask">
+                </totvs-field>
+                
+                <totvs-field totvs-checkbox
+                    t-bsswitch
+                    ng-disabled="false"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    label="{{ 'l-period' | i18n }}"
+                    ng-model="laborController.lApontaPeriodo">
+                </totvs-field>
+                                
+            </div>
+
+            <div class="row">
+                
+                <totvs-field
+                    totvs-datepicker
+                    ng-if="!laborController.lApontaPeriodo"
+                    ng-model='laborController.startDate'
+                    label="{{ 'l-date' | i18n }}"
+                    canclean
+                    t-mask-date
+                    class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                </totvs-field>    
+                                	            	
+	            <totvs-field
+	            	  totvs-date-range	            	  
+	            	  ng-if="laborController.lApontaPeriodo"
+					  ng-model="laborController.periodo"
+                      label="{{ 'l-date' | i18n }}"
+                      t-mask-date
+                      class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                      canclean>
+                </totvs-field>  	                   
+
+                <field  type="input"
+                        data-ng-model="laborController.hraInicial"
+                        ng-change="laborController.timeMask(laborController.hraInicial, 1);"
+                        ng-hide="laborController.isHraInicial"
+                        ng-blur="laborController.calculaPeriodo()"                        
+                        label="{{ 'l-initial-hour' | i18n }}"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12" 
+                        maxlength="5">
+                </field>
+
+                <field  type="input"
+                        data-ng-model="laborController.hraFinal"
+                        ng-change="laborController.timeMask(laborController.hraFinal, 2);"
+                        ng-hide="laborController.isHraFinal"
+                        ng-blur="laborController.calculaPeriodo()"                        
+                        label="{{ 'l-final-hour' | i18n }}"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                        maxlength="5">
+                </field>
+
+                <field type="input"
+                       name-id="normalHours"
+                       class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                       ng-model="laborController.normalHours"
+                       ng-hide="laborController.isHraNormal"
+                       ng-blur="laborController.calculaPeriodo()"
+                       ng-change="laborController.changeHraNormal()"
+                       placeholder="000,0000"
+                       ng-disabled="laborController.isDisabled"
+                       maxlength="8">   
+                    <label>{{ 'l-normal-hour' | i18n }}</label>
+                </field>
+
+                <field type="input"
+                       name-id="extraHours"
+                       class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                       ng-model="laborController.extraHours"
+                       ng-change="laborController.changeHraExtra()"
+                       ng-blur="laborController.calculaPeriodo()"
+                       ng-hide="laborController.isHraExtra"
+                       ng-disabled="laborController.isDisabled"
+                       placeholder="000,0000"
+                       maxlength="8">   
+                    <label>{{ 'l-overtime' | i18n }}</label>
+                </field>            
+	            
+	            <field type="input"
+                       name-id="hraTot"
+                       ng-disabled="true"
+                       class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                       ng-model="laborController.hraTot"
+                       ng-hide="laborController.isHraTot"
+                       placeholder="00,0000"
+                       ng-change="laborController.calculaPeriodo()"
+                       maxlength="7">   
+                    <label>{{ 'l-total-hours' | i18n }}</label>
+                </field>
+
+            </div>
+
+            <div class="row">
+                <field  type="input"
+                        maxlength="6"
+                        ng-change="laborController.percentMask(laborController.percentConclu);"
+                        ng-blur="laborController.setPercent();"
+                        data-ng-model="laborController.percentConclu"
+                        label="{{ 'l-percentage-completion' | i18n }}"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                </field>
+            </div>
+        
+            <div class="row" ng-if="laborController.taskReport.narrativa">
+                <div style="padding-left: 15px;padding-top: 10px;">
+                     <label class="formata-label">{{ 'l-narrative' | i18n }}</label>
+                </div>
+                <totvs-page-detail-info class="brokeLine col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                        value="{{laborController.taskReport.narrativa | enterLineTextArea}}">
+                </totvs-page-detail-info>
+            </div>
+            
+            <div class="row">
+                <field  type="textarea"
+                        data-ng-model="laborController.narrativa"
+                        label="{{ 'l-observation' | i18n }}"
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                </field>
+            </div>
+                        
+        </totvs-page-detail>
+    </totvs-page-content>
+
+    
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button type="button" class="btn btn-default" data-ng-click="laborController.close();">{{ 'l-cancel' | i18n }}</button>
+    <button type="button" class="btn btn-default" data-ng-click="laborController.save(true);">{{ 'l-save-new' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="laborController.save(false);">{{ 'l-save' | i18n }}</button>        
+</totvs-modal-footer>
+
+<style>
+.formata-label {
+    font-family: 'Arial';
+    margin-bottom: 5px;
+    font-weight: 200;
+    font-size: 12px;
+    color: #999;
+}
+</style>

@@ -1,0 +1,429 @@
+<totvs-page type="edit">
+
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">Home</breadcrumb>
+            <breadcrumb link="#/dts/mpd/paramportal">{{'l-sales-param-portal'| i18n}}</breadcrumb>
+            <breadcrumb>{{'l-edit-sales-param-portal'| i18n}}</breadcrumb>
+	    </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-sales-param-portal' | i18n}}"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new="true"></totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+
+    <totvs-page-content>     
+        <totvs-page-form>
+            <totvs-page-detail-info-group>{{'l-modulos-em-manutencao'| i18n}}</totvs-page-detail-info-group>
+            
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field type="checkbox" ng-model="controller.dataparam.portalmodulomanutencaomla">
+                    <label>{{'l-portal-mla-em-manutencao'| i18n}}</label>
+                </field>   
+            </div>  
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field type="checkbox" ng-model="controller.dataparam.portalmodulomanutencaopedido">
+                    <label>{{'l-portal-pedidos-em-manutencao'| i18n}}</label>
+                </field>   
+            </div>  
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field type="checkbox" ng-model="controller.dataparam.portalmodulomanutencaocrm">
+                    <label>{{'l-portal-crm-em-manutencao'| i18n}}</label>
+                </field>
+            </div>
+
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field  class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                        type="select2"
+                        canclean
+                        ng-model="controller.dataparam.portalmodulomanutencaogrupo"
+                        select-conector="{{'l-grupo-usuario-excecao'| i18n}}"	
+                        select-id="cod_grp_usuar"
+                        select-description="des_grp_usuar"
+                        select-init="{gotomethod:'gotokeygrp'}"
+                        select-service="mpd.grp-usuar.zoom">
+                    <zoom zoom-service="mpd.grp-usuar.zoom"></zoom>
+                    <label>{{'l-grupo-usuarios-excecao'| i18n}}</label>
+                </field>
+            </div>
+
+            <totvs-page-detail-info-group>{{ 'l-order-quotation'| i18n }}</totvs-page-detail-info-group>
+            
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field type="checkbox" 
+                       ng-disabled="!controller.dataparam.habilitaportalgeneralquotation"
+                       ng-model="controller.dataparam.portalgeneralquotation" 
+                       ng-change="controller.isChangePropQuotation = !controller.isChangePropQuotation">
+                    <label>{{ 'l-enable-general-quotation'| i18n }}</label>
+                </field>
+            </div>
+
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field type="checkbox" ng-model="controller.dataparam.portallogintgrportal">
+                    <label>{{'l-integra-portal'| i18n}}</label>
+                </field>
+            </div>
+
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field type="checkbox" 
+                       ng-model="controller.dataparam.portalAplicaDescontoAoIncluirItem">
+                    <label>{{ 'l-order-apply-item-dicount-on-add'| i18n }}</label>
+                </field>
+            </div>
+			
+			<div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field type="checkbox" 
+                       ng-model="controller.dataparam.portalCanalVendasRepres"
+					   ng-change="controller.isChangePropSalesChannel = !controller.isChangePropSalesChannel">
+                    <label>{{ 'l-canal-vendas-repres'| i18n }}</label>
+                </field>
+            </div>
+
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field type="checkbox" 
+                       ng-model="controller.dataparam.portalgerenciadoraprovacaopedvenda">
+                    <label>{{ 'l-wfapp-gerenciador-aprovacao'| i18n }}</label>
+                </field>
+            </div>
+
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field  class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                        type="select2"
+                        canclean
+                        ng-model="controller.dataparam.portalcodigomotivocancelamento"
+                        select-conector="{{'l-motivo-cancelamento-portal'| i18n}}"	
+                        select-id="cod-motivo"
+                        select-description="descricao"
+                        select-service="mpd.motivoCancelamento.Zoom"
+                        ng-required="true">
+                    <zoom zoom-service="mpd.motivoCancelamento.Zoom"></zoom>
+                    <label>{{'l-motivo-cancelamento-portal'| i18n}}</label>
+                    <validator key="zoom">{{'l-zoom-motivo-cancelamento-validacao' | i18n}} {{$fieldLabel}}</validator>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                </field>
+            </div> 
+
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field type="decimal"
+                       ng-model="controller.dataparam.portalvalminpedido"
+                       canclean
+                       data-m-dec="2"
+                       data-v-max="9999999999.99"
+                       required
+                       ng-required="true">
+                    <label>{{'l-valor-minimo-pedido-portal'| i18n}}</label>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                </field>
+            </div>
+
+			<totvs-page-detail-info-group>{{'l-search-item'| i18n }}</totvs-page-detail-info-group>
+
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12" 
+                       type="number"
+                       canclean
+                       min="10"
+                       max="200" 
+                       required
+                       ng-model="controller.dataparam.portalqtderesultpesquisa"
+                       ng-required="true">
+                    <label>{{'l-search-result-number'| i18n}}</label>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                    <validator key="min">{{ 'l-min' | i18n }}</validator>
+                    <validator key="max">{{ 'l-max' | i18n }}</validator>
+                    <validator key="number">{{ 'l-number' | i18n }}</validator>
+                </field>
+            </div>
+            
+            <totvs-page-detail-info-group>{{'l-workflow-app'| i18n}}</totvs-page-detail-info-group>
+
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <form class="form-horizontal col-lg-12">
+                    <button class="btn btn-primary ng-binding ng-scope" ng-click="controller.reloadWFAPP();">{{'l-reload-workflow' | i18n}}</button>
+                </form>
+            </div>
+            
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field type="select"
+                    canclean
+                    ng-required="true"
+                    ng-model="controller.dataparam.wfapaidatividadepedidoaceito">
+                    <label>{{ 'l-wfapp-aceito' | i18n }}</label>
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-wfapp-aceito' | i18n }}">{{ $select.selected.nome_atividade }}</ui-select-match>
+                        <ui-select-choices repeat="flow in controller.combowfapp | filter: $select.search track by $index">
+                                       <span ng-bind-html="flow.nome_atividade | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </include>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                </field>
+            </div>
+            
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field type="select"
+                    canclean
+                    ng-required="true"
+                    ng-model="controller.dataparam.wfapaidatividadepedidorejeitado">
+                    <label>{{ 'l-wfapp-rejeitado' | i18n }}</label>
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-wfapp-rejeitado' | i18n }}">{{ $select.selected.nome_atividade }}</ui-select-match>
+                        <ui-select-choices repeat="flow in controller.combowfapp | filter: $select.search track by $index">
+                                       <span ng-bind-html="flow.nome_atividade | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </include>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                </field>
+            </div>
+            
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field type="select"
+                    canclean
+                    ng-required="true"
+                    ng-model="controller.dataparam.wfapaidatividadeaprovacao">
+                    <label>{{ 'l-wfapp-aprovacao' | i18n }}</label>
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-wfapp-aprovacao' | i18n }}">{{ $select.selected.nome_atividade }}</ui-select-match>
+                        <ui-select-choices repeat="flow in controller.combowfapp | filter: $select.search track by $index">
+                                       <span ng-bind-html="flow.nome_atividade | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </include>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                </field>
+            </div>
+            
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                       type="input" 
+                       ng-model="controller.dataparam.portalusuarioaprovacaoecm"
+                       canclean
+                       required
+                       ng-required="true">
+                    <label>{{'l-wfapp-responsavel-aprovacao'| i18n}}</label>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                </field>
+            </div>
+
+            <totvs-page-detail-info-group>{{'l-workflow-cpp'| i18n}}</totvs-page-detail-info-group>
+
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <form class="form-horizontal col-lg-12">
+                    <button class="btn btn-primary ng-binding ng-scope" ng-click="controller.reloadWFCPP();">{{'l-reload-workflow' | i18n}}</button>
+                </form>
+            </div>
+            
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field type="select"
+                    canclean
+                    ng-model="controller.dataparam.wfcppidatividadecancelar">
+                    <label>{{ 'l-wfcpp-cancelar' | i18n }}</label>
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-wfcpp-cancelar' | i18n }}">{{ $select.selected.nome_atividade }}</ui-select-match>
+                        <ui-select-choices repeat="flow in controller.combowfcpp | filter: $select.search track by $index">
+                            <span ng-bind-html="flow.nome_atividade | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+            </div>
+            
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field type="select"
+                    canclean
+                    ng-model="controller.dataparam.wfcppidatividaderejeitar">
+                    <label>{{ 'l-wfcpp-reprovar-cancelamento' | i18n }}</label>
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-wfcpp-reprovar-cancelamento' | i18n }}">{{ $select.selected.nome_atividade }}</ui-select-match>
+                        <ui-select-choices repeat="flow in controller.combowfcpp | filter: $select.search track by $index">
+                            <span ng-bind-html="flow.nome_atividade | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+           </div>
+            
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                       type="input" 
+                       canclean
+                       ng-model="controller.dataparam.wfcppportalusuarioaprovacaoecm">
+                    <label>{{'l-wfcpp-responsavel-aprovacao'| i18n}}</label>
+                </field>
+            </div>
+
+            <totvs-page-detail-info-group>{{'l-arquivos'| i18n }}</totvs-page-detail-info-group>
+            
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12" 
+                       type="input"
+                       canclean 
+                       required
+                       ng-model="controller.dataparam.portalpastaarquivosdanfenfe"
+                       ng-required="true"
+                       placeholder="{{'l-exemplo' | i18n}}: //{{'l-server-name' | i18n}}/{{'l-folder-name' | i18n}}/">
+                    <label>{{'l-diretorio-arquivos-danfe'| i18n}}</label>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                </field>
+            </div>
+
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12" 
+                       type="input"
+                       canclean 
+                       required
+                       ng-model="controller.dataparam.portalpastaarquivosxmlnfe"
+                       ng-required="true"
+                       placeholder="{{'l-exemplo' | i18n}}: //{{'l-server-name' | i18n}}/{{'l-folder-name' | i18n}}/">
+                    <label>{{'l-diretorio-arquivos-xml-nfe'| i18n}}</label>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                </field>
+            </div>
+            
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12" 
+                       type="input"
+                       canclean 
+                       required
+                       ng-model="controller.dataparam.servidorpastaarquivosdanfenfe"
+                       ng-required="true"
+                       placeholder="{{'l-exemplo' | i18n}}: //{{'l-server-name' | i18n}}/{{'l-folder-name' | i18n}}/">
+                    <label>{{'l-diretorio-arquivos-danfe-servidor-portal'| i18n}}</label>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                </field>
+            </div>
+            
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12" 
+                       type="input"
+                       canclean 
+                       required
+                       ng-model="controller.dataparam.servidorpastaarquivosxmlnfe"
+                       ng-required="true"
+                       placeholder="{{'l-exemplo' | i18n}}: //{{'l-server-name' | i18n}}/{{'l-folder-name' | i18n}}/">
+                    <label>{{'l-diretorio-arquivos-xml-servidor-portal'| i18n}}</label>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                </field>
+            </div>
+            
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12" 
+                       type="input"
+                       canclean 
+                       required
+                       ng-model="controller.dataparam.servidorpastaarquivosimagemitem"
+                       placeholder="{{'l-exemplo' | i18n}}: //{{'l-server-name' | i18n}}/{{'l-folder-name' | i18n}}/">
+                    <label>{{'l-diretorio-arquivos-imagens-servidor-portal'| i18n}}</label>
+                </field>
+            </div>
+            
+            <totvs-page-detail-info-group>{{'l-usuario'| i18n }}</totvs-page-detail-info-group>
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12" 
+                       type="number"
+                       canclean
+                       min="0"
+                       max="365" 
+                       required
+                       ng-model="controller.dataparam.portalvalidadesenha"
+                       ng-required="true">
+                    <label>{{'l-periodo-validade-senha'| i18n}}</label>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                    <validator key="min">{{ 'l-min' | i18n }}</validator>
+                    <validator key="max">{{ 'l-max' | i18n }}</validator>
+                    <validator key="number">{{ 'l-number' | i18n }}</validator>
+                </field>
+            </div> 
+            
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12" 
+                       type="number"
+                       canclean
+                       min="0"
+                       max="10" 
+                       required
+                       ng-model="controller.dataparam.portaltentativaslogon"
+                       ng-required="true">
+                    <label>{{'l-tentativas-logon-incorreto'| i18n}}</label>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                    <validator key="min">{{ 'l-min' | i18n }}</validator>
+                    <validator key="max">{{ 'l-max' | i18n }}</validator>
+                    <validator key="number">{{ 'l-number' | i18n }}</validator>
+                </field>
+            </div>
+
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field  class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                        type="select2"
+                        canclean
+                        ng-model="controller.dataparam.portalusuariomodelo"
+                        select-conector="{{'l-usuario-modelo'| i18n}}"	
+                        select-id="cod_usuario"
+                        select-description="nom_usuario"
+                        select-service="mpd.usuario.Zoom"
+                        ng-required="true">
+                    <zoom zoom-service="mpd.usuario.Zoom"></zoom>
+                    <label>{{'l-usuario-modelo'| i18n}}</label>
+                    <validator key="zoom">{{'l-zoom-usuario-validacao' | i18n}} {{$fieldLabel}}</validator>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                </field>
+            </div>
+
+            <totvs-page-detail-info-group>{{'l-app'| i18n }}</totvs-page-detail-info-group>
+
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field type="checkbox" ng-model="controller.dataparam.portalapp">
+                    <label>{{'l-usa-app'| i18n}}</label>
+                </field>
+            </div>
+
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12" 
+                       type="input"
+                       canclean 
+                       required
+                       ng-model="controller.dataparam.portalappservinternet"
+                       ng-required="true"
+                       placeholder="{{'l-exemplo' | i18n}}: https://{{'l-server-name' | i18n}}/">
+                    <label>{{'l-serv-internet'| i18n}}</label>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                </field>
+            </div>
+
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12" 
+                       type="input"
+                       canclean 
+                       required
+                       ng-model="controller.dataparam.portalappimgempresa"
+                       ng-required="true"
+                       placeholder="{{'l-exemplo' | i18n}}: http://{{'l-your' | i18n}}_site.com/{{'l-your' | i18n}}_logo.png">
+                    <label>{{'l-img-empresa'| i18n}}</label>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                </field>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-info fade in alert-dismissable" style="margin-top: 15px">
+                    <a href="/#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                    <p>{{'l-msg-image' | i18n}}</p>
+                </div>
+            </div>
+
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12" 
+                       type="number"
+                       canclean
+                       min="0"
+                       max="9999" 
+                       required
+                       ng-model="controller.dataparam.validadeorcamento"
+                       ng-required="true">
+                    <label>{{'l-validade-orcamentos'| i18n}}</label>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                    <validator key="min">{{ 'l-min' | i18n }}</validator>
+                    <validator key="max">{{ 'l-max' | i18n }}</validator>
+                    <validator key="number">{{ 'l-number' | i18n }}</validator>
+                </field>
+            </div> 
+
+        </totvs-page-form>       
+    </totvs-page-content>
+</totvs-page>

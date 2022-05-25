@@ -1,0 +1,188 @@
+<style type="text/css" scoped="true">
+	.bold{
+		font-weight: bold;
+	}
+
+	.request-1:before{
+        background-color: #6ace39;
+        content: "1";
+        color:#fff;
+    }
+    .page-content .list-item.request-1 {
+        border-left: 5px solid #6ace39;
+    }
+    .list-item.request-1:before{
+		content: "";
+	}
+
+    .request-2:before{
+        background-color: #5B8548;
+        content: "2";
+        color:#fff;
+    }
+    .page-content .list-item.request-2 {
+        border-left: 5px solid #5B8548;
+    }
+    .list-item.request-2:before{
+		content: "";
+	}
+
+    .request-3:before{
+        background-color: #F06060;
+        content: "3";
+        color:#fff;
+    }
+    .page-content .list-item.request-3 {
+        border-left: 5px solid #F06060;
+    }
+    .list-item.request-3:before{
+		content: "";
+	}
+
+	.docNotFound{
+    	background: #fff;
+	    border-bottom-left-radius: 4px;
+	    border-bottom-right-radius: 4px;
+	    padding: 10px 0px;
+	    border: 1px solid #D9D9D9;
+    	border-top: 0px;
+    }
+
+	.subtitulo{
+		padding-left: 15px;
+		margin: 15px 0px 5px 0px;
+		font-size: 16px;
+		font-weight: bold;
+		float: left;
+		color: #337ab7;
+		width: 100%;
+	}
+</style>
+<totvs-page type="list" totvs-custom-element="customHistoricList">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mla/historic/">
+                <span class="hidden-xs">{{ 'l-approval-history' | i18n }}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{ 'l-approval-history-short' | i18n }}</span>
+            </breadcrumb>
+            <breadcrumb>
+                <span class="hidden-xs">{{controller.documentName}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{ 'l-document-micro' | i18n }} {{controller.documentId}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+		<totvs-page-header>
+			<totvs-page-header-title title="{{controller.documentName}}"
+									 total="{{controller.documentRequestsCount}}"
+									 id="titulo">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="2"
+						items="controller.documentRequests"
+	                    items-as="request">
+                    <action icon="glyphicon-calendar" ng-click="controller.openAdvancedSearch()" tooltip="{{ controller.isTouchDevice ? null : 'l-period' | i18n }}" ng-if="!controller.notFound">{{ 'l-period' | i18n }}</action>
+                    <action link="#/dts/mla/approval/list/{{controller.documentId}}" icon="glyphicon-ok-circle" ng-if="controller.isFluig">{{ 'l-documents-approval' | i18n }}</action>
+                    <action link="#/dts/mla/historic/" icon="glyphicon-menu-left" tooltip="{{ controller.isTouchDevice ? null : 'l-back' | i18n }}">{{ 'l-back' | i18n }}</action>
+                </totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter placeholder="{{ 'l-search' | i18n }}"
+                                                    ng-submit="controller.search()"
+													clean-search="controller.cleanSearch()"
+													ng-model="controller.quickSearchText"
+                                                    advanced-search="controller.openAdvancedSearchComplete">
+				</totvs-page-header-operation-filter>
+			</totvs-page-header-operation>
+
+			<totvs-page-tags>
+				<tag class="request-1">{{ 'l-aprov' | i18n }}</tag>
+				<tag class="request-2">{{ 'l-reaprov' | i18n }}</tag>
+				<tag class="request-3">{{ 'l-reprov' | i18n }}</tag>
+			</totvs-page-tags>
+
+			<totvs-page-disclaimers
+					disclaimer-list="controller.disclaimers"
+					ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-content-header>
+            <totvs-page-quick-filter
+                filters-list="controller.filters"
+                orderby-list="controller.orderbyList"
+                orderby-selected="controller.selectedOrderby"
+                on-select-filter="controller.selectFilter"
+                on-select-orderby="controller.selectOrderBy">
+            </totvs-page-quick-filter>
+        </totvs-page-content-header>
+
+		<totvs-list-item
+            id="request{{request['nr-trans']}}"
+            ng-class="{'request-1': request['situacao-doc'] == '2', 'request-2': request['situacao-doc'] == '4', 'request-3': request['situacao-doc'] == '3'}"
+            ng-repeat="request in controller.documentRequests"
+            totvs-custom-element="customList{{controller.customDocumentId}}">
+
+            <totvs-list-item-header>
+            	<!-- Template do titulo -->
+            	<div ng-include="controller.documentTitleTemplate" class="titleTemplate"></div>
+
+            	<totvs-list-item-action limit-primary-action="1" class="col-xs-5 col-sm-6">
+                    <action ng-click="controller.reapprove(request['nr-trans'])"
+                    		icon="glyphicon-ok-circle"
+                    		class="btn-success"
+                    		ng-show="request['situacao-doc'] == '3'"
+                    		tooltip="{{ controller.isTouchDevice ? null : 'l-reapprove' | i18n }}">{{ 'l-reapprove' | i18n }}</action>
+                    <action link="#/dts/mla/historic/detail/{{controller.documentId}}/{{request['nr-trans']}}"
+                    		icon="glyphicon-list-alt"
+                    		class="btn-default"
+                    		tooltip="{{ controller.isTouchDevice ? null : 'l-to-detail' | i18n }}">{{ 'l-to-detail' | i18n }}</action>
+                </totvs-list-item-action>
+				<div class="ng-scope">
+					<totvs-list-item-info class="col-xs col-sm-4 col-md-4"
+						title="{{ 'l-company' | i18n}}"
+						ng-show="{{controller.showCompany()}}"
+						value="{{request['mla-ep-codigo']}} - {{request['mla-desc-ep-codigo']}}"
+						value-break="false">
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs col-sm-4 col-md-4 "
+						title="{{ 'l-site-short' | i18n}}"
+						value="{{request['mla-cod-estabel']}} - {{request['mla-desc-cod-estabel']}}"
+						value-break="false">
+					</totvs-list-item-info>
+				</div>
+				<div class="row"></div>
+            	<!-- Template da listagem -->
+            	<div ng-include="controller.documentListTemplate" class="template"></div>
+            </totvs-list-item-header>
+			<div ng-controller="mla.historic.DetailCtrl as controller" ng-if="$root.userMLAInformation.showDetailInList">
+				<totvs-list-item-content-detail open="controller.detail(request['nr-trans'])" style="cursor: auto;">
+					<totvs-list-item-info class="col-xs-12 col-sm-12 col-md-12">
+						<totvs-page-content>
+							<totvs-page-detail>
+								<div ng-include="controller.documentDetailTemplate"  class="template" ></div>
+							</totvs-page-detail>
+						</totvs-page-content>
+					</totvs-list-item-info>
+				</totvs-list-item-content-detail>
+			</div>
+        </totvs-list-item>
+
+        <totvs-page-alert ng-if="controller.documentRequestsCount <= 0"
+                          type="info"
+                          message="{{ 'l-no-pending-document' | i18n }}">
+        </totvs-page-alert>
+
+        <totvs-list-pagination
+            ng-if="controller.originalList.length > 0 && (!controller.searched)"
+            ng-click="controller.loadMore();">
+        </totvs-list-pagination>
+
+        <totvs-page-alert ng-if="controller.notFound"
+                          type="info"
+                          message="{{ 'l-doc-not-found' | i18n }}">
+        </totvs-page-alert>
+	</totvs-page-content>
+</totvs-page>

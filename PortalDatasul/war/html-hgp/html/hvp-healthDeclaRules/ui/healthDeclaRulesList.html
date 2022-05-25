@@ -1,0 +1,112 @@
+<!--<healthcare-workarea>-->
+<totvs-page type="list">
+
+        <link type="text/css" rel="stylesheet" href="/dts/hgp/html/assets/css/hvp.css"/>
+        <totvs-page-navbar id="navBar" >
+                
+            <totvs-page-breadcrumb id="breadcrumb">
+                    <breadcrumb>&#193rea de Trabalho</breadcrumb>
+                    
+                    <!--  tem o segundo breadcumb para que eles fiquem centralizados verticalmente -->
+                    <breadcrumb></breadcrumb>
+            </totvs-page-breadcrumb>
+
+            <totvs-page-header>
+
+                <totvs-page-header-title title="Regras Declarações de Saúde" 
+                                         total="{{controller.qtdRegistrosBusca}}"
+                                         settings="controller.openConfigWindow()">
+                </totvs-page-header-title>
+
+                <totvs-page-header-operation>
+
+                    <totvs-page-header-operation-action limit-primary-action="1" 
+                                                        items="controller.tmpRegraDeclaSaude"
+                                                        items-as="healthDeclaRules">
+                        <action link="#/dts/hgp/hvp-healthDeclaRules/new">
+                            Incluir Regra
+                        </action>
+                        <action ng-click="controller.importFile()">
+                            Importar Arquivo
+                        </action>
+
+                    </totvs-page-header-operation-action>
+
+                    <totvs-page-header-operation-filter placeholder="Pesquisar Contratante ou Grupo"
+                                                        ng-submit="controller.search(false,true)"
+                                                        ng-model="controller.searchInputText"
+                                                        advanced-search="controller.openAdvancedSearch">
+                    </totvs-page-header-operation-filter>
+
+                </totvs-page-header-operation>
+
+                <totvs-page-tags>
+                    <tag class="tag-{{$index + 1}}" ng-repeat="item in HEALTH_DECLA_RULES_STATUS_ENUM.ENUMERATION_VALUES">{{item.label}}</tag>
+                </totvs-page-tags>
+
+                <totvs-page-disclaimers
+                    disclaimer-list="controller.disclaimers"
+                    ng-click="controller.removeDisclaimer">
+                </totvs-page-disclaimers>
+
+            </totvs-page-header>
+
+        </totvs-page-navbar>
+
+        <totvs-page-content id="pageContent">
+            
+            <totvs-page-alert ng-if="controller.hasDoneSearch == true && controller.tmpRegraDeclaSaude.length <= 0"
+                        type="info"
+                        message="Nenhum registro encontrado">
+            </totvs-page-alert>
+
+            <totvs-list-item
+                id="healthDeclaSaude{{healthDeclaSaude.id}}"
+				ng-repeat="healthDeclaSaude in controller.tmpRegraDeclaSaude"
+                class="tag-{{HEALTH_DECLA_RULES_STATUS_ENUM.getIndexByKey(healthDeclaSaude.inTipMovto) + 1}}"
+                >
+
+                <totvs-list-item-header>
+ 
+                <!--document.completeDocumentNumber-->
+                    <totvs-list-item-title
+                        title="Regra Declaração de Saúde: {{healthDeclaSaude.id}}"
+                        link="#/dts/hgp/hvp-healthDeclaRules/detail/{{healthDeclaSaude.id}}">
+                    </totvs-list-item-title>
+
+                    <totvs-list-item-action limit-primary-action="1">
+                        <action link="#/dts/hgp/hvp-healthDeclaRules/edit/{{healthDeclaSaude.id}}" icon="glyphicon-pencil">Editar</action>
+                        <action ng-click="controller.removeDeclaSaude(healthDeclaSaude)" icon="glyphicon-trash">Remover</action>
+                    </totvs-list-item-action>
+                </totvs-list-item-header>
+
+
+                    <totvs-list-item-content>
+                        
+                        <totvs-list-item-info title="Código do contratante"
+                                              value="{{ healthDeclaSaude.cdContratante }}"></totvs-list-item-info>
+                        
+                        <totvs-list-item-info title="Quantidade de beneficiários"
+                                              value="{{ healthDeclaSaude.qtdBenef }}"></totvs-list-item-info>
+
+                        
+                        <totvs-list-item-info title="Grupo do contratante"
+                                              value="{{ healthDeclaSaude.cdGrupoContratante }}"></totvs-list-item-info>
+
+
+                        <totvs-list-item-info title="Tipo do Anexo"
+                                              value="{{ healthDeclaSaude.inTipAnexo }}"></totvs-list-item-info>
+                        
+                    </totvs-list-item-content>
+                <!-- espacamento no final -->
+                <p></p>
+            </totvs-list-item>
+
+            <totvs-list-pagination
+                ng-if="controller.tmpRegraDeclaSaude.length < controller.totalOfhealthDeclaCount && controller.tmpRegraDeclaSaude.length"
+                ng-click="controller.search(true,false);">
+            </totvs-list-pagination>
+
+        </totvs-page-content>
+    </totvs-page>
+<!--</healthcare-DeclaRules>-->

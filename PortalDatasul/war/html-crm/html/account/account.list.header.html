@@ -1,0 +1,65 @@
+<totvs-page-header-operation>
+
+	<totvs-page-header-operation-action limit-primary-action="2">
+		<% if ((!data["btn-new-lead"] || data["btn-new-lead"].log_visivel === true)) { %>
+		<action icon="glyphicon-plus"
+				ng-click="controller.addEdit(undefined, false);">
+			{{ 'btn-new-lead' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+
+		<% if ((!data["btn-new-account"] || data["btn-new-account"].log_visivel === true)) { %>
+		<action icon="glyphicon-plus"
+				ng-click="controller.addEdit(undefined, true);">
+			{{ 'btn-new-account' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+
+		<% if ((!data["btn-report"] || data["btn-report"].log_visivel === true)) { %>
+		<action icon="glyphicon-list-alt" ng-if="!controller.isPortal"
+				ng-click="controller.showReports();">
+			{{ 'btn-report' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+
+		<% if ((!data["btn-export"] || data["btn-export"].log_visivel === true)) { %>
+		<action icon="glyphicon-print"
+				ng-click="controller.exportSearch();">
+			{{ 'btn-export' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+
+		<% if ((!data["btn-new-target"] || data["btn-new-target"].log_visivel === true)) { %>
+		<action icon="glyphicon-screenshot"
+				ng-click="controller.newTarget();">
+			{{ 'btn-new-target' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+
+	</totvs-page-header-operation-action>
+
+    <% if ((!data["l-quick-search"] || data["l-quick-search"].log_visivel === true)) { %>
+        <crm-quick-search
+            ng-model="controller.quickSearch"
+            placeholder="{{ 'l-search-account' | i18n: []: 'dts/crm' }}"
+            ng-submit="controller.search"
+            attributes="controller.searchablesProperties"
+            hide-info="false"
+            info-message="controller.infoSearchTooltip"
+            <% if ((!data["btn-advanced-search"] || data["btn-advanced-search"].log_visivel === true)) { %>
+            advanced-search="controller.openAdvancedSearch"
+            <% } %>
+            hide-search="false"
+        ></crm-quick-search>
+    <% } %>
+    
+
+</totvs-page-header-operation>
+
+<totvs-page-disclaimers
+	ng-if="controller.disclaimers.length > 0"
+	disclaimer-list="controller.disclaimers"
+	ng-click="controller.removeDisclaimer">
+</totvs-page-disclaimers>
+
+<div ng-include="'/dts/crm/html/account/account.legend.html'"></div>

@@ -1,0 +1,55 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<link rel="stylesheet" href="/dts/kbn/css/font-awesome.css"/>
+<totvs-page type="list">
+  <totvs-page-navbar>
+    <totvs-page-breadcrumb>
+      <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+      <breadcrumb>{{ 'l-mapping' | i18n }}</breadcrumb>
+    </totvs-page-breadcrumb>
+    <totvs-page-header>
+      <totvs-page-header-title title="{{ 'l-mapping-list' | i18n }}" total="{{controller.totalRecords}}"> </totvs-page-header-title>
+      <totvs-page-header-operation>
+        <totvs-page-header-operation-action limit-primary-action="2">
+          <action icon="glyphicon-plus" ng-click="controller.openModalRelatedActions('new', map);">{{ 'l-new-mapping' | i18n }}</action>
+        </totvs-page-header-operation-action>
+        <div class="col-md-5 col-sm-5"></div>
+        <totvs-page-header-operation-filter placeholder="{{ 'l-description' | i18n}}" ng-submit="controller.quickSearch()" ng-model="controller.quickSearchText" advanced-search="controller.openAdvancedSearch"></totvs-page-header-operation-filter>
+      </totvs-page-header-operation>
+      <totvs-page-tags>
+        <tag class="vermelho">{{ 'l-not-published' | i18n}}</tag>
+        <tag class="verde">{{ 'l-published' | i18n}}</tag>
+        <tag class="azul">{{ 'l-unpublished' | i18n}}</tag>
+      </totvs-page-tags>
+      <totvs-page-disclaimers disclaimer-list="controller.filtersApplied" ng-click="controller.removeFilter"></totvs-page-disclaimers>
+    </totvs-page-header>
+  </totvs-page-navbar>
+  <totvs-page-content>
+    <totvs-page-content-header>
+      <totvs-page-quick-filter filters-list="controller.preSavedFilters" on-select-filter="controller.selectQuickFilter"></totvs-page-quick-filter>
+    </totvs-page-content-header>
+    <totvs-page-alert ng-if="controller.listMap.length === 0" type="info" message="{{ 'msg-not-found' | i18n }}"></totvs-page-alert>
+    <totvs-list-item data-ng-repeat="map in controller.listMap" class="{{controller.colorTagStatus(map.idi_status)}}">
+      <totvs-list-item-header>
+        <totvs-list-item-title title="{{map.des_mapeamento}}" link="#/dts/kbn/mapping/{{map.num_id_mapeamento}}"></totvs-list-item-title>
+        <totvs-list-item-action limit-primary-action="3">
+          <action icon="glyphicon-cog" ng-if="[1,2].indexOf(map.idi_status) != -1" data-ng-click="controller.openPublishModal(map)" class="btn-success">{{ 'l-publish' | i18n }}</action>
+          <action icon="glyphicon-th-list" link="#/dts/kbn/mapping/{{map.num_id_mapeamento}}">{{ 'l-list-flows' | i18n }}</action>
+          <action icon="glyphicon-th" ng-if="map.hasItem" link="#/dts/kbn/mapping/cell/{{map.num_id_mapeamento}}">{{ 'l-list-cells' | i18n }}</action>
+          <action ng-if="map.idi_status == 1" data-ng-click="controller.openModalRelatedActions('edit', map)">{{ 'l-edit' | i18n }}</action>
+          <action data-ng-click="controller.openModalRelatedActions('clone', map)">{{ 'l-clone' | i18n }}</action>
+          <action ng-if="[1,2].indexOf(map.idi_status) != -1" data-ng-click="controller.validPendencies(map)">{{ 'l-valid-pendencies' | i18n }}</action>
+          <action ng-if="!map.publicationDate &amp;&amp; map.idi_status == 1 || map.idi_status == 2" data-ng-click="controller.remove(map)">{{ 'l-to-exclude' | i18n }}</action>
+        </totvs-list-item-action>
+      </totvs-list-item-header>
+      <totvs-list-item-content>
+        <totvs-list-item-info title="{{'l-cutoff-date' | i18n}}" value="{{map.dat_corte | kbnDateFormat}}" class="col-md-3"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-site' | i18n}}" value="{{map.cod_estab_erp}}" class="col-md-3"></totvs-list-item-info>
+        <totvs-list-item-info ng-show="map.dat_publicacao" title="{{'l-publication-date' | i18n}}" value="{{map.dat_publicacao | kbnDateFormat}}" class="col-md-3"></totvs-list-item-info>
+      </totvs-list-item-content>
+    </totvs-list-item>
+    <div align="center" class="container">
+      <pagination total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages" items-per-page="controller.pageSize" previous-text="{{'l-previous' | i18n}}" next-text="{{'l-next' | i18n}}" class="pagination-sm"></pagination>
+    </div>
+  </totvs-page-content>
+</totvs-page>

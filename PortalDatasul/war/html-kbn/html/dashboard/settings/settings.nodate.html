@@ -1,0 +1,30 @@
+
+<totvs-modal-header><span>{{ 'l-general-parmeters' | i18n : [] : 'dts/kbn'}}</span></totvs-modal-header>
+<totvs-modal-body>
+  <totvs-page-form>
+    <div class="col-md-6">
+      <establishment-select-adv ng-model="settingsController.settings.establishment" pre-init="settingsController.noop" pre-estab-selected="settingsController.noop"></establishment-select-adv>
+    </div>
+    <field type="combo" ng-model="settingsController.settings.itemExpedited" label="{{ 'l-type' | i18n : [] : 'dts/kbn'}}">
+      <totvs-options>
+        <totvs-option value="2">{{ 'l-both' | i18n : [] : 'dts/kbn'}}</totvs-option>
+        <totvs-option value="0">{{ 'l-flow-process' | i18n : [] : 'dts/kbn'}}</totvs-option>
+        <totvs-option value="1">{{ 'l-flow-expedition' | i18n : [] : 'dts/kbn'}}</totvs-option>
+      </totvs-options>
+    </field>&nbsp;
+    <div class="col-md-12">
+      <accordion class="classifiers-panel">
+        <accordion-group is-open="settingsController.accordionClassifier">
+          <accordion-heading>{{'l-relation-category-classifier' | i18n : [] : 'dts/kbn'}}<i ng-class="{'glyphicon-chevron-down': settingsController.accordionClassifier, 'glyphicon-chevron-right': !settingsController.accordionClassifier}" class="pull-right glyphicon"></i></accordion-heading>
+          <div class="row">
+            <kanban-classifier-select-adv ng-model="settingsController.settings.classifierSelected"></kanban-classifier-select-adv>
+          </div>
+        </accordion-group>
+      </accordion>
+    </div>
+  </totvs-page-form>
+</totvs-modal-body>
+<totvs-modal-footer>
+  <button data-ng-click="settingsController.cancel();" class="btn btn-default">{{ 'l-cancel' | i18n : [] : 'dts/kbn' }}</button>
+  <button ng-click="settingsController.apply()" class="btn btn-primary">{{ 'l-apply' | i18n : [] : 'dts/kbn'}}</button>
+</totvs-modal-footer>

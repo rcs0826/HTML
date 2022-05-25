@@ -1,0 +1,24 @@
+
+<totvs-modal-header>{{ controller.getLabelByAction(controller.myParams.action) | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+  <totvs-page-form id="formulaForm" role="form">
+    <div class="col-md-12">
+      <field type="input" ng-model="controller.myParams.model.des_formula" maxlength="50" placeholder="{{ 'l-description' | i18n }}" required="required" label="{{ 'l-description' | i18n}}" class="col-md-12"></field>
+    </div>
+    <div class="col-md-12">
+      <field type="textarea" ng-model="controller.myParams.model.observacao" maxlength="2000" placeholder="{{ 'l-observation' | i18n }}" required="required" label="{{ 'l-observation' | i18n}}" class="col-md-12"></field>
+    </div>
+    <div class="col-md-12">
+      <field type="input" ng-model="controller.diretorioFormula" maxlength="100" label="{{ 'l-directory-formulas' | i18n}}" ng-disabled="true" class="col-md-10"></field>
+      <button ng-click="controller.editarDiretorio();" style="margin-top:29px;" ng-if="!controller.diretorioFormula" class="btn btn-primary">{{ 'l-edit' | i18n }}           </button>
+    </div>
+    <div class="col-md-12">
+      <field type="input" ng-model="controller.programa" maxlength="200" placeholder="{{ 'l-program' | i18n }}" required="required" label="{{ 'l-program' | i18n}}" ng-disabled="true" class="col-md-10">       </field>
+      <button type="file" ng-if="controller.diretorioFormula" ngf-change="controller.selectFile($files)" tooltip="{{'l-select-file' | i18n}}" style="margin-top: 29px;" accept=".r" ngf-select="ngf-select" ngf-multiple="false" ngf-allow-dir="false" class="btn btn-default glyphicon glyphicon-folder-open"></button>
+    </div>
+  </totvs-page-form>
+</totvs-modal-body>
+<totvs-modal-footer>
+  <button data-ng-click="controller.cancel();" class="btn btn-default">{{ 'btn-cancel' | i18n }}</button>
+  <button data-ng-click="controller.save(controller.myParams.action, controller.myParams.model);" class="btn btn-primary">{{ 'btn-ok' | i18n }}</button>
+</totvs-modal-footer>

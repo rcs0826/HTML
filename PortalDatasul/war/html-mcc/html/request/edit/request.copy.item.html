@@ -1,0 +1,173 @@
+<totvs-page type="edit" totvs-custom-element="customRequest_copyItem">     
+    
+	<totvs-page-navbar>
+
+		 <totvs-page-breadcrumb ng-if="!controller.showDetail">
+			<breadcrumb link="#/">{{ 'l-home' | i18n: []: 'dts/mcc' }}</breadcrumb>
+			<breadcrumb link="#/dts/{{module}}/request">{{ 'l-requests' | i18n: []: 'dts/mcc' }}</breadcrumb>
+			<breadcrumb>{{ 'l-copy-items' | i18n: []: 'dts/mcc' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-breadcrumb ng-if="controller.showDetail">
+			<breadcrumb link="#/">{{ 'l-home' | i18n: []: 'dts/mcc' }}</breadcrumb>
+			<breadcrumb link="#/dts/{{module}}/request">{{ 'l-requests' | i18n: []: 'dts/mcc' }}</breadcrumb>
+			<breadcrumb link="#/dts/{{module}}/request/detail/{{controller.destiny}}">
+				<span class="hidden-xs">{{'l-request-detail' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-detail' | i18n: []: 'dts/mcc'}}</span>
+			</breadcrumb>
+			<breadcrumb>
+				<span class="hidden-xs">{{ 'l-copy-items' | i18n: []: 'dts/mcc' }}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{ 'l-copy' | i18n: []: 'dts/mcc' }}</span>
+			</breadcrumb>
+		</totvs-page-breadcrumb>
+
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'l-copy-items-to-request' | i18n: []: 'dts/mcc' }} {{controller.destiny | number}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<totvs-page-header-operation-action limit-primary-action="3" 
+													on-save-new="controller.saveNew"
+													items="controller.listOfRequests"
+													items-as="request">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+			<div class="row">
+	             <field type="input"
+	             		numbers-only
+	             		maxlength="9"
+	                    class="col-md-3"
+	             		ng-model="controller.sourceRequest"
+	                    zoom
+	                    zoom-id="nr-requisicao"
+	                    zoom-selected="controller.load(selected['nr-requisicao'])"
+	                    zoom-service="mcc.requisicao.zoom"
+	                    focus
+	                    name-id="sourceRequest"
+	                    placeholder="{{ 'l-request' | i18n: []: 'dts/mcc' }}"
+	                    ng-blur="controller.load(controller.sourceRequest)"
+	                    ng-keypress="controller.keyPress($event)"
+	                    
+	                    canclean>
+	                <label>{{ 'l-source-request' | i18n: []: 'dts/mcc' }}</label>
+	            </field>
+    		</div>
+		</totvs-page-header>
+	</totvs-page-navbar>
+		
+	<totvs-page-content>
+
+		<totvs-page-content-header>
+            <totvs-page-quick-select title="{{ 'l-selected-all' | i18n: []: 'dts/mcc' }}"
+                                     list="controller.listOfItems">
+            </totvs-page-quick-select>   
+        </totvs-page-content-header>
+
+		<div class="alert alert-info" role="alert" ng-if="controller.listOfItems.length <= 0 && controller.loaded">{{ 'l-theres-nothing' | i18n: []: 'dts/mcc' }}</div>
+
+		<div class="alert alert-info" role="alert" ng-if="controller.listOfItems.length <= 0 && !controller.loaded">{{ 'l-enter-a-request' | i18n: []: 'dts/mcc' }}</div>
+
+		<totvs-list-item ng-repeat="item in controller.listOfItems" selected="item" totvs-custom-element="customRequest_copyItemList">
+
+            <totvs-list-item-header>
+                <totvs-list-item-title
+                    title="{{item['sequencia']}} - {{item['it-codigo']}}"
+                    link="#/dts/{{module}}/request/item/detail?req={{item['nr-requisicao']}}&seq={{item['sequencia']}}&item={{item['it-codigo-link']}}&previous={{controller.destiny}}">
+                </totvs-list-item-title>
+            </totvs-list-item-header>
+
+             <totvs-list-item-content>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-item-description' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-12"
+	                value="{{item['desc-item']}}">
+	            </totvs-list-item-info>
+
+				<totvs-list-item-info title="{{ 'l-quantity' | i18n: []: 'dts/mcc' }}"  class="col-md-3 col-sm-6 col-xs-12">
+				    <totvs-editable value="{{item['qt-requisitada'] | number: 4}}">
+				        <field type="decimal"
+				               class="col-md-12"
+				               ng-model="item['qt-requisitada']"
+				               data-m-dec="4"
+				               data-v-max="9999999.9999"
+				               ng-model-options="{ updateOn: 'blur' }"
+				               canclean>
+				            <label>{{ 'l-quantity' | i18n: []: 'dts/mcc' }}</label>
+				        </field>
+				    </totvs-editable>
+				</totvs-list-item-info>
+
+				<totvs-list-item-info title="{{ 'l-measure-unit' | i18n: []: 'dts/mcc' }}" class="col-md-3 col-sm-6 col-xs-12">
+				    <totvs-editable value="{{item['un']}}" on-complete="controller.applyUN(editable.newValue, item);">
+			            <field type="select"			            	   
+			            	   class="col-md-12"
+			            	   ng-disabled="controller.enableFields && !controller.enableFields['un']"
+			                   ng-model="{un: item.un, descricao: item['un-desc']}">
+		                    <zoom zoom-service="mcc.tab-unidade.zoom"></zoom>
+		                    <label>{{ 'l-measure-unit' | i18n: []: 'dts/mcc' }}</label>
+			                <include>
+			                    <ui-select-match placeholder="">{{$select.selected['un']}} - {{$select.selected.descricao}}</ui-select-match>
+			                    <ui-select-choices repeat="unit in controller.serviceUM.listOfUMs | filter: $select.search track by $index"
+			                    					refresh="controller.serviceUM.getUMs($select.search)"
+		                    						refresh-delay="500">
+			                    	<span ng-bind-html="unit['un'] + (unit.descricao ? ' - ' + unit.descricao : '') | highlight: $select.search"></span>
+			                    </ui-select-choices>
+			                </include>
+			            </field>
+				    </totvs-editable>
+				</totvs-list-item-info>
+
+				<totvs-list-item-info title="{{ 'l-delivery-date' | i18n: []: 'dts/mcc' }}"  class="col-md-3 col-sm-6 col-xs-12">
+				    <totvs-editable value="{{item['dt-entrega'] | date:'dd/MM/yyyy'}}">
+	                    <field type="date"
+	                           ng-model="item['dt-entrega']"
+	                           class="col-md-12"
+	                           canclean>
+	                        <label>{{ 'l-delivery-date' | i18n: []: 'dts/mcc' }}</label>
+	                    </field>
+				    </totvs-editable>
+				</totvs-list-item-info>
+
+				<totvs-list-item-info title="{{ 'l-delivery-hour' | i18n: []: 'dts/mcc' }}"  class="col-md-3 col-sm-6 col-xs-12" ng-if="controller.tpRequis == 1">
+				    <totvs-editable value="{{item['hra-entrega']}}">
+						<field type="time"
+                           ng-model="item['hra-entrega']"
+                           class="col-md-12"
+                           canclean>
+                        	<label>{{ 'l-delivery-hour' | i18n: []: 'dts/mcc' }}</label>
+	                    </field>
+				    </totvs-editable>
+				</totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-account-book' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-6"
+	                value="{{item['ct-codigo']}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-cost-center' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-6"
+	                value="{{item['sc-codigo']}}">
+	            </totvs-list-item-info>
+
+			</totvs-list-item-content>
+
+        	<totvs-list-item-content-detail>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-supplementary-description' | i18n: []: 'dts/mcc' }}"
+	                class="col-xs-12 text-justify"
+	                value="{{item['narrativa']}}">
+	            </totvs-list-item-info>
+
+            </totvs-list-item-content-detail>
+        </totvs-list-item>
+			
+	</totvs-page-content>
+
+</totvs-page>

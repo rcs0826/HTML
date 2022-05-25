@@ -1,0 +1,82 @@
+<totvs-modal-header>
+	{{ 'l-advanced-search' | i18n }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<totvs-page-form>
+    	<fieldset>   
+    		<field	type="date"
+				data-ng-model="controller.model.balanceDate"
+				label="{{ 'l-balance-date' | i18n }}"
+				class="col-md-4 col-sm-4 col-xs-6"
+                required>
+			</field>
+        </fieldset>    
+        <fieldset>
+            <field type="select2" 
+                class="col-lg-12 col-md-5 col-sm-4 col-xs-12"   
+                data-ng-model="controller.model.site"                     
+                select-conector="{{'l-site' | i18n}}"
+                select-id="cod-estabel"
+                select-description="nome"
+                canclean
+                select-service="mpd.estabelecSE.zoom">
+                <zoom zoom-service="mpd.estabelecSE.zoom"></zoom>
+                <label>{{ 'l-site' | i18n }}</label>
+            </field>
+        </fieldset>
+        <fieldset>
+            <field type="select2"
+                class = "col-lg-12 col-md-4 col-sm-5 col-xs-12 "
+                data-ng-model="controller.model.warehouse"                       
+                select-conector="{{'l-warehouse' | i18n}}"
+                select-id="cod-depos"
+                select-description="nome"
+                select-service="mce.deposito.zoom"
+                ng-change="controller.getDefaults('cod-depos')"
+                canclean>  
+                <zoom zoom-service="mce.deposito.zoom"></zoom>
+                <label>{{ 'l-warehouse' | i18n }}</label>
+            </field>  
+        </fieldset> 
+        <fieldset>
+            <field type="select2"
+                class = "col-lg-12 col-md-5 col-sm-4 col-xs-12"
+                data-ng-model="controller.model.location"                       
+                select-conector="{{'l-localization' | i18n}}"
+                select-id="cod-localiz"
+                select-description="descricao"
+                canclean
+                select-service="mce.localizacao.zoom">
+                <zoom zoom-service = "mce.localizacao.zoom">
+                </zoom>
+                <label>{{ 'l-localization' | i18n }}</label>
+            </field>
+        </fieldset>    
+        <fieldset> 			            
+            <field type="select2"
+                class = "col-lg-12 col-md-5 col-sm-4 col-xs-12"
+                data-ng-model="controller.model.lot"  
+                select-conector="{{'l-lot-serial' | i18n}}"
+                select-id="lote"                          
+                canclean
+                ng-change="controller.getDefaults('lote')"                        
+                select-service="mce.saldo-estoq.zoom">
+                <zoom zoom-service = "mce.saldo-estoq.zoom">
+                 </zoom>
+                <label>{{ 'l-lot-serial' | i18n }}</label>
+            </field>      
+            
+			<field	type="checkbox"
+				data-ng-model="controller.model.noBalance"
+				label="{{ 'l-no-balance' | i18n }}"
+				class="col-md-12">
+			</field>
+        </fieldset>
+	</totvs-page-form>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply()">{{ 'l-apply' | i18n }}</button>
+</totvs-modal-footer>

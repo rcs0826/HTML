@@ -1,0 +1,39 @@
+<totvs-page type="base">             
+        <totvs-page-navbar id="navBar">
+            <totvs-page-header>
+    
+                <totvs-page-header-title 
+                    title="Mensagens de Erro ({{controller.listAvisosCobErrorMessagesCount}})" >
+                </totvs-page-header-title>
+    
+                <totvs-page-header-operation>
+                    <totvs-page-header-operation-action limit-primary-action="2">
+                        <action class="btn-default" ng-click="controller.cancel();">Fechar</action>
+                    </totvs-page-header-operation-action>
+                </totvs-page-header-operation>
+    
+            </totvs-page-header>    
+        </totvs-page-navbar>  
+
+        <totvs-page-content id="pageContent">
+            <totvs-page-alert 
+                ng-if="controller.hasDoneSearch == true &&  controller.listAvisosCobErrorMessages.length <= 0"
+                type="info"
+                message="Nenhum registro encontrado">
+            </totvs-page-alert>
+
+            <totvs-table
+                t-items="controller.listAvisosCobErrorMessages"
+                t-items-as="item"
+                t-selectable="off"
+                style="height: 200px; display:block; ">
+
+                <column title="Código" width="20">
+                    {{item.codErro}}
+                </column>
+                <column title="Descrição" width="100" style="white-space: inherit; ">
+                    {{item.desErro}}
+                </column>
+            </totvs-table>
+        </totvs-page-content>
+    </totvs-page>

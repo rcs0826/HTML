@@ -1,0 +1,68 @@
+<totvs-modal-header>
+    {{ 'l-advanced-search' | i18n }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <totvs-page-form>
+
+        <div class="col-sm-12 col-md-12">
+            <label class="col-sm-12" style="padding: 0">{{ 'l-status' | i18n: []: 'dts/mcc' }}</label>
+
+            <div class="col-sm-4 col-xs-6" style="padding: 0">
+                <span style="color:#888;font-size:12px">{{ 'l-late' | i18n: []: 'dts/mce' }}</span>
+                <br/>
+                <input type="checkbox" ng-model="controller.ttListParameters['atrasada']" bsswitch class="col-sm-2">
+                </input>
+            </div>
+
+            <div class="col-sm-4 col-xs-6">
+                <span style="color:#888;font-size:12px">{{ 'l-pending' | i18n: []: 'dts/mce' }}</span>
+                <br/>
+                <input type="checkbox" ng-model="controller.ttListParameters['pendente']" bsswitch class="col-sm-3">
+                </input>
+            </div>
+
+            <div class="col-sm-4 col-xs-6">
+                <span style="color:#888;font-size:12px">{{ 'l-closed' | i18n: []: 'dts/mce' }}</span>
+                <br/>
+                <input type="checkbox" ng-model="controller.ttListParameters['fechada']" bsswitch class="col-sm-3">
+                </input>
+            </div>
+        </div>
+
+        <totvs-divider></totvs-divider>
+
+        <totvs-field totvs-select 
+                     class="col-md-12" 
+                     label="{{'l-site' | i18n : [] : 'dts/mce'}}" 
+                     ng-model="controller.ttListParameters['cod-estabel']" 
+                     select-id="cod-estabel" 
+                     select-description="nome" 
+                     select-service="mpd.estabelecSE.select" 
+                     zoom-service="mpd.estabelecSE.zoom" 
+                     zoom-alert-message
+                     ng-required="true"
+                     canclean>
+            <validator key="required">{{'l-this-field-required' | i18n : [] : 'dts/mce' }}</validator>
+        </totvs-field>
+        
+        <totvs-field totvs-date-range class="col-md-12" 
+                     label="{{'l-date' | i18n : [] : 'dts/mce'}}" 
+                     depth='month' 
+                     format='dd/MM/yyyy' 
+                     ng-model='controller.range' 
+                     placeholder="{{'l-this-field-required' | i18n : [] : 'dts/mce' }}"
+                     canclean   
+                     ng-required="true">
+             <validator key="required">{{'l-this-field-required' | i18n : [] : 'dts/mce' }}</validator>
+        </totvs-field>
+
+
+    </totvs-page-form>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()">{{ 'btn-apply' | i18n }}</button>
+</totvs-modal-footer>

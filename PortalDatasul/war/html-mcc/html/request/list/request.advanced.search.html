@@ -1,0 +1,273 @@
+<totvs-modal-header>
+    {{ 'l-advanced-search' | i18n: []: 'dts/mcc' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <div class="row">
+		  <form class="form-horizontal" role="form">   
+
+        <label class="col-sm-12" style="margin:0px 0px 2px 0px;">{{ 'l-status' | i18n: []: 'dts/mcc' }}</label>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="col-sm-3 col-xs-6">
+              <span>{{ 'l-open' | i18n: []: 'dts/mcc' }}</span>
+              <br>
+              <input type="checkbox"
+                  ng-model="controller.model.statusOpen"
+                  bsswitch                  
+                  class="col-sm-3">
+              </input>
+            </div>
+
+            <div class="col-sm-3 col-xs-6">
+              <span>{{ 'l-incomplete' | i18n: []: 'dts/mcc' }}</span>
+              <br>
+              <input type="checkbox"
+                  ng-model="controller.model.statusIncomplete"
+                  bsswitch
+                  class="col-sm-3">                
+              </input>
+            </div>
+
+            <div class="col-sm-3 col-xs-6">
+              <span>{{ 'l-closed' | i18n: []: 'dts/mcc' }}</span>
+              <br>
+              <input type="checkbox"
+                  ng-model="controller.model.statusClosed"
+                  bsswitch
+                  class="col-sm-3">                
+              </input>
+            </div>
+
+            <div class="col-sm-3 col-xs-6">
+              <span>{{ 'l-with-order' | i18n: []: 'dts/mcc' }}</span>
+              <br>
+              <input type="checkbox"
+                  ng-model="controller.model.statusWithOrder"
+                  bsswitch
+                  class="col-sm-3">                
+              </input>
+            </div>
+          </div>
+        </div>
+
+        <label class="col-sm-12" style="margin:10px 0px 2px 0px;">{{ 'l-aprov' | i18n: []: 'dts/mcc' }}</label>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="col-sm-3 col-xs-6">
+              <span>{{ 'l-yes' | i18n: []: 'dts/mcc' }}</span>
+              <br>
+              <input type="checkbox"
+                  ng-model="controller.model.approved"
+                  bsswitch
+                  class="col-sm-3">                
+              </input>
+            </div>
+
+            <div class="col-sm-3 col-xs-6">
+              <span>{{ 'l-no' | i18n: []: 'dts/mcc' }}</span>
+              <br>
+              <input type="checkbox"
+                  ng-model="controller.model.notApproved"
+                  bsswitch
+                  class="col-sm-3">                
+              </input>
+            </div>
+          </div>
+        </div>
+
+        <label class="col-sm-12" style="margin:10px 0px 2px 0px;">{{ 'l-type' | i18n: []: 'dts/mcc' }}</label>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="col-md-3 col-sm-4 col-xs-4">
+              <span>{{ 'l-inventory-request' | i18n: []: 'dts/mcc' }}</span>
+              <br>
+              <input type="checkbox"
+                  ng-model="controller.model.inventoryRequest"
+                  bsswitch
+                  class="col-sm-3">                
+              </input>
+            </div>
+
+            <div class="col-md-3 col-sm-4 col-xs-4">
+              <span>{{ 'l-purchase-request' | i18n: []: 'dts/mcc' }}</span>
+              <br>
+              <input type="checkbox"
+                  ng-model="controller.model.purchaseRequest"
+                  bsswitch
+                  class="col-sm-3">                
+              </input>
+            </div>
+
+            <div class="col-md-3 col-sm-4 col-xs-4">
+              <span>{{ 'l-quotation-request' | i18n: []: 'dts/mcc' }}</span>
+              <br>
+              <input type="checkbox"
+                  ng-model="controller.model.quotationRequest"
+                  bsswitch
+                  class="col-sm-3">                
+              </input>
+            </div>
+          </div>          
+        </div>
+
+        <field type="daterange"
+               ng-model="controller.model.date"
+               start-placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}"
+               end-placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}"
+               start-date="31/12/1969">
+            <label>{{ 'l-requisition-date' | i18n: []: 'dts/mcc' }}</label>
+        </field>
+
+        <div class="clearfix"></div>  
+
+        <field type="input"                         
+               class="col-md-6 col-sm-6"
+               numbers-only
+               placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}"
+               maxlength="9"
+               canclean
+               ng-model="controller.model.requestNumber.start">
+            <label>{{ 'l-initial-number' | i18n: []: 'dts/mcc' }}</label>                          
+        </field>
+        <field type="input"                         
+               class="col-md-6 col-sm-6"
+               numbers-only
+               canclean
+               placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}"
+               maxlength="9"
+               ng-model="controller.model.requestNumber.end">
+            <label>{{ 'l-final-number' | i18n: []: 'dts/mcc' }}</label>                                 
+        </field>
+
+        <field type="input"
+               ng-model="controller.model.site.start"
+               class="col-md-6 col-sm-6"
+               canclean
+               placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}"
+               maxlength="5">
+            <label>{{ 'l-initial-site' | i18n: []: 'dts/mcc' }}</label>
+        </field>
+        <field type="input"
+               ng-model="controller.model.site.end"
+               class="col-md-6 col-sm-6"
+               canclean
+               placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}"
+               maxlength="5">
+            <label>{{ 'l-final-site' | i18n: []: 'dts/mcc' }}</label>
+        </field>
+
+        <field type="input"
+               ng-model="controller.model.requester.start"
+               class="col-md-6"
+               canclean
+               placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}"
+               maxlength="12">
+            <label>{{ 'l-initial-requester' | i18n: []: 'dts/mcc' }}</label>
+        </field>
+        <field type="input"
+               ng-model="controller.model.requester.end"
+               class="col-md-6"
+               placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}"
+               canclean
+               maxlength="12">
+            <label>{{ 'l-final-requester' | i18n: []: 'dts/mcc' }}</label>
+        </field>
+
+        <field type="input"
+               ng-model="controller.model.descriptionItem"
+               canclean
+               placeholder="{{ 'l-description' | i18n: []: 'dts/mcc' }}"
+               class="col-md-12"
+               ng-if="controller.sight == 1">
+            <label>{{ 'l-commentary-description-contains' | i18n: []: 'dts/mcc' }}</label>
+        </field>
+
+        <field type="input"
+               ng-model="controller.model.descriptionRequest"
+               canclean
+               placeholder="{{ 'l-description' | i18n: []: 'dts/mcc' }}"
+               class="col-md-12"
+               ng-if="controller.sight == 0">
+            <label>{{ 'l-commentary-description-contains' | i18n: []: 'dts/mcc' }}</label>
+        </field>
+
+        <totvs-page-detail-info-group>{{ 'l-item' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+        <field type="input"
+               ng-model="controller.model.itemCode.start"
+               canclean
+               ng-trim='false'
+               placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}"
+               class="col-md-6"
+               maxlength="16">
+            <label>{{ 'l-initial-code' | i18n: []: 'dts/mcc' }}</label>
+        </field>
+        <field type="input"
+               ng-model="controller.model.itemCode.end"
+               class="col-md-6"
+               canclean
+               placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}"
+               ng-trim='false'
+               maxlength="16">
+            <label>{{ 'l-final-code' | i18n: []: 'dts/mcc' }}</label>
+        </field>
+
+        <field type="input"
+               ng-model="controller.model.itemDescription.start"
+               class="col-md-6"
+               canclean
+               placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}"
+               maxlength="60">
+            <label>{{ 'l-initial-description' | i18n: []: 'dts/mcc' }}</label>
+        </field>
+        <field type="input"
+               ng-model="controller.model.itemDescription.end"
+               class="col-md-6"
+               canclean
+               placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}"
+               maxlength="60">
+            <label>{{ 'l-final-description' | i18n: []: 'dts/mcc' }}</label>
+        </field>
+
+        <field type="input"
+               ng-model="controller.model.itemCompCode.start"
+               class="col-md-6"
+               canclean
+               placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}"
+               maxlength="20">
+            <label>{{ 'l-initial-supplementary-code' | i18n: []: 'dts/mcc' }}</label>
+        </field>
+        <field type="input"
+               ng-model="controller.model.itemCompCode.end"
+               class="col-md-6"
+               canclean
+               placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}"
+               maxlength="20">
+            <label>{{ 'l-final-supplementary-code' | i18n: []: 'dts/mcc' }}</label>
+        </field>
+
+        <field type="input"
+               ng-model="controller.model.itemCompInfo.start"
+               class="col-md-6"
+               canclean
+               placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}"
+               maxlength="16">
+            <label>{{ 'l-initial-supplementary-info' | i18n: []: 'dts/mcc' }}</label>
+        </field>
+        <field type="input"
+               ng-model="controller.model.itemCompInfo.end"
+               class="col-md-6"
+               canclean
+               placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}"
+               maxlength="16">
+            <label>{{ 'l-final-supplementary-info' | i18n: []: 'dts/mcc' }}</label>
+        </field>
+
+      </form> 
+    </div>      
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n: []: 'dts/mcc' }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()">{{ 'l-apply' | i18n: []: 'dts/mcc' }}</button>
+</totvs-modal-footer>

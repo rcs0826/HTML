@@ -1,0 +1,147 @@
+<totvs-modal-header>{{ 'l-advanced-search' | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+    <div class="row">
+    	<form class="form-horizontal" role="form" >
+			<accordion close-others="controller.closeOther">
+				<accordion-group is-open="controller.advancedSearch.accord.selection">
+					<accordion-heading>
+						{{'l-selection' | i18n }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down':controller.advancedSearch.accord.selection, 'glyphicon-chevron-right': !controller.advancedSearch.accord.selection}"></i>
+					</accordion-heading>      					
+					<field
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        type="inputrange"
+                        ng-model="controller.advancedSearch.itemCotacaoRange"
+                        start-placeholder="{{'l-start' | i18n}}"
+                        start-maxlength="16"
+                        end-maxlength="16"
+                        label="{{'l-item-configured-from' | i18n}}">
+					</field>
+					<field
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        type="inputrange"
+						ng-model="controller.advancedSearch.nrEstrutRange"
+						m-dec="0"
+                        start-placeholder="{{'l-start' | i18n}}"
+                        start-maxlength="7"
+                        end-maxlength="7"
+						label="{{'l-nr-estrut-from' | i18n}}"
+						v-max="9999999">
+					</field>
+					<field
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        type="inputrange"
+                        ng-model="controller.advancedSearch.usuCriacaoRange"
+                        start-placeholder="{{'l-start' | i18n}}"
+                        start-maxlength="16"
+                        end-maxlength="16"
+                        label="{{'l-user-criacao-from' | i18n}}">
+					</field>
+					<totvs-field totvs-date-range  
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        type="daterange"
+                        ng-model="controller.advancedSearch.datCriacaoRange"
+                        start-placeholder="{{'l-start' | i18n}}"
+                        label="{{'l-creation-date' | i18n}}">
+					</totvs-field>	
+				</accordion-group>
+				<accordion-group is-open="controller.advancedSearch.accord.parameters">
+					<accordion-heading>
+						{{'l-parameters' | i18n }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': controller.advancedSearch.accord.parameters, 'glyphicon-chevron-right': !controller.advancedSearch.accord.parameters}"></i>
+					</accordion-heading>  
+					<totvs-field totvs-checkbox  
+						class="col-md-2 col-sm-6 col-xs-12"                              
+						ng-model="controller.advancedSearch.isAberto"
+						label="{{ 'l-open2' | i18n }}" 
+						t-bsswitch>                                
+					</totvs-field>	
+					<totvs-field totvs-checkbox  
+						class="col-md-2 col-sm-6 col-xs-12"                              
+						ng-model="controller.advancedSearch.isSuspenso"
+						label="{{ 'l-suspended2' | i18n }}" 
+						t-bsswitch>                                
+					</totvs-field>	
+					<totvs-field totvs-checkbox  
+						class="col-md-2 col-sm-6 col-xs-12"                              
+						ng-model="controller.advancedSearch.isEstrutAprov"
+						label="{{ 'l-approved-structure' | i18n }}" 
+						t-bsswitch>                                
+					</totvs-field>	
+					<totvs-field totvs-checkbox  
+						class="col-md-2 col-sm-6 col-xs-12"                              
+						ng-model="controller.advancedSearch.isRotAprov"
+						label="{{ 'l-approved-routing' | i18n }}" 
+						t-bsswitch>                                
+					</totvs-field>	
+					<totvs-field totvs-checkbox  
+						class="col-md-2 col-sm-6 col-xs-12"                              
+						ng-model="controller.advancedSearch.isProcAprov"
+						label="{{ 'l-approved-process' | i18n }}" 
+						t-bsswitch>                                
+					</totvs-field>	
+				</accordion-group>
+				<accordion-group is-open="controller.advancedSearch.accord.description">
+					<accordion-heading>
+						{{'l-desc-config' | i18n }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': controller.advancedSearch.accord.description, 'glyphicon-chevron-right': !controller.advancedSearch.accord.description}"></i>
+					</accordion-heading>
+					<field type="input" class="col-md-12" 
+            	   		ng-model="controller.advancedSearch.descricao"
+            	   		maxlength="60">
+		            </field>
+				</accordion-group>
+			</accordion>
+        </form>
+    </div>
+</totvs-modal-body>
+<totvs-modal-footer>    
+    <button type="button" class="btn btn-primary" data-ng-click="controller.search();">{{ 'l-search' | i18n }}</button>
+    <button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'l-cancel' | i18n }}</button>
+</totvs-modal-footer>
+<style>
+
+	.no-padding-left,
+	.no-padding { padding-left: 0; }
+		
+	.no-padding-right,
+	.no-padding { padding-right: 0; }
+	
+	.range-container { margin-top: 5px; }
+	
+	.range-container div > span {
+		border: none;
+	    border-top: 1px solid #ccc;
+	    border-bottom: 1px solid #ccc;
+	    width: 30px !important;
+	}
+	
+	.range-container div field > .field-container {
+		margin-top: 0 !important;
+	}
+	
+	.field-label {
+		margin-bottom: 5px;
+	   	font-weight: 200;
+	   	font-size: 12px;
+	   	color: gray;
+	}
+	
+	.faixa-addon {
+	    width: auto;
+    	min-width: 16px;
+    	padding: 4px 5px;
+	    font-weight: 400;
+    	line-height: 1.428571429;
+    	text-align: center;
+   		text-shadow: 0 1px 0 #fff;
+    	vertical-align: middle;
+    	background-color: #eee;
+    	border: solid #ccc;
+    	border-width: 1px 0;
+    	margin-left: -5px;
+    	margin-right: -5px;
+    	max-width: 40px;
+    	min-width: 40px;
+    	margin-top: 28px;
+    	height: 34px;
+	}
+	
+</style>

@@ -1,0 +1,220 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{'l-labor-report' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-labor-report' | i18n}}">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+				<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				 	<div class="operations ng-scope">
+						<button id="addButton" class='btn btn-primary clickable' ng-click="controller.onAdd()">
+							<span class="glyphicon glyphicon-plus"></span>
+							<span class="hidden-xs ng-binding">			 				
+								{{ 'l-add' | i18n }}</span>
+						</button>
+			 			
+			 			<a class="btn btn-success clickable" role="button" ng-click="controller.onSave()" ng-disabled="controller.externalApps.length <= 0 || controller.isConsulta">
+			 				<span class="glyphicon glyphicon-ok"></span>
+			 				<span class="hidden-xs ng-binding">			 				
+			 				{{ 'l-save' | i18n }}</span>
+		 				</a>
+		 				<a class="btn btn-danger clickable" role="button" ng-click="controller.onClear()" ng-disabled='controller.externalApps.length <= 0 && controller.isConsulta == false'>
+			 				<span class="glyphicon glyphicon-remove"></span>
+			 				<span class="hidden-xs ng-binding">			 				
+			 				{{ 'l-clear' | i18n }}</span>
+						 </a>
+						 
+						 <a class="btn btn-default clickable glyphicon glyphicon-export" 
+							role="button" 
+							ng-click="controller.onExport()" 
+							data-toggle="tooltip" 
+							title="{{ 'l-export-template' | i18n }}"
+		 				    ng-href="/dts/datasul-rest/resources/api/fch/fchmip/fchmip0066/downloadCsv" target="_blank">
+						</a>
+                   
+						<label title="{{ 'l-import-template' | i18n }}" 
+								role="button" for="file-input" 
+								ng-click="controller.uploadFile(controller.files);" 
+								class="btn btn-default clickable glyphicon glyphicon-import">
+							<totvs-field totvs-upload
+								style="position:fixed; top:-999px;"
+								ng-model="controller.files"
+						        name="file"
+						        name-id="file"
+						        t-show-file-list="false"
+						        t-auto-upload="true"
+						        t-multiple="false"
+						        t-save-url="controller.saveUrl"
+						        t-on-success="controller.onSuccess" 
+						        t-on-error="controller.onError"
+						        t-on-select="controller.onSelected"
+						        t-manual-upload="false">
+							</totvs-field>
+						</label>
+						<label title="{{ 'l-search-appointment' | i18n }}" 
+						      role="button" 
+						      ng-click="controller.buscaApontamento();" 
+						      class="btn btn-default clickable glyphicon glyphicon-time">
+						</label>
+						<label title="{{ 'l-parameters' | i18n }}" 								
+								role="button" 
+								ng-click="controller.setParametros();" 
+								class="btn btn-default clickable glyphicon glyphicon-cog">
+						</label>
+						
+	 				</div>
+ 				</div>                
+
+		    	<div class="col-lg-4 col-md-5 col-xs-12" style="padding-top: 10px;">
+					<div ng-show="controller.barProgress" class="progress">
+		            	<div ng-show="controller.barProgress" style="width: 100%" class="progress-bar progress-bar-striped active">{{'l-importing' | i18n}}</div>
+		            </div>
+		    	</div>
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers">
+            </totvs-page-disclaimers>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+		<totvs-grid
+            grid-options="controller.gridOptions"
+            grid="controller.myGrid"
+            grid-data="controller.externalApps"
+            on-change="controller.onChange(event)"
+            on-edit="controller.onChange(event, column)"
+            on-save="controller.onChange(event, column)"
+            editable="true"
+            resizable="true"
+            auto-resize-column="false">
+            <totvs-grid-column width="32" field="logErro">
+               <template>
+				<a class="glyphicon glyphicon-remove btn-errors" ng-if="dataItem.logErro == 1" data-ng-click="controller.showNotifications(dataItem);"></a>
+
+				<a class="glyphicon glyphicon-ok btn-ok" ng-if="dataItem.logErro == 2" data-ng-click="controller.showNotifications(dataItem);"></a>
+
+				<a class="glyphicon glyphicon-exclamation-sign btn-warnings" ng-if="dataItem.logErro == 3" data-ng-click="controller.showNotifications(dataItem);"></a>
+               </template>
+        	</totvs-grid-column>
+        	<totvs-grid-column width="32" field="logErro">
+               <template>
+				<a class="glyphicon glyphicon-trash btn-default" style="cursor: pointer" data-toggle="tooltip" title="{{ 'l-remove-line' | i18n }}" data-ng-click="controller.onRemove(dataItem);"></a>
+               </template>
+        	</totvs-grid-column>
+            <totvs-grid-column filter="number" editable="true" field="nrOrdProdu" width="120" editor="controller.editNrOrdProdu" header-template="controller.templateHeader('l-requisition')" template="controller.templateNrOrdProdu" style="text-align: right"></totvs-grid-column>
+			<totvs-grid-column editable="true" field="cdTarefa" width="100" header-template="controller.templateHeader('l-task')" template="controller.templateCdTarefa" editor="controller.editCdTarefa" style="text-align: right"></totvs-grid-column>
+            <totvs-grid-column editable="true" field="cdTecnico" width="100" header-template="controller.templateHeader('l-technician')" template="controller.templateCdTecnico" style="text-align: right" editor="controller.editCdTecnico"></totvs-grid-column>
+            <totvs-grid-column editable="true" editor="controller.editEspecialidade" field="especialidade" width="120" header-template="controller.templateHeader('l-specialty')"></totvs-grid-column>
+           	<totvs-grid-column editable="true" field="cdTurno" width="100" editor="controller.editCdTurno" header-template="controller.templateHeader('l-shift')" style="text-align: right"></totvs-grid-column>
+            <totvs-grid-column editable="true" field="dttrans" width="140" filter="date : dd/MM/yyyy" header-template="controller.templateHeader('l-date')"></totvs-grid-column>
+            <totvs-grid-column filter="timeMask" editable="true" field="horaInicio" width="100" editor="controller.editHoraInicio" style="text-align: right" header-template="controller.templateHeader('l-initial-hour')"></totvs-grid-column>
+            <totvs-grid-column editable="true" field="horaTermino" width="100" filter="timeMask" editor="controller.editHoraTermino" style="text-align: right" header-template="controller.templateHeader('l-final-hour')"></totvs-grid-column>
+            <totvs-grid-column editable="true" field="horaNormal" width="120" editor="controller.editHoraNormal" header-template="controller.templateHeader('l-normal-hour')" style="text-align: right"></totvs-grid-column>
+            <totvs-grid-column editable="true" field="horaExtra" width="120" editor="controller.editHoraExtra" header-template="controller.templateHeader('l-overtime')" style="text-align: right"></totvs-grid-column>
+            <totvs-grid-column template="controller.templateIntervalo" editor="controller.editIntervalo" editable="true" field="intervalo" width="40" header-template="controller.templateHeaderIntervalo()" ></totvs-grid-column>
+            <totvs-grid-column template="controller.templateEncTarefa" editor="controller.editEncTarefa" editable="true" field="encerrarTarefa" width="40" header-template="controller.templateHeaderEncTarefa()"></totvs-grid-column>
+            <totvs-grid-column template="controller.templateEncOrdem" editor="controller.editEncOrdem" editable="true" field="encerrarOrdem" width="40" header-template="controller.templateHeaderEncOrdem()"></totvs-grid-column>
+            <totvs-grid-column editable="true" field="narrativa" width="250" header-template="controller.templateHeader('l-observation')" editor="controller.editNarrativa"></totvs-grid-column>                     
+            <totvs-grid-column editable="true" field="centroCusto" width="200" editor="controller.editCentroCusto" header-template="controller.templateHeader('l-cost-center')"></totvs-grid-column>
+		</totvs-grid>
+        <totvs-list-pagination ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+                               ng-click="controller.loadData(true);">
+        </totvs-list-pagination>
+    </totvs-page-content>
+</totvs-page>
+<style>
+
+	.m-top-5px-estabel { margin-top: 5px; }
+
+	.h-action { height: 30px; }
+
+	.alinha-icon {
+		display: block !important;
+		text-align: center;
+	}
+
+	.alinha-check {
+		display: block !important;
+		margin: 5.6px auto !important;
+	}
+
+	.custom-filters totvs-page-header-operation-filter {
+		padding-left: 0px !important;
+		padding-right: 0px;
+		margin-right: 15px;
+	}
+
+	td > textarea { resize: none; }
+
+	.row .custom-filters > button { margin-top: 4px; }
+
+	.custom-filters totvs-page-header-operation-filter > div { padding: 0; }
+
+	.f-right { float: right; }
+
+	.f-left { float: left; }
+
+	.p-right { padding-right: 30px !important;}
+
+	.custom-filters {
+		padding-top: 5px;
+	    padding-right: 0;
+	    padding-left: 0;
+    }
+
+	.btn-ok { color: green !important; }
+
+    .btn-errors { color: red !important; }
+
+    .btn-warnings { color: orange !important; }
+
+	.btn-errors,
+	.btn-ok,
+	.btn-warnings {
+		cursor: pointer;
+    	text-align: center;
+    	display: block;
+	}
+
+	.custom-filters > button { margin-top: 5px;}
+
+	.custom-filters div > .filters { padding-top: 6px;}
+
+	.custom-filters > field {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.grid-agenda,
+	.content-box-left {
+		width: 50%;
+		float: left;
+	}
+
+	.page-head .operations a, .page-head .operations button {
+    	margin-right: 0px;
+	}	
+	.box-custom-filters .input-group-date button.btn-filter-date {
+		position: absolute;
+		z-index: 200;
+		right: 0px;
+    	top: 5px;
+    }
+
+   	.input-group-date {
+		position: relative;
+		float: left;
+		padding-right: 0px;
+		padding-left: 0px;
+	}
+
+	.custom-filters .input-group-date field {
+		padding-right: 0px;
+		padding-left: 0px;
+	}
+
+	.w-column { overflow: visible !important; }
+
+</style>

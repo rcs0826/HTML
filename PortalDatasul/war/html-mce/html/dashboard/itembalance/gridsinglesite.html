@@ -1,0 +1,71 @@
+<totvs-grid grid-data="controller.ttTotalWarehouseItemBalance"  
+			grid-options="controller.gridOptionsDuploClique"													
+            grid-selected-item="controller.selectedItem"
+            navigatable="true" 
+            reorderable="true" 
+            resizable="true" 
+            grid="controller.grid" 
+            grid-height="210" 
+            auto-resize-content="true" 
+            sortable="true"
+			selectable="row">
+    <!-- DEPÓSITO  -->
+    <totvs-grid-column field="cod-depos" width="60">
+        {{ ::'l-warehouse-micro' | i18n : [] : 'dts/mce' }}
+    </totvs-grid-column>
+        
+    <!-- TOTAL  -->
+    <totvs-grid-column field="quantidade" width="90" filter="number : 4" totals="sum">
+        {{ ::'l-total' | i18n : [] : 'dts/mce' }}
+    </totvs-grid-column>
+
+    <!-- DISPONIVEL  -->
+    <totvs-grid-column field="totalQtyAvail" width="85" filter="number : 4"  totals="sum">
+        {{ ::'l-available' | i18n : [] : 'dts/mce' }}
+    </totvs-grid-column>
+
+    <!-- OUTRAS A��ES -->
+    <totvs-grid-column field="" editable="false" title="-" width="22" class="options" hide-grouped="true">
+        <template>
+            <div class="btn-group" role="group" aria-label="...">  
+
+                <div class="btn-group " role="group">
+
+                    <button type="button " class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-th "></span>
+                        <span class="caret "></span>
+                    </button>
+                    
+                    <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">
+                         <!-- REQUISITAR-->
+                        <li>
+                            <a href="\\#/dts/mce/ce0205/?site={{dataItem['cod-estabel']}}&itemCode={{controller.itemCode}}&warehouse={{dataItem['cod-depos']}}">
+                                {{ 'l-to-request' | i18n : [] : 'dts/mce' }}
+                            </a>
+                        </li>
+                         <!-- DEVOLVER-->
+                         <li>
+                            <a href="\\#/dts/mce/ce0205a/?site={{dataItem['cod-estabel']}}&itemCode={{controller.itemCode}}&warehouse={{dataItem['cod-depos']}}">
+                                {{ 'l-return' | i18n : [] : 'dts/mce' }}
+                            </a>
+                        </li>
+                        <!-- TRANSFERIR-->
+                        <li>
+                            <a href="\\#/dts/mce/ce0206/?site={{dataItem['cod-estabel']}}&itemCode={{controller.itemCode}}">
+                                {{ 'l-to-transfer' | i18n : [] : 'dts/mce' }}
+                            </a>
+                        </li>
+                        <!-- DETALHAR-->
+                        <li>
+                            <a href="\\#/dts/mce/ce0830/?site={{dataItem['cod-estabel']}}&itemCode={{controller.itemCode}}&warehouse={{dataItem['cod-depos']}}">
+                                {{ 'l-to-detail' | i18n : [] : 'dts/mce' }}
+                            </a>
+                        </li>						
+                    </ul>
+                </div>
+            </div>
+        </template>
+    </totvs-grid-column>
+</totvs-grid>  
+
+

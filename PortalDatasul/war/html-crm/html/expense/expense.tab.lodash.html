@@ -1,0 +1,165 @@
+<totvs-page-child type="list">
+
+	<br>
+
+	<totvs-page-content class="crm-tab">
+
+		<div class="row">
+			<div class="col-xs-6">
+				<h3 style="margin-top: 0px;">
+					{{ 'nav-expense' | i18n: []: 'dts/crm' }} ({{ controllerExpenseTab.listOfExpenseCount }})
+				</h3>
+			</div>
+
+			<div class="col-xs-6">
+				<div class="pull-right" role="group"
+					 ng-animate="'animate-if'">
+					<% if ((!data["btn-add"] || data["btn-add"].log_visivel === true)) { %>
+					<button class="btn btn-primary"
+							ng-click="controllerExpenseTab.addEdit();"
+							ng-if="controllerExpenseTab.canOverrideTicket == true && controllerExpenseTab.type === controllerExpenseTab.types.history">
+						<span class="glyphicon glyphicon-plus"></span>
+						{{ 'btn-new-expense' | i18n: []: 'dts/crm' }}
+					</button>
+					<% } %>
+					<button class="btn btn-default"
+							ng-click="controllerExpenseTab.openAdvancedSearch();">
+						<span class="glyphicon glyphicon-search"></span>
+						{{ 'l-search-advanced' | i18n: []: 'dts/crm' }}
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<totvs-page-header style="padding-left: 2px;">
+			<totvs-page-disclaimers
+				ng-if="controllerExpenseTab.disclaimers.length > 0"
+				disclaimer-list="controllerExpenseTab.disclaimers"
+				ng-click="controllerExpenseTab.removeDisclaimer">
+			</totvs-page-disclaimers>
+		</totvs-page-header>
+
+		<totvs-divider ng-animate="'animate-if'"></totvs-divider>
+
+		<totvs-page-alert
+			ng-if="controllerExpenseTab.listOfExpense.length <= 0"
+			type="info"
+			message="{{ 'msg-not-found-expense' | i18n: []: 'dts/crm' }}">
+		</totvs-page-alert>
+
+		<div ng-repeat="expense in controllerExpenseTab.listOfExpense | orderBy: ['num_id_histor_acao'] : true | groupBy : ['num_id_histor_acao']">
+
+			<div class="no-gutter" ng-if="expense.isNewGroup">
+
+				<totvs-list-item-info class="col-xs-12 col-sm-4"
+									  title="{{ 'l-group' | i18n: []: 'dts/crm' }}"
+									  style="margin-top:15px;">
+
+					<a href="#/dts/crm/history/detail/{{expense.num_id_histor_acao}}">
+						{{ 'l-history' | i18n: []: 'dts/crm' }} ({{ expense.num_id_histor_acao }})
+					</a>
+				</totvs-list-item-info>
+
+				<!--cabecalho -->
+				<div class="crm-tab">
+
+					<div class="col-xs-12 crm-tab-item header">
+						<strong>
+							<div class="col-xs-2">
+								{{ 'l-type' | i18n: []: 'dts/crm' }}
+							</div>
+							<div class="col-xs-1">
+								{{ 'l-expense-date'  | i18n: []: 'dts/crm' }}
+							</div>
+							<div class="col-xs-2">
+								{{ 'l-unit-of-measurement' | i18n: []: 'dts/crm' }}
+							</div>
+							<div class="col-xs-2 text-right">
+								{{ 'l-quantity' | i18n: []: 'dts/crm' }}
+							</div>
+							<div class="col-xs-2 text-right">
+								{{ 'l-unit-value' | i18n: []: 'dts/crm' }}
+							</div>
+                            <div class="col-xs-2 text-right">
+                                {{ 'l-total-value' | i18n: []: 'dts/crm' }}
+							</div>
+							<% if ((!data["btn-remove"] || data["btn-remove"].log_visivel === true)) { %>
+							<div class="col-xs-1 text-right"
+                                 ng-if="controllerExpenseTab.canOverrideTicket == true">
+								&nbsp;
+							</div>
+							<% } else { %>
+							<div class="col-xs-3 text-right">
+								{{ 'l-value' | i18n: []: 'dts/crm' }}
+							</div>
+							<% } %>
+						</strong>
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="col-xs-12 crm-tab-item"
+				 ng-animate="'animate-if'">
+
+				<div class="col-xs-2">
+					<% if ((!data["l-description"] || data["l-description"].log_visivel === true)) { %>
+					<a role="button"
+					   ng-click="controllerExpenseTab.openSummary(expense)">
+						{{ expense.nom_tip_despes }}
+					</a>
+					<% } else { %>
+						{{ expense.nom_tip_despes }}
+					<% }%>
+				</div>
+				<div class="col-xs-1">
+					{{ expense.dat_livre_1 | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+				</div>
+				<div class="col-xs-2">
+					{{ expense.nom_unid_medid}} {{expense.nom_sig_umd ? '(' + expense.nom_sig_umd + ')' : '' }}
+				</div>
+				<div class="col-xs-2 text-right">
+					{{ expense.qtd_itens_despes_realzdo | number : 2}}
+				</div>
+                <div class="col-xs-2 text-right">
+					{{ expense.val_livre_1 | currency }} <!-- val_despes_realzdo_unit -->
+				</div>
+				<div class="col-xs-2 text-right">
+					{{ expense.val_despes_realzdo | currency }}
+				</div>
+				<% if ((!data["btn-remove"] || data["btn-remove"].log_visivel === true)) { %>
+				<div class="col-xs-1 text-right"
+                     ng-if="controllerExpenseTab.canOverrideTicket == true">
+					<a role="button" ng-click="controllerExpenseTab.remove(expense);" class="btn btn-xs btn-default">
+						<i class="glyphicon glyphicon-trash"></i>
+					</a>
+				</div>
+				<% } %>
+
+			</div>
+
+		</div>
+
+		<div class="crm-tab" ng-if="controllerExpenseTab.listOfExpense.length > 0">
+
+			<div class="col-xs-12 crm-tab-item header" style="margin-top: 15px;">
+				<strong>
+					<div class="col-xs-2 col-xs-offset-5 text-right">
+						{{ controllerExpenseTab.summary.totalItems | number : 2}}
+					</div>
+					<% if ((!data["btn-remove"] || data["btn-remove"].log_visivel === true)) { %>
+					<div class="col-xs-2 col-xs-offset-2 text-right">
+					<% } else { %>
+					<div class="col-xs-3 col-xs-offset-2 text-right">
+					<% } %>
+						{{ controllerExpenseTab.summary.totalValue | currency }}
+					</div>
+				</strong>
+			</div>
+
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

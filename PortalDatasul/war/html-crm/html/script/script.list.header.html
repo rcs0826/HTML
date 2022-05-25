@@ -1,0 +1,26 @@
+<totvs-page-header-operation>
+
+	<totvs-page-header-operation-action>
+		<action icon="glyphicon-plus"
+				ng-click="scriptController.addEdit();">
+			{{ 'btn-new-script' | i18n: []: 'dts/crm' }}
+		</action>
+	</totvs-page-header-operation-action>
+
+	<totvs-page-header-operation-filter
+		placeholder="{{ 'l-search-script' | i18n: []: 'dts/crm' }}"
+		ng-submit="scriptController.search()"
+		ng-model="scriptController.quickSearchText"
+		advanced-search="scriptController.openAdvancedSearch">
+	</totvs-page-header-operation-filter>
+
+
+</totvs-page-header-operation>
+
+<div ng-include="'/dts/crm/html/script/script.legend.html'"></div>
+
+<totvs-page-disclaimers
+	ng-if="scriptController.disclaimers.length > 0"
+	disclaimer-list="scriptController.disclaimers"
+	ng-click="scriptController.removeDisclaimer">
+</totvs-page-disclaimers>

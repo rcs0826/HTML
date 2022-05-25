@@ -1,0 +1,85 @@
+<accordion-heading>
+    <div class="row">
+        <div class="col-xs-12">
+            {{ 'l-phones' | i18n: []: 'dts/crm' }}
+            <i class="pull-right glyphicon"
+               ng-class="{'glyphicon-chevron-down' :  controller.group.phones.open,
+                          'glyphicon-chevron-right': !controller.group.phones.open}">
+            </i>
+        </div>
+    </div>
+</accordion-heading>
+
+<fieldset class="row">
+
+	<field type="select"
+		   ng-model="controller.phone.ttTipo"
+		   canclean="undefined">
+
+		<label>{{ 'l-type-phone' | i18n: []: 'dts/crm' }}</label>
+
+		<include>
+			<ui-select-match placeholder="{{ 'l-type-phone' | i18n: []: 'dts/crm' }}">
+				{{ $select.selected.nom_tip_telef }}
+			</ui-select-match>
+			<ui-select-choices repeat="type in controller.phoneTypes | filter: $select.search track by $index">
+				<span ng-bind-html="type.nom_tip_telef | highlight: $select.search"></span>
+			</ui-select-choices>
+		</include>
+	</field>
+
+	<field type="input"
+		   class="col-xs-11 col-md-5"
+		   ng-model="controller.phone.nom_telefone"
+		   placeholder="{{ 'l-phone' | i18n: []: 'dts/crm' }}"
+		   maxlength="15"
+		   canclean="undefined"
+		   on-key-enter="controller.addPhone();">
+		<label>{{ 'l-phone' | i18n: []: 'dts/crm' }}</label>
+	</field>
+
+	<div class="col-xs-1 col-md-1 crm-field-extra-button">
+		<button class="btn btn-primary"
+				ng-click="controller.addPhone();">
+			<span class="glyphicon glyphicon-plus"></span>
+		</button>
+	</div>
+
+</fieldset>
+
+<totvs-divider style="margin-bottom: 15px;"
+			   ng-animate="'animate-if'"
+			   ng-if="controller.model.ttTelefone.length">
+</totvs-divider>
+
+<div class="row crm-panel-item"
+	 ng-repeat="phone in controller.model.ttTelefone track by $index">
+
+	<div class="col-xs-1">
+		<span class="glyphicon {{ phone.nom_icone }}"></span>
+	</div>
+
+	<div class="col-xs-5">
+		{{ phone.ttTipo.nom_tip_telef }}
+	</div>
+
+	<div class="col-xs-5">
+		{{ phone.nom_telefone }}
+	</div>
+
+	<!--div class="col-xs-1 text-right"
+		ng-if="(controller.editMode)">
+		<a class="clickable"
+		   ng-click="controller.editPhone($index);">
+			{{ 'btn-edit' | i18n: []: 'dts/crm' }}
+		</a>
+	</div-->
+
+	<div class="col-xs-1 text-right">
+		<a class="clickable"
+		   ng-click="controller.removePhone($index);">
+			{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+		</a>
+	</div>
+
+</div>

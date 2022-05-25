@@ -1,0 +1,80 @@
+link(rel="stylesheet" href="/dts/kbn/css/field-addon.css")
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+
+totvs-modal-header
+    {{ 'l-produced-itens' | i18n }}
+totvs-modal-body
+    totvs-page-form(role="form", id="cellForm", name="cellModel", novalidate)
+        .row
+            ng-form(name="cellForm")
+                accordion.col-xs-12
+                    accordion-group(is-open="false")
+                        accordion-heading
+                            {{ 'l-cell' | i18n }}: {{controller.cell.ttMasterCellDs.cod_chave_erp| htmlText}} - {{controller.cell.ttMasterCellDs.des_cel | htmlText}}
+    totvs-page-form(role="form", id="itemForm", name="itemForm", novalidate)
+        .row
+            ng-form(name="itemForm", ng-repeat="processFlow in controller.cell.ttProcessFlowDs")
+                accordion.col-xs-12(ng-show="processFlow.ttItemDetDs.log_ativo")
+                    accordion-group(is-open="false")
+                        accordion-heading
+                            a {{processFlow.ttItemDetDs.ttItemDs | descFlow:'{sku} - {desc} {ref} ({exp})'}}
+                            a(ng-if="processFlow.edited") &nbsp; {{"*"}}
+                        totvs-tabset
+                            totvs-tab(heading="{{ 'l-times' | i18n }}")
+                                col-lg-12.col-xs-12.col-sm-12
+                                    totvs-field.col-lg-6.col-xs-6.col-sm-6(
+                                        totvs-input,
+                                        name="vli_tempo_ciclo",
+                                        required,
+                                        label="{{'l-item-cycle-time' | i18n}}",
+                                        ng-model="processFlow.vli_tempo_ciclo",
+                                        ng-blur="controller.calckanbanCycleTime(processFlow)",
+                                        ng-disabled="controller.mapping.idi_status === 4 || processFlow.ttItemDetDs.log_ativo == false || processFlow.ttItemDetDs.ttItemDs.idi_control_kanban === 0 && controller.mapping.idi_status !== 1",
+                                        ng-pattern="/^\\d{1,}:[0-5][0-9]:[0-5][0-9],\\d{3,3}$/"
+                                    )
+                                        validator(key="pattern") {{ 'l-should-be-completed-hours-format' | i18n }}
+                                    totvs-field.col-lg-6.col-xs-6.col-sm-6(
+                                        totvs-input,
+                                        name="kanbanCycleTime",
+                                        required,
+                                        label="{{'l-kanban-cycle-time' | i18n}}",
+                                        ng-model="processFlow.kanbanCycleTime",
+                                        ng-disabled="true"
+                                    )
+                                col-lg-12.col-xs-12.col-sm-12
+                                    totvs-field.col-lg-6.col-xs-6.col-sm-6(
+                                        totvs-input,
+                                        name="vli_tempo_setup",
+                                        required,
+                                        label="{{'l-setup-time' | i18n}}",
+                                        ng-model="processFlow.ttItemDetDs.ttMatrizSetupDs.vli_tempo_setup",
+                                        ng-blur="controller.markEdited(processFlow)"
+                                        ng-disabled="controller.mapping.idi_status === 4 || processFlow.ttItemDetDs.log_ativo == false  || processFlow.ttItemDetDs.ttItemDs.idi_control_kanban === 0 && controller.mapping.idi_status !== 1",
+                                        ng-pattern="/^\\d{1,}:[0-5][0-9]:[0-5][0-9],\\d{3,3}$/"
+                                    )
+                                        validator(key="pattern") {{ 'l-should-be-completed-hours-format' | i18n }}
+                            totvs-tab(heading="{{'l-consumed-items' | i18n}}", ng-if="processFlow.ttItemDetDs.ttRelacItemDs.length > 0")
+                                div
+                                    totvs-list-item(ng-repeat="structure in processFlow.ttItemDetDs.ttRelacItemDs  | orderBy: 'structure.ttItemDetDs2.ttItemDs2.cod_chave_erp'")
+                                        div.col-lg-9.col-md-9
+                                            totvs-list-item-info.width-fill(
+                                                ng-if="!structure.ttItemDetDs2.ttItemDs2.cod_refer",
+                                                value="{{structure.ttItemDetDs2.ttItemDs2.cod_chave_erp}} - {{structure.ttItemDetDs2.ttItemDs2.des_item_erp}}"
+                                            )
+                                            totvs-list-item-info.width-fill(
+                                                ng-if="structure.ttItemDetDs2.ttItemDs2.cod_refer",
+                                                value="{{structure.ttItemDetDs2.ttItemDs2.cod_chave_erp}} - {{structure.ttItemDetDs2.ttItemDs2.des_item_erp}} ({{structure.ttItemDetDs2.ttItemDs2.cod_refer | i18n}})"
+                                            )
+                                        totvs-list-item-info.col-md-3.col-lg-3(
+                                            title="{{'l-qtd-kanban' | i18n}}",
+                                            value="{{structure.qtd_filho / structure.qtd_pai}} {{structure.ttItemDetDs2.ttItemDs2.cod_un_med_erp}}"
+                                        )
+
+                            totvs-tab(heading="{{ 'l-items-tools' | i18n }}", ng-if="processFlow.ttItemDetDs.ttItemToolDs.length > 0")
+                                totvs-list-item(ng-repeat="tool in processFlow.ttItemDetDs.ttItemToolDs")
+                                    totvs-list-item-info(value="{{tool.ttToolDs.cod_chave_erp}} - {{tool.ttToolDs.des_ferram}}")
+    p.legend-classifiers.pull-right(ng-if="controller.displaySubtitle") &nbsp; {{"l-subtitle-produced-items" | i18n}}
+
+totvs-modal-footer
+    button.btn.btn-default(ng-click="controller.cancel();") {{ 'l-cancel' | i18n }}
+    button.btn.btn-primary(ng-click="controller.save();") {{ 'l-save' | i18n }}

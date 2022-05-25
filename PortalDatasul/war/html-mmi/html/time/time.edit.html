@@ -1,0 +1,63 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>  
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mmi/time">{{'l-hour-type' | i18n}}</breadcrumb>
+            <breadcrumb>{{ controller.breadcrumbTitle }}</breadcrumb>
+        </totvs-page-breadcrumb>   
+        <totvs-page-header>
+            <totvs-page-header-title title="{{controller.headerTitle}}"></totvs-page-header-title>       
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new="{{controller.saveNewDisabled}}">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>   
+    </totvs-page-navbar>
+    <totvs-page-content>     
+        <totvs-page-form>
+            <fieldset>
+            <totvs-field
+                    ng-disabled="controller.saveNewDisabled"
+                    totvs-input
+                    id="cod-tip-hora"
+                    name-id="cod-tip-hora"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+                    ng-model="controller.model['cod-tip-hora']"
+                    maxlength="12"
+                    required
+                    label="{{'l-hour-type' | i18n}}">
+             </totvs-field>
+             <field type="input"
+                    name-id="des-tip-hora"
+                    class="col-lg-9 col-md-9 col-sm-9 col-xs-12"
+                    ng-model="controller.model['des-tip-hora']"
+                    maxlength="40"
+                    required>
+                 <label>{{ 'l-description' | i18n }}</label>
+             </field>
+             <totvs-field 
+                    totvs-radio
+					class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+				   	label="{{ 'l-capacity' | i18n }}"
+				   	t-options="controller.optionsRadioTipoHora"
+                    ng-model="controller.model['idi-tip-hora']">
+             </totvs-field>
+             <totvs-field 
+                    totvs-radio
+					class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+				   	label="{{ 'l-value-type' | i18n }}"
+				   	t-options="controller.optionsRadioTipoValor"
+                    ng-model="controller.model['idi-tip-val']">
+             </totvs-field>
+             <field
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    type="textarea"
+                    maxlength="2000"
+                    ng-model="controller.model['des-obs']"
+                    rows="8"
+                    label="{{'l-observation' | i18n}}">
+             </field>
+            </fieldset>                       
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

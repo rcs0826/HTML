@@ -1,0 +1,37 @@
+<totvs-page type="detail" totvs-custom-element="customAlternativeBuyer_detail">
+    <totvs-page-navbar>
+
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{:: 'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/mcc/alternativebuyer">
+                <span class="hidden-xs">{{:: 'l-alternative-buyers' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{:: 'l-alternative-buyer-short' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+            <breadcrumb>
+                <span>{{:: 'l-to-detail' | i18n}} </span>
+                <span class="hidden-xs">{{:: 'l-alternative-buyer' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            <totvs-page-header-title title="{{controller.model['cod-comprado']}} - {{controller.model.nome}}"></totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action on-back="controller.back"
+                                                    on-remove="controller.remove"
+                                                    on-edit-link="#/dts/mcc/alternativebuyer/edit/{{controller.model['cod-comprado']}}">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-detail>
+                <totvs-page-detail-info class="col-md-4 col-sm-4"
+                                        title="{{:: 'l-alternative-buyer' | i18n: []: 'dts/mcc' }}"
+                                        value="{{controller.model['cod-cmprdor-altern']}} - {{controller.model['nome-altern']}}"></totvs-page-detail-info>
+                <totvs-page-detail-info class="col-md-4 col-sm-4"
+                                        title="{{:: 'l-validity' | i18n: []: 'dts/mcc' }}"
+                                        value="{{controller.model['dat-valid-ini'] | date: 'dd/MM/yyyy'}} {{:: 'l-to' | i18n: []: 'dts/mcc' }} {{controller.model['dat-valid-fim'] | date: 'dd/MM/yyyy'}}"></totvs-page-detail-info>
+        </totvs-page-detail>
+    </totvs-page-content>
+</totvs-page>

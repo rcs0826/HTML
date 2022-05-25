@@ -1,0 +1,143 @@
+<style type="text/css" scoped="true">
+	p {
+		text-align: justify;
+	}
+</style>
+<br/>
+<div class="row">
+	<div class="col-xs-12">
+		<div class="col-xs-12 crm-group-accordion">
+			<accordion close-others="false">
+
+				<accordion-group class="crm-panel" is-open="controller.isOpen">
+					<accordion-heading>
+						<div class="row">
+							<div class="col-xs-10 overflow-ellipsis">
+								<span>
+									{{ 'nav-task' | i18n: []: 'dts/crm' }}
+								</span>
+							</div>
+							<div class="col-xs-2 text-right">
+								<i class="pull-right glyphicon"
+								   ng-class="{'glyphicon-chevron-down' :  controller.isOpen,
+											  'glyphicon-chevron-right': !controller.isOpen}">
+								</i>
+							</div>
+						</div>
+					</accordion-heading>
+					<fieldset class="row">
+						<totvs-field class="col-xs-12 col-sm-4"
+							totvs-checkbox
+							ng-model="controller.model.log_tar_abert"
+							label="{{ 'l-open-tasks' | i18n: []: 'dts/crm' }}"
+							ng-disabled="false"
+							t-bsswitch>
+						</totvs-field>
+						<totvs-field class="col-xs-12 col-sm-4"
+							totvs-checkbox
+							ng-model="controller.model.log_tar_atraso"
+							label="{{ 'l-loser-tasks' | i18n: []: 'dts/crm' }}"
+							ng-disabled="false"
+							t-bsswitch>
+						</totvs-field>
+						<div class="col-xs-12 col-sm-4">
+							<totvs-field
+								totvs-checkbox
+								ng-model="controller.model.log_tar_fut"
+								label="{{ 'l-future-tasks' | i18n: []: 'dts/crm' }}"
+								ng-disabled="false"
+								t-bsswitch>
+							</totvs-field>
+							<totvs-field ng-if="controller.model.log_tar_fut"
+								totvs-decimal
+								ng-model="controller.model.num_dias_fut"
+								canclean="undefined"
+								ng-required="true"
+								label="{{ 'l-number-days' | i18n: []: 'dts/crm' }}"
+								placeholder="{{ 'l-number-days' | i18n: []: 'dts/crm' }}"
+								m-dec="0"
+								v-max="6">
+							</totvs-field>
+						</div>
+					</fieldset>
+					<br>
+					<br>
+					<fieldset class="row">
+					<totvs-tabset>
+						<totvs-tab heading="{{ 'l-html-template' | i18n: []: 'dts/crm' }}">
+							<div class="field-file">
+								<br>
+								<div>
+									<label class="btn btn-default pull-right"
+									   role="button"
+									   for="file-input">
+										{{ 'l-select-file' | i18n: []: 'dts/crm' }}
+									</label>
+									<span class="file-text"></span>
+									<input id="file-input"
+									   type="file"
+									   accept=".html"
+									   ngf-select
+									   style="position:fixed;top:-999px;"
+									   ngf-change="controller.onSelectFiles($files);"
+									   ngf-multiple="true"
+									   ngf-allow-dir="false"/>
+								</div>
+								<br>
+								<br>
+								<div class="row file-row"
+									 ng-if="controller.model.log_template || controller.fileSelect"
+									 ng-animate="'animate-if'">
+
+									<div class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+										<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAedJREFUOI2lkjFI1HEUxz/f51UUtTRIUAihuDaVUYjYHJZxEfe/ziJo0MtBwsEW0WhpKu8yCofk9FzaGmpoyaLaCpewq7FFi5oE7e69hjixvEroTb/hfb6/933vC/9Z2mrjnbm5Y3hcBnDi/mA2+wrAtgIXS+U01doznDacNvOYL5bLHVsSKM7MnAqjHLKJfC7pzOeSTje9ocalfwoUS+W0gocW3FuuLA4DjI6OmsH2EFX4yw6KpXJa+BymIvA50KHmbanM0trag5ClTXTkk2Sh4QR1OGQTEfriHtch5pdXq9MhnZHrZD5JFhpa2PDzbeBrhI/LlJfruFv0KiJp3tH0vN5vjeAw3YrQtwgfN9kA0OUWPU2ujGBkabVaqDOp+uPu7OwRd5/DVMDtiSyeSsrjdCmiR6akZoyADsir5zdN4K4hxNuBJLmKarvdvQacdeO0m3IeMWzuLSnovtLX92GzgEUr0ktJsVypPJLpJq4ViV5DQ8gOijjRn81WNtpet2Cuj8BhgLGxMQeuTU1N7Vnduesx4a0hdQ/kcou/L309B5Ol0tEaemGmacFkTdpLxA3zaCHV1J3PZN41uPivQSqUyr1YFAztB3B4jenCYCbzvhG8SQB+RnVfe3sr31Mr/RfPffoTWK8fcKvR/kl9nTMAAAAASUVORK5CYII="/>
+									</div>
+
+									<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+										<span ng-if="controller.model.log_livre_1 || controller.fileSelect">
+											<a target="_self"
+												ng-if="controller.fileSelect === false"
+												href="{{controller.nom_URL}}">
+												{{ 'l-custom-template' | i18n: []: 'dts/crm' }}
+											</a>
+											<span ng-if="controller.fileSelect">
+												{{ 'l-custom-template' | i18n: []: 'dts/crm' }}
+											</span>
+										</span>
+
+										<span ng-if="controller.model.log_livre_1 === false && controller.fileSelect === false">
+											<a target="_self" href="{{controller.nom_URL}}">{{ 'l-default-template' | i18n: []: 'dts/crm' }}</a>
+										</span>
+									</div>
+									<div class="col-lg-1 col-md-1 col-sm-1 hidden-xs text-right">
+									</div>
+									<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">
+										<a class="clickable"
+										   ng-if="controller.model.log_livre_1 || controller.fileSelect"
+										   ng-click="controller.removeTemplate();">
+											{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+										</a>
+									</div>
+								</div>
+							</div>
+							<br>
+							<totvs-page-alert
+								ng-if="controller.model.log_template === false && controller.fileSelect === false"
+								type="info"
+								message="{{ 'msg-not-found-html-template' | i18n: []: 'dts/crm' }}">
+							</totvs-page-alert>
+							<totvs-divider></totvs-divider>
+						</totvs-tab>
+					</totvs-tabset>
+					</fieldset>
+					<div class="pull-right">
+						<button class="btn btn-default" ng-click="controller.openProgressCreateCalendar()">{{ 'btn-create-progress-calendar' | i18n: []: 'dts/crm' }}</button>
+						<button class="btn btn-default" ng-click="controller.executeTaskCalendar()">{{ 'btn-execute-progress-calendar' | i18n: []: 'dts/crm' }}</button>
+						<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+					</div>
+				</accordion-group>
+			</accordion>
+		</div>
+	</div>
+</div>
+</br>

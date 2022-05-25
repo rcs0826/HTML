@@ -1,0 +1,801 @@
+<totvs-page type="base">
+
+    <totvs-page-navbar>
+ 
+        <totvs-page-breadcrumb id="breadcrumb">
+                <breadcrumb>Manutenção de Parâmetros do Revisão de Contas</breadcrumb>
+                <breadcrumb></breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title title="Manutenção de Parâmetros do Revisão de Contas">
+
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <!-- <totvs-page-header-operation-action on-back="controller.onCancel"
+                                                    on-cancel="controller.onCancel"                                                 
+                                                    hide-remove="true"
+                                                    hide-save-new="{{controller.action === 'INSERT' ? false : true }}">
+                </totvs-page-header-operation-action> -->
+
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action class="btn-primary"
+                            ng-click="controller.editCurrentRegister();"
+                            ng-if="controller.action == 'DETAIL'">Editar</action>
+                    <action ng-click="controller.onCancel();"
+                            ng-if="controller.action != 'DETAIL'">Cancelar</action>
+                    <action class="btn-primary"
+                            ng-click="controller.save();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+    </totvs-page-navbar>
+    
+    <totvs-page-content id="pageContent">
+
+        <totvs-page-form>
+            <fieldset>
+                <legend style="float:left;">Parâmetros</legend>
+
+                <totvs-row>
+                    <field type="date"
+                           label="Data de Início da Nova Valorização"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.dtNovaValorizacao"                       
+                           ng-disabled="controller.action == 'DETAIL' || controller.isNovaValorizacaoDisabled == true" >
+                    </field>   
+                </totvs-row>
+
+                <totvs-row>
+
+                <totvs-row>
+
+                    <field  type="combo"
+                            label="Tipo de Validade"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.inTipoValidade"                            
+                            ng-disabled="controller.action == 'DETAIL'"
+                           ng-options="v.value as v.label for v in controller.validTypesList">                     
+                    </field>   
+
+                    <field  type="combo"
+                            label="Tipo de Validade do Procedimento"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.inTipoValidadeProc"                            
+                            ng-disabled="controller.action == 'DETAIL'"
+                           ng-options="v.value as v.label for v in controller.tpValidadeProced">                     
+                    </field>   
+
+                    <field  type="combo"
+                            label="Calendário"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nmCalendario"                            
+                            ng-disabled="controller.action == 'DETAIL'"
+                           ng-options="v.codCalend as v.desCalend for v in controller.emsGlobalCalendarList">                     
+                    </field>   
+                </totvs-row>
+
+                <totvs-row>
+                    <field  type="combo"
+                            label="Busca Local de Atendimento"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.cdBuscaLocalAtend"                            
+                            ng-disabled="controller.action == 'DETAIL'"
+                           ng-options="v.value as v.label for v in controller.buscaLocalAtend">                     
+                    </field>   
+
+                    <field  type="combo"
+                            label="Tipo de Prestador para Controle de Documentos"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.tpPrestBase"                            
+                            ng-disabled="controller.action == 'DETAIL'"
+                           ng-options="v.value as v.label for v in controller.tpPrestBase">                     
+                    </field>   
+
+                    <field  type="combo"
+                            label="Restrição Quando Combinação Não Permitida"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.lgCombNaoPer"                            
+                            ng-disabled="controller.action == 'DETAIL'"
+                           ng-options="v.value as v.label for v in controller.lgCombNaoPer">                     
+                    </field>   
+                </totvs-row>
+
+                <totvs-row>
+                    <field  type="combo"
+                            label="Tipo de Valorização de Pacotes"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.tpValPacotes"                            
+                            ng-disabled="controller.action == 'DETAIL'"
+                           ng-options="v.value as v.label for v in controller.tpValPacotes">                     
+                    </field> 
+                </totvs-row>  
+
+                <totvs-row>  
+                    <field type="input"
+                           numbers-only
+                           maxlength="3"
+                           label="Dias para Recebimento da Fatura"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nrDiasRecebimento" 
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+
+                    <field type="input"
+                           numbers-only
+                           maxlength="3"
+                           label="Dias para Recebimento Interno (Intercâmbio)"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.qtDiasRecInterno"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+                </totvs-row>  
+
+                <totvs-row>  
+                    <field type="input"
+                           numbers-only
+                           maxlength="3"
+                           label="Dias de Validade para Documento Anterior"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nrDiasValidadeDoc"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+
+                   <field type="input"
+                           numbers-only
+                           maxlength="3"
+                           label="Dias para Cálculo de Taxa de Intercâmbio"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nrDiasTaxaIntercambio"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+
+                    <field  type="input"
+                           numbers-only
+                           maxlength="3"
+                           label="Dias para o recurso de glosa"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nrDiasRecurso"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                </totvs-row>
+
+                <totvs-row>
+                    <field  type="checkbox"
+                            label="Liberar as faturas por contratante"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgLiberaFaturaContrat"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <field  type="checkbox"
+                            label="Considerar data da realização para validade do proced."
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgConsidDataValidade"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <field  type="checkbox"
+                            label="Liberar períodos em aberto"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgLiberaPeriodoAberto"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                </totvs-row>
+
+                <totvs-row>
+                    <field  type="checkbox"
+                            label="Desconsiderar trans. x tipo guia na digitação de documentos"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgDescTranTipguia"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <field  type="checkbox"
+                            label="Permitir estorno no quantitativo"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgEstornoQuantitativo"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <field  type="checkbox"
+                            label="Permitir dig. de documentos com fatura em períodos fechados"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgPerFechado"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                </totvs-row>  
+
+                <totvs-row>
+                    <field  type="checkbox"
+                            label="Bloquear liberação parcial de documentos"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgBloqLiberParc"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <field  type="checkbox"
+                            label="Libera Contestação glosas WEB"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgLiberaGlosaWeb"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <field  type="checkbox"
+                            label="Ajusta valor insumo"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgAjusteInsumo"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                </totvs-row>
+
+                <totvs-row>
+                    <field  type="checkbox"
+                            label="Utilizar percentual de fracionamento na valorização de insumos"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgPercFracIns"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <field  type="checkbox"
+                            label="Calcular taxa interc. de movtos que não possuem cobrança taxa"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgCalcTaxaIntercMov"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <field  type="checkbox"
+                            label="Utilizar valores separados para intercâmbio"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgUtilizValSepIntercambio"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                </totvs-row>
+
+                <totvs-row>
+                    <field  type="checkbox"
+                            label="Desconsiderar percentual arquivo de importação A500"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgDescRegraPercArquivo"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <field  type="checkbox"
+                            label="Desconsiderar valorização por Local de Atendimento I.E."
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgValorLocalAtend"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <field  type="checkbox"
+                            label="Habilitar Pagamento por Performance"
+                            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                            data-ng-model="controller.paramrc.lgHabilitaPagtoPerfor"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <field type="combo"
+                           label="Data Base Pagamento por Performance"
+                           class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                           ng-if="controller.paramrc.lgHabilitaPagtoPerfor"
+                           data-ng-model="controller.paramrc.tpDatPgtoPerfor"
+                           ng-disabled="controller.action == 'DETAIL'"
+                           ng-options="v.value as v.label for v in controller.tpDatPgtoPerfor">
+                    </field>
+                </totvs-row>
+
+                <totvs-row>
+                    <field type="input"
+                           maxlength="4"
+                           label="Série Reapresentação Documentos"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nmSerieReapDoc"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+
+                    <field type="input"
+                           maxlength="4"
+                           label="Série Digitação de Contas do RC"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nrSerieHTML"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+
+                    <totvs-field totvs-select 
+                           label="Layout Impressão Conta Médica" canclean
+                           select-service="hcg.layoutImprContaMedicaZoomController"
+                           zoom-service="hcg.layoutImprContaMedicaZoomController"       
+                           select-id="cdLayout"            
+                           select-match='[{"field": "cdLayout"}]'
+                           zoom-init="{filters: controller.layoutImprContaMedicaFixedFilters}"
+                           select-init="{filters: controller.layoutImprContaMedicaFixedFilters}"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nmImpresContMed"       
+
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field> 
+                </totvs-row>
+
+                <totvs-row>
+                    <field type="input"
+                           label="Diretório de Anexos da Fatura"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nmDirAnexoFatura"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+                </totvs-row>
+            </fieldset>
+            <fieldset>
+                <legend style="float:left;">XML TISS</legend>
+
+                <totvs-row>
+                    <field type="input"
+                           label="Versão TISS"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.codVersaoTISS"                       
+                           ng-disabled=true>
+                    </field>   
+                </totvs-row>
+
+                <totvs-row>
+                    <field  type="combo"
+                            label="Calendário para Dias de Tolerância"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.nmCalendarioTolerancia"                            
+                            ng-disabled="controller.action == 'DETAIL'"
+                            ng-options="v.codCalend as v.desCalend for v in controller.emsGlobalCalendarList">               
+                    </field>   
+
+                    <totvs-field totvs-select 
+                           ng-model="controller.paramrc.nrEspecieRec"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           label="Espécie Recurso de Glosa"   
+                           select-id="codEspecDocto"
+                           select-description="desEspecDocto"
+                           select-service="hrc.restrictionRecourseSpecieZoomController"
+                           zoom-service="hrc.restrictionRecourseSpecieZoomController"
+                           canclean
+                           ng-disabled ="controller.action === 'DETAIL'">                      
+                    </totvs-field>
+                </totvs-row>
+
+                <totvs-row>
+                    <field  type="checkbox"
+                            label="Manter nome original do XML"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgMantemNomeOrigXML"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+             
+                    <field  type="checkbox"
+                            label="Utiliza percentual de desconto/acréscimo na importação de Lote Guias"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgUtilizaPercLoteguia"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>             
+                </totvs-row>  
+
+                <totvs-row>
+                    <field type="input"
+                           maxlength="3"
+                           label="Série da Nota Fiscal"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nrSerieFiscalXML"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+
+                    <field type="input"
+                           maxlength="4"
+                           label="Série do Documento Complementar XML"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nrSerieComplementXML"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+                </totvs-row>                
+
+                <totvs-row>
+                    <field type="input"
+                           maxlength="4"
+                           label="Série Recurso de Glosa"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nrSerieRec"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+
+                    <field type="input"
+                           maxlength="4"
+                           label="Série dos Documentos Gerados"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.codSerieXML"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field> 
+                </totvs-row>
+
+                <totvs-row>
+                    <field type="input"
+                           label="Diretório de Carga"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDirCargaXML"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+
+                     <field type="input"
+                           label="Diretório de Processamento"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDirXML"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+                </totvs-row>              
+
+                <totvs-row>
+                    <field type="input"
+                           label="Diretório de Resposta"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDirRespXML"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+
+                    <field type="input"
+                           label="Diretório de Erros"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDirXMLErros"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>  
+                </totvs-row>
+
+                <totvs-row>
+                    <field type="input"
+                           label="Diretório de Processamento (LINUX)"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDiretorioXMLTiss"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+
+                    <field type="input"
+                           label="Diretório de Erros (LINUX)"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDiretorioXMLErro"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>  
+                </totvs-row>
+            
+            </fieldset>
+            <fieldset>
+                <legend style="float:left;">PTU</legend>
+
+                <totvs-row>                
+                    <field type="input"
+                           maxlength="3"
+                           label="Série dos Movimentos Contestados"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nrSerieMovtoCont"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+
+                    <field type="input"
+                           maxlength="4"
+                           label="Série Importação Movtos (A500/A700)"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nmSerieImportMovtos"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+
+                    <field type="input"
+                           maxlength="4"
+                           label="Série Contestação"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nmSerieContestacao"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>     
+                </totvs-row>
+
+                <totvs-row>
+                    <totvs-field totvs-select
+                           label="Layout Exportação PTU A450"   canclean
+                           select-service="hcg.layoutExpoA450ZoomController"
+                           zoom-service="hcg.layoutExpoA450ZoomController"       
+                           select-id="cdLayout"            
+                           select-match='[{"field": "cdLayout"}]'
+                           zoom-init="{filters: controller.layoutExpoA450FixedFilters}"
+                           select-init="{filters: controller.layoutExpoA450FixedFilters}"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nmLayoutPTUA450"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field> 
+
+                    <totvs-field totvs-select 
+                           label="Layout Exportação PTU A1100"   canclean
+                           select-service="hcg.layoutExpoA1100ZoomController"
+                           zoom-service="hcg.layoutExpoA1100ZoomController"       
+                           select-id="cdLayout"            
+                           select-match='[{"field": "cdLayout"}]'
+                           zoom-init="{filters: controller.layoutExpoA1100FixedFilters}"
+                           select-init="{filters: controller.layoutExpoA1100FixedFilters}"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nmLayoutPTUA1100"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field> 
+
+                    <totvs-field totvs-select 
+                           label="Layout Exportação PTU A1200"   canclean
+                           select-service="hcg.layoutExpoA1200ZoomController"
+                           zoom-service="hcg.layoutExpoA1200ZoomController"       
+                           select-id="cdLayout"            
+                           select-match='[{"field": "cdLayout"}]'
+                           zoom-init="{filters: controller.layoutExpoA1200FixedFilters}"
+                           select-init="{filters: controller.layoutExpoA1200FixedFilters}"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nmLayoutPTUExpA1200"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>   
+                </totvs-row>
+            
+                <totvs-row>
+                    <totvs-field totvs-select 
+                           label="Layout Importação PTU A1200"   canclean
+                           select-service="hcg.layoutImpoA1200ZoomController"
+                           zoom-service="hcg.layoutImpoA1200ZoomController"       
+                           select-id="cdLayout"            
+                           select-match='[{"field": "cdLayout"}]'
+                           zoom-init="{filters: controller.layoutExpoA1200FixedFilters}"
+                           select-init="{filters: controller.layoutExpoA1200FixedFilters}"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nmLayoutPTUImpA1200"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>   
+
+                    <totvs-field totvs-select 
+                           label="Layout Exportação PTU A1300"   canclean
+                           select-service="hcg.layoutExpoA1300ZoomController"
+                           zoom-service="hcg.layoutExpoA1300ZoomController"       
+                           select-id="cdLayout"            
+                           select-match='[{"field": "cdLayout"}]'
+                           zoom-init="{filters: controller.layoutExpoA1300FixedFilters}"
+                           select-init="{filters: controller.layoutExpoA1300FixedFilters}"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.nmLayoutPTUExpA1300"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+                </totvs-row>
+
+            </fieldset>
+            <fieldset>
+
+              <legend style="font-size: 13px; font-weight: bold;">A500 - TXT</legend> 
+
+                <totvs-row>
+                    <field type="input"
+                           label="Diretório Carga Imp.Movtos PTU (RPW - Windows)"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDirCargWindows"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+
+                    <field type="input"
+                           label="Diretório Carga Imp.Movtos PTU (RPW - Linux)"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDirCargLinux"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+                </totvs-row>
+
+                <totvs-row>
+                    <field type="input"
+                           label="Diretório Acomp.Imp.Movtos PTU (RPW - Windows)"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDirAcomptoWindows"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>  
+
+                    <field type="input"
+                           label="Diretório Acomp.Imp.Movtos PTU (RPW - Linux)"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDirAcomptoLinux"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                </totvs-row>
+
+            </fieldset>
+            <fieldset>
+
+                <legend style="font-size: 13px; font-weight: bold;">A500 - XML</legend>
+
+                <totvs-row>
+                    <field type="input"
+                           label="Diretório Exportação A500 (Cobrança)"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDirExportPtuXmlA500Cob"
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>  
+
+                    <field type="input"
+                           label="Diretório Exportação A500 (Aviso)"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDirExportPtuXmlA500Aviso"
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>  
+                </totvs-row>
+
+                <totvs-row>
+                     <field type="input"
+                            label="Diretório Carga A500 (Cobrança)"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.desDirImportPtuXmlA500Carga"
+                            ng-disabled="controller.action == 'DETAIL'">
+                     </field>
+
+                     <field type="input"
+                            label="Diretório Acompanhamento A500 (Cobrança)"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.desDirImportPtuXmlA500Acomp"
+                            ng-disabled="controller.action == 'DETAIL'">
+                     </field>
+                </totvs-row>
+                <totvs-row>
+                     <field type="input"
+                            label="Diretório Carga A500 (Aviso)"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.desDirImportPtuXmlA500AvisoCarga"
+                            ng-disabled="controller.action == 'DETAIL'">
+                     </field>
+
+                     <field type="input"
+                            label="Diretório Acompanhamento A500 (Aviso)"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.desDirImportPtuXmlA500AvisoAcomp"
+                            ng-disabled="controller.action == 'DETAIL'">
+                     </field>
+                 </totvs-row>
+            </fieldset>
+            <fieldset>
+
+                <legend style="font-size: 13px; font-weight: bold;">Layout GPS</legend> 
+
+                <totvs-row>
+                    <field type="input"
+                           label="Diretório Carga Imp.Movtos GPS (RPW - Windows)"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDirCargWindowsGPL"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+
+                    <field type="input"
+                           label="Diretório Carga Imp.Movtos GPS (RPW - Linux)"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDirCargLinuxGPL"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>  
+                </totvs-row>
+
+                <totvs-row>
+                    <field type="input"
+                           label="Diretório Acomp. Imp.Movtos GPS (RPW - Windows)"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDirAcomptoWindowsGPL"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>   
+
+                    <field type="input"
+                           label="Diretório Acomp. Imp.Movtos GPS (RPW - Linux)"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDirAcomptoLinuxGPL"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>  
+                </totvs-row>
+
+            </fieldset>
+            <fieldset>
+
+                <legend style="font-size: 13px; font-weight: bold;">A520</legend> 
+
+                <totvs-row>
+                    <field type="input"
+                           label="Diretório Geração A520"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDirGeracA520"
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <field  type="checkbox"
+                            label="Utiliza Aviso de Cobrança (A520) On-line"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            data-ng-model="controller.paramrc.lgAvisoCobranca"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                </totvs-row>
+
+                <totvs-row>
+                    <field type="input"
+                           label="Diretório de Carga A520"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDiretorioCargaA520"
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <field type="input"
+                           label="Diretório de Processamento A520"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDiretorioProcessamentoA520"
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                </totvs-row>
+
+                <totvs-row>
+                    <field type="input"
+                           label="Diretório de Resposta A520"                       
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.paramrc.desDiretorioRespostaA520"
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                </totvs-row>
+            </fieldset>
+            <fieldset>
+                <legend style="float:left;">Integração com outros Sistemas - GRC</legend>
+
+                <field type="input"
+                       label="Diretório de Carga"                       
+                       class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                       data-ng-model="controller.paramrc.dirCargaGRC"                       
+                       ng-disabled="controller.action == 'DETAIL'">
+                </field>   
+
+                <field type="input"
+                       label="Diretório de Respota."                       
+                       class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                       data-ng-model="controller.paramrc.dirRespGRC"                       
+                       ng-disabled="controller.action == 'DETAIL'">
+                </field>
+            </fieldset>
+            <fieldset>      
+                <legend style="float:left;">SUS</legend>
+                <totvs-field totvs-select
+                       id="financialDocumentKindSUS"
+                       name-id="financialDocumentKindSUS"
+                       label="Espécie" canclean
+                       ng-model="controller.paramrc.nmEspecie"
+                       select-service="global.financialDocumentKindZoomController"
+                       zoom-service="global.financialDocumentKindZoomController"
+                       select-id="financialDocumentKindCode" 
+                       select-description="financialDocumentKindDescription"
+                       class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                       ng-disabled="controller.action == 'DETAIL'">
+                </totvs-field>
+            </fieldset>
+            <fieldset>
+                <legend style="float:left;">Procedimento Padrão</legend>
+
+                <totvs-field totvs-select id="movementZoom"
+                        name-id="movementZoom"
+                        ng-model="controller.movementReturnObject"
+                        return-object
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-10"
+                        label="Procedimento Consistente" 
+                        canclean
+                        select-service="hrc.movementZoomController"
+                        select-init="{filters: controller.movementFixedFilters}"
+                        zoom-service="hrc.movementZoomController"
+                        zoom-init="{filters: controller.movementFixedFilters}"
+                        select-id="formattedCodeWithType" 
+                        select-description="dsMovimento"
+                        select-match='[{"field": "formattedCodeWithType", "separator": " - "}, {"field": "dsMovimento"}]'
+                        ng-change="controller.onMovementSelect()"
+                        ng-disabled="controller.action == 'DETAIL'"> 
+                </totvs-field>
+            </fieldset>
+            <fieldset>
+                <legend style="float:left;">Atualização</legend>
+
+                <field type="date"
+                       label="Atualização"                       
+                       class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                       data-ng-model="controller.paramrc.dtAtualizacao"                       
+                       ng-disabled="true">
+                </field>
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>   
+</totvs-page>

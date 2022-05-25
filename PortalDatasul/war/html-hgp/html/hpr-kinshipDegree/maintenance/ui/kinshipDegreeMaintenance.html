@@ -1,0 +1,112 @@
+<totvs-page type="base"> 
+
+    <totvs-page-navbar >
+
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hpr-kinshipDegree/">Manutenção Graus de Parentesco</breadcrumb>
+                <breadcrumb>Manutenção Graus de Parentesco</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Manutenção Graus de Parentesco">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                    <action ng-click="controller.save();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar</action>
+                    <action ng-click="controller.saveNew();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Novo</action>
+                    <action class="btn-primary"
+                            ng-click="controller.saveClose();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Fechar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+    </totvs-page-navbar>
+
+    <totvs-page-content>            
+        <totvs-page-form t-name="controller.editForm">
+            <fieldset>
+                 <totvs-row>
+                    <totvs-field totvs-number
+                                 class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                 label="Código"
+                                 ng-model="controller.kinshipDegree.cdGrauParentesco"
+                                 ng-required="true"
+                                 min="1"
+                                 ng-disabled="controller.action != 'INSERT'">
+                        <validator key="required">Este campo é obrigatório!</validator>
+                        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+
+                    <totvs-field totvs-input
+                                 class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                 label="Descrição"
+                                 ng-model="controller.kinshipDegree.dsGrauParentesco"
+                                 ng-required="true"
+                                 ng-disabled="controller.action == 'DETAIL'">
+                        <validator key="required">Este campo e obrigatorio!</validator>
+                    </totvs-field>
+				 </totvs-row>                        
+                 
+                 <totvs-row>
+                    <totvs-field totvs-combo                     
+                                 class="col-lg-4 col-md-4 col-sm-4 col-xs-12"         
+                     	         label="Tipo dependência"
+                                 ng-required="true"
+                                 t-options= "controller.listTipoDependencia"
+                     	         ng-model="controller.kinshipDegree.inTipoDependencia"		
+                     	         ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+
+                    <totvs-field totvs-combo                      
+                                 class="col-lg-4 col-md-4 col-sm-4 col-xs-12"     
+                                 label="Nível dependência"
+                                 ng-required="true"
+                                 t-options= "controller.listNivelDependencia"
+                                 ng-model="controller.kinshipDegree.inNivelDependencia"        
+                                 ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+
+                    <totvs-field totvs-combo                     
+                                 class="col-lg-4 col-md-4 col-sm-4 col-xs-12"         
+                                 label="Tipo de dependente eSocial"                                 
+                                 t-options= "controller.listTipoDepEsocial"
+                                 ng-model="controller.kinshipDegree.inTipoDepEsocial"      
+                                 ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>                                
+                 </totvs-row>
+
+                 <totvs-row>
+                    <field type="textarea"
+                    	   class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                    	   label="Observação"
+                    	   ng-model="controller.kinshipDegree.desObservacao"                    	   
+                    	   ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                 label="Gera Parto Coberto"                                 
+                                 ng-model="controller.kinshipDegree.logPartoCoberto"
+                                 ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>      
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                 label="Processo maioridade"                                 
+                                 ng-model="controller.kinshipDegree.logMaioridade"
+                                 ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>       					
+                    
+                </totvs-row>               
+            </fieldset>
+        </totvs-page-form>        
+    </totvs-page-content>   
+</totvs-page>
+
+

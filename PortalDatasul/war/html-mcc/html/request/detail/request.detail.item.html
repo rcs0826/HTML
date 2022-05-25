@@ -1,0 +1,186 @@
+<totvs-page type="detail" totvs-custom-element="customRequest_detailItem">
+    <totvs-page-navbar>
+        <!-- Breadcrumbs | Se não for detalhe (search) -->
+        <totvs-page-breadcrumb ng-if="controller.showDetail && !controller.isJustForView">
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/{{module}}/request">{{'l-requests' | i18n: []: 'dts/mcc'}}</breadcrumb>            
+            
+            <breadcrumb link="#/dts/{{module}}/request/detail/{{controller.requestNumber}}" >
+                <span class="hidden-xs">{{'l-request-detail' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-detail' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>           
+
+            <breadcrumb>           
+                <span class="hidden-xs">{{'l-request-item-detail' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-item' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-breadcrumb ng-if="!controller.showDetail && !controller.isJustForView">
+            
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/{{module}}/request">{{'l-requests' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb>
+                <span class="hidden-xs">{{'l-request-item-detail' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-item' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <!-- Breadcrumbs | Se for detalhe (search) -->
+        <totvs-page-breadcrumb ng-if="controller.showDetail && controller.isJustForView && !controller.cd1409 && !controller.cd1410">
+            <!-- link da tela de requisicao  -->
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/{{module}}/request/search">{{'l-requests' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            
+            <breadcrumb link="#/dts/{{module}}/request/search/detail/{{controller.requestNumber}}" >
+                <span class="hidden-xs">{{'l-request-detail' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-detail' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>           
+
+            <breadcrumb>
+                <span class="hidden-xs">{{'l-request-item-detail' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-item' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+		
+		<totvs-page-breadcrumb ng-if="!controller.showDetail && controller.isJustForView && !controller.cd1409 && !controller.cd1410">
+			<breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+			<breadcrumb link="#/dts/module/request/search">{{'l-requests' | i18n: []: 'dts/mcc'}}</breadcrumb>
+			<breadcrumb>
+				<span class="hidden-xs">{{'l-request-item-detail' | i18n: []: 'dts/mcc'}}</span>
+				<span class="hidden-sm hidden-md hidden-lg">{{'l-item' | i18n: []: 'dts/mcc'}}</span>
+			</breadcrumb>
+		</totvs-page-breadcrumb>
+			
+        
+        <div ng-if="controller.cd1409"
+             ng-include="'/dts/mce/html/request/detail/request.detail.item.breadcrumb.cd1409.html'"></div>
+        
+        <div ng-if="controller.cd1410"
+             ng-include="'/dts/mce/html/request/detail/request.detail.item.breadcrumb.cd1410.html'"></div>
+
+        <totvs-page-header>
+            <totvs-page-header-title ng-if="controller.requestNumber">
+                {{ 'l-item-of' | i18n: []: 'dts/mcc' }} 
+
+                <a ng-if="!controller.isJustForView" href="#/dts/{{module}}/request/detail/{{controller.requestNumber}}">{{controller.translateRequestType(controller.model['tp-requis'])}} {{controller.requestNumber | number}}</a>
+
+                <a ng-if="controller.isJustForView && !controller.cd1409 && !controller.cd1410" href="#/dts/{{module}}/request/search/detail/{{controller.requestNumber}}">{{controller.translateRequestType(controller.model['tp-requis'])}} {{controller.requestNumber | number}}</a>
+
+                <!-- LINK PARA REQUISIÇÃO - CD1409 -->
+                <a ng-if="controller.isJustForView && controller.cd1409" href="#/dts/mce/cd1409/detail/{{controller.requestNumber}}">{{controller.translateRequestType(controller.model['tp-requis'])}} {{controller.requestNumber | number}}</a>
+                
+                <!-- LINK PARA REQUISIÇÃO - CD1410 -->
+                <a ng-if="controller.isJustForView && controller.cd1410" href="#/dts/mce/cd1410/detail/{{controller.requestNumber}}">{{controller.translateRequestType(controller.model['tp-requis'])}} {{controller.requestNumber | number}}</a>
+
+            </totvs-page-header-title>       
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-remove="true" on-back="controller.back" 
+                    on-edit-link="#/dts/{{module}}/request/item/edit?req={{controller.model['nr-requisicao']}}&seq={{controller.model['sequencia']}}&item={{controller.model['it-codigo-link']}}" ng-if="controller.enableUpdate && !controller.isJustForView">
+                </totvs-page-header-operation-action>
+
+                <totvs-page-header-operation-action hide-remove="true" on-back="controller.back" hide-edit="true" ng-if="!controller.enableUpdate || controller.isJustForView">
+                </totvs-page-header-operation-action>
+
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-detail>    
+            <totvs-page-detail-info-group>{{ 'l-request' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+            <totvs-page-detail-info class="col-sm-2" title="{{ 'l-seq' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['sequencia'] | number: 0}}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-4" title="{{ 'l-requester' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['nome-abrev']}} - {{controller.model['nome-abrev-desc']}}"></totvs-page-detail-info>                
+            <totvs-page-detail-info class="col-sm-3" title="{{ 'l-status' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['situacao-desc']}}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-3" title="{{ 'l-approved-gen' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['estado-desc']}}"></totvs-page-detail-info>      
+            <totvs-page-detail-info-group>{{ 'l-necessity-identification' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+            <totvs-page-detail-info class="col-sm-8" title="{{ 'l-item' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['it-codigo']}} - {{controller.model['desc-item']}}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-4" title="{{ 'l-reference' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['cod-refer']}} - {{controller.model['cod-refer-desc']}}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-3" title="{{ 'l-quantity' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['qt-requisitada'] | number:4}}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-3" title="{{ 'l-un' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['un']}} - {{controller.model['un-desc']}}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-3" title="{{ 'l-unit-price' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['preco-unit'] | number:5}}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-3" title="{{ 'l-delivery-date' | i18n: []: 'dts/mcc' }}" ng-if="controller.model['tp-requis'] != 1"
+                value="{{controller.model['dt-entrega'] | date:'dd/MM/yyyy'}}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-3" title="{{ 'l-delivery-date-hour' | i18n: []: 'dts/mcc' }}" ng-if="controller.model['tp-requis'] == 1"
+                value="{{controller.model['dt-entrega'] | date:'dd/MM/yyyy'}} - {{controller.model['hra-entrega'] | limitTo:2 }}:{{controller.model['hra-entrega'] | limitTo:-2 }}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-12 text-justify" title="{{ 'l-supplementary-description' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['narrativa']}}"></totvs-page-detail-info>
+            <totvs-page-detail-info-group>{{ 'l-investments' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+            <totvs-page-detail-info class="col-sm-4" title="{{ 'l-investment-order' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['num-ord-inv'] | number:0}}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-4" title="{{ 'l-company' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['ep-codigo']}} - {{controller.model['ep-codigo-desc']}}"></totvs-page-detail-info>
+            <totvs-page-detail-info-group>{{ 'l-posting' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+            <totvs-page-detail-info class="col-sm-6" title="{{ 'l-utility-code' | i18n: []: 'dts/mcc' }}"
+                value="{{controller.model['cod-utilizacao'] | number:0}} - {{controller.model['cod-utilizacao-desc']}}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-6" title="{{ 'l-account-book' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['ct-codigo']}} - {{controller.model['ct-codigo-desc']}}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-6" title="{{ 'l-cost-center' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['sc-codigo']}} - {{controller.model['sc-codigo-desc']}}"></totvs-page-detail-info>
+            <totvs-page-detail-info-group>{{ 'l-indicators' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+            <totvs-page-detail-info class="col-sm-3" title="{{ 'l-urgent' | i18n: []: 'dts/mcc' }}">            
+                <span ng-if="controller.model['log-1'] == true">{{ 'l-yes' | i18n: []: 'dts/mcc' }}</span>
+                <span ng-if="controller.model['log-1'] == false">{{ 'l-no' | i18n: []: 'dts/mcc' }}</span>
+            </totvs-page-detail-info>                    
+            <totvs-page-detail-info class="col-sm-3" title="{{ 'l-certify-supplier' | i18n: []: 'dts/mcc' }}">
+                <span ng-if="controller.model['log-2'] == true">{{ 'l-yes' | i18n: []: 'dts/mcc' }}</span>
+                <span ng-if="controller.model['log-2'] == false">{{ 'l-no' | i18n: []: 'dts/mcc' }}</span>
+            </totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-3" title="{{ 'l-quality-impact' | i18n: []: 'dts/mcc' }}">
+                <span ng-if="controller.model['afeta-qualidade'] == true">{{ 'l-yes' | i18n: []: 'dts/mcc' }}</span>
+                <span ng-if="controller.model['afeta-qualidade'] == false">{{ 'l-no' | i18n: []: 'dts/mcc' }}</span>
+            </totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-3" title="{{ 'l-approval-priority' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['prioridade-aprov-desc']}}"></totvs-page-detail-info>
+            <totvs-page-detail-info-group>{{ 'l-quantities' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+            <totvs-page-detail-info class="col-sm-3" title="{{ 'l-processed-quantity' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['qt-atendida'] | number:4}}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-3" title="{{ 'l-refused-quantity' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['qt-devolvida'] | number:4}}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-3" title="{{ 'l-quantity-to-process' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['qt-a-atender'] | number:4}}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-3" title="{{ 'l-refuse-quantity' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['qt-a-devolver'] | number:4}}"></totvs-page-detail-info>
+            <totvs-page-detail-info-group>{{ 'l-service-product-value' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+            <totvs-page-detail-info class="col-sm-12" title="{{ 'l-total-price' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['val-item'] | number:2}}"></totvs-page-detail-info>
+            <totvs-page-detail-info-group>{{ 'l-realization' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+            <totvs-page-detail-info class="col-sm-12" title="{{ 'l-processing-date' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['dt-atend'] | date:'dd/MM/yyyy'}}"></totvs-page-detail-info>
+            <totvs-page-detail-info-group>{{ 'l-inventory' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+            <totvs-page-detail-info class="col-sm-4" title="{{ 'l-warehouse' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['cod-depos']}} - {{controller.model['cod-depos-desc']}}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-4" title="{{ 'l-localization' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['cod-localiz']}} - {{controller.model['cod-localiz-desc']}}"></totvs-page-detail-info>
+            <totvs-page-detail-info class="col-sm-4" title="{{ 'l-lot-serial' | i18n: []: 'dts/mcc' }}" 
+                value="{{controller.model['lote']}}"></totvs-page-detail-info>
+            <totvs-page-detail-info-group>{{ 'l-purchase' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+            <totvs-page-detail-info class="col-sm-4" title="{{ 'l-purchase-orderline' | i18n: []: 'dts/mcc' }}">
+                <a href="#/dts/mcc/purchaseorderline/detail/{{controller.model['numero-ordem']}}" ng-if="controller.model['numero-ordem'] != 0">
+                    {{controller.model['numero-ordem'] | number:0}}    
+                </a>
+                <span ng-if="controller.model['numero-ordem'] == 0">{{controller.model['numero-ordem'] | number:0}}</span>
+            </totvs-page-detail-info>
+            <totvs-page-detail-info-group>{{ 'l-business-units' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <totvs-list-item ng-repeat="unit in controller.model['ttBusUnitRequest']" totvs-custom-element="customRequest_listBusinessUnit">
+                    <totvs-list-item-content>                   
+                        <totvs-list-item-info class="col-sm-6" title="{{ 'l-unit' | i18n: []: 'dts/mcc' }}">
+                            {{unit['cod_unid_negoc']}} - {{unit['des-unid-negoc']}}</totvs-list-item-info>
+                        <totvs-list-item-info class="col-sm-6" title="{{ 'l-percentage' | i18n: []: 'dts/mcc' }}">
+                            {{unit['perc-unid-neg']}}</totvs-list-item-info>                                     
+                    </totvs-list-item-content>
+                </totvs-list-item>
+            </div>
+        </totvs-page-detail>          
+    </totvs-page-content>
+</totvs-page>

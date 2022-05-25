@@ -1,0 +1,98 @@
+<totvs-page type="base">
+
+	<style>
+		.app-modal-window .modal-dialog {
+			width: 90%;
+		}
+	</style>
+
+	<totvs-modal-header>{{controller.detailName}}</totvs-modal-header>
+	<totvs-page-content>
+        <totvs-page-detail>
+			<!-- ITEM -->
+			<totvs-page-detail-info
+				class="col-md-2"
+				title="{{ 'l-item' | i18n }}"
+				value="{{controller.item}}">
+			</totvs-page-detail-info>
+			<!-- DESCRICAO -->
+			<totvs-page-detail-info
+				class="col-md-4"
+				title="{{ 'l-description' | i18n }}"
+				value="{{controller.descricao}}">
+			</totvs-page-detail-info>
+			<!-- REFERENCIA -->
+			<totvs-page-detail-info
+				class="col-md-4"
+				title="{{ 'l-reference' | i18n }}"
+				value="{{controller.referencia}}">
+			</totvs-page-detail-info>
+			<!-- TIPO -->
+			<totvs-page-detail-info
+				class="col-md-2"
+				title="{{ 'l-type' | i18n }}"
+				value="{{controller.tipo}}">
+			</totvs-page-detail-info>
+			<!-- VALOR MATERIAL -->
+			<totvs-page-detail-info
+				class="col-md-2"		
+				title="{{ 'l-material' | i18n }}"
+				value="{{controller.valueMat | number:4}}">
+			</totvs-page-detail-info>
+			<!-- VALOR MOB -->
+			<totvs-page-detail-info
+				class="col-md-2"
+				title="{{ 'l-mob-label' | i18n }}"
+				value="{{controller.valueMob | number:4}}">
+			</totvs-page-detail-info>
+			<!-- VALOR GGF -->
+			<totvs-page-detail-info
+				class="col-md-2"
+				title="{{ 'l-ggf' | i18n }}"
+				value="{{controller.valueGgf | number:4}}">
+			</totvs-page-detail-info>
+			<!-- VALOR PREPARACAO -->
+			<div id="opPreparacao" class="col-md-2">
+				<totvs-page-detail-info
+					class="col-md-12"
+					title="{{ 'l-preparacao' | i18n }}"
+					value="{{controller.valueOpPreparacao | number:4}}">
+				</totvs-page-detail-info>
+			</div>
+			<!-- VALOR OPERACAO EXTERNA -->
+			<div id="opExt" class="col-md-2">
+				<totvs-page-detail-info
+					class="col-md-12"
+					title="{{ 'l-opext' | i18n }}"
+					value="{{controller.valueOpExt | number:4}}">
+				</totvs-page-detail-info>
+			</div>
+			<!-- VALOR REFUGO -->
+			<div id="opRefugo" class="col-md-2">
+				<totvs-page-detail-info
+					class="col-md-12"
+					title="{{ 'l-refugo' | i18n }}"
+					value="{{controller.valueOpRefugo | number:4}}">
+				</totvs-page-detail-info>
+			</div>
+        </totvs-page-detail>
+    </totvs-page-content>
+	<totvs-modal-body>
+		<div class="row" style="min-height: 400px;">
+			<form class="form-horizontal" role="form" >
+				<div id="chart"></div>
+				<div id="gridMat" class="k-content grid"></div>
+				<div id="gridMov" class="k-content grid"></div>
+				<div id="gridGgf" class="k-content grid"></div>
+				<div id="gridExtOp" class="k-content grid"></div>
+				<div id="gridPreparacao" class="k-content grid"></div>
+				<!--div id="treeListExtOp" class="k-content grid"></div-->
+			</form>
+		</div>
+	</totvs-modal-body>
+
+	<totvs-modal-footer>
+		<button type="button" class="btn btn-primary principal" data-ng-click="controller.close();">{{ 'l-ok' | i18n }}</button>
+		<button type="button" class="btn btn-primary detalhes" data-ng-click="controller.voltar();">{{ 'l-back' | i18n }}</button>	
+	</totvs-modal-footer>
+</totvs-page>

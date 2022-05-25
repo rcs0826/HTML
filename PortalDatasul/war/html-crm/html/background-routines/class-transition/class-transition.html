@@ -1,0 +1,81 @@
+<totvs-page-child type="list">
+
+	<totvs-page-content class="crm-tab">
+
+		<div ng-include="'/dts/crm/html/background-routines/summary-schedule/summary-schedule.html'"
+			 ng-controller="class-transition-rpw.control as controller"/>
+
+		<div ng-animate="'animate-if'">
+            <field type="select"
+                   canclean="undefined"
+                   ng-model="controllerClassTrans.model.ttConta"
+                   ng-change="controllerClassTrans.onChangeAccount()">
+
+                <zoom zoom-selected="controllerClassTrans.onChangeAccount(selected)" zoom-service="crm.crm_pessoa.conta.zoom"></zoom>
+
+                <label>{{ 'l-account' | i18n: []: 'dts/crm' }}</label>
+
+                <include>
+                    <ui-select-match placeholder="{{ 'l-account' | i18n: []: 'dts/crm' }}">
+                        <span>
+                            <span ng-class="{'glyphicon glyphicon-lock': !$select.selected.log_acesso}"></span>
+                            <span ng-class="{'glyphicon glyphicon-globe': $select.selected.log_matriz}"></span>
+                            {{ $select.selected.nom_razao_social }} {{ $select.selected.cod_pessoa_erp ? ' (' + $select.selected.cod_pessoa_erp + ')' : '' }}
+                        </span>
+                    </ui-select-match>
+                    <ui-select-choices repeat="account in controllerClassTrans.accounts track by $index"
+                                       refresh="controllerClassTrans.getAccounts($select.search)"
+                                       refresh-delay="500">
+                        <span ng-if="!account.log_acesso"
+                              class="glyphicon glyphicon-lock">
+                        </span>
+                        <span ng-if="account.log_matriz"
+                              class="glyphicon glyphicon-globe">
+                        </span>
+                        <span ng-bind-html="account.nom_razao_social + (account.cod_pessoa_erp ? ' (' + account.cod_pessoa_erp + ')' : '') | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </include>
+                <validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+            </field>
+            
+            <field type="select"
+				   ng-model="controllerClassTrans.model.ttPublic"
+				   canclean="undefined"
+                   ng-change="controllerClassTrans.onChangeTarget()">
+				<label>{{ 'l-public' | i18n: []: 'dts/crm' }}</label>
+				<include>
+					<ui-select-match placeholder="{{ 'l-public' | i18n: []: 'dts/crm' }}">
+						{{$select.selected.nom_public_alvo}}
+					</ui-select-match>
+					<ui-select-choices repeat="item in controllerClassTrans.targets track by $index"
+									   refresh="controllerClassTrans.getTargets($select.search)"
+									   refresh-delay="500">
+						<span ng-bind-html="item.nom_public_alvo | highlight: $select.search"></span>
+					</ui-select-choices>
+				</include>
+			</field>
+            
+            <totvs-field totvs-checkbox
+                         ng-change="controllerClassTrans.onChangeAll()"
+					     ng-model="controllerClassTrans.model.all"
+					     label="{{ 'l-all' | i18n: []: 'dts/crm' }}"
+					     ng-disabled="false"
+					     t-bsswitch>
+            </totvs-field>
+		</div>
+        
+        <totvs-divider style="margin-top: 5px; margin-bottom: 5px;"></totvs-divider>
+        
+        <div class="row">
+			<div class="col-xs-12"
+				 ng-animate="'animate-if'">
+
+				<button class="btn btn-primary pull-right"
+						ng-click="controllerClassTrans.execute();">
+					{{ 'btn-execute' | i18n: []: 'dts/crm' }}
+				</button>
+			</div>
+		</div>
+        
+    </totvs-page-content>
+</totvs-page-child>

@@ -1,0 +1,57 @@
+<totvs-page type="detail" totvs-custom-element="customApprovalEmail">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mla/approval/">
+                <span class="hidden-xs">{{ 'l-documents-approval' | i18n }}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{ 'l-approval-short' | i18n }}</span>
+            </breadcrumb>
+            <breadcrumb>{{ 'l-email-approval' | i18n }}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{ 'l-email-approval' | i18n }} ({{ 'l-transaction' | i18n }}: {{controller.transactionCode}})" id="pageTitle"></totvs-page-header-title> 
+        </totvs-page-header>
+	</totvs-page-navbar>
+		
+	<totvs-page-content style="padding: 15px 15px 0 15px">		
+        <totvs-page-alert
+            type="success"
+            message="{{ controller.successMsg }}"
+            ng-if="controller.successMsg">
+        </totvs-page-alert>
+        <totvs-page-alert
+            type="danger"
+            message="{{ controller.errorMsg }}"
+            ng-if="controller.errorList && controller.errorList.length > 0">
+        
+            <totvs-page-child type="list">
+                <totvs-list-item ng-repeat="error in controller.errorList" 
+                                 totvs-custom-element="customEmailApproval" 
+                                 style="background-color: transparent !important">
+                    <totvs-list-item-content>
+                        <totvs-list-item-info
+                            id="code"
+                            title="{{ 'l-code' | i18n }}"
+                            class="col-xs-12"
+                            value="{{error['ErrorNumber']}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info
+                            id="description"
+                            title="{{ 'l-description' | i18n }}"
+                            class="col-xs-12"
+                            value="{{error['ErrorDescription']}}">
+                        </totvs-list-item-info>
+                       
+                        <totvs-list-item-info
+                            id="help"
+                            title="{{ 'l-help' | i18n }}"
+                            class="col-xs-12"
+                            value="{{error['ErrorHelp']}}">
+                        </totvs-list-item-info>
+                    </totvs-list-item-content>
+                </totvs-list-item>
+            </totvs-page-child>
+        </totvs-page-alert>
+	</totvs-page-content>
+</totvs-page>

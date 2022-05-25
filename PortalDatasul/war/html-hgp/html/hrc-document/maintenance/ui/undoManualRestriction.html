@@ -1,0 +1,218 @@
+<style>
+    .tag-nao-validados:before {
+        background-color: #f15a22;
+        content: "1";
+        text-align: center;
+    }
+    
+    .tag-validados:before {
+        background-color: #6ace39;
+        content: "2";
+        text-align: center;
+    }
+    
+    .undo-page-head{
+        padding-top: 0px;
+        padding-bottom: 0px;
+        border: none;
+    }
+
+    .undo-page-tags{
+        border: none !important;
+        padding-top: 0px !important;
+        text-align: center;
+    }
+
+    .tag-column:before{
+        border-radius: 50%;
+        height: 15px;
+        width: 15px;
+        font-size: 10px;
+        text-align: center;
+        vertical-align: middle;
+        display: inline-block;
+        color: #fff;
+        margin-right: 10px;
+    }
+
+    tr td.tag-nao-validados {
+        text-align: center;
+    }
+
+    tr td.tag-validados {
+        text-align: center;
+    }
+
+    .line-break{
+        white-space: normal !important;
+        word-wrap: break-word !important;
+    };
+
+</style>
+
+<totvs-modal-header>
+    Desfazer Glosa Manual
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+    <totvs-page-form id="modalForm">
+    
+        <totvs-page-detail class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-left: -5px" 
+                           ng-if="controller.model.documentKey !== null">
+            <totvs-page-detail-info 
+                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                title="Documento"
+                value="{{controller.model.documentKey}}">
+            </totvs-page-detail-info>
+        <!-- </totvs-page-detail>
+
+        <totvs-page-detail class="col-lg-12 col-md-12 col-sm-12 col-xs-12" 
+                           style="padding-top: 0px; padding-bottom: 0px;" 
+                           ng-if="controller.documentKey !== null">
+            <totvs-page-detail-info 
+                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                title="Documento"
+                value="{{controller.documentKey}}"> -->
+            </totvs-page-detail-info>
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Procedimentos"
+                value="{{controller.movementsNumbers.procedures}}"
+                ng-if="controller.movementsNumbers !== undefined">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Insumos"
+                value="{{controller.movementsNumbers.inputs}}"
+                ng-if="controller.movementsNumbers !== undefined">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Pacotes"
+                value="{{controller.movementsNumbers.packages}}"
+                ng-if="controller.movementsNumbers !== undefined">
+            </totvs-page-detail-info>
+        </totvs-page-detail>
+
+        <div class="page-head undo-page-head"
+             ng-if="controller.restrictionsList.length > 0">
+            <div class="undo-page-tags page-tags">
+                <div class="tag legend tag-nao-validados">Movimentos não validados</div>
+                <div class="tag legend tag-validados">Movimentos já validados</div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height" 
+             style="max-height: 250px; height: auto; overflow-y: auto;"
+             ng-if="controller.restrictionsList.length > 0">
+            <totvs-page-content>
+          
+                <totvs-table
+                    items="controller.restrictionsList"
+                    items-as="restriction"
+                    ng-click="controller.onRestricionSelect()"
+                    t-double-click="controller.openDocumentsRestrictions(restriction)">
+                    
+                    <column title="Status" 
+                        class="tag-column tag-{{restriction.lgValidada === true ? 'validados' : 'nao-validados'}}"
+                        width="60">
+                        &nbsp;
+                    </column>
+
+                    <column title="Glosa"
+                            class="line-break">
+                        {{restriction.rotulo}}
+                    </column>
+                    
+                    <column title="Classe Erro"
+                            class="line-break">
+                        {{restriction.rotuloClasseErro}}
+                    </column>
+                </totvs-table>
+            </totvs-page-content>
+            
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height"
+             ng-if="controller.restrictionsList.length > 0
+                 && controller.model.documentKey == null" >
+            <h5 style="margin-left: 269px; color: grey;">
+                * Duplo clique na linha para visualizar os documentos que possuem esta classe de erro
+            </h5>
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height"
+             ng-if="controller.restrictionsList.length > 0
+                 && controller.model.documentKey != null" >
+            <h5 style="margin-left: 269px; color: grey;">
+                * Duplo clique na linha para visualizar os movimentos que possuem esta classe de erro
+            </h5>
+        </div>
+
+        <div ng-if="controller.restrictionsList.length > 0">
+            <field type="checkbox"
+                class="col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                label="Validação Posterior"
+                data-ng-model="controller.lgValidacaoPosterior"
+                ng-if="controller.movementsList == undefined">
+            </field>
+
+            <field type="combo"
+                   class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                   ng-model="controller.cdTipoCob"
+                   ng-options="v.data as v.label for v in controller.billingValidationValues"
+                   label="Validação para Cobrança"
+                   ng-if="controller.lgValidacaoPosterior != true"
+                   required>
+            </field>
+
+            <field type="combo"
+                   class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                   ng-model="controller.cdTipoPagamento"
+                   ng-options="v.data as v.label for v in controller.paymentValidationValues"
+                   label="Validação para Pagamento"
+                   ng-if="controller.lgValidacaoPosterior != true"
+                   required>
+            </field>
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height" 
+             ng-if="controller.restrictionsList.length == 0">
+            <h5> Não existem glosas para serem mostradas</h5>
+        </div>
+
+        <div class="restrictionDiv" style="border: 2px solid #424c4e; width: 77%; height: auto; display: block; 
+                                    background-color: white; position: absolute; z-index: 4; margin-left: 83px;">
+            <totvs-modal-header>
+                {{controller.modalTitle}}
+            </totvs-modal-header>
+            
+            <totvs-modal-body>
+                <div style="max-height: 200px; overflow-y: auto;">
+                    <div ng-repeat="documentos in controller.restrictionDocuments track by $index"
+                         ng-if="controller.restrictionMovements.length == 0">
+                        <h5 style="margin-bottom: 15px;"> {{documentos.dsChave}}</h5>
+                    </div>
+
+                    <div ng-repeat="movimentos in controller.restrictionMovements"
+                         ng-if="controller.restrictionDocuments.length == 0">
+                        <h5 style="margin-bottom: 15px;"> {{movimentos.rotulo}}</h5>
+                    </div>
+                </div>
+            </totvs-modal-body>
+            
+            <totvs-modal-footer>
+                <button class="btn col-sm-height"  ng-click="controller.closeDocumentsRestriction()">Cancelar</button>
+            </totvs-modal-footer>
+        </div>
+
+    </totvs-page-form>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button class="btn" ng-click="controller.cancel()">Cancelar</button>
+    <button class="btn btn-primary" 
+            ng-disabled="!(controller.restrictionsList.length > 0
+                        && controller.hasSelectedRestricion == true)"
+            ng-click="controller.undoManualRestriction()">Desfazer</button>
+</totvs-modal-footer>

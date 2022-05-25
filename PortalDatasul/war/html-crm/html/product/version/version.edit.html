@@ -1,0 +1,30 @@
+<totvs-modal-header>
+	{{ 'btn-new-version' | i18n: []: 'dts/crm'  }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="select"
+			   class="col-xs-12"
+			   ng-required="true"
+			   ng-model="controller.model.version"
+			   canclean="undefined">
+			<label>{{ 'l-version' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-version' | i18n: []: 'dts/crm' }}">{{$select.selected.nom_vers_produt}}</ui-select-match>
+				<ui-select-choices repeat="item in controller.versions | filter: $select.search track by $index">
+					<span ng-bind-html="item.nom_vers_produt | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

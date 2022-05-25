@@ -1,0 +1,34 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_status_ocor : ('btn-new-status-restriction' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-status' | i18n: []: 'dts/crm' }}"
+			 required="true"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.model.num_id_restriction"
+			 t-multi-id="num_id"
+			 t-multi-description="nom_status_ocor"
+			 t-data="controller.ttFluxoStatus">
+		</totvs-field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default"
+			ng-click="controller.cancel()">
+		{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-primary"
+			ng-click="controller.save()">
+		{{ 'btn-save' | i18n: []: 'dts/crm' }}
+	</button>
+</totvs-modal-footer>

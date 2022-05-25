@@ -1,0 +1,722 @@
+<style type="text/css">
+	.customLabel{
+		font-family: 'Arial';
+		margin-bottom: 5px;
+		font-weight: 200;
+		font-size: 12px;
+		color: gray;
+		font-weight: 500 !important;
+	}	
+
+	.panel-body{
+		padding: 5px !important;
+	}
+
+    .badge{
+      background-color: green !important;
+    }
+</style>
+<totvs-page type="detail" totvs-custom-element="customQuotation_detail">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb link="#/dts/mcc/quotation/">{{:: 'l-quotations' | i18n}}</breadcrumb>
+			<breadcrumb>{{:: 'l-detail-quote' | i18n}}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+			<totvs-page-header-title title="{{:: 'l-detail-quote' | i18n: []: 'dts/mcc'}}">
+			</totvs-page-header-title>
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action
+					hide-save-new="false"
+					hide-edit="true"
+                    hide-remove="true">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-detail>
+			<fieldset>
+				<form>
+					<div class="row">
+						<div class="col-xs-12">
+							<totvs-page-detail-info 
+								id="purchase-orderline"
+								class="col-xs-12 col-sm-6 col-md-4" 
+								title="{{:: 'l-purchase-orderline' | i18n}}" 
+								value="{{controller.model.ttSummaryPurchRequisition['numero-ordem']}}"
+								ng-if="!controller.model.unlinkedQuotation">
+		                	</totvs-page-detail-info>
+							
+							<totvs-page-detail-info 
+								id="unlinked-quotation"
+								class="col-xs-12 col-sm-6 col-md-4" 
+								title="{{:: 'l-unlinked-quotation' | i18n }}">
+								<span ng-if="controller.model.unlinkedQuotation">{{:: 'l-yes' | i18n }}</span>
+								<span ng-if="!controller.model.unlinkedQuotation">{{:: 'l-no' | i18n }}</span>
+		                	</totvs-page-detail-info>
+		                </div>
+					</div>
+					<div class="row" ng-show="controller.model.unlinkedQuotation">
+						<div class="col-xs-12">
+							<totvs-page-detail-info 
+								id="item"
+								class="col-xs-12 col-sm-12 col-md-6" 
+								title="{{:: 'l-item' | i18n}}"
+								value="{{controller.model.ttSummaryPurchRequisition['it-codigo']}} - {{controller.model.ttSummaryPurchRequisition['it-codigo-desc']}}">
+		                	</totvs-page-detail-info>
+						</div>
+					</div>
+					<div class="row" ng-show="!controller.model.unlinkedQuotation" style="margin:12px 0px">
+						<div class="col-sm-12" style="padding:0px">
+							<totvs-page-detail-info 
+								id="item"
+								class="col-sm-6 col-md-4" 
+								title="{{ 'l-item' | i18n: []: 'dts/mcc' }}" 
+								value="{{controller.model.ttSummaryPurchRequisition['it-codigo']}} - {{controller.model.ttSummaryPurchRequisition['it-codigo-desc']}}">
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info 
+								id="unit-of-measure"
+								class="col-sm-3 col-md-4" 
+								title="{{ 'l-unit-of-measure' | i18n: []: 'dts/mcc' }}" 
+								value="{{controller.model.ttSummaryPurchRequisition['un']}} - {{controller.model.ttSummaryPurchRequisition['un-desc']}}">
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info 
+								id="site"
+								class="col-sm-3 col-md-4" 
+								title="{{ 'l-site' | i18n: []: 'dts/mcc' }}" 
+								value="{{controller.model.ttSummaryPurchRequisition['cod-estabel']}} - {{controller.model.ttSummaryPurchRequisition['cod-estabel-desc']}}">
+							</totvs-page-detail-info>
+						</div>
+					</div>
+
+					<!-- Cotação do fornecedor -->
+					<totvs-page-detail-info-group>{{:: 'l-vendor-quote' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12">
+
+							<totvs-page-detail-info 
+								id="vendor"
+								class="col-xs-12 col-sm-12 col-md-6" 
+								title="{{ 'l-vendor' | i18n }}"
+								value="{{controller.model.ttCotacaoItem['cod-emitente']}} - {{controller.vendor['nome-abrev']}}">
+		                	</totvs-page-detail-info>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-6">
+							<totvs-page-detail-info 
+								id="vendor-price"
+								class="col-md-6" 
+								title="{{:: 'l-vendor-price' | i18n }}"
+								value="{{controller.model.ttCotacaoItem['preco-fornec'] | number:5}}">
+		                	</totvs-page-detail-info>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<totvs-page-detail-info 
+								id="quotation-date"
+								class="col-xs-12 col-sm-4" 
+								title="{{:: 'l-quotation-date' | i18n: []: 'dts/mcc' }}"
+								value="{{controller.model.ttCotacaoItem['data-cotacao-desc']}}">
+		                	</totvs-page-detail-info>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-6">
+							<totvs-page-detail-info 
+								id="currency"
+								class="col-xs-12 col-md-6" 
+								title="{{:: 'l-currency' | i18n}}"
+								value="{{controller.model.ttCotacaoItem['mo-codigo']}} - {{controller.model.ttCotacaoItem['mo-codigo-desc']}}">
+		                	</totvs-page-detail-info>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<totvs-page-detail-info 
+								id="currency-quote"
+								class="col-sm-3" 
+								title="{{:: 'l-currency-quote' | i18n: []: 'dts/mcc' }}" 
+								value="{{controller.model.ttCotacaoItem['cotacao-moeda'] | currency: controller.siglaQuoteCurrecy :4}}">
+							</totvs-page-detail-info>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-6">
+							<totvs-page-detail-info 
+								id="discount-perc"
+								class="col-md-6" 
+								title="{{:: 'l-discount-perc-short' | i18n }}"
+								value="{{controller.model.ttCotacaoItem['perc-descto'] | number:5}}">
+		                	</totvs-page-detail-info>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<totvs-page-detail-info 
+								id="discount-value"
+								class="col-md-6" 
+								title="{{:: 'l-discount-value' | i18n }}"
+								value="{{controller.model.ttCotacaoItem['valor-descto'] | number:5}}">
+		                	</totvs-page-detail-info>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-12">
+							<totvs-page-detail-info 
+								id="vendor-unit-of-measure"
+								class="col-xs-12 col-sm-6" 
+								title="{{ 'l-vendor-unit-of-measure' | i18n }}"
+								value="{{controller.model.ttCotacaoItem['un']}} - {{controller.model.ttCotacaoItem['un-desc']}}">
+		                	</totvs-page-detail-info>
+						</div>
+					</div>
+
+					<div class="row" ng-show="controller.model.ttCotacaoItem['activeHisFunction']">
+						<div class="col-xs-12 col-sm-12 col-md-12">
+							<totvs-page-detail-info 
+								id="manufacturer"
+								class="col-lg-6 col-md-6 col-sm-6 col-xs-12" 
+								title="{{ 'l-manufacturer' | i18n }}"
+								value="{{controller.model.ttCotacaoItem['manufacturer']}} - {{controller.model.ttCotacaoItem['manufacturerDescription']}}">
+		                	</totvs-page-detail-info>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12">
+							<totvs-page-detail-info 
+								id="final-unit-price"
+								class="col-sm-6" 
+								title="{{ 'l-final-unit-price' | i18n: []: 'dts/mcc' }}" >
+								<span class="badge">
+									{{controller.model.ttCotacaoItem['pre-unit-for'] | currency: controller.sigla :5 }}
+								</span>
+							</totvs-page-detail-info>
+						
+							<totvs-page-detail-info 
+								id="approve-purchase"
+								class="col-sm-3" 
+								title="{{:: 'l-approved' | i18n }}" 
+								>
+								<span ng-if="controller.model.ttCotacaoItem['cot-aprovada']">
+									{{:: 'l-yes' | i18n }}
+								</span>
+								<span ng-if="!controller.model.ttCotacaoItem['cot-aprovada']">
+									{{:: 'l-no' | i18n }}
+								</span>
+							</totvs-page-detail-info>
+						</div>
+					</div>
+
+					<div class="col-xs-12 text-right" style="margin:20px 0 5px">
+						<a class="clickable" ng-click="controller.expandAll()">{{:: 'l-expand-contract-all' | i18n }}</a>
+					</div>
+					<div class="col-xs-12">
+						<accordion close-others="false" id="accordionDetail">
+							<!-- Última Compra -->
+							<accordion-group is-open="false">
+								<accordion-heading id="treta">
+									<div class="row">
+										<a ng-click="controller.detailLastPurchase=!controller.detailLastPurchase">
+											<div class="col-xs-10">{{:: 'l-last-purchase' | i18n}}</div>
+											<div class="col-xs-2 text-right">
+												<i class="pull-right glyphicon"
+													ng-class="{'glyphicon-chevron-down' :  controller.detailLastPurchase,'glyphicon-chevron-right': !controller.detailLastPurchase}">
+												</i>
+											</div>
+										</a>
+									</div>
+								</accordion-heading>
+								<div class="col-xs-12" style="padding: 0" id="detailLastPurchase">         
+                                    <totvs-tabset style="padding-right: 0px;padding-left: 0px">
+                                        <totvs-tab heading="{{:: 'l-last-purchases-vendor' | i18n: []: 'dts/mcc' }}">
+                                            <div class="col-xs-12" style="margin: 10px 0" id="lastpurchvendor"
+                                                 ng-include="'/dts/mcc/html/lastpurchase/lastpurchases.vendor.html'" ></div>
+                                        </totvs-tab>
+                                        <totvs-tab heading="{{:: 'l-last-purchases-item' | i18n: []: 'dts/mcc' }}">
+                                            <div class="col-xs-12" style="margin: 10px 0" id="lastpurchvendor"
+                                                 ng-include="'/dts/mcc/html/lastpurchase/lastpurchases.item.html'" ></div>                         
+                                        </totvs-tab>
+                                    </totvs-tabset>
+								</div>
+							</accordion-group>
+
+							<!-- Financeiro / Fiscal -->
+							<accordion-group is-open="false">
+								<accordion-heading>
+									<div class="row">
+										<a ng-click="controller.detailFinancialFiscal=!controller.detailFinancialFiscal">
+											<div class="col-xs-10">{{:: 'l-financial-fiscal' | i18n}}</div>
+											<div class="col-xs-2 text-right">
+												<i class="pull-right glyphicon"
+													ng-class="{'glyphicon-chevron-down' :  controller.detailFinancialFiscal,'glyphicon-chevron-right': !controller.detailFinancialFiscal}">
+												</i>
+											</div>
+										</a>
+									</div>
+								</accordion-heading>
+								<div class="col-xs-12" style="padding: 0">
+									<div class="row">
+										<div class="col-xs-12 col-sm-12 col-md-12">
+											<totvs-page-detail-info 
+												id="pay-cond"
+												class="col-xs-12 col-md-6" 
+												title="{{ 'l-pay-cond' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['cod-cond-pag']}} - 
+												{{controller.model.ttCotacaoItem['cod-cond-pag-desc']}}">
+											</totvs-page-detail-info>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12">
+											<totvs-page-detail-info 
+												id="financial-charges"
+												class="col-xs-12 col-md-6" 
+												title="{{:: 'l-financial-charges' | i18n }}">
+												<span ng-if="controller.model.ttCotacaoItem['taxa-financ']">{{:: 'l-yes' | i18n }}</span>
+												<span ng-if="!controller.model.ttCotacaoItem['taxa-financ']">{{:: 'l-no' | i18n }}</span>
+											</totvs-page-detail-info>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-12 col-sm-4">
+											<totvs-page-detail-info 
+												id="financial-rate"
+												class="col-xs-12 col-sm-6" 
+												title="{{:: 'l-financial-rate' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['valor-taxa'] | number:2}}">
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-xs-12 col-sm-4">
+											<totvs-page-detail-info 
+												id="financial-rate-days"
+												class="col-xs-12 col-sm-6" 
+												title="{{:: 'l-financial-rate-days' | i18n }}" value="{{controller.model.ttCotacaoItem['nr-dias-taxa']}}">
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-sm-4"></div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12 col-sm-4">
+											<totvs-page-detail-info 
+												id="aliquot-ipi"
+												class="col-xs-12 col-sm-6" 
+												title="{{:: 'l-aliquot-ipi' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['aliquota-ipi'] | number:2}}">
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-xs-12 col-sm-4">
+											<totvs-page-detail-info 
+												id="included-ipi"
+												class="col-xs-12 col-sm-6" 
+												title="{{:: 'l-included-ipi' | i18n }}" >
+												<span ng-if="controller.model.ttCotacaoItem['codigo-ipi']">
+													{{:: 'l-yes' | i18n }}
+												</span>
+												<span ng-if="!controller.model.ttCotacaoItem['codigo-ipi']">
+													{{:: 'l-no' | i18n }}
+												</span>
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-sm-4"></div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12 col-sm-4">
+											<totvs-page-detail-info 
+												id="icms-tax"
+												class="col-xs-12 col-sm-6" 
+												title="{{:: 'l-icms-tax' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['aliquota-icm'] | number:2}}">
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-xs-12 col-sm-4">
+											<totvs-page-detail-info 
+												id="type-order"
+												class="col-xs-12 col-sm-6" 
+												title="{{ 'l-icms' | i18n: []: 'dts/mcc' }}">
+												<span ng-if="controller.model.ttCotacaoItem['codigo-icm'] == 1">{{ 'l-usage' | i18n: []: 'dts/mcc' }}</span>
+												<span ng-if="controller.model.ttCotacaoItem['codigo-icm'] == 2">{{ 'l-industrialization' | i18n: []: 'dts/mcc' }}</span>
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-sm-4"></div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-4">
+											<totvs-page-detail-info 
+												id="aliquot-iss"
+												class="col-xs-12 col-sm-6" 
+												title="{{:: 'l-aliquot-iss' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['aliquota-iss'] | number:2}}">
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-sm-6"></div>
+									</div>
+									
+								</div>
+							</accordion-group>
+
+							<!-- Frete / Outros -->
+							<accordion-group is-open="false">
+								<accordion-heading>
+									<div class="row">
+										<a ng-click="controller.detailFreightOthers=!controller.detailFreightOthers">
+											<div class="col-xs-10">{{:: 'l-freight-others' | i18n}}</div>
+											<div class="col-xs-2 text-right">
+												<i class="pull-right glyphicon"
+													ng-class="{'glyphicon-chevron-down' :  controller.detailFreightOthers,'glyphicon-chevron-right': !controller.detailFreightOthers}">
+												</i>
+											</div>
+										</a>
+									</div>
+								</accordion-heading>
+								<div class="col-xs-12" style="padding: 0">
+									<div class="row">
+										<div class="col-xs-12 col-sm-12 col-md-12">
+											<totvs-page-detail-info 
+												id="carrier"
+												class="col-md-6" 
+												title="{{:: 'l-carrier' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['cod-transp']}} - {{controller.model.ttCotacaoItem['cod-transp-desc']}}">
+											</totvs-page-detail-info>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12 col-sm-4" >
+											<totvs-page-detail-info 
+												id="freight-value"
+												class="col-xs-12" 
+												title="{{:: 'l-freight-value' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['valor-frete'] | number:4}}">
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-xs-12 col-sm-4">
+											<totvs-page-detail-info 
+												id="included-freight"
+												class="col-xs-12" 
+												title="{{:: 'l-included-freight' | i18n }}" >
+												<span ng-if="controller.model.ttCotacaoItem['frete']">{{:: 'l-yes' | i18n }}</span>
+												<span ng-if="!controller.model.ttCotacaoItem['frete']">{{:: 'l-no' | i18n }}</span>
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-xs-12 col-sm-4"></div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12">
+											<totvs-page-detail-info 
+												id="deliverer-time"
+												class="col-xs-12 col-sm-6 col-md-4" 
+												title="{{:: 'l-deliverer-time' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['prazo-entreg']}}"
+												ng-if="controller.typeInformationDelivery == 1">
+											</totvs-page-detail-info>
+
+											<totvs-page-detail-info 
+												id="deliverer-time"
+												class="col-xs-12 col-sm-6 col-md-4" 
+												title="{{:: 'l-dt-shipment' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['dt-embarque'] | date:'dd/MM/yyyy'}}"
+												ng-if="controller.typeInformationDelivery == 2">
+											</totvs-page-detail-info>
+
+											<totvs-page-detail-info 
+												id="deliverer-time"
+												class="col-xs-12 col-sm-6 col-md-4" 
+												title="{{:: 'l-delivery-date' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['dt-entrega'] | date:'dd/MM/yyyy'}}"
+												ng-if="controller.typeInformationDelivery == 3">
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-xs-12">
+											<totvs-page-detail-info 
+												id="validity-days"
+												class="col-xs-12 col-sm-6 col-md-4" 
+												title="{{:: 'l-validity-days' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['dias-validade']}}">
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-xs-12 col-sm-4"></div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12 col-sm-4" >
+											<totvs-page-detail-info 
+												id="quote-readjust"
+												class="col-xs-12" 
+												title="{{:: 'l-quote-readjust' | i18n }}">
+												<span ng-if="controller.model.ttCotacaoItem['reajusta-cotacao']">
+													{{:: 'l-yes' | i18n }}
+												</span>
+												<span ng-if="!controller.model.ttCotacaoItem['reajusta-cotacao']">
+													{{:: 'l-no' | i18n }}
+												</span>
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-xs-12 col-sm-4" >
+											<totvs-page-detail-info 
+												id="formula-readjust"
+												class="col-xs-12" 
+												title="{{:: 'l-readjust' | i18n }}">
+												<span ng-if="controller.model.ttCotacaoItem['possui-reaj']">
+													{{:: 'l-yes' | i18n }}
+												</span>
+												<span ng-if="!controller.model.ttCotacaoItem['possui-reaj']">
+													{{:: 'l-no' | i18n }}
+												</span>
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-xs-12 col-sm-4"></div>
+									</div>
+
+									<!-- Reajuste cotação -->
+									<div class="row" ng-show="controller.model.ttCotacaoItem['possui-reaj']">
+										<div class="col-xs-12 col-sm-4">
+											<totvs-page-detail-info 
+												id="base-cost-date"
+												class="col-xs-12" 
+												title="{{:: 'l-base-cost-date' | i18n }}"
+												value="{{controller.model.priceBaseDate | date:'dd/MM/yyyy'}}">
+											</totvs-page-detail-info>
+										</div>
+									</div>
+									<div class="row" ng-show="controller.model.ttCotacaoItem['possui-reaj']" style="padding-top:10px">
+										<div class="col-xs-12">
+											<totvs-list-item
+												id="quoteReajust"
+												ng-class="tab-1"
+												ng-repeat="qr in controller.model.quoteReajust">
+												<totvs-list-item-header>
+													<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-currency' | i18n}}">
+														{{qr['currency']}} - {{controller.currency[qr['currency']]['descricao']}}
+													</totvs-list-item-info>
+													<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-base-date' | i18n}}">
+														{{qr['indexDate'] | date:'dd/MM/yyyy'}}
+													</totvs-list-item-info>
+													<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-percentage' | i18n}}">
+														{{qr['percReadjustment']}}
+													</totvs-list-item-info>
+												</totvs-list-item-header>
+											</totvs-list-item>
+										</div>
+									</div>
+								</div>
+							</accordion-group>
+
+							<!-- Responsável -->
+							<accordion-group is-open="false">
+								<accordion-heading>
+									<div class="row">
+										<a ng-click="controller.detailOwner=!controller.detailOwner">
+											<div class="col-xs-10">{{:: 'l-owner' | i18n}}</div>
+											<div class="col-xs-2 text-right">
+												<i class="pull-right glyphicon"
+													ng-class="{'glyphicon-chevron-down' :  controller.detailOwner,'glyphicon-chevron-right': !controller.detailOwner}">
+												</i>
+											</div>
+										</a>
+									</div>
+								</accordion-heading>
+								<div class="col-xs-12" style="padding:0px">
+									<div class="row">
+										<div class="col-xs-12">
+											<totvs-page-detail-info 
+												id="buyer"
+												class="col-xs-12 col-md-6" 
+												title="{{:: 'l-buyer' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['cod-comprado']}} - {{controller.model.ttCotacaoItem['cod-comprado-desc']}}">
+											</totvs-page-detail-info>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12">
+											<totvs-page-detail-info 
+												id="contact"
+												class="col-xs-12 col-md-6" 
+												title="{{:: 'l-contact' | i18n}}" 
+												value="{{controller.model.ttCotacaoItem['contato']}}">
+											</totvs-page-detail-info>
+										</div>
+									</div>
+
+									<div class="row" style="margin-top:10px">
+										<div class="col-xs-12">
+											<totvs-page-detail-info 
+												id="creator"
+												class="col-xs-12" 
+												title="{{ 'l-creator' | i18n: []: 'dts/mcc' }}" 
+												value="{{controller.model.ttCotacaoItem['cod-usuar-criador']}}">
+											</totvs-page-detail-info>
+										</div>
+									</div>
+								</div>
+							</accordion-group>
+
+							<!-- Comentários -->
+							<accordion-group is-open="false">
+								<accordion-heading>
+									<div class="row">
+										<a ng-click="controller.detailComments=!controller.detailComments">
+											<div class="col-xs-10">{{:: 'l-comments' | i18n}}</div>
+											<div class="col-xs-2 text-right">
+												<i class="pull-right glyphicon"
+													ng-class="{'glyphicon-chevron-down' :  controller.detailComments,'glyphicon-chevron-right': !controller.detailComments}">
+												</i>
+											</div>
+										</a>
+									</div>
+								</accordion-heading>
+								<div class="col-xs-12" style="padding:0px">
+									<div class="row">
+										<div class="col-xs-12">
+											<totvs-page-detail-info 
+												id="comments"
+												class="col-xs-12" 
+												title="{{:: 'l-comments' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['narrativa']}}">
+											</totvs-page-detail-info>
+										</div>
+									</div>
+								</div>
+							</accordion-group>
+
+							<!-- Importação -->
+							<accordion-group is-open="false" ng-if="controller.importQuotation">
+								<accordion-heading>
+									<div class="row">
+										<a ng-click="controller.detailImport=!controller.detailImport">
+											<div class="col-xs-10">{{:: 'l-import' | i18n}}</div>
+											<div class="col-xs-2 text-right">
+												<i class="pull-right glyphicon"
+													ng-class="{'glyphicon-chevron-down' :  controller.detailImport,'glyphicon-chevron-right': !controller.detailImport}">
+												</i>
+											</div>
+										</a>
+									</div>
+								</accordion-heading>
+								<div class="col-xs-12" style="padding: 0">
+									<div class="row">
+										<div class="col-xs-12 col-sm-6" >
+											<totvs-page-detail-info 
+												id="quotation-map"
+												class="col-xs-12 col-sm-4" 
+												title="{{:: 'l-quotation-map' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['mapa-cotacao']}}">
+											</totvs-page-detail-info>
+											
+										</div>
+										<div class="col-xs-12 col-sm-6" >
+											<totvs-page-detail-info 
+												id="incoterm"
+												class="col-md-6" 
+												title="{{:: 'l-incoterm' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['cod-incoterm']}} - {{controller.model.ttCotacaoItem['cod-incoterm-desc']}}">
+											</totvs-page-detail-info>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12 col-sm-6" >
+											<totvs-page-detail-info 
+												id="base-control-point"
+												class="col-md-12" 
+												title="{{:: 'l-base-control-point' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['Cod-pto-contr-base']}} - {{controller.model.ttCotacaoItem['cod-pto-contr-base-desc']}}">
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-xs-12 col-sm-6" >
+											<totvs-page-detail-info 
+												id="import-manufacturer"
+												class="col-md-12" 
+												title="{{ 'l-manufacturer' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['cdn-fabrican']}} - {{controller.model.ttCotacaoItem['cdn-fabrican-nome']}}">
+											</totvs-page-detail-info>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12 col-sm-6" >
+											<totvs-page-detail-info 
+												id="source-country"
+												class="col-md-12" 
+												title="{{:: 'l-source-country' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['cdn-pais-orig']}} - {{controller.model.ttCotacaoItem['cdn-pais-orig-desc']}}">
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-xs-12 col-sm-6" >
+											<totvs-page-detail-info 
+												id="tax-classification"
+												class="col-md-12" 
+												title="{{:: 'l-tax-classification' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['Class-fiscal']}} - {{controller.model.ttCotacaoItem['class-fiscal-desc']}}">
+											</totvs-page-detail-info>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12 col-sm-6" >
+											<totvs-page-detail-info 
+												id="import-system"
+												class="col-md-8" 
+												title="{{:: 'l-import-system' | i18n}}" 
+												value="{{controller.model.ttCotacaoItem['Regime-impot']}}">
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-xs-12 col-sm-6" >
+											<totvs-page-detail-info 
+												id="aliquot-ii"
+												class="col-xs-12 col-sm-6" 
+												title="{{:: 'l-aliquot-ii' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['aliquota-ii'] | number:2}}">
+											</totvs-page-detail-info>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-12 col-sm-6" >
+											<totvs-page-detail-info 
+												id="itinerary"
+												class="col-xs-12 col-sm-6" 
+												title="{{:: 'l-itinerary' | i18n }}" 
+												value="{{controller.model.ttCotacaoItem['itinerario']}} - {{controller.model.ttCotacaoItem['itinerario-desc']}}">
+											</totvs-page-detail-info>
+										</div>
+										<div class="col-xs-12 col-sm-6" >
+											<totvs-page-detail-info 
+												id="expense-automatic-generation"
+												class="col-xs-12" 
+												title="{{:: 'l-expense-automatic-generation' | i18n }}">
+												<span ng-if="controller.model.ttCotacaoItem['log-gerac-autom-despes']">
+													{{:: 'l-yes' | i18n }}
+												</span>
+												<span ng-if="!controller.model.ttCotacaoItem['log-gerac-autom-despes']">
+													{{:: 'l-no' | i18n }}
+												</span>
+											</totvs-page-detail-info>
+										</div>
+									</div>
+								</div>
+							</accordion-group>
+						</accordion>
+					</div>
+				</form>
+			</fieldset>
+		</totvs-page-detail>
+	</totvs-page-content>
+</totvs-page>

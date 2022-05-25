@@ -1,0 +1,216 @@
+<style>
+	.container-cod-refer {
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
+		padding-top: 0 !important;
+		padding-bottom: 0 !important;
+	}
+	.button-narrative {
+		padding: 0px 10px !important;
+	}
+</style>
+
+<div
+	ng-controller="salesorder.internalOrderDetailItemDetail.Controller as itemDetailController"
+	totvs-custom-element="order-detail-items-grid"
+>
+	<totvs-grid
+		grid-data="controller.ttOrderItem"
+		grid="controller.itensGrid"
+		auto-resize-content="true"
+		grid-height="500"
+		selectable="row"
+	>
+		<totvs-grid-column field="nr-sequencia" width="50">
+			{{ 'l-sequencia' | i18n : [] : 'dts/mpd' }}
+		</totvs-grid-column>
+		<totvs-grid-column field="it-codigo" width="150">
+			{{ 'l-cod-item' | i18n : [] : 'dts/mpd' }}
+		</totvs-grid-column>
+		<totvs-grid-column field="it-codigo-desc" class="text-nowrap" width="300">
+			{{ 'l-descricao' | i18n : [] : 'dts/mpd' }}
+		</totvs-grid-column>
+		<totvs-grid-column field="qt-pedida" width="100" filter="number : 4" style="text-align: right;">
+			{{ 'l-requested-quantity' | i18n : [] : 'dts/mpd' }}
+		</totvs-grid-column>
+		<totvs-grid-column field="vl-tot-it" filter="currency : " width="150" style="text-align: right;">
+			{{ :: 'l-vl-tot-it'| i18n : [] : 'dts/mpd' }}
+		</totvs-grid-column>
+		<totvs-grid-detail>
+			<div ng-init="itemDetailController.initItemDelivery(dataItem)">
+				<div style="margin-left: -15px">
+					<totvs-page-detail-info
+						title="{{ 'l-natur-oper' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-12 col-sm-4 col-md-3"
+					>
+						{{ dataItem['nat-operacao'] }} - {{ dataItem['nat-operacao-desc'] }} 
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info
+						title="{{ 'l-reference' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-12 col-sm-4 col-md-3 container-cod-refer"
+					>
+						{{ dataItem['cod-refer'] }}
+
+						<a 
+							class="btn btn-default btn-sm button-narrative"
+							role="button"
+							ng-show="
+								!itemsGridController.orderDisabled
+								&& dataItem['char-2'].substr(89, 3) == 'yes'
+								&& dataItem['cod-refer'] != ''
+								&& dataItem['cod-sit-item'] != 6
+							"
+							ng-click="itemDetailController.openConfigNarrative(dataItem['it-codigo'], dataItem['cod-refer'])"
+						>
+							<span class="glyphicon glyphicon-list-alt"></span>
+						</a>
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info
+						title="{{ 'l-unidade-medida' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-12 col-sm-4 col-md-3"
+					>
+						{{ dataItem['des-un-medida'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info
+						title="{{ 'Tabela de Preço' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-12 col-sm-4 col-md-3"
+					>
+						{{ dataItem['nr-tabpre'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info
+						title="{{ 'Preço Tabela' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-12 col-sm-4 col-md-3"
+					>
+						{{ dataItem['vl-pretab']| number:4 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info
+						title="{{ 'Preço Líquido' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-12 col-sm-4 col-md-3"
+					>
+						{{ dataItem['vl-preuni']| number:4 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info
+						title="{{ 'Preço Original' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-12 col-sm-4 col-md-3"
+					>
+						{{ dataItem['vl-preori']| number:4 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info
+						title="{{ 'Situação do Item' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-12 col-sm-4 col-md-3"
+					>
+						{{ dataItem['cod-sit-item-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info
+						title="{{ 'Data Entrega' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-12 col-sm-4 col-md-3"
+					>
+						{{ dataItem['dt-entrega'] | date }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info
+						title="{{ 'Quantidade Pedida' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-12 col-sm-4 col-md-3"
+					>
+						{{ dataItem['qt-pedida']| number:4 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info
+						title="{{ 'Quantidade Atendida' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-12 col-sm-4 col-md-3"
+					>
+						{{ dataItem['qt-atendida']| number:4 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info
+						title="{{ 'Saldo' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-12 col-sm-4 col-md-3"
+					>
+						{{ dataItem['qt-pedida'] - dataItem['qt-atendida']| number:4 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info
+						title="{{ 'Situação da Alocação' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-12 col-sm-4 col-md-3"
+					>
+						{{ dataItem['cod-sit-pre-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info
+						title="{{ 'Quantidade Alocada' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-12 col-sm-4 col-md-3"
+					>
+						{{ dataItem['qt-alocada']| number:4 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info
+						title="{{ 'Parcela' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-12 col-sm-4 col-md-3"
+					>
+						{{ dataItem['parcela'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info
+						title="{{ 'Número da Ordem de Compra' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-12 col-sm-4 col-md-3"
+					>
+						{{ dataItem['cod-ord-compra'] }}
+					</totvs-page-detail-info>
+				</div>
+
+				<field
+					type="textarea"
+					ng-model="dataItem['observacao']"
+					rows="2"
+					ng-disabled="true"
+					class="col-xs-12" style="padding:0"
+				>
+				</field>
+
+				<div class="row col-xs-6" style="padding-top: 15px; padding-bottom: 15px">
+					<a class="btn btn-default" role="button" ng-click="itemDetailController.loadSimpleDelivery(dataItem)">
+						<span class="glyphicon glyphicon-list"></span>
+						<span class="hidden-xs ng-binding" style="padding-left: 5px;">
+							Entregas
+						</span>
+					</a>
+
+					<a class="btn btn-default" role="button" ng-click="itemDetailController.loadItemInvoices(dataItem)">
+						<span class="glyphicon glyphicon-list"></span>
+						<span class="hidden-xs ng-binding" style="padding-left: 5px;">
+							Notas
+						</span>
+					</a>
+
+					<a class="btn btn-default" style="margin: 10px 0;" ng-click="itemDetailController.openItemModal(dataItem)">
+						<span class="glyphicon glyphicon-file"></span>
+						<span class="hidden-xs ng-binding">
+							{{ :: 'l-detail' | i18n : [] : 'dts/mpd' }}
+						</span>
+					</a>
+				</div>
+
+				<!--<div class="row" style="margin: 0;">
+					<totvs-grid grid-data="itemDetailController.simpledeliverylist"
+								grid="deliveryController.delivertyItemsGrid"
+								grid-height="150"
+								auto-resize-content="false">
+						<totvs-grid-column field="nr-entrega" width="50">{{ 'Nr Entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+						<totvs-grid-column field="dt-entrega" width="50" filter="date">{{ 'Dt Entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+						<totvs-grid-column field="hr-entrega" width="50">{{ 'Hora Entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+						<totvs-grid-column field="qt-pedida" width="50">{{ 'Qtde Pedida' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+						<totvs-grid-column field="cod-sit-ent-desc" width="50">{{ 'Descrição Situação' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					</totvs-grid>
+				</div>-->
+			</div>
+		</totvs-grid-detail>
+	</totvs-grid>
+</div>

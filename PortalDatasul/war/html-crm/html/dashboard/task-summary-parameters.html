@@ -1,0 +1,94 @@
+<totvs-modal-header>
+	{{ 'l-parameters' | i18n: []: 'dts/crm' }} {{'l-task-summary' | i18n : [] : 'dts/crm/' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<fieldset class="row">
+
+		<totvs-field totvs-combo
+					 label="{{ 'l-opening-period' | i18n: []: 'dts/crm' }}"
+					 ng-model="controller.model.idi_period"
+					 t-options="controller.periods"
+					 ng-required="true"
+					 canclean>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</totvs-field>
+
+		<totvs-field totvs-checkbox
+					 t-bsswitch
+					 class="col-xs-12 col-md-6"
+					 ng-model="controller.model.log_only_user_task"
+					 label="{{ 'l-task-filter-mine' | i18n: []: 'dts/crm' }}">
+		</totvs-field>
+
+		<totvs-divider></totvs-divider>
+
+        <totvs-field totvs-combo
+					 label="{{ 'l-view-by' | i18n: []: 'dts/crm' }}"
+					 ng-model="controller.model.idi_agrupador"
+					 t-options="controller.groups"
+					 ng-required="true"
+					 canclean>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</totvs-field>
+        
+        <totvs-field totvs-checkbox
+                     t-bsswitch
+                     class="col-xs-12 col-md-6"
+                     ng-model="controller.model.log_only_open_tasks"
+                     label="{{ 'l-only-open-tasks' | i18n: []: 'dts/crm' }}">
+		</totvs-field>
+
+        <totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-campaign' | i18n: []: 'dts/crm' }} {{ controller.campaigns.length ? '(' + controller.campaigns.length + ')' : '' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.model.num_id_campanha"
+			 t-multi-id="num_id"
+			 t-multi-description="nom_campanha"
+			 t-data="controller.campaigns">
+		</totvs-field>
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-action' | i18n: []: 'dts/crm' }} {{ controller.actions.length ? '(' + controller.actions.length + ')' : '' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.model.num_id_acao"
+			 t-multi-id="num_id"
+			 t-multi-description="nom_acao"
+			 t-data="controller.actions">
+		</totvs-field>
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-objective' | i18n: []: 'dts/crm' }} {{ controller.objectives.length ? '(' + controller.objectives.length + ')' : '' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.model.num_id_objet"
+			 t-multi-id="num_id"
+			 t-multi-description="nom_objet_acao"
+			 t-data="controller.objectives">
+		</totvs-field>
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 ng-disabled="controller.model.log_only_user_task"
+			 label="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }} {{ controller.users.length ? '(' + controller.users.length + ')' : '' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.model.num_id_respons"
+			 t-multi-id="num_id"
+			 t-multi-description="nom_usuar"
+			 t-data="controller.users">
+		</totvs-field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-primary" ng-click="controller.apply(true)">{{ 'btn-apply' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

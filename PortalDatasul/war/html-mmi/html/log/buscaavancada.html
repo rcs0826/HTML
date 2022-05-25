@@ -1,0 +1,72 @@
+<totvs-modal-header>{{ 'l-advanced-search' | i18n}}</totvs-modal-header>
+<totvs-modal-body>
+    <totvs-page-form>
+        <accordion class="col-lg-12" close-others="controller.closeOther">
+            <accordion-group is-open="controller.advancedSearch.accord.pendencia">
+                <accordion-heading>
+                    {{'l-pendencia' | i18n}} <i class="pull-right glyphicon"
+                        ng-class="{'glyphicon-chevron-down': controller.advancedSearch.accord.pendencia, 'glyphicon-chevron-right': !controller.advancedSearch.accord.pendencia}"></i>
+                </accordion-heading>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <totvs-field totvs-checkbox t-bsswitch ng-disabled="false"
+                        data-ng-model="controller.advancedSearch.logApontamentoMobMi" class="col-xs-3"
+                        label="{{'l-apontamento-mi' | i18n}}">
+                    </totvs-field>
+
+                    <totvs-field totvs-checkbox t-bsswitch ng-disabled="false"
+                        data-ng-model="controller.advancedSearch.logApontamentoMobFrotas" class="col-xs-3"
+                        label="{{'l-apontamento-frotas' | i18n}}"> 
+                    </totvs-field>
+
+                    <totvs-field totvs-checkbox t-bsswitch ng-disabled="false"
+                        data-ng-model="controller.advancedSearch.logCriacaoOm" class="col-xs-3"
+                        label="{{'l-cria-ordem-mi' | i18n}}"> 
+                    </totvs-field>
+
+                    <totvs-field totvs-checkbox t-bsswitch ng-disabled="false"
+                        data-ng-model="controller.advancedSearch.logSolicitacaoServico" class="col-xs-3"
+                        label="{{'l-cria-solicitacao-mi' | i18n}}"> 
+                    </totvs-field>
+                    <totvs-field 
+                            totvs-checkbox t-bsswitch ng-disabled="false"
+                            data-ng-model="controller.advancedSearch.logEncerramentoOm" class="col-xs-3"
+                            label="{{'l-work-order-closing' | i18n}}(MI)"> 
+                    </totvs-field>
+                </div>
+            </accordion-group>
+
+            <accordion-group is-open="controller.advancedSearch.accord.parametros">
+                <accordion-heading>
+                    {{'l-parameters' | i18n}}<i class="pull-right glyphicon"
+                        ng-class="{'glyphicon-chevron-down': controller.advancedSearch.accord.parametros, 'glyphicon-chevron-right': !controller.advancedSearch.accord.parametros}"></i>
+                </accordion-heading>
+                <div class="col-lg-12 col-md-10 col-sm-12 col-xs-12">
+                    <totvs-field totvs-date-range class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        ng-model='controller.advancedSearch.dateRange'
+                        label="{{'l-initial-date' | i18n }} / {{'l-final-date' | i18n}}" canclean t-mask-date
+                        ng-show=true>
+                    </totvs-field>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <field type="input" class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        data-ng-model="controller.advancedSearch.numeroDocumento" label="{{ 'l-document' | i18n }}"
+                        canclean>
+                    </field>
+                    <field type="input" class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        data-ng-model="controller.advancedSearch.codigoUsuario" label="{{ 'l-user' | i18n }}" canclean>
+                    </field>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <field type="input" class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        data-ng-model="controller.advancedSearch.codigEstabelecimento" maxlength="8"
+                        label="{{ 'l-site' | i18n }}" canclean>
+                    </field>
+                </div>
+            </accordion-group>
+        </accordion>
+    </totvs-page-form>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button ng-click="controller.cancelar()" class="btn btn-default">{{ 'l-cancel' | i18n}}</button>
+    <button ng-click="controller.pesquisar()" class="btn btn-primary">{{ 'l-search' | i18n}}</button>
+</totvs-modal-footer>

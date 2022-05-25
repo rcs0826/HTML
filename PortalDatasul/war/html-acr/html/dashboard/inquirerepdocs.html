@@ -1,0 +1,226 @@
+<div ng-controller="acr.dashboard.inquirerepdocs.Controller as dashInquireRepDocsCtrl">
+    <totvs-widget>
+        <acr-totvs-widget-header list="dashInquireRepDocsCtrl.showList()"
+                                 charts="dashInquireRepDocsCtrl.showCharts()"
+                                 settings="dashInquireRepDocsCtrl.showConfig()"
+								 title="{{'l-representative-docs' | i18n : [] : 'dts/acr/' }}">
+			<i class="glyphicon glyphicon-info-sign hidden-xs"
+			   tooltip-placement="bottom"
+			   tooltip-html="dashInquireRepDocsCtrl.tooltipHelp">
+			</i>
+		</acr-totvs-widget-header>
+        <totvs-widget-body>
+
+            <div>			
+                <div class="no-gutter" ng-show="dashInquireRepDocsCtrl.listShow">
+		        <br>
+                    <div class="col-md-6">
+
+                        <h5 class="col-md-6">
+                            <b>{{ 'l-expired' | i18n : [] : 'dts/acr/' }}</b>
+                        </h5>
+
+                        <h5 class="col-md-6 text-right"
+                            ng-if="dashInquireRepDocsCtrl.vencidos == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/acr'}}
+                        </h5>
+
+                        <h5 ng-click="dashInquireRepDocsCtrl.openList(1,null);"
+                            class="col-md-6 text-right clickable btn-link" 
+                            ng-if="dashInquireRepDocsCtrl.vencidos != undefined">
+                            <b>{{dashInquireRepDocsCtrl.vencidos | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/acr' )}}</b>
+                        </h5>
+
+                        <div ng-if="dashInquireRepDocsCtrl.listResult != undefined">
+                            <totvs-list-item 
+                                ng-repeat="titulo in dashInquireRepDocsCtrl.listResult" 
+                                ng-if="((titulo.numSituacao == 1) && ((dashInquireRepDocsCtrl.aVencer != 0) || (dashInquireRepDocsCtrl.vencidos != 0)))">
+
+                                <totvs-list-item-content>
+
+                                    <totvs-list-item-info
+                                        class="col-md-6"
+                                        value="{{dashInquireRepDocsCtrl.traduzFaixa(titulo['numFaixaVencto'])}}">
+                                    </totvs-list-item-info>
+
+                                    <totvs-list-item-info
+                                        ng-click="dashInquireRepDocsCtrl.openList(1,titulo['numFaixaVencto']);"
+                                        class="col-md-6 text-right clickable btn-link"
+                                        value="{{titulo['valSdoFaixaVencto'] | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/acr' )}}">
+                                    </totvs-list-item-info>
+
+                                </totvs-list-item-content>
+                            </totvs-list-item>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+
+                        <h5 class="col-md-6">
+                            <b>{{ 'l-not-expired' | i18n : [] : 'dts/acr/' }}</b>
+                        </h5>
+
+                        <h5 class="col-md-6 text-right" 
+                            ng-if="dashInquireRepDocsCtrl.aVencer == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/acr'}}
+                        </h5>
+
+                        <h5 ng-click="dashInquireRepDocsCtrl.openList(2,null);"
+                            class="col-md-6 text-right clickable btn-link" 
+                            ng-if="dashInquireRepDocsCtrl.aVencer != undefined">
+                            <b>{{dashInquireRepDocsCtrl.aVencer | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/acr' )}}</b>
+                        </h5>
+
+                        <div ng-if="dashInquireRepDocsCtrl.listResult != undefined">
+
+                            <totvs-list-item
+                                ng-repeat="titulo in dashInquireRepDocsCtrl.listResult" 
+                                ng-if="((titulo.numSituacao == 2) && ((dashInquireRepDocsCtrl.aVencer != 0) || (dashInquireRepDocsCtrl.vencidos != 0)))">
+
+                                <totvs-list-item-content>
+
+                                    <totvs-list-item-info
+                                        class="col-md-6"
+                                        value="{{dashInquireRepDocsCtrl.traduzFaixa(titulo['numFaixaVencto'])}}">
+                                    </totvs-list-item-info>
+
+                                    <totvs-list-item-info
+                                        ng-click="dashInquireRepDocsCtrl.openList(2,titulo['numFaixaVencto']);"
+                                        class="col-md-6 text-right clickable btn-link"
+                                        value="{{titulo['valSdoFaixaVencto'] | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/acr' )}}">
+                                    </totvs-list-item-info>
+
+                                </totvs-list-item-content>
+                            </totvs-list-item>
+                        </div>
+                    </div>
+
+                    <div ng-if="((dashInquireRepDocsCtrl.vencidos == 0) && (dashInquireRepDocsCtrl.aVencer == 0))">
+                        <div class="col-md-12">
+
+                            <totvs-divider></totvs-divider>
+
+                            <totvs-widget>
+                                <totvs-widget-header class="text-center">
+                                    {{ 'msg-no-documents' | i18n: []: 'dts/acr' }}
+                                </totvs-widget-header>
+                            </totvs-widget>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="no-gutter" ng-show="dashInquireRepDocsCtrl.chartsShow">
+                <br>
+                    <div class="col-md-6">
+
+                        <h5 class="col-md-6">
+                            <b>{{ 'l-expired' | i18n : [] : 'dts/acr/' }}</b>
+                        </h5>
+
+                        <h5 class="col-md-6 text-right" 
+                            ng-if="dashInquireRepDocsCtrl.vencidos == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/acr'}}
+                        </h5>
+
+                        <h5 ng-click="dashInquireRepDocsCtrl.openList(1,null);"
+                            class="col-md-6 text-right clickable btn-link"
+                            ng-if="dashInquireRepDocsCtrl.vencidos != undefined">
+                            <b>{{dashInquireRepDocsCtrl.vencidos | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/acr' )}}</b>
+                        </h5>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <h5 class="col-md-6">
+                            <b>{{ 'l-not-expired' | i18n : [] : 'dts/acr/' }}</b>
+                        </h5>
+
+                        <h5 class="col-md-6 text-right" 
+                            ng-if="dashInquireRepDocsCtrl.aVencer == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/acr'}}
+                        </h5>
+
+                        <h5 ng-click="dashInquireRepDocsCtrl.openList(2,null);"
+                            class="col-md-6 text-right clickable btn-link"
+                            ng-if="dashInquireRepDocsCtrl.aVencer != undefined">
+                            <b>{{dashInquireRepDocsCtrl.aVencer | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/acr' )}}</b>
+                        </h5>
+
+                    </div>
+
+                    <div class="col-md-12 no-gutter">
+                        <acr-totvs-chart 
+                            t-type-chart="column"
+                            t-on-click="dashInquireRepDocsCtrl.onClick"
+                            t-series="dashInquireRepDocsCtrl.series"
+                            t-categories="dashInquireRepDocsCtrl.categories"
+                            t-width="dashInquireRepDocsCtrl.tamGrafico">
+                        </acr-totvs-chart>
+                    </div>		        
+                </div>
+
+                <div ng-hide="dashInquireRepDocsCtrl.listShow == true || dashInquireRepDocsCtrl.chartsShow == true">
+                    <form>
+                        <div class="row">																																											
+
+                            <totvs-field 
+                                totvs-datepicker 
+                                class="col-md-12" 
+                                ng-model="dashInquireRepDocsCtrl.dataemis" 
+                                label="{{ 'l-after-issue-date' | i18n: []: 'dts/acr' }}"
+                                t-mask-date="00/00/0000" 
+                                required="true">
+                                <validator key="required">{{ 'l-required' | i18n: [] : 'dts/acr' }}</validator>
+                            </totvs-field>
+
+                            <totvs-field 
+                                totvs-datepicker
+                                class="col-md-12" 
+                                ng-model="dashInquireRepDocsCtrl.datavenc" 
+                                label="{{ 'l-due-date-until' | i18n: []: 'dts/acr' }}"
+                                t-mask-date="00/00/0000"
+                                required="true">
+                                <validator key="required">{{ 'l-required' | i18n: [] : 'dts/acr' }}</validator>
+                            </totvs-field>
+
+                            <field type="select"
+                                canclean="undefined"
+                                ng-required="false"
+                                ng-model="dashInquireRepDocsCtrl.model.ttCustomer"
+                                ng-change="dashInquireRepDocsCtrl.onChangeCustomer(dashInquireRepDocsCtrl.model.ttCustomer)">
+
+                                <label>{{ 'l-customer' | i18n: []: 'dts/acr' }}</label>
+
+                                <include>
+                                    <ui-select-match placeholder="{{ 'l-all-customers' | i18n: []: 'dts/acr' }}">{{ $select.selected.nomAbrev }} ({{ $select.selected.cdnCliente }})</ui-select-match>
+                                    <ui-select-choices repeat="customer in dashInquireRepDocsCtrl.customersOfRepres | filter: $select.search track by $index"
+                                                       refresh="dashInquireRepDocsCtrl.getCustomers($select.search)"
+                                                       refresh-delay="500">
+                                        <span ng-bind-html="customer.nomAbrev + ' (' + customer.cdnCliente + ')' | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </include>
+
+                            </field>																								
+                        </div>
+                    </form>
+                    <hr>
+                    <a role="button" class="btn btn-default pull-right" ng-click="dashInquireRepDocsCtrl.applyConfig()">&nbsp; {{ 'btn-apply' | i18n : [] : 'dts/acr/' }} &nbsp; </a>	                                
+                </div>			
+            </div>
+			
+        </totvs-widget-body>
+
+        <totvs-widget-footer>
+
+            <totvs-widget-footer-body>
+            </totvs-widget-footer-body>
+
+            <totvs-widget-footer-actions>
+                <action class="clickable btn-link" ng-click="dashInquireRepDocsCtrl.openList(null,null);">{{ 'l-detail' | i18n : [] : 'dts/acr/' }}</action>
+            </totvs-widget-footer-actions>
+
+        </totvs-widget-footer>
+    </totvs-widget>
+</div>       
+        

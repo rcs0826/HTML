@@ -1,0 +1,331 @@
+<totvs-page type="detail">
+    <totvs-page-navbar>
+        
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{ 'l-history-om-programming' | i18n }}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            <totvs-page-header-title title="{{ 'l-history-om-programming' | i18n }}"></totvs-page-header-title>
+            
+            <div class="row" style="padding-left: 15px;">                
+                <div class="dropdown alinha-menu-dropdown">
+                    <button class="btn btn-primary dropdown-toggle"
+                            type="button"
+                            style="margin-top: 10px;" 
+                            id="dropdownMenu1" 
+                            data-toggle="dropdown" 
+                            aria-haspopup="true" 
+                            aria-expanded="true">
+                        {{ 'l-export-csv' | i18n }}
+                        <span class="caret"></span>
+                    </button>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
+                        <li>
+                            <a href="#" ng-click="historicoCtrl.exportaHistImpedimento()">{{'l-export-impeachment-history' | i18n}}</a>
+                        </li>
+                        <li>
+                            <a href="#" ng-click="historicoCtrl.exportaHistProgramacao()">{{'l-export-reprogramming' | i18n}}</a>
+                        </li>
+                    </ul>
+                </div>                
+            </div>
+
+        </totvs-page-header>
+        
+    </totvs-page-navbar>
+    
+    <totvs-page-content>
+        <totvs-page-detail>
+                        
+            <div style="height: 620px">
+                <totvs-tabset class="col-xs-12">
+                    <totvs-tab heading="{{'l-parameters' | i18n }}">
+                        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" style="padding-top: 20px">
+                            <totvs-field totvs-date-range
+                                         class="col-md-8" 
+                                         ng-model="historicoCtrl.param.periodo" 
+                                         label="{{ 'l-opening-date' | i18n }}"
+                                         t-mask-date 
+                                         canclean>
+                            </totvs-field>
+                        </div>
+                    
+                        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" style="padding-top: 30px">
+
+                            <div class="col-lg-12">
+                                <label class="field-label" style="margin-bottom: 0">{{'l-order-status' | i18n}}</label>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+                                <totvs-field totvs-checkbox
+                                             t-bsswitch 
+                                             ng-disabled="false"
+                                             data-ng-model="historicoCtrl.param.lNaoIniciada"
+                                             class="col-xs-12 row"
+                                             label="{{ 'l-not-started' | i18n }}">
+                                </totvs-field>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+                                <totvs-field totvs-checkbox
+                                             t-bsswitch 
+                                             ng-disabled="false"
+                                             data-ng-model="historicoCtrl.param.lIniciada"
+                                             class="col-xs-12 row"
+                                             label="{{ 'l-started' | i18n }}">
+                                </totvs-field>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
+                                <totvs-field totvs-checkbox
+                                             t-bsswitch 
+                                             ng-disabled="false"
+                                             data-ng-model="historicoCtrl.param.lTerminada"
+                                             class="col-xs-12 row"
+                                             label="{{ 'l-done' | i18n }}">
+                                </totvs-field>
+                            </div>
+                        </div>
+                    </totvs-tab>
+                    
+                    <totvs-tab heading="{{'l-filter' | i18n }}">                                            
+                        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" style="padding-top: 20px; padding-left: 0px">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <totvs-field totvs-input
+                                             class="col-xs-12 "
+                                             ng-model="historicoCtrl.param.ordemInicial"
+                                             ng-blur="historicoCtrl.sugereFinal(1)"
+                                             label="{{ 'l-maintenance-order' | i18n }}">
+                                </totvs-field>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" 
+								 style="margin-top: 35px; text-align: center;">
+                                {{'l-to' | i18n}}
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <totvs-field totvs-input
+                                             class="col-xs-12 "
+                                             ng-model="historicoCtrl.param.ordemFinal"
+                                             label="{{ 'l-maintenance-order' | i18n }}">
+                                </totvs-field>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <totvs-field totvs-input
+                                             class="col-xs-12 "
+                                             ng-model="historicoCtrl.param.empresaInicial"
+                                             ng-blur="historicoCtrl.sugereFinal(2)"
+                                             label="{{ 'l-company' | i18n }}">
+                                </totvs-field>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" 
+								 style="margin-top: 35px; text-align: center;">
+                                {{'l-to' | i18n}}
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <totvs-field totvs-input
+                                             class="col-xs-12"
+                                             ng-model="historicoCtrl.param.empresaFinal"
+                                             label="{{ 'l-company' | i18n }}">
+                                </totvs-field>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <totvs-field totvs-input
+                                             class="col-xs-12"
+                                             ng-model="historicoCtrl.param.estabelInicial"
+                                             ng-blur="historicoCtrl.sugereFinal(3)"
+                                             label="{{ 'l-site' | i18n }}">
+                                </totvs-field>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" 
+								 style="margin-top: 35px; text-align: center;">
+                                {{'l-to' | i18n}}
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <totvs-field totvs-input
+                                             class="col-xs-12"
+                                             ng-model="historicoCtrl.param.estabelFinal"
+                                             label="{{ 'l-site' | i18n }}">
+                                </totvs-field>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-11">
+                                <totvs-field totvs-input
+                                             class="col-xs-12 "
+                                             ng-model="historicoCtrl.param.oficinaInicial"
+                                             ng-blur="historicoCtrl.sugereFinal(4)"
+                                             label="{{ 'l-workshop' | i18n }}">
+                                </totvs-field>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" 
+								 style="margin-top: 35px; text-align: center;">
+                                {{'l-to' | i18n}}
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <totvs-field totvs-input
+                                             class="col-xs-12 "
+                                             ng-model="historicoCtrl.param.oficinaFinal"
+                                             label="{{ 'l-workshop' | i18n }}">
+                                </totvs-field>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <totvs-field totvs-input
+                                             class="col-xs-12 "
+                                             ng-model="historicoCtrl.param.planejadorInicial"
+                                             ng-blur="historicoCtrl.sugereFinal(5)"
+                                             label="{{ 'l-planner' | i18n }}">
+                                </totvs-field>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" 
+								 style="margin-top: 35px; text-align: center;">
+                                {{'l-to' | i18n}}
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <totvs-field totvs-input
+                                             class="col-xs-12"
+                                             ng-model="historicoCtrl.param.planejadorFinal"
+                                             label="{{ 'l-planner' | i18n }}">
+                                </totvs-field>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <totvs-field totvs-input
+                                             class="col-xs-12 "
+                                             ng-model="historicoCtrl.param.equipamentoInicial"
+                                             ng-blur="historicoCtrl.sugereFinal(6)"
+                                             label="{{'l-equipment' | i18n }}">
+                                </totvs-field>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" 
+								 style="margin-top: 35px; text-align: center; text-align: center">
+                                {{'l-to' | i18n}}
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <totvs-field totvs-input
+                                             class="col-xs-12"
+                                             ng-model="historicoCtrl.param.equipamentoFinal"
+                                             label="{{'l-equipment' | i18n }}">
+                                </totvs-field>
+                            </div>	 	 
+                        </div>
+
+                        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <totvs-field totvs-input
+                                             class="col-xs-12 "
+                                             ng-model="historicoCtrl.param.tagInicial"
+                                             ng-blur="historicoCtrl.sugereFinal(7)"
+                                             label="{{ 'l-tag' | i18n }}">
+                                </totvs-field>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" 
+								 style="margin-top: 35px; text-align: center;">
+                                {{'l-to' | i18n}}
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 ">
+                                <totvs-field totvs-input
+                                             class="col-xs-12 "
+                                             ng-model="historicoCtrl.param.tagFinal"
+                                             label="{{ 'l-tag' | i18n }}">
+                                </totvs-field>
+                            </div>	 	 
+                        </div>
+
+                        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px">
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <totvs-field totvs-input
+                                             class="col-xs-12 "
+                                             ng-model="historicoCtrl.param.planoInicial"
+                                             ng-blur="historicoCtrl.sugereFinal(8)"
+                                             label="{{'l-maintenance-plan' | i18n }}">
+                                </totvs-field>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" 
+								 style="margin-top: 35px; text-align: center;">
+                                {{'l-to' | i18n}}
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <totvs-field totvs-input
+                                             class="col-xs-12 "
+                                             ng-model="historicoCtrl.param.planoFinal"
+                                             label="{{'l-maintenance-plan' | i18n }}">
+                                </totvs-field>
+                            </div>	 	 
+                        </div>
+                    </totvs-tab>
+
+                    <totvs-tab heading="{{'l-execution' | i18n }}">  
+                        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" style="padding-top: 20px">
+                            <totvs-field totvs-radio
+                                label="{{'l-execution-method' | i18n }}"
+                                t-options="historicoCtrl.options"
+                                ng-model="historicoCtrl.executionType">
+                            </totvs-field>
+                        </div>
+
+                        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" style="padding-top: 20px">
+                            <totvs-field totvs-datepicker
+                                ng-disabled="historicoCtrl.executionType === '1'"
+                                class="col-md-4" 
+                                ng-model="historicoCtrl.execution.date" 
+                                label="{{ 'l-execution-date' | i18n }}"
+                                t-mask-date
+                                canclean>
+                            </totvs-field>
+                            <totvs-field totvs-time
+                                ng-disabled="historicoCtrl.executionType === '1'"
+                                class="col-md-3" 
+                                ng-model="historicoCtrl.execution.time" 
+                                label="{{ 'l-execution-hour' | i18n }}"
+                                canclean>
+                            </totvs-field>
+                        </div>
+
+                        <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12" style="padding-top: 20px">
+                                <totvs-field totvs-select label="{{ 'l-execution-server' | i18n }}"
+                                    ng-disabled="historicoCtrl.executionType == 1"
+                                    ng-model="historicoCtrl.execution.rpwServer"
+                                    class="col-md-7"
+                                    select-id="cod_servid_exec"
+                                    select-description="des_servid_exec"
+                                    select-service="fnd.servid-exec.zoom"
+                                    zoom-service="fnd.servid-exec.zoom"
+                                    return-object="select-id">
+                                </totvs-field>  
+                        </div>
+                    </totvs-tab>
+                </totvs-tabset>
+            </div>                        
+            
+        </totvs-page-detail>
+    </totvs-page-content>         
+</totvs-page>

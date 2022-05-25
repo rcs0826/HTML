@@ -1,0 +1,67 @@
+<totvs-modal-header>
+    {{epiEditControl.headerTitle}}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-page-content style="border:0px">           
+	              
+        <totvs-page-detail style="padding-top:0px">
+          <div class="row">
+            <div class="col-sm-12">	           
+	            <totvs-field totvs-select
+			                 class="col-sm-12"
+			                 ng-model="epiEditControl.epi['cd-tarefa']"
+			                 ng-disabled="epiEditControl.epi.isNew === false"
+			                 select-id="cd-tarefa"
+			                 id="cd-tarefa"
+			                 select-description="descricao"
+			                 select-service="mmi.ord-taref.zoom"
+			                 zoom-service="mmi.ord-taref.zoom"
+			                 label="{{ 'l-task' | i18n }}"
+			                 required
+			                 canclean>
+              	</totvs-field>               
+            </div>
+            <div class="col-sm-12">
+	            <totvs-field totvs-select
+			                 class="col-sm-12"
+			                 ng-model="epiEditControl.epi.equiptoProtecao"
+			                 ng-disabled="epiEditControl.epi.isNew === false"
+			                 select-id="cd-epi"
+			                 id="cd-epi"
+			                 select-description="descricao"
+			                 select-service="mmi.epi.zoom"
+			                 zoom-service="mmi.epi.zoom"
+			                 return-object="select-id"
+			                 label="{{ 'l-epi' | i18n }}"
+			                 required
+			                 canclean>
+                </totvs-field>              
+            </div>
+           	<div class="col-sm-12">
+		  		<totvs-field totvs-decimal
+					name-id="qtde-epi"
+                    id="qtde-epi"
+					class="col-lg-4 col-md-4 col-sm-12 col-xs-12"
+                    value="1"
+                    m-dec="2"
+					ng-maxlength="10"
+					data-ng-model="epiEditControl.epi['qtde-epi']"
+                    required
+					label="{{ 'l-quantity' | i18n }}" >
+                    <validator key="maxlength">{{ 'l-invalid-value' | i18n }}</validator>
+		        </totvs-field>
+           	</div>
+          </div>          
+		</totvs-page-detail>
+				
+	</totvs-page-content>
+	
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="epiEditControl.close()">{{ 'l-cancel' | i18n }}</button>
+    <button ng-if="epiEditControl.epi.isNew" type="button" class="btn btn-default" data-ng-click="epiEditControl.save(true);">{{ 'l-save-new' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="epiEditControl.save(false)">{{ 'l-save' | i18n }}</button>
+</totvs-modal-footer>

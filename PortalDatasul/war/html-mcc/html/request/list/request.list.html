@@ -1,0 +1,277 @@
+<style type="text/css" scoped>
+.page-head .page-tags .tag-1:before {
+    content: "1";
+}
+.page-head .page-tags .tag-3:before {
+    content: "2";
+}
+.page-head .page-tags .tag-4:before {
+    content: "3";
+}
+</style>
+<totvs-page type="list" totvs-custom-element="customRequest_list">    
+    
+	<totvs-page-navbar>
+
+		 <totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n: []: 'dts/mcc' }}</breadcrumb>
+			<breadcrumb>{{ 'l-requests' | i18n: []: 'dts/mcc' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'l-requests' | i18n: []: 'dts/mcc' }}" 
+								 	total="{{controller.modelListCount}}"
+								 	settings="controller.settings()">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<totvs-page-header-operation-action limit-primary-action="3" 
+													items="controller.listOfRequests"
+													items-as="request">
+					<action link="#/dts/{{module}}/request/new" icon="glyphicon-plus" ng-if="!controller.isJustForView">{{ 'l-add-request' | i18n: []: 'dts/mcc' }}</action>
+				</totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter placeholder="{{ 'l-request-item-item-description-pch' | i18n: []: 'dts/mcc' }}"
+													ng-submit="controller.load()"
+													ng-model="controller.basicFilter"
+													advanced-search="controller.openAdvancedSearch"
+													clean-search="controller.load()">
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+			<totvs-page-tags>
+				<tag class="tag-1">{{ 'l-inventory' | i18n: []: 'dts/mcc' }}</tag>
+				<tag class="tag-3">{{ 'l-purchase' | i18n: []: 'dts/mcc' }}</tag>
+				<tag class="tag-4">{{ 'l-quotation' | i18n: []: 'dts/mcc' }}</tag>
+			</totvs-page-tags>
+
+			<totvs-page-disclaimers
+					disclaimer-list="controller.disclaimers"
+					ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+		
+	<totvs-page-content>
+
+		<totvs-page-content-header>
+ 
+            <totvs-page-quick-filter
+            	on-select-orderby="controller.orderByChanged"
+                orderby-list="controller.orderby"
+            	orderby-selected="controller.selectedOrderBy">
+            </totvs-page-quick-filter>
+ 
+        </totvs-page-content-header>
+        
+        <totvs-list-item ng-repeat="request in controller.modelList" ng-if="controller.sight == 0"
+		ng-class="{'tag-1' : request['tp-requis'] == 1, 'tag-3' : request['tp-requis'] == 2, 'tag-4' : request['tp-requis'] == 3}" totvs-custom-element="customRequest_listRequestSight">
+            <totvs-list-item-header>    
+
+                <totvs-list-item-title ng-if="!controller.isJustForView"
+                    title="{{controller.translateRequestType(request['tp-requis'])}} {{request['nr-requisicao'] | number}}" link="#/dts/{{module}}/request/detail/{{request['nr-requisicao']}}" class="col-xs-8">
+                </totvs-list-item-title>
+
+                <totvs-list-item-title ng-if="controller.isJustForView"
+                    title="{{controller.translateRequestType(request['tp-requis'])}} {{request['nr-requisicao'] | number}}" link="#/dts/{{module}}/request/search/detail/{{request['nr-requisicao']}}" class="col-xs-8">
+                </totvs-list-item-title>
+
+	            <totvs-list-item-action 
+	            	limit-primary-action="2" 
+	            	ng-if="!controller.isJustForView"
+	            	class="col-xs-4">
+	                
+	                <action link="#/dts/{{module}}/request/edit/{{request['nr-requisicao']}}" icon="glyphicon-pencil" 
+					ng-if="((controller.currentuser.toLowerCase() == request['nome-abrev'].toLowerCase() && !controller.enableUpdate) || (controller.currentuser.toLowerCase() != request['nome-abrev'].toLowerCase() && controller.enableUpdate) || (controller.currentuser.toLowerCase() == request['nome-abrev'.toLowerCase()] && controller.enableUpdate)) && (request.situacao != 2 && request.situacao != 4)">{{ 'btn-edit' | i18n: []: 'dts/mcc' }}</action>
+
+	                <action ng-click="controller.onRemoveRequest(request)" ng-if="((controller.currentuser.toLowerCase() == request['nome-abrev'].toLowerCase() && !controller.enableUpdate) || (controller.currentuser.toLowerCase() != request['nome-abrev'].toLowerCase() && controller.enableUpdate) || (controller.currentuser.toLowerCase() == request['nome-abrev'].toLowerCase() && controller.enableUpdate)) && (request.situacao != 2 && request.situacao != 4)" icon="glyphicon-trash">{{ 'btn-remove' | i18n: []: 'dts/mcc' }}</action>
+
+	                <action ng-click="controller.followUp(request['tp-requis'], request['nr-requisicao'], '', 0, 0, 0);">{{ 'l-followup' | i18n: []: 'dts/mcc' }}</action>
+
+	                <action link="#/dts/{{module}}/request/item/new/{{request['nr-requisicao']}}" ng-if="((controller.currentuser.toLowerCase() == request['nome-abrev'].toLowerCase() && !controller.enableUpdate) || (controller.currentuser.toLowerCase() != request['nome-abrev'].toLowerCase() && controller.enableUpdate) || (controller.currentuser.toLowerCase() == request['nome-abrev'].toLowerCase() && controller.enableUpdate)) && (request.situacao != 2 && request.situacao != 4)">{{ 'l-add-item' | i18n: []: 'dts/mcc' }}</action>
+
+	                <action link="#/dts/{{module}}/request/item/copy/{{request['nr-requisicao']}}" ng-if="((controller.currentuser.toLowerCase() == request['nome-abrev'].toLowerCase() && !controller.enableUpdate) || (controller.currentuser.toLowerCase() != request['nome-abrev'].toLowerCase() && controller.enableUpdate) || (controller.currentuser.toLowerCase() == request['nome-abrev'].toLowerCase() && controller.enableUpdate)) && (request.situacao != 2 && request.situacao != 4)">{{ 'l-copy-items' | i18n: []: 'dts/mcc' }}</action>
+	            </totvs-list-item-action>
+            </totvs-list-item-header>
+
+            <totvs-list-item-content>
+	            <totvs-list-item-info
+	                title="{{ 'l-site' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-3 col-sm-3"
+	                value="{{request['cod-estabel']}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-date' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-3 col-sm-3"
+	                value="{{request['dt-requisicao'] | date :'dd/MM/yyyy'}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-approved-gen' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-3 col-sm-3">
+	                <span ng-if="request.estado == 1">{{ 'l-yes' | i18n: []: 'dts/mcc' }}</span>
+	                <span ng-if="request.estado == 2">{{ 'l-no' | i18n: []: 'dts/mcc' }}</span>
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-status' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-3 col-sm-3"
+	                value="{{request['situacao-desc']}}">
+	            </totvs-list-item-info>
+			</totvs-list-item-content>
+
+        	<totvs-list-item-content-detail>
+            	<totvs-list-item-info
+	                title="{{ 'l-comments' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-12"
+	                value="{{request['requisicao-narrativa']}}">
+                </totvs-list-item-info>
+            </totvs-list-item-content-detail>
+        </totvs-list-item>
+
+		<totvs-list-item ng-repeat="requestItem in controller.modelList" ng-if="controller.sight == 1"
+		ng-class="{'tag-1' : requestItem['tp-requis'] == 1, 'tag-3' : requestItem['tp-requis'] == 2, 'tag-4' : requestItem['tp-requis'] == 3}"  totvs-custom-element="customRequest_listRequestItemSight">
+
+            <totvs-list-item-header>
+
+                <totvs-list-item-title ng-if="!controller.isJustForView"
+                    title="{{requestItem['sequencia'] | number}} - {{requestItem['it-codigo']}}"
+                    link="#/dts/{{module}}/request/item/detail?req={{requestItem['nr-requisicao']}}&seq={{requestItem['sequencia']}}&item={{requestItem['it-codigo-link']}}"
+                    class="col-xs-9">
+                </totvs-list-item-title>
+
+                <totvs-list-item-title ng-if="controller.isJustForView"
+                    title="{{requestItem['sequencia'] | number}} - {{requestItem['it-codigo']}}"
+                    link="#/dts/{{module}}/request/search/item/detail?req={{requestItem['nr-requisicao']}}&seq={{requestItem['sequencia']}}&item={{requestItem['it-codigo-link']}}"
+                    class="col-xs-9">
+                </totvs-list-item-title>
+
+                <totvs-list-item-action 
+                	limit-primary-action="2" 
+                	ng-if="controller.isJustForView"
+                	class="col-xs-3">
+					<action link="#/dts/{{module}}/request/search/detail/{{requestItem['nr-requisicao']}}">{{ 'l-detail-request' | i18n: []: 'dts/mcc' }}</action>
+            	</totvs-list-item-action>
+
+                <totvs-list-item-action 
+                	limit-primary-action="2" 
+                	ng-if="!controller.isJustForView"
+                	class="col-xs-3">
+                    
+                    <action link="#/dts/{{module}}/request/item/edit?req={{requestItem['nr-requisicao']}}&seq={{requestItem['sequencia']}}&item={{requestItem['it-codigo-link']}}" icon="glyphicon-pencil" ng-if="((controller.currentuser.toLowerCase() == requestItem['nome-abrev'].toLowerCase() && !controller.enableUpdate) || (controller.currentuser.toLowerCase() != requestItem['nome-abrev'].toLowerCase() && controller.enableUpdate) || (controller.currentuser.toLowerCase() == requestItem['nome-abrev'].toLowerCase() && controller.enableUpdate)) && (requestItem.situacao != 2 && requestItem.situacao != 4)">{{ 'btn-edit' | i18n: []: 'dts/mcc' }}</action>
+
+                    <action ng-click="controller.onRemoveRequestItem(requestItem)" icon="glyphicon-trash" ng-if="((controller.currentuser.toLowerCase() == requestItem['nome-abrev'].toLowerCase() && !controller.enableUpdate) || (controller.currentuser.toLowerCase() != requestItem['nome-abrev'].toLowerCase() && controller.enableUpdate) || (controller.currentuser.toLowerCase() == requestItem['nome-abrev'].toLowerCase() && controller.enableUpdate)) && (requestItem.situacao != 2 && requestItem.situacao != 4)">{{ 'btn-remove' | i18n: []: 'dts/mcc' }}</action>
+                    
+                    <action link="#/dts/{{module}}/request/item/new/{{requestItem['nr-requisicao']}}" ng-if="((controller.currentuser.toLowerCase() == requestItem['nome-abrev'].toLowerCase() && !controller.enableUpdate) || (controller.currentuser.toLowerCase() != requestItem['nome-abrev'].toLowerCase() && controller.enableUpdate) || (controller.currentuser.toLowerCase() == requestItem['nome-abrev'].toLowerCase() && controller.enableUpdate)) && (requestItem.situacao != 2 && requestItem.situacao != 4)">{{ 'l-add-item' | i18n: []: 'dts/mcc' }}</action>
+                    
+                    <action link="#/dts/{{module}}/request/item/copy/{{requestItem['nr-requisicao']}}" ng-if="((controller.currentuser.toLowerCase() == requestItem['nome-abrev'].toLowerCase() && !controller.enableUpdate) || (controller.currentuser.toLowerCase() != requestItem['nome-abrev'].toLowerCase() && controller.enableUpdate) || (controller.currentuser.toLowerCase() == requestItem['nome-abrev'].toLowerCase() && controller.enableUpdate)) && (requestItem.situacao != 2 && requestItem.situacao != 4)">{{ 'l-copy-items' | i18n: []: 'dts/mcc' 
+                    }}</action>
+                    
+                    <action link="#/dts/{{module}}/request/detail/{{requestItem['nr-requisicao']}}">{{ 'l-detail-request' | i18n: []: 'dts/mcc' }}</action>
+                    
+                    <action link="#/dts/{{module}}/request/edit/{{requestItem['nr-requisicao']}}" ng-if="((controller.currentuser.toLowerCase() == requestItem['nome-abrev'].toLowerCase() && !controller.enableUpdate) || (controller.currentuser.toLowerCase() != requestItem['nome-abrev'].toLowerCase() && controller.enableUpdate) || (controller.currentuser.toLowerCase() == requestItem['nome-abrev'].toLowerCase() && controller.enableUpdate)) && (requestItem.situacao != 2 && requestItem.situacao != 4)">{{ 'l-edit-request' | i18n: []: 'dts/mcc' }}</action>
+                    
+                    <action ng-click="controller.onRemoveRequest(requestItem)" ng-if="((controller.currentuser.toLowerCase() == requestItem['nome-abrev'].toLowerCase() && !controller.enableUpdate) || (controller.currentuser.toLowerCase() != requestItem['nome-abrev'].toLowerCase() && controller.enableUpdate) || (controller.currentuser.toLowerCase() == requestItem['nome-abrev'].toLowerCase() && controller.enableUpdate)) && (requestItem.situacao != 2 && requestItem.situacao != 4)">{{ 'l-remove-request' | i18n: []: 'dts/mcc' }}</action>
+                    
+                    <action ng-click="controller.followUp(requestItem['tp-requis'], requestItem['nr-requisicao'], requestItem['it-codigo'], requestItem.sequencia, 0, 0);">{{ 'l-followup' | i18n: []: 'dts/mcc' }}</action>
+
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+
+            <totvs-list-item-content>
+	            <totvs-list-item-info
+	                title="{{ 'l-solicitation' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-3 col-sm-3"
+	                value="{{requestItem['nr-requisicao'] | number}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-item-description' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-9 col-sm-9"
+	                value="{{requestItem['desc-item']}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-urgent' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-3 col-sm-3">
+	                <span ng-if="requestItem['urgente'] == true">{{ 'l-yes' | i18n: []: 'dts/mcc' }}</span>
+	                <span ng-if="requestItem['urgente'] != true">{{ 'l-no' | i18n: []: 'dts/mcc' }}</span>
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-status' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-3 col-sm-3"
+	                value="{{requestItem['situacao-desc']}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-approved-gen' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-2 col-sm-6">
+	                <span ng-if="requestItem['estado'] == true">{{ 'l-yes' | i18n: []: 'dts/mcc' }}</span>
+	                <span ng-if="requestItem['estado'] != true">{{ 'l-no' | i18n: []: 'dts/mcc' }}</span>
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	            	ng-if="requestItem['tp-requis'] == 1"
+	                title="{{ 'l-delivery-date-hour' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-4 col-sm-6"
+	                value="{{requestItem['dt-entrega'] | date :'dd/MM/yyyy'}} - {{requestItem['hra-entrega'] | limitTo:2 }}:{{requestItem['hra-entrega'] | limitTo:-2 }}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	            	ng-if="requestItem['tp-requis'] != 1"
+	                title="{{ 'l-delivery-date' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-4 col-sm-6"
+	                value="{{requestItem['dt-entrega'] | date :'dd/MM/yyyy'}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-requester' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-3 col-sm-3"
+	                value="{{requestItem['nome-abrev']}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-quantity' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-3 col-sm-6"
+	                value="{{requestItem['qt-requisitada'] | number : 4}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-um' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-3 col-sm-3"
+	                value="{{requestItem['un']}}">
+	            </totvs-list-item-info>
+
+			</totvs-list-item-content>
+
+        	<totvs-list-item-content-detail>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-supplementary-description' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-12 col-sm-12 text-justify"
+	                value="{{requestItem['it-requisicao-narrativa']}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-item-text' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-12 col-sm-12 text-justify"
+	                value="{{requestItem['narrativa-item']}}">
+	            </totvs-list-item-info>
+
+            </totvs-list-item-content-detail>
+        </totvs-list-item>
+		
+		<totvs-list-pagination
+            ng-if="controller.modelList.length < controller.modelListCount && controller.modelList.length"
+            ng-click="controller.load(true);">
+        </totvs-list-pagination>		
+	</totvs-page-content>
+
+</totvs-page>

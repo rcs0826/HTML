@@ -1,0 +1,42 @@
+<totvs-page type="detail" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#{{defaultPageHome}}">{{ 'l-home-page' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-salesorder' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title>
+			{{currentuser['user-entity']}},	{{ 'l-salesorder' | i18n }} {{controller.order['nr-pedido']}}
+				<span class="label label-warning"
+					  ng-if="controller.order['log-cotacao'] == true"
+					  style="font-size: 18px;">
+					{{ 'l-status-order-11' | i18n }}
+				</span>
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action
+					hide-edit="true"
+					hide-back="true"
+					hide-remove="true">
+					<action ng-if="!controller.orderDisabled" ng-click="controller.save();" icon="glyphicon-ok">{{ 'btn-save' | i18n }}</action>
+					<action ng-if="!controller.orderDisabled && controller.hasError == 'false'" ng-click="controller.cancel();" icon="glyphicon-remove">{{ 'btn-cancel' | i18n }}</action>
+					<action ng-if="controller.orderDisabled" ng-click="controller.cancel();" icon="glyphicon-arrow-left">{{ 'btn-back' | i18n }}</action>
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+			<!--h4>{{currentuser['user-entity']}}</h4-->
+
+			<h4>{{ 'l-customer' | i18n }}: {{controller.order['nome-abrev']}} - {{ 'nr-pedcli' | i18n }}: {{controller.order['nr-pedcli']}} </h4>
+
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-form>
+			<totvs-lodash-template src="/dts/mpd/html/order/order-fields.html" template-data="controller.pedVendaCadastroVisibleFields"/>
+		</totvs-page-form>
+	</totvs-page-content>
+</totvs-page>

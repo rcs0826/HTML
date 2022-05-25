@@ -1,0 +1,31 @@
+<div style="max-height: 300px; overflow-y : auto;">
+	<p>{{ 'l-equivalent-item-description' | i18n }}</p>
+	<span ng-show="popoverData.bestEquivalent != ''">{{ 'l-equivalent-item-best' | i18n }}: {{popoverData.bestEquivalent}}.</span>
+	<hr>
+	<div class="table table-condensed">
+		<table class="table">
+			<thead>
+				<tr>
+					<th style="min-width: 100px">{{ 'l-cod-item' | i18n }}</th>
+					<th style="min-width: 120px">{{ 'l-vl-preuni' | i18n }}</th>
+					<th style="min-width: 150px">{{ 'l-inventory' | i18n }}</th>
+					<th style="min-width: 100px">{{ 'l-cod-refer' | i18n }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr data-ng-repeat="item in popoverData.itemsEquivalent track by $index">
+					<td><a class="clickable btn btn-primary btn-xs" template-popover-remove-all
+						ng-click="popoverData.serchitemctrl.quickSearchText = item['it-codigo']; popoverData.serchitemctrl.setFirstTab(); popoverData.serchitemctrl.searchButton();">{{ 'btn-select' | i18n }}</a> &nbsp; &nbsp; {{item['it-codigo']}}</td>
+					<td>{{item['vl-preuni'] | number : 4}}</td>
+					<td ng-if="item.isRepresentative" >{{item['vl-saldo'] | number : 4}}</td>
+					<td ng-if="item.hasBalance && !item.isRepresentative">{{ 'l-inventory-avail' | i18n }}</td>
+					<td ng-if="!item.hasBalance && !item.isRepresentative">{{ 'l-inventory-not-avail' | i18n }}</td>
+					<td>{{item['cod-refer']}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<hr>
+	</div>
+</div>
+<hr style="margin-top: 10px; margin-bottom: 10px;">
+<button type="button" style="margin-bottom: 5px;" class="btn btn-default btn-xs pull-right" template-popover-remove-all>{{ 'close' | i18n }}</button>

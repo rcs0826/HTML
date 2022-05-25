@@ -1,0 +1,22 @@
+totvs-modal-header
+	{{'t-new-flow' | i18n}}
+totvs-modal-body
+	totvs-page-form(id="flowForm",role="form")
+
+		field.col-md-12(
+			type="select",
+			ng-model="controller.selected",
+			label="{{'l-item' | i18n: []: 'dts/kbn' }}",
+			required
+		)
+			include
+				ui-select-match(placeholder="{{ 'l-code' | i18n}}")
+					{{$select.selected | descFlow}}
+				ui-select-choices(repeat="item in controller.items track by $index", refresh="controller.getItensFromERP($select.search)", refresh-delay="1500")
+					span(ng-bind-html="item | descFlow | highlight: $select.search")					
+
+totvs-modal-footer
+	button.btn.btn-default(data-ng-click="controller.cancel();")
+		{{ 'l-cancel' | i18n }}
+	button.btn.btn-primary(data-ng-click="controller.createFlow();")
+		{{ 'l-ok' | i18n }}

@@ -1,0 +1,115 @@
+<totvs-modal-header>{{ 'l-import-items' | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+    <totvs-page-content>
+        <totvs-page-detail>
+            <totvs-page-detail-info-group>{{controller.planCode}} - {{controller.planDescription}}</totvs-page-detail-info-group>
+            
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                 style="margin-top: 0px;">
+                
+                <!-- PERIODO/DATA -->
+                <div class="btn-group" 
+                     data-toggle="buttons"
+                     style="padding-right: 15px;">
+                    <label class="btn btn-primary active"
+                           ng-click="controller.onChangeDataPeriodo(1)">
+                      <input type="radio"
+                             id="btnPeriod"
+                             checked>{{ 'l-period' | i18n }}
+                    </label>
+                    <label class="btn btn-primary"
+                           ng-click="controller.onChangeDataPeriodo(2)">
+                      <input type="radio"
+                             id="btnDate">{{ 'l-date' | i18n }}
+                    </label>
+                </div>
+                
+                <!-- SOBRESCREVER -->
+                <label style="margin-top: 12px; padding-right: 15px; padding-left: 15px;">
+                    <span class="hidden-xs">{{ 'l-override' | i18n }}</span>
+                    <input type="checkbox"
+                           ng-model="controller.override"
+                           bsswitch>
+                    </input>
+                </label>
+            
+                <!-- GERAR LAYOUT -->
+                <a href=''
+                   data-ng-click="controller.downloadLayout();"
+                   style="margin-top: 5px; padding-left: 5px; padding-right: 5px;"
+                   id="linklayout"
+                   download="mpl.csv">
+                    {{ 'generate-import-file' | i18n }}
+                </a>
+                
+                <!-- SELECIONAR ARQUIVO -->
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4"
+                     style="margin-top: 5px; float: right; padding-left: 0px; padding-right: 0px;">
+                    <div class="field-file"
+                         style="border: 0px; padding: 0px; display: table-cell;">
+                        <label class="btn btn-default pull-left"
+                               role="button"
+                               style="top: 0px;"
+                               for="file-input">
+                            <span class="glyphicon glyphicon-save-file hidden-lg hidden-md"></span>
+                            <span class="hidden-xs ng-binding hidden-sm hidden-xs">{{ 'l-select-file' | i18n }}</span>
+                        </label>
+
+                        <span class="file-text"></span>
+
+                        <input id="file-input"
+                               type="file"
+                               style="position:fixed;top:-999px;"
+                               ngf-select
+                               ngf-change="controller.changeFile($files)"
+                               ngf-multiple="true"
+                               ngf-allow-dir="false"
+                               accept=".csv"
+                               ngf-accept="'.csv'"
+                               ngf-max-size="10000000">
+                        </input>
+                    </div>
+                </div>
+            </div>
+            
+            <totvs-divider style="padding-bottom: 5px;"></totvs-divider>
+    
+            <!-- NOME ARQUIVO -->
+            <totvs-page-detail-info
+                class="col-lg-8 col-md-8 col-sm-4 col-xs-12"
+                title="{{ 'l-file-name' | i18n }}"
+                style="margin-bottom: 0px;"
+                ng-if="controller.file"
+                value="{{controller.file.name}}">
+            </totvs-page-detail-info>
+    
+            <!-- TAMANHO ARQUIVO -->
+            <totvs-page-detail-info
+                class="col-lg-4 col-md-4 col-sm-2 col-xs-12"
+                title="{{ 'l-size' | i18n }}"
+                style="margin-bottom: 0px;"
+                ng-if="controller.file"
+                value="{{controller.file.size / 1000}} Kb">
+            </totvs-page-detail-info>
+    
+        </totvs-page-detail>
+        <totvs-page-alert
+            ng-if="!controller.file"
+            type="info"
+            message="{{ 'msg-file-not-selected' | i18n }}">
+        </totvs-page-alert>
+  	</totvs-page-content>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <!-- IMPORTAR -->
+    <button type="button" 
+            class="btn btn-primary" 
+            ng-disabled="!controller.file"
+            data-ng-click="controller.import();">{{ 'btn-import' | i18n }}
+    </button>
+    <!-- FECHAR -->
+	<button type="button" 
+            class="btn btn-default" 
+            data-ng-click="controller.close();">{{ 'btn-close' | i18n }}
+    </button>
+</totvs-modal-footer>

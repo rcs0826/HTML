@@ -1,0 +1,179 @@
+<style>
+    .list-item.tag-1 {
+        border-left: 5px solid #BDBDBD !important;
+    }
+
+    .tag-1:before {
+        background-color: #BDBDBD !important;
+    }
+
+    .list-item.tag-2 {
+        border-left: 5px solid #FF0000  !important; 
+    }
+
+    .tag-2:before {
+        background-color: #FF0000 !important;
+    }
+
+    .list-item.tag-3 {
+        border-left: 5px solid #F0CA38 !important;
+    }
+
+    .tag-3:before {
+        background-color: #F0CA38 !important;
+    }
+
+    .list-item.tag-4 {
+        border-left: 5px solid #9F81F7 !important;
+    }
+
+    .tag-4:before {
+        background-color: #9F81F7 !important;
+    }
+
+    .list-item.tag-5 {
+        border-left: 5px solid #FF8000 !important;
+    }
+
+    .tag-5:before {
+        background-color: #FF8000 !important;
+    }
+
+    .list-item.tag-6 {
+        border-left: 5px solid #4B610B !important;
+    }
+
+    .tag-6:before {
+        background-color: #4B610B !important;
+    } 
+
+    .list-item.tag-7 {
+        border-left: 5px solid #0B6121 !important;
+    }
+
+    .tag-7:before {
+        background-color: #0B6121 !important;
+    }
+
+</style>
+
+<totvs-page type="list">
+
+    <totvs-page-navbar>
+        <link type="text/css" rel="stylesheet" href="/dts/hgp/html/assets/css/hrs.css"/>
+        <totvs-page-breadcrumb id="breadcrumb">
+                <breadcrumb>Central de Movimentação RESSUS</breadcrumb>
+        </totvs-page-breadcrumb>
+        
+        <totvs-page-header>
+
+            <totvs-page-header-title title="Aviso de Beneficiário Identificado - ABI" 
+                                     total="{{controller.listOfRessusAbiImportationCount}}"
+                                     settings="controller.openConfigWindow()">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+
+                <totvs-page-header-operation-action limit-primary-action="1">
+                    <action class="glyphicon-plus"
+                            link="#/dts/hgp/hrs-ressusAbiImportation/new">
+                        Importar ABI
+                    </action>
+
+                </totvs-page-header-operation-action>
+
+                <totvs-page-header-operation-filter placeholder="Pesquisar"
+                                                    ng-submit="controller.search()"
+                                                    ng-model="controller.searchInputText"
+                                                    advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+
+            </totvs-page-header-operation>
+
+            
+
+            <totvs-page-tags>
+                <tag class="tag-{{$index + 1}}" ng-repeat="item in ABI_STATUS_ENUM.ENUMERATION_VALUES">{{item.label}}</tag>
+            </totvs-page-tags>
+
+            <totvs-page-disclaimers
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+            
+        </totvs-page-header>
+    </totvs-page-navbar>
+    
+    <totvs-page-content>
+
+        <totvs-page-alert ng-if="controller.listOfRessusAbiImportation.length <= 0"
+                    type="info"
+                    message="Nenhum registro encontrado">
+        </totvs-page-alert>
+
+        <totvs-list-item class="tag-{{ressusAbiImportation.idiStatus}}"
+                         ng-repeat="ressusAbiImportation in controller.listOfRessusAbiImportation | filter:{ filterField: controller.searchInputText}">
+            <totvs-list-item-header>
+
+                <totvs-list-item-title>
+                    <span> 
+                        <a href="#/dts/hgp/hrs-abiAnalysisAttendance/{{ressusAbiImportation.cddRessusAbiDados}}/{{ressusAbiImportation.codAbi}}/{{ressusAbiImportation.codProcesso.replace('/','.')}}" id="linkDocumentTitle"> 
+                        ABI: <b>{{ressusAbiImportation.codAbi}}</b>
+                    </a>
+                    </span>
+                </totvs-list-item-title>
+
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/hgp/hrs-abiAnalysisAttendance/{{ressusAbiImportation.cddRessusAbiDados}}/{{ressusAbiImportation.codAbi}}/{{ressusAbiImportation.codProcesso.replace('/','.')}}" icon="glyphicon-pencil">Analisar Atendimentos</action>
+                    
+                    <action link="#/dts/hgp/hrs-ressusAbiImportation/detail/{{ressusAbiImportation.cddRessusAbiDados}}"       icon="glyphicon-list-alt">Detalhar</action>
+
+                    <action ng-click="controller.reprocessAbi(ressusAbiImportation)"       
+                            icon="glyphicon-list-alt">Reprocessar</action>
+
+                    <action ng-click="controller.removeRessusAbiDados(ressusAbiImportation)" 
+                            icon="glyphicon-trash">Remover</action>
+
+                    <action ng-click="controller.alteraStatusAbiDados(ressusAbiImportation)"
+                            icon="glyphicon-trash">Alterar Status</action>
+                </totvs-list-item-action>
+
+            </totvs-list-item-header>
+
+            <totvs-list-item-content>
+                <totvs-row>
+                    <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                          title="Número do Ofício"
+                                          value="{{ressusAbiImportation.codOficio}}">
+                    </totvs-list-item-info>
+
+                    <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                          title="Número do Processo"
+                                          value="{{ressusAbiImportation.codProcesso}}">
+                    </totvs-list-item-info>
+                </totvs-row>
+
+                <totvs-row>
+                    <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                          title="Competência"
+                                          value="{{ressusAbiImportation.codComptciaInic.substring(0,2)}}/{{ressusAbiImportation.codComptciaInic.substring(2,6)}} a {{ressusAbiImportation.codComptciaFim.substring(0,2)}}/{{ressusAbiImportation.codComptciaFim.substring(2,6)}}">
+                    </totvs-list-item-info>
+                     
+                    <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                     					  title="Data de Disponibilização"
+                     					  value="{{ressusAbiImportation.datRecebto | date : 'dd/MM/yyyy'}}">
+                    </totvs-list-item-info>
+                </totvs-row>
+                
+            </totvs-list-item-content>
+        </totvs-list-item>
+
+        <totvs-list-pagination
+            ng-if="controller.listOfRessusAbiImportation.length < controller.listOfRessusAbiImportationCount && controller.listOfRessusAbiImportation.length"
+            ng-click="controller.search(true);">
+        </totvs-list-pagination>
+
+    </totvs-page-content>
+</totvs-page>
+
+

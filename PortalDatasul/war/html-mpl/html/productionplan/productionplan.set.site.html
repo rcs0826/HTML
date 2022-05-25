@@ -1,0 +1,30 @@
+<totvs-modal-header>{{ 'l-set-site' | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+    <totvs-page-content>
+        <totvs-page-detail>
+            <totvs-page-detail-info-group>{{controller.planCode}} - {{controller.planDescription}}</totvs-page-detail-info-group>
+        </totvs-page-detail>
+        <div style="height: 450px; overflow-y: scroll;">
+            <totvs-table
+                items="controller.listOfSites"
+                items-as="site">
+                <column title="{{ 'l-site' | i18n }}">
+                    {{site.siteCode}}
+                </column>
+                <column title="{{ 'l-description' | i18n }}">
+                    {{site.siteDescription}}
+                </column>
+            </table>
+        </div>
+  	</totvs-page-content>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button type="button" 
+            class="btn btn-primary"
+            data-ng-click="controller.save();">{{ 'l-confirm' | i18n }}
+    </button>
+	<button type="button" 
+            class="btn btn-default" 
+            data-ng-click="controller.close();">{{ 'btn-close' | i18n }}
+    </button>
+</totvs-modal-footer>

@@ -1,0 +1,346 @@
+<style scoped="true">
+	.btn-legend-portal {
+		margin-top: 3px;
+	}
+	.btn-legend-menu {
+		margin-top: 5px;
+	}
+</style>
+
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_atrib : ('btn-new-field' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="input"
+			   class="col-xs-6"
+			   ng-required="true"
+			   ng-model="controller.model.nom_atrib"
+			   canclean="undefined"
+			   placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+			   focus>
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="select"
+			   class="col-xs-6"
+			   ng-model="controller.model.ttProcess"
+			   ng-change="controller.onChangeProcess()"
+			   ng-disabled="controller.model.log_used === true"
+			   required>
+			<label>{{ 'l-process' | i18n : [] : 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-process' | i18n : [] : 'dts/crm' }}">
+					{{ $select.selected.nom_process}}
+				</ui-select-match>
+				<ui-select-choices repeat="process in controller.listOfProcess | filter: $select.search track by $index">
+					<span ng-bind-html="process.nom_process | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   class="col-xs-6"
+			   ng-model="controller.model.ttType"
+			   ng-change="controller.onChangeType()"
+			   required>
+			<label>{{ 'l-type' | i18n : [] : 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-type' | i18n : [] : 'dts/crm' }}">
+					{{ $select.selected.nom_type }}
+				</ui-select-match>
+				<ui-select-choices repeat="type in controller.listOfTypes | filter: $select.search track by $index">
+					<span ng-bind-html="type.nom_type | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+	</fieldset>
+
+	<hr ng-if="(controller.model.ttType && controller.model.ttType.num_id)"
+		style="margin-top: 15px; margin-bottom: 5px; border: 0; border-top: 1px solid #eee;">
+
+	<fieldset class="row" ng-if="(controller.model.ttType && controller.model.ttType.num_id)">
+
+		<totvs-field totvs-decimal
+					class="col-xs-6"
+					ng-model="controller.model.properties.num_max_length"
+					ng-if="controller.allowsMaxLength === true"
+					canclean="undefined"
+					m-dec="0"
+					ng-minlength="0"
+					label="{{ 'l-maxlength' | i18n: []: 'dts/crm' }}"
+					placeholder="{{ 'l-maxlength' | i18n: []: 'dts/crm' }}">
+		</totvs-field>
+
+		<field type="input"
+			   class="col-xs-6"
+			   ng-model="controller.model.properties.nom_mask"
+			   ng-if="controller.allowsMask === true"
+			   ng-change="controller.onChangeMask()"
+			   ng-disabled="controller.model.log_used === true"
+			   canclean="undefined"
+			   placeholder="{{ 'l-mask' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-mask' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<!-- select default option -->
+		<field type="select"
+			   class="col-xs-6"
+			   ng-if="(controller.model.ttType.is_multi_value !== true)"
+			   ng-model="controller.model.properties.ttDefaultOption"
+			   ng-change="controller.onChangeDefaultOption()">
+			<label>{{ 'l-default-option' | i18n : [] : 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-default-option' | i18n : [] : 'dts/crm' }}">
+					{{ $select.selected.name }}
+				</ui-select-match>
+				<ui-select-choices repeat="df in controller.listOfDefaults | filter: $select.search track by $index">
+					<span ng-bind-html="df.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<!-- default input -->
+		<totvs-field totvs-input
+					 class="col-xs-6"
+					 ng-model="controller.model.properties.dsl_default"
+					 ng-if="(controller.model.ttType.num_id && controller.model.ttType.num_id === 1) && (controller.controlMask !== true)"
+					 canclean="undefined"
+					 placeholder="{{ 'l-default' | i18n: []: 'dts/crm' }}"
+					 label="{{ 'l-default' | i18n: []: 'dts/crm' }}"
+					 t-mask="{{controller.model.properties.nom_mask}}">
+		</totvs-field>
+
+		<!-- default date -->
+		<totvs-field totvs-datepicker
+					 class="col-xs-6"
+					 ng-model='controller.model.properties.dt_default'
+						ng-if="(controller.model.ttType.num_id && controller.model.ttType.num_id === 6) && (!controller.model.properties.ttDefaultOption || controller.model.properties.ttDefaultOption.num_id === 1)"
+					 culture="pt"
+					 canclean="undefined"
+					 label="{{ 'l-default' | i18n: []: 'dts/crm' }}"
+					 placeholder="{{ 'l-default' | i18n: []: 'dts/crm' }}">
+		</totvs-field>
+
+		<!-- default time -->
+		<totvs-field totvs-time
+					 class="col-xs-6"
+					 canclean="undefined"
+					 ng-if="(controller.model.ttType.num_id && controller.model.ttType.num_id === 7) && (!controller.model.properties.ttDefaultOption || controller.model.properties.ttDefaultOption.num_id === 1)"
+					 ng-model="controller.model.properties.hr_default"
+					 t-default-time="false"
+					 label="{{ 'l-time' | i18n: []: 'dts/crm' }}"
+					 placeholder="{{ 'l-time' | i18n: []: 'dts/crm' }}">
+		</totvs-field>
+
+		<!-- default integer -->
+		<totvs-field totvs-decimal
+					class="col-xs-6"
+					ng-model="controller.model.properties.val_default"
+					ng-if="(controller.model.ttType.num_id && controller.model.ttType.num_id === 8)"
+					m-dec="0"
+					ng-minlength="0"
+					label="{{ 'l-default' | i18n: []: 'dts/crm' }}"
+					placeholder="{{ 'l-default' | i18n: []: 'dts/crm' }}">
+		</totvs-field>
+
+		<!-- default decimal -->
+		<totvs-field totvs-decimal
+					class="col-xs-6"
+					ng-model="controller.model.properties.val_default"
+					ng-if="(controller.model.ttType.num_id && controller.model.ttType.num_id === 9)"
+					m-dec="2"
+					ng-minlength="0"
+					label="{{ 'l-default' | i18n: []: 'dts/crm' }}"
+					placeholder="{{ 'l-default' | i18n: []: 'dts/crm' }}">
+		</totvs-field>
+
+		<!-- casas decimais -->
+		<field type="select"
+			   class="col-xs-6"
+			   canclean="undefined"
+			   ng-model="controller.model.properties.ttDecimalPrecision"
+			   ng-if="controller.allowsMaxDecimal === true">
+			<label>{{ 'l-decimal-precision' | i18n : [] : 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-decimal-precision' | i18n : [] : 'dts/crm' }}">
+					{{ $select.selected.value }}
+				</ui-select-match>
+				<ui-select-choices repeat="d in controller.listOfDecimalPrecision | filter: $select.search track by $index">
+					<span ng-bind-html="d.value.toString() | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<totvs-field totvs-checkbox
+					t-bsswitch
+					ng-disabled="false"
+					ng-model="controller.model.properties.log_obrig"
+					label="{{ 'l-required' | i18n: []: 'dts/crm' }}"
+					class="col-xs-3">
+		</totvs-field>
+
+		<totvs-field totvs-checkbox
+				   class="col-xs-3"
+				   t-bsswitch
+				   ng-disabled="false"
+				   label="{{ 'l-allows-negative' | i18n: []: 'dts/crm' }}"
+				   ng-model="controller.model.properties.log_negativo"
+				   ng-if="controller.allowsNegativeValue === true">
+		</totvs-field>
+
+	</fieldset>
+
+	<div class="row">
+		<br/>
+		<accordion close-others="false">
+
+			<accordion-group is-open="controller.openItens"
+							 class="crm-panel"
+							 id="panel-properties"
+							 ng-if="controller.model.ttType && controller.model.ttType.is_multi_value === true">
+
+				<div>
+					<accordion-heading>
+						{{ 'l-items' | i18n: []: 'dts/crm' }}
+
+						<i class="pull-right glyphicon"
+						   ng-class="{'glyphicon-chevron-down' :  controller.openItens,
+									  'glyphicon-chevron-right': !controller.openItens}">
+						</i>
+					</accordion-heading>
+
+					<fieldset class="row" >
+
+						<field type="input"
+							   class="col-xs-6"
+							   canclean="undefined"
+							   ng-model="controller.model.nom_item"
+							   placeholder="{{ 'l-item' | i18n: []: 'dts/crm' }}"
+							   on-key-enter="controller.addItem();">
+							<!--label>{{ 'l-item' | i18n: []: 'dts/crm' }}</label-->
+						</field>
+
+						<div class="col-xs-6 text-left"
+							 ng-class="{'btn-legend-portal': controller.isPortal === true,
+										'btn-legend-menu': !controller.isPortal}">
+
+							<button class="btn btn-primary"
+									ng-click="controller.addItem();">
+								<i class="glyphicon glyphicon-plus"></i>
+							</button>
+
+							<button class="btn btn-default"
+									ng-click="controller.openAddItens();">
+								<i class="glyphicon glyphicon-flash"></i> {{ 'btn-new-field-from-text' | i18n : [] : 'dts/crm'}}
+							</button>
+						</div>
+
+					</fieldset>
+
+					<div class="crm-tab">
+						<div class="row crm-tab-item header"
+								ng-if="controller.model.properties.itens && controller.model.properties.itens.length > 0">
+							<strong>
+								<div class="col-xs-10">
+									{{ 'l-item' | i18n: []: 'dts/crm' }}
+								</div>
+
+								<!--div class="col-xs-2">
+									{{ 'l-default' | i18n: []: 'dts/crm' }}
+								</div-->
+
+								<div class="col-xs-2 text-right">
+									<a ng-if="controller.model.properties.itens && controller.model.properties.itens.length > 0"
+									   class="clickable" ng-click="controller.removeAllItens();">
+										{{ 'btn-remove-all' | i18n : [] : 'dts/crm' }}
+									</a>
+								</div>
+							</strong>
+						</div>
+
+						<div class="row crm-panel-item"
+							 ng-repeat="item in controller.model.properties.itens track by $index">
+
+							<div class="col-xs-8">
+								{{ item.name }}
+							</div>
+
+							<div class="col-xs-2 text-right">
+								<span class="glyphicon glyphicon-star crm-starred-default clickable"
+									  ng-if="item.log_default === true"
+									  ng-click="item.log_default = false;">
+								</span>
+								<span class="glyphicon glyphicon-star-empty clickable"
+									  ng-if="!item.log_default"
+									  ng-click="controller.setAsDefaultItem(item)">
+								</span>
+							</div>
+
+							<div class="col-xs-2 text-right">
+								<a class="clickable"
+								   ng-click="controller.removeItem($index, true);">
+									{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+								</a>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+			</accordion-group>
+
+			<accordion-group is-open="controller.openObs"
+							 class="crm-panel"
+							 id="panel-obs">
+
+				<div>
+					<accordion-heading>
+						{{ 'l-observation' | i18n: []: 'dts/crm' }}
+						<i class="pull-right glyphicon"
+						   ng-class="{'glyphicon-chevron-down' :  controller.openObs,
+									  'glyphicon-chevron-right': !controller.openObs}">
+						</i>
+					</accordion-heading>
+
+					<fieldset class="row">
+						<field type="textarea"
+							   class="col-xs-12"
+							   ng-model="controller.model.properties.dsl_obs"
+							   maxlength="1000">
+							<validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 1000</validator>
+						</field>
+					</fieldset>
+				</div>
+			</accordion-group>
+
+		</accordion>
+	</div>
+
+
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default"
+			ng-click="controller.close()">
+		{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-default"
+			ng-click="controller.save(true)"
+			ng-if="controller.editMode === false;">
+		{{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-primary"
+			ng-click="controller.save()">
+		{{ 'btn-save' | i18n: []: 'dts/crm' }}
+	</button>
+</totvs-modal-footer>

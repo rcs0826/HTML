@@ -1,0 +1,116 @@
+<div ng-controller="salesorder.dashboard.orderSummary.Controller as orderSummaryController">
+	<totvs-widget>
+		<style type="text/css" scoped>
+			.tooltip-inner {
+				max-width: 400px;
+				text-align: left;
+			}
+		</style>
+
+		<totvs-widget-header settings="orderSummaryController.summaryShow = false"
+			title="{{ 'l-order-summary' | i18n : [] : 'dts/mpd'}}">
+			<i class="glyphicon glyphicon-info-sign hidden-xs" tooltip-placement="bottom"
+				tooltip-html="orderSummaryController.tooltip"></i>
+		</totvs-widget-header>
+		<totvs-widget-body>
+
+			<div ng-if="orderSummaryController.summaryData" style="height:300px;"
+				ng-show="orderSummaryController.summaryShow">
+				<chart dataset="orderSummaryController.summaryData" options="orderSummaryController.summaryOptions">
+				</chart>
+
+	<%
+	if(data){
+		if (data.indexOf("customer") > -1) {
+			if (data.indexOf("newordernotallowed") > -1) {
+		%>
+				<p>{{ 'l-newordernotallowed' | i18n : [] : 'dts/mpd' }}</p>
+				<%
+			} else if (data.indexOf("newordersuspended") > -1){
+		%>
+				<p>{{ 'l-newordersuspended' | i18n : [] : 'dts/mpd' }}</p>
+				<%
+			}
+		}
+	}
+	%>
+
+			</div>
+			<div style="height:300px;" ng-if="!orderSummaryController.summaryData">
+				{{ 'l-loading-portlet' | i18n : [] : 'dts/mpd'}} </div>
+			<div style="height:300px;" ng-hide="orderSummaryController.summaryShow">
+				<form>
+					<p>{{ 'l-order-summary-period' | i18n : [] : 'dts/mpd'}}</p>
+					<div class="row">
+						<field type="date" ng-model="orderSummaryController.iniDate" required class="col-md-12">
+							<label>{{ 'l-dat-inic' | i18n : [] : 'dts/mpd' }}</label>
+						</field>
+					</div>
+
+
+					<hr>
+					<a role="button" class="btn btn-default pull-right"
+						ng-click="orderSummaryController.applyConfig()">&nbsp; {{ 'btn-apply' | i18n }} &nbsp; </a>
+					<div ng-show="orderSummaryController.noResults">
+						<alert type="danger">{{ 'l-no-data-to-show' | i18n : [] : 'dts/mpd'}}</alert>
+					</div>
+
+				</form>
+			</div>
+
+
+		</totvs-widget-body>
+
+		<totvs-widget-footer>
+			<totvs-widget-footer-body>
+			</totvs-widget-footer-body>
+
+			<totvs-widget-footer-actions>
+				<action link="#/dts/mpd/salesorders/">{{ 'l-detail' | i18n : [] : 'dts/mpd'}}</action>
+			</totvs-widget-footer-actions>
+
+			<totvs-widget-footer-actions ng-if="!orderSummaryController.newOrderInclusionFlow">
+	<%
+	if(data){
+		if (data.indexOf("customer") > -1) {
+		%>
+
+				<%
+					if (data.indexOf("newordernotallowed") == -1 && data.indexOf("newordersuspended") == -1){
+		%>
+				<action link="#/dts/mpd/model">{{ 'btn-new-order' | i18n : [] : 'dts/mpd'}}</action>
+				<%
+					}
+		%>
+
+				<%
+		}
+	}
+	%>
+			</totvs-widget-footer-actions>
+
+
+			<totvs-widget-footer-actions ng-if="orderSummaryController.newOrderInclusionFlow">
+	<%
+	if(data){
+		if (data.indexOf("customer") > -1) {
+		%>
+				<%
+					if (data.indexOf("newordernotallowed") == -1 && data.indexOf("newordersuspended") == -1){
+		%>
+				<action ng-if="orderSummaryController.newOrderInclusionFlow" link="#/dts/mpd/order2/new/0">
+					{{ 'btn-new-order' | i18n : [] : 'dts/mpd'}}</action>
+
+				<%
+					}
+		%>
+				<%
+		}
+	}
+	%>
+			</totvs-widget-footer-actions>
+
+
+		</totvs-widget-footer>
+	</totvs-widget>
+</div>

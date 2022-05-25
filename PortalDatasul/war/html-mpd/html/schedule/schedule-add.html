@@ -1,0 +1,33 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{ 'l-add-schedule' | i18n}}</h3>
+</div>
+<div class="modal-body">
+	<form name="scheduleAddForm" class="form-horizontal" role="form" novalidate>
+		<div class="row">
+			<field  type="select2" required
+					ng-model="controller.item['cdn-emitente']"
+					select-conector="{{ 'l-customer' | i18n }}"
+					select-id="cod-emitente"
+					select-description="nome-abrev"
+					select-service="salesorder.zoomEmitente.Service"
+					class="col-md-12">
+				<zoom zoom-service="salesorder.zoomEmitente.Service"></zoom>
+				<label>{{ 'l-customer' | i18n }}</label>	
+			</field>
+			<field class="col-md-12" type="date" ng-model="controller.item['dat-agenda']" required>
+				<label>{{ 'l-date' | i18n }}</label>
+			</field>
+			<field class="col-md-12" type="time" ng-model="controller.item.hora" required>
+				<label>{{ 'l-time' | i18n }}</label>
+			</field>
+			<field class="col-md-12" type="textarea" ng-model="controller.item['des-obs']" required>
+				<label>{{ 'l-observacoes' | i18n }}</label>
+			</field>
+		</div>
+	</form>
+
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" ng-click="controller.saveItem()">{{ 'btn-save' | i18n }}</button>    
+	<button class="btn btn-warning" ng-click="controller.close()">{{"btn-close"| i18n}}</button>
+</div>

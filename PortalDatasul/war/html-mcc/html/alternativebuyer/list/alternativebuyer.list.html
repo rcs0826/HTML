@@ -1,0 +1,90 @@
+<totvs-page type="list" totvs-custom-element="alternativebuyer_list">
+
+	<totvs-page-navbar>
+
+		 <totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n: []: 'dts/mcc' }}</breadcrumb>
+			<breadcrumb>{{ 'l-alternative-buyers' | i18n: []: 'dts/mcc' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'l-alternative-buyers' | i18n: []: 'dts/mcc' }}"
+								 	total="{{controller.buyersCount}}"
+								 	class="col-xs-10 col-md-12">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<totvs-page-header-operation-action limit-primary-action="3"
+													items="controller.listOfRequests"
+													items-as="request"
+													class="col-xs-2 col-sm-7">
+					<action link="#/dts/mcc/alternativebuyer/new" icon="glyphicon-plus">{{ 'l-add' | i18n }}</action>
+				</totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter placeholder="{{ 'l-buyer' | i18n: []: 'dts/mcc' }}, {{ 'l-alternative-buyer' | i18n: []: 'dts/mcc' }}"
+													ng-submit="controller.applySimpleFilter();"
+													ng-model="controller.quickSearch"
+													advanced-search="controller.openAdvancedSearch"
+													clean-search="controller.applySimpleFilter();">
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+			<totvs-page-disclaimers
+					disclaimer-list="controller.disclaimers"
+					ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+        <totvs-list-item ng-repeat="buyer in controller.buyers" totvs-custom-element="alternativebuyer_listItem">
+            <totvs-list-item-header>
+
+                <totvs-list-item-title
+                    title="{{buyer['cod-comprado']}} - {{buyer['nome']}}" 
+                    link="#/dts/mcc/alternativebuyer/detail/{{buyer['cod-comprado']}}" 
+                    class="col-xs-7">
+                </totvs-list-item-title>
+
+	            <totvs-list-item-action
+	            	limit-primary-action="2"
+	            	class="col-xs-5">
+	                <action link="#/dts/mcc/alternativebuyer/edit/{{buyer['cod-comprado']}}" icon="glyphicon-pencil">{{ 'btn-edit' | i18n: []: 'dts/mcc' }}</action>
+	                <action ng-click="controller.remove(buyer);" icon="glyphicon-trash">{{ 'btn-remove' | i18n: []: 'dts/mcc' }}</action>
+	            </totvs-list-item-action>
+            </totvs-list-item-header>
+
+            <totvs-list-item-content>
+	            <totvs-list-item-info
+	                title="{{ 'l-alternative' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-4 col-sm-4"
+	                value="{{buyer['cod-cmprdor-altern']}} - {{buyer['nome-altern']}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-initial-validity' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-4 col-sm-4"
+	                value="{{buyer['dat-valid-ini'] | date :'dd/MM/yyyy'}}">
+	            </totvs-list-item-info>
+
+                <totvs-list-item-info
+	                title="{{ 'l-final-validity' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-4 col-sm-4"
+	                value="{{buyer['dat-valid-fim'] | date :'dd/MM/yyyy'}}">
+	            </totvs-list-item-info>
+			</totvs-list-item-content>
+        </totvs-list-item>
+
+		<totvs-list-pagination
+            ng-if="controller.buyers.length < controller.buyersCount && controller.buyers.length"
+            ng-click="controller.load(true);">
+        </totvs-list-pagination>
+	</totvs-page-content>
+
+</totvs-page>

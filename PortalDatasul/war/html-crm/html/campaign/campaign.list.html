@@ -1,0 +1,132 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb>{{ 'nav-campaign' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'nav-campaign' | i18n: []: 'dts/crm' }}"
+									 total="{{ controller.listOfCampaignCount }}"
+									 settings="controller.userSettings();">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<totvs-page-header-operation-action>
+					<action icon="glyphicon-plus"
+							ng-click="controller.addEdit();">
+						{{ 'btn-new-campaign' | i18n: []: 'dts/crm' }}
+					</action>
+					<action icon="glyphicon-print"
+							ng-click="controller.exportSearch();">
+							{{ 'btn-export' | i18n: []: 'dts/crm' }}
+					</action>
+				</totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter placeholder="{{ 'l-search-generic' | i18n: []: 'dts/crm' }}"
+													ng-submit="controller.search()"
+													ng-model="controller.quickSearchText"
+													advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+			<totvs-page-disclaimers disclaimer-list="controller.disclaimers"
+									ng-click="controller.removeDisclaimer"
+									ng-if="controller.disclaimers.length > 0">
+			</totvs-page-disclaimers>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}"
+						  ng-if="controller.listOfCampaign.length <= 0">
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addEdit();">
+				<span class="glyphicon glyphicon-plus"></span>
+				&nbsp;&nbsp;{{ 'btn-new-campaign' | i18n: []: 'dts/crm' }}
+			</button>
+		</totvs-page-alert>
+
+		<totvs-list-item id="campaign{{ campaign.num_id }}"
+						 ng-repeat="campaign in controller.listOfCampaign">
+
+			<totvs-list-item-header>
+
+				<totvs-list-item-title>
+					<a href="#/dts/crm/campaign/detail/{{ campaign.num_id }}">
+						{{ campaign.num_id }} - {{ campaign.nom_campanha }}
+					</a>
+				</totvs-list-item-title>
+
+				<totvs-list-item-action limit-primary-action="3">
+
+					<action icon="glyphicon-pencil"
+							ng-click="controller.addEdit(campaign)">
+						{{ 'btn-edit' | i18n: []: 'dts/crm' }}
+					</action>
+
+					<action icon="glyphicon-trash"
+							ng-click="controller.remove(campaign)">
+						{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+					</action>
+
+				</totvs-list-item-action>
+
+			</totvs-list-item-header>
+
+			<totvs-list-item-content>
+
+				<totvs-list-item-info value-break="false"
+									  class="col-xs-12 col-sm-6 col-md-4"
+									  title="{{ 'l-date' | i18n: []: 'dts/crm' }}">
+					{{ campaign.dat_inic | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+					<span ng-if="campaign.dat_term">
+						- {{ campaign.dat_term | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+					</span>
+				</totvs-list-item-info>
+
+				<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-4"
+									  title="{{ 'l-type' | i18n: []: 'dts/crm' }}"
+									  value="{{ campaign.ttTipoCampanha.nom_tip_campanha }}"
+									  value-break="false">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-4"
+									  title="{{ 'l-finished' | i18n: []: 'dts/crm' }}"
+									  value-break="false">
+					{{ (campaign.log_finaliza === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</totvs-list-item-info>
+
+
+				<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-4"
+									  ng-if="controller.isIntegratedWithGpls == true && campaign.log_padr_gpls == true"
+									  value-break="false">
+
+					<span class="label crm-label-green">
+						{{ 'l-default-campaign-gpls' | i18n: []: 'dts/crm' }}
+					</span>
+
+				</totvs-list-item-info>
+
+			</totvs-list-item-content>
+
+		</totvs-list-item>
+
+		<totvs-list-pagination ng-click="controller.search(true);"
+							   ng-if="controller.listOfCampaign.length < controller.listOfCampaignCount && controller.listOfCampaign.length">
+		</totvs-list-pagination>
+
+	</totvs-page-content>
+
+</totvs-page>

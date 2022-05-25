@@ -1,0 +1,80 @@
+<div class="modal-header">
+     <h3 class="modal-title">{{ 'l-advanced-search' | i18n }}</h3>
+</div>
+
+<div class="modal-body">
+
+	<div class="row">
+		<form class="form-horizontal" role="form">
+                    
+					<field canclean type="select2" data-ng-model="controller.advancedSearch.model.codEstabel" class="col-md-12"
+                            select-conector="{{'l-estabel' | i18n}}"
+                            select-id="cod-estabel"
+    					    select-description="nome"
+                            select-service="mpd.estabelecSE.select">
+						<zoom zoom-service="mpd.estabelecSE.zoom"></zoom>
+						<label>{{ 'l-estabel' | i18n }}</label>
+					</field>
+                                    
+                    <div ng-if="controller.mainOrderProfileConfig.isRepresentative">
+                    
+                        <field ng-maxlength="30" canclean type="input" ng-model="controller.advancedSearch.model.nomAbrev" class="col-md-12">
+                            <label>{{ 'l-nome-abrev-start' | i18n }}</label>
+                        </field>
+
+                        <!-- Filtro codigo do cliente --> 
+                        <field ng-maxlength="30" canclean type="input" ng-model="controller.advancedSearch.model.codCliIni">
+                            <label>{{ 'l-cod-emitente-ini' | i18n }}</label>
+                        </field>
+
+                        <field ng-maxlength="60" canclean type="input" ng-model="controller.advancedSearch.model.codCliFim">
+                            <label>{{ 'l-cod-emitente-fim' | i18n }}</label>
+                        </field>
+                        
+                        <!-- Filtro numero do pedido --> 
+                        <field ng-maxlength="30" canclean type="input" ng-model="controller.advancedSearch.model.nrPedCliIni">
+                            <label>{{ 'l-nr-pedcli-ini' | i18n }}</label>
+                        </field>
+
+                        <field ng-maxlength="60" canclean type="input" ng-model="controller.advancedSearch.model.nrPedCliFim">
+                            <label>{{ 'l-nr-pedcli-fim' | i18n }}</label>
+                        </field>
+
+                    </div>                    
+
+                    <field ng-maxlength="30" canclean type="input" ng-model="controller.advancedSearch.model.nrNotaIni">
+                        <label>{{ 'l-nr-nota-start' | i18n }}</label>
+                    </field>
+                    <field ng-maxlength="60" canclean type="input" ng-model="controller.advancedSearch.model.nrNotaFim">
+                        <label>{{ 'l-nr-nota-end' | i18n }}</label>
+                    </field>
+
+                    <field type="date"  ng-model="controller.advancedSearch.model.dtEmissIni">
+                        <label>{{ 'l-dt-emiss-start' | i18n }}</label>
+                    </field>
+                    
+                    <field type="date" ng-model="controller.advancedSearch.model.dtEmissFim">
+                        <label>{{ 'l-dt-emiss-end' | i18n }}</label>
+                    </field>  
+
+                    <div class="col-xs-12 col-md-12" style="margin-top: 15px">
+                        <button ng-if="currentuser['user-hiearchy']" class="btn btn-default" ng-model="controller.selectedRepresentatives" ng-change="controller.onZoomSelectRepresentatives();"
+                            zoom zoom-multiple zoom-service="mpd.repres.zoom" zoom-init="currentuser['listSubord']">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            {{ 'l-bt-repres' | i18n: []: 'dts/mpd/' }}
+                        </button>
+                    </div>
+                    <div class="col-xs-12 col-md-12">
+                        <totvs-page-disclaimers disclaimer-list="controller.disclaimers" ng-click="controller.removeDisclaimer">
+                        </totvs-page-disclaimers>
+                    </div>			
+			
+		</form>
+	</div>
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" data-ng-click="controller.search();">{{ 'btn-search' | i18n }}</button>
+	<button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'btn-cancel' | i18n }}</button>
+</div>
+

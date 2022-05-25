@@ -1,0 +1,98 @@
+<totvs-page-child type="list">
+
+	<br/>
+
+	<totvs-page-content class="crm-tab">
+
+		<div class="row">
+
+			<div class="col-xs-10">
+				<h3 style="margin-top: 0px;">
+					{{ 'l-ranges' | i18n: []: 'dts/crm' }} ({{ controller.model.ttFaixa.length || 0 }})
+				</h3>
+			</div>
+
+			<div class="col-xs-2">
+				<div class="pull-right">
+					<button type="button"
+							class="btn btn-primary"
+							ng-click="controller.addEditRange(controller.model);">
+						<span class="glyphicon glyphicon-plus"></span>
+						<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<totvs-divider></totvs-divider>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-record-not-found' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.model.ttFaixa || controller.model.ttFaixa.length <= 0">
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addEditRange(controller.model);">
+				<span class="glyphicon glyphicon-plus"></span>
+				<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+			</button>
+		</totvs-page-alert>
+
+		<div class="crm-tab"
+			 ng-if="controller.model.ttFaixa.length">
+
+			<div class="row crm-tab-item header hidden-xs">
+				<strong>
+					<div class="col-xs-3 col-sm-3">
+						{{ 'l-name' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-sm-3">
+						{{ 'l-initial-range' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-sm-2">
+						{{ 'l-final-range' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-sm-2">
+						{{ 'l-color' | i18n: []: 'dts/crm' }}
+					</div>
+				</strong>
+			</div>
+
+			<div class="row crm-tab-item"
+				 ng-repeat="range in controller.model.ttFaixa">
+
+				<div class="hidden-xs col-sm-3 overflow-ellipsis">
+					{{ range.des_faixa_prfv }}
+				</div>
+
+				<div class="hidden-xs col-sm-3 overflow-ellipsis">
+					{{ range.vli_inicial }}
+				</div>
+
+				<div class="hidden-xs col-sm-2 overflow-ellipsis">
+					{{ range.vli_final }}
+				</div>
+
+				<div class="hidden-xs col-sm-2 overflow-ellipsis">
+					{{ range.ttCor.nom_cor }}
+				</div>
+
+				<div class="col-xs-3 col-sm-2 text-right">
+					<a class="clickable"
+					   ng-click="controller.addEditRange(controller.model, range);">
+						<span class="visible-xs-inline glyphicon glyphicon-pencil"></span>
+						<span class="hidden-xs">{{ 'btn-edit' | i18n: []: 'dts/crm' }}</span>
+					</a>
+					&nbsp;&nbsp;
+					<a class="clickable"
+					   ng-click="controller.removeRange(controller.model.ttFaixa, range, $index);">
+						<span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+						<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+					</a>
+				</div>
+			</div>
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

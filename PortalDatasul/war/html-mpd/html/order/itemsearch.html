@@ -1,0 +1,217 @@
+	<style>
+		.popover-large {
+			width:90% !important;
+			max-width:90% !important;
+		}
+
+		.panel-group{
+			margin-bottom: 0px !important;
+		}
+
+		.small-icon-plus{
+			font-size: 10px !important;
+			margin-left: -12px;
+		}
+
+		.opera #thingie, .chrome #thingie .small-icon-plus{
+				font-size: 10px !important;
+				margin-left: 0px;
+		}
+
+		.chrome #thingie {
+			do: this;
+		}
+
+		@media screen and (max-width: 768px){
+			.col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+				padding-left: 15px !important;
+				padding-right: 15px !important;
+			}
+
+			.responsive-accordion-mpd{
+				margin-top: 10px
+			}
+
+			.no-padding-right-mpd{
+				padding-right: 0px !important;
+			}
+		}
+
+		@media screen and (min-width: 769px){
+			.responsive-accordion-mpd{
+				margin-top: 10px
+			}
+		}
+
+		@media screen and (min-width: 992px){
+			.mpd-zoom-img img:hover
+			{
+				width: 20%;
+				height: 20%;
+				-webkit-transition: width 2.5s; /* Safari */
+				transition: width 2.5s;
+			}
+		}
+
+		.accordionDrawAttention{
+			background-color: #e0e5ea !important;
+		}
+
+		.field-label{
+			line-height: 1 !important;
+			color: #333 !important;
+			font-weight: bold !important;
+		}
+
+		.totvs-style-guide .nav-tabs>li>a {
+			margin-right: 0px;
+		}
+
+		.no-padding-search-produtcs{
+			padding-left: 0px !important;
+			padding-right: 0px !important;
+		}
+
+		.field-label {
+			font-weight: 700 !important;
+			font-size: 12px !important;
+		}
+
+	</style>
+
+<totvs-page type="list" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#{{defaultPageHome}}">{{ 'l-home-page' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-salesorder' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-add-items' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{'l-order-search-products' | i18n}}"></totvs-page-header-title>
+			<totvs-page-header-operation>
+
+				<div class="col-xm-12 col-sm-12 col-md-12 responsive-accordion-mpd" ng-show="controller.itemsListoToAddAfter.length > 0">
+					<accordion close-others="false">
+						<accordion-group is-open="controller.isOpenItemsSearchedToAdd" style="background-color: #f9f9f9;">
+							<accordion-heading>
+								<i class="glyphicon glyphicon-shopping-cart"></i>
+								{{ 'l-items-searched-to-add' | i18n: []:  'dts/mpd' }} ({{controller.itemsListoToAddAfter.length}})
+								<i class="pull-right glyphicon"
+									ng-class="{'glyphicon-chevron-down' :  controller.isOpenItemsSearchedToAdd,
+									'glyphicon-chevron-right': !controller.isOpenItemsSearchedToAdd}">
+								</i>
+							</accordion-heading>
+							<div ng-if="controller.isOpenItemsSearchedToAdd">
+								<div ng-repeat="item in controller.itemsListoToAddAfter" class="col-xs-12 col-sm-12 col-md-12" 
+									 style="padding-left: 0px !important; padding-right: 0px !important; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 10px; background-color: #ffffff;" 
+									 totvs-custom-element="customItemsSearchedToAdd">
+
+										<div class="col-xs-12 col-sm-12 col-md-12" style="padding-left: 15px; padding-right: 0px;">
+											<form class="form-inline">
+												<div class="form-group col-xs-10" style="padding-left: 0px; padding-right: 0px;">
+
+													<h5 ng-if="item['cod-refer']">
+														<b ng-if="controller.searchProfileConfig.useItCodigo == true">{{item['it-codigo']}} </b>
+														<b ng-if="controller.searchProfileConfig.useItemDesc == true" > - {{item['itemDesc']}} </b>
+														<b ng-if="controller.searchProfileConfig.useCodRefer == true"> - {{item['cod-refer']}} </b>
+													</h5>
+													<h5 ng-if="!item['cod-refer']">
+														<b ng-if="controller.searchProfileConfig.useItCodigo == true">{{item['it-codigo']}} </b>
+														<b ng-if="controller.searchProfileConfig.useItemDesc == true"> - {{item['itemDesc']}} </b>
+													</h5>
+
+												</div>
+												<div class="form-group col-xs-2 pull-right no-padding-right-mpd" style="padding-left: 0px !important;">
+													<button type="button"
+															ng-click="controller.removeItemToAddAfter($index)"
+															style="margin-bottom: 5px; margin-top: 10px"
+															class="btn btn-default btn-xs pull-right ng-binding ng-scope"> <span><i class="glyphicon glyphicon-remove"></i></span> {{ 'l-remove' | i18n }}</button>
+												</div>
+											</form>
+										</div>
+
+										<div ng-if="controller.showItemImage && item['nom-imagem']">
+											<img class="col-xs-3 col-sm-3 col-md-1" style="padding-bottom: 10px;" alt="{{ 'l-image-not-found' | i18n }}"  ng-src="/dts/datasul-rest/resources/api/fch/fchdis/fchdis0038/imagem?imagem={{item['nom-imagem']}}">
+										</div>
+
+										<div class="col-xs-9 col-sm-9 col-md-11">
+
+											<div class="col-xs-12 col-sm-12 col-md-12" style="padding: 5px">
+												<totvs-lodash-template src="/dts/mpd/html/order/itemsearchselected.html" template-data="controller.searchProfileConfig"></totvs-lodash-template>
+											</div>
+										</div>
+								</div>
+
+								<button ng-if="controller.itemsListoToAddAfter.length > 1" class="btn btn-default btn-xs pull-right" ng-click="controller.removeAllItemsToAfter()">
+									<span><i class="glyphicon glyphicon-remove"></i> {{ 'l-remove-all' | i18n }} </span>
+								</button>
+
+							</div>
+						</accordion-group>
+					</accordion>
+				</div>
+				<div class="pull-left col-md-4" style="margin-top: 10px;">
+					<button class="btn btn-primary hidden-md hidden-lg" ng-click="controller.addItens(); controller.closePopovers(); "><span class="glyphicon glyphicon-plus"></span> {{ 'l-items-add-to-order-small' | i18n }}</button>
+					<button class="btn btn-primary hidden-sm hidden-xs" ng-click="controller.addItens(); controller.closePopovers(); "><span class="glyphicon glyphicon-plus"></span> {{ 'l-items-add-to-order' | i18n }}</button>
+					<button class="btn btn-default" ng-click="controller.cancel(); controller.closePopovers(); "><span class="glyphicon glyphicon-arrow-left"></span> {{ 'btn-back' | i18n }}</button>
+					<div class="btn-group" ng-if="controller.firstTabSelected == true">
+						<button  class="btn btn-default" ng-class="{active: controller.orderSearchItemsWithGrid == false}"  ng-click="controller.setOrderSearchItemsWithGrid(); controller.closePopovers();" title="{{ 'l-order-grid-items' | i18n }}"><span class="glyphicon glyphicon-align-justify"></span></button>
+						<button  class="btn btn-default" ng-class="{active: controller.orderSearchItemsWithGrid == true}" ng-click="controller.setOrderSearchItemsWithGrid(); controller.closePopovers();" title="{{ 'l-order-detail-items' | i18n }}"><span class="glyphicon glyphicon-th"></span></button>
+					</div>
+				</div>
+
+				<div class="pull-right col-md-8" style="margin-top: 10px;">
+					<form ng-submit="controller.searchButton();">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="{{ 'l-items-search' | i18n }}" ng-model="controller.quickSearchText">
+							<span class="input-group-btn">
+								<button class="btn btn-default"
+										type="button"
+										ng-click="controller.quickSearchText = ''; controller.searchButton();"><span class="glyphicon glyphicon-remove"></span></button>
+								<button class="btn btn-default"
+										type="submit"><span class="glyphicon glyphicon-filter"></span></button>
+							</span>
+						</div>
+					</form>
+				</div>
+
+			</totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-detail style="padding-left: 15px">
+			<totvs-tabset>
+				<totvs-tab  class="col-md-2 col-sm-6 col-xs-6 no-padding-search-produtcs" active="controller.firstTabSelected" heading="{{:: 'l-all' | i18n : [] : 'dts/mpd' }}" ng-click="controller.selectedTab(1)">
+
+					<div ng-if="controller.orderSearchItemsWithGrid != false" style="margin-top:10px">
+						<totvs-lodash-template src="/dts/mpd/html/order/itemsearchlist.html" template-data="controller.searchProfileConfig"></totvs-lodash-template>
+					</div>
+
+					<div ng-if="controller.orderSearchItemsWithGrid == false">
+						<totvs-lodash-template src="/dts/mpd/html/order/itemsearchgrid.html" template-data="controller.searchProfileConfig"></totvs-lodash-template>
+					</div>
+
+				</totvs-tab>
+
+				<totvs-tab class="col-md-2 col-sm-6 col-xs-6 no-padding-search-produtcs"  active="controller.secondTabSelected" heading="{{:: 'l-replacement' | i18n : [] : 'dts/mpd' }}" ng-click="controller.selectedTab(2)">
+					<totvs-lodash-template src="/dts/mpd/html/order/itemsearchreplacement.html" template-data="controller.searchProfileConfig"></totvs-lodash-template>
+				</totvs-tab>
+
+			</totvs-tabset>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+	<totvs-list-pagination ng-if="controller.firstTabSelected == true && controller.listResult2.length < controller.totalRecords2 && controller.listResult2.length"
+		ng-click="controller.loadMore()">
+	</totvs-list-pagination>
+
+	<totvs-list-pagination ng-if="controller.secondTabSelected == true && controller.listResult3.length < controller.totalRecords3 && controller.listResult3.length"
+		ng-click="controller.loadMore()">
+	</totvs-list-pagination>
+
+</totvs-page>

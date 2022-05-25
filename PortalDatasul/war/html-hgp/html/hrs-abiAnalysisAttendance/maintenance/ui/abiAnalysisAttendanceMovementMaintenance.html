@@ -1,0 +1,140 @@
+<totvs-modal-header> 
+    {{controller.action == 'EDIT' ? 'Editar' : 'Detalhes do '}} Movimento
+</totvs-modal-header>
+<totvs-modal-body style="overflow-y: auto;">
+    <fieldset ng-form="controller.modelForm">                    
+        
+        <totvs-row>
+                                   
+                <field  label="Código SUS"
+                        ng-model="controller.movement.cddServRessus" 
+                        type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"                                                
+                        disabled>
+                </field>
+            
+                <field  label="Descrição"
+                        ng-model="controller.movement.desProcedimento"
+                        type="input"
+                        class="col-lg-10 col-md-10 col-sm-10 col-xs-12"                                                
+                        disabled>
+                </field>
+
+        </totvs-row>
+        
+        <totvs-row>
+                <totvs-field
+                        label="{{controller.movement.logLivre1 ? 'Selecionar Código' : 'Código'}}"
+                        totvs-combo
+                        t-options="controller.listOfAssocvaConverMovto"
+                        ng-model="controller.selectedMovement"
+                        ng-change="controller.onSelectedMovement()"
+                        ng-disabled="controller.action == 'DETAIL'"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        canclean>
+                </totvs-field>
+
+                <field  label="Tipo"
+                        ng-model="controller.indTipServRessus"
+                        type="input"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"                                
+                        disabled>
+                </field>
+        </totvs-row>
+        
+        <totvs-row> 
+                <totvs-field
+                    totvs-decimal
+                    ng-model="controller.movement.qtdProcedimento"
+                    label="Quantidade Cobrada"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    m-dec="0"
+                    canclean
+                    ng-disabled="true">
+                </totvs-field>
+
+                <totvs-field
+                    totvs-decimal
+                    ng-model="controller.movement.valProcedimento"
+                    label="Valor Cobrado (R$)"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    m-dec="2"
+                    canclean
+                    ng-disabled="true">
+                </totvs-field>
+
+                <totvs-field
+                    totvs-decimal
+                    ng-model="controller.movement.valParticip"
+                    label="Valor Participação (R$)"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    m-dec="2"
+                    canclean
+                    ng-disabled="true">
+                </totvs-field>
+        </totvs-row>
+
+        <totvs-row>
+                <totvs-field
+                    totvs-decimal
+                    ng-model="controller.movement.qtdDeferido"
+                    label="Quantidade Reconhecida"
+                    ng-disabled="controller.action == 'DETAIL' 
+                              || controller.movement.logErroMovto"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    m-dec="0"
+                    canclean>
+                </totvs-field>               
+
+                <totvs-field
+                    totvs-decimal
+                    ng-model="controller.movement.valDeferido"
+                    label="Valor Reconhecido (R$)"
+                    ng-disabled="controller.action == 'DETAIL' 
+                              || controller.movement.logErroMovto"
+                    ng-keyup="controller.onCalculateRestrictionValue()"                    
+                    ng-change="controller.onCalculateRestrictionValue()"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    m-dec="2"
+                    canclean>
+                </totvs-field>
+
+                <totvs-field
+                    totvs-decimal
+                    ng-model="controller.movement.valGlosado"
+                    label="Valor Glosado (R$)"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    m-dec="2"
+                    canclean
+                    ng-disabled="true">
+                </totvs-field>
+
+                <totvs-field
+                    totvs-decimal
+                    ng-model="controller.movement.valPago"
+                    label="Valor Pago (R$)"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    m-dec="2"
+                    canclean
+                    ng-disabled="true">
+                </totvs-field>
+        </totvs-row>
+                                                                                                
+        <totvs-row>
+                <field  type="textarea"
+                        label="Observação"
+                        ng-model="controller.movement.desIncrem"
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"                
+                        maxlength="2000"
+                        ng-disabled="true"
+                        rows="4">
+                </field>
+        </totvs-row>
+            
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button ng-click="controller.cancel()" class="btn">{{ controller.action == 'EDIT' ? 'Cancelar' : 'Fechar'}}</button>
+    <button ng-click="controller.save()" ng-if="controller.action == 'EDIT'" class="btn btn-primary">Salvar</button>
+</totvs-modal-footer>

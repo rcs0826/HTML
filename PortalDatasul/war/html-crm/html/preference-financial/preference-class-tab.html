@@ -1,0 +1,50 @@
+<div class="field-file">
+    <br>
+    <totvs-page-alert type="warning"
+                      message="{{ 'msg-warning-classes' | i18n: []: 'dts/crm' }}">
+    </totvs-page-alert>
+    
+    <div ng-if="controller.model.ttClasses.length > 0">
+        <div class="row" style="padding-left: 15px;">
+            <button type="button"
+                    class="btn btn-primary"
+                    ng-click="controller.selectClassifications()">
+                
+                <span class="glyphicon glyphicon-plus"></span>
+                <span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+            </button>
+        </div>
+        <br>
+        <div class="crm-tab">
+            <div class="row crm-tab-item hover"
+                 ng-repeat="class in controller.model.ttClasses">
+
+                <div class="col-xs-9 overflow-ellipsis">
+                    {{ class.nom_clas_clien }}
+                </div>
+
+                <div class="col-xs-3 text-right">
+                    <a class="clickable"
+                       ng-click="controller.removeClass($index);">
+                        <span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+                        <span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <totvs-page-alert type="info"
+                      message="{{ 'msg-not-found-classes' | i18n: []: 'dts/crm' }}"
+                      ng-if="!controller.model.ttClasses || controller.model.ttClasses.length <= 0">
+        <br>
+        <button type="button"
+                class="btn btn-primary"
+                ng-click="controller.selectClassifications()">
+            
+            <span class="glyphicon glyphicon-plus"></span>
+            <span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+        </button>
+    </totvs-page-alert>
+
+</div>

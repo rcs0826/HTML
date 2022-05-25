@@ -1,0 +1,178 @@
+<totvs-page type="list">
+    <link type="text/css" rel="stylesheet" href="/dts/hgp/html/assets/css/notice.css"/>
+    <totvs-page-navbar id="navBar" >
+
+        <totvs-page-breadcrumb id="breadcrumb">
+                <breadcrumb>Manutenção Avisos de Cobrança Exportados</breadcrumb>
+
+                <!--  tem o segundo breadcumb para que eles fiquem centralizados verticalmente -->
+                <breadcrumb></breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title title="Avisos de Cobrança Exportados" 
+                                     total="{{controller.listTmpDoctoAvisoCobCount}}"
+                                     settings="controller.openConfigWindow()">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+
+                <totvs-page-header-operation-action limit-primary-action="1"                               
+                                                    totvs-custom-element="customListAction">
+                                                                                                     
+                        <action ng-click="controller.removerDocumentosAvisos('Selecionados',null)" 
+                                                    id="removeDocumentosSelecionadosAction"                       
+                                                    ng-show="controller.listTmpDoctoAvisoCobCount >= 1"
+                                                    tooltip="Remover os avisos selecionados"                                                    
+                                                    icon="glyphicon-trash">Remover
+                        </action>
+                        <action ng-click="controller.reprocessarDocumentosAvisos('Selecionados',null)" 
+                                                    id="reprocessaDocumentosSelecionadosAction"
+                                                    ng-show="controller.listTmpDoctoAvisoCobCount >= 1"
+                                                    ng-if="controller.listTmpDoctoAvisoCob[0].lgAvisoCobranca"
+                                                    tooltip="Reprocessar os avisos selecionados"                    
+                                                    icon="glyphicno glyphicon-repeat">Reprocessar
+                        </action>
+                </totvs-page-header-operation-action>
+
+                <totvs-page-header-operation-filter placeholder="Guia Prestador"
+                                                    ng-submit="controller.search()"
+                                                    ng-model="controller.searchInputText"
+                                                    advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+
+            </totvs-page-header-operation>
+
+            <totvs-page-tags>
+                <tag class="tag-{{$index + 1}}" ng-repeat="item in DOCUMENTOS_AVISOS_STATUS_EXP_ENUM.ENUMERATION_VALUES">{{item.label}}</tag>
+            </totvs-page-tags>
+
+            <totvs-page-disclaimers
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content id="pageContent">
+        
+        <!-- se ja carregou as configuracoes e estas nao possuem filtros-->
+        <totvs-page-alert 
+            ng-if="controller.config.lgBuscarAoAbrirTela != undefined
+               && !(controller.disclaimers.length > 0)"
+            type="info"
+            message="Nenhum filtro informado">
+        </totvs-page-alert>
+        
+        <totvs-page-alert 
+            ng-if="controller.hasDoneSearch == true && controller.listTmpDoctoAvisoCob.length <= 0"
+            type="info"
+            message="Nenhum registro encontrado">
+        </totvs-page-alert>
+
+        <totvs-list-item
+            id="tmpDoctoAvisoCob{{$index}}"
+            class="tag-{{DOCUMENTOS_AVISOS_STATUS_EXP_ENUM.getIndexByKey(tmpDoctoAvisoCob.situacao) + 1}}"
+            ng-repeat="tmpDoctoAvisoCob in controller.listTmpDoctoAvisoCob | filter:{ nrGuiaPrestador: controller.searchInputText}"
+            selected="tmpDoctoAvisoCob"
+            >
+
+            <totvs-list-item-header>
+                <totvs-list-item-title>
+                    <span>
+                        <a href="#/dts/hgp/hrc-document/detailEventNotice/{{tmpDoctoAvisoCob.idSeqHistorDocrecon}}/{{tmpDoctoAvisoCob.idSeqAvisoCob}}" 
+                            id="linkDocumentTitle"> 
+                            <b>Trans</b> {{(StringTools.fill(tmpDoctoAvisoCob.cdTransacao, "0", 4))}} 
+                            | <b>Série</b> {{tmpDoctoAvisoCob.nrSerieDocOriginal}} 
+                            | <b>Número</b> {{(StringTools.fill(tmpDoctoAvisoCob.nrDocOriginal, "0", 8))}} 
+                            | <b>Sequência</b> {{(StringTools.fill(tmpDoctoAvisoCob.nrDocSistema, "0", 9))}} 
+                            | <b>Lote</b> {{tmpDoctoAvisoCob.nrLoteExport}} 
+                    </a>
+                    </span>
+                 </totvs-list-item-title>
+                 <totvs-list-item-action limit-primary-action="1" id="listActionDocument">
+                        <action 
+                        ng-click="controller.searchHistSituation(tmpDoctoAvisoCob.idSeqAvisoCob)" 
+                        icon="glyphicon-list"          
+                        id=" documentExporSituationNoticesEvents">Histórico</action>
+                        <action 
+                        ng-click="controller.removerDocumentosAvisos('Unico',tmpDoctoAvisoCob)" 
+                        icon="glyphicon-trash"          
+                        id=" documentExporSituationNoticesEvents">Remover</action>       
+                        <action 
+                        ng-click="controller.reprocessarDocumentosAvisos('Unico',tmpDoctoAvisoCob)" 
+                        ng-if="tmpDoctoAvisoCob.situacao == 3 && tmpDoctoAvisoCob.lgAvisoCobranca"
+                        icon="glyphicon glyphicon-alert"          
+                        id=" documentExporSituationNoticesEvents">Reprocessar</action>                        
+                        <action 
+                        ng-click="controller.searchErrorMessages(tmpDoctoAvisoCob.idSeqAvisoCob)" 
+                        ng-if="tmpDoctoAvisoCob.situacao == 3"
+                        icon="glyphicon-list"
+                        id=" documentImportErrorMessages">Mensagens de Erro</action>
+                </totvs-list-item-action>      
+
+            </totvs-list-item-header>
+            <totvs-list-item-content>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}" 
+                title="Beneficiário" value-break="false">
+
+                <a ng-if="tmpDoctoAvisoCob.idPessoa != 0" 
+                    href="#/menu-html/program-html/hvp.personInformation/#/F/{{tmpDoctoAvisoCob.idPessoa}}">
+                    {{tmpDoctoAvisoCob.rotuloBenef}}
+                </a>
+
+                <a ng-if="tmpDoctoAvisoCob.idPessoa == 0"
+                    href="#/menu-html/program-html/hvp.personInformation/#/I/{{(StringTools.fill(tmpDoctoAvisoCob.cdUnidadeCarteira, '0', 4))}}{{(StringTools.fill(tmpDoctoAvisoCob.cdCarteiraUsuario, '0', 13))}}">
+                    {{tmpDoctoAvisoCob.rotuloBenef}}
+                </a>
+
+                </totvs-list-item-info>     
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                            title="Prestador Executante"  value-break="false"
+                            value="{{tmpDoctoAvisoCob.rotuloPrestador}}" >                                                                                    
+                </totvs-list-item-info>
+
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                            title="Guia do Prestador"
+                            value="{{(tmpDoctoAvisoCob.nrGuiaPrestador == '' ? '-' : tmpDoctoAvisoCob.nrGuiaPrestador)}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Transação"
+                                      value="{{tmpDoctoAvisoCob.rotuloTransacao}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Data Importacao"
+                                      value="{{tmpDoctoAvisoCob.rotuloImportacao}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Arquivo Importacão"
+                                      value="{{tmpDoctoAvisoCob.nomArqImport}}">
+                </totvs-list-item-info>                      
+
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Data Conhecimento"              
+                                      value="{{tmpDoctoAvisoCob.rotuloConhecimento}}">
+                </totvs-list-item-info>
+                
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Data Exportação"
+                                      value="{{tmpDoctoAvisoCob.rotuloGeracao}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Arquivo Exportação"
+                                      value="{{tmpDoctoAvisoCob.nomArqExport}}">
+                </totvs-list-item-info>
+                
+            </totvs-list-item-content>
+        </totvs-list-item>
+
+        <totvs-list-pagination
+            ng-if="controller.listTmpDoctoAvisoCob.length < controller.listTmpDoctoAvisoCobCount && controller.listTmpDoctoAvisoCob.length"
+            ng-click="controller.search(true);">
+        </totvs-list-pagination>
+
+    </totvs-page-content>
+</totvs-page>

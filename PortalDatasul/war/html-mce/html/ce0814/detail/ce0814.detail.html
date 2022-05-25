@@ -1,0 +1,266 @@
+<totvs-page type="detail">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mce/ce0814//">{{ 'l-item-inventory-movement' | i18n }}</breadcrumb>
+            <breadcrumb>{{ 'l-detail' | i18n }}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-document' | i18n}} : {{controller.model['documentNumber']}}"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action on-back-link="#/dts/mce/ce0814"
+                                                    hide-edit="true"
+                                                    hide-remove="true">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-detail>
+            <!--TIPO DA TRANSAÃ‡ÃƒO-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-transaction-type' | i18n }}"
+                                    value="{{controller.legendUtil.documentType.NAME(controller.model['transType'])}}">
+            </totvs-page-detail-info>
+            <!--DATA DA TRANSAÃ‡ÃƒO-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-transaction-date' | i18n }}"
+                                    value="{{controller.model['transactionDate']}}">
+            </totvs-page-detail-info>
+            <!--QUANTIDADE-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-quantity' | i18n }}"
+                                    value="{{controller.mceUtils.formatDecimal(controller.model['quantity'],4)}}">
+            </totvs-page-detail-info>            
+            <!-----------------------------------DOCUMENTO-------------------------------------------->
+            <legend class="col-md-12"></legend>
+            <!-----------------------------------LINHA 1-------------------------------------------->
+            <!--SÃ‰RIE-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-serie-document' | i18n }}"
+                                    value="{{controller.model['documentSeries']}}">
+            </totvs-page-detail-info>
+            
+            <!--ESPÃ‰CIE-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-species' | i18n }}"
+                                    value="{{controller.model['documentClass']}}">
+            </totvs-page-detail-info>
+            <!--FORNECEDOR-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-vendor' | i18n }}"
+                                    value="{{controller.model['vendor']}} - {{controller.model['vendorDescription']}}">
+            </totvs-page-detail-info>
+            <!-----------------------------------LINHA 2-------------------------------------------->
+            <!--NATUREZA DE OPERAÃ‡ÃƒO-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-operation-type' | i18n }}"
+                                    value="{{controller.model['operationType']}}">
+            </totvs-page-detail-info>
+            <!--UNIDADE DE NEGÃ“CIO-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-business-unit' | i18n }}"
+                                    value="{{controller.model['businessUnit']}} - {{controller.model['businessUnitDescription']}}">
+            </totvs-page-detail-info>
+            <!--USUÃ�RIO-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-user' | i18n }}"
+                                    value="{{controller.model['userName']}}">
+            </totvs-page-detail-info>
+            <!-----------------------------------LINHA 3-------------------------------------------->
+            <!--CONTA CONTÃ�BIL TODO BUSCAR DESCRIÃ‡ÃƒO-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-account' | i18n }}"
+                                    value="{{controller.model['account']}} - {{controller.model['accountDescription']}}">
+            </totvs-page-detail-info>
+            <!--CENTRO DE CUSTO TODO BUSCAR DESCRIÃ‡ÃƒO-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-cost-center' | i18n }}"
+                                    value="{{controller.model['costCenter']}} - {{controller.model['costCenterDescription']}}">
+            </totvs-page-detail-info>            
+            <!-----------------------------------ITEM-------------------------------------------->
+            <div class="col-md-12"><legend class="col-md-12">{{ 'l-item' | i18n }}</legend></div>
+            
+            <!-----------------------------------LINHA 1-------------------------------------------->
+            <!--ITEM-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-item' | i18n }}"
+                                    value="{{controller.model['item']}} - {{controller.model['itemDescription']}}">
+            </totvs-page-detail-info>
+            <!--ESTABELECIMENTO-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-site' | i18n }}"
+                                    value="{{controller.model['site']}} - {{controller.model['siteDescription']}}">
+            </totvs-page-detail-info>
+            <!--DEPÃ“SITO-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-warehouse' | i18n }}"
+                                    value="{{controller.model['warehouse']}} - {{controller.model['warehouseDescription']}}">
+            </totvs-page-detail-info>
+            <!-----------------------------------LINHA 2-------------------------------------------->
+            <!--LOCALIZAÃ‡ÃƒO-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-localization' | i18n }}"
+                                    value="{{controller.model['localization']}}">
+            </totvs-page-detail-info>
+            <!--REFERÃŠNCIA-->
+            <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-6 col-xs-12"
+                                    title="{{ 'l-reference' | i18n }}"
+                                    value="{{controller.model['reference']}}">
+            </totvs-page-detail-info>            
+            <!-----------------------------------LINHA 3-------------------------------------------->
+            <!--LOTE-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-lot' | i18n }}"
+                                    value="{{controller.model['lot']}}">
+            </totvs-page-detail-info>
+            <!--VALIDADE DO LOTE-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-dateValidLot' | i18n }}"
+                                    value="{{controller.model['lotValidityDate']}}">
+            </totvs-page-detail-info>                    
+            <!-----------------------------------COMPLEMENTOS-------------------------------------------->
+            <div class="col-md-12"><legend class="col-md-12">{{ 'l-supplements' | i18n }}</legend></div>
+            <!-----------------------------------LINHA 1-------------------------------------------->
+            <!--ORDEM DE INVESTIMENTO-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-investment-order' | i18n }}"
+                                    value="{{controller.model['inventoryReqNumber']}}">
+            </totvs-page-detail-info>
+            <!--SALDO REQUISIÃ‡ÃƒO-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-requisition-balance' | i18n }}"
+                                    value="{{controller.model['reqBalance']}}">
+            </totvs-page-detail-info>
+            <!--ORDEM-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-requisition' | i18n }}"
+                                    value="{{controller.model['reqNumber']}}">
+            </totvs-page-detail-info>
+            <!-----------------------------------LINHA 2-------------------------------------------->
+            <!--ORDEM DE PRODUÃ‡ÃƒO-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-productionOrder' | i18n }}"
+                                    value="{{controller.model['productReqNumber']}}">
+            </totvs-page-detail-info>
+            <!--PEDIDO-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-8 col-xs-12"
+                                    title="{{ 'l-requisition' | i18n }}"
+                                    value="{{controller.model['requisition']}}">
+            </totvs-page-detail-info>
+            <!--DATA DA NOTA FISCAL DE SAIDA-->
+            <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                                    title="{{ 'l-fiscal-out-date' | i18n }}"
+                                    value="{{controller.model['fiscalOutDate']}}">
+            </totvs-page-detail-info>
+            <!------------------------------------VALORES-------------------------------------------->
+            <div class="col-md-12"><legend class="col-md-12">{{ 'l-values' | i18n }}</legend></div>
+            <!-----------------------------------CABEÃ‡ALHO-------------------------------------------->
+            <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                                    title=""
+                                    value="">
+            </totvs-page-detail-info>
+            <!--MATERIAL-->
+            <totvs-page-detail-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+                                    title=""
+                                    value="{{ 'l-material' | i18n }}">
+            </totvs-page-detail-info>
+            <!--MÃƒO DE OBRA-->
+            <totvs-page-detail-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+                                    title=""
+                                    value="{{ 'l-mob' | i18n }}">
+            </totvs-page-detail-info>
+            <!--GGF-->
+            <totvs-page-detail-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+                                    title=""
+                                    value="{{ 'l-ggf' | i18n }}">
+            </totvs-page-detail-info>
+            <!-----------------------------------MOEDA 1-------------------------------------------->
+            <!--MOEDA 1-->
+            <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                                    title=""
+                                    ng-hide="controller.hideCurrency1"
+                                    value="{{controller.model['currency1Description']}}">
+            </totvs-page-detail-info>
+            <!--VALOR MAT-->
+            <totvs-page-detail-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+                                    title=""
+                                    ng-hide="controller.hideCurrency1"
+                                    value="{{controller.mceUtils.formatDecimal(controller.model['matValue1'],4)}}">
+            </totvs-page-detail-info>
+            <!--VALOR MOB-->
+            <totvs-page-detail-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+                                    title=""
+                                    ng-hide="controller.hideCurrency1"
+                                    value="{{controller.mceUtils.formatDecimal(controller.model['mobValue1'],4)}}">
+            </totvs-page-detail-info>
+            <!--VALOR GGF-->
+            <totvs-page-detail-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+                                    title=""
+                                    ng-hide="controller.hideCurrency1"
+                                    value="{{controller.mceUtils.formatDecimal(controller.model['ggfValue1'],4)}}">
+            </totvs-page-detail-info>
+            <!-----------------------------------MOEDA 2-------------------------------------------->
+            <!--MOEDA 2-->
+            <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                                    title=""
+                                    ng-hide="controller.hideCurrency2"
+                                    value="{{controller.model['currency2Description']}}">
+            </totvs-page-detail-info>
+            <!--VALOR MAT-->
+            <totvs-page-detail-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+                                    title=""
+                                    ng-hide="controller.hideCurrency2"
+                                    value="{{ controller.mceUtils.formatDecimal(controller.model['matValue2'],4) }}">
+            </totvs-page-detail-info>
+            <!--VALOR MOB-->
+            <totvs-page-detail-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+                                    title=""
+                                    ng-hide="controller.hideCurrency2"
+                                    value="{{ controller.mceUtils.formatDecimal(controller.model['mobValue2'],4) }}">
+            </totvs-page-detail-info>
+            <!--VALOR GGF-->
+            <totvs-page-detail-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3col-lg-3 col-md-3 col-sm-3 col-xs-3"
+                                    title=""
+                                    ng-hide="controller.hideCurrency2"
+                                    value="{{ controller.mceUtils.formatDecimal(controller.model['ggfValue2'],4) }}">
+            </totvs-page-detail-info>
+            <!-----------------------------------MOEDA 3-------------------------------------------->
+            <!--MOEDA 3-->
+            <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                                    title=""
+                                    ng-hide="controller.hideCurrency3"
+                                    value="{{controller.model['currency3Description']}}">
+            </totvs-page-detail-info>
+            <!--VALOR MAT-->
+            <totvs-page-detail-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+                                    title=""
+                                    ng-hide="controller.hideCurrency3"
+                                    value="{{controller.mceUtils.formatDecimal(controller.model['matValue3'],4)}}">
+            </totvs-page-detail-info>
+            <!--VALOR MOB-->
+            <totvs-page-detail-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+                                    title=""
+                                    ng-hide="controller.hideCurrency3"
+                                    value="{{controller.mceUtils.formatDecimal(controller.model['mobValue3'],4)}}">
+            </totvs-page-detail-info>
+            <!--VALOR GGF-->
+            <totvs-page-detail-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+                                    title=""
+                                    ng-hide="controller.hideCurrency3"
+                                    value="{{controller.mceUtils.formatDecimal(controller.model['ggfValue3'],4)}}">
+            </totvs-page-detail-info>
+            <!-----------------------------------NARRATIVA-------------------------------------------->
+            <!--ESPAÃ‡O-->
+            <totvs-page-detail-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                    title=""
+                                    value="">
+            </totvs-page-detail-info>
+            <!--NARRATIVA-->
+            <totvs-page-detail-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                    title="{{ 'l-narrative' | i18n }}"
+                                    value="{{controller.model['narrative']}}">
+            </totvs-page-detail-info>
+        </totvs-page-detail>
+    </totvs-page-content>
+</totvs-page>

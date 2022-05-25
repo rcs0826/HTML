@@ -1,0 +1,18 @@
+
+<div ng-controller="kbn.dashboard.productionPerformanceCtrl.ctrl as productionPerformanceCtrl">
+  <link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+  <totvs-widget>
+    <totvs-widget-header settings="productionPerformanceCtrl.showParams()" title="{{ productionPerformanceCtrl.chart.titleWidget | i18n : [] : 'dts/kbn'}}"><i ng-if="productionPerformanceCtrl.chart.titleWidget == 'l-production-performance-card'" tooltip-placeholder="rigth" tooltip-html="productionPerformanceCtrl.tooltip" class="glyphicon glyphicon-info-sign hidden-xs"></i></totvs-widget-header>
+    <totvs-widget-body>
+      <ol class="dashboard breadcrumb">
+        <li ng-repeat="chart in productionPerformanceCtrl.chartArray" ng-class="{ 'active' : $last, 'is-pointer': !$last }"> <span ng-click="productionPerformanceCtrl.navigate($index)">{{ chart.titleBreadcrumb }}</span></li>
+      </ol>
+      <totvs-chart t-categories="productionPerformanceCtrl.chart.categories" t-series="productionPerformanceCtrl.chart.series" t-type-chart="{{productionPerformanceCtrl.chart.typeChart}}" t-chart-tooltip="false" t-on-click="productionPerformanceCtrl.chart.onClick"></totvs-chart>
+    </totvs-widget-body>
+    <totvs-widget-footer>
+      <totvs-widget-footer-actions>
+        <action ng-click="productionPerformanceCtrl.sendDataToReport()">{{ 'l-detail' | i18n : [] : 'dts/kbn/' }}</action>
+      </totvs-widget-footer-actions>
+    </totvs-widget-footer>
+  </totvs-widget>
+</div>

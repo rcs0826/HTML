@@ -1,0 +1,313 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_produt : ('btn-new-product' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="input"
+			   class="col-md-12"
+			   ng-required="true"
+			   ng-model="controller.model.nom_produt"
+			   canclean="undefined"
+			   maxlength="60"
+			   placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+			   focus>
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="select"
+			   canclean="undefined"
+			   ng-model="controller.model.productType"
+			   ng-required="true">
+			<label>{{ 'l-type' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-type' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_tip_produt }} </ui-select-match>
+				<ui-select-choices repeat="item in controller.listOfProductType | filter: $select.search track by $index">
+					<span ng-bind-html="item.nom_tip_produt | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+				ng-model="controller.model.un"
+				ng-required="true">
+			<label>{{ 'l-unit-of-measurement' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-unit-of-measurement' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_unid_medid }} {{$select.selected.cod_unid_medid_erp ? ' (' + $select.selected.cod_unid_medid_erp + ')' : '' }} </ui-select-match>
+				<ui-select-choices repeat="item in controller.listOfUn | filter: $select.search track by $index">
+					<span ng-bind-html="item.nom_unid_medid + (item.cod_unid_medid_erp ? ' (' + item.cod_unid_medid_erp + ')' : '' ) | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.status"
+			   canclean="undefined"
+			   ng-required="true">
+			<label>{{ 'l-status' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-status' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.name }} </ui-select-match>
+				<ui-select-choices repeat="item in controller.listOfStatus | filter: $select.search track by $index">
+					<span ng-bind-html="item.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   canclean="undefined"
+			   ng-model="controller.model.materialFamily"
+			   ng-required="true">
+			<label>{{ 'l-material-family' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-material-family' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_familia }} </ui-select-match>
+				<ui-select-choices repeat="item in controller.listOfMaterialFamily | filter: $select.search track by $index">
+					<span ng-bind-html="item.nom_familia | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   canclean="undefined"
+			   ng-model="controller.model.businessFamily"
+			   ng-required="true">
+			<label>{{ 'l-business-family' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-business-family' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_familia_comerc }} </ui-select-match>
+				<ui-select-choices repeat="item in controller.listOfBusinessFamily | filter: $select.search track by $index">
+					<span ng-bind-html="item.nom_familia_comerc | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.stockGroup"
+			   canclean="undefined"
+			   ng-required="true">
+			<label>{{ 'l-stock-group' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-stock-group' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_grp_estoq }} </ui-select-match>
+				<ui-select-choices repeat="item in controller.listOfStockGroup | filter: $select.search track by $index">
+					<span ng-bind-html="item.nom_grp_estoq | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="date"
+			   class="col-md-6"
+			   canclean="undefined"
+			   placeholder="{{ 'l-date-deployment' | i18n: []: 'dts/crm' }}"
+			   ng-model="controller.model.dat_impl"
+			   ng-required="true">
+			<label>{{ 'l-date-deployment' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+	</fieldset>
+
+	<div class="row">
+        <br/>
+        <div class="crm-group-accordion">
+            <accordion close-others="false">
+
+                <accordion-group is-open="controller.isOpenComplement" class="crm-panel">
+                    <accordion-heading>
+                        <div class="row">
+                            <div class="col-xs-12">
+                            {{ 'l-complement' | i18n: []: 'dts/crm' }}
+                            <i class="pull-right glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  controller.isOpenComplement,
+                                'glyphicon-chevron-right': !controller.isOpenComplement}">
+                            </i>
+                            </div>
+                        </div>
+                    </accordion-heading>
+
+                    <fieldset class="row">
+
+                        <field type="select"
+                            ng-model="controller.model.taxClassification"
+                            canclean="undefined">
+                            <label>{{ 'l-tax-classification' | i18n: []: 'dts/crm' }}</label>
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-tax-classification' | i18n: []: 'dts/crm' }}">
+                                    {{ $select.selected.nom_classif_fisc }} </ui-select-match>
+                                <ui-select-choices repeat="item in controller.listOfTaxClassification | filter: $select.search track by $index">
+                                    <span ng-bind-html="item.nom_classif_fisc | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+
+                        <field type="select"
+                            ng-model="controller.model.currency"
+                            canclean="undefined">
+                            <label>{{ 'l-currency' | i18n: []: 'dts/crm' }}</label>
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-currency' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_moeda }}</ui-select-match>
+                                <ui-select-choices repeat="currency in controller.listOfCurrency | filter: $select.search track by $index">
+                                    <span ng-bind-html="currency.nom_moeda | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+
+                        <field type="input"
+                            ng-model="controller.model.cod_aux_produt"
+                            canclean="undefined"
+                            maxlength="8"
+                            placeholder="{{ 'l-auxiliary-code-1' | i18n: []: 'dts/crm' }}"
+                            focus>
+                            <label>{{ 'l-auxiliary-code-1' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+
+                        <field type="select"
+                                ng-model="controller.model.composition">
+                            <label>{{ 'l-composition' | i18n: []: 'dts/crm' }}</label>
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-composition' | i18n: []: 'dts/crm' }}">
+                                    {{ $select.selected.name }} </ui-select-match>
+                                <ui-select-choices repeat="item in controller.listOfComposition | filter: $select.search track by $index">
+                                    <span ng-bind-html="item.name | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+
+                        <field type="select"
+                            ng-model="controller.model.establishment"
+                            canclean="undefined">
+                            <label>{{ 'l-establishment' | i18n: []: 'dts/crm' }}</label>
+                            <zoom zoom-service="crm.crm_estab.zoom"></zoom>
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-establishment' | i18n: []: 'dts/crm' }}">
+                                    {{$select.selected.nom_estab}} {{$select.selected.cod_estab_erp ? ' (' + $select.selected.cod_estab_erp + ')' : '' }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="estab in controller.listOfEstablishment track by $index"
+                                                refresh="controller.getEstablishments($select.search)"
+                                                refresh-delay="500">
+                                    <span ng-bind-html="estab.nom_estab + (estab.cod_estab_erp ? ' (' + estab.cod_estab_erp + ')' : '') | highlight: 	$select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+
+                        <totvs-field
+                            totvs-decimal
+                            ng-model="controller.model.val_fator_conver_unid_medid"
+                            m-dec="2"
+                            label="{{ 'l-conversion-Factor' | i18n: []: 'dts/crm' }}"
+                            canclean="0"
+                            placeholder="{{ 'l-conversion-Factor' | i18n: []: 'dts/crm' }}">
+                        </totvs-field>
+
+                        <totvs-field
+                            totvs-decimal
+                            ng-model="controller.model.val_cust"
+                            m-dec="2"
+                            label="{{ 'l-cost' | i18n: []: 'dts/crm' }}"
+                            canclean="0"
+                            placeholder="{{ 'l-cost' | i18n: []: 'dts/crm' }}">
+                        </totvs-field>
+
+                        <field type="checkbox"
+                            class="col-xs-12 col-sm-6 col-md-3"
+                            ng-model="controller.model.log_produt_assist_tec"
+                            label="{{ 'l-product-support' | i18n: []: 'dts/crm' }}">
+                        </field>
+
+                        <field type="checkbox"
+                            class="col-xs-12 col-sm-6 col-md-3"
+                            ng-model="controller.model.log_produt_concor"
+                            label="{{ 'l-competitive-produt' | i18n: []: 'dts/crm' }}">
+                        </field>
+
+                        <!--field type="checkbox"
+                            ng-disabled="true"
+                            class="col-xs-12 col-sm-6 col-md-3"
+                            ng-model="controller.model.log_produt_vda"
+                            label="{{ 'l-billed' | i18n: []: 'dts/crm' }}">
+                        </field-->
+                    </fieldset>
+
+                </accordion-group>
+
+                <accordion-group is-open="controller.isOpenStory" class="crm-panel">
+                    <accordion-heading>
+                        <div class="row">
+                            <div class="col-xs-12">
+                            {{ 'l-story' | i18n: []: 'dts/crm' }}
+                            <i class="pull-right glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  controller.isOpenStory,
+                                'glyphicon-chevron-right': !controller.isOpenStory}">
+                            </i>
+                            </div>
+                        </div>
+                    </accordion-heading>
+                    <fieldset class="row">
+                        <field type="textarea"
+                            class="col-md-12"
+                            maxlength="3000"
+                            ng-model="controller.model.dsl_narrat_text_item">
+                        </field>
+                    </fieldset>
+                </accordion-group>
+
+                <accordion-group is-open="controller.isOpenFeature" class="crm-panel">
+                    <accordion-heading>
+                        <div class="row">
+                            <div class="col-xs-12">
+                            {{ 'l-technical-feature' | i18n: []: 'dts/crm' }}
+                            <i class="pull-right glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  controller.isOpenFeature,
+                                'glyphicon-chevron-right': !controller.isOpenFeature}">
+                            </i>
+                            </div>
+                        </div>
+                    </accordion-heading>
+                    <fieldset class="row">
+                        <field type="textarea"
+                            class="col-md-12"
+                            maxlength="1000"
+                            ng-model="controller.model.dsl_caract_tec">
+                        </field>
+                    </fieldset>
+                </accordion-group>
+
+                <accordion-group is-open="controller.isOpenSellingArgument" class="crm-panel">
+                    <accordion-heading>
+                        <div class="row">
+                            <div class="col-xs-12">
+                            {{ 'l-selling-argument' | i18n: []: 'dts/crm' }}
+                            <i class="pull-right glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  controller.isOpenSellingArgument,
+                                'glyphicon-chevron-right': !controller.isOpenSellingArgument}">
+                            </i>
+                            </div>
+                        </div>
+                    </accordion-heading>
+                    <fieldset class="row">
+                        <field type="textarea"
+                            class="col-md-12"
+                            maxlength="1000"
+                            ng-model="controller.model.dsl_text_argum_vda">
+                        </field>
+                    </fieldset>
+                </accordion-group>
+
+            </accordion>
+        </div>
+	</div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

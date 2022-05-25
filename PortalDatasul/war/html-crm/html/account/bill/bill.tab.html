@@ -1,0 +1,171 @@
+<totvs-page-child type="list" ng-if="controllerBillList.account.nom_abrev.length === 0 || controllerBillList.account.cod_pessoa_erp.length === 0">
+	<br/>
+	<totvs-page-alert
+		type="info"
+		message="{{ 'msg-account-not-integrated' | i18n: []: 'dts/crm' }}">
+	</totvs-page-alert>
+
+</totvs-page-child>
+
+<totvs-page-child type="list" ng-if="controllerBillList.account.nom_abrev.length > 0 && controllerBillList.account.cod_pessoa_erp.length > 0">
+
+	<totvs-page-header class="row" style="margin-bottom: -20px;">
+
+		<totvs-page-header-operation>
+
+			<totvs-page-header-operation-action>
+
+			</totvs-page-header-operation-action>
+
+			<totvs-page-header-operation-filter
+				<% if ((!data["l-quick-search"] || data["l-quick-search"].log_visivel === true)) { %>
+				placeholder="{{ 'l-bill-title' | i18n: []: 'dts/crm' }}"
+				ng-submit="controllerBillList.search()"
+				ng-model="controllerBillList.quickSearchText"
+				<% } %>
+				<% if ((!data["btn-advanced-search"] || data["btn-advanced-search"].log_visivel === true)) { %>
+				advanced-search="controllerBillList.openAdvancedSearch"
+				<% } %>>
+			</totvs-page-header-operation-filter>
+
+		</totvs-page-header-operation>
+
+		<div ng-include="'/dts/crm/html/account/bill/bill.legend.html'"></div>
+
+		<totvs-page-disclaimers
+			ng-if="controllerBillList.disclaimers.length > 0"
+			disclaimer-list="controllerBillList.disclaimers"
+			ng-click="controllerBillList.removeDisclaimer">
+		</totvs-page-disclaimers>
+
+	</totvs-page-header>
+
+	<totvs-divider></totvs-divider>
+
+	<totvs-page-content>
+		<totvs-page-content-header>
+			<totvs-page-quick-filter filters-list="controllerBillList.quickFilters"
+									 on-select-filter="controllerBillList.selectQuickFilter"
+									 orderby-list="controllerBillList.listOfOrderBy"
+									 on-select-orderby="controllerBillList.selectOrderBy"
+									 filters-list-custom="controllerBillList.listOfCustomFilters"
+									 on-remove-custom="controllerBillList.removeCustomFilter"
+									 on-add-edit-custom="controllerBillList.addEditCustomFilters">
+			 </totvs-page-quick-filter>
+		</totvs-page-content-header>
+
+		<totvs-page-alert
+			ng-if="controllerBillList.bills.length <= 0 && controllerBillList.account.nom_abrev.length > 0 && controllerBillList.account.cod_pessoa_erp.length > 0"
+			type="info"
+			message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+		</totvs-page-alert>
+
+		<totvs-list-item
+			 id="bill{{bill['tta_cod_tit_acr']}}"
+			 ng-class="bill.nom_cor"
+			 ng-repeat="bill in controllerBillList.bills">
+			<totvs-list-item-header>
+
+				<totvs-list-item-title class="legend col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+					<div class="row" ng-if="bill.tta_cod_parcela === ''">
+						<div class="text-left no-gutters col-xs-4">
+							{{ 'l-bill-title' | i18n: []: 'dts/crm' }}: {{ bill.tta_cod_tit_acr }}
+						</div>
+					</div>
+					<div class="row" ng-if="bill.tta_cod_parcela !== ''">
+						<div class="text-left no-gutters col-xs-4">
+							{{ 'l-bill-title' | i18n: []: 'dts/crm' }} / {{ 'l-quota' | i18n: []: 'dts/crm' }}: {{ bill.tta_cod_tit_acr }} / {{ bill.tta_cod_parcela }}
+						</div>
+					</div>
+
+				</totvs-list-item-title>
+
+			</totvs-list-item-header>
+
+			<totvs-list-item-content>
+
+				<% if ((!data["l-establishment"] || data["l-establishment"].log_visivel === true)) { %>
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-establishment' | i18n: []: 'dts/crm' }}"
+					value-break="false">
+					{{ bill.tta_cod_estab }}
+				</totvs-list-item-info>
+				<% } %>
+
+				<% if ((!data["l-situation"] || data["l-situation"].log_visivel === true)) { %>
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-situation' | i18n: []: 'dts/crm' }}"
+					value-break="false">
+					{{ bill.nom_situation }}
+				</totvs-list-item-info>
+				<% } %>
+
+				<% if ((!data["l-date-emission"] || data["l-date-emission"].log_visivel === true)){ %>
+				<totvs-list-item-info
+					value-break="false"
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-date-emission' | i18n: []: 'dts/crm' }}">
+					{{ bill.tta_dat_emis_docto | date : ('l-date-format' | i18n: []: 'dts/crm')}}
+				</totvs-list-item-info>
+				<% } %>
+
+				<% if ((!data["l-date-vencto"] || data["l-date-vencto"].log_visivel === true)) { %>
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-date-vencto' | i18n: []: 'dts/crm' }}"
+					value-break="false">
+					{{ bill.tta_dat_vencto_tit_acr | date : ('l-date-format' | i18n: []: 'dts/crm')}}
+				</totvs-list-item-info>
+				<% } %>
+
+				<% if ((!data["l-specie"] || data["l-specie"].log_visivel === true)) { %>
+					<totvs-list-item-info
+						class="col-xs-12 col-sm-6 col-md-4"
+						title="{{ 'l-specie' | i18n: []: 'dts/crm' }}"
+						value-break="false">
+						{{ bill.tta_cod_espec_docto }}
+					</totvs-list-item-info>
+				<% } %>
+
+				<% if ((!data["l-invoice-series"] || data["l-invoice-series"].log_visivel === true)) { %>
+					<totvs-list-item-info
+						class="col-xs-12 col-sm-6 col-md-4"
+						title="{{ 'l-invoice-series' | i18n: []: 'dts/crm' }}"
+						value-break="false">
+						{{ bill.tta_cod_ser_docto }}
+					</totvs-list-item-info>
+				<% } %>
+
+				<% if ((!data["l-val-origin"] || data["l-val-origin"].log_visivel === true)) { %>
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-6 col-md-4"
+					title="{{ 'l-val-origin' | i18n: []: 'dts/crm' }}"
+					value-break="false">
+					{{ bill.tta_val_origin_tit_acr | number : 2 }}
+				</totvs-list-item-info>
+				<% } %>
+
+				<% if ((!data["l-val-balance"] || data["l-val-balance"].log_visivel === true)) { %>
+					<totvs-list-item-info
+						class="col-xs-12 col-sm-6 col-md-4"
+						title="{{ 'l-val-balance' | i18n: []: 'dts/crm' }}"
+						value-break="false">
+						{{ bill.tta_val_sdo_tit_acr | number : 2 }}
+					</totvs-list-item-info>
+				<% } %>
+
+			</totvs-list-item-content>
+		</totvs-list-item>
+
+		<totvs-list-pagination
+			ng-if="controllerBillList.bills.length < controllerBillList.billsCount && controllerBillList.bills.length"
+			ng-click="controllerBillList.search(true);">
+		</totvs-list-pagination>
+
+	</totvs-page-content>
+
+
+</totvs-page-child>

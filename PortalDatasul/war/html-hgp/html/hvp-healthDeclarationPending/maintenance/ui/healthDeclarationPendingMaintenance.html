@@ -1,0 +1,152 @@
+<!--<healthcare-workarea>-->
+    <totvs-page type="base"> 
+        <link type="text/css" rel="stylesheet" href="/dts/hgp/html/assets/css/hvp.css"/>
+
+        <totvs-page-navbar id="navBar">
+
+            <totvs-page-breadcrumb>
+                    <breadcrumb link="#/dts/hgp/hvp-healthDeclaRules/">&#193rea de Trabalho</breadcrumb>
+                    <breadcrumb>Auditoria da Declaração de Saúde</breadcrumb>
+            </totvs-page-breadcrumb>
+            
+            <totvs-page-header>
+
+                <totvs-page-header-title 
+                    title="Auditoria de Declaração de Saúde" >
+                </totvs-page-header-title>
+
+                <totvs-page-header-operation>
+                    <totvs-page-header-operation-action>
+                     <action ng-click="controller.approve(controller.tmpPendingDeclaSaude);">
+                            Aprovar</action>     
+                     <action ng-click="controller.disapprove(controller.tmpPendingDeclaSaude);">
+                            Reprovar</action>     
+                    <action ng-click="controller.onCancel();">
+                            Fechar</action>				
+
+                    </totvs-page-header-operation-action>
+                </totvs-page-header-operation>
+
+            </totvs-page-header>
+
+        </totvs-page-navbar>
+        <totvs-page-content id="pageContent">
+
+       <form style="padding: 40px 10px 0px 10px;">
+            </totvs-list-item-header>
+
+              <totvs-list-item-content>
+                        
+                  <totvs-list-item-info title="Beneficiário"
+                                              value="{{controller.tmpPendingDeclaSaude.nmBeneficiario}}"></totvs-list-item-info>
+                        
+                  <totvs-list-item-info title="Situação"
+                                              value="{{controller.tmpPendingDeclaSaude.situacao}}"></totvs-list-item-info>
+                  
+                  <totvs-list-item-info title="Modalidade"
+                                              value="{{controller.tmpPendingDeclaSaude.cdModalidade}}"></totvs-list-item-info>
+                  
+                  <totvs-list-item-info title="Grau de Parentesco"
+                                              value="{{controller.tmpPendingDeclaSaude.rotuloGrauParentesco}}"></totvs-list-item-info>
+                  
+                  <totvs-list-item-info title="Termo de Adesão"
+                                              value="{{controller.tmpPendingDeclaSaude.nrTermo}}"></totvs-list-item-info>
+                        
+                        
+                        
+                  <totvs-list-item-info title="Proposta"
+                                              value="{{controller.tmpPendingDeclaSaude.nrProposta}}"></totvs-list-item-info>
+                          
+                  <totvs-list-item-info title="Simulação"
+                                              value="{{controller.tmpPendingDeclaSaude.lgSimulacao}}"></totvs-list-item-info>
+                        
+                  <totvs-list-item-info title="Data de Nascimento"
+                                              value="{{controller.tmpPendingDeclaSaude.rotuloDtNascimento}}"></totvs-list-item-info>           
+                        
+                  <totvs-list-item-info title="Origem do Contratante"
+                                              value="{{controller.tmpPendingDeclaSaude.rotuloOriContratante}}"></totvs-list-item-info>
+                        
+                  <totvs-list-item-info title="Data de Inclusao"
+                                              value="{{controller.tmpPendingDeclaSaude.rotuloDtInclusao}}"></totvs-list-item-info>             
+                        
+                  <totvs-list-item-info title="Contratante"
+                                              value="{{controller.tmpPendingDeclaSaude.cdContratante}}"></totvs-list-item-info>
+                        
+                  <totvs-list-item-info title="Classe Hospitalar"
+                                              value="{{controller.tmpPendingDeclaSaude.claHospitalar}}"></totvs-list-item-info>
+            
+                  <totvs-list-item-info title="Carteira"
+                                              value="{{controller.tmpPendingDeclaSaude.cdCarteira}}"></totvs-list-item-info>
+          
+                  <totvs-list-item-info title="Último Parecer"
+                                              value="{{controller.tmpPendingDeclaSaude.ultimoParecer}}"></totvs-list-item-info>
+          
+                </totvs-list-item-content>
+
+            </form>
+
+           <div class="field-container ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                style="padding-top: 10px; padding-bottom: 25px; border: 2px solid #d0d0d0; 
+                                    border-radius: 25px;margin-top:5px ;margin-bottom: 10px;   background-color:white;">
+                <div>
+
+                    <h5 class = "col-sm-3 pull-right">
+                            Selecione Arquivo para upload           
+                            <input id="file-input"
+                            type="file"                                 
+                            ngf-select
+                            ngf-change="controller.uploadFile($files,controller.tmpPendingDeclaSaude.idPessoa);"
+                            ngf-multiple="true"
+                            ngf-allow-dir="false" style="padding-top: 10px;"/>
+                    </h5>
+
+
+                    <totvs-field totvs-select canclean
+                        ng-model="controller.tpDocumento"
+                        class="col-lg-4 col-md-4 col-sm-2 col-xs-6 pull-right"
+                        label="Tipo de Anexo"
+                        select-service="hcg.attachmentTypeZoomController"
+                        zoom-service="hcg.attachmentTypeZoomController"
+                        select-id="cdnTipAnexo"
+                        select-description="desTipAnexo">
+                    </totvs-field>
+
+                    
+                </div>
+                <h3 class = "col-sm-8">           Anexos</h3>
+                    
+                <totvs-list-item
+                    id="anexo{{anexo.id}}"
+                    ng-repeat="anexo in controller.anexos"
+                    class="tag-1">
+
+                    <totvs-list-item-header>
+     
+                    <!--document.completeDocumentNumber-->
+                        <totvs-list-item-title
+                            title="{{anexo.nome}}">
+                        </totvs-list-item-title>
+
+                        <totvs-list-item-action limit-primary-action="1">
+                            <action ng-click="controller.donwload(anexo)"  icon="glyphicon-download-alt" >Download</action>
+                            <action ng-click="controller.removeAttachment(anexo)"  icon="glyphicon-remove" >Remover</action>
+                        </totvs-list-item-action>
+                    </totvs-list-item-header>
+                        <totvs-list-item-content>
+                            
+                            <totvs-list-item-info title="Tipo anexo"
+                                                value="{{ anexo.rotuloTpAnexo }}"></totvs-list-item-info>
+                            <totvs-list-item-info title="Usuario"
+                                                value="{{ anexo.usuario }}"></totvs-list-item-info>
+                            
+                            <totvs-list-item-info title="Tamanho Anexo"
+                                                value="{{ anexo.tamanho }}"></totvs-list-item-info>
+                            
+                        </totvs-list-item-content>
+                    <!-- espacamento no final -->
+                    <p></p>
+                </totvs-list-item>               
+          </div>
+        </totvs-page-content>	
+    </totvs-page>
+<!--</healthcare-healthDeclaRules>-->

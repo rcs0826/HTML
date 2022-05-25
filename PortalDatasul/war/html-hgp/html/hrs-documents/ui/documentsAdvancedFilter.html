@@ -1,0 +1,47 @@
+<totvs-modal-header>
+    Busca Avançada
+</totvs-modal-header>
+<totvs-modal-body style="height: 290px; overflow-y: auto;">
+    <fieldset>
+        <totvs-row>
+                 <field  type="inputrange"
+                        label="Documento"
+                        ng-model="afController.model.idImpugdocs"
+                        start-placeholder="Inicial"
+                        start-maxlength="6" 
+                        end-placeholder="Final"
+                        end-maxlength="6" >
+                </field>
+        </totvs-row>
+
+        
+        <totvs-row>
+                 <field  type="inputrange"
+                        label="Sequencia"
+                        ng-model="afController.model.nrImpressaoSeq"
+                        start-placeholder="Inicial"
+                        start-maxlength="6" 
+                        end-placeholder="Final"
+                        end-maxlength="6">
+                </field>                
+        </totvs-row>
+        <totvs-row>
+                <totvs-field
+                        totvs-combo
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12" 
+                        label="Apenas documentos obrigatórios"
+                        t-options="[{value:  'Todos', label: 'Todos'},
+                                {value:  'Sim', label: 'Sim'},
+                                {value:  'Nao', label: 'Não'}]"
+                        ng-model="afController.model.lgPadrao">
+                </totvs-field>
+        </totvs-row>
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn" ng-click="afController.cleanFields()">Limpar Campos</button>
+    <button class="btn" ng-click="afController.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-click="afController.search()">Buscar</button>
+</totvs-modal-footer>
+

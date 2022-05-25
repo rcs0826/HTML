@@ -1,0 +1,61 @@
+<totvs-page-header-operation>
+
+	<totvs-page-header-operation-action limit-primary-action="3">
+		<% if ((!data["btn-new-task"] || data["btn-new-task"].log_visivel === true)) { %>
+		<action icon="glyphicon-plus"
+				ng-click="controllerTaskList.addEdit();">
+			{{ 'btn-new-task' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+		<% if ((!data["btn-report"] || data["btn-report"].log_visivel === true)) { %>
+		<action icon="glyphicon-list-alt" ng-if="!controllerTaskList.isPortal"
+				ng-click="controllerTaskList.showReports();"
+				ng-disabled="controllerTaskList.countSelected > 0"
+				ng-if="controllerTaskList.parent === undefined">
+			{{ 'btn-report' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+		<% if ((!data["btn-export"] || data["btn-export"].log_visivel === true)) { %>
+		<action icon="glyphicon-print"
+				ng-disabled="controllerTaskList.countSelected > 0"
+				ng-click="controllerTaskList.exportSearch();">
+			{{ 'btn-export' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+		<% if ((!data["btn-execute"] || data["btn-execute"].log_visivel === true)) { %>
+		<action icon="glyphicon-play"
+				ng-if="controllerTaskList.isActiveMultipleSelection == true && controllerTaskList.countSelected > 0"
+				ng-click="controllerTaskList.executeTaskList();">
+			{{ 'btn-execute-selected' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+	</totvs-page-header-operation-action>
+
+	<totvs-page-header-operation-filter
+		<% if ((!data["l-quick-search"] || data["l-quick-search"].log_visivel === true)) { %>
+		placeholder="{{ 'l-search-calendar' | i18n: []: 'dts/crm' }}"
+		ng-submit="controllerTaskList.search()"
+		ng-model="controllerTaskList.quickSearchText"
+		<% } %>
+		<% if ((!data["btn-advanced-search"] || data["btn-advanced-search"].log_visivel === true)) { %>
+		advanced-search="controllerTaskList.openAdvancedSearch"
+		<% } %>
+		ng-if="controllerTaskList.isCalendar !== true">
+	</totvs-page-header-operation-filter>
+
+	<totvs-page-header-operation-filter
+		<% if ((!data["btn-advanced-search"] || data["btn-advanced-search"].log_visivel === true)) { %>
+		advanced-search="controllerTaskList.openAdvancedSearch"
+		<% } %>
+		ng-if="controllerTaskList.isCalendar === true">
+	</totvs-page-header-operation-filter>
+
+</totvs-page-header-operation>
+
+<div ng-include="'/dts/crm/html/task/task.legend.html'"></div>
+
+<totvs-page-disclaimers
+	ng-if="controllerTaskList.disclaimers.length > 0"
+	disclaimer-list="controllerTaskList.disclaimers"
+	ng-click="controllerTaskList.removeDisclaimer">
+</totvs-page-disclaimers>

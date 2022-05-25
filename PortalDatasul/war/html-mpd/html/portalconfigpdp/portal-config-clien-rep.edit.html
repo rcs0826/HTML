@@ -1,0 +1,205 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{'l-initial-page' | i18n}}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalconfigpdp">{{'l-portal-config-clien-rep' | i18n}}</breadcrumb>
+            <breadcrumb>{{controller.title}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{controller.title}}"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new='true'>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form>
+            <fieldset>
+                <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12" >
+                    <form class="form-horizontal" role="form" >
+                          
+                        <div ng-if="controller.model['cdn-clien']"> 
+                            <totvs-page-detail-info ng-if="controller.idDisabled != false && controller.model['cdn-clien'] > 0"
+                                                    title="{{'l-cdn-clien' | i18n }}"
+                                                    value="{{controller.model['cdn-clien']}}">
+                            </totvs-page-detail-info>
+                        </div>
+                          
+                        <totvs-field totvs-select
+                                     class="col-lg-8 col-md-8 col-sm-8 col-xs-12"   
+                                     label="{{'l-cdn-clien' | i18n}}"
+                                     ng-model="controller.model['cdn-clien']"                            
+                                     select-id="cod-emitente"
+                                     select-description="nome-abrev"
+                                     select-service="mpd.cliente.select"
+                                     zoom-service="mpd.cliente.zoom"
+                                     ng-change="controller.onChange('emitente')"
+                                     ng-disabled="controller.idDisabled"
+                                     ng-if="controller.idDisabled != true"
+                                     canclean>
+                        </totvs-field>
+                    </form>
+                    
+                    <form class="form-horizontal" role="form">
+
+                        <div ng-if="controller.model['cdn-grp-clien']">
+                            <totvs-page-detail-info ng-if="controller.idDisabled != false && controller.model['cdn-grp-clien'] > 0"
+                                                    title="{{'l-cdn-grp-clien' | i18n }}"
+                                                    value="{{controller.model['cdn-grp-clien']}}">
+                            </totvs-page-detail-info>
+                        </div>
+                          
+                        <totvs-field totvs-select
+                                     class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                     label="{{'l-cdn-grp-clien' | i18n}}"
+                                     ng-model="controller.model['cdn-grp-clien']"
+                                     select-id="cod-gr-cli"
+                                     select-description="descricao"
+                                     select-service="mpd.grupo-cliente.select"
+                                     zoom-service="mpd.grupo-cliente.zoom"
+                                     ng-change="controller.onChange('gr-cli')"
+                                     ng-disabled="controller.idDisabled"
+                                     ng-if="controller.idDisabled != true"
+                                     canclean>
+                        </totvs-field>
+                    </form>
+                    
+                    <form class="form-horizontal" role="form">
+
+                        <div ng-if="controller.model['cdn-repres']">
+                            <totvs-page-detail-info ng-if="controller.idDisabled != false && controller.model['cdn-repres'] > 0"
+                                                    title="{{'l-cdn-repres' | i18n}}"
+                                                    value="{{controller.model['cdn-repres']}}">
+                            </totvs-page-detail-info>
+                        </div>
+
+                        <totvs-field 
+                            class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                            totvs-select
+                            label="{{'l-cdn-repres' | i18n}}"
+                            ng-model="controller.model['cdn-repres']"
+                            select-id="cod-rep"
+                            select-description="nome-abrev"
+                            select-service="mpd.repres.zoom"
+                            zoom-service="mpd.repres.zoom"
+                            ng-change="controller.onChange('repres')"
+                            ng-if="controller.idDisabled != true"
+                            canclean>
+                        </totvs-field>
+                    </form>
+
+                    <form class="form-horizontal" role="form" >
+
+                        <div ng-if="controller.model['idi-clien-repres']">
+                            <totvs-page-detail-info ng-if="controller.idDisabledIdiClienRepres != false && controller.model['idi-clien-repres'] > 0"
+                                        title="{{'l-tipo-configuracao' | i18n}}"
+                                        value="{{(controller.model['idi-clien-repres'] === 1 ? ('l-todos-clientes' | i18n) : controller.model['idi-clien-repres'] === 2 ? ('l-todos-repres' | i18n) : '' )}}">
+                                {{controller.model['idi-clien-repres']}}
+                            </totvs-page-detail-info>
+                        </div>
+						<field  class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                type="combo"
+                                data-ng-disabled="controller.idDisabledIdiClienRepres"
+                                ng-model="controller.model['idi-clien-repres']"
+                                ng-if="controller.idVisibleIdiClienRepres && controller.idDisabled != true"
+                                ng-change="controller.onChange('')">
+                            <totvs-options>
+							    <totvs-option value="0">{{''}}</totvs-option>
+                                <totvs-option value="1">{{'l-todos-clientes' | i18n}}</totvs-option>
+                                <totvs-option value="2">{{'l-todos-repres' | i18n}}</totvs-option>
+                            </totvs-options>
+                            <label class="field-label">{{ 'l-tipo-configuracao' | i18n }}</label>
+                        </field>
+                    </form>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h5>{{'l-configuracao-perfil' | i18n}}</h5>
+                    <hr>
+
+                    <div class="col-md-12 field" style="padding-left: 15px; padding-top: 10px" ng-if="controller.model['idi-clien-repres'] === 2 || controller.enableCotacConfiguration">
+                        <label class="field-label" tooltip="{{ 'l-enable-quotations' | i18n }}" tooltip-placement="top">{{ 'l-enable-quotations' | i18n }}</label>
+						<label ng-if="!controller.enableQuotation" class="field-label">({{'l-function-disabled-sales-portal-param' | i18n}})</label>
+                        <div class="field-input">
+                            <div class="btn-group btn-group">
+                                <button class="btn btn-default" data-ng-disabled="!controller.enableQuotation" style="opacity: 1" ng-class="{active: controller.model['log-habilita-cotac'] == true}" ng-click="controller.model['log-habilita-cotac'] = true">{{'l-yes' | i18n}}</button>
+                                <button class="btn btn-default" data-ng-disabled="!controller.enableQuotation" style="opacity: 1" ng-class="{active: controller.model['log-habilita-cotac'] == false}" ng-click="controller.model['log-habilita-cotac'] = false">{{'l-no' | i18n}}</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 field" style="padding-left: 15px; padding-top: 10px">
+                        <label class="field-label" tooltip="{{'l-itens-cliente' | i18n}}" tooltip-placement="top">{{'l-itens-cliente' | i18n}}</label>
+                        <div class="field-input">
+                            <div class="btn-group btn-group">
+                                <button class="btn btn-default" data-ng-disabled="controller.idDisabledLogLivre1" style="opacity: 1" ng-class="{active: controller.model['log-livre-1'] == true}" ng-click="controller.model['log-livre-1'] = true">{{'l-yes' | i18n}}</button>
+                                <button class="btn btn-default" data-ng-disabled="controller.idDisabledLogLivre1" style="opacity: 1" ng-class="{active: controller.model['log-livre-1'] == false}" ng-click="controller.model['log-livre-1'] = false">{{'l-no' | i18n}}</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 field" style="padding-left: 15px; padding-top: 10px">
+                        <label class="field-label" tooltip="{{'l-liberacao-pedido-completa-automaticamente' | i18n}}" tooltip-placement="top">{{'l-liberacao-pedido-completa-automaticamente' | i18n}}</label>
+                        <div class="field-input">
+                            <div class="btn-group btn-group">
+                                <button class="btn btn-default" data-ng-disabled="controller.idDisabledLogLivre3" style="opacity: 1" ng-class="{active: controller.model['log-livre-3'] == true}" ng-click="controller.model['log-livre-3'] = true">{{'l-yes' | i18n}}</button>
+                                <button class="btn btn-default" data-ng-disabled="controller.idDisabledLogLivre3" style="opacity: 1" ng-class="{active: controller.model['log-livre-3'] == false}" ng-click="controller.model['log-livre-3'] = false">{{'l-no' | i18n}}</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 field" style="padding-left: 15px; padding-top: 10px">
+                        <label class="field-label" tooltip="{{'l-permite-alterar-preco' | i18n}}" tooltip-placement="top">{{'l-permite-alterar-preco' | i18n}}</label>
+                        <div class="field-input">
+                            <div class="btn-group btn-group">
+                                <button class="btn btn-default" data-ng-disabled="controller.idDisabledLogLivre4" style="opacity: 1" ng-class="{active: controller.model['log-livre-4'] == true}" ng-click="controller.model['log-livre-4'] = true">{{'l-yes' | i18n}}</button>
+                                <button class="btn btn-default" data-ng-disabled="controller.idDisabledLogLivre4" style="opacity: 1" ng-class="{active: controller.model['log-livre-4'] == false}" ng-click="controller.model['log-livre-4'] = false">{{'l-no' | i18n}}</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 field" style="padding-left: 15px; padding-top: 10px">
+                        <label class="field-label" tooltip="{{'l-new-type-add-order-message' | i18n}}" tooltip-placement="right">{{'l-new-type-add-order' | i18n}}</label>
+                        <div class="field-input">
+                            <div class="btn-group btn-group">
+                                <button class="btn btn-default" style="opacity: 1" ng-class="{active: controller.model['num-livre-4'] == 1}" ng-click="controller.model['num-livre-4'] = 1">{{'l-yes' | i18n}}</button>
+                                <button class="btn btn-default" style="opacity: 1" ng-class="{active: controller.model['num-livre-4'] == 0}" ng-click="controller.model['num-livre-4'] = 0">{{'l-no' | i18n}}</button>
+                            </div>
+                        </div>
+                    </div>
+					<div class="col-md-12 field" style="padding-left: 15px; padding-top: 10px" ng-if="controller.model['idi-clien-repres'] === 2 || controller.idDisabledLogCanalVendasRepres">
+                        <label class="field-label" tooltip="{{'l-canal-vendas-repres' | i18n}}" tooltip-placement="top">{{'l-canal-vendas-repres' | i18n}}</label>
+						<label ng-if="!controller.enableSalesChannel" class="field-label">({{'l-function-disabled-sales-portal-param' | i18n}})</label>
+                        <div class="field-input">
+                            <div class="btn-group btn-group">
+                                <button class="btn btn-default" data-ng-disabled="!controller.enableSalesChannel" style="opacity: 1" ng-class="{active: controller.model['log-canal-vendas-repres'] == true}" ng-click="controller.model['log-canal-vendas-repres'] = true">{{'l-yes' | i18n}}</button>
+                                <button class="btn btn-default" data-ng-disabled="!controller.enableSalesChannel" style="opacity: 1" ng-class="{active: controller.model['log-canal-vendas-repres'] == false}" ng-click="controller.model['log-canal-vendas-repres'] = false">{{'l-no' | i18n}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h5>{{'l-configuracao-geral' | i18n}}</h5>
+                    <hr>
+
+                    <div class="col-md-12 field" style="padding-left: 15px; padding-top: 10px">
+                        <label class="field-label" tooltip="{{'l-cond-clien-repres' | i18n}}" tooltip-placement="top">{{'l-cond-clien-repres' | i18n}}</label>
+                        <div class="field-input">
+                            <div class="btn-group btn-group">
+                                <button class="btn btn-default" style="opacity: 1" ng-class="{active: controller.model['log-cond-clien-repres'] == true}" ng-click="controller.model['log-cond-clien-repres'] = true">{{'l-yes' | i18n}}</button>
+                                <button class="btn btn-default" style="opacity: 1" ng-class="{active: controller.model['log-cond-clien-repres'] == false}" ng-click="controller.model['log-cond-clien-repres'] = false">{{'l-no' | i18n}}</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 field" style="padding-left: 15px; padding-top: 10px">
+                        <label class="field-label" tooltip="{{'l-item-clien-repres' | i18n}}" tooltip-placement="top">{{'l-item-clien-repres' | i18n}}</label>
+                        <div class="field-input">
+                            <div class="btn-group btn-group">
+                                <button class="btn btn-default" style="opacity: 1" ng-class="{active: controller.model['log-item-clien-repres'] == true}" ng-click="controller.model['log-item-clien-repres'] = true">{{'l-yes' | i18n}}</button>
+                                <button class="btn btn-default" style="opacity: 1" ng-class="{active: controller.model['log-item-clien-repres'] == false}" ng-click="controller.model['log-item-clien-repres'] = false">{{'l-no' | i18n}}</button>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>               
+            </fieldset>           
+        </totvs-page-form>       
+    </totvs-page-content>
+</totvs-page>

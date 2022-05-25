@@ -1,0 +1,26 @@
+totvs-modal-header
+	span.initialwrap.title.link {{controller.items | descFlow}}
+totvs-modal-body
+	totvs-list-item-header
+		.col-xs-12
+			totvs-list-item-info.col-md-4(title="{{'l-warehouse' | i18n}}", value="{{controller.items.codeDeposErp}}")
+			totvs-list-item-info.col-md-4(title="{{'l-location' | i18n}}", value="{{controller.items.codeLocationErp | htmlText}}")
+			totvs-list-item-info.col-md-4(title="{{'l-type' | i18n}}", value="{{((controller.items.expedition)?'l-expedition':'l-process') | i18n}}")
+			br
+		.col-xs-12
+			totvs-list-item-info.col-md-4(title="{{'l-kanban-size' | i18n}}", value="{{controller.items.kanbanSize}}")
+			totvs-list-item-info.col-md-4(title="{{'l-kanban-cycle-time' | i18n}}", value="{{controller.tempoCiclo}} h")
+			totvs-list-item-info.col-md-4(title="{{'l-setup-time' | i18n}}", value="{{controller.tempoSetup}} h")
+		.row
+		br
+		totvs-tabset
+			totvs-tab(heading="{{ 'l-consumed-items' | i18n }}")
+				totvs-list-item(ng-repeat="structure in controller.items.inputs | orderBy: 'codeErp'")
+					totvs-list-item-info.col-md-9(value="{{structure | descGeneric:'{sku} - {desc} {ref}'}}")
+					totvs-list-item-info.col-md-3.pull-right(title="{{'l-qtd-kanban' | i18n}}" value="{{structure.qtdItem}} {{structure.cod_un_med_erp}}") 
+			totvs-tab(heading="{{ 'l-items-tools' | i18n }}", ng-if="controller.items.tools.length > 0")
+				totvs-list-item(ng-repeat="tool in controller.items.tools")
+					totvs-list-item-info(value="{{tool.cod_chave_erp}} - {{tool.des_ferram}}")
+
+totvs-modal-footer
+	button.btn.btn-default(ng-click="controller.close()") {{ 'l-close' | i18n }}

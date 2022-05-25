@@ -1,0 +1,47 @@
+
+<totvs-page type="list">
+  <totvs-page-navbar>
+    <totvs-page-breadcrumb>
+      <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+      <breadcrumb link="#/dts/kbn/mapping">{{ 'l-mapping' | i18n }}</breadcrumb>
+      <breadcrumb>{{ 'l-nav-flows' | i18n }}</breadcrumb>
+    </totvs-page-breadcrumb>
+    <totvs-page-header>
+      <totvs-page-header-title title="{{ 'l-mapping' | i18n }} {{controller.mapping[0].des_mapeamento}} ({{ controller.totalRecords }})"></totvs-page-header-title>
+      <totvs-page-header-operation>
+        <totvs-page-header-operation-action limit-primary-action="2">
+          <action icon="glyphicon-plus" ng-click="controller.newFlow()" ng-show="controller.mapping[0].idi_status != 3 &amp;&amp; controller.mapping[0].idi_status != 4">{{ 't-new-flow' | i18n }}</action>
+          <action icon="glyphicon-plus" ng-click="controller.newBatchFlow()" ng-show="controller.mapping[0].idi_status != 3 &amp;&amp; controller.mapping[0].idi_status != 4">{{ 'l-new-batch' | i18n }}</action>
+          <action icon="glyphicon-edit" link="#/dts/kbn/mapping/flow/edit/{{controller.mapping[0].num_id_mapeamento}}" ng-show="controller.mapping[0].idi_status != 3 &amp;&amp; controller.mapping[0].idi_status != 4 &amp;&amp; controller.itens != 0" class="btn-warning">{{ 'l-batch-edit' | i18n }}</action>
+        </totvs-page-header-operation-action>
+        <totvs-page-header-operation-filter placeholder="{{ 'l-code-description' | i18n}}" ng-submit="controller.quickSearch()" ng-model="controller.quickSearchText" advanced-search="controller.openAdvancedSearch"></totvs-page-header-operation-filter>
+      </totvs-page-header-operation>
+      <totvs-page-disclaimers disclaimer-list="controller.filtersApplied" ng-click="controller.removeFilter"></totvs-page-disclaimers>
+    </totvs-page-header>
+  </totvs-page-navbar>
+  <totvs-page-content>
+    <totvs-page-content-header>
+      <totvs-page-quick-filter ng-if="controller.totalRecords" filters-list="controller.preSavedFilters" on-select-filter="controller.selectQuickFilter"></totvs-page-quick-filter>
+    </totvs-page-content-header>
+    <totvs-page-alert ng-if="results === 0" type="info" message="{{ 'msg-not-found' | i18n }}"></totvs-page-alert>
+    <totvs-list-item data-ng-repeat="flow in controller.listFlows">
+      <totvs-list-item-header>
+        <totvs-list-item-title title="{{flow | descFlow}}" link="#/dts/kbn/mapping/flow/view/{{flow.num_id_item_det}}"></totvs-list-item-title>
+        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-2 actions-group">
+          <div role="group" class="btn-group btn-group-sm actions pull-right"><a role="button" href="#/dts/kbn/mapping/flow/view/{{flow.num_id_item_det}}" class="btn btn-default hidden-xs ng-binding"><span class="glyphicon glyphicon-eye-open"></span>  {{ 'l-view' | i18n }}</a><a role="button" ng-show="controller.mapping[0].idi_status != 3 &amp;&amp; controller.mapping[0].idi_status != 4" data-ng-click="controller.remove(flow)" class="btn btn-default hidden-xs ng-binding"><span class="glyphicon glyphicon-remove"></span>  {{ 'l-to-exclude' | i18n }}</a><a role="button" ng-show="controller.mapping[0].idi_status == 3 &amp;&amp; flow.log_ativo " data-ng-click="controller.deactivateFlow(flow)" class="btn btn-default hidden-xs ng-binding"><span class="glyphicon glyphicon-ban-circle"></span>  {{ 'l-deactivate' | i18n }}</a></div>
+        </div>
+      </totvs-list-item-header>
+      <totvs-list-item-content>
+        <totvs-list-item-info title="{{'l-warehouse' | i18n}}" value="{{flow.cod_depos_erp}}" class="col-md-2"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-location' | i18n}}" value="{{flow.cod_localiz | htmlText}}" class="col-md-2"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-type' | i18n}}" value="{{((flow.ttItemFlowDs.log_expedic)?'l-expedition':'l-process') | i18n}}" class="col-md-2"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-cutoff-date' | i18n}}" value="{{controller.mapping[0].dat_corte | date: 'dd/MM/yyyy' : 'UTC'}}" class="col-md-2"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-active' | i18n}}" value="{{flow.log_ativo | yesOrNo}}" class="col-md-1"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-controlled' | i18n}}" value="{{flow.ttItemFlowDs.idi_control_kanban | yesOrNo}}" class="col-md-2"></totvs-list-item-info>
+      </totvs-list-item-content>
+    </totvs-list-item>
+    <div align="center" class="container">
+      <pagination total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages" items-per-page="controller.pageSize" previous-text="{{'l-previous' | i18n}}" next-text="{{'l-next' | i18n}}" class="pagination-sm"></pagination>
+    </div>
+  </totvs-page-content>
+</totvs-page>

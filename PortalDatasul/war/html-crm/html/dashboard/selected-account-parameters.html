@@ -1,0 +1,53 @@
+<totvs-modal-header>
+	{{ 'l-parameters' | i18n: []: 'dts/crm' }} {{'l-selected-account' | i18n : [] : 'dts/crm/' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<fieldset class="row">
+
+		<!--field type="select" canclean="undefined"
+			   ng-model="controller.model.num_id_usuar_respons">
+			<label>{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_usuar.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_usuar }}
+				</ui-select-match>
+				<ui-select-choices repeat="user in controller.users track by $index"
+								   refresh="controller.getUsers($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="user.nom_usuar | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field-->
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }} {{ controller.users.length ? '(' + controller.users.length + ')' : '' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.model.num_id_usuar_respons"
+			 t-multi-id="num_id"
+			 t-multi-description="nom_usuar"
+			 t-data="controller.users">
+		</totvs-field>
+
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-type-account' | i18n: []: 'dts/crm' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.model.idi_tip_cta"
+			 t-multi-id="num_id"
+			 t-multi-description="nom_tipo"
+			 t-data="controller.accountTypes">
+		</totvs-field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-primary" ng-click="controller.apply(true)">{{ 'btn-apply' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

@@ -1,0 +1,24 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/field-addon.css"/>
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<totvs-modal-header>{{ 'l-inserts-workcenters' | i18n }} {{'l-in-cell' | i18n}} {{controller.cell | descGeneric:"{codeErpCell} {descCell}"}}</totvs-modal-header>
+<totvs-modal-body>
+  <div class="row">
+    <totvs-page type="list">
+      <totvs-page-content>
+        <totvs-list-item data-ng-repeat="workcenter in controller.workcenters">
+          <totvs-list-item-header>
+            <totvs-list-item-title title="{{workcenter.cod_chave_erp | htmlText}} - {{workcenter.des_ct_erp | htmlText}}"></totvs-list-item-title>
+          </totvs-list-item-header>
+          <totvs-list-item-content ng-if="workcenter.linked">
+            <totvs-list-item-info title="{{'l-current-cell' | i18n}}" value="{{workcenter | descGeneric: '{codeErpCell} {descCell}'}}"></totvs-list-item-info>
+          </totvs-list-item-content>
+        </totvs-list-item>
+      </totvs-page-content>
+    </totvs-page>
+  </div><span ng-if="controller.linked">{{'msg-workcenters-linked' | i18n}}</span>
+</totvs-modal-body>
+<totvs-modal-footer>
+  <button ng-click="controller.cancel();" class="btn btn-default">{{ 'l-cancel' | i18n }}</button>
+  <button ng-click="controller.confirm();" class="btn btn-primary">{{ 'l-confirm' | i18n }}</button>
+</totvs-modal-footer>

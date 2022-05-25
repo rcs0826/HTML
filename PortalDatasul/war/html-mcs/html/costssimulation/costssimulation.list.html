@@ -1,0 +1,42 @@
+<totvs-page type="list">
+    
+	<totvs-page-navbar>
+        
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-simulation-price-it' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+        
+        <totvs-page-header>
+            <totvs-page-header-title title="{{ 'l-costssimulation' | i18n }}">
+            </totvs-page-header-title>
+            
+            <totvs-page-header-operation>
+                
+				<totvs-page-header-operation-action>
+                    <action  ng-click="controller.gerarCsv()" class="btn-primary">{{ 'l-gerar-csv' | i18n }}</action>             
+                </totvs-page-header-operation-action>
+                
+				<totvs-page-header-operation-filter placeholder="{{ 'l-code' | i18n }}"
+													ng-submit="controller.loadData()"
+													ng-model="controller.quickSearchText"
+                                                    advanced-search="controller.openAdvancedSearch"
+                                                    clean-search="controller.onCleanSearch">
+				</totvs-page-header-operation-filter>
+                
+			</totvs-page-header-operation> 
+			<totvs-page-disclaimers
+					disclaimer-list="controller.disclaimers"
+					ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+        </totvs-page-header>
+        
+    </totvs-page-navbar>
+    
+    
+    <totvs-page-content>
+		<div id="treeList"></div>
+    </totvs-page-content>
+    
+</totvs-page>
+

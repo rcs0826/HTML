@@ -1,0 +1,262 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/attribute/">{{ 'nav-custom-field' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'nav-custom-field' | i18n: []: 'dts/crm' }}"
+									 total="{{ controller.listCount }}"
+									 settings="controller.userSettings();">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<totvs-page-header-operation-action>
+					<action icon="glyphicon-plus"
+							ng-click="controller.addEdit();">
+						{{ 'btn-new-field' | i18n: []: 'dts/crm' }}
+					</action>
+				</totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter placeholder="{{ 'l-search-generic' | i18n: []: 'dts/crm' }}"
+													ng-submit="controller.quickSearch()"
+													ng-model="controller.quickSearchText"
+                                                    advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+			<totvs-page-disclaimers
+				ng-if="controller.disclaimers.length > 0"
+				disclaimer-list="controller.disclaimers"
+				ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+
+			<div ng-include="'/dts/crm/html/attribute/attribute.legend.html'"></div>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-content-header ng-if="controller.isChild !== true"
+								   style="border: none !important;">
+			<totvs-page-quick-filter filters-list="controller.quickFilters"
+						 on-select-filter="controller.selectQuickFilter"
+						 orderby-list="controller.listOfOrderBy"
+						 on-select-orderby="controller.selectOrderBy"
+						 filters-list-custom="controller.listOfCustomFilters"
+						 on-remove-custom="controller.removeCustomFilter"
+						 on-add-edit-custom="controller.addEditCustomFilters">
+			 </totvs-page-quick-filter>
+		</totvs-page-content-header>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}"
+						  ng-if="controller.list.length <= 0">
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addEdit();">
+				<span class="glyphicon glyphicon-plus"></span>
+				&nbsp;&nbsp;{{ 'btn-new-field' | i18n: []: 'dts/crm' }}
+			</button>
+		</totvs-page-alert>
+
+		<totvs-page-detail class="row crm-tab" ng-show="controller.listByGroup && controller.listByGroup.length">
+
+			<div class="col-xs-12">
+
+				<div class="pull-left col-xs-12 col-sm-4 col-md-3"
+					 style="padding-left: 5px !important; padding-right: 5px !important; padding-top: 0px !important;">
+
+					<div class="row crm-tab-item hover"
+						 ng-class="{ 'crm-selected' : group.$selected }"
+						 ng-repeat="group in controller.listByGroup | orderBy:['name'] : false">
+
+						<div class="col-xs-12 clickable overflow-ellipsis"
+							 ng-click="controller.selectGroup(group);">
+							{{ group.name }}
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="pull-right col-xs-12 col-sm-8 col-md-9"
+					 style="padding-left: 5px !important; padding-right: 5px !important;">
+
+					<div ng-if="controller.selectedGroup && controller.selectedGroup.attributes"
+						 style="padding-top: 5px !important;">
+
+						<totvs-list-item id="attribute{{ attribute.num_id }}"
+										 style="margin-bottom: 10px !important;"
+										 class="{{ attribute.nom_cor }}"
+										 ng-repeat="attribute in controller.selectedGroup.attributes"
+										 ng-drag="true"
+										 ng-drag-data="attribute"
+										 ng-drop="true"
+										 ng-drop-success="controller.onAttributeDropComplete($index, $data, $event)">
+
+							<totvs-list-item-header>
+
+								<totvs-list-item-title class="legend overflow-ellipsis"
+													   ng-class="[attribute.nom_cor]">
+									<span class="hidden-xs glyphicon glyphicon-resize-vertical"
+										  style="margin-right: 5px;">
+									</span>
+									{{ attribute.nom_atrib }}
+								</totvs-list-item-title>
+
+								<totvs-list-item-action limit-primary-action="2">
+
+									<action icon="glyphicon-pencil"
+											ng-click="controller.addEdit(attribute)"
+											ng-if="attribute.idi_sit === 1">
+										{{ 'btn-edit' | i18n: []: 'dts/crm' }}
+									</action>
+
+									<action icon="glyphicon-trash"
+											ng-if="!attribute.log_used"
+											ng-click="controller.remove(attribute)">
+										{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+									</action>
+
+									<action icon="glyphicon-ok"
+											ng-if="attribute.idi_sit === 1 || attribute.idi_sit === 3"
+											ng-click="controller.updateStatus('released', attribute)">
+										{{ 'btn-release' | i18n: []: 'dts/crm' }}
+									</action>
+
+									<action icon="glyphicon-backward"
+											ng-if="attribute.idi_sit === 2"
+											ng-click="controller.updateStatus('developing', attribute)">
+										{{ 'btn-return-development' | i18n: []: 'dts/crm' }}
+									</action>
+
+									<action icon="glyphicon-off"
+											ng-if="attribute.idi_sit === 2"
+											ng-click="controller.updateStatus('suspended', attribute)">
+										{{ 'btn-suspend' | i18n: []: 'dts/crm' }}
+									</action>
+
+								</totvs-list-item-action>
+
+							</totvs-list-item-header>
+
+							<totvs-list-item-content-detail ng-click="controller.loadItemDetail(attribute);">
+
+								<totvs-list-item-info class="col-xs-6 col-sm-3"
+													  title="{{ 'l-type' | i18n: []: 'dts/crm' }}"
+													  value-break="false">
+									{{ attribute.nom_tip_atrib }}
+								</totvs-list-item-info>
+
+								<totvs-list-item-info
+									value-break="false"
+									class="col-xs-6 col-sm-3"
+									title="{{ 'l-required' | i18n: []: 'dts/crm' }}">
+									{{ (attribute.properties.log_obrig === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+								</totvs-list-item-info>
+
+								<totvs-list-item-info
+									value-break="false"
+									class="col-xs-4 col-sm-3"
+									ng-if="attribute.properties.num_max_length && attribute.properties.num_max_length > 0"
+									title="{{ 'l-maxlength' | i18n: []: 'dts/crm' }}"
+									value="{{ attribute.properties.num_max_length }}">
+								</totvs-list-item-info>
+
+								<!-- default -->
+								<totvs-list-item-info
+									value-break="false"
+									class="col-xs-4 col-sm-3"
+									ng-if="attribute.properties.dsl_default && attribute.properties.dsl_default !== ''"
+									title="{{ 'l-default' | i18n: []: 'dts/crm' }}"
+									value="{{ (attribute.parseMask && attribute.parseMask.nom_mask) ? (attribute.properties.dsl_default | mask : attribute.parseMask.nom_mask) : (attribute.properties.dsl_default) }}">
+								</totvs-list-item-info>
+
+								<totvs-list-item-info
+									value-break="false"
+									class="col-xs-4 col-sm-3"
+									ng-if="attribute.properties.dt_default"
+									title="{{ 'l-default' | i18n: []: 'dts/crm' }}"
+									value="{{ attribute.properties.dt_default | date : ('l-date-format' | i18n: []: 'dts/crm')}}">
+								</totvs-list-item-info>
+
+								<totvs-list-item-info
+									value-break="false"
+									class="col-xs-4 col-sm-3"
+									ng-if="(attribute.properties.val_default && attribute.properties.val_default > 0 && attribute.idi_tip_atrib === 8)"
+									title="{{ 'l-default' | i18n: []: 'dts/crm' }}"
+									value="{{ attribute.properties.val_default }}">
+								</totvs-list-item-info>
+
+								<totvs-list-item-info
+									value-break="false"
+									class="col-xs-4 col-sm-3"
+									ng-if="(attribute.properties.val_default && attribute.properties.val_default > 0 && attribute.idi_tip_atrib === 9)"
+									title="{{ 'l-default' | i18n: []: 'dts/crm' }}"
+									value="{{ attribute.properties.val_default | number:2}}">
+								</totvs-list-item-info>
+
+								<totvs-list-item-info
+									value-break="false"
+									class="col-xs-4 col-sm-3"
+									ng-if="attribute.properties.hr_default && attribute.properties.hr_default !== ''"
+									title="{{ 'l-default' | i18n: []: 'dts/crm' }}"
+									value="{{ attribute.properties.hr_default }}">
+								</totvs-list-item-info>
+								<!-- default -->
+
+								<totvs-list-item-info
+									value-break="false"
+									class="col-xs-4 col-sm-3"
+									ng-if="attribute.properties.nom_mask && attribute.properties.nom_mask !== ''"
+									title="{{ 'l-mask' | i18n: []: 'dts/crm' }}"
+									value="{{ attribute.properties.nom_mask }}">
+								</totvs-list-item-info>
+
+								<totvs-list-item-info
+									value-break="false"
+									class="col-xs-4 col-sm-3"
+									ng-if="attribute.idi_tip_atrib === 9 && attribute.properties.num_prec_decimal"
+									title="{{ 'l-decimal-precision' | i18n: []: 'dts/crm' }}"
+									value="{{ attribute.properties.num_prec_decimal }}">
+								</totvs-list-item-info>
+
+								<totvs-list-item-info
+									value-break="false"
+									class="col-xs-4 col-sm-3"
+									ng-if="(attribute.idi_tip_atrib === 8 || attribute.idi_tip_atrib === 9)"
+									title="{{ 'l-allows-negative' | i18n: []: 'dts/crm' }}">
+									{{ (attribute.properties.log_negativo === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+								</totvs-list-item-info>
+
+								<totvs-divider style="margin-left: 1px; margin-right: 1px;" style=""></totvs-divider>
+
+								<totvs-list-item-info
+									class="col-xs-12 description"
+									title="{{ 'l-observation' | i18n: []: 'dts/crm' }}"
+									value="{{ attribute.properties.dsl_obs }}">
+								</totvs-list-item-info>
+
+							</totvs-list-item-content-detail>
+						</totvs-list-item>
+
+					</div>
+
+				</div>
+			</div>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

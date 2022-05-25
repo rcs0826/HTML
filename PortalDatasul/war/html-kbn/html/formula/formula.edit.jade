@@ -1,0 +1,20 @@
+totvs-modal-header
+    {{ controller.getLabelByAction(controller.myParams.action) | i18n }}
+totvs-modal-body
+    totvs-page-form(id="formulaForm",role="form")
+        .col-md-12
+            field.col-md-12(type="input", ng-model="controller.myParams.model.des_formula", maxlength="50", placeholder="{{ 'l-description' | i18n }}", required, label="{{ 'l-description' | i18n}}")
+        .col-md-12
+            field.col-md-12(type="textarea", ng-model="controller.myParams.model.observacao", maxlength="2000", placeholder="{{ 'l-observation' | i18n }}", required, label="{{ 'l-observation' | i18n}}")
+        .col-md-12
+            field.col-md-10(type="input", ng-model="controller.diretorioFormula", maxlength="100", label="{{ 'l-directory-formulas' | i18n}}", ng-disabled="true")
+            button.btn.btn-primary(ng-click="controller.editarDiretorio();" style="margin-top:29px;", ng-if="!controller.diretorioFormula") {{ 'l-edit' | i18n }}           
+        .col-md-12
+            field.col-md-10(type="input", ng-model="controller.programa", maxlength="200", placeholder="{{ 'l-program' | i18n }}", required, label="{{ 'l-program' | i18n}}", ng-disabled="true")        
+            button.btn.btn-default(type="file", class="glyphicon glyphicon-folder-open", ng-if="controller.diretorioFormula", ngf-change="controller.selectFile($files)", tooltip="{{'l-select-file' | i18n}}",style="margin-top: 29px;", accept=".r", ngf-select, ngf-multiple="false", ngf-allow-dir="false")
+            
+totvs-modal-footer
+    button.btn.btn-default(data-ng-click="controller.cancel();")
+        {{ 'btn-cancel' | i18n }}
+    button.btn.btn-primary(data-ng-click="controller.save(controller.myParams.action, controller.myParams.model);")
+        {{ 'btn-ok' | i18n }}

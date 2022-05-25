@@ -1,0 +1,159 @@
+<totvs-modal-header>
+    {{employeeEditCtrl.headerTitle}}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-page-content style="border:0px">           
+	              
+    	<totvs-page-detail style="padding-top:0px">
+			<div class="row">
+	            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">	
+					<totvs-field totvs-input
+								 class="col-lg-9 col-md-9 col-sm-12 col-xs-12"
+								 label="{{'l-company' | i18n }}"
+								 ng-model="employeeEditCtrl.model['ep-codigo']"
+								 canclean="undefined"
+								 ng-disabled="!employeeEditCtrl.model.isNew"
+								 required
+								 id="ep-codigo"
+								 zoom-id="ep-codigo"
+								 zoom-description="nome"
+								 zoom-service="mab.empresa.zoom">
+					</totvs-field>		
+	            </div>
+	            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-field totvs-input
+								 class="col-lg-9 col-md-9 col-sm-12 col-xs-12"
+								 label="{{'l-site' | i18n }}"
+								 ng-model="employeeEditCtrl.model['cod-estabel']"
+								 canclean="undefined"
+								 ng-disabled="!employeeEditCtrl.model.isNew"
+								 required
+								 zoom-id="cod-estabel"
+								 zoom-description="nome"
+								 zoom-service="mpd.estabelecSE.zoom">
+					</totvs-field>
+				</div> 
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		            <totvs-field totvs-input
+				                 class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+								 ng-model="employeeEditCtrl.model['cod-matr']"
+								 ng-disabled="!employeeEditCtrl.model.isNew"
+								 zoom-service=""
+								 zoom-id="cod-matr"
+								 zoom-description="descricao"
+								 maxlength="10"
+				                 label="{{'l-code-employee' | i18n }}"
+				                 required>
+					</totvs-field> 
+					<totvs-field totvs-input
+								 id="nom-func"
+								 class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+								 ng-model="employeeEditCtrl.model['nom-func']"
+								 label="{{'l-employee' | i18n }}"
+								 required>
+					</totvs-field>              
+				</div>
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="height:60px"> 
+					<totvs-field totvs-checkbox
+								 class="col-lg-2 col-md-2 col-sm-12 col-xs-12"
+							 	 t-bsswitch
+								 label="{{'l-control-time' | i18n}}"
+								 ng-model="employeeEditCtrl.model['log-control-hora']">
+					</totvs-field>
+					<totvs-field totvs-checkbox
+							     class="col-lg-2 col-md-2 col-sm-12 col-xs-12"
+								 t-bsswitch
+								 label="{{'l-create-wo-task' | i18n}}"
+								 ng-model="employeeEditCtrl.model['log-permite-cria-tar']">
+					</totvs-field>
+					
+					<totvs-field totvs-checkbox
+								 class="col-lg-2 col-md-2 col-sm-12 col-xs-12"
+								 t-bsswitch
+								 label="{{'l-active' | i18n}}"
+								 ng-model="employeeEditCtrl.model.situacao">
+					</totvs-field>
+					<div ng-if="!employeeEditCtrl.model.situacao">
+						<totvs-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12" 
+									totvs-datepicker
+									t-mask-date
+									required
+									label="{{'l-deactivation-date' | i18n }}"
+									ng-model="employeeEditCtrl.model['dat-desativ']" 				
+									canclean="undefined">
+						</totvs-field>
+					</div>   
+				</div>  
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-field class="col-lg-3 col-md-3 col-sm-12 col-xs-12" 
+								 totvs-datepicker
+								 t-mask-date
+								 required
+								 label="{{'l-control-start' | i18n }}"
+								 ng-model="employeeEditCtrl.model['dat-inicial']" 				
+								 canclean="undefined"
+								 ng-change="">
+					</totvs-field>
+
+				</div>
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		            <totvs-field totvs-select
+				                 class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+								 ng-change="employeeEditCtrl.buscaCentroCusto()"
+								 ng-model="employeeEditCtrl.model['cod-setor-ofici']"
+								 zoom-service="mab.mmvSetorOfici.zoom"
+								 select-id="cod-setor-ofici"
+								 select-service="mab.mmvSetorOfici.zoom"
+								 select-description="des-setor-ofici"
+								 label="{{'l-sector' | i18n }}"
+								 required
+				                 canclean="undefined">
+	              </totvs-field>              
+				</div>
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-field totvs-input
+								 class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+								 ng-model="employeeEditCtrl.model['cc-codigo']"
+								 zoom-service="mab.centroCusto.zoom"
+								 zoom-id="cc-codigo"
+								 zoom-description="descricao"
+								 label="{{'l-cc-codigo' | i18n }}"
+								 canclean="undefined">
+					</totvs-field>              
+				</div>  
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-field totvs-input
+							 	 class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+							 	 ng-model="employeeEditCtrl.model['cd-mob-dir']"
+								 zoom-service="mab.tabMobDir.zoom"
+								 zoom-id="cd-mob-dir"
+								 zoom-description="descricao"
+								 label="{{'l-direct-labor-code' | i18n }}"
+								 canclean="undefined">
+					</totvs-field>
+				</div> 
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<totvs-field totvs-input
+											 class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+											 ng-model="employeeEditCtrl.model['cod-usuar']"
+											 label="{{'l-user' | i18n }}"
+											 canclean
+											 zoom-service="mmv.user.zoom"
+											 zoom-id="cod_usuario"
+											 zoom-description="nom_usuario">
+					</totvs-field>
+				</div> 
+			</div>
+		</totvs-page-detail>
+				
+	</totvs-page-content>
+	
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" ng-click="employeeEditCtrl.cancel()">{{'l-cancel' | i18n }}</button>
+    <button ng-if="employeeEditCtrl.model.isNew" type="button" class="btn btn-default" ng-click="employeeEditCtrl.save(true);">{{'l-save-new' | i18n }}</button>
+    <button type="button" class="btn btn-primary" ng-click="employeeEditCtrl.save(false)">{{'l-save' | i18n }}</button>        
+</totvs-modal-footer>

@@ -1,0 +1,70 @@
+<totvs-page type="list">
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb>{{'nav-transference-process' | i18n: []: 'dts/crm'}}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title
+				class="col-xs-8"
+				style="margin-left: -30px;"
+				title="{{'nav-transference-process' | i18n: []: 'dts/crm'}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action limit-primary-action="2" class="pull-right" style="margin-top: -15px;">
+						<action icon="glyphicon-arrow-left"
+								ng-click="controller.previousPage();"
+								ng-disabled="controller.pageIndex === 0">
+							{{ 'btn-previous' | i18n: []: 'dts/crm' }}
+						</action>
+						<action icon="glyphicon-arrow-right"
+								ng-click="controller.nextPage();"
+								ng-disabled="controller.pageIndex === controller.lastPage">
+							{{ 'btn-next' | i18n: []: 'dts/crm' }}
+						</action>
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content style="border-top: 1px dotted #e4e4e4;">
+		<totvs-page-content-header style="border-bottom: 0px;">
+			<totvs-tabset style="padding-top: 5px;padding-bottom: 10px;">
+				<totvs-tab heading="{{ 'l-parameters' | i18n: []: 'dts/crm' }}"
+						   active="controller.pageIndex === 0" disabled="controller.pageIndex !== 0">
+					<div ng-include="'/dts/crm/html/transference-process/transference-process.params.html'"></div>
+				</totvs-tab>
+
+				<totvs-tab heading="{{ 'nav-account' | i18n: []: 'dts/crm' }}"
+						   active="controller.pageIndex === 1" disabled="controller.pageIndex !== 1">
+					<div ng-include="'/dts/crm/html/transference-process/transference-process.account.html'"></div>
+				</totvs-tab>
+
+				<totvs-tab heading="{{ 'nav-ticket' | i18n: []: 'dts/crm' }}"
+						   active="controller.pageIndex === 2" disabled="controller.pageIndex !== 2">
+					<div ng-include="'/dts/crm/html/transference-process/transference-process.ticket.html'"></div>
+				</totvs-tab>
+
+				<totvs-tab heading="{{ 'nav-opportunity' | i18n: []: 'dts/crm' }}"
+						   active="controller.pageIndex === 3" disabled="controller.pageIndex !== 3">
+					<div ng-include="'/dts/crm/html/transference-process/transference-process.opportunity.html'"></div>
+				</totvs-tab>
+
+				<totvs-tab heading="{{ 'nav-task' | i18n: []: 'dts/crm' }}"
+						   active="controller.pageIndex === 4" disabled="controller.pageIndex !== 4">
+					<div ng-include="'/dts/crm/html/transference-process/transference-process.task.html'"></div>
+				</totvs-tab>
+
+				<totvs-tab heading="{{ 'l-transfer' | i18n: []: 'dts/crm' }}"
+						   active="controller.pageIndex === 5" disabled="controller.pageIndex !== 5">
+					<div ng-include="'/dts/crm/html/transference-process/transference-process.summary.html'"></div>
+				</totvs-tab>
+			</totvs-tabset>
+		</totvs-page-content-header>
+	</totvs-page-content>
+</totvs-page>

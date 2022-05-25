@@ -1,0 +1,65 @@
+link(rel="stylesheet" href="/dts/kbn/css/font-awesome.css")
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+
+totvs-page(type="list")
+    totvs-page-navbar
+        totvs-page-breadcrumb
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb {{ 'l-list-board' | i18n }}
+        totvs-page-header
+            totvs-page-header-title(title="{{ 'l-board' | i18n }}" total="{{controller.totalRecords}}")
+            totvs-page-header-operation
+                div.col-md-7.col-sm-7
+                totvs-page-header-operation-filter(placeholder="{{ 'l-code-description' | i18n}}", 
+                                                   ng-submit="controller.quickSearch()", 
+                                                   ng-model="controller.quickSearchText",
+                                                   advanced-search="controller.callAdvancedSearch")
+            totvs-page-disclaimers(disclaimer-list="controller.filtersApplied", ng-click="controller.removeFilter")
+    totvs-page-content
+            totvs-page-alert(ng-if="!controller.hasEstab()" type="info" message="{{ 'msg-estab-not-selected' | i18n }}")
+            totvs-page-alert(ng-if="controller.hasEstab() && controller.totalRecords === 0" type="info" message="{{ 'msg-not-found' | i18n }}")
+            totvs-list-item(data-ng-repeat="board in controller.listBoard")
+                totvs-list-item-header
+                    div
+                        div(title=' {{board.ttMasterCellDs | descGeneric:"{codeErpCell} {descCell}"}}' link="#/dts/kbn/board/{{board.num_id_cel_mestre}}" class="col-xs-10 col-sm-7 col-md-7 col-lg-7 ng-scope ng-isolate-scope")
+                            a(class="title link ng-binding" href="#/dts/kbn/board/{{board.num_id_cel_mestre}}")
+                                {{board.ttMasterCellDs | descGeneric:"{codeErpCell} {descCell}"}}
+
+                        div(class="col-lg-5 col-md-5 col-sm-5 col-xs-2 actions-group")
+                            div(class="btn-group btn-group-sm actions pull-right" role="group" aria-label="item-actions")
+                                a(role="button" class="btn btn-default ng-binding" href="#/dts/kbn/board/{{board.num_id_cel_mestre}}")
+                                    span(class="fa fa-desktop")
+                                    | &nbsp; {{'l-show-board'|i18n: []: 'dts/kbn'}}
+                totvs-list-item-content-detail(ng-click="controller.itensProduzidos(board)")
+                    totvs-divider
+                    totvs-list-item-info.col-md-4(title="{{ 'l-group-machines' | i18n }}" value="{{board.cod_chave_erp}}")
+                    totvs-list-item-info.col-md-4(title="{{ 'l-programming-interval' | i18n }}" value="{{board.qtd_horiz | prettyTime}}")
+                    totvs-list-item-info.col-md-4(title="{{ 'l-simultaneous-card' | i18n }}" value="{{board.log_multiplos_itens | yesOrNo}}")
+                    totvs-list-item-info.col-md-4(title="{{ 'l-fixed-range' | i18n }}" value="{{board.qtd_faixa_fixa | prettyTime}}")
+                    totvs-list-item-info.col-md-4(title="{{ 'l-max-card-production' | i18n }}" value="{{board.qtd_cartoes}}")
+                    accordion.col-xs-12
+                        accordion-group(heading="{{ 'l-items' | i18n }}" is-open="true")
+                            .row
+                                table.table
+                                    thead
+                                        tr
+                                            td.col-md-4
+                                                b {{ 'l-item' | i18n }}
+                                            td.col-md-2(align='center')
+                                                b {{ 'l-warehouse' | i18n }}
+                                            td.col-md-2(align='center')
+                                                b {{ 'l-location' | i18n }}
+                                            td.col-md-2(align='center')
+                                                b {{ 'l-kanban-size' | i18n }}
+                                            td.col-md-2(align='center')
+                                                b {{ 'l-total-balance-cards' | i18n }}
+                                    tbody
+                                        tr(data-ng-repeat="item in board.itensProduzidos")
+                                            td {{item.ttItemProduzDs | descGeneric:"{sku} - {desc} {ref} ({exp})"}}
+                                            td(align='center') {{item.cod_depos_erp}}
+                                            td(align='center') {{item.cod_localiz}}
+                                            td(align='center') {{item.qti_tam_kanban}} {{item.ttItemProduzDs.cod_un_med_erp}}
+                                            td(align='center') {{item.qti_verde_kanban + item.qti_amarela_kanban + item.qti_vermelha_kanban}}
+
+            .container(align="center")
+                pagination.pagination-sm(total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages", items-per-page="controller.pageSize", previous-text="{{'l-previous' | i18n}}", next-text="{{'l-next' | i18n}}")

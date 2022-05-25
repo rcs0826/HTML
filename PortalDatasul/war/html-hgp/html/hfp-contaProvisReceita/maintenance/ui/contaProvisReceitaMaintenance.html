@@ -1,0 +1,546 @@
+<totvs-page type="base"> 
+    <totvs-page-navbar >
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hfp-contaProvisReceita/">Contas de Provisionamento da Receita</breadcrumb>
+                <breadcrumb>Manutenção de Contas de Provisionamento da Receita</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+  
+           <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Contas de Provisionamento da Receita">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                    <action ng-click="controller.save();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar</action>
+                    <action ng-click="controller.saveNew();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Novo</action>
+                    <action class="btn-primary"
+                            ng-click="controller.saveClose();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Fechar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.contaProvisReceitaForm">
+            <fieldset>                
+                <totvs-row>
+                    <totvs-field  
+                        totvs-checkbox 
+                        ng-model="controller.contaProvisReceita.lgTodasModalidades" 
+                        label="Todas Modalidades" 
+                        ng-disabled="controller.action != 'INSERT'"
+                        ng-change="controller.onTodasModalidadesChange()"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                    </totvs-field>                
+                    <totvs-field totvs-select 
+                        id="modalityZoom"
+                        name-id="modalityZoom"
+                        ng-model="controller.contaProvisReceita.cdModalidade"
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        label="Modalidade" canclean
+                        select-service="hpr.modalityZoomController"
+                        zoom-service="hpr.modalityZoomController"
+                        select-id="cdModalidade" 
+                        select-description="dsModalidade"
+                        ng-change="controller.onModalityChanged()"
+                        ng-disabled="controller.action != 'INSERT' || controller.contaProvisReceita.lgTodasModalidades">
+                        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                </totvs-row>
+
+                <totvs-row>
+                    <totvs-field  
+                        totvs-checkbox 
+                        ng-model="controller.contaProvisReceita.lgTodosPlanos" 
+                        label="Todos Planos" 
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                        ng-disabled="controller.action != 'INSERT' || controller.contaProvisReceita.lgTodasModalidades"
+                        ng-change="controller.onTodosPlanosChange()"
+                        >
+                    </totvs-field>
+                    <totvs-field totvs-select
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        ng-model="controller.contaProvisReceita.cdPlano"
+                        label="Plano" canclean
+                        select-service="hpr.planZoomController"
+                        zoom-service="hpr.planZoomController"
+                        select-id="cdPlano" 
+                        min="0"
+                        select-description="nmPlano"
+                        select-init ="{filters: controller.zoomPlano}"
+                        zoom-init = "{filters: controller.zoomPlano}"
+                        ng-change="controller.onPlanChanged()"
+                        ng-disabled="controller.action != 'INSERT' || controller.contaProvisReceita.lgTodosPlanos">
+                        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                </totvs-row>
+
+                <totvs-row>
+                    <totvs-field  
+                        totvs-checkbox 
+                        ng-model="controller.contaProvisReceita.lgTodosTiposPlano"
+                        label="Todos Tipos de Plano"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                        ng-disabled="controller.action != 'INSERT' || controller.contaProvisReceita.lgTodosPlanos">
+                    </totvs-field>
+                    <totvs-field totvs-select
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        ng-model="controller.contaProvisReceita.cdTipoPlano"
+                        label="Tipo de Plano" canclean
+                        select-service="hpr.planTypeZoomController"
+                        zoom-service="hpr.planTypeZoomController"
+                        select-id="cdTipoPlano" 
+                        min="0"
+                        select-description="nmTipoPlano"
+                        select-init ="{filters: controller.zoomTipoPlano}"
+                        zoom-init = "{filters: controller.zoomTipoPlano}"
+                        ng-change="controller.onPlanTypeChanged()"
+                        ng-disabled="controller.action != 'INSERT' || controller.contaProvisReceita.lgTodosTiposPlano">
+                        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                </totvs-row>
+
+                <totvs-row>    
+                    <totvs-field  
+                        totvs-checkbox 
+                        ng-model="controller.contaProvisReceita.lgTodasFormaPagamento"
+                        label="Todas Formas de Pagamento"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <totvs-field totvs-combo
+                        class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                        label="Forma de Pagamento"                        
+                        t-options= "controller.listFormaPagamento"
+                        ng-model="controller.contaProvisReceita.cdFormaPagto"
+                        ng-disabled="controller.action != 'INSERT' || controller.contaProvisReceita.lgTodasFormaPagamento">
+                    </totvs-field>
+                </totvs-row>
+
+                <totvs-row>                    
+                    <field type="input"
+                            label="fake" style="visibility: hidden"
+                            class="col-lg-2 col-md-2 col-sm-2 hidden-xs">
+                    </field>                                    
+                    <totvs-field totvs-select 
+                        id="eventZoom"
+                        name-id="eventZoom"
+                        ng-model="controller.contaProvisReceita.cdEvento"
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        label="Evento" canclean
+                        required
+                        select-service="hrb.eventZoomController"
+                        zoom-service="hrb.eventZoomController"
+                        select-id="cdEvento" 
+                        select-description="dsEvento"
+                        select-init ="{filters: controller.zoomEvento}"
+                        zoom-init = "{filters: controller.zoomEvento}"
+                        ng-change="controller.onEventChanged()"
+                        ng-disabled="controller.action != 'INSERT'">
+                        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                </totvs-row>
+
+                <totvs-row>                    
+                    <totvs-field  
+                        totvs-checkbox 
+                        ng-model="controller.contaProvisReceita.lgTodosModulos"
+                        label="Todos Módulos"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>             
+                    <totvs-field totvs-select 
+                        id="coverageModuleZoom"
+                        name-id="coverageModuleZoom"
+                        ng-model="controller.contaProvisReceita.cdModulo"
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        label="Módulo" canclean
+                        select-service="hpr.coverageModuleZoomController"
+                        zoom-service="hpr.coverageModuleZoomController"
+                        select-id="cdModulo" 
+                        select-description="dsModulo"
+                        ng-change="controller.oncoverageModuleChanged()"
+                        ng-disabled="controller.action != 'INSERT' || controller.contaProvisReceita.lgTodosModulos">
+                        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                </totvs-row>
+
+                <totvs-row>
+                    <totvs-field totvs-combo
+                        class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                        label="Tipo de Movimento"
+                        required
+                        t-options= "controller.listTipoMovimento"
+                        ng-model="controller.contaProvisReceita.inMovto"
+                        ng-change="controller.onTipoMovimentoChanged()"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                </totvs-row>
+
+                <totvs-row>
+                    <totvs-field totvs-combo
+                        class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                        label="Grupo de Procedimento"
+                        ng-required="controller.contaProvisReceita.inMovto == 'P'"
+                        ng-show="controller.contaProvisReceita.inMovto == 'P'"
+                        t-options= "controller.listGrupoProcedimento"
+                        ng-model="controller.contaProvisReceita.cdGrupoTipo"
+                        ng-change="controller.onGrupoTipoChanged()"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    <totvs-field totvs-combo
+                        class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                        label="Tipo de Insumo"
+                        ng-required="controller.contaProvisReceita.inMovto == 'I'"
+                        ng-show="controller.contaProvisReceita.inMovto == 'I'"
+                        t-options= "controller.listTipoInsumo"
+                        ng-model="controller.contaProvisReceita.cdGrupoTipo"
+                        ng-change="controller.onGrupoTipoChanged()"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                </totvs-row>
+
+                <totvs-row>
+                    <totvs-field  
+                        totvs-checkbox 
+                        ng-model="controller.contaProvisReceita.lgTodosProcedimentos"
+                        label="Todos Procedimentos"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                        ng-show="controller.contaProvisReceita.inMovto == 'P'"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>                    
+                    <totvs-field  totvs-select name-id="procedureZoom"
+                        ng-model="controller.contaProvisReceita.cdProcInsu"
+                        class="col-lg-6 col-md-8 col-sm-6 col-xs-12"
+                        label="Procedimento"
+                        ng-required="controller.contaProvisReceita.inMovto == 'P' && !controller.contaProvisReceita.lgTodosProcedimentos"
+                        ng-if="controller.contaProvisReceita.inMovto == 'P'"
+                        canclean
+                        select-service="hrc.movementZoomController"
+                        zoom-service="hrc.movementZoomController"
+                        select-init="{filters: controller.movementFixedFilters}"
+                        zoom-init="{filters: controller.movementFixedFilters}"
+                        select-id="formattedCodeWithType" 
+                        select-description="dsMovimento"                        
+                        ng-disabled="controller.action != 'INSERT' || controller.contaProvisReceita.lgTodosProcedimentos"> 
+                    </totvs-field>
+
+                    <totvs-field  
+                        totvs-checkbox 
+                        ng-model="controller.contaProvisReceita.lgTodosInsumos"
+                        label="Todos Insumos"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                        ng-show="controller.contaProvisReceita.inMovto == 'I'"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>                    
+                    <totvs-field  totvs-select name-id="inputZoom"
+                        ng-model="controller.contaProvisReceita.cdProcInsu"
+                        class="col-lg-6 col-md-8 col-sm-6 col-xs-12"
+                        label="Insumo"
+                        ng-required="controller.contaProvisReceita.inMovto == 'I' && !controller.contaProvisReceita.lgTodosInsumos"
+                        ng-if="controller.contaProvisReceita.inMovto == 'I'"
+                        canclean
+                        select-service="hrc.movementZoomController"
+                        zoom-service="hrc.movementZoomController"
+                        select-init="{filters: controller.movementFixedFilters}"
+                        zoom-init="{filters: controller.movementFixedFilters}"
+                        select-id="formattedCodeWithType" 
+                        select-description="dsMovimento"                        
+                        ng-disabled="controller.action != 'INSERT' || controller.contaProvisReceita.lgTodosInsumos"> 
+                    </totvs-field>
+
+                    <totvs-field  
+                        totvs-checkbox 
+                        ng-model="controller.contaProvisReceita.lgTodosPacotes"
+                        label="Todos Pacotes"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                        ng-show="controller.contaProvisReceita.inMovto == 'C'"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>                
+                    <totvs-field  totvs-select name-id="inputZoom"
+                        ng-model="controller.contaProvisReceita.cdProcInsu"
+                        class="col-lg-6 col-md-8 col-sm-6 col-xs-12"
+                        label="Pacote"
+                        ng-required="controller.contaProvisReceita.inMovto == 'C' && !controller.contaProvisReceita.lgTodosPacotes"
+                        ng-if="controller.contaProvisReceita.inMovto == 'C'"
+                        canclean
+                        select-service="hrc.movementZoomController"
+                        zoom-service="hrc.movementZoomController"
+                        select-init="{filters: controller.movementFixedFilters}"
+                        zoom-init="{filters: controller.movementFixedFilters}"
+                        select-id="formattedCodeWithType" 
+                        select-description="dsMovimento"                        
+                        ng-disabled="controller.action != 'INSERT'  || controller.contaProvisReceita.lgTodosPacotes"> 
+                    </totvs-field>                                                     
+                </totvs-row>
+
+                <totvs-row>
+                    <totvs-field totvs-combo
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        label="Validade Mês"
+                        t-options= "controller.listMeses"
+                        ng-model="controller.contaProvisReceita.mmValidade"
+                        ng-change="controller.onValidateCCChanged()"
+                        ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"                        
+                        ng-model="controller.contaProvisReceita.aaValidade"
+                        ng-change="controller.onValidateCCChanged()"
+                        label="Ano"  
+                        maxlength="4"                        
+                        numbers-only
+                        required
+                        ng-disabled="controller.action != 'INSERT'">
+                    </field>
+
+                    <!--
+                    <totvs-field totvs-datepicker
+                            class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+                            format="MM/yyyy"
+                            culture="pt"
+                            label="Validade"
+                            depth="year"
+                            ng-model="controller.contaProvisReceita.dtValidade"
+                            ng-change="controller.onValidadeChanged()"
+                            required
+                            ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                    -->
+                </totvs-row>
+
+                <totvs-row>                                    
+                    <totvs-field totvs-select 
+                        id="ledgerAccountZoom"
+                        name-id="ledgerAccountZoom"
+                        ng-model="controller.contaProvisReceita.ctCodigo"
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        label="Conta Contábil" canclean
+                        select-service="hpp.ledgerAccountZoomController"
+                        zoom-service="hpp.ledgerAccountZoomController"
+                        select-id="codCtaCtbl" 
+                        select-description="desTitCtbl"
+                        ng-change="controller.onledgerAccountChanged()"
+                        required
+                        select-init="{filters: controller.ledgerAccountCCFixedFilters}"
+                        zoom-init="{filters: controller.ledgerAccountCCFixedFilters}"
+                        ng-disabled="controller.action == 'DETAIL' 
+                                    || (controller.contaProvisReceita.mmValidade == 0 
+                                    ||  controller.contaProvisReceita.aaValidade == 0
+                                    ||  controller.contaProvisReceita.aaValidade == undefined)">
+                        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                    <field
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        type="input"
+                        ng-model="controller.contaProvisReceita.scCodigo"
+                        label="Centro de Custo"                        
+                        ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                </totvs-row>
+            </fieldset>
+            <fieldset>
+                <legend>Contas Contábeis por Tipo de Contratação</legend>
+                <totvs-row>
+                    <totvs-field totvs-combo
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"  
+                        label="Inicio da Validade Mês"
+                        t-options= "controller.listMeses"
+                        ng-model="controller.contaProvisReceita.mmInicioValidade"
+                        ng-change="controller.onValidateChanged()"
+                        ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+
+                    <field type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"                        
+                        ng-model="controller.contaProvisReceita.aaInicioValidade"
+                        ng-change="controller.onValidateChanged()"
+                        label="Ano"
+                        maxlength="4"                          
+                        numbers-only
+                        ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <!--
+                    <totvs-field totvs-datepicker
+                            class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+                            format="MM/yyyy"
+                            culture="pt"
+                            label="Início da Validade"
+                            depth="year"
+                            ng-model="controller.contaProvisReceita.dtInicioValidade"
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+                    -->
+                </totvs-row>
+
+                <totvs-row>                                    
+                    <totvs-field totvs-select 
+                        id="ledgerAccountZoom"
+                        name-id="ledgerAccountZoom"
+                        ng-model="controller.contaProvisReceita.ctTpContratacao1"
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        label="Cta Individual/Familiar" canclean
+                        select-service="hpp.ledgerAccountZoomController"
+                        zoom-service="hpp.ledgerAccountZoomController"
+                        select-id="codCtaCtbl" 
+                        select-description="desTitCtbl"
+                        ng-change="controller.onledgerAccountChanged()"
+                        select-init="{filters: controller.ledgerAccountFixedFilters}"
+                        zoom-init="{filters: controller.ledgerAccountFixedFilters}"
+                        ng-disabled="controller.action == 'DETAIL' 
+                                    || (controller.contaProvisReceita.mmInicioValidade == 0 
+                                    ||  controller.contaProvisReceita.aaInicioValidade == 0
+                                    ||  controller.contaProvisReceita.aaInicioValidade == undefined)">
+                        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                    <field
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        type="input"
+                        ng-model="controller.contaProvisReceita.scTpContratacao1"
+                        label="Centro de Custo"
+                        ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                </totvs-row>
+                <totvs-row>                                    
+                    <totvs-field totvs-select 
+                        id="ledgerAccountZoom"
+                        name-id="ledgerAccountZoom"
+                        ng-model="controller.contaProvisReceita.ctTpContratacao3"
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        label="Cta Col.Adesao c/Patroc." canclean
+                        select-service="hpp.ledgerAccountZoomController"
+                        zoom-service="hpp.ledgerAccountZoomController"
+                        select-id="codCtaCtbl" 
+                        select-description="desTitCtbl"
+                        ng-change="controller.onledgerAccountChanged()"        
+                        select-init="{filters: controller.ledgerAccountFixedFilters}"
+                        zoom-init="{filters: controller.ledgerAccountFixedFilters}"                
+                        ng-disabled="controller.action == 'DETAIL' 
+                                    || (controller.contaProvisReceita.mmInicioValidade == 0 
+                                    ||  controller.contaProvisReceita.aaInicioValidade == 0
+                                    ||  controller.contaProvisReceita.aaInicioValidade == undefined)">
+                        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                    <field
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        type="input"
+                        ng-model="controller.contaProvisReceita.scTpContratacao3"
+                        label="Centro de Custo"
+                        ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                </totvs-row>
+                <totvs-row>                                    
+                    <totvs-field totvs-select 
+                        id="ledgerAccountZoom"
+                        name-id="ledgerAccountZoom"
+                        ng-model="controller.contaProvisReceita.ctTpContratacao4"
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        label="Cta Col.Adesao s/Patroc." canclean
+                        select-service="hpp.ledgerAccountZoomController"
+                        zoom-service="hpp.ledgerAccountZoomController"
+                        select-id="codCtaCtbl" 
+                        select-description="desTitCtbl"
+                        ng-change="controller.onledgerAccountChanged()"
+                        select-init="{filters: controller.ledgerAccountFixedFilters}"
+                        zoom-init="{filters: controller.ledgerAccountFixedFilters}"
+                        ng-disabled="controller.action == 'DETAIL' 
+                                    || (controller.contaProvisReceita.mmInicioValidade == 0 
+                                    ||  controller.contaProvisReceita.aaInicioValidade == 0
+                                    ||  controller.contaProvisReceita.aaInicioValidade == undefined)">
+                        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                    <field
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        type="input"
+                        ng-model="controller.contaProvisReceita.scTpContratacao4"
+                        label="Centro de Custo"
+                        ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                </totvs-row>
+                <totvs-row>                                    
+                    <totvs-field totvs-select 
+                        id="ledgerAccountZoom"
+                        name-id="ledgerAccountZoom"
+                        ng-model="controller.contaProvisReceita.ctTpContratacao5"
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        label="Cta Col.Empr.c/Patroc." canclean
+                        select-service="hpp.ledgerAccountZoomController"
+                        zoom-service="hpp.ledgerAccountZoomController"
+                        select-id="codCtaCtbl" 
+                        select-description="desTitCtbl"
+                        ng-change="controller.onledgerAccountChanged()"
+                        select-init="{filters: controller.ledgerAccountFixedFilters}"
+                        zoom-init="{filters: controller.ledgerAccountFixedFilters}"
+                        ng-disabled="controller.action == 'DETAIL' 
+                                    || (controller.contaProvisReceita.mmInicioValidade == 0 
+                                    ||  controller.contaProvisReceita.aaInicioValidade == 0
+                                    ||  controller.contaProvisReceita.aaInicioValidade == undefined)">
+                        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                    <field
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        type="input"
+                        ng-model="controller.contaProvisReceita.scTpContratacao5"
+                        label="Centro de Custo"
+                        ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                </totvs-row>
+                <totvs-row>                                    
+                    <totvs-field totvs-select 
+                        id="ledgerAccountZoom"
+                        name-id="ledgerAccountZoom"
+                        ng-model="controller.contaProvisReceita.ctTpContratacao6"
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        label="Cta Col.Empr.s/Patroc." canclean
+                        select-service="hpp.ledgerAccountZoomController"
+                        zoom-service="hpp.ledgerAccountZoomController"
+                        select-id="codCtaCtbl" 
+                        select-description="desTitCtbl"
+                        ng-change="controller.onledgerAccountChanged()"
+                        select-init="{filters: controller.ledgerAccountFixedFilters}"
+                        zoom-init="{filters: controller.ledgerAccountFixedFilters}"
+                        ng-disabled="controller.action == 'DETAIL' 
+                                    || (controller.contaProvisReceita.mmInicioValidade == 0 
+                                    ||  controller.contaProvisReceita.aaInicioValidade == 0
+                                    ||  controller.contaProvisReceita.aaInicioValidade == undefined)">
+                        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                    <field
+                        class="col-lg-6 col-md-6 col-sm-8 col-xs-10"
+                        type="input"
+                        ng-model="controller.contaProvisReceita.scTpContratacao6"
+                        label="Centro de Custo"
+                        ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                </totvs-row>   
+                            
+                <totvs-row ng-if="controller.action != 'INSERT'">
+                    <field type="date"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        label="Data de Atualização"
+                        ng-model="controller.contaProvisReceita.dtAtualizacao"
+                        format="dd/MM/yyyy"
+                        ng-disabled="true">
+                    </field>
+                    <totvs-field totvs-input
+                        class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+                        label="Usuário da última atualização"
+                        ng-model="controller.contaProvisReceita.cdUserid"
+                        ng-disabled="true">
+                    </totvs-field>
+                </totvs-row>                 
+            </fieldset>
+        </totvs-page-form>        
+    </totvs-page-content>   
+</totvs-page>
+
+

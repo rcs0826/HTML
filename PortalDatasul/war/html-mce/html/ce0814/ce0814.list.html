@@ -1,0 +1,180 @@
+<link rel="stylesheet" href="/dts/mce/css/mce.css"/>
+<totvs-page type="list">
+    <script>
+        $("a.tips").tooltip();
+    </script>
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{'l-item-inventory-movement' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12">
+                    <div class="displayInitialAndFinalQuantity" >
+                         <h5 class = "col-md-6">                        
+                             {{ ::'l-initial-quantity' | i18n : [] : 'dts/mce' }}: <span class="badge">{{controller.balanceQuantities.initial | number : 4}}</span>
+                        </h5>
+                    </div>
+
+                    <div class="displayInitialAndFinalQuantity" >
+                        <h5 class = "col-md-6">
+                            {{ ::'l-end-quantity' | i18n : [] : 'dts/mce' }}: <span class="badge">{{controller.balanceQuantities.final | number : 4}}</span>
+                        </h5>
+                    </div>
+                </div>
+
+                <totvs-field class="col-md-5 col-sm-5 col-xs-10"
+                             totvs-select
+                             ng-model="controller.itemCode"
+                             select-id="it-codigo"
+                             select-description="desc-item"
+                             select-service="men.item.zoom"
+                             zoom-service="men.item.zoom"
+                             canclean
+                             zoom-selected="controller.search"
+                             ng-change="controller.search()"
+                             delay="1000"
+                             placeholder=" {{ 'l-item' | i18n}}, {{ 'l-description' | i18n}}">
+                </totvs-field>
+                
+                <div id="mce_advancedSearch" 
+                     class="col-md-1 col-lg-1 col-xs-1 col-sm-1">
+                    <span>
+                        <a ng-click="controller.openAdvancedSearch()" 
+                              class="ng-binding"> 
+                           {{ 'l-advanced-search' | i18n}}
+                        </a>
+                    </span>
+                </div>
+
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <totvs-page-disclaimers disclaimer-list="controller.disclaimers" 
+                                            ng-click="controller.removeDisclaimer">
+                    </totvs-page-disclaimers>
+                </div>
+				
+				<totvs-page-header-operation-action>
+					<action ng-click="controller.gerarExcel()" 
+							icon="glyphicon-save"
+							class="col-xs-2 col-sm-4 col-md-4 col-lg-2 btn btn-success" >
+							{{ ::'l-export-excel' | i18n : [] : 'dts/mce' }}
+					</action>
+				</totvs-page-header-operation-action>				
+				
+            </div>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+        <totvs-page-form name="formGrid">
+
+            <totvs-grid grid-data="controller.listOfMovements" 
+                        navigatable="true" 
+                        reorderable="true" 
+                        resizable="true" 
+                        grid="controller.myGrid" 
+                        grid-height="200" 
+                        auto-resize-content="true" 
+                        sortable="true"
+						selectable="row">
+
+                <!-- TIPO  -->
+                <totvs-grid-column field="tipo-trans"  
+                                   style ="text-align: center;" 
+                                   width="70" 
+                                   template="controller.templateTipoMovimento">
+                    {{ ::'l-type' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <!-- SERIES  -->
+                <totvs-grid-column field=" serie-docto" width="80">
+                    {{ ::'l-series' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <!-- DOCUMENTO  -->
+                <totvs-grid-column field=" nro-docto" width="100">
+                    {{ ::'l-document' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <!-- ESTABELECIMENTO  -->
+                <totvs-grid-column field=" cod-estabel" width="60">
+                    {{ ::'l-site-short' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <!-- DEPÓSITO  -->
+                <totvs-grid-column field=" cod-depos" width="60">
+                    {{ ::'l-warehouse-micro' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <!-- ESPÉCIE  -->
+                <totvs-grid-column field=" esp-docto" width="70">
+                    {{ ::'l-species' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <!-- DATA TRANSAÇÃO  -->
+                <totvs-grid-column field="dt-trans" width="140">
+                    {{ ::'l-transaction-date' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <!-- QUANTIDADE  -->
+                <totvs-grid-column field="quantidade" width="150">
+                    {{ ::'l-quantity' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <!-- LOCALIZAÇÃO  -->
+                <totvs-grid-column field="cod-localiz" width="95">
+                    {{ ::'l-localization-short' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <!-- LOTE  -->
+                <totvs-grid-column field="lote" width="100">
+                    {{ ::'l-lot-serial' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <!-- REFERÊNCIA  -->
+                <totvs-grid-column field="cod-refer" width="100">
+                    {{ ::'l-reference-short' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <!-- materialAmount  -->
+                <totvs-grid-column field="materialAmount" width="150">
+                    {{ ::'l-mat-value' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <!-- laborAmount  -->
+                <totvs-grid-column field="laborAmount" width="150">
+                    {{ ::'l-mob-value' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <!-- l-ggf-value  -->
+                <totvs-grid-column field="OHAmount" width="150">
+                    {{ ::'l-ggf-value' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <!-- CONTA  -->
+                <totvs-grid-column field="ct-codigo" width="170">
+                    {{ ::'l-account' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <!-- CONTA  -->
+                <totvs-grid-column field="sc-codigo" width="170">
+                    {{ ::'l-cost-center' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <!-- UNIDADE DE NEGOCIO  -->
+                <totvs-grid-column field="cod-unid-negoc" width="90">
+                    {{ ::'l-business-unit-short' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <totvs-grid-column field="" width="75" template="controller.templateDetalhar">
+                    &nbsp;
+                </totvs-grid-column>
+            </totvs-grid>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

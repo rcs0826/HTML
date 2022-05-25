@@ -1,0 +1,40 @@
+<totvs-modal-header>{{ i18n('l-operations-backlog', [], 'dts/mdb')}}</totvs-modal-header>
+<totvs-modal-body>
+    <totvs-row>
+        <!-- Filtrar GM, Ordem ou Item -->
+        <totvs-field
+            totvs-input
+            ng-change="controller.searchItem()"
+            ng-model="controller.valorSearch"
+            placeholder="{{i18n('l-mgroup-req-item', [], 'dts/mdb')}}">
+        </totvs-field>
+    </totvs-row>
+    <totvs-page-detail>
+
+        <totvs-grid grid-options="controller.gridOptions"
+                    grid-selected-items="controller.selectedItems"
+                    grid-data="controller.gridData"
+                    editable='true'
+                    on-save="controller.changeOper(event)"
+                    add-select-column="separate"
+                    grid-height="450"
+                    grid="controller.grid">
+
+            <totvs-grid-column editable="true" field="gm-codigo" width="120">{{ 'l-machine-group' | i18n }}</totvs-grid-column>
+            <totvs-grid-column editable="true" field="cod-ctrab" width="120">{{ 'l-workcenter' | i18n }}</totvs-grid-column>
+            <totvs-grid-column editable="true" field="datetime-inicio" filter="date: short" width="140">{{ 'l-start-date-time' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="num-ord-alpha" width="120">{{ 'l-requisition' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="op-codigo" width="90">{{ 'l-oper' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="it-codigo" width="140">{{ 'l-item' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="datetime-liberacao" filter="date: short" width="140">{{ 'l-release-date-time' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="tempo-prepar" filter="number : 4" width="120" style="text-align: right;">{{ 'l-preparation' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="tempo-maquin" filter="number : 4" width="120" style="text-align: right;">{{ 'l-execution' | i18n }}</totvs-grid-column>
+
+        </totvs-grid>
+    </totvs-page-detail>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <!-- FECHAR -->
+    <button class="btn btn-default" ng-click="controller.close()">{{ i18n('btn-close', [], 'dts/mdb')}}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()">{{ i18n('btn-apply') }}</button>
+</totvs-modal-footer>

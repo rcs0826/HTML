@@ -1,0 +1,159 @@
+<style type="text/css" scoped>
+.page-head .page-tags .tag-7:before {
+	background-color: #703593;
+	content: "7";
+}
+.page-head .page-tags .tag-8:before {
+	background-color: #582A1A;
+	content: "8";
+}
+.page-content .list-item.tag-7 {
+	border-left: 5px solid #703593;
+}
+.page-content .list-item.tag-8 {
+	border-left: 5px solid #582A1A;
+}
+
+.k-grid-header:first-child{
+	border-radius: 0px 0px 0 0;
+}
+
+.k-grid{
+	border-radius: 0px;
+}
+
+.page-content .page-content-header {
+	border-bottom: 0px solid #e4e4e4 !important;
+}
+
+</style>
+
+<totvs-page type="list" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{:: 'l-home' | i18n}}</breadcrumb>
+			<breadcrumb>{{:: 'l-rules-operations-title' | i18n: []: 'dts/mpd'}}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{:: 'l-rules-operations-title' | i18n: []: 'dts/mpd'}}"
+				total="{{controller.rulesOperationsData.length}}/{{controller.rulesoperationslistCount}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action limit-primary-action="4">
+					<action icon="glyphicon-plus" ng-click="controller.openModalAddEdit('add')">
+						{{:: 'l-new-operagions-rule' | i18n: []: 'dts/mpd' }}
+					</action>
+					<action icon="glyphicon-pencil"
+							ng-click="controller.openModalAddEdit('edit');">
+						{{:: 'l-edit-operagions-rule' | i18n: []: 'dts/mpd' }}
+					</action>
+
+					<!--<action ng-if="controller.multiRulesOperationsSelected.length === 1" icon="glyphicon-duplicate"
+							 ng-click="controller.openModalAddEdit('singlecopy');">
+						{{:: 'l-copy-operagions-rule' | i18n: []: 'dts/mpd' }}
+					</action>-->
+
+					<action icon="glyphicon-duplicate"
+							 ng-click="controller.copyOperationsRules('singlecopy');">
+						{{:: 'l-copy-operagions-rule' | i18n: []: 'dts/mpd' }}
+					</action>
+
+					<action icon="glyphicon-remove"
+							ng-click="controller.deleteOperationsRules();">
+						{{:: 'l-remove-operagions-rule' | i18n: []: 'dts/mpd' }}
+					</action>
+
+					<action icon="glyphicon-check"
+							ng-click="controller.openModalAddEdit('simulator');">
+						{{:: 'l-simulate-operagions-rule' | i18n: []: 'dts/mpd' }}
+					</action>
+
+					<action icon="glyphicon-time"
+							ng-click="controller.openHistory();">
+						{{:: 'l-history-operagions-rule' | i18n: []: 'dts/mpd' }}
+					</action>
+
+					<action icon="glyphicon-th"
+							ng-click="controller.exportData(true);">
+						{{:: 'l-exportar-operagions-rule' | i18n: []: 'dts/mpd' }}
+					</action>
+
+				</totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter
+					placeholder="{{:: 'Tipo de Operação e Natureza' | i18n }}"
+					ng-submit="controller.applySimpleFilter();"
+					ng-model="controller.quickSearch"
+					advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+			<totvs-page-disclaimers
+				disclaimer-list="controller.disclaimers"
+				ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<div style="border:0; padding: 15px; padding-top: 0px">
+			<div class="row">
+				<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12" style="padding-top: 15px">
+					<button ng-disabled="controller.singleRulesOperationsSelected == undefined" class="btn btn-default btn-success" ng-click="controller.saveEditedRulesOnGrid()" focus>
+						<span class="glyphicon glyphicon-save"></span>
+						<span class="hidden-xs ng-binding">&nbsp;&nbsp; {{:: 'l-save-change-operagions-rule' | i18n: []: 'dts/mpd' }} </span>
+					</button>
+					<a ng-if="controller.rulesOperationsDataEdited.length > 0 || controller.singleRulesOperationsSelected['note&note&note'] != undefined" class="btn btn-default" role="button" ng-click="controller.discardEditedRulesOnGrid()">
+						<span class="glyphicon glyphicon-refresh"></span>
+						<span class="hidden-xs ng-binding">&nbsp;&nbsp; {{:: 'l-back-change-operagions-rule' | i18n: []: 'dts/mpd' }}</span>
+					</a>
+					<button class="btn btn-default btn-default" ng-click="controller.exportData(false);"
+							tooltip-placement="right"
+							 tooltip-html="controller.helpexportrules">
+						<span class="glyphicon glyphicon-print"></span>
+					</button>
+				</div>
+				<div class="pull-right" style="padding-right: 15px; padding-left: 15px; padding-top: 15px">
+					<i class="glyphicon glyphicon-question-sign"
+						tooltip-placement="left"
+						tooltip-html="controller.helprule"></i>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div style="margin-left: 25px; margin-right: 25px;">
+				 <totvs-grid
+					 grid-data="controller.rulesOperationsData"
+					 grid-dirty-items="controller.rulesOperationsDataEdited"
+					 editable="true"
+					 resizable="true"
+					 navigatable="true"
+					 add-select-column
+					 grid-height="300"
+					 selectable="multiple"
+					 grid-options="controller.gridRuplesOperactionsOptions"
+					 grid="controller.gridRulesOperations"
+					 grid-selected-items="controller.multiRulesOperationsSelected"
+					 grid-selected-item="controller.singleRulesOperationsSelected"
+					 on-edit="controller.itemsGridEdit(event, column)">
+				 </totvs-grid>
+			</div>
+
+			<div class="more-results" style="margin-left: 15px; margin-right: 15px;" 
+				 ng-show="(controller.rulesOperationsData.length && controller.rulesOperationsData.length < controller.rulesoperationslistCount)" >
+				<button ng-click="controller.getOperationsRulesData(true)"
+						class="btn btn-primary col-xs-12">
+					{{'l-more' | i18n}}
+				</button>
+			</div>
+		</div>
+	</totvs-page-content>
+
+</totvs-page>

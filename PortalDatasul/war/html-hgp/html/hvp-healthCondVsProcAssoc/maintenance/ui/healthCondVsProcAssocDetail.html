@@ -1,0 +1,132 @@
+<totvs-page type="detail"> 
+
+    <totvs-page-navbar>
+
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hvp-healthCondVsProcAssoc/">Manutenção Associativa Condição Saúde x Procedimento</breadcrumb>
+                <breadcrumb></breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Associativa Condição Saúde x Procedimento" >
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action on-back="controller.onCancel"
+                                                    on-cancel="controller.onCancel"
+                                                    on-save-new="controller.onSaveNew"
+                                                    hide-edit="true"
+                                                    hide-remove="true"
+                                                    hide-save-new="{{controller.action === 'INSERT' ? false : true }}">
+                </totvs-page-header-operation-action>
+
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+
+        <totvs-page-form>
+            <fieldset>
+            
+                <legend>Condição de Saúde</legend>                 
+
+                <totvs-field  totvs-select name-id="condicaoSaudeZoom"
+                        ng-model="controller.healthCondVsProcAssoc.cdCondicaoSaude"
+                        class="col-lg-6 col-md-8 col-sm-12 col-xs-12"
+                        label="Condição de Saúde"
+                        required 
+                        canclean
+                        select-service="hvp.healthConditionZoomController"
+                        zoom-service="hvp.healthConditionZoomController"
+                        select-init="{filters: controller.movementFixedFilters}"
+                        zoom-init="{filters: controller.movementFixedFilters}"
+                        select-id="cdCondicaoSaude" 
+                        select-description="dsCondicaoSaude"
+                        ng-disabled="controller.action == 'DETAIL' || controller.action == 'EDIT'"> 
+                </totvs-field>
+
+
+                <field  type="input"
+                        label="fake" style="visibility: hidden"
+                        class="col-lg-6 col-md-4 col-sm-4 col-xs-12">
+                </field>                 
+                             
+                <totvs-field  totvs-select name-id="procedimentoZoom"
+                        ng-model="controller.healthCondVsProcAssoc.cdProcedimento"
+                        class="col-lg-6 col-md-8 col-sm-12 col-xs-12"
+                        label="Procedimento"
+                        required 
+                        canclean
+                        select-service="hrc.movementZoomController"
+                        zoom-service="hrc.movementZoomController"
+                        select-init="{filters: controller.movementFixedFilters}"
+                        zoom-init="{filters: controller.movementFixedFilters}"
+                        select-id="formattedCodeWithType" 
+                        select-description="dsMovimento"                        
+                        ng-disabled="controller.action == 'DETAIL' || controller.action == 'EDIT'"> 
+                </totvs-field>            
+
+                <field  type="input"
+                        label="fake" style="visibility: hidden"
+                        class="col-lg-6 col-md-4 col-sm-4 col-xs-12">
+                </field> 
+
+
+                <field  type="date"
+                        label="Data Limite"
+                        required
+                        class="col-lg-2 col-md-3 col-sm-6 col-xs-8"
+                        data-ng-model="controller.healthCondVsProcAssoc.dtLimite"
+                        ng-disabled="controller.action == 'DETAIL'"
+                        start-date="controller.today">
+                </field>                  
+
+                <field  type="input"
+                        label="fake" style="visibility: hidden"
+                        class="col-lg-10 col-md-9 col-sm-6 col-xs-12">
+                </field>                                               
+            
+                <legend>Carência</legend>            
+
+                <field  type="input"
+                        label="Quantidade de dias"
+                        required
+                        maxlength="3"
+                        numbers-only                         
+                        class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+                        data-ng-model="controller.healthCondVsProcAssoc.nrCarenciaCpt"                            
+                        ng-disabled="controller.action == 'DETAIL'">
+                </field>                    
+            
+                <field  type="input"
+                        label="fake" style="visibility: hidden"
+                        class="col-lg-10 col-md-9 col-sm-8 col-xs-12">
+                </field>
+
+                <legend>Atualização do Registro</legend>
+
+                <div ng-if="controller.action == 'DETAIL'">                
+                    <field  type="input"
+                            label=""                         
+                            class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+                            data-ng-model="controller.healthCondVsProcAssoc.codUsuarUltAtualiz"                            
+                            ng-disabled="true">
+                    </field>
+                </div>
+
+                <field  type="date"
+                        label=""
+                        class="col-lg-2 col-md-3 col-sm-6 col-xs-8"
+                        data-ng-model="controller.healthCondVsProcAssoc.datUltAtualiz"
+                        ng-disabled="true">
+                </field>                                                   
+
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>   
+</totvs-page>

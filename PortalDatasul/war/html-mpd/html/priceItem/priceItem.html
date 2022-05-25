@@ -1,0 +1,87 @@
+<totvs-page type="list" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#{{defaultPageHome}}">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-item-list' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		
+		<totvs-page-header>
+     
+            <totvs-page-header-title title="{{ 'l-item-list' | i18n }}"></totvs-page-header-title>
+									 
+			<totvs-page-header-operation>
+			
+				<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12"></div>
+                <totvs-page-header-operation-filter placeholder="{{ 'l-fast-search-product' | i18n }}"
+                                                    ng-submit="controller.search();"
+                                                    ng-model="controller.quickSearchText"
+													ng-disabled="true">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+			<totvs-page-disclaimers disclaimer-list="controller.filterBy"
+								    ng-click="controller.removeSelectedFilter"></totvs-page-disclaimers>
+		</totvs-page-header>	
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+	<totvs-page-detail>
+
+		<totvs-list-item ng-repeat="customerPriceTableItem in controller.listResult"
+						 totvs-custom-element="customListItem">
+			<totvs-list-item-header>
+				<totvs-list-item-title title="Item: {{customerPriceTableItem['it-codigo']}}"
+									   link="#/dts/mpd/productdetail/{{customerPriceTableItem['it-codigo']}}?codRefer={{customerPriceTableItem['cod-refer']}}">
+									   <b style="font-weight: 500;" ng-if="customerPriceTableItem['cod-refer']"> {{ 'l-cod-refer' | i18n }}: {{customerPriceTableItem['cod-refer']}} </b>
+				</totvs-list-item-title>
+				
+			</totvs-list-item-header>
+			<totvs-list-item-content>
+				<div class="row line-detail"> 
+					<div class="col-xs-12 col-sm-6 col-md-5">
+						<img class="col-xs-6 col-sm-4 col-md-4" alt="{{ 'l-image-not-found' | i18n }}" ng-if="customerPriceTableItem['nom-imagem']" ng-src="/dts/datasul-rest/resources/api/fch/fchdis/fchdis0038/imagem?imagem={{customerPriceTableItem['nom-imagem']}}">
+	
+						<totvs-page-detail-info title="{{ 'l-descricao' | i18n }}" class="col-xs-6 col-sm-8 col-md-8" ng-class="{'col-xs-6 col-sm-8 col-md-8' : customerPriceTableItem['nom-imagem'], 'col-xs-12 col-sm-12 col-md-12' : !customerPriceTableItem['nom-imagem']}">
+							{{customerPriceTableItem.itemDesc}}
+						</totvs-page-detail-info>
+					</div>
+					<div id="PriceTableItem" class="col-xs-12 col-sm-6 col-md-7">
+						<div ng-repeat="priceRelated in customerPriceTableItem.ttPricesRelatedByItem">
+							<div class="col-xs-12 col-sm-12 col-md-8 no-gutter">
+								<totvs-page-detail-info title="{{ 'l-quant-min' | i18n }}" class="col-xs-3 col-sm-3 col-md-3">
+									{{priceRelated['quant-min'] | number : 4}}
+								</totvs-page-detail-info>
+								<totvs-page-detail-info title="{{ 'l-unidade-medida' | i18n }}" class="col-xs-3 col-sm-3 col-md-3">
+									{{priceRelated['cod-unid-med']}}
+								</totvs-page-detail-info>		
+								<totvs-page-detail-info title="{{ 'l-preco-cif' | i18n }}" class="col-xs-3 col-sm-3 col-md-3">
+									{{priceRelated['preco-venda'] | number : 2}}
+								</totvs-page-detail-info>
+								<totvs-page-detail-info title="{{ 'l-preco-fob' | i18n }}" class="col-xs-3 col-sm-3 col-md-3">
+									{{priceRelated['preco-fob'] | number : 2}}
+								</totvs-page-detail-info>	
+							</div>
+							<totvs-page-detail-info ng-if="controller.bussinessContexts" title="{{ 'l-quantity' | i18n }}" class="col-xs-12 col-sm-12 col-md-4">
+                                <div class="input-group">
+                                    <input onClick="this.setSelectionRange(0, this.value.length)" data-v-max="9999999.9999" type="text" data-a-sep="." data-a-dec="," autonumeric="" bind="" data-m-dec="4" class="form-control ng-pristine ng-valid ng-touched" ng-init="priceRelated.qtdToAddCart = 0" ng-model="priceRelated.qtdToAddCart" name="pricerelated_qtdtoaddcart"></input>
+                                    <span class="input-group-btn">
+                                        <a role="button" class="btn btn-default" class="clickable" ng-click="controller.addItemToShoppingCart(customerPriceTableItem, priceRelated)"><span class="glyphicon glyphicon-shopping-cart"><span class="glyphicon glyphicon glyphicon-plus"></span></span> </a>    
+                                    </span>
+                                </div>
+                            </totvs-page-detail-info> 
+						</div>						
+					</div>					
+				</div>
+            </div>
+			</totvs-list-item-content>
+
+			
+		</totvs-list-item>
+	</totvs-page-detail>
+
+	</totvs-page-content>
+
+	<totvs-list-pagination ng-if="!controller.newOrderInclusionFlow && (controller.listResult.length < controller.totalRecords && controller.listResult.length)" ng-click="controller.loadMore()"></totvs-list-pagination>		
+	<totvs-list-pagination ng-if="controller.newOrderInclusionFlow && controller.hasMore" ng-click="controller.loadMore()"></totvs-list-pagination>			
+
+</totvs-page>

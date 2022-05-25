@@ -1,0 +1,130 @@
+link(rel="stylesheet" href="/dts/kbn/css/font-awesome.css")
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+totvs-page(type='list')
+    totvs-page-navbar
+        totvs-page-breadcrumb
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb {{ 'l-supermarketstatus' | i18n }}
+        totvs-page-header
+            totvs-page-header-title(title="{{ 'l-supermarketstatus' | i18n }}" total="{{controller.totalRecords}}")
+            totvs-page-header-operation
+                div.col-md-7.col-sm-7
+                totvs-page-header-operation-filter(
+                    placeholder="{{ 'l-code-description' | i18n}}", 
+                    ng-submit="controller.quickSearch()", 
+                    advanced-search="controller.openAdvancedSearch",
+                        ng-model="controller.quickSearchText")
+            totvs-page-disclaimers(disclaimer-list="controller.filtersApplied", ng-click="controller.removeFilter")
+    totvs-page-content
+        totvs-page-content-header
+            .row
+                .col-md-6
+                    .col-lg-5.col-md-5.col-sm-5.col-xs-2.actions-group(ng-if="controller.totalRecords > 0")
+                        .btn-group.btn-group-sm.actions(role='group')
+                            .btn-group.btn-group-sm.ng-scope(role='group')
+                                a.btn.btn-primary.dropdown-toggle(data-toggle='dropdown', role='button', style="margin-top: 10px;margin-bottom: 10px;")
+                                    span.ng-binding {{ 'l-export-data' | i18n }}
+                                    span.glyphicon.glyphicon-triangle-bottom
+                                            
+                                ul.dropdown-menu(role='menu')
+                                    li 
+                                        a(data-ng-click='controller.exportaConsulta("xlsx")')
+                                            span.fa.fa-file-excel-o
+                                            |{{ 'l-excel-xlsx' | i18n }}
+                                    li
+                                        a(data-ng-click='controller.exportaConsulta("pdf")')
+                                            span.fa.fa-file-pdf-o
+                                            |{{ 'l-pdf' | i18n }}
+                                            
+        totvs-page-alert(ng-if="!controller.hasEstab()" type="info" message="{{ 'msg-estab-not-selected' | i18n }}")        
+        totvs-page-alert(ng-if="controller.hasEstab() && controller.totalRecords == 0" type="info" message="{{ 'msg-not-found' | i18n }}")
+        
+        totvs-list-item(data-ng-repeat="itens in controller.itens")
+            totvs-list-item-header
+                totvs-list-item-title.col-xs-6.col-lg-12.col-md-12.col-sm-6(title='{{itens | descGeneric:"{sku} - {desc} {ref} ({exp})"}}')                
+                
+                .col-md-4
+                .col-md-2
+                    .input-group
+                        label.input-label {{ 'l-supermarket' | i18n }}
+                            .input-group
+                                .input-group-addon
+                                    span.fa.fa-tag.fa-lg.is-color-red(ng-if="itens.sit_supermercado == 3" tooltip="{{'l-red-range' | i18n}}")
+                                    span.fa.fa-tag.fa-lg.is-color-yellow(ng-if="itens.sit_supermercado == 2" tooltip="{{'l-yellow-range' | i18n}}")
+                                    span.fa.fa-tag.fa-lg.is-color-green(ng-if="itens.sit_supermercado == 1" tooltip="{{'l-green-range' | i18n}}")
+                                input.form-control.input-sm(
+                                    ng-disabled="true",
+                                    id="qtd_supermercado",
+                                    name="qtd_supermercado",
+                                    type="number",
+                                    ng-model="itens.qtd_supermercado",
+                                    min=1,
+                                    integer,
+                                    required,
+                                    label="{{'l-red-range' | i18n}}")
+                                .input-group-addon {{'l-cards' | i18n}}
+
+                .col-md-2
+                    .input-group
+                        label.input-label {{ 'l-board' | i18n }}
+                            .input-group
+                                .input-group-addon
+                                    span.fa.fa-tag.fa-lg.is-color-red(ng-if="itens.sit_quadro == 3" tooltip="{{'l-red-range' | i18n}}")
+                                    span.fa.fa-tag.fa-lg.is-color-yellow(ng-if="itens.sit_quadro == 2" tooltip="{{'l-yellow-range' | i18n}}")
+                                    span.fa.fa-tag.fa-lg.is-color-green(ng-if="itens.sit_quadro == 1" tooltip="{{'l-green-range' | i18n}}")
+                                input.form-control.input-sm(
+                                    ng-disabled="true",
+                                    id="qtd_quadro",
+                                    name="qtd_quadro",
+                                    type="number",
+                                    ng-model="itens.qtd_quadro",
+                                    min=1,
+                                    integer,
+                                    required,
+                                    label="{{'l-red-range' | i18n}}")
+                                .input-group-addon {{'l-cards' | i18n}}
+                                
+                .col-md-2
+                    .input-group
+                        label.input-label {{ 'l-extras-board' | i18n }}
+                            .input-group
+                                .input-group-addon
+                                    span.fa.fa-tag.fa-lg.is-color-blue(tooltip="{{'l-extra-card' | i18n}}")
+                                input.form-control.input-sm(
+                                    ng-disabled="true",
+                                    id="qtd_quadro_extra",
+                                    name="qtd_quadro_extra",
+                                    type="number",
+                                    ng-model="itens.qtd_quadro_extra",
+                                    min=1,
+                                    integer,
+                                    required,
+                                    label="{{'l-extra-card' | i18n}}")
+                                .input-group-addon {{'l-cards' | i18n}}                             
+                                
+                .col-md-2
+                    .input-group
+                        label.input-label {{ 'l-process' | i18n }}
+                            .input-group
+                                input.form-control.input-sm(
+                                    ng-disabled="true",
+                                    id="qtd_processo",
+                                    name="qtd_processo",
+                                    type="number",
+                                    ng-model="itens.qtd_processo",
+                                    min=1,
+                                    integer,
+                                    required,
+                                    label="{{'l-red-range' | i18n}}")
+                                .input-group-addon {{'l-cards' | i18n}}
+
+            
+            totvs-list-item-content-detail
+                totvs-divider
+                totvs-list-item-info.col-md-4(title="{{'l-cell' | i18n}}", value='{{itens.cod_chave_cel}} - {{itens.des_cel}}')
+                totvs-list-item-info.col-md-4(title="{{'l-total-balance-cards' | i18n}}", value="{{itens.qti_tam_pilha}}")
+                totvs-list-item-info.col-md-4(title="{{'l-warehouse' | i18n}}", value="{{itens.cod_depos}}")
+                totvs-list-item-info.col-md-4(title="{{'l-balance-item-quantity' | i18n}}", value="{{itens.qtd_item}} {{itens.cod_un_med_erp}}")
+
+        .container(align="center")
+                pagination.pagination-sm(total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages", items-per-page="controller.pageSize", previous-text="{{'l-previous' | i18n}}", next-text="{{'l-next' | i18n}}")

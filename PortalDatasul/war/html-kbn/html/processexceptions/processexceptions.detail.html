@@ -1,0 +1,18 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/field-addon.css"/>
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<totvs-modal-header><span class="initialwrap title link">{{controller.item.ttItemExceptionDs | descGeneric:"{sku} - {desc} {ref} ({exp})"}}</span></totvs-modal-header>
+<totvs-modal-body>
+  <totvs-page-content>
+    <totvs-page-alert ng-if="controller.movtoDetail.length == 0" type="info" message="{{ 'msg-not-found' | i18n }}"></totvs-page-alert>
+    <totvs-table ng-if="controller.movtoDetail.length &gt; 0" items="controller.movtoDetail" items-as="movtoDetail" type-select="off">
+      <column width="150" title="{{'l-date-movement' | i18n}}">{{movtoDetail.dtm_movto | date:'dd-MM-yyyy HH:mm:ss'}}</column>
+      <column width="80" title="{{'l-number-cards' | i18n}}">{{movtoDetail.qtd_cartoes}}</column>
+      <column width="220" title="{{'l-exception-type' | i18n}}">{{controller.exceptionType(movtoDetail.tipo_excecao)}}</column>
+      <column width="220" title="{{'l-reason' | i18n}}">{{movtoDetail.ttJustificativaDs.des_justif}}</column>
+    </totvs-table>
+  </totvs-page-content>
+</totvs-modal-body>
+<totvs-modal-footer>
+  <button ng-click="controller.close()" class="btn btn-default">{{ 'l-close' | i18n }}</button>
+</totvs-modal-footer>

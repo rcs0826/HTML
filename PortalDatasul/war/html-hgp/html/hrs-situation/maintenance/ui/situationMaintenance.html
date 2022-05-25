@@ -1,0 +1,77 @@
+<totvs-page type="base"> 
+
+    <totvs-page-navbar >
+
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hrs-situation/">Status da Análise</breadcrumb>
+                <breadcrumb>Manutenção Status da Análise</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Status da Análise">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>                    
+                    <action class="btn-primary"
+                            ng-click="controller.saveClose();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Fechar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+            
+        <totvs-page-form t-name="controller.situationForm">
+            <fieldset>
+                 <totvs-row>
+                 	<totvs-field totvs-number
+                 			class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                 			label="Código"
+                 			ng-model="controller.situation.idSituacao"
+                 			ng-required="true"
+                 			min="1"
+                            ng-disabled="true"
+                            ng-if="controller.action != 'INSERT'"
+                            focus>
+                 	<validator key="required">Este campo é obrigatório!</validator>
+                 	<validator key="min">Insira um valor maior que zero</validator>
+                 	</totvs-field>
+                 	<totvs-field totvs-input
+                 			class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                 			label="Nome"
+                 			ng-model="controller.situation.nmSituacao"
+                 			ng-required="true">
+                 	<validator key="required">Este campo é obrigatório!</validator>
+                 	</totvs-field>
+                 </totvs-row>
+                 <totvs-row>
+                 	<totvs-field totvs-input
+                 			class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                 			label="Descrição"
+                 			ng-model="controller.situation.dsSituacao"  
+                 	  		ng-disabled="controller.action == 'DETAIL'">
+                 	<validator key="required">Este campo é obrigatório!</validator>
+                 	</totvs-field>
+                 </totvs-row>
+                 <totvs-row>
+                    <totvs-field totvs-checkbox
+                        label="Status Padrão"
+                        ng-model="controller.situation.lgPadrao"
+                        ng-disabled="controller.lgPadraoAux">
+                    </totvs-field>
+                 	</totvs-field>
+                 </totvs-row>
+            </fieldset>
+        </totvs-page-form>        
+    </totvs-page-content>   
+</totvs-page>
+
+

@@ -1,0 +1,114 @@
+<div ng-controller="cfl.dashboard.keeptrackofcashflowforecast.Controller as controller">
+    <totvs-widget>
+        <cfl-totvs-widget-header list="controller.showList()"
+                                 charts="controller.showCharts()"
+                                 settings="controller.showConfig()"
+								 title="{{'l-cash-flow-forecast' | i18n : [] : 'dts/cfl' }}">
+			<i class="glyphicon glyphicon-info-sign hidden-xs"
+			   tooltip-placement="bottom"
+			   tooltip-html="controller.tooltipHelp">
+			</i>
+		</cfl-totvs-widget-header>
+        <totvs-widget-body>
+
+            <div>			
+                <div ng-show="controller.listShow">
+		        <br>
+                    <div class="col-md-12">
+                        <totvs-grid 
+                            grid-data="controller.listResult" 
+                            grid-height="400" 
+                            selectable="false" 
+                            auto-resize-content="true" 
+                            sortable="true" 
+                            resizable="true">
+
+                            <totvs-grid-column 
+                                field="forecastBalanceDate"
+                                title="{{ 'l-date' | i18n: []: 'dts/cfl' }}"
+                                filter="date: shortDate">
+                            </totvs-grid-column>
+
+                            <totvs-grid-column 
+                                field="forecastFinalBalance" 
+                                title="{{ 'l-value' | i18n: []: 'dts/cfl' }}"
+                                filter="number: 2">
+                            </totvs-grid-column>
+
+                        </totvs-grid>
+                    </div>	        
+                </div>
+
+                <div ng-show="controller.chartsShow">
+                    <br />
+                    <br />
+                    <div id="chart">
+                    </div>
+                <br />
+                </div>
+
+                <div ng-hide="controller.listShow == true || controller.chartsShow == true">
+
+                    <div class="row">
+                        <form>
+
+                            <div class="col-md-12">
+                                <totvs-field 
+                                    totvs-select 
+                                    label="{{ 'l-visualization-pattern' | i18n: []: 'dts/cfl' }}" 
+                                    class="col-md-12"
+                                    delay="100"
+                                    placeholder="{{ 'l-select' | i18n: []: 'dts/cfl' }}"
+                                    ng-model="controller.options.visualizationPattern" 
+                                    select-id="cod_padr_fluxo_cx" 
+                                    select-description="des_padr_fluxo_cx"
+                                    ng-required="true" 
+                                    t-no-data="{{ 'l-no-data' | i18n: []: 'dts/cfl' }}" 
+                                    select-service="cfl.padr-fluxo-cx.zoom"
+                                    zoom-service="cfl.padr-fluxo-cx.zoom" 
+                                    canclean>
+                                    <validator key="required"> {{ 'l-required' | i18n }} </validator>
+                                </totvs-field>
+                            </div>
+
+                            <div class="col-md-12">
+                                <totvs-field 
+                                    totvs-select 
+                                    label="{{ 'l-ucf' | i18n: []: 'dts/cfl' }}" 
+                                    class="col-md-12"
+                                    delay="100"
+                                    placeholder="{{ 'l-select' | i18n: []: 'dts/cfl' }}"
+                                    ng-model="controller.options.financialControlUnity" 
+                                    select-id="cod_unid_control_financ" 
+                                    select-description="des_unid_control_financ"
+                                    t-no-data="{{ 'l-no-data' | i18n: []: 'dts/cfl' }}" 
+                                    select-service="cfl.unid-control-financ.zoom"
+                                    zoom-service="cfl.unid-control-financ.zoom" 
+                                    canclean>
+                                </totvs-field>
+                            </div>
+
+                        </form>
+                    </div>
+                    <hr>
+                    
+                    <a role="button" class="btn btn-default pull-right" ng-click="controller.applyConfig()">&nbsp; {{ 'btn-apply' | i18n : [] : 'dts/cfl/' }} &nbsp; </a>	                                
+                    
+                </div>			
+            </div>
+			
+        </totvs-widget-body>
+
+        <totvs-widget-footer>
+            <totvs-widget-footer-body>
+            </totvs-widget-footer-body>
+
+            <cfl-totvs-widget-footer-actions class="actions">
+                <action class="button btn-primary" ng-click="controller.openCFL700();">{{ 'l-maintenance' | i18n : [] : 'dts/cfl/' }}</action>
+                <action class="button btn-default" ng-click="controller.openCFL206();">{{ 'l-detail' | i18n : [] : 'dts/cfl/' }}</action>
+            </cfl-totvs-widget-footer-actions>
+
+        </totvs-widget-footer>
+    </totvs-widget>
+</div>       
+        

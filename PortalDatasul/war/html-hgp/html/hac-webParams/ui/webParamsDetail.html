@@ -1,0 +1,460 @@
+<totvs-page type="detail">
+
+    <totvs-page-navbar>
+ 
+        <totvs-page-breadcrumb id="breadcrumb">
+                <breadcrumb>Manutenção dos Parâmetros Web</breadcrumb>
+                <breadcrumb></breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title title="Manutenção de Parâmetros Web">
+
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action on-edit="controller.onEdit"
+                                                    hide-back="true"
+                                                    hide-remove="true"
+                                                    hide-save-new="{{controller.action === 'INSERT' ? false : true }}">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+    </totvs-page-navbar>
+    
+    <totvs-page-content id="pageContent">
+
+            <totvs-page-form>
+                <fieldset>
+                    <legend>Documentos Gerados via WEB</legend>
+    
+                    <field type="input"
+                           label="Série"                       
+                           required
+                           maxlength="4"
+                           class="col-lg-2 col-md-3 col-sm-5 col-xs-8"
+                           data-ng-model="controller.webParams.nrSerieDoc"                       
+                           ng-disabled="controller.action == 'DETAIL'">
+                    </field> 
+                </fieldset> 
+                
+                <fieldset>         
+                    <legend>Identificação do Beneficiário</legend>
+                    <totvs-row>
+                        <field  type="checkbox"
+                                label="Foto do Beneficiário"
+                                class="col-sm-12"
+                                data-ng-model="controller.webParams.lgBuscaFotoBenef"                              
+                                ng-disabled="controller.action == 'DETAIL'"
+                                ng-change="controller.onBenefIdentificationChange()">
+                        </field>
+                    </totvs-row>           
+    
+                    <div ng-show="controller.webParams.lgBuscaFotoBenef">
+                        <totvs-row>
+                            <field  type="input"
+                                    required
+                                    label="Diretório da foto do Beneficiário"
+                                    class="col-lg-4 col-md-4 col-sm-5 col-xs-12"
+                                    data-ng-model="controller.webParams.nmDiretorioFotoBenef"                            
+                                    ng-disabled="controller.action == 'DETAIL'">
+                            </field>
+    
+                            <field  type="combo"
+                                    label="Extensão do Arquivo"
+                                    class="col-lg-2 col-md-3 col-sm-3 col-xs-12"
+                                    data-ng-model="controller.webParams.nmExtensaoArqFotoBenef"                            
+                                    ng-disabled="controller.action == 'DETAIL'"
+                                    ng-options="v.value as v.label for v in controller.extensaoArqFotoBeneValues">                          
+                            </field>                
+                        </totvs-row>                                            
+                    </div>     
+                </fieldset> 
+                
+                <fieldset>               
+                    <legend>Restrições ao Beneficiário</legend>
+    
+                    <field  type="checkbox"
+                            label="Na Ocorrência de Restrições ao Beneficiário não Inclui o Movimento"
+                            class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                            data-ng-model="controller.webParams.lgRestringeMovto"                            
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>     
+                </fieldset>                    
+                
+                <fieldset>     
+                    <legend>Segurança</legend>
+    
+                    <field  type="checkbox"
+                            label="Validar a Senha do Beneficiário"
+                            class="col-lg-2 col-md-4 col-sm-5 col-xs-12"
+                            data-ng-model="controller.webParams.lgValidaSenhaBenef"                            
+                            ng-disabled="controller.action == 'DETAIL'"
+                            ng-change="controller.onBenefPasswordValidateChange()">
+                    </field>
+    
+                    <div ng-show="controller.webParams.lgValidaSenhaBenef">    
+                        <field  type="checkbox"
+                                label="Expirar Senha do Beneficiário"
+                                class="col-sm-12"
+                                data-ng-model="controller.webParams.lgSenhaBenefValidade"                            
+                                ng-disabled="controller.action == 'DETAIL'">
+                        </field>                        
+                    </div>      
+                  
+                    <div ng-show="controller.webParams.lgSenhaBenefValidade">
+                        <totvs-row>
+                            <field  type="input"
+                                    required
+                                    numbers-only
+                                    maxlength="4"
+                                    label="Validade Senha do Beneficiário"
+                                    class="col-lg-2 col-md-3 col-sm-3 col-xs-12"
+                                    data-ng-model="controller.webParams.qtValidadeSenhaBenef"                            
+                                    ng-disabled="controller.action == 'DETAIL'">
+                            </field>
+                            <field  type="combo"
+                                    label="Unidade da Validade"
+                                    class="col-lg-2 col-md-3 col-sm-3 col-xs-12"
+                                    data-ng-model="controller.webParams.cdUnidValidSenhaBenef"                            
+                                    ng-disabled="controller.action == 'DETAIL'"
+                                    ng-options="u.value as u.label for u in controller.unidValidValues">                                    
+                            </field>                                 
+                        </totvs-row>   
+                    </div>  
+    
+                    <field  type="checkbox"
+                            label="Expirar Senha do Prestador"
+                            class="col-sm-12"
+                            data-ng-model="controller.webParams.lgSenhaPrestValidade"                            
+                            ng-disabled="controller.action == 'DETAIL'"
+                            ng-change="controller.onPrestPasswordValidateChange()">
+                    </field>                
+    
+                    <div ng-show="controller.webParams.lgSenhaPrestValidade">             
+                        <totvs-row>
+                            <field  type="input" 
+                                    required                           
+                                    numbers-only
+                                    maxlength="4"
+                                    label="Validade Senha do Prestador"
+                                    class="col-lg-2 col-md-3 col-sm-3 col-xs-12"
+                                    data-ng-model="controller.webParams.qtValidadeSenhaPrest"                            
+                                    ng-disabled="controller.action == 'DETAIL'">
+                            </field>
+                            
+                            <field  type="combo"
+                                    label="Unidade da Validade"
+                                    class="col-lg-2 col-md-3 col-sm-3 col-xs-12"
+                                    ng-model="controller.webParams.cdUnidValidSenhaPrest"                            
+                                    ng-disabled="controller.action == 'DETAIL'"
+                                    ng-options="u.value as u.label for u in controller.unidValidValues">                           
+                            </field>
+                        </totvs-row>
+                    </div>
+                </fieldset> 
+                
+                <fieldset>     
+                    <div>
+                        <legend>Faixa Etária</legend>
+    
+                        <field  type="input"    
+                                required                        
+                                numbers-only
+                                maxlength="2"                
+                                label="Inicial"
+                                class="col-lg-1 col-md-2 col-sm-3 col-xs-12"
+                                data-ng-model="controller.webParams.nrFaixaEtariaIni"                            
+                                ng-disabled="controller.action == 'DETAIL'"
+                                ng-change="controller.onAgeRangeChange()">
+                        </field>
+    
+                        <field  type="input"  
+                                required                          
+                                numbers-only
+                                maxlength="2"            
+                                label="Final"
+                                class="col-lg-1 col-md-2 col-sm-3 col-xs-12"
+                                data-ng-model="controller.webParams.nrFaixaEtariaFim"                            
+                                ng-disabled="controller.action == 'DETAIL'"
+                                ng-change="controller.onAgeRangeChange()"
+                                id="faixaEtariaInicial">
+                        </field>
+                    </div>
+                </fieldset> 
+                
+                <fieldset>     
+                    <div>
+                        <legend>Relatórios Batch</legend>
+    
+                        <field  type="input"
+                                required
+                                label="Diretorio dos Relatórios"
+                                class="col-lg-6 col-sm-12"
+                                data-ng-model="controller.webParams.nmDirRelBatch"
+                                ng-disabled="controller.action == 'DETAIL'">
+                        </field>
+    
+                        <field  type="input"
+                                required
+                                label="Diretório de Visualização"
+                                class="col-lg-6 col-sm-12"
+                                data-ng-model="controller.webParams.nmDirVisualizBatch"                            
+                                ng-disabled="controller.action == 'DETAIL'">
+                        </field>
+    
+                        <field  type="input"                            
+                                numbers-only
+                                maxlength="3"
+                                label="Quantidade de Dias Retroativos para a Exclusão dos Relatórios Batch"
+                                class="col-lg-6 col-sm-12"
+                                data-ng-model="controller.webParams.nrDiasExcRelBatch"                            
+                                ng-disabled="controller.action == 'DETAIL'">
+                        </field>                    
+                    </div>  
+                </fieldset>     
+    
+                <fieldset>                             
+                    <div>
+                        <legend>Armazenamento AIH</legend>
+    
+                        <field  type="combo"
+                                label="Formato"
+                                class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                                data-ng-model="controller.webParams.nrGuiaAtrOperadora"                            
+                                ng-disabled="controller.action == 'DETAIL'"
+                                ng-options="v.value as v.label for v in controller.armazenamentoAIHValues">
+                        </field>
+    
+                        <field  type="input"
+                                label="Extensão dos Arquivos Anexos AIH"
+                                class="col-lg-3 col-md-4 col-sm-6 col-xs-8"
+                                data-ng-model="controller.webParams.nmExtArqAnexosAih"                            
+                                ng-disabled="controller.action == 'DETAIL'">
+                        </field>                      
+                    </div>
+                </fieldset>  
+    
+                <fieldset>                
+                    <div>
+                        <legend>Diretório de Gravação dos Anexos da AIH</legend>
+    
+                        <field  type="input"
+                                label="Windows"
+                                class="col-lg-6 col-md-8 col-sm-12 col-xs-12"
+                                data-ng-model="controller.webParams.nmDirAnexosAihWindows"
+                                ng-disabled="controller.action == 'DETAIL'">
+                        </field>
+    
+                        <field  type="input"
+                                label="Linux"
+                                class="col-lg-6 col-md-8 col-sm-12 col-xs-12"
+                                data-ng-model="controller.webParams.nmDirAnexosAihLinux"
+                                ng-disabled="controller.action == 'DETAIL'">
+                        </field>                                   
+                    </div>  
+                </fieldset> 
+                
+                <fieldset>                    
+                    <div>
+                        <legend>Diretório de Gravação Anexos Diretrizes</legend>
+    
+                        <field  type="input"
+                                label="Windows"
+                                class="col-lg-6 col-md-8 col-sm-12 col-xs-12"
+                                data-ng-model="controller.webParams.nmDirDiretrizesWindows"                            
+                                ng-disabled="controller.action == 'DETAIL'">
+                        </field>
+    
+                        <field  type="input"
+                                label="Linux"
+                                class="col-lg-6 col-md-8 col-sm-12 col-xs-12"
+                                data-ng-model="controller.webParams.nmDirDiretrizesLinux"                            
+                                ng-disabled="controller.action == 'DETAIL'">
+                        </field>
+    
+                        <field  type="input"
+                                label="Extensão dos Arquivos Anexos Diretrizes"
+                                class="col-lg-3 col-md-4 col-sm-6 col-xs-8"
+                                data-ng-model="controller.webParams.dsExtAnexosDiretrizes"                            
+                                ng-disabled="controller.action == 'DETAIL'">
+                        </field>                                       
+                    </div> 
+                </fieldset> 
+                
+                <fieldset>     
+                    <div>
+                        <legend>Biometria Digital</legend>
+                        <totvs-row>
+                            <field  type="input"                            
+                                    numbers-only
+                                    maxlength="8"                   
+                                    label="Clínica Genérica para a Utilização do Programa"
+                                    class="col-lg-3 col-md-6 col-sm-12"
+                                    data-ng-model="controller.webParams.cdClinicaGenerica"                            
+                                    ng-disabled="controller.action == 'DETAIL'">
+                            </field>
+                            <field  type="input"                            
+                                    numbers-only
+                                    maxlength="4"                   
+                                    label="Unidade Genérica para a Utilização do Programa"
+                                    class="col-lg-3 col-md-6 col-sm-12"
+                                    data-ng-model="controller.webParams.cdUnidGenerica"                            
+                                    ng-disabled="controller.action == 'DETAIL'">
+                            </field>
+                        </totvs-row>
+                        <totvs-row>
+                            <field  type="input"                            
+                                    numbers-only
+                                    maxlength="8"
+                                    label="Prestador Genérico para a Utilização do Programa"
+                                    class="col-lg-3 col-md-6 col-sm-12"
+                                    data-ng-model="controller.webParams.cdPrestGenericoBiometria"                            
+                                    ng-disabled="controller.action == 'DETAIL'">
+                            </field>
+                            <field  type="input"                            
+                                    numbers-only
+                                    maxlength="6"                   
+                                    label="Senha do Prestador Genérico"
+                                    class="col-lg-3 col-md-6 col-sm-12"
+                                    data-ng-model="controller.webParams.nrSenhaPrestGenerico"                            
+                                    ng-disabled="controller.action == 'DETAIL'">
+                            </field>
+                        </totvs-row>
+                        
+                        <field  type="combo"
+                                label="Leitor Biométrico"
+                                class="col-lg-2 col-md-4 col-sm-6 col-xs-8"
+                                data-ng-model="controller.webParams.cdLeitorBiometria"                            
+                                ng-disabled="controller.action == 'DETAIL'"
+                                ng-options="u.value as u.label for u in controller.leitorBiometricoValues">
+                        </field>                                                                          
+                    </div>
+                </fieldset> 
+    
+                <fieldset>     
+                    <legend>Envio de SMS</legend>
+                    <totvs-row>
+                        <field  type="checkbox"
+                                label="Envia SMS para guias autorizadas/negadas/canceladas"
+                                class="col-sm-12"
+                                data-ng-model="controller.webParams.logEnviaSms"                        
+                                ng-disabled="controller.action == 'DETAIL'"
+                                ng-change="controller.onSmsChange()">
+                        </field>
+    
+                        <field  type="checkbox"
+                                label="Envia mensagem automaticamente"
+                                class="col-sm-12"
+                                data-ng-model="controller.webParams.logEnviaSmsAutom"
+                                ng-show="controller.webParams.logEnviaSms"
+                                ng-disabled="controller.action == 'DETAIL'">
+                        </field>
+    
+                        <field  type="input"
+                                label="Programa de layout para integração com o serviço"
+                                class="col-sm-3"
+                                data-ng-model="controller.webParams.nomLayoutSms"
+                                ng-show="controller.webParams.logEnviaSms"
+                                ng-disabled="controller.action == 'DETAIL'">
+                        </field>
+                    </totvs-row>
+                    <totvs-row>
+                        <field  type="input"
+                                label="Login"
+                                class="col-sm-3"
+                                data-ng-model="controller.webParams.nomUsuarSms"
+                                ng-show="controller.webParams.logEnviaSms"
+                                ng-disabled="controller.action == 'DETAIL'">
+                        </field>
+    
+                        <field  type="password"
+                                label="Senha"
+                                class="col-sm-3"
+                                data-ng-model="controller.webParams.desSenhaSms"
+                                ng-show="controller.webParams.logEnviaSms"
+                                ng-disabled="controller.action == 'DETAIL'">
+                        </field>
+                    </totvs-row>
+                </fieldset>
+                
+                <fieldset>     
+                    <div>
+                        <legend>Outros Parâmetros</legend>
+                        <totvs-row>
+                            <field  type="checkbox"
+                                    label="Utiliza Visualização de Prioridade"
+                                    class="col-sm-12"
+                                    data-ng-model="controller.webParams.lgUtilVisualizPrioridade"                        
+                                    ng-disabled="controller.action == 'DETAIL'">
+                            </field> 
+    
+                            <field  type="checkbox"
+                                    label="Validar Insumo x Tipo de Acomodação"
+                                    class="col-sm-12"
+                                    data-ng-model="controller.webParams.lgValidInsuTpAcomodacao"                            
+                                    ng-disabled="controller.action == 'DETAIL'">
+                            </field> 
+    
+                            <field  type="checkbox"
+                                    label="Verificar a Autorização do Procedimento Quando Ocorre Simulação"
+                                    class="col-sm-12"
+                                    data-ng-model="controller.webParams.lgVerefAutProcedSimul"                            
+                                    ng-disabled="controller.action == 'DETAIL'">
+                            </field>
+    
+                            <field  type="checkbox"
+                                    label="Consiste Classe Hospitalar e Acomodação Insumo Internação"
+                                    class="col-sm-12"
+                                    data-ng-model="controller.webParams.lgConsClasHospInsumoInter"
+                                    ng-disabled="controller.action == 'DETAIL'">
+                            </field>
+    
+                            <field  type="checkbox"
+                                    label="Consiste Variações de Proced. na Solicitação de Procedimento WebService"
+                                    class="col-sm-12"
+                                    data-ng-model="controller.webParams.lgConsVariacaoProced"
+                                    ng-disabled="controller.action == 'DETAIL'">
+                            </field>
+                            
+                            <field  type="checkbox"
+                                    label="Verificar Permissão de Execução de Insumos"
+                                    class="col-sm-12"
+                                    data-ng-model="controller.webParams.lgUtilizaInsumoPrestador"
+                                    ng-disabled="controller.action == 'DETAIL'">
+                            </field>
+                        </totvs-row>
+                        <totvs-row>
+                            <field  type="input"
+                                    label="URL WAC"
+                                    class="col-md-6 col-sm-12"
+                                    data-ng-model="controller.webParams.nmUrlWac"                        
+                                    ng-disabled="controller.action == 'DETAIL'">
+                            </field>  
+                        </totvs-row>
+                        <totvs-row>
+                            <field  type="input"                            
+                                    numbers-only
+                                    maxlength="5"
+                                    label="Tempo para Bloqueio da Digitação Simultânea (Segundos)"
+                                    class="col-md-4 col-sm-12"
+                                    data-ng-model="controller.webParams.nrTmpBloqDigSimult"                            
+                                    ng-disabled="controller.action == 'DETAIL'">
+                            </field>
+                        </totvs-row>
+                        <totvs-row>
+                            <field  type="date"
+                                    label="Data de Atualização do Registro"
+                                    class="col-md-3 col-sm-12"
+                                    data-ng-model="controller.webParams.dtAtualizacao"
+                                    ng-disabled="true"
+                                    id="today">
+                            </field>
+                        </totvs-row>                   
+                    </div>
+                </fieldset>
+            </totvs-page-form>
+        </totvs-page-content>   
+</totvs-page>

@@ -1,0 +1,194 @@
+<totvs-modal-header>
+
+	<span ng-if="!(controller.model.num_id > 0)">
+		{{ 'btn-new-contact' | i18n: []: 'dts/crm' }}
+	</span>
+
+	<span ng-if="controller.model.num_id > 0">
+		{{ controller.model.nom_razao_social }}
+		{{ controller.model.cod_pessoa_erp ? '(' + controller.model.cod_pessoa_erp + ')' : '' }}
+	</span>
+
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<fieldset class="row"
+			  ng-animate="'animate-if'"
+			  ng-if="controller.editMode === false && controller.related">
+
+		<field type="select"
+			   class="col-md-12"
+			   ng-if="!controller.model.nom_razao_social"
+			   ng-change="controller.onZoomSelectContact(controller.model.ttContatoZoom)"
+			   placeholder="{{ 'l-enter-contact-already-registered' | i18n: []: 'dts/crm' }}"
+			   ng-model="controller.model.ttContatoZoom"
+			   ng-required="true"
+			   canclean="undefined">
+
+			<label>{{ 'l-contact' | i18n: []: 'dts/crm' }}</label>
+
+			<zoom
+				  zoom-init="{entity: 3}"
+				  zoom-service="crm.crm_pessoa.all_type_account.zoom"
+				  zoom-selected="controller.onZoomSelectContact(selected, oldValue)">
+			</zoom>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-enter-contact-already-registered' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_razao_social }}
+				</ui-select-match>
+				<ui-select-choices repeat="contact in controller.contacts track by $index"
+								   refresh="controller.getContacts($select.search)"
+								   refresh-delay="750">
+					<span ng-bind-html="contact.nom_razao_social | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="input"
+			   class="col-md-12"
+			   ng-model="controller.model.nom_razao_social"
+			   ng-change="controller.onChangeName()"
+			   ng-if="!controller.model.ttContatoZoom"
+			   ng-required="true"
+			   maxlength="80"
+			   placeholder="{{ 'l-enter-the-name-new-contact' | i18n: []: 'dts/crm' }}"
+			   canclean="undefined">
+
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+
+			<validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 80</validator>
+		</field>
+
+	</fieldset>
+
+	<totvs-divider ng-if="controller.editMode === false && !controller.model.ttContatoZoom"></totvs-divider>
+
+	<totvs-lodash-template src="/dts/crm/html/account/account.edit.content.html"
+						   template-data="controller.accessRestrictionContactEdit"
+						   ng-if="controller.editMode === true || !controller.model.ttContatoZoom">
+	</totvs-lodash-template>
+
+	<totvs-divider></totvs-divider>
+
+	<fieldset class="row"
+			  ng-if="controller.related">
+
+		<field type="select"
+			   ng-model="controller.model.ttVinculo"
+			   ng-required="true"
+			   canclean="undefined">
+
+			<label>{{ 'l-bond' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-bond' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_tip_vinc }}
+					{{ $select.selected.log_suspenso ? ( ' (' + ('l-suspended' | i18n: []: 'dts/crm' ) + ')' ) : ''}}
+				</ui-select-match>
+				<ui-select-choices repeat="vinc in controller.bondTypes | filter: $select.search track by $index">
+					<span ng-bind-html="vinc.nom_tip_vinc + (vinc.log_suspenso ? ( ' (' + ('l-suspended' | i18n: []: 'dts/crm' ) + ')' ) : ('') ) | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<% if ((!data["l-department"] || data["l-department"].log_visivel === true)) { %>
+		<field type="select"
+			   ng-model="controller.model.ttDepartamento"
+			 <% if (!(!data["l-department"] || data["l-department"].log_editavel === true)) { %>
+			   ng-disabled="true"
+			   <% } %>
+			   canclean="undefined">
+
+			<label>{{ 'l-department' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-department' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_departamento }}
+				</ui-select-match>
+				<ui-select-choices repeat="depto in controller.departments | filter: $select.search track by $index">
+					<span ng-bind-html="depto.nom_departamento | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+		<% } %>
+
+		<% if ((!data["l-decision-level"] || data["l-decision-level"].log_visivel === true)) { %>
+		<field type="select"
+			   ng-model="controller.model.ttNivelDecisao"
+			 <% if (!(!data["l-decision-level"] || data["l-decision-level"].log_editavel === true)) { %>
+			   ng-disabled="true"
+			   <% } %>
+			   canclean="undefined">
+
+			<label>{{ 'l-decision-level' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-decision-level' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_niv_decis }}
+				</ui-select-match>
+				<ui-select-choices repeat="lvl in controller.decisionLevels | filter: $select.search track by $index">
+					<span ng-bind-html="lvl.nom_niv_decis | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+		<% } %>
+
+	</fieldset>
+
+	<% if ((!data["panel-phone"] || data["panel-phone"].log_visivel === true)
+		|| (!data["panel-address"] || data["panel-address"].log_visivel === true)
+		|| (!data["panel-observation"] || data["panel-observation"].log_visivel === true)) { %>
+	<div class="row"
+		 ng-animate="'animate-if'"
+		 ng-if="!controller.model.ttContatoZoom">
+
+		<br/>
+
+        <div class="crm-group-accordion">
+            <accordion close-others="false">
+
+                <% if ((!data["panel-address"] || data["panel-address"].log_visivel === true)) { %>
+                <accordion-group is-open="controller.group.addresses.open"
+                                ng-click="controller.onOpenAddressPanel()"
+                                ng-hide="controller.editMode === true"
+                                class="crm-panel">
+
+                    <div ng-include="'/dts/crm/html/account/account.edit.content.address.html'"></div>
+
+                </accordion-group>
+                <% } %>
+
+                <% if ((!data["panel-phone"] || data["panel-phone"].log_visivel === true)) { %>
+                <accordion-group is-open="controller.group.phones.open"
+                                ng-click="controller.onOpenPhonePanel()"
+                                ng-hide="controller.editMode === true"
+                                class="crm-panel">
+
+                    <div ng-include="'/dts/crm/html/account/account.edit.content.phone.html'"></div>
+
+                </accordion-group>
+                <% } %>
+
+                <% if ((!data["panel-observation"] || data["panel-observation"].log_visivel === true)) { %>
+                <accordion-group is-open="controller.group.obs.open"
+                                ng-click="controller.onOpenObservationPanel()"
+                                ng-hide="controller.editMode === true"
+                                class="crm-panel">
+
+                    <div ng-include="'/dts/crm/html/account/account.edit.content.observation.html'"></div>
+
+                </accordion-group>
+                <% } %>
+
+            </accordion>
+        </div>
+	</div>
+	<% } %>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

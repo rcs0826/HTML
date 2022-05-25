@@ -1,0 +1,163 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-header>
+            <totvs-page-header-title title="Contabilização do Faturamento de Planos">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="4">
+
+                    <action class="btn btn-default" ng-click="controller.irPara('parametros');" style="color: #333;
+                    background-color: #fff;
+                    border-color: #ccc; padding-right: 15px;">
+                        Parâmetros
+                    </action>
+                    <action class="btn btn-default" ng-click="controller.irPara('selecao');" style="padding-right: 15px;">
+                        Seleção
+                    </action>
+                    <action class="btn btn-default" ng-click="controller.irPara('execucao');" style="padding-right: 15px;">
+                        Execução
+                    </action>
+                    <action class="btn btn-primary" ng-click="controller.generate();" style="padding-right: 15px;">
+                        Enviar
+                    </action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.filtersForm">
+            <a name="parametros" id="parametros" style="display: block;
+                position: relative;
+                top: -170px;
+                visibility: hidden;"></a>
+            <legend>
+                Parâmetros
+            </legend>
+            <totvs-row>
+                <totvs-field totvs-combo class="col-lg-3 col-md-4 col-sm-6 col-xs-12" label="Tipo de Relatório" ng-model="controller.dadosTela.tipoRelatorio"
+                    t-options="controller.options.tipoRelatorio" ng-required="true" ng-change="controller.changeTipoRelatorio()">
+                    <validator key="required">Este campo deve ser preenchido.</validator>
+                </totvs-field>
+                <totvs-field totvs-combo class="col-lg-3 col-md-4 col-sm-6 col-xs-12" label="Tipo de Referência" ng-model="controller.dadosTela.tipoReferencia"
+                    t-options="controller.options.tipoReferencia" ng-disabled="controller.dadosTela.tipoRelatorio != 1">
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>                
+                <totvs-field totvs-checkbox
+                    class="col-lg-2 col-md-4 col-sm-6 col-xs-12"
+                    label="Exporta Temporárias" 
+                    ng-model="controller.dadosTela.lgExportaTemporarias"
+                    ng-change="controller.changeLgExportaTemporarias()">
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-input class="col-lg-6 col-md-8 col-sm-12 col-xs-12" label="Diretório para exportação" ng-show="controller.dadosTela.lgExportaTemporarias" ng-model="controller.dadosTela.diretorioExportacao">
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>                
+                <totvs-field totvs-checkbox
+                    class="col-lg-2 col-md-4 col-sm-6 col-xs-12"
+                    label="Alterar Usuário da Contabilização" 
+                    ng-model="controller.dadosTela.altUsuarioCont"
+                    ng-change="controller.changeAltUsuarioCont()">
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>                                
+                <totvs-field totvs-input class="col-lg-3 col-md-6 col-sm-6 col-xs-12" label="Usuário EMS" ng-show="controller.dadosTela.altUsuarioCont" ng-model="controller.dadosTela.usuarioEms">
+                </totvs-field>                
+                <field type="password" class="col-lg-3 col-md-6 col-sm-6 col-xs-12" label="Senha" ng-show="controller.dadosTela.altUsuarioCont" ng-model="controller.dadosTela.senhaEms">
+                </field>
+            </totvs-row>
+
+            <totvs-row>
+                <totvs-field totvs-checkbox
+                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                    label="Gerar arquivo .CSV"
+                    ng-model="controller.dadosTela.lgGerarCSV">
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>
+                <totvs-field totvs-input
+                    class="col-lg-6 col-md-8 col-sm-12 col-xs-12" 
+                    label="Nome arquivo .CSV"
+                    ng-show="controller.dadosTela.lgGerarCSV"
+                    ng-model="controller.dadosTela.nmArquivoCSV">
+                </totvs-field>
+            </totvs-row>
+
+            <a name="selecao" id="selecao" style="display: block;
+                position: relative;
+                top: -170px;
+                visibility: hidden;"></a>
+            <legend name="selecao" id="selecao">
+                Seleção
+            </legend>
+            <totvs-row>
+                <totvs-field totvs-input maxlength="3" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" 
+                    label="Empresa" ng-model="controller.dadosTela.cdEmpresa" ng-required="true">
+                        <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+            
+            <totvs-row>
+                <totvs-field totvs-input maxlength="5" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" 
+                    label="Estabelecimento" ng-model="controller.dadosTela.cdEstabelecimento" ng-required="true">
+                        <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>
+                <totvs-field totvs-input 
+                    maxlength="3" 
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-5" 
+                    label="Espécie Inicial" 
+                    ng-model="controller.dadosTela.cdEspecieIni"
+                    zoom-service="global.documentSpecieZoomController"
+                    zoom-id="codigo">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+                <totvs-field totvs-input 
+                    maxlength="3"
+                    required="true"
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-5"
+                    label="Espécie Final" 
+                    ng-model="controller.dadosTela.cdEspecieFim"
+                    zoom-service="global.documentSpecieZoomController"
+                    zoom-id="codigo">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>
+                <totvs-field totvs-datepicker class="col-lg-2 col-md-4 col-sm-6 col-xs-12" label="Data Inicial"
+                    ng-model="controller.dadosTela.dtContabIni" format="dd/MM/yyyy" culture="pt" required="true">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+                <totvs-field totvs-datepicker class="col-lg-2 col-md-4 col-sm-6 col-xs-12" label="Data Final"
+                    ng-model="controller.dadosTela.dtContabFim" format="dd/MM/yyyy" culture="pt" required="true">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+            
+            <a name="execucao" id="execucao" style="display: block;
+            position: relative;
+            visibility: hidden;"></a>
+            <totvs-execution hide-repeat="true" ng-model="controller.execution">
+                <totvs-execution-item type="execution">
+                    <gps-totvs-schedule program-name="hdtvwcontabilizacaofaturamento" ng-model="controller.schedule">
+                    </gps-totvs-schedule>
+                    <totvs-field totvs-select ng-model="controller.dadosTela.servidor" label="Servidor de Execução" t-no-data="Sem dados" placeholder="Selecione.."
+                        select-id="cdServidor" select-description="dsServidor" t-data-source="controller.options.servidores"
+                        canclean>
+                    </totvs-field>
+                </totvs-execution-item>
+            </totvs-execution>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

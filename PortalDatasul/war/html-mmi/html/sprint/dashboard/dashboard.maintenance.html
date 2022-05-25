@@ -1,0 +1,112 @@
+<link rel="stylesheet" href="/dts/mmi/html/sprint/dashboard/dashboard.maintenance.css">
+<totvs-page type="list" style="padding: 0px;">
+	 <totvs-page-content
+	style="padding-left:0px; padding-right:0px;">
+<div class="row" style="margin: 0px;">
+	<div class="my-col-md-1" style="padding-left: 5px;">
+		<button class="btn btn-link" type="button" id="btPesquisar"
+			data-ng-click="dashboardCtrl.pesquisaProgramacao()"
+			tooltip="{{ l-search-programming | i18n }}" tooltip-placement="right"
+			align="right" style="padding-top: 10px;">
+			<span class="glyphicon glyphicon-search"></span>
+		</button>
+	</div>
+	<div class="my-col-md-8" style="padding-left: 0px;">
+		<h4>
+			<a data-ng-click="dashboardCtrl.informacaoSprint()"
+				style="cursor: pointer;">{{dashboardCtrl.tituloProgramacao}}</a>
+		</h4>
+	</div>
+	<div class="my-col-md-3" style="padding-right: 5px;">
+		<div class="dropdown pull-right" style="margin-top: 2px;"
+			 ng-if="dashboardCtrl.programacaoSelecionada">
+			<button class="btn btn-primary dropdown-toggle" type="button"
+				id="dropdownMenu1" data-toggle="dropdown" position="relative"
+				aria-haspopup="true" aria-expanded="true">
+				{{ 'l-actions' | i18n }} <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+				<li><a style="cursor:pointer" ng-click="dashboardCtrl.iniciarFechamentoPeriodo()"
+				       ng-if="dashboardCtrl.arvoreModel.ttSprint['0'].situacao === 3">{{ 'l-to-closing' | i18n }}</a></li>
+				<li><a style="cursor:pointer" ng-click="dashboardCtrl.incluiOrdemDashboard()"
+					   ng-if="dashboardCtrl.arvoreModel.ttSprint['0'].situacao !== 5">{{ 'l-insert-order' | i18n }}</a></li>
+				<li><a style="cursor:pointer" ng-click="dashboardCtrl.listarOmProgramacao()">{{ 'l-list-order-period' | i18n }}</a></li>
+				<li><a style="cursor:pointer" ng-click="dashboardCtrl.encerraPeriodo()"
+					   ng-if="dashboardCtrl.arvoreModel.ttSprint['0'].situacao !== 5">{{ 'l-shut' | i18n }}</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="row check-element animate-show-hide"
+	ng-show="dashboardCtrl.programacaoSelecionada" style="margin: 0px;">
+
+	<div class="my-col-md-1"
+		ng-include="'/dts/mmi/html/sprint/dashboard/dashboard.maintenance.icones.html'"
+		style="padding-left: 5px;"></div>
+
+	<div id="arvoreAtivos" class="my-col-md-3"
+		ng-style="dashboardCtrl.obterAlturaConteudoArvore()"
+		ng-show="dashboardCtrl.arvoreAtivos">
+		<!-- Arvore de Ativos -->
+		<mmi-arvore-ativos mmi-model="dashboardCtrl.arvoreModel"
+			mmi-equip-selecionado="dashboardCtrl.valorSelecionado"
+			mmi-nivel-selecionado="dashboardCtrl.possuiNivelSelecionado"
+			mmi-nivel-ordens="dashboardCtrl.nivelOrdens"
+			mmi-acao-seleciona-nivel-ordem="dashboardCtrl.selecionaNivelOrdem"
+			mmi-acao-seleciona-nivel="dashboardCtrl.selecionaNivelResumo"
+			mmi-control="dashboardCtrl.arvoreAtivosScope"
+			mmi-acao-seleciona-equipamento="dashboardCtrl.selecionaEquipamentoCallback">
+		</mmi-arvore-ativos>
+		<!-- Arvore de Ativos -->
+	</div>
+
+	<!-- Acompanhamentos -->
+	<div id="acompanhamentoId"
+		ng-class="dashboardCtrl.arvoreAtivosExpandida"
+		ng-style="dashboardCtrl.obterAlturaConteudo()"
+		ng-if="dashboardCtrl.acompanhamento"
+		ng-include="'/dts/mmi/html/sprint/dashboard/dashboard.maintenance.acompanhamento.html'"
+		style="padding-left: 0px; padding-right: 0px;"></div>
+
+	<!-- Cards -->
+	<div id="cardsId" ng-class="dashboardCtrl.arvoreAtivosExpandida"
+		ng-show="dashboardCtrl.cards"
+		ng-include="'/dts/mmi/html/sprint/dashboard/dashboard.maintenance.cards.html'"
+		ng-style="dashboardCtrl.obterAlturaConteudo()"></div>
+
+	<!-- Gráficos -->
+	<div id="graficoId" ng-class="dashboardCtrl.arvoreAtivosExpandida"
+		ng-style="dashboardCtrl.obterAlturaConteudo()"
+		ng-if="dashboardCtrl.graficos"
+		ng-include="'/dts/mmi/html/sprint/dashboard/dashboard.maintenance.graficos.html'">
+	</div>
+
+	<!-- Impedimentos -->
+	<div id="impedimentosId" ng-class="dashboardCtrl.arvoreAtivosExpandida"
+		ng-style="dashboardCtrl.obterAlturaConteudo()"
+		ng-if="dashboardCtrl.impedimentos"
+		ng-include="'/dts/mmi/html/sprint/dashboard/dashboard.maintenance.impedimentos.html'">
+	</div>
+
+	<!-- Arvore de Especialidades -->
+	<div id="arvoreEspecialidades"
+	    class="my-col-md-3"
+		ng-style="dashboardCtrl.obterAlturaConteudoArvore()"
+		ng-show="dashboardCtrl.arvoreEspecialidades"
+		ng-include="'/dts/mmi/html/sprint/dashboard/dashboard.maintenance.arvore.especialidades.html'"
+		ng-controller="mmi.dashboard.EspecialidadeCtrl as especialidadeCtrl">
+	</div>
+
+	<!-- Especialidades -->
+	<div id="especialidadesId"  
+		class="my-col-md-9"
+		ng-if="dashboardCtrl.especialidades"
+		ng-include="'/dts/mmi/html/sprint/dashboard/dashboard.maintenance.especialidades.grid.html'"
+		ng-controller="mmi.dashboard.EspecialidadeGridCtrl as especialidadeGridCtrl">
+	</div>
+
+
+</div>
+
+</totvs-page-content> </totvs-page>

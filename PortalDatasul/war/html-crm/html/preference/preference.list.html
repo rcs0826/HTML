@@ -1,0 +1,195 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb>{{ 'nav-preference' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'nav-preference' | i18n: []: 'dts/crm' }}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<totvs-page-header-operation-action limit-primary-action="2"></totvs-page-header-operation-action>
+				<totvs-page-header-operation-filter placeholder="{{ 'l-description' | i18n: []: 'dts/crm' }}, {{ 'l-title' | i18n: []: 'dts/crm' }}"
+													ng-model="controller.quickSearchTeste"
+													ng-submit="controller.quickSearch = controller.quickSearchTeste;"
+													ng-model-options="{ debounce: 300 }">
+
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<style type="text/css" scoped="true">
+			p {
+				text-align: justify;
+			}
+		</style>
+
+		<br/>
+
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="col-xs-12">
+
+					<totvs-page-alert type="info"
+									  ng-if="(controller.listOfParam | filter: controller.quickSearch : strict).length <= 0"
+									  message="{{ 'msg-not-found-preference' | i18n: []: 'dts/crm' }}">
+					</totvs-page-alert>
+
+                    <div class="crm-group-accordion">
+                        <accordion close-others="false"
+                                ng-if="controller.listOfParam.length > 0">
+
+                            <accordion-group class="crm-panel"
+                                            is-open="parameterModule.isOpen"
+                                            ng-repeat="parameterModule in controller.listOfParam track by $index"
+                                            ng-if="(parameterModule.ttParameter | filter: controller.quickSearch : strict).length > 0">
+
+                                <accordion-heading>
+                                    <div class="row">
+                                        <div class="col-xs-10 overflow-ellipsis">
+                                            <span>
+                                                {{ parameterModule.nom_grp_param }} ({{ (parameterModule.ttParameter | filter: controller.quickSearch : strict).length }})
+                                            </span>
+                                        </div>
+                                        <div class="col-xs-2 text-right">
+                                            <i class="pull-right glyphicon"
+                                            ng-class="{'glyphicon-chevron-down' :  parameterModule.isOpen,
+                                                        'glyphicon-chevron-right': !parameterModule.isOpen}">
+                                            </i>
+                                        </div>
+                                    </div>
+                                </accordion-heading>
+
+                                <div class="row crm-tab">
+
+                                    <div class="col-xs-12 crm-tab-item"
+                                        ng-init="parameter.isOpen = false;"
+                                        ng-repeat="parameter in parameterModule.ttParameter | filter: controller.quickSearch : strict track by $index">
+
+                                        <div class="clickable"
+                                            ng-click="parameter.isOpen = !parameter.isOpen">
+
+                                            <div class="col-xs-10 overflow-ellipsis crm-no-gutter"
+                                                ng-click="controller.getZoomData(parameter);">
+                                                {{ parameter.nom_tit_param }}
+                                            </div>
+
+                                            <div class="col-xs-2 text-right"
+                                                ng-click="controller.getZoomData(parameter);">
+                                                <a class="clickable">
+                                                <i class="glyphicon"
+                                                    ng-class="{'glyphicon-chevron-down' :  parameter.isOpen,
+                                                                'glyphicon-chevron-right': !parameter.isOpen}">
+                                                    </i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div ng-if="parameter.isOpen">
+
+                                            <totvs-divider></totvs-divider>
+
+                                            <!-- CAMPO EDIT -->
+                                            <field class="col-xs-12 col-sm-6 crm-no-gutter"
+                                                ng-if="parameter.idi_campo_compon === 5"
+                                                type="input"
+                                                ng-model="parameter.value"
+                                                ng-blur="controller.onChangeParameter(parameter)"
+                                                placeholder="{{ 'l-parameter' | i18n: []: 'dts/crm' }}">
+                                            </field>
+
+                                            <!-- CAMPO LIST -->
+                                            <field type="select"
+                                                ng-if="parameter.idi_campo_compon === 3"
+                                                canclean="undefined"
+                                                ng-required="true"
+                                                ng-change="controller.onChangeParameter(parameter)"
+                                                ng-model="parameter.value">
+
+                                                <include>
+                                                    <ui-select-match placeholder="{{ 'l-status' | i18n: []: 'dts/crm' }}">
+                                                        {{ $select.selected.label }}
+                                                    </ui-select-match>
+                                                    <ui-select-choices repeat="status in parameter.selectList | filter: $select.search track by $index">
+                                                        <span ng-bind-html="status.label | highlight: $select.search"></span>
+                                                    </ui-select-choices>
+                                                </include>
+
+                                                <validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+                                            </field>
+
+                                            <!-- CAMPO ZOOM -->
+
+                                            <field type="select"
+                                                ng-if="parameter.idi_campo_compon === 2"
+                                                ng-required="true"
+                                                ng-change="controller.onChangeParameter(parameter)"
+                                                ng-model="parameter.value"
+                                                class="crm-no-gutter col-xs-12 col-md-6">
+
+                                                <include>
+                                                    <ui-select-match placeholder="{{ 'l-select-value' | i18n: []: 'dts/crm' }}">
+                                                        {{ $select.selected.nom_valor }}
+                                                    </ui-select-match>
+                                                    <ui-select-choices repeat="item in parameter.ttResultZoom | filter: $select.search track by $index"
+                                                                    refresh="controller.getDataTypeHead($select.search, parameter)"
+                                                                    refresh-delay="500">
+                                                        <span ng-bind-html="item.nom_valor | highlight: $select.search"></span>
+                                                    </ui-select-choices>
+                                                </include>
+
+                                                <validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+                                            </field>
+
+                                            <!-- CAMPO BOOLEAN -->
+                                            <div class="col-xs-12 col-sm-6 crm-no-gutter">
+                                                <input type="checkbox"
+                                                    ng-if="parameter.idi_campo_compon === 4"
+                                                    ng-value="{{$index}}"
+                                                    ng-model="parameter.value"
+                                                    ng-change="controller.onChangeParameter(parameter)"
+                                                    bsswitch>
+                                            </div>
+
+                                            <div class="col-xs-12 col-sm-6">
+                                                <p><strong>{{ 'l-description' | i18n: []: 'dts/crm' }}:</strong> {{ parameter.dsl_descr_param }}</p>
+                                                <p><strong>{{ 'l-default-value' | i18n: []: 'dts/crm' }}:</strong> {{ parameter.dsl_param_crm_default }} </p>
+                                            </div>
+
+                                            <totvs-divider ng-if="parameter.dsl_param_crm.trim() != parameter.dsl_param_crm_default.trim()" style="margin-top: 10px; margin-bottom: 5px;">
+                                            </totvs-divider>
+
+                                            <div class="col-xs-12 text-right"
+                                                ng-if="parameter.dsl_param_crm.trim() !== parameter.dsl_param_crm_default.trim()">
+
+                                                <a class="clickable"
+                                                ng-click="controller.restoreDefault(parameter);">
+                                                    {{ 'l-restore-preference' | i18n: []: 'dts/crm' }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </accordion-group>
+                        </accordion>
+                    </div>
+				</div>
+			</div>
+		</div>
+
+		<br/>
+	</totvs-page-content>
+
+</totvs-page>

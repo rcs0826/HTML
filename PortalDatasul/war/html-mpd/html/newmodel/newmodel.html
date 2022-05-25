@@ -1,0 +1,104 @@
+<totvs-page type="edit" totvs-custom-element="customPage">
+
+	<style type="text/css" scoped>
+
+		.model-field{
+			float: left;
+			width: 95%;
+			word-wrap: break-word;
+		}
+
+		.model-cb{
+			float: left;
+			width: 5%;
+		}
+
+	</style>
+
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#{{defaultPageHome}}">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb link="#/dts/mpd/salesorders">{{ 'l-order-portfolio' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-new-order-model' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title ng-if="controller.modelType == 1" title="{{ 'l-create-new-order-model' | i18n }} {{controller.orderId}}"></totvs-page-header-title>
+			<totvs-page-header-title ng-if="controller.modelType == 2" title="{{ 'l-create-new-quotation-model' | i18n }} {{controller.orderId}}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action on-save="controller.saveModel"
+													hide-save-new="true">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		</br>
+		<div class="col-xs-12">
+			<div class="alert alert-info" role="alert">
+				{{ 'l-order-model-alert' | i18n }}
+			</div>
+		</div>	
+	
+		<totvs-page-detail-info-group>{{ 'l-order-model-identification' | i18n }}</totvs-page-detail-info-group>
+			
+		
+		<totvs-page-form>
+
+			
+		
+			<fieldset class="col-xs-12">
+				<form class="form-inline" role="form" novalidate>
+					<field type="input" ng-model="controller.nomeModelo" class="col-xs-12 col-sm-12 col-md-12">
+						<label>{{ 'l-order-model-name' | i18n }}</label>
+					</field>
+
+					<field type="textarea" ng-model="controller.descricaoModelo" class="col-xs-12 col-sm-12 col-md-12">
+						<label>{{ 'l-order-model-description' | i18n }}</label>
+					</field>
+				</form>
+			</fieldset>
+
+		</totvs-page-form>
+
+		<totvs-page-content-header style="border-bottom: 0px">
+			<div class="quick-select clickable pull-left" ng-click="controller.selectAll($event);">
+				<span>
+					<input id="selectAll" type="checkbox" ng-click="controller.selectAll($event);" ng-model="controller.selectedAll">
+					<label for="selectAll"></label>
+				</span>
+				<span ng-if="controller.selectedAll !== true">{{ 'l-select-all' | i18n }}</span>
+				<span ng-if="controller.selectedAll === true">{{ 'btn-clear-all' | i18n }}</span>
+			</div>
+		</totvs-page-content-header>
+
+		<totvs-page-detail>
+			<totvs-tabset>
+				<tabset>
+					<tab heading="{{ 'l-order-head' | i18n }}">						
+						<totvs-lodash-template src="/dts/mpd/html/newmodel/order-model-fields.html" template-data="controller.orderNewModelProfileConfig"/></totvs-lodash-template>
+					</tab>
+					<tab heading="{{ 'l-order-items' | i18n }}">
+						<totvs-list-item ng-repeat="item in controller.orderItens">
+							<totvs-list-item-content>
+								<totvs-list-item-info class="col-xs-12 col-sm-2 col-md-2" title="{{ 'l-sequencia' | i18n }}">{{item['nr-sequencia']}}</totvs-list-item-info>
+								<totvs-list-item-info class="col-xs-12 col-sm-5 col-md-5" title="{{ 'l-cod-item' | i18n }}">{{item['it-codigo']}} - {{item['itemDesc']}}</totvs-list-item-info>
+								<totvs-list-item-info class="col-xs-12 col-sm-5 col-md-5" title="{{ 'l-cod-refer' | i18n }}">{{item['cod-refer']}} - {{item['desc-cod-refer']}}</totvs-list-item-info>
+							</totvs-list-item-content>
+							<totvs-list-item-content-detail>								
+								<totvs-lodash-template src="/dts/mpd/html/newmodel/order-model-item-fields.html" template-data="controller.orderNewModelProfileConfig"/></totvs-lodash-template>
+							</totvs-list-item-content-detail>
+						</totvs-list-item>
+					</tab>
+				</tabset>
+			</totvs-tabset>
+		</totvs-page-detail>
+
+
+
+	</totvs-page-content>
+</totvs-page>

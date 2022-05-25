@@ -1,0 +1,219 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/access-restriction/">{{ 'nav-restriction' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header ng-if="(controller.model | isDefined)">
+
+			<totvs-page-header-title
+				title="{{controller.model.nom_acess}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action on-back-link="#/dts/crm/access-restriction/"
+													on-edit="controller.onEdit"
+													on-remove="controller.onRemove"
+													hide-actions="true">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert
+			ng-if="(controller.model | isUndefined)"
+			type="info"
+			message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-show="controller.model | isDefined">
+
+			<totvs-tabset>
+
+				<totvs-tab heading="{{ 'l-forms' | i18n: []: 'dts/crm' }} ({{ controller.model.ttRegraAcesso.length || 0 }})">
+
+					<br/>
+
+					<div class="row">
+						<div class="col-xs-12">
+							<button class="btn btn-primary"
+									ng-click="controller.addForm();">
+								<span class="glyphicon glyphicon-plus"></span>
+								{{ 'btn-add' | i18n: []: 'dts/crm' }}
+							</button>
+						</div>
+					</div>
+
+					<totvs-divider style="margin-top: 10px; margin-bottom: 10px;"></totvs-divider>
+
+					<accordion close-others="false">
+
+						<accordion-group ng-repeat="form in controller.model.ttRegraAcesso"
+										 ng-init="form.isOpen = false"
+										 is-open="form.isOpen"
+										 ng-click="controller.loadFormComponents(form);"
+										 class="crm-panel">
+
+							<accordion-heading>
+								<div class="row">
+									<div class="col-xs-10">
+										<span ng-if="form.log_livre_1 === true">{{ 'l-general' | i18n: []: 'dts/crm' }}</span>
+										<span ng-if="form.log_livre_1 !== true">{{ form.nom_form }}</span>
+									</div>
+									<div class="col-xs-2 text-right">
+										<a class="clickable"
+										   style="padding-right: 15px"
+										   ng-if="form.log_livre_1 !== true"
+										   ng-click="controller.removeForm(form, $event);">
+											{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+										</a>
+										<i class="pull-right glyphicon"
+										   ng-class="{'glyphicon-chevron-down' :  form.isOpen,
+													  'glyphicon-chevron-right': !form.isOpen}">
+										</i>
+									</div>
+								</div>
+							</accordion-heading>
+
+							<totvs-page-alert
+								class="row"
+								ng-if="!form.ttComponente.length || form.ttComponente.length === 0"
+								type="info"
+								message="{{ 'msg-not-found-component' | i18n: []: 'dts/crm' }}">
+							</totvs-page-alert>
+
+							<div class="row crm-tab"
+								 ng-animate="'animate-if'"
+								 ng-if="form.ttComponente.length > 0">
+
+								<div class="col-xs-12 crm-tab-item header">
+									<strong>
+										<div class="col-xs-8">
+											{{ 'l-component' | i18n: []: 'dts/crm' }}
+										</div>
+										<div class="col-xs-2 text-right">
+											{{ 'l-editable' | i18n: []: 'dts/crm' }}
+										</div>
+										<div class="col-xs-2 text-right">
+											{{ 'l-visible' | i18n: []: 'dts/crm' }}
+										</div>
+									</strong>
+								</div>
+
+								<div class="col-xs-12 crm-tab-item"
+									 ng-repeat="component in form.ttComponente track by $index">
+									<div class="col-xs-8">
+										{{ component.nom_compon }}
+									</div>
+									<div class="col-xs-2 text-right">
+										<input type="checkbox"
+											   ng-model="component.log_editavel"
+											   ng-change="controller.setFormComponentEditable(form, $index);"
+											   ng-if="component.log_op_editavel === true"
+											   ng-disabled="component.log_disable_editable === true"
+											   bsswitch>
+									</div>
+									<div class="col-xs-2 text-right">
+										<input type="checkbox"
+											   ng-model="component.log_visivel"
+											   ng-change="controller.setFormComponentVisible(form, $index);"
+											   ng-disabled="component.log_disable_visible === true"
+											   bsswitch>
+									</div>
+								</div>
+
+							</div>
+
+						</accordion-group>
+
+					</accordion>
+
+				</totvs-tab>
+
+				<totvs-tab heading="{{ 'l-user-and-groups' | i18n: []: 'dts/crm' }} ({{ controller.model.ttUsuario.length || 0 }})">
+
+					<br/>
+
+					<div class="row">
+						<div class="col-xs-12">
+							<button class="btn btn-primary"
+									ng-model="controller.selectedUsersOrGroups"
+									ng-change="controller.onZoomSelectUsersOrGroups();"
+									zoom
+									zoom-multiple
+									zoom-service="crm.crm_usuar.zoom">
+								<span class="glyphicon glyphicon-plus"></span>
+								{{ 'btn-add-users' | i18n: []: 'dts/crm' }}
+							</button>
+							&nbsp;
+							<button class="btn btn-default"
+									ng-model="controller.selectedUsersOrGroups"
+									ng-change="controller.onZoomSelectUsersOrGroups();"
+									zoom
+									zoom-multiple
+									zoom-service="crm.crm_grp_usuar.zoom">
+								<span class="glyphicon glyphicon-plus"></span>
+								{{ 'btn-add-groups' | i18n: []: 'dts/crm' }}
+							</button>
+						</div>
+					</div>
+
+					<totvs-divider style="margin-top: 10px; margin-bottom: 0px;"></totvs-divider>
+
+					<div class="crm-tab">
+
+						<div ng-repeat="user in controller.model.ttUsuario | orderBy: 'log_usuar' | groupBy: 'log_usuar'">
+
+							<div class="row"
+								 ng-animate="'animate-if'"
+								 ng-if="user.isNewGroup === true">
+								<br/>
+								<totvs-list-item-info class="col-xs-12"
+									  title="{{ (user.log_usuar !== false ? 'l-users' : 'l-group') | i18n: []: 'dts/crm' }}">
+								</totvs-list-item-info>
+							</div>
+
+							<div class="row crm-tab-item">
+
+								<div class="col-xs-10 col-sm-11">
+									<span ng-if="user.log_usuar !== false"
+										  class="glyphicon glyphicon-user">
+									</span>
+									<span ng-if="user.log_usuar === false"
+										  class="glyphicon glyphicon-globe">
+									</span>
+									&nbsp;&nbsp;&nbsp;
+									<span ng-if="user.log_usuar !== false">{{ user.nom_usuar }}</span>
+									<span ng-if="user.log_usuar === false">{{ user.nom_grp_usuar }}</span>
+								</div>
+
+								<div class="col-xs-2 col-sm-1 text-right">
+									<a class="clickable"
+									   ng-click="controller.removeUserGroup(user);">
+										{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+									</a>
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</totvs-tab>
+
+			</totvs-tabset>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

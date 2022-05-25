@@ -1,0 +1,61 @@
+<totvs-modal-header>
+    Colunas do Relatório CSV
+</totvs-modal-header>
+<totvs-modal-body style="height: 500px; overflow-y: auto;">
+
+    <field  type="input"
+        label="fake" style="visibility: hidden"
+        class="col-lg-6 col-md-6 col-sm-2 col-xs-2">
+    </field>
+
+    <totvs-button t-click="controller.selectAll()"
+        class="col-lg-3 col-md-3 col-sm-5 col-xs-5"
+        t-label="Marcar Todos">
+    </totvs-button>
+    <totvs-button t-click="controller.deselectAll()"
+        class="col-lg-3 col-md-3 col-sm-5 col-xs-5"
+        t-label="Desmarcar Todos">
+    </totvs-button>
+
+    <totvs-divider  style="visibility: hidden"></totvs-divider>    
+
+    <div ng-repeat="page in controller.pages" style="margin-top: 0px;margin-bottom: 0px;">
+        <h3 style="margin-top: 0px;margin-bottom: 0px;">{{page.pageName}}</h3>
+    
+        <totvs-divider style="margin-top: 0px;margin-bottom: 0px;"></totvs-divider>    
+
+        <field  type="input"
+            label="fake" style="visibility: hidden;height: 10px;"
+            class="col-lg-9 col-md-9 col-sm-2 col-xs-2">
+        </field>
+
+        <a href=""  
+        ng-click="controller.selectAllPageColumns(page)">
+            <span>Marcar Todos</span>
+        </a>
+
+        <a  href=""
+        ng-click="controller.deselectAllPageColumns(page)">
+            <span>Desmarcar Todos</span>
+        </a>
+
+        <totvs-divider  style="visibility: hidden; margin-top: 0px;margin-bottom: 0px;"></totvs-divider>    
+
+        <div ng-repeat="column in page.columns" style="margin-top: 0px;margin-bottom: 0px;">
+            <totvs-field totvs-checkbox
+                        class="col-lg-4 col-md-6 col-sm-12 col-xs-12"
+                        label="{{column.columnDescription}}"
+                        id="reason_{{column.columnName}}_{{column.columnVariable}}"
+                        ng-model="column.isSelected">
+            </totvs-field> 
+        </div>
+
+        <totvs-divider  style="visibility: hidden"></totvs-divider>    
+        
+    </div>
+    
+</totvs-modal-body>
+<totvs-modal-footer>
+        <button class="btn btn-primary" ng-click="controller.saveCSVColumnsConfiguration()">Salvar Alterações</button>
+    <button class="btn" ng-click="controller.close()">Fechar</button>
+</totvs-modal-footer>

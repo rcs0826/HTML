@@ -1,0 +1,160 @@
+<style type="text/css" scoped="true">
+	.crm-page-details {
+		padding: 0px;
+	}
+</style>
+
+<totvs-modal-header>
+	{{ 'nav-execute-task' | i18n: []: 'dts/crm' }} {{(controller.total && controller.total > 0) ? ('(' + controller.total + ')') : ''}}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-page-detail class="row crm-page-details">
+
+		<div class="col-xs-12">
+
+			<totvs-page-detail-info
+				class="col-xs-12 col-sm-6 col-md-6"
+				title="{{ 'l-campaign' | i18n: []: 'dts/crm' }}"
+				value="{{controller.model.ttCampanha.nom_campanha}}"
+				value-break="false">
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info
+				class="col-xs-12 col-sm-6 col-md-6"
+				title="{{ 'l-action' | i18n: []: 'dts/crm' }}"
+				value="{{controller.model.ttAcao.nom_acao}}"
+				value-break="false">
+			</totvs-page-detail-info>
+
+			<!--totvs-page-detail-info
+				class="col-xs-12 col-sm-6 col-md-4"
+				title="{{ 'l-account' | i18n: []: 'dts/crm' }}"
+				value-break="false">
+
+				<span ng-if="controller.model.ttConta.log_matriz"
+					  class="glyphicon glyphicon-globe">
+				</span>
+
+				<span ng-if="controller.model.ttConta.log_acesso !== true">
+					<span class="glyphicon glyphicon-lock"></span> &nbsp;
+				</span>
+
+				{{ controller.model.ttConta.nom_razao_social }}
+				{{ (controller.model.ttConta.cod_pessoa_erp ? '(' + controller.model.ttConta.cod_pessoa_erp + ')' : '') }}
+
+			</totvs-page-detail-info-->
+
+		</div>
+
+	</totvs-page-detail>
+
+	<fieldset class="row">
+		<field type="select"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-model="controller.model.ttResultado"
+			   ng-change="controller.onChangeResult()">
+
+			<label>{{ 'l-result' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-result' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_restdo }}</ui-select-match>
+				<ui-select-choices repeat="result in controller.results | filter: $select.search track by $index">
+					<span ng-bind-html="result.nom_restdo | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-model="controller.model.ttMidia">
+
+			<label>{{ 'l-media' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-media' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_mid_relacto }}</ui-select-match>
+				<ui-select-choices repeat="media in controller.medias | filter: $select.search track by $index">
+					<span ng-bind-html="media.nom_mid_relacto | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<% if ((!data["l-detailing"] || data["l-detailing"].log_visivel === true)) { %>
+		<field type="select"
+			   canclean="undefined"
+			   ng-model="controller.model.ttDetalhamento"
+			   ng-disabled="!controller.model.ttResultado"
+			   ng-if="controller.details.length"
+			   ng-animate="'animate-if'">
+
+			<label>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-detailing' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_detmnto_restdo }}</ui-select-match>
+				<ui-select-choices repeat="detail in controller.details | filter: $select.search track by $index">
+					<span ng-bind-html="detail.nom_detmnto_restdo | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+		<% } %>
+
+	</fieldset>
+
+	<totvs-divider></totvs-divider>
+
+	<fieldset class="row">
+		<field type="textarea"
+			   class="col-md-12"
+			   ng-required="true"
+			   ng-model="controller.model.dsl_histor_acao">
+			<label>{{ 'l-description' | i18n: []: 'dts/crm' }}</label>
+		</field>
+	</fieldset>
+
+	<totvs-divider></totvs-divider>
+
+	<fieldset class="row">
+
+		<field type="daterange"
+			   class="col-md-6"
+			   ng-required="true"
+			   ng-model="controller.model.initialDate"
+			   start-date="controller.model.dateStart"
+			   end-date="controller.model.dateEnd"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-date-start' | i18n: []: 'dts/crm' }}</label>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="time"
+			   class="col-xs-6 col-md-3 time-range-from"
+			   ng-required="true"
+			   ng-model="controller.model.initialHour.start">
+			<label>{{ 'l-time' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="time"
+			   class="col-xs-6 col-md-3 time-range-to"
+			   ng-required="true"
+			   ng-model="controller.model.initialHour.end">
+			<label>{{ 'l-to' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

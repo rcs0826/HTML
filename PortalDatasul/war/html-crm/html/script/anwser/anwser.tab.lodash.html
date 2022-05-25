@@ -1,0 +1,150 @@
+<totvs-page-child type="list">
+
+	<totvs-page-header class="row" style="margin-bottom: -20px;">
+
+		<totvs-page-header-operation>
+
+			<totvs-page-header-operation-action>
+				<action ng-click="controllerAnwserTab.openSelection();">
+					{{ 'btn-select-script' | i18n: []: 'dts/crm' }}
+				</action>
+			</totvs-page-header-operation-action>
+
+			<totvs-page-header-operation-filter
+				placeholder="{{ 'l-search-anwser' | i18n: []: 'dts/crm' }}"
+				ng-submit="controllerAnwserTab.search()"
+				ng-model="controllerAnwserTab.quickSearchText"
+				advanced-search="controllerAnwserTab.openAdvancedSearch">
+			</totvs-page-header-operation-filter>
+
+			<totvs-page-header-operation-filter
+				advanced-search="controllerAnwserTab.openAdvancedSearch"
+				ng-if="controllerAnwserTab.isCalendar === true">
+			</totvs-page-header-operation-filter>
+
+		</totvs-page-header-operation>
+
+		<div ng-include="'/dts/crm/html/script/anwser/anwser.legend.html'"></div>
+
+		<totvs-page-disclaimers
+			ng-if="controllerAnwserTab.disclaimers.length > 0"
+			disclaimer-list="controllerAnwserTab.disclaimers"
+			ng-click="controllerAnwserTab.removeDisclaimer">
+		</totvs-page-disclaimers>
+
+	</totvs-page-header>
+
+
+	<totvs-divider></totvs-divider>
+
+	<totvs-page-content>
+
+		<totvs-page-content-header>
+			<totvs-page-quick-filter filters-list="controllerAnwserTab.quickFilters"
+									 on-select-filter="controllerAnwserTab.selectQuickFilter"
+									 filters-list-custom="controllerAnwserTab.listOfCustomFilters"
+									 on-remove-custom="controllerAnwserTab.removeCustomFilter"
+									 on-add-edit-custom="controllerAnwserTab.addEditCustomFilters">
+			 </totvs-page-quick-filter>
+		</totvs-page-content-header>
+
+		<totvs-page-alert
+			ng-if="controllerAnwserTab.listOfAnwser.length <= 0"
+			type="info"
+			message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controllerAnwserTab.openSelection();">
+				{{ 'btn-select-script' | i18n: []: 'dts/crm' }}
+			</button>
+		</totvs-page-alert>
+
+			<totvs-list-item
+				 id="anwser-{{ anwser.num_id }}"
+				 class="{{ anwser.nom_cor }}"
+				 ng-repeat="anwser in controllerAnwserTab.listOfAnwser track by $index">
+			<totvs-list-item-header>
+
+				<totvs-list-item-title class="legend overflow-ellipsis"
+									   ng-class="[anwser.nom_cor]">
+					<% if ((!data["btn-anwser.detail"] || data["btn-anwser.detail"].log_visivel === true)) { %>
+						<a role="button" href="#/dts/crm/script/anwser/{{anwser.ttQuestionario.num_id}}/{{anwser.nom_id}}?entity={{controllerAnwserTab.typeScript}}&id={{controllerAnwserTab.model.num_id}}">
+					<% } %>
+						{{ anwser.ttQuestionario.nom_script }}
+					<% if ((!data["btn-anwser.detail"] || data["btn-anwser.detail"].log_visivel === true)) { %>
+						</a>
+					<% } %>
+				 </totvs-list-item-title>
+
+				<totvs-list-item-action limit-primary-action="2">
+
+					<action ng-if="anwser.idi_status === 2"
+							icon="glyphicon-play"
+							ng-click="controllerAnwserTab.openExecution(anwser)">
+						{{ 'btn-continue' | i18n: []: 'dts/crm' }}
+					</action>
+
+					<action ng-if="anwser.idi_status === 1"
+							icon="glyphicon-play"
+							ng-click="controllerAnwserTab.openExecution(anwser)">
+						{{ 'btn-execute' | i18n: []: 'dts/crm' }}
+					</action>
+
+					<% if ((!data["btn-print-script"] || data["btn-print-script"].log_visivel === true)) { %>
+					<action icon="glyphicon-print"
+							ng-click="controllerAnwserTab.print(anwser)">
+						{{ 'btn-print' | i18n: []: 'dts/crm' }}
+					</action>
+					<% } %>
+
+				</totvs-list-item-action>
+
+			</totvs-list-item-header>
+
+			<totvs-list-item-content>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-6"
+					title="{{ 'l-answered-by' | i18n : [] : 'dts/crm' }}"
+					value-break="false"
+					ng-if="anwser.num_id_usuar > 0">
+					<a role="button"
+					   ng-click="controllerAnwserTab.openUserSummary(anwser.num_id_usuar)">
+						{{ anwser.ttUsuario.nom_usuar }}
+					</a>
+				</totvs-list-item-info>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-6"
+					title="{{ 'l-account' | i18n : [] : 'dts/crm' }}"
+					value-break="false">
+					<a role="button"
+					   href="#/dts/crm/account/detail/{{anwser.num_id_pessoa}}">
+						{{ anwser.ttPessoa.nom_razao_social }}
+						<span ng-if="anwser.ttPessoa.cod_pessoa_erp > 0">
+							({{ anwser.ttPessoa.cod_pessoa_erp }})
+						</span>
+					</a>
+				</totvs-list-item-info>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-6"
+					title="{{ 'l-date-anwser' | i18n : [] : 'dts/crm' }}"
+					value-break="false">
+					{{ anwser.val_dat_atualiz | date : (('l-date-format' | i18n: []: 'dts/crm') + ' HH:mm ') }}
+				</totvs-list-item-info>
+
+			</totvs-list-item-content>
+
+		</totvs-list-item>
+
+		<totvs-list-pagination
+			ng-if="controllerAnwserTab.listOfAnwser.length < controllerAnwserTab.listOfAnwserCount && controllerAnwserTab.listOfAnwser.length"
+			ng-click="controllerAnwserTab.search(true);">
+		</totvs-list-pagination>
+
+	</totvs-page-content>
+
+</totvs-page-child>
+

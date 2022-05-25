@@ -1,0 +1,92 @@
+<style type="text/css">
+    .status-1 {
+        background-color: #fa2a00 !important;
+    }
+    .status-2 {
+        background-color: #56a642 !important;
+    }
+</style>
+<totvs-modal-header>
+	{{ 'l-vendor-email-configuration' | i18n: []: 'dts/mcc' }} ({{controller.model.vendorNumber}})
+</totvs-modal-header>
+
+<totvs-modal-body>
+   <totvs-page-form>
+       <fieldset>
+           <form>
+               <div class="col-xs-12">
+                   <h5>{{ 'l-email' | i18n: []: 'dts/mcc' }}</h5>   
+               </div>
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                   <field type="input"
+                          class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                          name-id="emailTitle"
+                          maxlength="100"
+                          ng-model="controller.model.infoSend['assunto-email']">
+                      <label>{{ 'l-subject-mail' | i18n: []: 'dts/mcc' }}</label>                                           
+                   </field>            
+               </div>
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <field type="textarea"
+                         class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                         ng-model="controller.model.infoSend['dsl-texto']"
+                         name-id="emailText"
+                         maxlength="2000">
+                      <label>{{ 'l-text' | i18n: []: 'dts/mcc' }}</label>
+                  </field>
+                </div>
+                <div class="col-xs-12">
+                    <h5>{{ 'l-quotation-answer' | i18n: []: 'dts/mcc' }}</h5>   
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" padding-left="15" padding-right="15">
+                        <span>{{ 'l-send-quotation-spreadsheet' | i18n: []: 'dts/mcc' }}</span> 
+                        <br>
+                        <input type="checkbox"
+                             name-id="sendSpreadsheet"
+                             class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                             ng-model="controller.model.infoSend['log-planilha-envda']"
+                             bsswitch/>  
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" padding-left="15" padding-right="15">
+                            <span>{{ 'l-vendor-answer-by-web' | i18n: []: 'dts/mcc' }}</span> 
+                        <br>
+                        <input type="checkbox"
+                                name-id="sendSpreadsheet"
+                                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                ng-model="controller.model.infoSend['log-responde-via-web']"
+                                bsswitch/>  
+                    </div>
+                </div>
+                    
+                <div class="col-xs-12">
+                    <h5>{{ 'l-send-to' | i18n: []: 'dts/mcc' }}</h5>   
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-xs-12">
+                        <div class="alert alert-info" role="alert" style="margin-bottom: 5px">
+                            {{ 'l-msg-to-put-more-emails' | i18n: []: 'dts/mcc' }}
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" padding-left="15" padding-right="15">
+                        <totvs-editable value="{{ 'l-emails' | i18n: []: 'dts/mcc' }}: {{controller.model.infoSend['des-e-mail']}}" 
+                                        id="emails" placement="top" on-complete="controller.applyEmail">
+                            <totvs-field totvs-input
+                                name-id="description"
+                                maxlength="2000"
+                                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                ng-model="controller.model.infoSend['des-e-mail']"
+                                label="{{ 'l-emails' | i18n: []: 'dts/mcc' }}">
+                            </totvs-field>
+                        </totvs-editable>   
+                    </div>
+                </div>
+           </form>
+       </fieldset>
+    </totvs-page-form>
+</totvs-modal-body>
+
+<totvs-modal-footer>	
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-close' | i18n: []: 'dts/mcc' }}</button> 	
+	<button class="btn btn-primary" ng-click="controller.apply();">{{ 'l-apply' | i18n: []: 'dts/mcc' }}</button>
+</totvs-modal-footer>

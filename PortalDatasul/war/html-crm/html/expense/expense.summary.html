@@ -1,0 +1,59 @@
+<totvs-modal-header>
+	{{ controller.model.nom_tip_despes  }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-list-item-content>
+
+		<totvs-list-item-info
+			value-break="false"
+			class="col-xs-6"
+			title="{{ 'l-expense-date' | i18n: []: 'dts/crm' }}">
+			{{ controller.model.dat_livre_1 | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+		</totvs-list-item-info>
+
+		<totvs-list-item-info
+			class="col-xs-6"
+			title="{{ 'l-unit-of-measurement' | i18n: []: 'dts/crm' }}"
+			value="{{ controller.model.nom_unid_medid}} {{controller.model.nom_sig_umd ? '(' + controller.model.nom_sig_umd + ')' : '' }}">
+		</totvs-list-item-info>
+
+		<totvs-list-item-info
+			class="col-xs-6"
+			title="{{ 'l-quantity' | i18n: []: 'dts/crm' }}"
+			value="{{ controller.model.qtd_itens_despes_realzdo | number }}">
+		</totvs-list-item-info>
+
+        <totvs-list-item-info
+			class="col-xs-6"
+			title="{{ 'l-unit-value' | i18n: []: 'dts/crm' }}"
+			value="{{ controller.model.val_livre_1 | currency }}">
+		</totvs-list-item-info>
+
+        <totvs-list-item-info
+			class="col-xs-6"
+			title="{{ 'l-total-value' | i18n: []: 'dts/crm' }}"
+			value="{{ controller.model.val_despes_realzdo | currency }}">
+		</totvs-list-item-info>
+
+		<totvs-divider></totvs-divider>
+
+		<totvs-list-item-info
+			class="col-xs-12"
+			title="{{ 'l-description' | i18n: []: 'dts/crm' }}">
+			<p style="overflow: auto;">{{ controller.model.dsl_tip_despes }}</p>
+		</totvs-list-item-info>
+
+
+	</totvs-list-item-content>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+
+	<button class="btn btn-default" ng-click="controller.close()">
+			{{ 'btn-close' | i18n: []: 'dts/crm' }}
+	</button>
+
+</totvs-modal-footer>

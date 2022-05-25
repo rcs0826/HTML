@@ -1,0 +1,87 @@
+<accordion-heading>
+	<div class="row">
+		<div class="col-xs-12">
+			<strong ng-if="controller.model.ttTipoCliente.log_require_erp_field === true">
+				{{ 'l-addresses' | i18n: []:  'dts/crm' }}
+				<span style="color: red;"> *</span>
+			</strong>
+			<span ng-if="controller.model.ttTipoCliente.log_require_erp_field !== true">
+				{{ 'l-addresses' | i18n: []:  'dts/crm' }}
+			</span>
+			<i class="pull-right glyphicon"
+			   ng-class="{'glyphicon-chevron-down' :  controller.group.addresses.open,
+						  'glyphicon-chevron-right': !controller.group.addresses.open}">
+			</i>
+		</div>
+	</div>
+</accordion-heading>
+
+<fieldset class="row">
+
+	<div class="col-xs-11">
+
+		<totvs-page-alert type="info"
+						  ng-if="!controller.model.ttEndereco.length"
+						  message="{{ 'msg-account-address-new' | i18n: []: 'dts/crm' }}"
+						  style="margin-bottom: 0px; margin-top: 10px; padding: 0 15px;">
+		</totvs-page-alert>
+
+		<totvs-page-alert type="warning"
+						  ng-if="controller.model.ttTipoCliente.log_require_erp_field === true"
+						  message="{{ 'msg-account-address-erp' | i18n: []: 'dts/crm' }}"
+						  style="margin-bottom: 0px; margin-top: 10px; padding: 0 15px;">
+		</totvs-page-alert>
+
+	</div>
+
+	<div class="col-xs-1 crm-field-extra-button"
+		 style="margin-top: 10px;">
+
+		<button class="btn btn-primary"
+				ng-click="controller.addAddress();">
+			<span class="glyphicon glyphicon-plus"></span>
+		</button>
+
+	</div>
+
+</fieldset>
+
+<totvs-divider style="margin-bottom: 15px;"
+			   ng-if="controller.model.ttEndereco.length">
+</totvs-divider>
+
+<div class="row crm-panel-item"
+	 ng-repeat="address in controller.model.ttEndereco track by $index">
+
+	<div class="col-xs-3">
+		{{ address.ttTipo.nom_tipo }}
+	</div>
+
+	<div ng-class="{'col-xs-7' : !address.log_integrad_erp,
+					'col-xs-9' : address.log_integrad_erp}">
+		{{ address.nom_lograd_ender }} {{(address.num_lograd_ender && address.num_lograd_ender.toString() != '') ? (', ' + address.num_lograd_ender.toString()) : ''}}, {{ address.ttBairro.nom_bairro }} - {{ address.ttCidade.nom_cidade }},
+		{{ address.ttEstado.nom_unid_federac }} - {{ address.ttPais.nom_pais }}, {{ address.cod_cep }}
+		<% if ((!data["l-erp-zipcode"] || data["l-erp-zipcode"].log_visivel === true)) { %>
+			<span ng-if="address.cod_zip_code">
+				{{ 'l-erp-zipcode' | i18n: []: 'dts/crm' }}: {{ address.cod_zip_code }}
+			</span>
+		<% } %>
+	</div>
+
+	<div class="col-xs-2 text-right"
+		  ng-if="!address.log_integrad_erp">
+
+		<a class="clickable"
+		   ng-click="controller.editAddress($index);">
+			{{ 'btn-edit' | i18n: []: 'dts/crm' }}
+		</a>
+
+		&nbsp;&nbsp;
+
+		<a class="clickable"
+		   ng-click="controller.removeAddress($index);">
+			{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+		</a>
+	</div>
+
+</div>

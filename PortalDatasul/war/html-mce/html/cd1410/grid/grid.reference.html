@@ -1,0 +1,47 @@
+<totvs-grid grid-data="controller.ttSummaryInventoryBalance " 
+            editable="true " 
+            grid-dirty-items="controller.dirtyTTSummaryInventoryBalance" 
+            grid="controller.myGrid " 
+            auto-resize-content="true"
+            grid-options="controller.gridOptions" 
+            reorderable="true" 
+            resizable="true" 
+            sortable="true" 
+            grid-height="300 " 
+            auto-resize-content="true " 
+            navigatable="true" 
+            selectable="multiple, row">
+
+    <totvs-grid-column field="cod-depos" width="50">
+        {{ ::'l-warehouse-micro' | i18n : [] : 'dts/mce' }}
+    </totvs-grid-column>    
+    <totvs-grid-column field="cod-localiz" class="text-nowrap">
+        {{ ::'l-localization' | i18n : [] : 'dts/mce' }}
+    </totvs-grid-column>
+    <totvs-grid-column field="lote" class="text-nowrap">
+        {{ ::'l-lot' | i18n : [] : 'dts/mce' }}
+    </totvs-grid-column>
+    <totvs-grid-column field="cod-refer" class="text-nowrap">
+        {{ ::'l-reference-short' | i18n : [] : 'dts/mce' }}
+    </totvs-grid-column>
+     <totvs-grid-column field="qtidade-atu"  filter="number:4" class="text-right">
+         {{ ::'l-available-qtd' | i18n : [] : 'dts/mce' }}
+     </totvs-grid-column>    
+    <totvs-grid-column field="qt-a-atender" filter="number:4" editable="true" class="text-right">
+        {{ ::'l-refuse-quantity-short' | i18n : [] : 'dts/mce' }}
+    </totvs-grid-column>
+
+    <totvs-grid-detail>
+        <totvs-grid grid-data="dataItem['ttSummaryAux-aux-ds']" grid-height="100" editable="true">
+            <totvs-grid-column field="dt-trans"  class="text-nowrap" filter="date:dd/MM/yyyy">
+                 {{ ::'l-processing-date' | i18n : [] : 'dts/mce' }}
+            </totvs-grid-column>
+            <totvs-grid-column field="qtidade-atu"  filter="number:4" class="text-right">
+                 {{ ::'l-processed-quantity-short' | i18n : [] : 'dts/mce' }}
+            </totvs-grid-column>
+            <totvs-grid-column field="dt-vali-lote"  filter="date:dd/MM/yyyy" cclass="text-nowrap">
+                 {{ ::'l-dateValidLot' | i18n : [] : 'dts/mce' }}
+            </totvs-grid-column>
+        </totvs-grid>
+    </totvs-grid-detail>
+</totvs-grid>

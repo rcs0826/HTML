@@ -1,0 +1,102 @@
+<totvs-page type="detail" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#{{defaultPageHome}}">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-order-details' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'l-pedido' | i18n }}: {{controller.orderId}}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action hide-remove='true' hide-edit='true' hide-back='true' limit-primary-action="4">
+					<action
+						ng-click="controller.cancel()"
+						icon="glyphicon-arrow-left"
+					>
+						{{ 'btn-back' | i18n }}
+					</action>
+					
+					<action
+						link="#/dts/mpd/orderhistory/{{ controller.orderId }}"
+						icon="glyphicon-calendar"
+					>
+						{{ 'l-show-history' | i18n }}
+					</action>
+
+					<action
+						ng-if="!controller.newOrderInclusionFlow && controller.btnOpenOrder"
+						link="#/dts/mpd/order/{{ controller.orderId }}"
+						icon="glyphicon-folder-open"
+					>
+						{{ 'l-open-order' | i18n : [] : 'dts/mpd' }}
+					</action>
+
+					<action
+						ng-if="controller.newOrderInclusionFlow && controller.btnOpenOrder" 
+						link="#/dts/mpd/order2/{{ controller.orderId }}/edit" 
+						icon="glyphicon-folder-open"
+					>
+						{{ 'l-open-order' | i18n : [] : 'dts/mpd' }}
+					</action>
+
+					<action ng-click="controller.print()" icon="glyphicon-print">{{ 'l-print' | i18n }}</action>
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-detail>
+			<div class="col-md-12" ng-show="controller.messageList.length > 0">
+				<div class="panel panel-danger">
+					<div class="panel-heading">{{ 'l-messages' | i18n }}</div>
+					<div class="panel-body">
+						<ul>
+							<li ng-repeat="m in controller.messageList">
+							{{m}}
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<totvs-tabset>
+				<tabset>
+					<tab heading="{{ 'l-order-head' | i18n }}">
+						<totvs-lodash-template	src="/dts/mpd/html/orderdetail/order-detail-fields.html"
+												template-data="controller.orderDetailProfileConfig">
+						</totvs-lodash-template>
+					</tab>
+					<tab heading="{{ 'l-order-items' | i18n }}">
+						<totvs-list-item	ng-repeat="item in controller.orderItens"
+											totvs-custom-element="orderdetailItemList">
+							<totvs-list-item-content>
+								<totvs-list-item-info	class="col-xs-12 col-sm-2 col-md-2"
+														title="{{ 'l-sequencia' | i18n }}">
+									{{item['nr-sequencia']}}
+								</totvs-list-item-info>
+								<totvs-list-item-info	class="col-xs-12 col-sm-5 col-md-5"
+														title="{{ 'l-cod-item' | i18n }}">
+									{{item['it-codigo']}} - {{item['itemDesc']}}
+								</totvs-list-item-info>
+								<totvs-list-item-info	ng-if="controller.showItemRefHeader"
+								 						class="col-xs-12 col-sm-5 col-md-5"
+														title="{{ 'l-cod-refer' | i18n }}">
+									{{item['cod-refer']}} - {{item['desc-cod-refer']}}
+								</totvs-list-item-info>
+							</totvs-list-item-content>
+							<totvs-list-item-content-detail>
+								<totvs-lodash-template	src="/dts/mpd/html/orderdetail/order-detail-item-fields.html"
+														template-data="controller.orderDetailProfileConfig">
+								</totvs-lodash-template>
+							</totvs-list-item-content-detail>
+						</totvs-list-item>
+					</tab>
+				</tabset>
+			</totvs-tabset>
+		</totvs-page-detail>
+	</totvs-page-content>
+</totvs-page>

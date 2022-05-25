@@ -1,0 +1,139 @@
+<totvs-modal-header>
+    {{ closeCtrl.model.order['nr-ord-produ'] | orderNumberMask }} - {{closeCtrl.model.order['des-man-corr'] }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<totvs-page-content style="border:0px">           
+        <totvs-page-detail style="padding-top:0px">
+        	<div class="row col-xs-12">        	
+	        	<totvs-field
+	        		class="col-lg-3 col-md-3 col-sm-6 col-xs-12" 
+	        		totvs-datepicker
+	                t-mask-date
+	                label="{{ 'l-date' | i18n }}"
+	                ng-model="closeCtrl.params['da-dt-base']" 				
+					canclean="undefined"
+					ng-change="closeCtrl.onChangeData()">
+				</totvs-field>
+			</div>
+            <div class="row col-xs-12">
+				<field  type="select"
+						data-ng-model="closeCtrl.userTechnician"
+						label="{{ 'l-technician' | i18n }}"
+						class="field-label col-lg-6 col-md-6 col-sm-12 col-xs-12"
+						ng-if="closeCtrl.model.order.tipoControle > 1">
+					<include>
+						<ui-select-match placeholder="{{ 'l-select-technician' | i18n }}">{{closeCtrl.userTechnician.cdTecnico}} {{closeCtrl.hifen}} {{closeCtrl.userTechnician.nomeCompl}}</ui-select-match>
+						<ui-select-choices repeat="tech in closeCtrl.listOfTechnician track by $index"
+										   refresh="closeCtrl.filterTechnician($select.search)"
+										   refresh-delay="500">
+							<span data-ng-bind-html="tech.cdTecnico | highlight: $select.search"></span> - <span data-ng-bind-html="tech.nomeCompl | highlight: $select.search"></span>
+						</ui-select-choices>
+					</include>
+				</field>
+			</div>
+			<div class="row col-xs-12">
+				<totvs-field totvs-radio
+							 t-options="closeCtrl.tipoControle"
+							 ng-model="closeCtrl.params.tipoApontamento"
+							 ng-disabled="true"
+							 ng-if="closeCtrl.model.order.tipoControle > 1">
+				</totvs-field>
+			</div>
+			<div class="row col-xs-12">
+				<totvs-field totvs-decimal
+							 class="col-md-5"
+							 ng-model="closeCtrl.params.apontamento"
+							 ng-if="closeCtrl.model.order.tipoControle > 1"
+							 m-dec="4"
+							 v-max="12"
+							 label="{{ 'l-counter' | i18n }}">
+				</totvs-field>				
+				<totvs-field totvs-decimal
+							 class="col-md-5"
+							 ng-model="closeCtrl.contadorAcumulado"
+							 ng-disabled="true"
+							 m-dec="4"
+							 v-max="12"
+							 label="{{ 'l-counter-acum' | i18n }}"
+							 ng-if="closeCtrl.model.order.tipoControle > 1">
+				</totvs-field>				
+			</div>
+			<div class="row col-xs-12">
+				<totvs-field totvs-select
+							 class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+							 ng-model="closeCtrl.model.order['cd-inspecao']"
+							 select-id="cd-inspecao"
+							 select-description="descricao"
+							 select-service="mmi.inspec.zoom"
+							 zoom-service="mmi.inspec.zoom"
+							 label="{{ 'l-inspection' | i18n }}"
+							 ng-disabled="true"
+							 ng-if="closeCtrl.model.order['tp-manut'] === 10">
+				</totvs-field>
+			</div>
+			<div class="row col-xs-12">
+				<totvs-field totvs-decimal
+							 class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+							 ng-model="closeCtrl.params.valorLeitura"
+							 ng-blur="closeCtrl.onChangeValorLeitura()"
+							 m-dec="4"
+							 v-max="9"
+							 label="{{ 'l-value-inspec' | i18n }}"
+							 ng-if="closeCtrl.model.order['tp-manut'] === 10">
+				</totvs-field>				
+			</div>
+
+			<div class="row col-xs-12">
+	        	<totvs-field
+	        		totvs-checkbox
+	        		class="col-lg-5 col-md-5 col-sm-6 col-xs-12"
+	                t-bsswitch 
+	                data-ng-model="closeCtrl.params['l-aceite']"
+	                label="{{ 'l-close-pending-accept' | i18n }}">
+				</totvs-field>
+                <totvs-field 
+	                totvs-checkbox
+	                class="col-lg-5 col-md-5 col-sm-6 col-xs-12"
+	                t-bsswitch 
+					data-ng-model="closeCtrl.params['l-tarefa']"
+	                label="{{ 'l-close-pending-task' | i18n }}">
+				</totvs-field>
+	        </div>
+	        <div class="row col-xs-12">	            
+	        	<totvs-field
+	        		totvs-checkbox
+	        		class="col-lg-5 col-md-5 col-sm-6 col-xs-12"
+	                t-bsswitch 
+	                data-ng-model="closeCtrl.params['l-req-pend']"
+	                label="{{ 'l-close-pending-requests' | i18n }}">
+				</totvs-field>
+                <totvs-field 
+	                totvs-checkbox
+	                class="col-lg-5 col-md-5 col-sm-6 col-xs-12"
+	                t-bsswitch 
+					data-ng-model="closeCtrl.params['l-oc-pend']"
+	                label="{{ 'l-close-pending-purchase' | i18n }}">
+				</totvs-field>
+	        </div>	
+	        <div class="row col-xs-12">		
+				<field 
+					class="col-xs-12"
+			    	type="textarea"
+			        ng-model="closeCtrl.params['narrativa-pad']"
+			        maxlength="2000"
+			        rows="4"
+			        autofocus>
+				    <label class="field-label">{{ 'l-narrative' | i18n }}</label>
+				</field>
+			</div>
+		</totvs-page-detail>
+				
+	</totvs-page-content>
+	
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="closeCtrl.cancel()">{{ 'l-cancel' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="closeCtrl.closeOrder()">{{ 'l-shut' | i18n }}</button>
+</totvs-modal-footer>

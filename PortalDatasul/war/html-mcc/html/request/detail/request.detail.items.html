@@ -1,0 +1,71 @@
+<div class="col-md-12" style="margin-bottom:5px;">
+    
+    <a href="#/dts/{{module}}/request/item/new/{{controller.requestNumber}}" ng-class="{disabled: controller.enableUpdate == false}" ng-if="!controller.isJustForView && controller.enableUpdate" class="btn btn-primary">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;{{ 'btn-add' | i18n: []: 'dts/mcc' }}        
+    </a>
+
+    <a href="#/dts/{{module}}/request/item/copy/{{controller.requestNumber}}" ng-class="{disabled: controller.enableUpdate == false}" ng-if="!controller.isJustForView && controller.enableUpdate" class="btn btn-default">
+        <span class="glyphicon glyphicon-copy" aria-hidden="true"></span>&nbsp;{{ 'l-copy-items' | i18n: []: 'dts/mcc' }}        
+    </a>
+</div>
+
+<totvs-tabset>
+    <tabset>
+        <tab heading="{{ 'l-items' | i18n: []: 'dts/mcc' }} ({{controller.listOfItemsCount | number:0}})">
+            <totvs-list-item ng-repeat="item in controller.listOfItems" totvs-custom-element="customRequest_detailItems">
+                <totvs-list-item-header>
+                    <totvs-list-item-title ng-if="!controller.isJustForView"
+                        title="{{item['sequencia'] | number:0}} - {{item['it-codigo']}}"
+                        link="#/dts/{{module}}/request/item/detail?req={{item['nr-requisicao']}}&seq={{item['sequencia']}}&item={{item['it-codigo-link']}}">
+                    </totvs-list-item-title>
+
+                    <totvs-list-item-title ng-if="!controller.cd1409 && !controller.cd1410 && controller.isJustForView"
+                        title="{{item['sequencia'] | number:0}} - {{item['it-codigo']}}"
+                        link="#/dts/{{module}}/request/search/item/detail?req={{item['nr-requisicao']}}&seq={{item['sequencia']}}&item={{item['it-codigo-link']}}">
+                    </totvs-list-item-title>
+
+                    <!-- ITEM DA REQUSICAO - CD1409 -->
+                    <totvs-list-item-title ng-if="controller.cd1409 && controller.isJustForView"
+                        title="{{item['sequencia'] | number:0}} - {{item['it-codigo']}}"
+                        link="#/dts/mce/cd1409/item/detail?req={{item['nr-requisicao']}}&seq={{item['sequencia']}}&item={{item['it-codigo-link']}}">
+                    </totvs-list-item-title>
+                    
+                    <!-- ITEM DA REQUSICAO - CD1410 -->
+                    <totvs-list-item-title ng-if="controller.cd1410 && controller.isJustForView"
+                        title="{{item['sequencia'] | number:0}} - {{item['it-codigo']}}"
+                        link="#/dts/mce/cd1410/item/detail?req={{item['nr-requisicao']}}&seq={{item['sequencia']}}&item={{item['it-codigo-link']}}">
+                    </totvs-list-item-title>
+
+                    <totvs-list-item-action limit-primary-action="2" ng-if="!controller.isJustForView">
+                        <action link="#/dts/{{module}}/request/item/edit?req={{item['nr-requisicao']}}&seq={{item['sequencia']}}&item={{item['it-codigo-link']}}" icon="glyphicon-pencil" ng-if="controller.enableUpdate">{{ 'btn-edit' | i18n: []: 'dts/mcc' }}</action>                        
+
+                        <action ng-click="controller.removeRequestItem(item)" icon="glyphicon-trash" ng-if="controller.enableUpdate">{{ 'btn-remove' | i18n: []: 'dts/mcc' }}</action>
+
+                        <action icon="glyphicon-list-alt" ng-click="controller.followUp(item['tp-requis'], item['nr-requisicao'], item['it-codigo'], item.sequencia, 0, 0);">{{ 'l-followup' | i18n: []: 'dts/mcc' }}</action>
+                    </totvs-list-item-action>
+
+                </totvs-list-item-header>
+
+                <totvs-list-item-content>
+                    <totvs-list-item-info title="{{ 'l-item-description' | i18n: []: 'dts/mcc' }}" value="{{item['it-desc']}}" class="col-md-12 col-sm-12"></totvs-list-item-info>
+                    <totvs-list-item-info title="{{ 'l-un' | i18n: []: 'dts/mcc' }}" value="{{item['un']}}" class="col-md-4 col-sm-3"></totvs-list-item-info>
+                    <totvs-list-item-info title="{{ 'l-quantity' | i18n: []: 'dts/mcc' }}" value="{{item['qt-requisitada'] | number:4}}" class="col-md-4 col-sm-3"></totvs-list-item-info>
+                    <totvs-list-item-info title="{{ 'l-delivery-date' | i18n: []: 'dts/mcc' }}" value="{{item['dt-entrega'] | date:'dd/MM/yyyy'}}" class="col-md-4 col-sm-6" ng-if="controller.model['tp-requis'] != 1"></totvs-list-item-info>
+                    <totvs-list-item-info title="{{ 'l-delivery-date-hour' | i18n: []: 'dts/mcc' }}" value="{{item['dt-entrega'] | date:'dd/MM/yyyy'}} - {{item['hra-entrega'] | limitTo:2 }}:{{item['hra-entrega'] | limitTo:-2 }}" class="col-md-4 col-sm-6" ng-if="controller.model['tp-requis'] == 1"></totvs-list-item-info>
+                    <totvs-list-item-info title="{{ 'l-status' | i18n: []: 'dts/mcc' }}" value="{{item['situacao-desc']}}" class="col-md-4 col-sm-3"></totvs-list-item-info>
+                    <totvs-list-item-info class="col-md-4 col-sm-3" title="{{ 'l-urgent' | i18n: []: 'dts/mcc' }}">
+                        <span ng-if="item['urgente'] == true">{{ 'l-yes' | i18n: []: 'dts/mcc' }}</span>
+                        <span ng-if="item['urgente'] == false">{{ 'l-no' | i18n: []: 'dts/mcc' }}</span>
+                    </totvs-list-item-info>
+                    <totvs-list-item-info title="{{ 'l-approved-gen' | i18n: []: 'dts/mcc' }}" value="{{item['estado-desc']}}" class="col-md-4 col-sm-6"></totvs-list-item-info>
+                </totvs-list-item-content>
+
+                <totvs-list-item-content-detail>
+                    <totvs-list-item-info class="col-md-12 text-justify" title="{{ 'l-supplementary-description' | i18n: []: 'dts/mcc' }}" value="{{item['narrativa']}}"></totvs-list-item-info>
+                </totvs-list-item-content-detail>
+            </totvs-list-item>
+            <totvs-list-pagination ng-if="controller.listOfItems.length < controller.listOfItemsCount && controller.listOfItems.length" ng-click="  controller.loadItens(true);">
+            </totvs-list-pagination>
+        </tab>
+    </tabset>
+</totvs-tabset>

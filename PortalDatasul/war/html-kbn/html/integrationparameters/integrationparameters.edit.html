@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css">
+<link rel="stylesheet" href="/dts/kbn/css/font-awesome.css">
+<totvs-page type="list">
+  <totvs-page-navbar>
+    <totvs-page-breadcrumb>
+      <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+      <breadcrumb>{{ 'l-integration-parameters-ekanban' | i18n }}        </breadcrumb>
+    </totvs-page-breadcrumb>
+    <totvs-page-header>
+      <totvs-page-header-title title="{{ 'l-integration-parameters-ekanban' | i18n }}"></totvs-page-header-title>
+      <totvs-page-header-operation>
+        <div class="col-md-6 col-sm-6">
+          <totvs-field totvs-combo="" label="{{'l-erp-integrated' | i18n}}" ng-model="controller.erpSelected" t-options="controller.integrationErps" ng-change="controller.setParametersIntegration()" ng-required="true"></totvs-field>
+        </div>
+        <div style="margin-top:29px;" class="col-md-6 col-sm-6">
+          <button ng-click="controller.generateEstablishment();" style="margin-left:10px; margin-right:10px;" ng-disabled="controller.erpSelected === null || controller.erpSelected === undefined" class="btn btn-primary col-md-4 col-sm-4 pull-right">{{ 'l-generate-establishments' | i18n }}</button>
+          <button ng-click="controller.configureURL();" ng-if="controller.erpSelected &gt; 1" class="btn btn-warning col-md-4 col-sm-4 pull-right">{{ 'l-configure-urls' | i18n }}</button>
+        </div>
+      </totvs-page-header-operation>
+    </totvs-page-header>
+  </totvs-page-navbar>
+  <totvs-page-content>
+    <totvs-page type="edit">
+      <div class="row">
+        <div class="col-md-12">
+          <field type="input" ng-model="controller.diretorioFormula" maxlength="100" label="{{ 'l-directory-formulas' | i18n}}" ng-disabled="true"></field>
+          <button ng-click="controller.editarDiretorio();" style="margin-top:29px;" class="btn btn-default">
+            <div class="fa fa-pencil">&nbsp;</div>{{ 'l-edit' | i18n }}
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">&nbsp;
+          <field type="checkbox" label="{{ 'l-propose-cell' | i18n}}" ng-model="controller.logCellDefault" ng-change="controller.editarCelulaPadrao();" class="col-xs-12 col-md-12"></field>
+        </div>
+        <div class="col-md-12">
+          <field type="input" ng-model="controller.celulaPadrao + ' - ' + controller.descCelPadrao" label="{{ 'l-default-cell' | i18n}}" ng-disabled="true" ng-hide="!controller.logCellDefault"></field>
+          <button ng-click="controller.editarCelulaPadrao();" ng-hide="!controller.logCellDefault" style="margin-top:29px;" class="btn btn-default">
+            <div class="fa fa-pencil">&nbsp;</div>{{ 'l-edit' | i18n }}
+          </button>
+        </div>
+        <div class="col-md-12">
+          <field type="input" ng-model="controller.ctPadrao + ' - ' + controller.descCtPadrao" label="{{ 'l-default-wk' | i18n}}" ng-disabled="true" ng-hide="!controller.logCellDefault"></field>
+        </div>
+      </div>
+    </totvs-page>
+  </totvs-page-content>
+</totvs-page>

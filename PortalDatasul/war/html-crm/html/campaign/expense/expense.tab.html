@@ -1,0 +1,123 @@
+<totvs-page-child type="list">
+
+	<br/>
+
+	<totvs-page-content class="crm-tab">
+
+        <div class="row">
+
+            <div class="col-xs-10">
+                <h3 style="margin-top: 0px;">
+                    {{ 'nav-expense' | i18n: []: 'dts/crm' }} ({{ controller.model.ttDespesa.length || 0 }})
+                </h3>
+            </div>
+
+            <div class="col-xs-2">
+                <div class="pull-right">
+                    <button type="button"
+                            class="btn btn-primary"
+                            ng-click="controller.addEditCampaingExpense(controller.model);">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        <span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <totvs-divider></totvs-divider>
+        
+        <totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-expense' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.model.ttDespesa || controller.model.ttDespesa.length <= 0">
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addEditCampaingExpense(controller.model);">
+				<span class="glyphicon glyphicon-plus"></span>
+				<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+			</button>
+		</totvs-page-alert>
+        
+        <div class="crm-tab"
+			 ng-if="controller.model.ttDespesa.length">
+
+			<div class="row crm-tab-item header hidden-xs">
+				<strong>
+					<div class="col-xs-3 col-sm-3">
+						{{ 'l-expense-type' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-sm-3">
+						{{ 'l-unit-of-measurement' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-sm-2">
+						{{ 'l-quantity' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-sm-2">
+						{{ 'l-total-value' | i18n: []: 'dts/crm' }}
+					</div>
+				</strong>
+			</div>
+            
+            <div class="row crm-tab-item"
+				 ng-repeat="expense in controller.model.ttDespesa">
+                
+				<div class="hidden-xs col-sm-3 overflow-ellipsis">
+					{{ expense.nom_tip_despes }}
+				</div>
+
+				<div class="hidden-xs col-sm-3 overflow-ellipsis">
+					{{ expense.nom_umd }}
+				</div>
+                
+                <div class="hidden-xs col-sm-2 overflow-ellipsis">
+					{{ expense.qtd_itens_despes | number : 2 }}
+				</div>
+                
+                <div class="hidden-xs col-sm-2 overflow-ellipsis">
+					{{ expense.val_despes_previs | number : 2 }}
+				</div>
+
+				<div class="col-xs-3 col-sm-2 text-right">
+					<a class="clickable"
+					   ng-click="controller.addEditCampaingExpense(controller.model, expense);">
+						<span class="visible-xs-inline glyphicon glyphicon-pencil"></span>
+						<span class="hidden-xs">{{ 'btn-edit' | i18n: []: 'dts/crm' }}</span>
+					</a>
+					&nbsp;&nbsp;
+					<a class="clickable"
+					   ng-click="controller.removeCampaingExpense(controller.model.ttDespesa, expense, $index);">
+						<span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+						<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+					</a>
+                    
+                    <i class="clickable glyphicon"
+					   ng-class="{'glyphicon-chevron-down' :  expense.isOpen,
+								  'glyphicon-chevron-right': !expense.isOpen}"
+					   ng-click="expense.isOpen = !expense.isOpen;">
+					</i>
+				</div>
+                
+                <div ng-if="expense.isOpen">
+                    <div class="col-xs-12 crm-tab">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <br/>
+                                <strong>
+                                    {{ 'l-observation' | i18n: []: 'dts/crm' }}
+                                </strong>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12">
+                                {{ expense.dsl_tip_despes }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</div>
+        </div>
+    
+    </totvs-page-content>
+    
+</totvs-page-child>

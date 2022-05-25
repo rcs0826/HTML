@@ -1,0 +1,227 @@
+<totvs-page-detail-info title="{{ 'l-company' | i18n}}" class="col-xs col-sm-12 col-md-12"> <!-- Empresa -->
+	{{controller.request['tt-lista'][0]['empresa']}} - {{controller.request['tt-lista'][0]['desc-empresa']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-site' | i18n}}" class="col-xs col-sm-12 col-md-12"> <!-- Filial -->
+	{{controller.request['tt-lista'][0]['estab']}} - {{controller.request['tt-lista'][0]['desc-estab']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-requester' | i18n}}" class="col-xs col-sm-12 col-md-12"> <!-- Solicitante -->
+    {{controller.request['tt-lista'][0]['USUCRI']}} - {{controller.request['tt-lista'][0]['desc-solicit']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-request-date' | i18n}}" class="col-xs col-sm-12 col-md-12"> <!-- Data Solicitação - l-request-date -->
+	{{controller.request['tt-lista'][0]['DTCRIA'] | progressDate}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-carrier' | i18n}}" class="col-xs col-sm-12 col-md-12"> <!-- Transportador -->
+	{{controller.request['tt-lista'][0]['CDEMIT']}} - {{controller.request['tt-lista'][0]['desc-transp']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-freight-table' | i18n}}" class="col-xs col-sm-12 col-md-12"> <!-- Tabela de Frete - l-freight-table -->
+	{{controller.request['tt-lista'][0]['NRTAB']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-negotiatn' | i18n}}" class="col-xs col-sm-12 col-md-12"> <!-- Negociação - l-negotiatn -->
+	{{controller.request['tt-lista'][0]['NRNEG']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-freight-classification' | i18n}}" class="col-xs col-sm-12 col-md-12"> <!-- Classificação Frete - l-freight-classification -->
+	{{controller.request['tt-lista'][0]['CDCLFR']}} - {{controller.request['tt-lista'][0]['DSCLFR']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-oper-type' | i18n}}" class="col-xs col-sm-12 col-md-12"> <!-- Tipo Operação - l-oper-type -->
+	{{controller.request['tt-lista'][0]['CDTPOP']}} - {{controller.request['tt-lista'][0]['DSTPOP']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-validity-gfe' | i18n}}" class="col-xs col-sm-12 col-md-12"> <!-- Vigência - l-validity-gfe -->
+	{{controller.request['tt-lista'][0]['DTVALI']}} até {{controller.request['tt-lista'][0]['DTVALF']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-type-capac' | i18n}}" class="col-xs col-sm-12 col-md-12"> <!-- Tipo Lotação - l-type-capac -->
+	{{controller.request['tt-lista'][0]['TPLOTA']}} - {{controller.request['tt-lista'][0]['desc-tip-lotac']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-quote-cote' | i18n}}" class="col-xs col-sm-12 col-md-12"> <!-- Código da Cotação - l-quote-cote -->
+	{{controller.request['tt-lista'][0]['CODCOT']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-quote-sequence' | i18n}}" class="col-xs col-sm-12 col-md-12"> <!-- Sequência da Cotação - l-quote-sequence -->
+	{{controller.request['tt-lista'][0]['SEQCOT']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-quotation-amount' | i18n}}" class="col-xs col-sm-12 col-md-12"> <!-- Valor da Cotação - l-quotation-amount -->
+	{{controller.request['tt-lista'][0]['VALCOT']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-quotation-comments' | i18n}}" class="col-xs col-sm-12 col-md-12"> <!-- Observações da Cotação - l-quotation-comments -->
+	{{controller.request['tt-lista'][0]['OBSCOT']}}
+</totvs-page-detail-info>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	<accordion close-others="true">
+		<accordion-group>
+			<accordion-heading>
+				<div>{{ 'l-fee-plural' | i18n}}</div> <!-- Tarifas - l-fee-plural -->
+			</accordion-heading>
+			<totvs-list-item
+				    id="tarifa{{tarifa['cont_tarifa']}}"
+				    ng-class="tab-1"
+				    ng-repeat="tarifa in controller.request['tt-tarifa']"
+				    totvs-custom-element="customDetail29_listTarifa">
+				<totvs-list-item-header>	 		
+					<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+						title="{{ 'l-route-number' | i18n}}" 
+						value="{{tarifa['NRROTA']}}"> <!-- Número da Rota - l-route-number -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+						title="{{ 'l-origin' | i18n}}" 
+						value="{{tarifa['ORIGEM']}}"> <!-- Origem - l-origin -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
+						title="{{ 'l-target' | i18n}}" 
+						value="{{tarifa['DESTIN']}}"> <!-- Destino - l-target -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-2 col-md-6 col-lg-6"
+						title="{{ 'l-range-code' | i18n}}" 
+						value="{{tarifa['CDFXTV']}}"> <!-- Código Faixa - l-range-code -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-vehicle-type-code' | i18n}}" 
+						value="{{tarifa['CDTPVC']}}"> <!-- Código Tipo Veículo - l-vehicle-type-code -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-vehicle-type-description' | i18n}}" 
+						value="{{tarifa['DSTPVC']}}"> <!-- Descrição Tipo Veículo - l-vehicle-type-description -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-componente' | i18n}}" 
+						value="{{tarifa['CDCOMP']}}"> <!-- Componente - l-componente -->
+					</totvs-list-item-info>
+				</totvs-list-item-header>
+				<totvs-list-item-content-detail>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-normal-fixed-value' | i18n}}" 
+						value="{{tarifa['VLFIXN']}}"> <!-- Valor Fixo Normal - l-normal-fixed-value -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-normal-perc' | i18n}}" 
+						value="{{tarifa['PCNORM']}}"> <!-- % Normal - l-normal-perc -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-normal-unitary-value' | i18n}}" 
+						value="{{tarifa['VLUNIN']}}"> <!-- Valor Unitário Normal - l-normal-unitary-value -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-normal-fraction' | i18n}}" 
+						value="{{tarifa['VLFRAC']}}"> <!-- Fração Normal - l-normal-fraction -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-minimum-normal-value' | i18n}}" 
+						value="{{tarifa['VLMINN']}}"> <!-- Valor Mínimo Normal - l-minimum-normal-value -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-limit-amount' | i18n}}" 
+						value="{{tarifa['VLLIM']}}"> <!-- Valor Limite - l-limit-amount -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-extra-fixed-value' | i18n}}" 
+						value="{{tarifa['VLFIXE']}}"> <!-- Valor Fixo Extra - l-extra-fixed-value -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-extra-perc' | i18n}}" 
+						value="{{tarifa['PCEXTR']}}"> <!-- % Extra - l-extra-perc -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-extra-unitary-value' | i18n}}" 
+						value="{{tarifa['VLUNIE']}}"> <!-- Valor Unitário Extra - l-extra-unitary-value -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-calculation-excess' | i18n}}" 
+						value="{{tarifa['CALCEX']}}"> <!-- Cálculo Excedente - l-calculation-excess -->
+					</totvs-list-item-info>
+				</totvs-list-item-content-detail>
+			</totvs-list-item>
+		</accordion-group>
+		<accordion-group>
+			<accordion-heading>
+				<div>{{ 'l-route-plural' | i18n}}</div> <!-- Rotas - l-route-plural -->
+			</accordion-heading>
+			<totvs-list-item
+				    id="rota{{rota['cont_rota']}}"
+				    ng-class="tab-1"
+				    ng-repeat="rota in controller.request['tt-rota']"
+				    totvs-custom-element="customDetail29_listRota">
+				<totvs-list-item-header>
+					<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+						title="{{ 'l-route-number' | i18n}}" 
+						value="{{rota['NRROTA']}}"> <!-- Número da Rota - l-route-number -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+						title="{{ 'l-source-type' | i18n}}" 
+						value="{{rota['TPORIG']}}"> <!-- Tipo Origem - l-source-type -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+						title="{{ 'l-origin' | i18n}}" 
+						value="{{rota['ORIGEM']}}"> <!-- Origem - l-origin -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
+						title="{{ 'l-target-type' | i18n}}" 
+						value="{{rota['TPDEST']}}"> <!-- Tipo Destino - l-target-type -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
+						title="{{ 'l-target' | i18n}}" 
+						value="{{rota['DESTIN']}}"> <!-- Destino - l-target -->
+					</totvs-list-item-info>
+				</totvs-list-item-header>
+			</totvs-list-item>
+		</accordion-group>
+		<accordion-group>
+			<accordion-heading>
+				<div>{{ 'l-range' | i18n}}</div> <!-- Faixas - l-range -->
+			</accordion-heading>
+			<totvs-list-item
+				    id="faixa{{faixa['cont_faixa']}}"
+				    ng-class="tab-1"
+				    ng-repeat="faixa in controller.request['tt-faixa']"
+				    totvs-custom-element="customDetail29_listRota">
+				<totvs-list-item-header>
+					<totvs-list-item-info class="col-xs-12 col-sm-2 col-md-6 col-lg-6"
+						title="{{ 'l-range-code' | i18n}}" 
+						value="{{faixa['CDFXTV']}}"> <!-- Código Faixa - l-range-code -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-vehicle-type-code' | i18n}}" 
+						value="{{faixa['CDTPVC']}}"> <!-- Código Tipo Veículo - l-vehicle-type-code -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-vehicle-type-description' | i18n}}" 
+						value="{{faixa['DSTPVC']}}"> <!-- Descrição Tipo Veículo - l-vehicle-type-description -->
+					</totvs-list-item-info>
+				</totvs-list-item-header>
+				<totvs-list-item-content-detail>
+					<totvs-list-item-info class="col-xs-12 col-sm-2 col-md-6 col-lg-6"
+						title="{{ 'l-end-quantity' | i18n}}" 
+						value="{{faixa['QTFXFI']}}"> <!-- Quantidade Final - l-end-quantity -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-measure-unit' | i18n}}" 
+						value="{{faixa['UNICAL']}}"> <!-- Unidade de Medida - l-measure-unit -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-lease-value' | i18n}}" 
+						value="{{faixa['VLALUG']}}"> <!-- Valor Locação - l-lease-value -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-2 col-md-6 col-lg-6"
+						title="{{ 'l-franchise-km' | i18n}}" 
+						value="{{faixa['FRQKM']}}"> <!-- Franquia Km - l-franchise-km -->
+					</totvs-list-item-info>
+					<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-6 col-lg-6"
+						title="{{ 'l-fee-extra-km' | i18n}}" 
+						value="{{faixa['VLKMEX']}}"> <!-- Valor Km Excedido - l-fee-extra-km -->
+					</totvs-list-item-info>
+				</totvs-list-item-content-detail>
+			</totvs-list-item>
+		</accordion-group>
+	</accordion>
+</div>

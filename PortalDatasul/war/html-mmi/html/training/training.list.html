@@ -1,0 +1,82 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+	
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-trainings' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+			
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'l-trainings' | i18n }}" 
+									 total="{{controller.totalRecords}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+			
+				<totvs-page-header-operation-action>
+							<action link="#/dts/mmi/training/new" icon="glyphicon-plus">{{ 'l-add' | i18n }}</action>
+				</totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter placeholder="{{ 'l-code-description' | i18n }}"
+													ng-submit="controller.search()"
+													ng-model="controller.quickSearchText"
+													advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+								
+			</totvs-page-header-operation>
+			
+			<totvs-page-disclaimers
+					disclaimer-list="controller.disclaimers"
+					ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+
+		</totvs-page-header>
+						
+	</totvs-page-navbar>
+	
+	<totvs-page-content>
+
+		<totvs-page-alert
+			ng-if="controller.listResult.length <= 0"
+			type="info"
+			message="{{ 'msg-search-not-found' | i18n }}">			
+		</totvs-page-alert>
+ 
+        <totvs-list-item id="curso{{curso['cdn-curso']}}"
+						 ng-repeat="curso in controller.listResult">
+						 
+			<totvs-list-item-header>
+				<totvs-list-item-title
+				    class="col-lg-4 col-md-4 col-sm-3 col-xs-3"
+                	title="{{curso['cdn-curso']}} - {{curso['des-curso']}}"
+                	link="#/dts/mmi/training/detail/{{ curso['cdn-curso'] }}">
+				</totvs-list-item-title>
+				<totvs-list-item-info
+					class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+					title="{{ 'l-active' | i18n }}"
+					value="{{curso.traducao}}">
+				</totvs-list-item-info>
+				<totvs-list-item-action limit-primary-action="1" class="ng-scope pull-right col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                    <action link="#/dts/mmi/training/edit/{{curso['cdn-curso']}}" icon="glyphicon-pencil">{{ 'l-edit' | i18n }}</action>
+					<action ng-click="controller.delete(curso)" icon="glyphicon-trash">{{ 'l-remove' | i18n }}</action>
+               	</totvs-list-item-action>               											
+			</totvs-list-item-header>
+			<totvs-list-item-content-detail>
+				<totvs-list-item-info
+					class="col-lg-10 col-md-12 col-xs-12 col-sm-12"
+					title="{{ 'l-narrative' | i18n }}"
+					value="{{curso.narrativa}}">
+				</totvs-list-item-info>
+			</totvs-list-item-content-detail>	
+        </totvs-list-item>
+		
+		<totvs-list-pagination
+            ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+            ng-click="controller.loadData(true);">
+        </totvs-list-pagination>
+ 
+    </totvs-page-content>	
+		
+</totvs-page>

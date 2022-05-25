@@ -1,0 +1,151 @@
+<style type="text/css" scoped="true">
+
+	h5 {
+		margin-top: 15px !important;
+    	padding-bottom: 5px;
+    	border-bottom: 1px solid #ddd;
+	}
+	
+	totvs-table > div {
+		height: 200px !important;
+	}
+
+	totvs-table > div > div {
+		height: 200px !important;
+	}
+
+	.label-text {
+		font-size: 12px;
+		font-weight: 700;
+		cursor: pointer;
+	}
+
+	.text {
+		font-size: 12px;
+		white-space: nowrap;
+		display: inline-flex;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		max-width: 200px;
+	}
+
+	.k-black .k-group,.k-metroblack .k-group,.k-highcontrast .k-group,.k-flat .k-group,.k-moonlight .k-group {
+		color: #ffffff;
+	}
+	.k-grid{
+		height: 200px !important;
+	}
+	.k-grid-content{
+		height: 167px !important;
+	}
+</style>
+<totvs-page type="list">
+	
+	<totvs-page-navbar>
+		<totvs-page-header>
+			<totvs-page-header-title	title="{{controller.param.client}}"
+										total="{{controller.quotations.length}}">
+			</totvs-page-header-title>
+			
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action>
+					<action ng-click="controller.closeQuotation()" icon="glyphicon-send" tooltip="{{ 'l-close-quotation' | i18n: []: i18nContext }}">{{ 'l-close-quotation' | i18n: []: i18nContext }}</action>
+					<action ng-click="controller.back()" icon="glyphicon-menu-left" tooltip="{{ 'l-back' | i18n: []: i18nContext }}">{{ 'l-back' | i18n: []: i18nContext }}</action>
+				</totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter>
+					<div class="input-group" >
+						<input type="text" 
+							   class="form-control" 
+							   ng-model="controller.customFilter"
+							   placeholder="{{ 'l-filter-placeholder' | i18n: []: i18nContext }}"
+							   ng-change="controller.filterOrders()"
+							   tooltip="{{ 'l-filter-placeholder' | i18n: []: i18nContext }}">
+						<span class="input-group-btn">
+							<button class="btn btn-default" 
+									type="button" 
+									style="height: 34px;" 
+									ng-click="controller.cleanSearch()">
+								<span class="glyphicon glyphicon-remove"></span>
+							</button>
+						</span>
+					</div>
+				</totvs-page-header-operation-filter>
+			</totvs-page-header-operation>
+			
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content totvs-custom-element="customrfianswerlist">
+		
+		<totvs-page-content-header>
+			<totvs-page-quick-filter filters-list="controller.filters"
+									 on-select-filter="controller.selectFilter">
+			</totvs-page-quick-filter>
+		</totvs-page-content-header>
+		
+		<totvs-page-alert ng-if="controller.quotations.length <= 0"
+						  type="info"
+						  message="{{ 'l-orderline-not-found' | i18n: []: i18nContext }}">
+		</totvs-page-alert>
+
+		<totvs-list-item id="quotation{{quotation.id}}"
+						 ng-repeat="quotation in controller.quotations" totvs-custom-element="customrfianswerlistfields">
+
+
+			<totvs-list-item-header>
+				<totvs-list-item-title title="{{:: quotation['itemVendor']}} - {{:: quotation['it-codigo-desc']}}"
+									   ng-if="quotation['itemVendor']"
+									   ng-click="controller.viewQuotation(quotation)"
+									   style="cursor:pointer">
+				</totvs-list-item-title>
+				<totvs-list-item-title title="{{:: quotation['it-codigo']}} - {{:: quotation['it-codigo-desc']}}"
+									   ng-if="!quotation['itemVendor']"
+									   ng-click="controller.viewQuotation(quotation)"
+									   style="cursor:pointer">
+				</totvs-list-item-title>
+				<totvs-list-item-action limit-primary-action="3">
+					<action ng-click="controller.quote(quotation)" icon="glyphicon-plus">{{ 'l-quote' | i18n: []: i18nContext }}</action>
+					<action ng-click="controller.viewQuotation(quotation)" icon="glyphicon-usd">{{ 'l-view-quotation' | i18n: []: i18nContext }}</action>
+				</totvs-list-item-action>
+			</totvs-list-item-header>
+
+			<totvs-list-item-content >
+				<totvs-list-item-info class="quantidade col-xs-12 col-md-6" title="{{ 'l-quantity' | i18n: []: i18nContext}}" value="{{:: quotation['qt-solic'] | number: 4}}"></totvs-list-item-info>
+				<totvs-list-item-info class="UnidMedInterna col-xs-12 col-md-6" title="{{ 'l-internal-unit-metric' | i18n: []: i18nContext}}" value="{{:: quotation['un']}} - {{:: quotation['un-desc'] }}"></totvs-list-item-info>
+				<totvs-list-item-info class="numorder col-xs-12 col-md-6" title="{{ 'l-orderline-number' | i18n: []: i18nContext}}" value="{{:: quotation['numero-ordem']}}"></totvs-list-item-info>
+				<totvs-list-item-info class="comprador col-xs-12 col-md-6" title="{{ 'l-buyer' | i18n: []: i18nContext }}" value="{{:: quotation['cod-comprado']}} - {{:: quotation['cod-comprado-desc']}}"></totvs-list-item-info>
+				<totvs-list-item-info class="cotarate col-xs-12 col-md-6" title="{{ 'l-quote-to' | i18n: []: i18nContext }}" value="{{:: quotation['dat-fim-leilao-rfq'] | date: 'dd/MM/yyyy' }} {{ :: quotation['hra-fim-leilao-rfq'] }}"></totvs-list-item-info>
+				<div kendo-tooltip k-content="quotation['narrativa'] == '' ? controller.withoutDescMessage : quotation['narrativa']" k-position="'down'" class="col-xs-12 col-md-6 k-group" style="background: none;">
+					<span class="label-text">{{ 'l-supplementary-description' | i18n: []: i18nContext }}: </span>
+					<span class="text">{{:: quotation['narrativa'].substring(0,20) }}</span>...
+				</div>
+			</totvs-list-item-content>
+
+			<totvs-list-item-content-detail open="controller.onShowDetails(quotation['numero-ordem'])">
+				<div class="row" style="padding: 0 15px;">
+					<div class="col-xs-12 col-md-4">
+						<totvs-grid 
+							grid-height="200"
+							grid-data="quotation.entregas">    
+				
+							<totvs-grid-column field="data-entrega" filter="date: dd/MM/yyyy" title="{{ 'l-delivery' | i18n: []: i18nContext }}"></totvs-grid-column>
+							<totvs-grid-column field="quantidade" filter="number: 4" title="{{ 'l-quantity' | i18n: []: i18nContext }}"></totvs-grid-column>
+						</totvs-grid>
+					</div>
+					<div class="col-xs-12 col-md-8">
+						<div class="col-md-12">
+							<h5 style="margin-top: 5px !important;">{{ 'l-delivery-place' | i18n: []: i18nContext }}</h5>
+							<totvs-list-item-info title="{{ 'l-address' | i18n: []: i18nContext }}" value="{{:: quotation['endereco']}}"></totvs-list-item-info>
+							<totvs-list-item-info title="{{ 'l-postal-code' | i18n: []: i18nContext }}" value="{{:: quotation['cep']}}"></totvs-list-item-info>
+							<totvs-list-item-info title="{{ 'l-dstrict' | i18n: []: i18nContext }}" value="{{:: quotation['bairro']}}"></totvs-list-item-info>
+							<totvs-list-item-info title="{{ 'l-city' | i18n: []: i18nContext }}" value="{{:: quotation['cidade']}}"></totvs-list-item-info>
+							<totvs-list-item-info title="{{ 'l-state' | i18n: []: i18nContext }}" value="{{:: quotation['estado']}}"></totvs-list-item-info>
+							<totvs-list-item-info title="{{ 'l-country' | i18n: []: i18nContext }}" value="{{:: quotation['pais']}}"></totvs-list-item-info>
+						</div>
+					</div>
+				</div>
+			</totvs-list-item-content-detail>
+		</totvs-list-item>
+	</totvs-page-content>
+</totvs-page>

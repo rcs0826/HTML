@@ -1,0 +1,19 @@
+
+<totvs-modal-header>{{controller.getLabelByAction(controller.myParams.action) | i18n}}</totvs-modal-header>
+<totvs-modal-body>
+  <totvs-page-form id="mappingForm" role="form">
+    <field type="input" ng-model="controller.myParams.model.des_mapeamento" maxlength="45" placeholder="{{'l-description' | i18n}}" required="required" label="{{'l-description' | i18n}}" class="col-md-6"></field>
+    <field ng-disabled="controller.myParams.disableLimitDate || (controller.selected.id==1)" type="date" ng-model="controller.myParams.model.dat_corte" required="required" label="{{'l-cutoff-date' | i18n}}" class="col-md-6"></field>
+    <field type="select" ng-model="controller.selected" ng-change="controller.selectCloneType()" label="{{'l-clone-type' | i18n}}" required="required" ng-show="controller.myParams.action == 'clone'" class="col-md-12">
+      <include>
+        <ui-select-match>{{$select.selected.name}}</ui-select-match>
+        <ui-select-choices repeat="state in controller.listselect track by $index"><span data-ng-bind-html="state.name | highlight: $select.search"></span></ui-select-choices>
+      </include>
+    </field>
+    <establishment-select ng-if="controller.myParams.action == 'new'" ng-model="controller.myParams.model.establishmentErpCode" callback-no-establishment="controller.callbackNoEstablishment"></establishment-select>
+  </totvs-page-form>
+</totvs-modal-body>
+<totvs-modal-footer>
+  <button data-ng-click="controller.cancel();" class="btn btn-default">{{ 'l-cancel' | i18n }}</button>
+  <button data-ng-click="controller.save(controller.myParams.action, controller.myParams.model);" class="btn btn-primary">{{ 'l-ok' | i18n }}</button>
+</totvs-modal-footer>

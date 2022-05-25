@@ -1,0 +1,203 @@
+<div ng-controller="apb.dashboard.inquirevendordoc.Controller as dashInquireVendorDocCtrl">
+    <totvs-widget>
+        <apb-totvs-widget-header list="dashInquireVendorDocCtrl.showList()"
+                                 charts="dashInquireVendorDocCtrl.showCharts()"
+                                 settings="dashInquireVendorDocCtrl.showConfig()"
+								 title="{{'l-vendor-docs' | i18n : [] : 'dts/apb/' }}">
+			<i class="glyphicon glyphicon-info-sign hidden-xs"
+			   tooltip-placement="bottom"
+			   tooltip-html="dashInquireVendorDocCtrl.tooltipHelp">
+			</i>
+		</apb-totvs-widget-header>
+        <totvs-widget-body>
+
+            <div>			
+                <div class="no-gutter" ng-show="dashInquireVendorDocCtrl.listShow">
+		        <br>
+                    <div class="col-md-6">
+
+                        <h5 class="col-md-6">
+                            <b>{{ 'l-expired' | i18n : [] : 'dts/apb/' }}</b>
+                        </h5>
+
+                        <h5 class="col-md-6 text-right"
+                            ng-if="dashInquireVendorDocCtrl.vencidos == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/apb'}}
+                        </h5>
+
+                        <h5 ng-click="dashInquireVendorDocCtrl.openList(1,null);"
+                            class="col-md-6 text-right clickable btn-link"
+                            ng-if="dashInquireVendorDocCtrl.vencidos != undefined">
+                            <b>{{ dashInquireVendorDocCtrl.vencidos | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/apb' ) }}</b>
+                        </h5>
+
+                        <div ng-if="dashInquireVendorDocCtrl.listResult != undefined">
+
+                            <totvs-list-item
+                                ng-repeat="titulo in dashInquireVendorDocCtrl.listResult"
+                                ng-if="((titulo.numSituacao == 1) && ((dashInquireVendorDocCtrl.vencidos != 0) || (dashInquireVendorDocCtrl.aVencer != 0)))">
+
+                                <totvs-list-item-content>
+
+                                    <totvs-list-item-info
+                                        class="col-md-6"
+                                        value="{{dashInquireVendorDocCtrl.traduzFaixa(titulo['numFaixaVencto'])}}">
+                                    </totvs-list-item-info>
+
+                                    <totvs-list-item-info
+                                        ng-click="dashInquireVendorDocCtrl.openList(1,titulo['numFaixaVencto']);"
+                                        class="col-md-6 text-right clickable btn-link"
+                                        value="{{titulo['valSdoAber'] | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/apb' ) }}">
+                                    </totvs-list-item-info>
+                                    
+                                </totvs-list-item-content>
+                            </totvs-list-item>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        
+                        <h5 class="col-md-6">
+                            <b>{{ 'l-not-expired' | i18n : [] : 'dts/apb/' }}</b>
+                        </h5>
+                        
+                        <h5 class="col-md-6 text-right" 
+                            ng-if="dashInquireVendorDocCtrl.aVencer == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/apb'}}
+                        </h5>
+                        
+                        <h5 ng-click="dashInquireVendorDocCtrl.openList(2,null);"
+                            class="col-md-6 text-right clickable btn-link" ng-if="dashInquireVendorDocCtrl.aVencer != undefined" >
+                            <b>{{ dashInquireVendorDocCtrl.aVencer | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/apb' ) }}</b>
+                        </h5>
+
+                        <div ng-if="dashInquireVendorDocCtrl.listResult != undefined">
+                            <totvs-list-item 
+                                ng-repeat="titulo in dashInquireVendorDocCtrl.listResult"
+                                ng-if="(( titulo.numSituacao == 2 ) && (( dashInquireVendorDocCtrl.aVencer != 0 ) || ( dashInquireVendorDocCtrl.vencidos != 0 )))">
+
+                                <totvs-list-item-content>
+
+                                    <totvs-list-item-info    
+                                        class="col-md-6"
+                                        value="{{dashInquireVendorDocCtrl.traduzFaixa(titulo['numFaixaVencto'])}}">
+                                    </totvs-list-item-info>
+
+                                    <totvs-list-item-info
+                                        ng-click="dashInquireVendorDocCtrl.openList(2,titulo['numFaixaVencto']);"
+                                        class="col-md-6 text-right clickable btn-link"
+                                        value="{{titulo['valSdoAber'] | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/apb' ) }}">
+                                    </totvs-list-item-info>
+
+                                </totvs-list-item-content>
+                            </totvs-list-item>
+                        </div>
+                    </div>
+
+                    <div ng-if="((dashInquireVendorDocCtrl.vencidos == 0) && (dashInquireVendorDocCtrl.aVencer == 0))">
+                        <div class="col-md-12">
+
+                            <totvs-divider></totvs-divider>
+
+                            <totvs-widget>
+                                <totvs-widget-header class="text-center">
+                                    {{ 'msg-no-documents' | i18n: []: 'dts/apb' }}
+                                </totvs-widget-header>
+                            </totvs-widget>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="no-gutter" ng-show="dashInquireVendorDocCtrl.chartsShow">
+                <br>
+                    <div class="col-md-6">
+
+                        <h5 class="col-md-6">
+                            <b>{{ 'l-expired' | i18n : [] : 'dts/apb/' }}</b>
+                        </h5>
+
+                        <h5 class="col-md-6 text-right"
+                            ng-if="dashInquireVendorDocCtrl.vencidos == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/apb'}}
+                        </h5>
+
+                        <h5 ng-click="dashInquireVendorDocCtrl.openList(1,null);"
+                            class="col-md-6 text-right clickable btn-link"
+                            ng-if="dashInquireVendorDocCtrl.vencidos != undefined">
+                            <b>{{ dashInquireVendorDocCtrl.vencidos | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/apb' ) }}</b>
+                        </h5>
+                    </div>
+                    <div class="col-md-6">
+
+                        <h5 class="col-md-6">
+                            <b>{{ 'l-not-expired' | i18n : [] : 'dts/apb/' }}</b>
+                        </h5>
+
+                        <h5 class="col-md-6 text-right"
+                            ng-if="dashInquireVendorDocCtrl.aVencer == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/apb'}}
+                        </h5>
+
+                        <h5 ng-click="dashInquireVendorDocCtrl.openList(2,null);"
+                            class="col-md-6 text-right clickable btn-link"
+                            ng-if="dashInquireVendorDocCtrl.aVencer != undefined">
+                            <b>{{ dashInquireVendorDocCtrl.aVencer | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/apb' ) }}</b>
+                        </h5>
+                    </div>
+
+                    <div class="col-md-12 no-gutter">
+                        <apb-totvs-chart 
+                            t-type-chart="column"
+                            t-on-click="dashInquireVendorDocCtrl.onClick"
+                            t-series="dashInquireVendorDocCtrl.series"
+                            t-categories="dashInquireVendorDocCtrl.categories"
+                            t-width="dashInquireVendorDocCtrl.tamGrafico">
+                        </apb-totvs-chart>
+                    </div>		        
+                </div>
+
+                <div ng-hide="dashInquireVendorDocCtrl.listShow == true || dashInquireVendorDocCtrl.chartsShow == true">
+                    <form>
+                        <div class="row">																																											
+
+                            <totvs-field 
+                                totvs-datepicker 
+                                class="col-md-12" 
+                                ng-model="dashInquireVendorDocCtrl.dataemis" 
+                                label="{{ 'l-after-issue-date' | i18n: []: 'dts/apb' }}"
+                                t-mask-date="00/00/0000" 
+                                required="true"
+                                canclean>
+                                <validator key="required">{{ 'l-required' | i18n }}</validator>
+                            </totvs-field>
+
+                            <totvs-field 
+                                totvs-datepicker 
+                                class="col-md-12" 
+                                ng-model="dashInquireVendorDocCtrl.datavenc" 
+                                label="{{ 'l-due-date-until' | i18n: []: 'dts/apb' }}"
+                                t-mask-date="00/00/0000"
+                                required="true"
+                                canclean>
+                                <validator key="required">{{ 'l-required' | i18n }}</validator>
+                            </totvs-field>
+
+                        </div>
+                    </form>
+                    <hr>            	                
+                    <a role="button" class="btn btn-default pull-right" ng-click="dashInquireVendorDocCtrl.applyConfig()">&nbsp; {{ 'btn-apply' | i18n : [] : 'dts/apb/' }} &nbsp; </a>	                                
+                </div>			
+            </div>
+			
+        </totvs-widget-body>
+
+        <totvs-widget-footer>
+            <totvs-widget-footer-body>
+            </totvs-widget-footer-body>
+            <totvs-widget-footer-actions>
+                <action class="clickable btn-link" ng-click="dashInquireVendorDocCtrl.openList(null,null);">{{ 'l-detail' | i18n : [] : 'dts/apb/' }}</action>
+            </totvs-widget-footer-actions>            
+        </totvs-widget-footer>
+    </totvs-widget>
+</div>       
+        

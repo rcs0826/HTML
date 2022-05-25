@@ -1,0 +1,74 @@
+<link type="text/css" rel="stylesheet" href="/dts/mmi/html/sprint/arvoreativos/arvore-ativos.css"></link>
+<div class="row" style="margin: 0px">
+
+  <div class="div-arvore col-md-12"
+        style="padding-bottom:10px; padding-left:10px; border-top-left-radius: 4px; border-top-right-radius: 4px; margin-bottom: 0px;">
+
+    <div class="row col-md-10">
+      {{ 'l-assets-tree' | i18n }}
+    </div>
+  
+    <div class="col-md-1" style="padding-left:30px">
+      <a ng-if="!collapse" class="glyphicon glyphicon-plus" title="{{ 'l-expand' | i18n }}" 
+          style="cursor:pointer; color:#777" ng-click="mostraFilhos()"></a>
+      <a ng-if="collapse" class="glyphicon glyphicon-minus" title="{{ 'l-collapse' | i18n }}" 
+          style="cursor:pointer; color:#777" ng-click="escondeFilhos()"></a>
+    </div>
+
+    <div class="col-md-1">
+      <a ng-if="mmiModel.ttProgramacao" class="glyphicon glyphicon-refresh" title="{{ 'l-reload' | i18n }}" 
+          style="cursor:pointer; color:#777" ng-click="carregaArvore()"></a>
+      <a ng-if="!mmiModel.ttProgramacao" class="glyphicon glyphicon-refresh" title="{{ 'l-reload' | i18n }}" 
+          style="cursor:not-allowed; color:#777"></a>
+    </div>
+  </div>
+</div>
+
+<div class="row" style="margin-right: 0px;">
+  <div class="col-md-12" ng-style="obterAlturaArvore()" style="padding-right: 0px;">
+    <div ng-repeat="nivel1 in mmiModel.arvore track by nivel1.codigo">
+      
+      <div class="div-nivel1"
+            id="div-{{nivel1.id}}"
+            ng-click="selecionaNivelResumo(nivel1, $event)">
+        <span ng-if="!nivel1.mostraFilhos" class="glyphicon glyphicon-folder-close"></span>
+        <span ng-if="nivel1.mostraFilhos" class="glyphicon glyphicon-folder-open"></span>
+        &nbsp;{{nivel1.codigo}} - {{nivel1.descricao}} ({{nivel1.quantidade}})
+      </div>
+      
+      <div ng-repeat="nivel2 in nivel1.ttNivel2 track by nivel2.codigo"
+           ng-if="nivel1.mostraFilhos">
+        
+        <div class="div-nivel2"
+             id="div-{{nivel2.id}}"
+             ng-click="selecionaNivelResumo(nivel2, $event)">
+          <span ng-if="!nivel2.mostraFilhos" class="glyphicon glyphicon-folder-close"></span>
+          <span ng-if="nivel2.mostraFilhos" class="glyphicon glyphicon-folder-open"></span>
+          &nbsp;{{nivel2.codigo}} - {{nivel2.descricao}} ({{nivel2.quantidade}})
+        </div>
+        
+        <div ng-repeat="nivel3 in nivel2.ttNivel3 track by nivel3.codigo"
+              ng-if="nivel2.mostraFilhos">
+          
+          <div class="div-nivel3"
+                id="div-{{nivel3.id}}"
+                ng-click="selecionaNivelResumo(nivel3, $event)">
+            <span ng-if="!nivel3.mostraFilhos" class="glyphicon glyphicon-folder-close"></span>
+            <span ng-if="nivel3.mostraFilhos" class="glyphicon glyphicon-folder-open"></span> 
+            &nbsp;{{nivel3.codigo}} - {{nivel3.descricao}} ({{nivel3.quantidade}})
+          </div>
+          
+          <div ng-repeat="nivel4 in nivel3.ttNivel4 track by nivel4.codigo"
+                ng-if="nivel3.mostraFilhos">
+            <div class="div-nivel4"
+                  id="div-{{nivel4.id}}"
+                  ng-click="selecionaNivelOrdem(nivel4, $event)">
+              <span class="glyphicon glyphicon-file"></span> 
+              &nbsp;{{nivel4.codigo}} ({{nivel4.quantidade}})
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

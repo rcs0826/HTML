@@ -1,0 +1,123 @@
+<style type="text/css">
+  h5{
+    margin-top: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+  }
+</style>
+<totvs-modal-header>
+    {{ 'l-delivery' | i18n }} 
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <div class="row">
+		<form class="form-horizontal" role="form">
+            <totvs-page-detail class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 5px 15px">
+                <totvs-page-detail-info
+                    name-id="purchaseRequisition"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    title="{{ 'l-purchase-orderline' | i18n }}"
+                    value="{{controller.purchaseOrderline['numero-ordem']}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info
+                    name-id="purchaseQuantity"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    title="{{ 'l-quantity-order' | i18n }}"
+                    value="{{controller.purchaseOrderline['qt-solic'] | number:4}}">
+                </totvs-page-detail-info>
+            </totvs-page-detail>
+            
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="padding: 0">
+              <field type="decimal"
+                   class="col-md-12 col-sm-12 col-xs-12"
+                   data-m-dec="4"
+                   name-id="quantity"
+                   data-v-max="9999999.9999"
+                   ng-model-options="{ updateOn: 'blur' }"
+                   ng-model="controller.deliverySchedule['quantidade']"
+                   ng-disabled="controller.enableFields && !controller.enableFields['quantidade']"
+                   required>
+                <label>{{ 'l-quantity' | i18n: []: 'dts/mcc' }}</label>
+              </field>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12" style="padding: 0">
+                <totvs-field totvs-datepicker 
+                       name-id="deliveryDate"
+                       label="{{ 'l-delivery-date' | i18n: []: 'dts/mcc' }}"
+                       required
+                       class=" col-md-12 col-sm-12 col-xs-12"
+                       ng-model="controller.deliverySchedule['data-entrega']"
+                </totvs-field>
+            </div>
+            <totvs-field totvs-select
+                  name-id="reference"
+                  class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                  ng-model="controller.deliverySchedule['cod-refer']"
+                  label="{{ 'l-reference' | i18n }}"
+                  select-id="cod-refer"
+                  select-description="descricao"
+                  select-match='[{"field":"cod-refer", "separator":" - "}, {"field":"descricao"}]'
+                  select-service="mcc.referencia.zoom"
+                  zoom-service="mcc.referencia.zoom"
+                  ng-disabled="controller.enableFields && !controller.enableFields['cod-refer']"
+                  canclean>
+              </totvs-field> 
+
+            <div class="col-xs-12">
+                <h5>{{ 'l-customer-request' | i18n: []: 'dts/mcc' }}</h5>  
+            </div>
+
+            <div class="col-xs-12" style="padding:0">
+                <totvs-field totvs-select
+                    name-id="customer"
+                    ng-change="controller.changeCustomer()"
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-model="controller.customerZoomField"
+                    label="{{ 'l-customer' | i18n }}"
+                    select-id="cod-emitente"
+                    select-description="nome-abrev"
+                    select-match='[{"field":"cod-emitente", "separator":" - "}, {"field":"nome-abrev"}]'
+                    select-service="mpd.cliente.zoom"
+                    zoom-service="mpd.cliente.zoom"
+                    return-object
+                    canclean>
+                </totvs-field> 
+            </div>
+            <totvs-field totvs-select
+                name-id="customerOrder"
+                ng-change="controller.changeCustomerOrder()"
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                ng-model="controller.deliverySchedule['pedido-clien']"
+                label="{{ 'l-order' | i18n }}"
+                select-id="nr-pedcli"
+                select-match='[{"field":"nr-pedcli", "separator":" - "}, {"field":"nome-abrev"}]'
+                select-service="mpd.ped-venda.zoom"
+                zoom-service="mpd.ped-venda.zoom"
+                zoom-init="controller.customerOrderZoomInit"
+                select-init="controller.customerOrderZoomInit"
+                canclean>
+            </totvs-field> 
+            <totvs-field totvs-select
+                name-id="clientOrderItemSequence"
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                ng-model="controller.deliverySchedule['nr-sequencia']"
+                label="{{ 'l-sequence' | i18n }}"
+                select-id="nr-sequencia"
+                select-description="nr-pedcli"
+                select-match='[{"field":"nr-sequencia", "separator":" - "}, {"field":"nr-pedcli"}]'
+                select-service="mpd.ped-item.zoom"
+                zoom-service="mpd.ped-item.zoom"
+                zoom-init="controller.customerOrderItemSequenceZoomInit"
+                select-init="controller.customerOrderItemSequenceZoomInit"
+                canclean>
+            </totvs-field> 
+        </form> 
+    </div>      
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n }}</button>
+    <button class="btn btn-default" ng-click="controller.apply(true)" ng-show="controller.showSaveContinueButton">{{ 'l-save-new' | i18n }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply(false)">{{ 'l-save' | i18n }}</button>
+</totvs-modal-footer>

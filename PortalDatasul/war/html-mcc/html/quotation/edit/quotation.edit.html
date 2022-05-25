@@ -1,0 +1,1103 @@
+<style type="text/css">
+	.customLabel{
+		font-family: 'Arial';
+		margin-bottom: 5px;
+		font-weight: 200;
+		font-size: 12px;
+		color: gray;
+		font-weight: 500 !important;
+	}	
+
+	.panel-body{
+		padding: 5px !important;
+	}
+
+	.badge{
+		background-color: green !important;
+    }
+
+    .nopadding{
+    	padding:0px !important;
+    }
+</style>
+<totvs-page type="edit" totvs-custom-element="customQuotation_edit">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb link="#/dts/mcc/quotation/">{{:: 'l-quotations' | i18n}}</breadcrumb>
+			<breadcrumb>
+				<span ng-if="controller.isNew">{{:: 'l-new-quote' | i18n}}</span>
+				<span ng-if="!controller.isNew">{{:: 'l-update-quote' | i18n}}</span>
+			</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+			<totvs-page-header-title title="{{ controller.pageTitle | i18n: []: 'dts/mcc'}}">
+			</totvs-page-header-title>
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action
+					hide-save-new="{{controller.hideSaveNew}}">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-form>
+			<fieldset>
+				<form>
+					<totvs-page-detail-info-group>{{:: 'l-purchase-orderline' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-6">
+							<field type="number"
+								ng-model="controller.model.ttSummaryPurchRequisition['numero-ordem']"
+								ng-blur="controller.getSummaryPurchRequisition()"	
+								label="{{:: 'l-purchase-orderline' | i18n}}"
+								class="col-xs-12 col-sm-4"
+								style="padding-right: 0px; border-radius: 5px 0 0 5px;"
+								ng-disabled="controller.model.unlinkedQuotation || !controller.isNew">
+							</field>
+							
+							<button 
+								class="btn btn-default" 
+								style="margin-top:30px; border-radius: 0 5px 5px 0;"
+								ng-model="controller.ordemCompraZoom"
+								zoom
+								zoom-service="mcc.ordem-compra-quotation.zoom"
+								zoom-init="{filter : {'ordem-compra.situacao' : '1',
+                                              'ordem-compra.cod-comprado': controller.valorcomprador} }"								
+								ng-change="controller.selectedOrdemCompraZoom();"
+								tooltip="{{:: 'l-purchase-orderline' | i18n }}"
+								ng-disabled="controller.model.unlinkedQuotation || !controller.isNew">
+								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+							</button>
+												
+							<!-- não estamos usando esse pois o zoom-selected não está funcionando, quando seleciono o item no zoom ele não chama o método especificado
+							<totvs-field totvs-input
+								class="col-md-6"
+								ng-model="controller.model.ttSummaryPurchRequisition['numero-ordem']"
+								label="{{:: 'l-purchase-orderline' | i18n}}"
+								zoom-service="mcc.ordem-compra.zoom"	
+								zoom-selected="controller.getSummaryPurchRequisition()"
+								ng-blur="controller.getSummaryPurchRequisition()"
+								zoom-id="numero-ordem"
+								canclean>
+							</totvs-field>
+							-->
+						</div>
+
+						<div class="col-xs-12 col-sm-3" style="margin-top:10px;">
+							<div class="field-container ng-scope">
+								<label class="customLabel" tooltip="{{:: 'l-unlinked-quotation' | i18n }}" tooltip-placement="top">{{:: 'l-unlinked-quotation' | i18n }}</label>
+								<div class="field-input">
+									<div class="input-group">
+                                        <totvs-field totvs-checkbox
+                                            ng-model="controller.model.unlinkedQuotation"
+											ng-disabled="!controller.isNew"
+											ng-change = "controller.changeUnlinkedQuotation()"
+                                            t-bsswitch>
+                                        </totvs-field>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<totvs-page-detail-info 
+							class="col-xs-12 col-sm-3" 
+							title="{{ 'l-quantity' | i18n: []: 'dts/mcc' }}" 
+							value="{{controller.model.ttSummaryPurchRequisition['qt-solic'] | number:4}}"
+							style="margin-top:10px; padding:0 7px"
+							ng-show="!controller.model.unlinkedQuotation">
+						</totvs-page-detail-info>
+					</div>
+
+					<div class="row" ng-show="controller.model.unlinkedQuotation">
+						<div class="col-xs-12">
+							<field type="select2"
+								ng-model="controller.model.ttSummaryPurchRequisition['it-codigo']"
+								select-conector="{{:: 'l-item' | i18n}}"
+								select-id="it-codigo"
+								select-description="desc-item"
+								select-service="men.item.zoom"
+								canclean
+								class="col-xs-12 col-sm-12 col-md-6"
+								ng-change="controller.getSummaryPurchRequisition()"
+								ng-disabled="!controller.isNew">
+								<zoom zoom-service="men.item.zoom"
+									zoom-init="controller.model.ttSummaryPurchRequisition['it-codigo']"
+									zoom-selected="controller.getSummaryPurchRequisition()">
+								</zoom>
+								<label>{{:: 'l-item' | i18n}}</label>
+							</field>
+						</div>
+					</div>
+					<div class="row" ng-show="!controller.model.unlinkedQuotation" style="margin:12px 0px">
+						<div class="col-sm-12" style="padding:0px">
+							<totvs-page-detail-info 
+								class="col-sm-6" 
+								title="{{ 'l-item' | i18n: []: 'dts/mcc' }}" 
+								value="{{controller.model.ttSummaryPurchRequisition['it-codigo']}} - {{controller.model.ttSummaryPurchRequisition['it-codigo-desc']}}">
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info 
+								class="col-sm-3" 
+								title="{{ 'l-unit-of-measure' | i18n: []: 'dts/mcc' }}" 
+								value="{{controller.model.ttSummaryPurchRequisition['un']}}">
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info 
+								class="col-sm-3" 
+								title="{{ 'l-site' | i18n: []: 'dts/mcc' }}" 
+								value="{{controller.model.ttSummaryPurchRequisition['cod-estabel']}}">
+							</totvs-page-detail-info>
+						</div>
+					</div>
+
+					<!-- Cotação do fornecedor -->
+					<totvs-page-detail-info-group>{{:: 'l-vendor-quote' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12">
+							<totvs-field totvs-select
+								label="{{ 'l-vendor' | i18n }}"
+								ng-model="controller.model.ttCotacaoItem['cod-emitente']"
+								select-init="{gotomethod: 'gotocodemitente'}"
+								select-id="cod-emitente"
+								select-description="nome-abrev"
+								select-service="mpd.emitente.zoom"
+								zoom-service="mpd.emitente.zoom"
+								zoom-init="{filter:{'identific': '2|3'}}"
+								ng-change="controller.getVendor(controller.model.ttCotacaoItem['cod-emitente']);controller.changeField('cod-emitente')"
+								canclean
+								required
+								ng-disabled="controller.enableFields && !controller.enableFields['cod-emitente']"
+								style="padding-right:0px">
+							</totvs-field>
+
+							<button 
+								class="btn btn-default" 
+								style="margin-top:30px"
+								ng-model="controller.model.ttCotacaoItem['cod-emitente']"
+								zoom
+								zoom-service="mcc.item-fornec.zoom"	
+								zoom-init="controller.zoomItemFornecInit"
+								tooltip="{{:: 'l-search' | i18n }} {{:: 'l-vendor-item' | i18n }}"
+								ng-disabled="controller.enableFields && !controller.enableFields['cod-emitente']">
+								<!--zoom-init=""-->
+								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+							</button>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-6">
+							<totvs-field totvs-decimal
+								m-dec="5"
+								class="col-md-5"
+								required
+								label="{{:: 'l-vendor-price' | i18n }}"
+								ng-maxlength="20"
+								ng-model="controller.model.ttCotacaoItem['preco-fornec']"
+								ng-change="controller.changeField('preco-fornec')"
+								ng-disabled="controller.enableFields && !controller.enableFields['preco-fornec']">
+								<validator key="maxlength">{{:: 'l-invalid-value' | i18n: []: 'dts/mcc' }}</validator>
+							</totvs-field>
+						</div>
+
+						<div class="col-xs-12 col-sm-6" style="padding:0px">
+							<field type="date"
+								class="col-xs-12 col-sm-4"
+								ng-model="controller.model.ttCotacaoItem['data-cotacao']"
+								required>
+								<label>{{:: 'l-quotation-date' | i18n: []: 'dts/mcc' }}</label>
+							</field>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-6">
+							<totvs-field totvs-select
+								id="currency"
+								class="col-xs-12 col-md-6"
+								ng-model="controller.model.ttCotacaoItem['mo-codigo']"
+								label="{{:: 'l-currency' | i18n}}"
+								select-id="mo-codigo"
+								select-description="descricao"
+								select-match='[{"field":"mo-codigo", "separator": " - "},{"field":"descricao"}]'
+								select-service="mpd.moeda.zoom"
+								zoom-service="mpd.moeda.zoom"
+								zoom-valid-search-values="[0]"
+								zoom-init="{}"
+								ng-change="controller.changeField('mo-codigo')"
+								canclean>
+							</totvs-field>
+						</div>
+
+						<div class="col-xs-12 col-sm-6" style="padding:10px 0 0 0">
+							<totvs-page-detail-info 
+								class="col-sm-3" 
+								title="{{:: 'l-currency-quote' | i18n: []: 'dts/mcc' }}" 
+								value="{{controller.model.ttCotacaoItem['cotacao-moeda'] | currency: controller.siglaQuoteCurrecy:4}}">
+							</totvs-page-detail-info>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-6">
+							<totvs-field totvs-decimal
+								ng-model="controller.model.ttCotacaoItem['perc-descto']"
+								class="col-md-3"
+								label="{{:: 'l-discount-perc-short' | i18n }}"
+								m-dec="5"
+								ng-maxlength="8"
+								ng-change="controller.changeField('perc-descto')"
+								ng-disabled="controller.enableFields && !controller.enableFields['perc-descto']">
+								<validator key="maxlength">{{:: 'l-invalid-value' | i18n: []: 'dts/mcc' }}</validator>
+							</totvs-field>
+						</div>
+
+						<div class="col-xs-12 col-sm-6" style="padding:0px">
+							<totvs-field totvs-decimal
+								ng-model="controller.model.ttCotacaoItem['valor-descto']"
+								ng-change="controller.changeField('valor-descto')"
+								ng-disabled="controller.enableFields && !controller.enableFields['valor-descto']"
+								class="col-md-3"
+								label="{{:: 'l-discount-value' | i18n }}"
+								m-dec="4"
+								ng-maxlength="16">
+								<validator key="maxlength">{{:: 'l-invalid-value' | i18n: []: 'dts/mcc' }}</validator>
+							</totvs-field>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12 col-sm-12">
+							<totvs-field totvs-select
+								class="col-xs-12 col-sm-6"
+								ng-model="controller.model.ttCotacaoItem['un']"
+								label="{{ 'l-vendor-unit-of-measure' | i18n }}"
+								select-id="un"
+								select-description="descricao"
+								select-match='[{"field":"un", "separator":" - "}, {"field":"descricao"}]'
+								select-service="mcc.tab-unidade.zoom"
+								zoom-service="mcc.tab-unidade.zoom"
+								
+								ng-change="controller.getLastPurchase()"
+								canclean
+								style="padding-right:0px">
+							</totvs-field>
+
+							<button 
+								class="btn btn-default" 
+								style="margin-top:30px"
+								ng-model="controller.model.ttCotacaoItem['un']"
+								zoom
+								zoom-service="mcc.item-unid-compra.zoom"
+								zoom-init="controller.zoomItemFornecInit"
+								tooltip="{{:: 'l-search' | i18n }} {{:: 'l-un' | i18n }} {{:: 'l-vendor-item' | i18n }}">
+								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+							</button>
+						</div>
+					</div>
+
+					<div class="row" ng-show="controller.model.ttCotacaoItem['activeHisFunction']">
+						<div class="col-xs-12 col-sm-12 col-md-12">
+							<totvs-field totvs-select
+								id="contract"
+								class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+								ng-model="controller.model.ttCotacaoItem['manufacturer']"
+								label="{{ 'l-manufacturer' | i18n }}"
+								select-id="cdn-fabrican"
+								select-description="nom-fabrican"
+								select-match='[{"field":"cdn-fabrican", "separator":" - "}, {"field":"nom-fabrican"}]'
+								select-service="mcc.fab-medic-item.zoom"
+								select-init="controller.zoomFabMedicItemInit"
+								zoom-service="mcc.fab-medic-item.zoom"
+								zoom-init="controller.zoomFabMedicItemInit"
+								canclean
+								ng-disabled="!controller.model.ttCotacaoItem['activeHisFunction']">
+							</totvs-field>
+						</div>
+					</div>
+
+					<div class="row" style="margin-top:10px;">
+						<div class="col-xs-12 col-sm-12 col-md-12">
+							<div class="col-sm-6">
+								<div class="field-container ng-scope">
+									<div class="col-sm-12 nopadding">
+										<label class="customLabel" tooltip="{{:: 'l-final-unit-price' | i18n }}" tooltip-placement="top">{{:: 'l-final-unit-price' | i18n }}</label>
+									</div>
+									<div class="col-sm-12 nopadding">
+										<span class="badge">{{controller.model.ttCotacaoItem['pre-unit-for'] | currency: controller.sigla :4 }}</span>
+									</div>
+								</div>
+							</div>
+						
+							<div class="col-sm-3">
+								<div class="field-container ng-scope">
+									<label class="customLabel" tooltip="{{:: 'l-approve-purchase' | i18n }}" tooltip-placement="top">{{:: 'l-approve-purchase' | i18n }}</label>
+									<div class="field-input">
+										<div class="input-group">
+                                            <totvs-field totvs-checkbox
+                                                ng-disabled="controller.model.unlinkedQuotation"
+                                                ng-model="controller.model.ttCotacaoItem['cot-aprovada']"
+                                                t-bsswitch>
+                                            </totvs-field>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xs-12 text-right" style="margin:20px 0 5px">
+						<a class="clickable" ng-click="controller.expandAll()">{{:: 'l-expand-contract-all' | i18n }}</a>
+					</div>
+					<div class="col-xs-12">
+						<accordion close-others="false" id="accordionDetail">
+							<!-- Última Compra -->
+							<accordion-group is-open="false">
+								<accordion-heading id="treta">
+									<div class="row">
+										<a ng-click="controller.detailLastPurchase=!controller.detailLastPurchase">
+											<div class="col-xs-10">{{:: 'l-last-purchase' | i18n}}</div>
+											<div class="col-xs-2 text-right">
+												<i class="pull-right glyphicon"
+													ng-class="{'glyphicon-chevron-down' :  controller.detailLastPurchase,'glyphicon-chevron-right': !controller.detailLastPurchase}">
+												</i>
+											</div>
+										</a>
+									</div>
+								</accordion-heading>
+								<div class="col-xs-12" id="detailLastPurchase">
+                                    <totvs-tabset style="padding-right: 0px;padding-left: 0px">
+                                        <totvs-tab heading="{{:: 'l-last-purchases-vendor' | i18n: []: 'dts/mcc' }}">
+                                            <div class="col-xs-12" style="margin: 10px 0" id="lastpurchvendor"
+                                                 ng-include="'/dts/mcc/html/lastpurchase/lastpurchases.vendor.html'" ></div>
+                                        </totvs-tab>
+                                        <totvs-tab heading="{{:: 'l-last-purchases-item' | i18n: []: 'dts/mcc' }}">
+                                            <div class="col-xs-12" style="margin: 10px 0" id="lastpurchvendor"
+                                                 ng-include="'/dts/mcc/html/lastpurchase/lastpurchases.item.html'" ></div>                         
+                                        </totvs-tab>
+                                    </totvs-tabset>
+								</div>
+							</accordion-group>
+
+							<!-- Financeiro / Fiscal -->
+							<accordion-group is-open="false">
+								<accordion-heading>
+									<div class="row">
+										<a ng-click="controller.detailFinancialFiscal=!controller.detailFinancialFiscal">
+											<div class="col-xs-10">{{:: 'l-financial-fiscal' | i18n}}</div>
+											<div class="col-xs-2 text-right">
+												<i class="pull-right glyphicon"
+													ng-class="{'glyphicon-chevron-down' :  controller.detailFinancialFiscal,'glyphicon-chevron-right': !controller.detailFinancialFiscal}">
+												</i>
+											</div>
+										</a>
+									</div>
+								</accordion-heading>
+								<div class="col-xs-12">
+									<div class="row">
+										<div class="col-xs-12 col-sm-12 col-md-12" style="padding:0px">
+											<totvs-field totvs-select                        
+												ng-model="controller.model.ttCotacaoItem['cod-cond-pag']"
+												label="{{ 'l-pay-cond' | i18n }}"
+												class="col-xs-12 col-md-6"		
+												select-id="cod-cond-pag"
+												select-description="descricao"
+												select-service="mcc.cond-pagto-2.zoom"		
+												zoom-service="mcc.cond-pagto-2.zoom">
+											</totvs-field>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12">
+											<div class="field-container ng-scope">
+												<label class="customLabel" tooltip="{{:: 'l-financial-charges' | i18n }}" tooltip-placement="top">{{:: 'l-financial-charges' | i18n }}</label>
+												<div class="field-input">
+													<div class="input-group">
+                                                        <totvs-field totvs-checkbox
+                                                            ng-model="controller.model.ttCotacaoItem['taxa-financ']"
+                                                            ng-change="controller.changeField('taxa-financ')"
+                                                            ng-disabled="controller.enableFields && !controller.enableFields['taxa-financ']"
+                                                            t-bsswitch>
+                                                        </totvs-field>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-xs-12 col-sm-4">
+												<totvs-field totvs-decimal
+													m-dec="2"
+													a-dec=","
+													a-sep="."
+													class="col-xs-12 col-sm-6"
+													ng-model="controller.model.ttCotacaoItem['valor-taxa']"
+													ng-change="controller.changeField('valor-taxa')"
+													label="{{:: 'l-financial-rate' | i18n }}"
+													ng-disabled="controller.enableFields && !controller.enableFields['valor-taxa']"
+													ng-maxlength="8">
+													<validator key="maxlength">{{:: 'l-invalid-value' | i18n: []: 'dts/mcc' }}</validator>
+												</totvs-field>
+											</div>
+											<div class="col-xs-12 col-sm-4">
+												<totvs-field totvs-decimal
+													m-dec="0"
+													class="col-xs-12 col-sm-6"
+													ng-model="controller.model.ttCotacaoItem['nr-dias-taxa']"
+													ng-change="controller.changeField('nr-dias-taxa')"
+													label="{{:: 'l-financial-rate-days' | i18n }}"
+													ng-disabled="controller.enableFields && !controller.enableFields['nr-dias-taxa']"
+													ng-maxlength="3">
+													<validator key="maxlength">{{:: 'l-invalid-value' | i18n: []: 'dts/mcc' }}</validator>
+												</totvs-field>
+											</div>
+											<div class="col-sm-4"></div>
+										</div>
+
+										<div class="row">
+											<div class="col-xs-12 col-sm-4">
+												<totvs-field totvs-decimal
+													m-dec="2"
+													class="col-xs-12 col-sm-6"
+													ng-model="controller.model.ttCotacaoItem['aliquota-ipi']"
+													ng-change="controller.changeField('aliquota-ipi')"
+													label="{{:: 'l-aliquot-ipi' | i18n }}"
+													ng-disabled="controller.enableFields && !controller.enableFields['aliquota-ipi']"
+													ng-maxlength="6">
+													<validator key="maxlength">{{:: 'l-invalid-value' | i18n: []: 'dts/mcc' }}</validator>
+												</totvs-field>
+											</div>
+											<div class="col-xs-12 col-sm-4" style="padding:10px 30px;">
+												<div class="field-container ng-scope">
+													<label class="customLabel" tooltip="{{:: 'l-included-ipi' | i18n }}" tooltip-placement="top">{{:: 'l-included-ipi' | i18n }}</label>		
+													<div class="field-input">
+														<div class="input-group">
+															<totvs-field totvs-checkbox
+                                                                ng-model="controller.model.ttCotacaoItem['codigo-ipi']"
+                                                                ng-change="controller.changeField('codigo-ipi')"
+                                                                ng-disabled="controller.enableFields && !controller.enableFields['codigo-ipi']"
+                                                                t-bsswitch>
+                                                            </totvs-field>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-sm-4"></div>
+										</div>
+
+										<div class="row">
+											<div class="col-xs-12 col-sm-4">
+												<totvs-field totvs-decimal
+													m-dec="2"
+													a-dec=","
+													a-sep="."
+													class="col-xs-12 col-sm-6"
+													ng-model="controller.model.ttCotacaoItem['aliquota-icm']"
+													label="{{:: 'l-icms-tax' | i18n }}"
+													ng-disabled="controller.enableFields && !controller.enableFields['aliquota-icm']"
+													ng-maxlength="6">
+													<validator key="maxlength">{{:: 'l-invalid-value' | i18n: []: 'dts/mcc' }}</validator>
+												</totvs-field>
+											</div>
+											<div class="col-xs-12 col-sm-4">
+												<field type="combo"
+													ng-model="controller.model.ttCotacaoItem['codigo-icm']"
+													label="{{ 'l-icms' | i18n: []: 'dts/mcc' }}"
+													ng-disabled="controller.enableFields && !controller.enableFields['codigo-icm']">
+													<totvs-options>
+														<totvs-option value="1">{{ 'l-usage' | i18n: []: 'dts/mcc' }}</totvs-option>
+														<totvs-option value="2">{{ 'l-industrialization' | i18n: []: 'dts/mcc' }}</totvs-option>
+													</totvs-options>
+												</field>
+											</div>
+											<div class="col-sm-4"></div>
+										</div>
+
+										<div class="row">
+											<div class="col-xs-4">
+												<totvs-field totvs-decimal
+													m-dec="2"
+													a-dec=","
+													a-sep="."
+													class="col-xs-12 col-sm-6"
+													ng-model="controller.model.ttCotacaoItem['aliquota-iss']"
+													label="{{:: 'l-aliquot-iss' | i18n }}"
+													ng-disabled="controller.enableFields && !controller.enableFields['aliquota-iss']"
+													ng-maxlength="6">
+													<validator key="maxlength">{{:: 'l-invalid-value' | i18n: []: 'dts/mcc' }}</validator>
+												</totvs-field>
+											</div>
+											<div class="col-sm-6"></div>
+										</div>
+									</div>
+								</div>
+							</accordion-group>
+
+							<!-- Frete / Outros -->
+							<accordion-group is-open="false">
+								<accordion-heading>
+									<div class="row">
+										<a ng-click="controller.detailFreightOthers=!controller.detailFreightOthers">
+											<div class="col-xs-10">{{:: 'l-freight-others' | i18n}}</div>
+											<div class="col-xs-2 text-right">
+												<i class="pull-right glyphicon"
+													ng-class="{'glyphicon-chevron-down' :  controller.detailFreightOthers,'glyphicon-chevron-right': !controller.detailFreightOthers}">
+												</i>
+											</div>
+										</a>
+									</div>
+								</accordion-heading>
+								<div class="col-xs-12">
+									<div class="row">
+										<div class="col-xs-12 col-sm-12 col-md-12" style="padding:0px">
+											<totvs-field totvs-select
+												id="carrier"
+												class="col-md-6"
+												ng-model="controller.model.ttCotacaoItem['cod-transp']"
+												label="{{:: 'l-carrier' | i18n }}"
+												select-id="cod-transp"
+												select-description="nome"
+												select-match='[{"field":"cod-transp", "separator": " - "},{"field":"nome"}]'
+												select-service="mpd.transporte.zoom"
+												zoom-service="mpd.transporte.zoom"
+												zoom-valid-search-values="[0]"
+												canclean>
+											</totvs-field>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12 col-sm-4" style="padding:0px">
+											<totvs-field totvs-decimal
+												m-dec="4"
+												a-dec=","
+												a-sep="."
+												class="col-xs-12 col-sm-6"
+												ng-model="controller.model.ttCotacaoItem['valor-frete']"
+												label="{{:: 'l-freight-value' | i18n }}"
+												ng-disabled="controller.enableFields && !controller.enableFields['valor-frete']"
+												ng-maxlength="16">
+												<validator key="maxlength">{{:: 'l-invalid-value' | i18n: []: 'dts/mcc' }}</validator>
+											</totvs-field>											
+										</div>
+										<div class="col-xs-12 col-sm-4" style="padding-top:10px">
+											<div class="field-container ng-scope">
+												<label class="customLabel" tooltip="{{:: 'l-included-freight' | i18n }}" tooltip-placement="top">{{:: 'l-included-freight' | i18n }}</label>
+												<div class="field-input">
+													<div class="input-group">
+														<totvs-field totvs-checkbox
+                                                            ng-model="controller.model.ttCotacaoItem['frete']"
+                                                            ng-disabled="controller.enableFields && !controller.enableFields['frete']"
+                                                            t-bsswitch>
+                                                        </totvs-field>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-4"></div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12 col-sm-4" style="padding:0px">
+											<totvs-field
+												totvs-number
+												ng-model="controller.model.ttCotacaoItem['prazo-entreg']"
+												min="0"
+												max="9999"
+												ng-maxlength="4"
+												label="{{:: 'l-deliverer-time' | i18n }}"
+												class="col-xs-12 col-sm-6 col-md-4"
+												ng-if="controller.typeInformationDelivery == 1">
+												<validator key="maxlength">{{:: 'l-invalid-value' | i18n: []: 'dts/mcc' }}</validator>
+											</totvs-field>
+
+											<field type="date"
+												class="col-xs-12 col-sm-6 col-md-6"
+												ng-model="controller.model.ttCotacaoItem['dt-embarque']"
+												ng-if="controller.typeInformationDelivery == 2"
+												required
+												ng-change="controller.changeDtEmbarque()">
+												<label>{{:: 'l-dt-shipment' | i18n }}</label>
+											</field>
+
+											<field type="date"
+												class="col-xs-12 col-sm-6 col-md-6"
+												ng-model="controller.model.ttCotacaoItem['dt-entrega']"
+												ng-if="controller.typeInformationDelivery == 3"
+												required
+												ng-change="controller.changeDtEntrega()">
+												<label>{{:: 'l-delivery-date' | i18n }}</label>
+											</field>
+										</div>
+										<div class="col-xs-12 col-sm-4" style="padding:0px">
+											<totvs-field
+												totvs-number
+												ng-model="controller.model.ttCotacaoItem['dias-validade']"
+												min="0"
+												max="999"
+												ng-maxlength="3"
+												label="{{:: 'l-validity-days' | i18n }}"
+												class="col-xs-12 col-sm-6 col-md-4">
+												<validator key="maxlength">{{:: 'l-invalid-value' | i18n: []: 'dts/mcc' }}</validator>
+											</totvs-field>
+										</div>
+										<div class="col-xs-12 col-sm-4"></div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12 col-sm-4" style="padding-top:10px">
+											<div class="field-container ng-scope">
+												<label class="customLabel" tooltip="{{:: 'l-quote-readjust' | i18n }}" tooltip-placement="top">{{:: 'l-quote-readjust' | i18n }}</label>
+												<div class="field-input">
+													<div class="input-group">
+														<totvs-field totvs-checkbox
+                                                            ng-model="controller.model.ttCotacaoItem['reajusta-cotacao']"
+                                                            t-bsswitch>
+                                                        </totvs-field>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-4" style="padding-top:10px">
+											<div class="field-container ng-scope">
+												<label class="customLabel" tooltip="{{:: 'l-readjust' | i18n }}" tooltip-placement="top">{{:: 'l-readjust' | i18n }}</label>
+												<div class="field-input">
+													<div class="input-group">
+														<totvs-field totvs-checkbox
+                                                            ng-model="controller.model.ttCotacaoItem['possui-reaj']"
+                                                            t-bsswitch>
+                                                        </totvs-field>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-4"></div>
+									</div>
+									<div ng-show="controller.model.ttCotacaoItem['possui-reaj']">
+										<div class="row" style="padding-top:10px">
+											<div class="col-xs-12" style="padding:0px">
+												<totvs-page-detail-info-group>{{:: 'l-quote-readjust' | i18n: []: 'dts/mcc' }}</totvs-page-detail-info-group>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-xs-12" style="padding:0px">
+												<field type="date"
+													class="col-xs-12 col-sm-6 col-md-2"
+													ng-model="controller.model.priceBaseDate"
+													required>
+													<label>{{:: 'l-base-cost-date' | i18n: []: 'dts/mcc' }}</label>
+												</field>
+											</div>
+										</div>
+										<div class="row" style="padding-top:10px">
+											<div class="col-xs-12">
+												<button ng-click="controller.addQuoteReajust()" class="btn btn-primary" ng-disabled="controller.model.quoteReajust.length > 4"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar</button>
+											</div>
+										</div>
+										<div class="row" style="padding-top:10px">
+											<totvs-list-item
+											id="quoteReajust"
+											ng-class="tab-1"
+											ng-repeat="qr in controller.model.quoteReajust">
+												<totvs-list-item-header>
+													<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-currency' | i18n}}">
+														<totvs-editable value="{{controller.getCurrencyDescription(qr['currency'])}}">
+															<totvs-field totvs-select
+																id="currency_qr$index"
+																class="col-xs-12 col-md-12"
+																ng-model="qr['currency']"
+																label="{{:: 'l-currency' | i18n}}"
+																select-id="mo-codigo"
+																select-description="descricao"
+																select-match='[{"field":"mo-codigo", "separator": " - "},{"field":"descricao"}]'
+																select-service="mpd.moeda.zoom"
+																zoom-service="mpd.moeda.zoom"
+																zoom-valid-search-values="[0]"
+																zoom-init="{}"
+																canclean>
+															</totvs-field>
+														</totvs-editable>
+													</totvs-list-item-info>
+													<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-base-date' | i18n}}">
+														<totvs-editable value="{{qr['indexDate'] | date:'dd/MM/yyyy'}}">
+															<field
+																type="date"
+																class="col-md-12"
+																ng-model="qr['indexDate']"
+																canclean>
+																<label>{{ 'l-base-date' | i18n}}</label>
+															</field>
+														</totvs-editable>
+													</totvs-list-item-info>
+													<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-percentage' | i18n}}">
+														<totvs-editable value="{{qr['percReadjustment']}}">
+															<field
+																type="number"
+																class="col-md-12"
+																ng-model="qr['percReadjustment']"
+																canclean>
+																<label>{{ 'l-percentage' | i18n}}</label>
+															</field>
+														</totvs-editable>
+													</totvs-list-item-info>
+													<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3 text-right">
+														<button ng-click="controller.removeQuoteReajust($index)" class="btn btn-default"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Excluir</button>
+													</totvs-list-item-info>
+												</totvs-list-item-header>
+											</totvs-list-item>
+										</div>
+									</div>
+								</div>
+							</accordion-group>
+
+							<!-- Responsável -->
+							<accordion-group is-open="false">
+								<accordion-heading>
+									<div class="row">
+										<a ng-click="controller.detailOwner=!controller.detailOwner">
+											<div class="col-xs-10">{{:: 'l-owner' | i18n}}</div>
+											<div class="col-xs-2 text-right">
+												<i class="pull-right glyphicon"
+													ng-class="{'glyphicon-chevron-down' :  controller.detailOwner,'glyphicon-chevron-right': !controller.detailOwner}">
+												</i>
+											</div>
+										</a>
+									</div>
+								</accordion-heading>
+								<div class="col-xs-12">
+									<div class="row">
+										<div class="col-xs-12" style="padding:0px">
+											<totvs-field totvs-select
+												class="col-xs-12 col-md-6"
+												ng-model="controller.model.ttCotacaoItem['cod-comprado']"
+												label="{{:: 'l-buyer' | i18n }}"
+												select-id="cod-comprado"
+												select-description="nome"
+												select-match='[{"field":"cod-comprado", "separator":" - "}, {"field":"nome"}]'
+												select-service="mcc.comprador.zoom"
+												zoom-service="mcc.comprador.zoom"
+												ng-change="controller.changeBuyer()"
+												canclean>
+											</totvs-field>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12" style="padding:0px">
+											<totvs-field totvs-select
+												ng-model="controller.model.ttCotacaoItem['contato']"
+												label="{{:: 'l-contact' | i18n}}"
+												select-id="nome"
+												select-description=""
+												select-match='[{"field":"nome"}]'
+												select-service="mpd.cont-emit.zoom"
+												select-init="{codEmit: controller.model.ttCotacaoItem['cod-emitente'], filter: {'cod-emitente': controller.model.ttCotacaoItem['cod-emitente']}, gotomethod: 'gotocontemitbyname'}"
+												zoom-init="{codEmit: controller.model.ttCotacaoItem['cod-emitente'], filter: {'cod-emitente': controller.model.ttCotacaoItem['cod-emitente']}}"
+												zoom-valid-search-values="[]"
+												zoom-service="mpd.cont-emit.zoom"
+												canclean>
+											</totvs-field>
+										</div>
+										
+									</div>
+
+									<div class="row" style="margin-top:10px">
+										<totvs-page-detail-info 
+											class="col-xs-12" 
+											title="{{ 'l-creator' | i18n: []: 'dts/mcc' }}" 
+											value="{{controller.creator}}">
+										</totvs-page-detail-info>
+									</div>
+								</div>
+							</accordion-group>
+
+							<!-- Múltiplas Ordens -->
+							<accordion-group is-open="false">
+								<accordion-heading>
+									<div class="row">
+										<a ng-click="controller.detailMultipleRequests=!controller.detailMultipleRequests">
+											<div class="col-xs-10">{{:: 'l-multiple-requests' | i18n}}</div>
+											<div class="col-xs-2 text-right">
+												<i class="pull-right glyphicon"
+													ng-class="{'glyphicon-chevron-down' :  controller.detailMultipleRequests,'glyphicon-chevron-right': !controller.detailMultipleRequests}">
+												</i>
+											</div>
+										</a>
+									</div>
+								</accordion-heading>
+								<div class="row">
+									<div class="col-xs-12 col-sm-6">
+										<totvs-field totvs-select
+											class="col-xs-12"
+											ng-model="controller.model.compradorMultiplasOrdens"
+											label="{{:: 'l-buyer' | i18n }}"
+											select-id="cod-comprado"
+											select-description="nome"
+											select-match='[{"field":"cod-comprado", "separator":" - "}, {"field":"nome"}]'
+											select-service="mcc.comprador.zoom"
+											zoom-service="mcc.comprador.zoom"
+											canclean>
+										</totvs-field>
+									</div>
+									<div class="col-xs-12 col-sm-6" style="padding-top:30px">
+										<button class="btn btn-default" ng-click="controller.getMultipleRequisitions();">{{:: 'l-get' | i18n}}</button>
+									</div>									
+								</div>
+
+								<div class="col-xs-12 text-center" style="margin-top:20px;">
+									<!-- "mr" = multipleRequisitions -->
+									<totvs-grid 
+										grid-data="controller.multipleRequisitions"
+										grid="controller.mrGrid"
+										grid-height="300"
+										auto-resize-content="true"
+										add-select-column="separate"
+										navigatable="true" 
+										editable="true"
+										resizable="true"
+										sortable="true"										
+										reorderable="true"
+										selectable="multiple,row"
+										grid-selected-item="controller.mrSelectedItem"
+										grid-selected-items="controller.mrSelected"
+										grid-dirty-items="controller.mrDirty"
+										on-edit="controller.mrGridOnEdit(event, column)"
+										on-save="controller.mrGridOnSave(event, column, value, currentIndex, original)"
+										on-change="controller.mrGridOnChange(event)">
+										<totvs-grid-column field="numero-ordem" width="200">
+											{{:: 'l-purchase-orderline' | i18n: []: 'dts/mcc' }}
+										</totvs-grid-column>
+
+										<totvs-grid-column field="qt-solic" class="text-right" filter="number:4" width="200">
+											{{:: 'l-quantity' | i18n: []: 'dts/mcc' }}
+										</totvs-grid-column>
+
+										<totvs-grid-column field="data-entrega" filter="date:dd/MM/yyyy" width="200">
+											{{:: 'l-delivery-date' | i18n: []: 'dts/mcc' }}
+										</totvs-grid-column>
+
+										<totvs-grid-column field="situacao-desc" width="200">
+											{{:: 'l-status' | i18n: []: 'dts/mcc' }}
+										</totvs-grid-column>
+
+										<totvs-grid-column field="cod-estabel" class="text-right" width="200">
+											{{:: 'l-site-short' | i18n: []: 'dts/mcc' }}
+										</totvs-grid-column>
+									</totvs-grid>
+								</div>
+
+								<div class="col-xs-12">
+									<div class="row">
+										<div class="col-xs-12" style="padding:0px">
+											<field type="textarea"
+												class="col-xs-12"
+												ng-model="controller.mrComments">
+												<label>{{:: 'l-supplementary-description' | i18n }}</label>
+											</field>
+										</div>
+									</div>
+								</div>
+							</accordion-group>
+
+							<!-- Comentários -->
+							<accordion-group is-open="false">
+								<accordion-heading>
+									<div class="row">
+										<a ng-click="controller.detailComments=!controller.detailComments">
+											<div class="col-xs-10">{{:: 'l-comments' | i18n}}</div>
+											<div class="col-xs-2 text-right">
+												<i class="pull-right glyphicon"
+													ng-class="{'glyphicon-chevron-down' :  controller.detailComments,'glyphicon-chevron-right': !controller.detailComments}">
+												</i>
+											</div>
+										</a>
+									</div>
+								</accordion-heading>
+								<div class="col-xs-12">
+									<div class="row">
+										<div class="col-xs-12" style="padding:0px">
+											<field type="textarea"
+												class="col-xs-12"
+												ng-model="controller.model.ttCotacaoItem['narrativa']"
+												maxlength="2000">
+												<label>{{:: 'l-comments' | i18n }}</label>
+											</field>
+										</div>
+									</div>
+								</div>
+							</accordion-group>
+
+							<!-- Importação -->
+							<accordion-group is-open="false" ng-if="controller.importQuotation">
+								<accordion-heading>
+									<div class="row">
+										<a ng-click="controller.detailImport=!controller.detailImport">
+											<div class="col-xs-10">{{:: 'l-import' | i18n}}</div>
+											<div class="col-xs-2 text-right">
+												<i class="pull-right glyphicon"
+													ng-class="{'glyphicon-chevron-down' :  controller.detailImport,'glyphicon-chevron-right': !controller.detailImport}">
+												</i>
+											</div>
+										</a>
+									</div>
+								</accordion-heading>
+								<div class="col-xs-12">
+									<div class="row">
+										<div class="col-xs-12 col-sm-6" style="padding:0px">
+											<field type="input"
+												class="col-xs-12"
+												ng-model="controller.model.ttCotacaoItem['mapa-cotacao']"
+												ng-disabled="controller.enableFields && !controller.enableFields['mapa-cotacao']">
+												<label>{{:: 'l-quotation-map' | i18n }}</label>
+											</field>
+										</div>
+										<div class="col-xs-12 col-sm-6" style="padding:0px">
+											<totvs-field totvs-select
+												class="col-xs-12"
+												ng-model="controller.model.ttCotacaoItem['cod-incoterm']"
+												label="{{:: 'l-incoterm' | i18n }}"
+												select-id="cod-incoterm"
+												select-match='[{"field":"cod-incoterm", "separator": " - "},{"field":"descricao"}]'
+												select-service="mpd.inco-cx.zoom"
+												zoom-service="mpd.inco-cx.zoom"
+												canclean>
+											</totvs-field>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12 col-sm-6" style="padding:0px">
+											<totvs-field totvs-select
+												class="col-md-12"
+												ng-model="controller.model.ttCotacaoItem['Cod-pto-contr-base']"
+												label="{{:: 'l-base-control-point' | i18n }}"
+												select-id="cod-pto-contr"
+												select-match='[{"field":"cod-pto-contr", "separator": " - "},{"field":"descricao"}]'
+												select-service="mpd.pto-contr.zoom"
+												zoom-service="mpd.pto-contr.zoom"
+												canclean>
+											</totvs-field>
+										</div>
+										<div class="col-xs-12 col-sm-6" style="padding:0px">
+											<totvs-field totvs-select
+												class="col-md-12"
+												label="{{ 'l-manufacturer' | i18n }}"
+												ng-model="controller.model.ttCotacaoItem['cdn-fabrican']"
+												select-init="{gotomethod: 'gotocodemitente'}"
+												select-id="cod-emitente"
+												select-description="nome-abrev"
+												select-service="mpd.emitente.zoom"
+												zoom-service="mpd.emitente.zoom"
+												canclean>
+											</totvs-field>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12 col-sm-6" style="padding:0px">
+											<totvs-field totvs-select
+												class="col-md-12"
+												ng-model="controller.model.ttCotacaoItem['cdn-pais-orig']"
+												label="{{:: 'l-source-country' | i18n }}"
+												select-id="cod-pais"
+												select-description="nome-pais"
+												select-init="{gotomethod: ''}"
+												select-service="mpd.pais.zoom"
+												zoom-service="mpd.pais.zoom"
+												ng-change="controller.changeFieldImport('cdn-pais-orig')"
+												canclean>
+											</totvs-field>
+										</div>
+										<div class="col-xs-12 col-sm-6" style="padding:0px">
+											<totvs-field totvs-select
+												class="col-md-12"
+												ng-model="controller.model.ttCotacaoItem['Class-fiscal']"
+												label="{{:: 'l-tax-classification' | i18n }}"
+												select-id="class-fiscal"
+												select-description="descricao"
+												select-service="mpd.classif-fisc.zoom"
+												zoom-service="mpd.classif-fisc.zoom"
+												ng-disabled="controller.enableFields && !controller.enableFields['Class-fiscal']"
+												ng-change="controller.changeFieldImport('class-fiscal')"
+												canclean>
+											</totvs-field>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-12 col-sm-6" style="padding:0px">
+											<totvs-field totvs-select
+												class="col-md-12"
+												ng-model="controller.model.ttCotacaoItem['Regime-impot']"
+												label="{{:: 'l-import-system' | i18n}}"
+												select-id="regime-import"
+												select-description="des-regim-import"
+												select-match='[{"field":"regime-import", "separator":" - "}, {"field":"des-regim-import"}]'
+												select-service="mcc.pais-aliquota.zoom"
+												select-init="{filter: {'class-fiscal': controller.model.ttCotacaoItem['Class-fiscal'],
+												'cod-pais': controller.model.ttCotacaoItem['cdn-pais-orig']}}"
+												zoom-service="mcc.pais-aliquota.zoom"
+												zoom-init="{filter: {'class-fiscal': controller.model.ttCotacaoItem['Class-fiscal'],
+												'cod-pais': controller.model.ttCotacaoItem['cdn-pais-orig']}}"
+												ng-change="controller.changeFieldImport('regime-impot')"
+												canclean>
+											</totvs-field>
+										</div>
+										<div class="col-xs-12 col-sm-6" style="padding:0px">
+											<div class="col-xs-12 col-sm-6" style="padding:0px">
+												<totvs-field totvs-decimal
+													m-dec="2"
+													class="col-xs-12 col-sm-6"
+													ng-model="controller.model.ttCotacaoItem['aliquota-ii']"
+													label="{{:: 'l-aliquot-ii' | i18n }}"
+													ng-maxlength="6">
+													<validator key="maxlength">{{:: 'l-invalid-value' | i18n: []: 'dts/mcc' }}</validator>
+												</totvs-field>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-12 col-sm-6" style="padding:0px">
+											<totvs-field totvs-select
+												class="col-md-12"
+												ng-model="controller.model.ttCotacaoItem['itinerario']"
+												label="{{:: 'l-itinerary' | i18n }}"
+												select-id="cod-itiner"
+												select-match='[{"field":"cod-itiner", "separator": " - "},{"field":"descricao"}]'
+												select-service="mpd.itinerario.zoom"
+												zoom-service="mpd.itinerario.zoom"
+												canclean
+												ng-disabled="controller.enableFields && !controller.enableFields['itinerario']">
+											</totvs-field>
+										</div>
+										<div class="col-xs-12 col-sm-6" style="padding-top:10px">
+											<div class="field-container ng-scope">
+												<label class="customLabel" tooltip="{{:: 'l-expense-automatic-generation' | i18n }}" tooltip-placement="top">{{:: 'l-expense-automatic-generation' | i18n }}</label>
+												<div class="field-input">
+													<div class="input-group">
+														<totvs-field totvs-checkbox
+                                                            ng-model="controller.model.ttCotacaoItem['log-gerac-autom-despes']"
+                                                            t-bsswitch>
+                                                        </totvs-field>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</accordion-group>
+						</accordion>
+					</div>
+				</form>
+			</fieldset>
+		</totvs-page-form>
+	</totvs-page-content>
+</totvs-page>

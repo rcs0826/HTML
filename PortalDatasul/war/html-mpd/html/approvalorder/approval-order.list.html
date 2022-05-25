@@ -1,0 +1,124 @@
+<totvs-page type="list" totvs-custom-element="customPage">
+    <style type="text/css" scoped>    
+        .page-head .page-tags .tag-7:before {            
+            background-color: #703593;
+            content: "7";
+        }
+        .page-content .list-item.tag-7 {            
+            border-left: 5px solid #703593;
+        }
+    </style>                    
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{'l-initial-page' | i18n}}</breadcrumb>
+            <breadcrumb>{{'l-aprov-ped-venda' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>         
+        <totvs-page-header>
+            
+            <totvs-page-header-title class="col-lg-7 col-md-7 col-sm-7 col-xs-12" style="margin-right: 0px; margin-left: -30px; padding-top: 10px;" title="{{'l-aprov-ped-venda' | i18n}}" total="{{controller.totalRecords}}"></totvs-page-header-title>            
+            <totvs-page-header-operation>                                                          
+                <totvs-page-header-operation-filter placeholder="{{ 'l-search' | i18n }}"
+                                                    ng-submit="controller.search();"
+                                                    ng-model="controller.quickSearchText"
+                                                    advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>                
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers disclaimer-list="controller.filterBy" ng-click="controller.removeSelectedFilter"></totvs-page-disclaimers>
+            
+            <totvs-page-tags>
+				<tag class="tag-1 btn btn-link" 
+                     ng-click="controller.setQuickFilter(1)">{{'l-cod-sit-ped-1' | i18n}}</tag>
+				<tag class="tag-2 btn btn-link" 
+                     ng-click="controller.setQuickFilter(2)">{{'l-cod-sit-ped-2' | i18n}}</tag>
+				<tag class="tag-3 btn btn-link" 
+                     ng-click="controller.setQuickFilter(3)">{{'l-cod-sit-ped-3' | i18n}}</tag>
+                <tag class="tag-4 btn btn-link" 
+                     ng-click="controller.setQuickFilter(4)">{{'l-cod-sit-ped-4' | i18n}}</tag>
+                <tag class="tag-5 btn btn-link" 
+                     ng-click="controller.setQuickFilter(5)">{{'l-cod-sit-ped-5' | i18n}}</tag>
+                <tag class="tag-6 btn btn-link" 
+                     ng-click="controller.setQuickFilter(6)">{{'l-cod-sit-ped-6' | i18n}}</tag>
+                <tag class="tag-7 btn btn-link" 
+                     ng-click="controller.setQuickFilter(7)">{{'l-cod-sit-ped-7' | i18n}}</tag>                
+			</totvs-page-tags>
+            
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers"
+                                   ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+            
+        </totvs-page-header>     
+    </totvs-page-navbar>     
+    <totvs-page-content> 
+                    
+        <totvs-list-item ng-repeat="orderapprovallist in controller.listResult"
+                         totvs-custom-element="customListItem"
+                         ng-class="{'tag-1':orderapprovallist.situacao == 'Aberto',
+                                    'tag-2':orderapprovallist.situacao == 'Atendido Parcial',
+                                    'tag-3':orderapprovallist.situacao == 'Atendido Total',
+                                    'tag-4':orderapprovallist.situacao == 'Pendente',
+                                    'tag-5':orderapprovallist.situacao == 'Suspenso',
+                                    'tag-6':orderapprovallist.situacao == 'Cancelado',
+                                    'tag-7':orderapprovallist.situacao == 'Fatur Balcão'}"
+                         ng-if="true">
+            <totvs-list-item-header>
+                                                                             
+                <totvs-list-item-title link="teste"
+                                       title="{{orderapprovallist['nr_pedcli']}}">
+                </totvs-list-item-title>        
+                               
+                <totvs-list-item-action ng-show="true" limit-primary-action="1">                    
+                    <action ng-click="controller.openModalSavaAndSendTask(orderapprovallist)" icon="glyphicon-ok">{{ 'Aprovação' | i18n }}</action>
+                    <action link="#/dts/mpd/orderhistory/{{orderapprovallist['nr_pedido']}}" icon="glyphicon-minus">{{ 'Histórico do Pedido' | i18n }}</action>
+                    <action ng-click="controller.removeOrder(orderapprovallist)" icon="glyphicon-minus">{{ 'Excluir Pedido' | i18n }}</action>
+                </totvs-list-item-action>
+                                                            
+                <!--    
+                <totvs-list-item-action limit-primary-action="0" ng-click="controller.getTaskOptionsToOrder(orderapprovallist)">                                       
+                     <action ng-if="controller.showNegociate"   ng-click="controller.openNegotiate(orderapprovallist)" icon="glyphicon-ok">{{orderapprovallist.option1}}</action>
+                     <action ng-if="controller.showApproved"    ng-click="controller.openApproved(orderapprovallist)" icon="glyphicon-ok">{{orderapprovallist.option2}}</action>
+                     <action ng-if="controller.showDisapproved" ng-click="controller.openDisapproved(orderapprovallist)" icon="glyphicon-ok">{{orderapprovallist.option3}}</action>                     
+                     <action ng-if="controller.showTransfer"    ng-click="controller.openTransfer(orderapprovallist)" icon="glyphicon-ok">{{orderapprovallist.option4}}</action>                           
+                </totvs-list-item-action>
+                -->
+                                                                                                                                                                                                                           
+            </totvs-list-item-header>
+            
+            <totvs-list-item-content>
+            <totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-nr-pedido' | i18n}}">{{orderapprovallist['nr_pedido']}}</totvs-list-item-info>
+            <totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-customer' | i18n}}">{{orderapprovallist['nome_abrev']}}</totvs-list-item-info>
+            <totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-nome-ab-rep' | i18n}}">{{orderapprovallist['representante']}}</totvs-list-item-info>
+            <totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-vl-aberto' | i18n}}">{{orderapprovallist['vl_aberto'] | number: 2}}</totvs-list-item-info>
+            <totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-desconto' | i18n}}">{{orderapprovallist['desconto'] | number: 2}}</totvs-list-item-info>
+            <totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-rentabilidade' | i18n}}">{{orderapprovallist['rentabilidade'] | number: 2}}</totvs-list-item-info>
+            <totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-dt-emissao' | i18n}}">{{orderapprovallist['dt_emis'] | date : ('l-date-format' | i18n) : 'UTC' }}</totvs-list-item-info>
+            <totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-status' | i18n}}">{{orderapprovallist['situacao']}}</totvs-list-item-info>
+            <totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-cod-sit-aval' | i18n}}">{{orderapprovallist['aval_credito']}}</totvs-list-item-info>
+            <totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-cod-sit-com' | i18n}}">{{orderapprovallist['aval_comerc']}}</totvs-list-item-info>
+            </totvs-list-item-content>
+                                              
+            <totvs-list-item-content-detail open="controller.getOrderItens(orderapprovallist)">	
+				<totvs-list-item ng-repeat="orderapprovallist in orderapprovallist.orderItens">
+					<totvs-list-item-content>
+                        <!--
+                        <img class="col-xs-2" alt="tst" ng-if="item.nomImagem" ng-src="/dts/mpd/resource/product/imagem?image={{item.nomImagem}}">
+                        -->
+                        <totvs-list-item-info title="{{'l-sequencia'|i18n}}" class="col-xs col-sm-3 col-md-4">{{orderapprovallist['nr_sequencia']}}</totvs-list-item-info>
+                        <totvs-list-item-info title="{{'l-cod-item'|i18n}}" class="col-xs col-sm-3 col-md-4">{{orderapprovallist['it_codigo']}}</totvs-list-item-info>
+                        <totvs-list-item-info title="{{'l-descricao'|i18n}}" class="col-xs col-sm-3 col-md-4">{{orderapprovallist['descricao']}}</totvs-list-item-info>
+                        <totvs-list-item-info title="{{'l-quantity'|i18n}}" class="col-xs col-sm-3 col-md-4">{{orderapprovallist['qt_pedida'] | number: 4}}</totvs-list-item-info>
+                        <totvs-list-item-info title="{{'l-original-price'|i18n}}" class="col-xs col-sm-3 col-md-4">{{orderapprovallist['vl_preori'] | number: 2}}</totvs-list-item-info>
+                        <totvs-list-item-info title="{{'l-desconto'|i18n}}" class="col-xs col-sm-3 col-md-4">{{orderapprovallist['per_des_item'] | number: 2}}</totvs-list-item-info>
+                        <totvs-list-item-info title="{{'l-net-price'|i18n}}" class="col-xs col-sm-3 col-md-4">{{orderapprovallist['vl_liq_it'] | number: 2}}</totvs-list-item-info>
+                        <totvs-list-item-info title="{{'l-status'|i18n}}" class="col-xs col-sm-3 col-md-4">{{orderapprovallist['cod_sit_item']}}</totvs-list-item-info>
+                                                                     						                        
+					</totvs-list-item-content>
+				</totvs-list-item>			
+			</totvs-list-item-content-detail>
+   
+        </totvs-list-item>       
+        <totvs-list-pagination ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+                               ng-click="controller.loadMore();">
+        </totvs-list-pagination>   
+         
+    </totvs-page-content>      
+</totvs-page>

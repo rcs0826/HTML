@@ -1,0 +1,140 @@
+<totvs-page>
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-generate-order-solic' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+			<totvs-page-header-title title="{{ 'l-generate-order-solic' | i18n }} ({{controller.labelTotalRecords}})"></totvs-page-header-title>
+			<totvs-page-header-operation>
+				<div class="col-md-5 col-sm-5 col-xs-5">
+					<button type="button" 
+							class="btn btn-danger" 
+							style="margin-top:  10px;" 
+							data-ng-click="controller.cancelar();">
+							<i class="glyphicon glyphicon-remove"></i>
+							{{ 'l-cancel' | i18n }}
+					</button>
+					<button type="button" 
+							class="btn btn-primary" 
+							style="margin-top:  10px;" 
+							data-ng-click="controller.generateOM();">
+							{{ 'l-generating-maintenance-order' | i18n }}
+					</button>
+
+
+				</div>
+				<field  type="select"
+						ng-model="controller.paramSearchSelect"
+						class="row field-label col-lg-2 col-md-2 col-sm-2 col-xs-6"
+						ng-change="controller.clickParam()"
+						style="margin-top:  5px;">
+					<include>
+						<ui-select-match placeholder="{{ 'l-selected' | i18n }}">{{controller.paramSearchSelect.nmParam}}</ui-select-match>
+						<ui-select-choices repeat="param in controller.paramSearch track by $index">
+							<span data-ng-bind-html="param.nmParam | highlight: $select.search"></span>
+						</ui-select-choices>
+					</include>
+				</field>
+				<totvs-page-header-operation-filter
+					placeholder="{{ 'l-search-text' | i18n }}"
+					ng-submit="controller.quickSearch()"
+					ng-model="controller.quickSearchText"
+                    advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+			</totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-detail>
+			<div class="col-md-12 col-sm-12 col-lg-12" ng-style="controller.alturaGrid()">
+				<totvs-grid
+                    add-select-column="separate"
+                    on-change="controller.seleciona(event)"
+					grid="controller.gridOrder"
+					grid-data="controller.listOrder"	
+					grid-selected-item="controller.selectedOrder"
+					navigatable="true"
+					selectable="multiple,row"
+					scrollable="true"
+					resizable="true"
+					sortable="true"
+					auto-resize-content="false">
+					<totvs-grid-column width="32" field="detail" style="text-align: center">
+						<template>
+							<a class="glyphicon glyphicon-pencil btn-default" 
+								style="cursor: pointer"
+								data-toggle="tooltip" 
+								title="{{ 'l-edit-solicitation' | i18n}}"
+								ng-click="controller.openEdit(dataItem)"></a>
+						</template>
+					</totvs-grid-column>
+					<totvs-grid-column width="32" field="detail" style="text-align: center">
+						<template>
+							<a class="glyphicon glyphicon-list-alt btn-default" 
+								style="cursor: pointer"
+								data-toggle="tooltip" 
+								title="{{ 'l-ss-detail-program' | i18n}}"
+								ng-click="controller.openDetail(dataItem)"></a>
+						</template>
+					</totvs-grid-column>
+					<totvs-grid-column field="nrSoliServ" style="text-align: right" width="120px">{{'l-solic-serv' | i18n}}</totvs-grid-column>
+					<totvs-grid-column field="descricao" width="350px">{{'l-description' | i18n}}</totvs-grid-column>
+					<totvs-grid-column field="cd-equipto" width="160px">{{'l-equipment' | i18n}}</totvs-grid-column>
+					<totvs-grid-column field="ep-codigo" width="80px">{{'l-company' | i18n}}</totvs-grid-column>
+					<totvs-grid-column field="cod-estabel" width="130px">{{'l-site' | i18n}}</totvs-grid-column>
+					<totvs-grid-column field="cod-unid-negoc" width="80px">{{'l-un-neg' | i18n}}</totvs-grid-column>        
+					<totvs-grid-column field="cd-tag" width="160px">{{'l-tag' | i18n}}</totvs-grid-column>
+					<totvs-grid-column field="fm-equipto" width="80px">{{'l-family' | i18n}}</totvs-grid-column>
+					<totvs-grid-column field="dataStr" width="115px">{{'l-opening-date' | i18n}}</totvs-grid-column>
+					<totvs-grid-column field="hora" width="115px">{{'l-opening-time' | i18n}}</totvs-grid-column>
+					<totvs-grid-column field="cc-codigo" width="160px">{{'l-cc-codigo' | i18n}}</totvs-grid-column>
+					<totvs-grid-column field="nome-usua" width="130px">{{'l-user' | i18n}}</totvs-grid-column>
+					<totvs-grid-column field="cd-manut" width="160px">{{'l-maintenance' | i18n}}</totvs-grid-column>
+					<totvs-grid-column field="dtInicioStr" width="115px">{{'l-start-date' | i18n}}</totvs-grid-column>
+					<totvs-grid-column field="dtTerminoStr" width="115px">{{'l-end-date' | i18n}}</totvs-grid-column>
+					<totvs-grid-column field="prioridade" style="text-align: right" width="100px">{{'l-priority' | i18n}}</totvs-grid-column>
+					<totvs-grid-column field="cd-equip-res" width="120px">{{'l-equipe' | i18n}}</totvs-grid-column>
+					<totvs-grid-column field="cd-planejado" width="120px">{{'l-planner' | i18n}}</totvs-grid-column>
+				</totvs-grid>
+			</div>
+			<div class="col-md-12 col-sm-12 col-lg-12">
+				<div class="more-results ng-scope" ng-if="controller.paginate && controller.listOrder.length > 1" ng-click="controller.doSearch(true)" >
+					<a class="btn btn-primary col-xs-12 ng-binding">{{ 'l-displaying' | i18n }} {{ controller.totalRecords }} {{ 'l-results' | i18n }}. {{ 'msg-click-to-get-more' | i18n }}.</a>
+					</div>
+				<div class="more-results ng-scope" ng-if="controller.paginate && controller.listOrder.length === 1" ng-click="controller.doSearch(true)" >
+					<a class="btn btn-primary col-xs-12 ng-binding">{{ 'l-displaying' | i18n }} {{ controller.totalRecords }} {{ 'l-result-lower' | i18n }}. {{ 'msg-click-to-get-more' | i18n }}.</a>
+				</div>
+				<div class="more-results ng-scope" ng-if="controller.totalRecords > 0 && !controller.paginate && controller.listOrder.length > 0 && controller.totalRecords > 1" ng-href="#" >
+					<a ng-disabled="true" class="btn btn-primary col-xs-12 ng-binding">{{ 'l-total-of' | i18n }} {{ controller.totalRecords }} {{ 'l-results-found' | i18n }}.</a>
+				</div>
+				<div class="more-results ng-scope" ng-if="controller.totalRecords > 0 && !controller.paginate && controller.listOrder.length > 0 && controller.totalRecords == 1" ng-href="#" >
+					<a ng-disabled="true" class="btn btn-primary col-xs-12 ng-binding">{{ 'l-total-of' | i18n }} {{ controller.totalRecords }} {{ 'l-result-found' | i18n }}.</a>
+				</div>
+				<totvs-list-pagination
+					ng-if="controller.listOrder.length < controller.totalRecords && controller.listOrder.length"
+					ng-click="controller.doSearch(true)">
+				</totvs-list-pagination>
+			</div>
+		</totvs-page-detail>
+	</totvs-page-content>
+</totvs-page>
+
+<style>
+    .k-grid-content::-webkit-scrollbar {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .k-grid-content::-webkit-scrollbar-track-piece {
+        background: #f0f0f0;
+    }
+    
+    .k-grid-content::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+</style>
+	

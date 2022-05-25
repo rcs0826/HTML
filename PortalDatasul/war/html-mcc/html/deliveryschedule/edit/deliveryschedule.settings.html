@@ -1,0 +1,62 @@
+<style type="text/css">
+  h5{
+    margin: 0 !important;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+  }
+  .form-horizontal > div, .form-horizontal > totvs-field{
+    margin-bottom: 10px;
+  }
+  
+</style>
+<totvs-modal-header>
+    {{ 'l-set-rules' | i18n }} 
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <div class="row">
+  		<form class="form-horizontal" role="form">
+          <div class="col-xs-12">
+              <h5>{{ 'l-parameters-for-validation' | i18n: []: 'dts/mcc' }}</h5>  
+          </div>
+          <totvs-field totvs-date-range class="col-xs-12 col-sm-12 col-md-8 col-lg-8"
+            ng-model="controller.model.intervalDeliveryDate"
+            label="{{ 'l-interval-delivery-date' | i18n: []: 'dts/mcc' }}">
+          </totvs-field>
+          <div class="col-xs-12">
+            <span class="span-label">{{ 'l-allow-minor-minimum-lot' | i18n: []: 'dts/mcc' }}</span>
+            <br>
+            <input type="checkbox"
+                ng-model="controller.model.allowMinimumLot"
+                bsswitch
+                class="col-sm-3">                
+            </input>
+          </div>
+
+          <div class="col-xs-12">
+            <span class="span-label">{{ 'l-allow-minor-multiple-lot' | i18n: []: 'dts/mcc' }}</span>
+            <br>
+            <input type="checkbox"
+                ng-model="controller.model.allowDifferentMultipleLot"
+                bsswitch
+                class="col-sm-3">                
+            </input>
+          </div>
+
+          <div class="col-xs-12">
+            <span class="span-label">{{ 'l-export-client-deliveries' | i18n: []: 'dts/mcc' }}</span>
+            <br>
+            <input type="checkbox"
+                ng-model="controller.model.exportSchedule"
+                bsswitch
+                class="col-sm-3">                
+            </input>
+          </div>
+        </form> 
+    </div>      
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()">{{ 'l-apply' | i18n }}</button>
+</totvs-modal-footer>

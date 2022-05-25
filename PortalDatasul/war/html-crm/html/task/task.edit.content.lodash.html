@@ -1,0 +1,538 @@
+<totvs-page-detail class="row crm-page-details"
+				   ng-if="controller.editMode === true">
+
+	<div class="col-xs-12 no-gutter">
+
+		<totvs-page-detail-info
+			class="col-xs-12 col-sm-6 col-md-4"
+			title="{{ 'l-campaign' | i18n: []: 'dts/crm' }}"
+			value="{{controller.model.ttCampanha.nom_campanha}}"
+			value-break="false">
+		</totvs-page-detail-info>
+
+		<totvs-page-detail-info
+			class="col-xs-12 col-sm-6 col-md-4"
+			title="{{ 'l-objective' | i18n: []: 'dts/crm' }}"
+			value="{{controller.model.ttObjetivo.nom_objet_acao}}"
+			value-break="false">
+		</totvs-page-detail-info>
+
+		<totvs-page-detail-info
+			class="col-xs-12 col-sm-6 col-md-4"
+			title="{{ 'l-account' | i18n: []: 'dts/crm' }}"
+			value-break="false">
+
+			<span ng-if="controller.model.ttConta.log_matriz"
+				  class="glyphicon glyphicon-globe">
+			</span>
+
+			<span ng-if="controller.model.ttConta.log_acesso !== true">
+				<span class="glyphicon glyphicon-lock"></span> &nbsp;
+			</span>
+
+			{{ controller.model.ttConta.nom_razao_social }}
+			{{ (controller.model.ttConta.cod_pessoa_erp ? '(' + controller.model.ttConta.cod_pessoa_erp + ')' : '') }}
+
+		</totvs-page-detail-info>
+
+	</div>
+
+</totvs-page-detail>
+
+<fieldset ng-class="{ 'row' : controller.isModal }"
+		  ng-if="controller.editMode !== true">
+
+	<field type="select"
+		   canclean="undefined"
+		   ng-required="true"
+		   ng-model="controller.model.ttConta"
+		   ng-change="controller.onChangeAccount()"
+		   ng-disabled="!controller.canOverrideAccount">
+
+		<zoom zoom-selected="controller.onChangeAccount(selected)" zoom-service="crm.crm_pessoa.conta.zoom"></zoom>
+
+		<label>{{ 'l-account' | i18n: []: 'dts/crm' }}</label>
+
+		<include>
+			<ui-select-match placeholder="{{ 'l-account' | i18n: []: 'dts/crm' }}">
+				<span>
+					<span ng-class="{'glyphicon glyphicon-lock': !$select.selected.log_acesso}"></span>
+					<span ng-class="{'glyphicon glyphicon-globe': $select.selected.log_matriz}"></span>
+					{{ $select.selected.nom_razao_social }} {{ $select.selected.cod_pessoa_erp ? ' (' + $select.selected.cod_pessoa_erp + ')' : '' }}
+				</span>
+			</ui-select-match>
+			<ui-select-choices repeat="account in controller.accounts track by $index"
+							   refresh="controller.getAccounts($select.search)"
+							   refresh-delay="500">
+				<span ng-if="!account.log_acesso"
+					  class="glyphicon glyphicon-lock">
+				</span>
+				<span ng-if="account.log_matriz"
+					  class="glyphicon glyphicon-globe">
+				</span>
+				<span ng-bind-html="account.nom_razao_social + (account.cod_pessoa_erp ? ' (' + account.cod_pessoa_erp + ')' : '') | highlight: $select.search"></span>
+			</ui-select-choices>
+		</include>
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+	</field>
+
+	<% if ((!data["l-contact"] || data["l-contact"].log_visivel === true)) { %>
+	<field type="select"
+		   ng-change="controller.onChangeContact()"
+		 <% if ((!data["btn-new-contact"] || data["btn-new-contact"].log_visivel === true)) { %>
+		   class="col-xs-11 col-md-5"
+		   <% } %>
+		   canclean="undefined"
+		 <% if ((!data["l-contact"] || data["l-contact"].log_editavel === true)) { %>
+		   ng-disabled="!controller.model.ttConta"
+		   <% } else { %>
+			   ng-disabled="true"
+		   <% } %>
+		   ng-model="controller.model.ttContato">
+
+		<label>{{ 'l-contact' | i18n: []: 'dts/crm' }}</label>
+
+		<include>
+			<ui-select-match placeholder="{{ 'l-contact' | i18n: []: 'dts/crm' }}">
+				<span>
+					<span ng-class="{'glyphicon glyphicon-lock': !$select.selected.log_acesso}"></span>
+					&nbsp;{{ $select.selected.nom_razao_social }} {{ $select.selected.cod_pessoa_erp ? ' (' + $select.selected.cod_pessoa_erp + ')' : '' }}
+				</span>
+			</ui-select-match>
+			<ui-select-choices repeat="contact in controller.contacts | filter: $select.search track by $index">
+				<span ng-if="!contact.log_acesso" class="glyphicon glyphicon-lock">&nbsp;</span>
+				<span ng-bind-html="contact.nom_razao_social + (contact.cod_pessoa_erp ? ' (' + contact.cod_pessoa_erp + ')' : '') | highlight: $select.search"></span>
+			</ui-select-choices>
+		</include>
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+	</field>
+
+	<% if ((!data["btn-new-contact"] || data["btn-new-contact"].log_visivel === true)) { %>
+	<div class="col-xs-1 col-md-1 crm-field-extra-button">
+		<button class="btn btn-default"
+				ng-click="controller.newAccountContact();"
+				ng-disabled="!controller.model.ttConta">
+			<span class="glyphicon glyphicon-plus"></span>
+		</button>
+	</div>
+	<% } %>
+
+	<% } %>
+
+</fieldset>
+
+<totvs-divider ng-class="[(controller.editMode === true ? 'crm-remove-margin-top' : '')]"></totvs-divider>
+
+<fieldset ng-class="{ 'row' : controller.isModal }">
+
+	<field type="select"
+		   canclean="undefined"
+		   ng-required="true"
+		   ng-model="controller.model.ttCampanha"
+		   ng-change="controller.onChangeCampaign()"
+		   ng-disabled="!controller.canOverrideCampaign"
+		   ng-if="controller.editMode !== true">
+
+		<label>{{ 'l-campaign' | i18n: []: 'dts/crm' }}</label>
+
+		<include>
+			<ui-select-match placeholder="{{ 'l-campaign' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_campanha }}</ui-select-match>
+			<ui-select-choices repeat="campaign in controller.campaigns | filter: $select.search track by $index">
+				<span ng-bind-html="campaign.nom_campanha | highlight: $select.search"></span>
+			</ui-select-choices>
+		</include>
+
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+	</field>
+
+	<field type="select"
+		   canclean="undefined"
+		   ng-required="true"
+		   ng-model="controller.model.ttAcao"
+		   ng-change="controller.onChangeAction()"
+		   ng-disabled="!controller.model.ttCampanha || !controller.canOverrideAction"
+		   ng-if="controller.editMode !== true">
+
+		<label>{{ 'l-action' | i18n: []: 'dts/crm' }}</label>
+
+		<include>
+			<ui-select-match placeholder="{{ 'l-action' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_acao }}</ui-select-match>
+			<ui-select-choices repeat="action in controller.actions | filter: $select.search track by $index">
+				<span ng-bind-html="action.nom_acao | highlight: $select.search"></span>
+			</ui-select-choices>
+		</include>
+
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+	</field>
+
+	<field type="select"
+		   canclean="undefined"
+		   ng-required="true"
+		   ng-model="controller.model.ttObjetivo"
+		   ng-disabled="!controller.model.ttAcao || !controller.canOverrideObjective"
+		   ng-if="controller.editMode !== true">
+
+		<label>{{ 'l-objective' | i18n: []: 'dts/crm' }}</label>
+
+		<include>
+			<ui-select-match placeholder="{{ 'l-objective' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_objet_acao }}</ui-select-match>
+			<ui-select-choices repeat="objective in controller.objectives | filter: $select.search track by $index">
+				<span ng-bind-html="objective.nom_objet_acao | highlight: $select.search"></span>
+			</ui-select-choices>
+		</include>
+
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+	</field>
+
+	<field type="select"
+		   canclean="undefined"
+		   ng-if="controller.isActiveUserGroup === true"
+		   ng-required="true"
+		   ng-model="controller.model.ttGrupoUsuario"
+		   ng-change="controller.onChangeGroup(controller.model.ttGrupoUsuario);">
+
+		<label>{{ 'l-group-user' | i18n: []: 'dts/crm' }}</label>
+
+		<include>
+			<ui-select-match placeholder="{{ 'l-group-user' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_grp_usuar }}</ui-select-match>
+			<ui-select-choices repeat="group in controller.groups | filter: $select.search track by $index">
+				<span ng-bind-html="group.nom_grp_usuar | highlight: $select.search"></span>
+			</ui-select-choices>
+		</include>
+
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+	</field>
+
+	<field type="select"
+		   canclean="undefined"
+		   ng-required="true"
+		   ng-model="controller.model.ttResponsavel"
+		   ng-change="controller.reloadRecipients();"
+		   ng-disabled="controller.disableUser">
+
+		<label>{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}</label>
+
+		<include>
+			<ui-select-match placeholder="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_usuar }}</ui-select-match>
+			<ui-select-choices repeat="user in controller.users | filter: $select.search track by $index">
+				<span ng-bind-html="user.nom_usuar | highlight: $select.search"></span>
+			</ui-select-choices>
+		</include>
+
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+	</field>
+
+	<% if ((!data["l-status"] || data["l-status"].log_visivel === true)) { %>
+	<field type="select"
+		   canclean="undefined"
+		 <% if (!(!data["l-status"] || data["l-status"].log_editavel === true)) { %>
+		   ng-disabled="true"
+		   <% } %>
+		   ng-required="true"
+		   ng-if="controller.canOverrideStatus"
+		   ng-model="controller.model.ttStatus">
+
+		<label>{{ 'l-status' | i18n: []: 'dts/crm' }}</label>
+
+		<include>
+			<ui-select-match placeholder="{{ 'l-status' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_status }}</ui-select-match>
+			<ui-select-choices repeat="status in controller.status | filter: $select.search track by $index">
+				<span ng-bind-html="status.nom_status | highlight: $select.search"></span>
+			</ui-select-choices>
+		</include>
+
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+	</field>
+	<% } %>
+
+	<% if ((!data["l-contact"] || data["l-contact"].log_visivel === true)) { %>
+	<field type="select"
+		 <% if ((!data["btn-new-contact"] || data["btn-new-contact"].log_visivel === true)) { %>
+		   class="col-xs-11 col-md-5"
+		   <% } %>
+		   canclean="undefined"
+		   ng-model="controller.model.ttContato"
+		   ng-change="controller.onChangeContact();"
+
+		 <% if ((!data["l-contact"] || data["l-contact"].log_editavel === true)) { %>
+		   ng-disabled="!controller.model.ttConta"
+		   <% } else { %>
+			   ng-disabled="true"
+		   <% } %>
+		   ng-if="controller.editMode === true">
+
+		<label>{{ 'l-contact' | i18n: []: 'dts/crm' }}</label>
+
+		<include>
+			<ui-select-match placeholder="{{ 'l-contact' | i18n: []: 'dts/crm' }}">
+				<span>
+					<span ng-class="{'glyphicon glyphicon-lock': !$select.selected.log_acesso}"></span>
+					&nbsp;{{ $select.selected.nom_razao_social }}
+				</span>
+			</ui-select-match>
+			<ui-select-choices repeat="contact in controller.contacts | filter: $select.search track by $index">
+				<span ng-if="!contact.log_acesso" class="glyphicon glyphicon-lock">&nbsp;</span>
+				<span ng-bind-html="contact.nom_razao_social + (contact.cod_pessoa_erp ? ' (' + contact.codeERP + ')' : '') | highlight: $select.search"></span>
+			</ui-select-choices>
+		</include>
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+	</field>
+
+	<% if ((!data["btn-new-contact"] || data["btn-new-contact"].log_visivel === true)) { %>
+	<div class="col-xs-1 col-md-1 crm-field-extra-button"
+		 ng-if="controller.editMode === true">
+		<button class="btn btn-default"
+				ng-click="controller.newAccountContact(controller.model.ttConta);"
+				ng-disabled="!controller.model.ttConta">
+			<span class="glyphicon glyphicon-plus"></span>
+		</button>
+	</div>
+	<% } %>
+	<% } %>
+
+	<% if ((!data["l-phone"] || data["l-phone"].log_visivel === true)) { %>
+	<field type="select"
+		   canclean="undefined"
+		   ng-if="controller.isShowPhoneInTask === true"
+		   ng-disabled="!controller.phoneList.length"
+		   ng-model="controller.model.ttTelefone">
+
+		<label>{{ 'l-phone' | i18n: []: 'dts/crm' }}</label>
+
+		<include>
+			<ui-select-match placeholder="{{ 'l-phone' | i18n: []: 'dts/crm' }}">
+				{{ $select.selected.nom_telefone}} {{ $select.selected.idi_tip_orig === 2 ? ( ' (' + ('l-contact' | i18n : [] : 'dts/crm' | uppercase) + ')' ) : ( ' (' + ('l-account' | i18n : [] : 'dts/crm' | uppercase) + ')' ) }}
+			</ui-select-match>
+			<ui-select-choices repeat="phone in controller.phoneList | filter: $select.search track by $index">
+				<span ng-bind-html="phone.nom_telefone + (phone.idi_tip_orig === 2 ? ( ' (' + ( 'l-contact' | i18n : [] : 'dts/crm' | uppercase ) + ')' ) : ( ' (' + ( 'l-account' | i18n : [] : 'dts/crm' | uppercase ) + ')' ) ) | highlight: $select.search"></span>
+			</ui-select-choices>
+		</include>
+	</field>
+	<% } %>
+
+	<% if ((!data["l-workflow"] || data["l-workflow"].log_visivel === true)) { %>
+	<field type="input"
+		   canclean="undefined"
+		   ng-disabled="true"
+		   ng-if="controller.model.ttAcao.nom_workflow"
+		   ng-model="controller.model.ttAcao.nom_workflow"
+		   ng-if="controller.editMode !== true">
+		<label>{{ 'l-workflow' | i18n: []: 'dts/crm' }}</label>
+	</field>
+	<% } %>
+
+</fieldset>
+
+<totvs-divider ng-class="{ 'crm-modal-in-menu-row-hr' : ! controller.isModal }"></totvs-divider>
+
+<fieldset ng-class="{ 'row' : controller.isModal }">
+
+	<field type="textarea"
+		   class="col-md-12"
+		   ng-required="true"
+		   maxlength="1500"
+		   ng-model="controller.model.dsl_motivo"
+		   ng-disabled="!controller.canOverrideDescription">
+		<label>{{ 'l-description' | i18n: []: 'dts/crm' }}</label>
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+	</field>
+
+</fieldset>
+
+<% if ((!data["l-justification"] || data["l-justification"].log_visivel === true)) { %>
+<totvs-divider ng-if="controller.canOverrideJustification"
+			   ng-class="{ 'crm-modal-in-menu-row-hr' : ! controller.isModal }"></totvs-divider>
+
+<fieldset ng-class="{ 'row' : controller.isModal }" ng-if="controller.canOverrideJustification">
+	<field type="textarea"
+		   class="col-md-12"
+		   maxlength="1500"
+		 <% if (!(!data["l-justification"] || data["l-justification"].log_editavel === true)) { %>
+		   ng-disabled="true"
+		   <% } %>
+		   ng-required="true"
+		   ng-model="controller.model.dsl_justif_alter">
+		<label>{{ 'l-justification' | i18n: []: 'dts/crm' }}</label>
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+	</field>
+
+</fieldset>
+<% } %>
+
+<totvs-divider ng-class="{ 'crm-modal-in-menu-row-hr' : ! controller.isModal }"></totvs-divider>
+
+<fieldset ng-class="{ 'row' : controller.isModal }">
+
+	<field type="daterange"
+		   class="col-md-6"
+		   ng-required="true"
+		   ng-change="controller.checkChangeInitialDate();"
+		   ng-model="controller.model.initialDate"
+		   start-date="controller.model.dateTimeBase"
+		   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+		   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+		<label>{{ 'l-date-start' | i18n: []: 'dts/crm' }}</label>
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+	</field>
+
+	<field type="time"
+		   class="col-xs-6 col-md-3 time-range-from"
+		   ng-required="true"
+		   ng-model="controller.model.initialHour.start">
+		<label>{{ 'l-time' | i18n: []: 'dts/crm' }}</label>
+	</field>
+
+	<field type="time"
+		   class="col-xs-6 col-md-3 time-range-to"
+		   ng-required="true"
+		   ng-model="controller.model.initialHour.end">
+		<label>{{ 'l-to' | i18n: []: 'dts/crm' }}</label>
+	</field>
+
+</fieldset>
+
+<% if ( (!data["l-notify"] || data["l-notify"].log_visivel === true)
+	 || (!data["nav-attachment"] || data["nav-attachment"].log_visivel === true)
+	 || (!data["l-integrates-outlook"] || data["l-integrates-outlook"].log_visivel === true)) {
+%>
+<totvs-divider ng-class="{ 'crm-modal-in-menu-row-hr' : ! controller.isModal }"></totvs-divider>
+
+<fieldset ng-class="{ 'row' : controller.isModal }">
+
+	<% if ((!data["l-integrates-outlook"] || data["l-integrates-outlook"].log_visivel === true)) { %>
+	<field type="checkbox"
+		   class="col-xs-6 col-sm-3"
+		 <% if (!(!data["l-integrates-outlook"] || data["l-integrates-outlook"].log_editavel === true)) { %>
+		   ng-disabled="true"
+		   <% } %>
+		   ng-model="controller.model.log_integrad_outlook"
+		   label="{{ 'l-integrates-outlook' | i18n: []: 'dts/crm' }}">
+	</field>
+	<% } %>
+
+	<% if ((!data["l-notify"] || data["l-notify"].log_visivel === true)) { %>
+	<field type="checkbox"
+		   class="col-xs-6 col-sm-3"
+		 <% if (!(!data["l-notify"] || data["l-notify"].log_editavel === true)) { %>
+		   ng-disabled="true"
+		   <% } %>
+		   ng-if="!controller.isAutoNotify"
+		   ng-model="controller.showRecipients"
+		   ng-change="controller.reloadRecipients();"
+		   label="{{ 'l-notify' | i18n: []: 'dts/crm' }}">
+	</field>
+	<% } %>
+
+	<% if ((!data["nav-attachment"] || data["nav-attachment"].log_visivel === true)) { %>
+	<div class="field">
+		<div class="field-container col-xs-12 col-sm-6">
+			<label class="field-label">{{ 'nav-attachment' | i18n: []: 'dts/crm' }}</label>
+			<div class="field-input">
+				<div class="input-group">
+					<label class="btn btn-default"
+						   role="button"
+						   for="file-input">
+						{{ 'l-select-files' | i18n: []: 'dts/crm' }}
+					</label>
+
+					<span ng-if="controller.model.files.length ===  1">1 {{ 'l-selected-files' | i18n: []: 'dts/crm' }}</span>
+					<span ng-if="controller.model.files.length > 1">{{ controller.model.files.length }} {{ 'l-selected-files-plural' | i18n: []: 'dts/crm' }}</span>
+
+					<input id="file-input"
+						   type="file"
+						   style="position:fixed;top:-999px;"
+						   ngf-select
+						   ngf-change="controller.onSelectFiles($files);"
+						   ngf-multiple="true"
+						   ngf-allow-dir="false"/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% } %>
+
+</fieldset>
+<% } %>
+
+<% if ((!data["l-mail-to"] || data["l-mail-to"].log_visivel === true) && (!data["l-notify"] || data["l-notify"].log_visivel === true)) { %>
+<totvs-divider ng-if="controller.showRecipients"
+			   ng-class="{ 'crm-modal-in-menu-row-hr' : ! controller.isModal }"></totvs-divider>
+
+<fieldset ng-class="{ 'row' : controller.isModal }"
+		  ng-if="controller.showRecipients">
+
+	<field type="input"
+		   class="col-md-12"
+		   canclean="undefined"
+		   ng-model="controller.recipients">
+		<label>{{ 'l-mail-to' | i18n: []: 'dts/crm' }}</label>
+	</field>
+
+</fieldset>
+<% } %>
+
+<% if ( (!data["l-source-task"] || data["l-source-task"].log_visivel === true)
+	 || (!data["l-source-ticket"] || data["l-source-ticket"].log_visivel === true)
+	 || (!data["l-source-history"] || data["l-source-history"].log_visivel === true)
+	 || (!data["l-source-opportunity"] || data["l-source-opportunity"].log_visivel === true)) {
+%>
+<totvs-divider style="margin-top: 0px;"
+			   ng-class="{ 'crm-modal-in-menu-row-hr' : ! controller.isModal }"
+			   ng-if="((controller.model.ttOcorrenciaOrigem
+							|| controller.model.ttOportunidadeOrigem
+							|| controller.model.ttTarefaOrigem
+							|| controller.model.ttHistoricoOrigem))">
+</totvs-divider>
+
+<totvs-group-content title="{{ ( controller.inDetail ? 'lk-hide-extra' : 'l-show-extra' ) | i18n: []: 'dts/crm' }}"
+					 ng-class="{ 'crm-modal-in-menu-row-extra' : ! controller.isModal }"
+					 ng-if="((controller.model.ttOcorrenciaOrigem
+							|| controller.model.ttOportunidadeOrigem
+							|| controller.model.ttTarefaOrigem
+							|| controller.model.ttHistoricoOrigem))">
+
+	<totvs-page-detail class="row crm-page-details">
+
+		<div class="col-xs-12 no-gutter">
+
+			<totvs-page-detail-info class="col-xs-12"
+									title="{{ 'l-ticket' | i18n: []: 'dts/crm' }}"
+									ng-if="controller.model.ttOcorrenciaOrigem">
+				<a target="_blank"
+				   href="#/dts/crm/ticket/detail/{{controller.model.ttOcorrenciaOrigem.num_id}}">
+					{{ controller.model.ttOcorrenciaOrigem.cod_livre_1 + ' - ' + controller.model.ttOcorrenciaOrigem.nom_ocor }}
+				</a>
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info class="col-xs-12"
+									title="{{ 'l-opportunity' | i18n: []: 'dts/crm' }}"
+									ng-if="controller.model.ttOportunidadeOrigem">
+				<a target="_blank"
+				   href="#/dts/crm/opportunity/detail/{{controller.model.ttOportunidadeOrigem.num_id}}">
+					{{ controller.model.ttOportunidadeOrigem.num_id + ' - ' + controller.model.ttOportunidadeOrigem.des_oportun_vda }}
+				</a>
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info class="col-xs-12"
+									title="{{ 'l-task' | i18n: []: 'dts/crm' }}"
+									ng-if="controller.model.ttTarefaOrigem">
+				<a target="_blank"
+				   href="#/dts/crm/task/detail/{{controller.model.ttTarefaOrigem.num_id}}">
+					{{ controller.model.ttTarefaOrigem.num_id + ' - ' + (controller.model.ttTarefaOrigem.nom_acao || controller.model.ttTarefaOrigem.ttAcao.nom_acao) }}
+				</a>
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info class="col-xs-12"
+									title="{{ 'l-history' | i18n: []: 'dts/crm' }}"
+									ng-if="controller.model.ttHistoricoOrigem">
+				<a target="_blank"
+				   href="#/dts/crm/history/detail/{{controller.model.ttHistoricoOrigem.num_id}}">
+					{{ controller.model.ttHistoricoOrigem.num_id + ' - ' + (controller.model.ttHistoricoOrigem.nom_acao || controller.model.ttHistoricoOrigem.ttAcao.nom_acao) }}
+				</a>
+			</totvs-page-detail-info>
+		</div>
+
+	</totvs-page-detail>
+
+</totvs-group-content>
+<% } %>

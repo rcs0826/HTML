@@ -1,0 +1,114 @@
+<br/>
+<style scoped="true">
+	.btn-other-portal {
+		margin-top: 28px;
+	}
+	.btn-other-menu {
+		margin-top: 30px;
+	}
+</style>
+
+<fieldset class="row">
+
+	<field type="input"
+		   ng-class="{'col-xs-8': controller.hasAttributeAsOther() === true,
+					  'col-xs-9': controller.hasAttributeAsOther() === false}"
+		   class="col-xs-8"
+		   canclean="undefined"
+		   ng-model="controller.attribute"
+		   placeholder="{{ 'l-attribute' | i18n: []: 'dts/crm' }}"
+		   on-key-enter="controller.addAttribute();">
+		<label>{{ controller.selectedTab === 'col' ? 'l-colunm' : 'l-row' | i18n: []: 'dts/crm' }}</label>
+	</field>
+
+	<field type="checkbox"
+		   ng-if="controller.hasAttributeAsOther()"
+		   class="col-xs-1"
+		   ng-model="controller.log_livre_1"
+		   label="{{ 'l-other' | i18n: []: 'dts/crm' }}">
+	</field>
+
+	<div class="col-xs-3 text-right"
+		 ng-class="{'btn-other-portal': controller.isPortal === true,
+					'btn-other-menu': controller.isPortal === false}">
+		<button class="btn btn-primary"
+				ng-click="controller.addAttribute();">
+			<i class="glyphicon glyphicon-plus"></i>
+		</button>
+
+		<button class="btn btn-default"
+				ng-click="controller.openFastInclusion();">
+			<i class="glyphicon glyphicon-flash"></i> {{ 'btn-new-attribute-from-text' | i18n : [] : 'dts/crm'}}
+		</button>
+	</div>
+
+</fieldset>
+
+<totvs-divider></totvs-divider>
+
+<div class="crm-tab"
+	 ng-if="controller.model.ttQuestionarioQuestaoAtributo.length">
+
+	<div class="row crm-tab-item header hidden-xs">
+
+		<div class="col-xs-10">
+			<strong>{{ 'l-name' | i18n: []: 'dts/crm' }}</strong>
+		</div>
+
+		<div class="col-xs-2 text-right">
+			<a ng-if="(controller.model.ttTipo.num_id !== 8
+					  && controller.model.ttTipo.num_id !== 12
+					  && controller.model.ttTipo.num_id !== 13
+					  && controller.model.ttTipo.num_id !== 14)"
+			   class="clickable" ng-click="controller.removeAllAttributes();">
+				{{ 'btn-remove-all' | i18n : [] : 'dts/crm' }}
+			</a>
+		</div>
+	</div>
+
+	<div class="row crm-tab-item hover"
+		 ng-if="controller.selectedTab !== 'col'"
+		 ng-repeat="attr in controller.model.ttQuestionarioQuestaoAtributo | filter: controller.isRowFilter">
+
+		<div class="col-xs-10 overflow-ellipsis"
+			 ng-class="{'col-xs-8': attr.log_livre_1 === true}">
+			{{ attr.nom_atrib }}
+		</div>
+		<div class="col-xs-2 overflow-ellipsis"
+			 ng-if="attr.log_livre_1 === true">
+			{{ 'l-other' | i18n: []: 'dts/crm' }}
+		</div>
+
+		<div class="col-xs-2 text-right">
+			<a class="clickable"
+			   ng-click="controller.removeAttribute(attr, $index);">
+				<span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+				<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+			</a>
+		</div>
+	</div>
+
+	<div class="row crm-tab-item hover"
+		 ng-if="controller.selectedTab === 'col'"
+		 ng-repeat="attr in controller.model.ttQuestionarioQuestaoAtributo | filter: controller.isColunmFilter">
+
+		<div class="col-xs-10 overflow-ellipsis"
+			 ng-class="{'col-xs-8': attr.log_livre_1 === true}">
+			{{ attr.nom_atrib }}
+		</div>
+		<div class="col-xs-2 overflow-ellipsis"
+			  ng-if="attr.log_livre_1 === true">
+			{{ 'l-other' | i18n: []: 'dts/crm' }}
+		</div>
+
+
+		<div class="col-xs-2 text-right">
+			<a class="clickable"
+			   ng-click="controller.removeAttribute(attr, $index);">
+				<span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+				<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+			</a>
+		</div>
+	</div>
+
+</div>

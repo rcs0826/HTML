@@ -1,0 +1,86 @@
+<totvs-page-content style="border-top: 1px dotted #e4e4e4;">
+
+	<totvs-page-content-header style="border-bottom: 0px;">
+		<fieldset>
+			<field type="input"
+				canclean="undefined"
+				maxlength="8"
+				numbers-only
+			    class="col-xs-12 col-sm-4 col-md-4"
+				ng-model="controllerRemoveProcess.basicFilter.campaign.num_id"
+				placeholder="{{ 'l-code' | i18n: []: 'dts/crm' }}">
+				<label>{{ 'l-code' | i18n: []: 'dts/crm' }}</label>
+			</field>
+			<field type="daterange"
+				canclean="undefined"
+				class="col-xs-12 col-sm-6 col-md-7"
+				ng-model="controllerRemoveProcess.basicFilter.campaign.dat_inic"
+				start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+				end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+				<label>{{ 'l-date-start' | i18n: []: 'dts/crm' }}</label>
+			</field>
+			<div class="col-xs-12 col-sm-2 col-md-1" style="margin-top: 27px;">
+				<button class="btn btn-default pull-right"
+						ng-click="controllerRemoveProcess.search(false, true);">{{ 'btn-apply' | i18n: []: 'dts/crm' }}
+				</button>
+			</div>
+		</fieldset>
+	</totvs-page-content-header>
+
+	<totvs-page-content-header>
+		<totvs-page-quick-select
+			title="{{ 'l-select-all' | i18n: []: 'dts/crm' }} (Selecionados {{(controllerRemoveProcess.listOfCampaigns | filter:{$selected:'true'}).length}} de {{controllerRemoveProcess.listOfCampaignsCount}})"
+			list="controllerRemoveProcess.listOfCampaigns">
+		</totvs-page-quick-select>
+	</totvs-page-content-header>
+
+	<totvs-page-alert
+		ng-if="controllerRemoveProcess.listOfCampaigns.length <= 0"
+		type="info"
+		message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+	</totvs-page-alert>
+
+	<totvs-list-item
+		id="campaign{{campaign.num_id}}"
+		ng-repeat="campaign in controllerRemoveProcess.listOfCampaigns"
+		selected="campaign">
+		<totvs-list-item-header>
+			<totvs-list-item-title>
+				{{ campaign.num_id }} - {{ campaign.nom_campanha }}
+			</totvs-list-item-title>
+		</totvs-list-item-header>
+		<totvs-list-item-content>
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-4"
+				title="{{ 'l-type' | i18n: []: 'dts/crm' }}"
+				value="{{ campaign.ttTipo.nom_tip_campanha}}">
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-4"
+				title="{{ 'l-date-start' | i18n: []: 'dts/crm' }}"
+				value="{{ campaign.dat_inic | date : ('l-date-format' | i18n: []: 'dts/crm') }}">
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-4"
+				title="{{ 'l-date-end' | i18n: []: 'dts/crm' }}"
+				value="{{ campaign.dat_term | date : ('l-date-format' | i18n: []: 'dts/crm') }}">
+			</totvs-list-item-info>
+		</totvs-list-item-content>
+
+		<!--totvs-list-item-content-detail>
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-3"
+				title="{{ 'l-description' | i18n: []: 'dts/crm' }}"
+				value="{{ campaign.dsl_campanha }}">
+			</totvs-list-item-info>
+		</totvs-list-item-content-detail-->
+
+	</totvs-list-item>
+
+	<totvs-list-pagination
+		ng-if="controllerRemoveProcess.listOfCampaigns.length < controllerRemoveProcess.listOfCampaignsCount && controllerRemoveProcess.listOfCampaigns.length"
+		ng-click="controllerRemoveProcess.search(true);">
+	</totvs-list-pagination>
+</totvs-page-content>

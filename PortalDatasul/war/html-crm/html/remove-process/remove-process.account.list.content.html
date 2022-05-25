@@ -1,0 +1,102 @@
+<totvs-page-content style="border-top: 1px dotted #e4e4e4;">
+	<totvs-page-content-header style="border-bottom: 0px;">
+		<fieldset>
+			<field type="input"
+				canclean="undefined"
+				maxlength="8"
+				numbers-only
+				class="col-xs-12 col-sm-4 col-md-4"
+				ng-model="controllerRemoveProcess.basicFilter.account.num_id"
+				placeholder="{{ 'l-code' | i18n: []: 'dts/crm' }}">
+				<label>{{ 'l-code' | i18n: []: 'dts/crm' }}</label>
+			</field>
+			<field type="daterange"
+				canclean="undefined"
+				class="col-xs-12 col-sm-6 col-md-7"
+				ng-model="controllerRemoveProcess.basicFilter.account.dat_cadastro"
+				start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+				end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+				<label>{{ 'l-date-create' | i18n: []: 'dts/crm' }}</label>
+			</field>
+			<div class="col-xs-12 col-sm-2 col-md-1" style="margin-top: 27px;">
+				<button class="btn btn-default pull-right"
+						ng-click="controllerRemoveProcess.search(false, true);">{{ 'btn-apply' | i18n: []: 'dts/crm' }}
+				</button>
+			</div>
+		</fieldset>
+	</totvs-page-content-header>
+
+
+	<totvs-page-content-header style="border-bottom: 0px;">
+		<totvs-page-quick-select
+			title="{{ 'l-select-all' | i18n: []: 'dts/crm' }} ({{ 'l-selecteds' | i18n: []: 'dts/crm' }} {{(controllerRemoveProcess.listOfAccounts | filter:{$selected:'true'}).length}} de
+			{{controllerRemoveProcess.listOfAccountsCount | countPerPage : 50 : controllerRemoveProcess.lastAccountsLength}})"
+			list="controllerRemoveProcess.listOfAccounts">
+		</totvs-page-quick-select>
+	</totvs-page-content-header>
+
+	<totvs-page-alert
+		ng-if="controllerRemoveProcess.listOfAccounts.length <= 0"
+		type="info"
+		message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+	</totvs-page-alert>
+
+	<totvs-list-item
+			 id="account{{account.num_id}}"
+			 ng-repeat="account in controllerRemoveProcess.listOfAccounts"
+			 class="crm-default {{account.nom_cor}}"
+			 selected="account">
+
+		<totvs-list-item-header>
+			<totvs-list-item-title
+				class="legend overflow-ellipsis"
+				ng-class="account.nom_cor">
+				{{ account.num_id }} - {{ account.nom_razao_social }}
+				{{ account.cod_pessoa_erp ? '(' + account.cod_pessoa_erp + ')' : '' }}
+				{{ account.cod_pessoa_gpl ? '{' + account.cod_pessoa_gpl + '}' : '' }}
+			</totvs-list-item-title>
+		</totvs-list-item-header>
+
+		<totvs-list-item-content>
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-3"
+				ng-if="account.idi_tip_pessoa === 1"
+				title="{{ 'l-cpf' | i18n: []: 'dts/crm' }}">
+				{{ account.nom_cpf | mask : '999.999.999-99' }}
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-3"
+				ng-if="account.idi_tip_pessoa !== 1"
+				title="{{ 'l-cnpj' | i18n: []: 'dts/crm' }}">
+				{{ account.nom_cnpj | mask : '99.999.999/9999-99' }}
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-3"
+				title="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}"
+				value="{{ account.ttResponsavel.nom_usuar }}">
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-3"
+				title="{{ 'l-type-account' | i18n: []: 'dts/crm' }}">
+				{{ account.nom_tip_cta }}
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-3"
+				title="{{ 'l-date-create' | i18n: []: 'dts/crm' }}"
+				value="{{ account.dat_cadastro | date : ('l-date-format' | i18n: []: 'dts/crm') }}">
+			</totvs-list-item-info>
+		</totvs-list-item-content>
+
+	</totvs-list-item>
+
+	<totvs-list-pagination
+		ng-if="controllerRemoveProcess.listOfAccounts.length < controllerRemoveProcess.listOfAccountsCount && controllerRemoveProcess.listOfAccounts.length"
+		ng-click="controllerRemoveProcess.search(true);">
+	</totvs-list-pagination>
+
+</totvs-page-content>
+

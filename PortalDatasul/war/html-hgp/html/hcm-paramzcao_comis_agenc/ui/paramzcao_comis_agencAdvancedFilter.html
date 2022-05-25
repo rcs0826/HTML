@@ -1,0 +1,95 @@
+<totvs-modal-header>
+    Busca Avançada
+</totvs-modal-header>
+<totvs-modal-body style="height: 290px; overflow-y: auto;">
+    <fieldset>
+
+        <field  type="input"
+                numbers-only
+                maxlength="6"
+                label="Id Inicial"
+                class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                data-ng-model="afController.model.idRegraInic"
+                ng-blur="afController.changeRange('idRegraInic','idRegraFim')">
+        </field>
+
+        <field  type="input"
+                numbers-only
+                maxlength="6"
+                label="Id Final"
+                class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                data-ng-model="afController.model.idRegraFim">
+        </field>
+
+        <field type="input"
+               label="fake" style="visibility: hidden"
+               class="col-lg-2 col-md-2 col-sm-2 hidden-xs">
+        </field>
+
+        <totvs-field totvs-combo
+                class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                label="Considera para contagem"
+                t-options= "afController.listConsidParamzcaoAgenc"
+                ng-model="afController.model.considParamzcaoAgenc">                
+        </totvs-field>
+
+        <totvs-field totvs-combo
+                class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                label="Considera para pagar"
+                t-options= "afController.listConsidParamzcaoBenefPagto"
+                ng-model="afController.model.idiConsidParamzcaoBenefPagto">
+        </totvs-field>
+
+        <field type="input"
+                label="fake" style="visibility: hidden"
+                class="col-lg-2 col-md-2 col-sm-2 hidden-xs">
+        </field>
+
+        <totvs-field totvs-combo
+                class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                label="Contagem por"
+                t-options= "afController.listContagComisAgenc"
+                ng-model="afController.model.contagComisAgenc">                
+        </totvs-field>
+
+        <field type="input"
+                label="fake" style="visibility: hidden"
+                class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+        </field>
+
+        <field type="input"
+                label="fake" style="visibility: hidden"
+                class="col-lg-2 col-md-2 col-sm-2 hidden-xs">
+        </field>       
+
+        <totvs-field totvs-datepicker
+               class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+               label="Período Inicial"
+               depth="year"
+               format="MM/yyyy"
+               ng-model="afController.model.dtInicial"
+               culture="pt"
+               canclean
+               ng-show="true"
+               ng-blur="afController.changeRange('dtInicial','dtFinal')">
+        </totvs-field>
+
+        <totvs-field totvs-datepicker
+              class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+               label="Período Final"
+               depth="year"
+               format="MM/yyyy"
+               ng-model="afController.model.dtFinal"
+               culture="pt"
+               canclean
+               ng-show="true">
+        </totvs-field>
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn" ng-click="afController.cleanFields()">Limpar Campos</button>
+    <button class="btn" ng-click="afController.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-click="afController.search()">Buscar</button>
+</totvs-modal-footer>
+

@@ -1,0 +1,49 @@
+<div class="row dm-border" ng-style="dashboardCtrl.obterAlturaConteudo()">
+  <div class="col-md-10" style="margin-left: 0px;">
+    <totvs-field totvs-radio
+                 t-options="dashboardCtrl.situacaoOptions"
+                 ng-model="dashboardCtrl.situacaoModel"
+                 ng-change="dashboardCtrl.filtraDadosImpedimento()"
+                 class="col-md-12">
+    </totvs-field>
+  </div>
+  <div class="col-md-2" style="padding-right: 5px; padding-top: 5px;" >
+    <button type="button" 
+            class="col-md-12 btn btn-primary" 
+            data-ng-click="dashboardCtrl.fecharImpedimento()"
+            ng-disabled="dashboardCtrl.habilitaBtFecharImpedimento()">
+            {{ 'l-close-impediments' | i18n }}
+    </button>
+  </div>
+  <div class="col-md-12" style="padding-left: 5px; padding-right: 5px;">
+    <totvs-grid 
+      grid-options="dashboardCtrl.getGridOptions"
+      grid-data="dashboardCtrl.listaOms"
+      grid-height="{{dashboardCtrl.obterAlturaGridImpedimentos()}}"
+      grid-selected-items="dashboardCtrl.listaOmsSelecionados"
+      resizable="true"
+      add-select-column="separate">
+      <totvs-grid-column width="58" field="detail" style="text-align: center">{{ 'l-observation' | i18n }}  
+          <template>
+            <a class="glyphicon glyphicon-list-alt btn-default" 
+              style="cursor: pointer"
+              data-toggle="tooltip" 
+              title="{{ 'l-impediment-observation' | i18n}}"
+              ng-click="dashboardCtrl.abrirObservacaoImpedimento(dataItem)"></a>
+          </template>                   
+      </totvs-grid-column>
+      <totvs-grid-column width="150" min-width="150" template="dashboardCtrl.equipamentoTemplate">{{ 'l-equipment' | i18n }}</totvs-grid-column>
+      <totvs-grid-column width="100" min-width="100" style="text-align: right" template="dashboardCtrl.numeroOrdemTemplate">{{ 'l-ord' | i18n }}</totvs-grid-column>
+      <totvs-grid-column width="70" min-width="80" style="text-align: right" template="dashboardCtrl.tarefaTemplate">{{ 'l-task' | i18n }}</totvs-grid-column>
+      <totvs-grid-column template="dashboardCtrl.motivoTemplate" width="400" min-width="400">{{ 'l-holdover' | i18n }}</totvs-grid-column>
+      <totvs-grid-column field="descSituacao" width="100" min-width="100">{{ 'l-status' | i18n }}</totvs-grid-column>
+      <totvs-grid-column field="dtIniImped" filter="date : dd/MM/yyyy" width="100" min-width="100">{{ 'l-date' | i18n }}</totvs-grid-column>
+      <totvs-grid-column field="horaIniImped" width="90" min-width="90">{{ 'l-hour' | i18n }}</totvs-grid-column>
+      <totvs-grid-column field="codUsuarCriac" width="150" min-width="150">{{ 'l-user' | i18n }}</totvs-grid-column>
+      <totvs-grid-column field="dtFimImped" filter="date : dd/MM/yyyy" width="100" min-width="100">{{ 'l-closing-date-short' | i18n }}</totvs-grid-column>
+      <totvs-grid-column field="horaFimImped" width="90" min-width="90">{{ 'l-closing-time' | i18n }}</totvs-grid-column>
+      <totvs-grid-column field="codUsuarAlterSit" width="150" min-width="150">{{ 'l-closing-user' | i18n }}</totvs-grid-column>
+    </totvs-grid>
+  </div>
+
+</div>

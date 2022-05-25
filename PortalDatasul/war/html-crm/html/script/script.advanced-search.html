@@ -1,0 +1,79 @@
+<totvs-modal-header>
+	{{ 'l-search-advanced' | i18n }}
+</totvs-modal-header>
+ 
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="select"
+			   canclean="undefined"
+			   ng-model="controller.model.idi_tip_script">
+
+			<label>{{ 'l-script-type' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-script-type' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_tip_script}}
+				</ui-select-match>
+				<ui-select-choices repeat="type in controller.types | filter: $select.search track by $index">
+					<span ng-bind-html="type.nom_tip_script | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.num_id_usuar"
+			   canclean="undefined">
+			<label>{{ 'l-user-create' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_usuar.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-user-create' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_usuar }}
+				</ui-select-match>
+				<ui-select-choices repeat="user in controller.users track by $index"
+								   refresh="controller.getUsers($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="user.nom_usuar | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="daterange"
+			   class="col-xs-6"
+			   ng-model="controller.model.val_valid"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-expiration-date' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="daterange"
+			   class="col-xs-6"
+			   ng-model="controller.model.val_dat_cadastro"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-date-create' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+	</fieldset>
+
+	<fieldset class="row">
+		<totvs-field class="col-xs-12"
+			 totvs-multi-select
+			 label="{{ 'l-status' | i18n: []: 'dts/crm' }}"
+			 t-highlight-first="true"
+			 t-filter="contains"
+			 ng-model="controller.model.num_livre_1"
+			 t-multi-id="num_id"
+			 t-multi-description="nom_status"
+			 t-data="controller.listOfStatus">
+		</totvs-field>
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply(false)">{{ controller.isAddEditMode ? 'btn-save' : 'btn-apply' | i18n }}</button>
+	<button ng-if="controller.isAddEditMode === true" class="btn btn-primary" ng-click="controller.apply(true)">{{ 'btn-apply-save' | i18n }}</button>
+</totvs-modal-footer>

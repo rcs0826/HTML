@@ -1,0 +1,127 @@
+<link rel="stylesheet" href="/dts/mmi/html/equipment/dashboard/dashboard.equipment.css">
+<totvs-page type="list">
+ 
+    <totvs-page-content style="padding-left:0px; padding-right:0px;">
+        <div class="row" style="margin: 0px; padding-top: 2px">
+            <div class="my-col-md-1" style="padding-left: 5px; padding-right: 0px;">
+                <button class="btn btn-link"
+                  zoom 
+                  zoom-service="mmi.equipto.zoom"
+                  ng-model="dashboardCtrl.selectedEquipto"
+                  ng-change="dashboardCtrl.pesquisaEquipto();"                        
+                  type="button" 
+                  id="btPesquisar"                  
+                  tooltip="{{ l-search-programming | i18n }}"
+                  tooltip-placement="right"
+                  align="right"
+                  style="padding-top: 10px;">
+                  <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </div>
+            <div class="my-col-md-8" style="padding-left:0px">
+                <button class="btn btn-link"
+                       zoom 
+                       zoom-service="mmi.equipto.zoom"
+                       ng-model="dashboardCtrl.selectedEquipto"
+                       ng-change="dashboardCtrl.pesquisaEquipto();"
+                       type="button" 
+                       style="padding-top: 10px; font-weight: bold; font-size: 16px;">{{dashboardCtrl.tituloProgramacao}}</button>
+            </div>
+            <div align="right" style="padding-top: 3px; padding-right: 5px; padding-left: 5px">
+                <div style="background-color: #e6e6e6;">
+                    <button class="btn btn-link" 
+                            ng-model="dashboardCtrl.advSearch"
+                            ng-click="dashboardCtrl.openAdvancedSearch();"
+                            type="button" 
+                            id="filter">
+                        {{ 'l-advanced-search' | i18n }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row check-element animate-show-hide" 
+            ng-show="dashboardCtrl.equipamentoSelecionado"
+            style="margin: 0px;">
+      
+            <div class="my-col-md-1"
+                ng-include="'/dts/mmi/html/equipment/dashboard/dashboard.equipment.icones.html'"
+                style="padding-left: 5px; padding-right: 5px;">
+            </div>
+            
+            <div id="equiptoId"
+                class="my-col-md-11"
+                ng-show="dashboardCtrl.equiptoData" 
+                ng-if="dashboardCtrl.dados" 
+                ng-include="'/dts/mmi/html/equipment/dashboard/dashboard.equipment.data.html'"
+                ng-style="dashboardCtrl.obterAlturaConteudo()">
+            </div>
+            
+            <div id="equiptoHistory"
+                class="my-col-md-11"
+                style="padding-left: 0px; overflow: auto;"
+                ng-if="dashboardCtrl.historico" 
+                ng-include="'/dts/mmi/html/equipment/dashboard/dashboard.equipment.history.html'"
+                ng-style="dashboardCtrl.obterAlturaConteudo()">
+            </div>
+            
+            <div id="equiptoComponent"
+                class="my-col-md-11"
+                style="padding-left: 0px; overflow: auto;"
+                ng-if="dashboardCtrl.componente" 
+                ng-include="'/dts/mmi/html/equipment/dashboard/dashboard.equipment.components.html'"
+                ng-style="dashboardCtrl.obterAlturaConteudo()">
+            </div>
+            
+            <div id="equiptoMaintenance"
+                class="my-col-md-11"
+                style="padding-left: 0px; overflow: auto;"
+                ng-if="dashboardCtrl.manutencao" 
+                ng-include="'/dts/mmi/html/equipment/dashboard/dashboard.equipment.maintenance.html'"
+                ng-style="dashboardCtrl.obterAlturaConteudo()">
+            </div>
+            
+            <div id="equiptoUtility"
+                class="my-col-md-11"
+                style="padding-left: 0px; overflow: auto;"
+                ng-if="dashboardCtrl.utilizacao" 
+                ng-include="'/dts/mmi/html/equipment/dashboard/dashboard.equipment.utility.html'"
+                ng-style="dashboardCtrl.obterAlturaConteudo()">
+            </div>
+            
+            <div id="equiptoMaintenanceOrders"
+                class="my-col-md-11"
+                style="padding-left: 0px; overflow: auto;"
+                ng-if="dashboardCtrl.ordens" 
+                ng-include="'/dts/mmi/html/equipment/dashboard/dashboard.equipment.orders.html'"
+                ng-style="dashboardCtrl.obterAlturaConteudo()">
+            </div>
+            
+            <div id="equiptoInspection"
+                class="my-col-md-11"
+                style="padding-left: 0px; overflow: auto;"
+                ng-if="dashboardCtrl.inspecao" 
+                ng-include="'/dts/mmi/html/equipment/dashboard/dashboard.equipment.inspection.html'"
+                ng-style="dashboardCtrl.obterAlturaConteudo()">
+            </div>
+            
+            <div id="equiptoRequest"
+                class="my-col-md-11"
+                style="padding-left: 0px; overflow: auto;"
+                ng-if="dashboardCtrl.solicitacao" 
+                ng-include="'/dts/mmi/html/equipment/dashboard/dashboard.equipment.request.html'"
+                ng-style="dashboardCtrl.obterAlturaConteudo()">
+            </div>
+            
+            <div id="equiptoPlannedOrder"
+                class="my-col-md-11"
+                style="padding-left: 0px; overflow: auto;"
+                ng-if="dashboardCtrl.omplanejada" 
+                ng-include="'/dts/mmi/html/equipment/dashboard/dashboard.equipment.plannedorder.html'"
+                ng-style="dashboardCtrl.obterAlturaConteudo()">
+            </div>
+            
+        </div>
+
+    </totvs-page-content>
+</totvs-page>

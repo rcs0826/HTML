@@ -1,0 +1,25 @@
+totvs-modal-header
+    {{controller.getLabelByAction(controller.myParams.action) | i18n}}
+totvs-modal-body
+    totvs-page-form(id="mappingForm",role="form")
+        field.col-md-6(type="input", ng-model="controller.myParams.model.des_mapeamento", maxlength="45",placeholder="{{'l-description' | i18n}}", required, label="{{'l-description' | i18n}}")
+
+        field.col-md-6(ng-disabled="controller.myParams.disableLimitDate || (controller.selected.id==1)", type="date", ng-model="controller.myParams.model.dat_corte", required, label="{{'l-cutoff-date' | i18n}}")
+
+        field.col-md-12(type="select",ng-model="controller.selected", ng-change="controller.selectCloneType()", label="{{'l-clone-type' | i18n}}", required, ng-show="controller.myParams.action == 'clone'")
+            include
+                ui-select-match
+                    {{$select.selected.name}}
+                ui-select-choices(repeat="state in controller.listselect track by $index")
+                    span(data-ng-bind-html="state.name | highlight: $select.search")
+        establishment-select(
+            ng-if="controller.myParams.action == 'new'",
+            ng-model="controller.myParams.model.establishmentErpCode",
+            callback-no-establishment="controller.callbackNoEstablishment"
+        )
+
+totvs-modal-footer
+    button.btn.btn-default(data-ng-click="controller.cancel();")
+        {{ 'l-cancel' | i18n }}
+    button.btn.btn-primary(data-ng-click="controller.save(controller.myParams.action, controller.myParams.model);")
+        {{ 'l-ok' | i18n }}

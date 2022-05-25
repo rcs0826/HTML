@@ -1,0 +1,63 @@
+<style type="text/css" scoped="true">fieldset > div.row.header {margin: 5px 0;padding: 5px 0;background-color: #f9f9f9;border-left: 5px solid #D0D0D0;border-bottom: 1px solid #D0D0D0;}.dd {max-width: none;}ol.dd-list > li.dd-item {cursor:move;}ol.dd-list > li.dd-item:nth-child(odd) > .dd-handle {border-left: 5px solid #D0D0D0;}ol.dd-list > li.dd-item:nth-child(even) > .dd-handle {border-left: 5px solid #C0C0C0;}@media (max-width: 767px) {fieldset .text-right,fieldset .visible-xs {padding-top: 5px;}fieldset .name {font-weight: bold;}fieldset {padding-bottom: 15px;}}</style>
+<totvs-modal-header>
+    <h3 class="modal-title" ng-if="!controller.columnsMode">{{:: 'l-printing-configuration' | i18n: []: 'dts/mcc' }}</h3>
+    <h3 class="modal-title" ng-if="controller.columnsMode">{{:: 'l-columns-configurations' | i18n: []: 'dts/mcc' }}</h3>
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<div class="row">
+		<div class="col-xs-6" ng-if="!controller.columnsMode">
+			<span>{{:: 'l-to-detail-installments' | i18n: []: 'dts/mcc' }}</span>
+			<br>
+			<input  type="checkbox"
+					ng-model="controller.printParams.detailInstallments"
+					bsswitch
+					class="col-sm-3">
+			</input>
+		</div>
+		<div class="col-xs-6">
+			<span>{{:: 'l-search' | i18n: []: 'dts/mcc' }}</span>
+			<br>
+			<div class="input-group pull-right">
+				<input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-scope" ng-model="controller.basicFilter" placeholder="Nome campo">
+				<span class="input-group-btn">
+					<button class="btn btn-default ng-scope" type="button" ng-click="controller.basicFilter = ''">
+						<span class="glyphicon glyphicon-remove"></span>
+					</button>					
+				</span>
+			</div>
+		</div>
+
+		<div class="col-xs-12" style="margin-top:20px;max-height: calc(100vh - 300px); overflow-y: scroll">
+			<fieldset>
+				<div class="row header hidden-xs">
+					<strong>
+						<div class="col-xs-9">{{:: 'l-column' | i18n }}</div>					
+						<div class="col-xs-3 text-right">{{:: 'l-visible' | i18n }}</div>
+					</strong>
+				</div>
+			</fieldset>
+			<ol class="dd-item">
+				<li class="dd-item col-xs-12" ng-repeat="f in controller.fields | filter: {fieldLabel: controller.basicFilter} | orderBy: ['-fieldShow', '+fieldLabel']">				
+					<div class="dd-handle ng-scope">
+						<div class="row">
+							<div class="col-xs-9">{{:: f.fieldLabel}}</div>
+							<div class="col-xs-3 text-right">
+								<input  type="checkbox"
+										ng-model="controller.model[f.fieldName]"
+										bsswitch
+										class="col-xs-12">
+								</input>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ol>			
+		</div>
+	</div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button type="button" class="btn btn-primary" data-ng-click="controller.apply();">{{ 'l-apply' | i18n: []: 'dts/mcc' }}</button>    
+	<button type="button" class="btn btn-default" data-ng-click="controller.cancel();">{{ 'l-cancel' | i18n: []: 'dts/mcc' }}</button>
+</totvs-modal-footer>

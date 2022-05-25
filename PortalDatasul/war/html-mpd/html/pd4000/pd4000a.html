@@ -1,0 +1,644 @@
+<style>
+	.colum-refer {
+		height: 45px;
+		padding-top: 0;
+		padding-bottom: 0;
+		text-align: right;
+	}
+	.button-narrative {
+		padding: 0px 10px !important;
+	}
+</style>
+
+<div ng-controller="salesorder.pd4000ItemsGrid.Controller as itemsGridController" totvs-custom-element="pd4000a">
+	<div class="row">
+		<div style="border:0; padding: 15px;">
+			<div class="row">
+				<div class="col-xs-12">
+					<button
+						class="btn btn-default"
+						ng-show="itemsGridController.orderDisabled"
+						ng-click="itemsGridController.openItemModal()"
+						ng-disabled="!itemsGridController.itemsGridSelectedItem"
+					>
+						<span class="glyphicon glyphicon-file"></span>
+						<span class="hidden-xs ng-binding">{{ :: 'Detalhar' | i18n : [] : 'dts/mpd' }}</span>
+					</button>
+
+					<div ng-show="!itemsGridController.orderDisabled">
+						<div
+							ng-class="{
+								'btn-group': orderController.pd4000['adicionar-fast-item']
+								|| (orderController.pd4000['adicionar-filho-item']
+								&& itemsGridController.itemsGridSelectedItem
+								&& itemsGridController.itemsGridSelectedItem['ind-componen'] >= 2)
+							}"
+							ng-if="orderController.pd4000['adicionar-item']"
+							style="display: inline-block;"
+						>
+							<button class="btn btn-default" ng-click="itemsGridController.openAddItemModal()">
+								<span class="glyphicon glyphicon-plus"></span>
+								<span class="hidden-xs ng-binding">
+									&nbsp;&nbsp;{{ :: 'Adicionar' | i18n : [] : 'dts/mpd' }}
+								</span>
+							</button>
+
+							<button
+								ng-if="
+									orderController.pd4000['adicionar-fast-item']
+									|| (orderController.pd4000['adicionar-filho-item']
+									&& itemsGridController.itemsGridSelectedItem
+									&& itemsGridController.itemsGridSelectedItem['ind-componen'] >= 2)
+								"
+								type="button"
+								class="btn btn-default dropdown-toggle"
+								data-toggle="dropdown"
+								aria-haspopup="true"
+								aria-expanded="false"
+							>
+								<span class="caret"></span>
+							</button>
+
+							<ul class="dropdown-menu">
+								<li ng-if="orderController.pd4000['adicionar-fast-item']">
+									<a ng-click="itemsGridController.fastAddItemModal()">
+										<span class="glyphicon glyphicon-flash"></span>
+										&nbsp;&nbsp;{{ :: 'Inclusão rápida' | i18n : [] : 'dts/mpd' }}
+									</a>
+								</li>
+
+								<li
+									ng-if="
+										orderController.pd4000['adicionar-filho-item']
+										&& itemsGridController.itemsGridSelectedItem
+										&& itemsGridController.itemsGridSelectedItem['ind-componen'] >= 2
+									"
+								>
+									<a ng-click="itemsGridController.openAddChildItemModal()">
+										<span class="glyphicon glyphicon-plus-sign"></span>
+										&nbsp;&nbsp;{{ :: 'Adicionar Item Filho' | i18n : [] : 'dts/mpd' }}
+									</a>
+								</li>
+							</ul>
+						</div>
+
+						<div
+							ng-class="{'btn-group':orderController.pd4000['editar-grade-item']}"
+							ng-if="orderController.pd4000['editar-item']"
+							style="display: inline-block;"
+						>
+							<button
+								class="btn btn-default"
+								ng-click="itemsGridController.openItemModal()"
+								ng-disabled="!itemsGridController.itemsGridSelectedItem"
+							>
+								<span class="glyphicon glyphicon-pencil"></span>
+								<span class="hidden-xs ng-binding">{{ :: 'Editar' | i18n : [] : 'dts/mpd' }}</span>
+							</button>
+
+							<button
+								ng-if="orderController.pd4000['editar-grade-item']"
+								type="button"
+								class="btn btn-default dropdown-toggle"
+								data-toggle="dropdown"
+								aria-haspopup="true"
+								aria-expanded="false"
+							>
+								<span class="caret"></span>
+							</button>
+
+							<ul class="dropdown-menu" ng-if="orderController.pd4000['editar-grade-item']">
+								<li>
+									<a ng-click="itemsGridController.inlineEdit()">
+										<span class="glyphicon glyphicon-th"></span>
+										&nbsp;&nbsp;{{ :: 'Edição na grade' | i18n : [] : 'dts/mpd' }}
+									</a>
+								</li>
+							</ul>
+						</div>
+
+						<div class="btn-group" ng-if="itemsGridController.inlineEditActive">
+							<button
+								class="btn btn-default"
+								ng-click="itemsGridController.inlineEditSave()"
+								ng-disabled="
+									itemsGridController.itemGridDirtyItems.length < 1
+									|| itemsGridController.disableBtnSave == true
+								"
+							>
+								<span class="glyphicon glyphicon-save"></span>
+								<span class="hidden-xs ng-binding">
+									&nbsp;&nbsp;{{ (itemsGridController.disableBtnSave == true ? 'Carregando...' : 'Salvar Alterações') | i18n : [] : 'dts/mpd' }}
+								</span>
+							</button>
+
+							<button
+								class="btn btn-default"
+								ng-click="itemsGridController.inlineEditCancel()"
+								ng-disabled="itemsGridController.itemGridDirtyItems.length < 1"
+							>
+								<span class="glyphicon glyphicon-refresh"></span>
+								<span class="hidden-xs ng-binding">&nbsp;&nbsp;Descartar Alterações</span>
+							</button>
+						</div>
+
+						<div
+							ng-class="{
+								'btn-group':orderController.pd4000['remover-item']
+								&& orderController.pd4000['cancelar-item']
+							}"
+							style="display: inline-block;"
+						>
+							<button
+								ng-if="orderController.pd4000['remover-item']"
+								class="btn btn-default"
+								ng-click="itemsGridController.removeOrderItem()"
+								ng-disabled="!itemsGridController.itemsGridSelectedItems.length"
+							>
+								<span class="glyphicon glyphicon-remove"></span>
+								<span class="hidden-xs ng-binding">{{ :: 'Remover' | i18n : [] : 'dts/mpd' }}</span>
+							</button>
+
+							<button
+								ng-if="orderController.pd4000['cancelar-item']"
+								class="btn btn-default"
+								ng-click="itemsGridController.openCancelModal()"
+								ng-disabled="!itemsGridController.itemsGridSelectedItems.length"
+							>
+								<span class="glyphicon glyphicon-ban-circle"></span>
+								<span class="hidden-xs ng-binding">{{ :: 'Cancelar' | i18n : [] : 'dts/mpd' }}</span>
+							</button>
+
+							<button
+								class="btn btn-primary"
+								ng-click="itemsGridController.configProduct(itemsGridController.itemsGridSelectedItems[0])"
+								ng-if="
+									itemsGridController.itemsGridSelectedItems.length == 1
+									&& !itemsGridController.orderDisabled
+									&& orderController.pd4000['cancelar-item']
+									&& itemsGridController.itemsGridSelectedItem['char-2'].substr(89, 3) == 'yes'
+									&& itemsGridController.itemsGridSelectedItem['cod-refer'] == ''
+								"
+							>
+								<span class="glyphicon glyphicon-cog"></span>
+								<span class="hidden-xs ng-binding">{{ :: 'Configurar' | i18n : [] : 'dts/mpd' }}</span>
+							</button>
+						</div>
+
+						<div class="pull-right" style="display: inline-block;">
+							<div class="checkbox" style="margin-top: 0px; margin-bottom: 0px;">
+								<label>
+									<input
+										type="checkbox"
+										ng-change="itemsGridController.setQuickFilterShowChildren();"
+										ng-model="itemsGridController.showChild"
+									/>
+										{{ :: 'Mostrar Itens Filhos' | i18n : [] : 'dts/mpd' }}
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<span
+			class="col-md-12" 
+			style="color:#337ab7; font-size: 14px; "		
+			ng-show="itemsGridController.inlineEditActive"
+		>
+			{{ :: 'Grade em modo edição' | i18n : [] : 'dts/mpd' }}
+		</span>
+
+		<div class="col-sm-12">
+			<totvs-grid
+				grid-data="itemsGridController.orderItens"
+				grid="itemsGridController.itemsGrid"
+				grid-height="350"
+				auto-resize-content="true"
+				navigatable="true"
+				editable="true"
+				resizable="true"
+				sortable="true"
+				groupable="false"
+				reorderable="true"
+				selectable="multiple,row"
+				add-select-column
+				show-header-edit-icon="itemsGridController.showEdit"
+				grid-selected-item="itemsGridController.itemsGridSelectedItem"
+				grid-selected-items="itemsGridController.itemsGridSelectedItems"
+				grid-dirty-items="itemsGridController.itemGridDirtyItems"
+				on-edit="itemsGridController.itemsGridEdit(event, column)"
+				on-save="itemsGridController.itemsGridSave(event, column, value, original, currentIndex)"
+				on-data="itemsGridController.customItemsGrid()"
+			>
+				<totvs-grid-column
+					editable="true"
+					field="nr-sequencia"
+					class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+					width="50"
+				>
+					{{ :: 'Sequência' | i18n : [] : 'dts/mpd' }}
+				</totvs-grid-column>
+
+				<totvs-grid-column
+					editable="true"
+					field="it-codigo"
+					class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+					width="160"
+				>
+					{{ :: 'Item' | i18n : [] : 'dts/mpd' }}
+				</totvs-grid-column>
+
+				<totvs-grid-column
+					editable="true"
+					field="desc-item"
+					class="#= data['cod-sit-item'] == 6 ? 'cancelled text-nowrap' : 'text-nowrap'#"
+					width="350"
+				>
+					{{ :: 'Descrição' | i18n : [] : 'dts/mpd' }}
+				</totvs-grid-column>
+
+				<% _.forEach(data, function(field) { %>
+					<% if (field.fieldName == "cod-refer") { %>
+						<totvs-grid-column
+							editable="true"
+							field="cod-refer"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#, colum-refer"
+							width="160"
+						>
+							<template>
+								{{ dataItem['cod-refer'] }}
+
+								<a
+									class="btn btn-default btn-sm button-narrative"
+									role="button"
+									ng-show="
+										!itemsGridController.orderDisabled
+										&& dataItem['char-2'].substr(89, 3) == 'yes'
+										&& dataItem['cod-refer'] != ''
+										&& dataItem['cod-sit-item'] != 6
+									"
+									ng-click="itemsGridController.openConfigNarrative(dataItem['it-codigo'], dataItem['cod-refer'])"
+								>
+									<span class="glyphicon glyphicon-list-alt"></span>
+								</a>
+							</template>
+
+							{{:: 'l-cod-refer' | i18n : [] : 'dts/mpd'}}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "cod-sit-item") { %>
+						<totvs-grid-column
+							editable="true"
+							field="cod-sit-item"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="160"
+						>
+							{{ :: 'Situação' | i18n : [] : 'dts/mpd' }}
+							<option id="1">{{ :: 'Aberto' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="2">{{ :: 'Atendido Parcial' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="3">{{ :: 'Atendido Total' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="4">{{ :: 'Pendente' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="5">{{ :: 'Suspenso' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="6">{{ :: 'Cancelado' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="7">{{ :: 'Fat. Balcão' | i18n : [] : 'dts/mpd' }}</option>
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "qtd-disponivel") { %>
+						<totvs-grid-column
+							editable="true"
+							field="qtd-disponivel"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="150"
+							filter="number : 4"
+							style="text-align: right;"
+						>
+							{{ :: 'Quantidade Disponível' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "qt-un-fat") { %>
+						<totvs-grid-column
+							editable="true"
+							field="qt-un-fat"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="160"
+							oldeditable="<%= field.fieldEnabled %>"
+							filter="number : 4"
+							style="text-align: right;"
+						>
+						{{ :: 'Qtde Pedida UM' | i18n : [] : 'dts/mpd' }}
+					</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "des-un-medida") { %>
+						<totvs-grid-column
+							editable="true"
+							field="des-un-medida"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="120"
+							oldeditable="<%= field.fieldEnabled %>"
+							select-id="un"
+							select-service="mcc.tab-unidade.zoom"
+						>
+							{{ :: 'UM Fat' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "qt-pedida") { %>
+						<totvs-grid-column
+							editable="true"
+							field="qt-pedida"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="110"
+							filter="number : 4"
+							style="text-align: right;"
+						>
+							{{ :: 'Qtde Pedida' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "cod-un") { %>
+						<totvs-grid-column
+							editable="true"
+							field="cod-un"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="50"
+						>
+							{{ :: 'UM' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "log-usa-tabela-desconto") { %>
+						<totvs-grid-column
+							editable="true"
+							field="log-usa-tabela-desconto"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="110"
+							filter="booleanI18N"
+							oldeditable="<%= field.fieldEnabled %>"
+						>
+							{{ :: 'Usa Tabela Desconto' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "nr-tabpre") { %>
+						<totvs-grid-column
+							editable="true"
+							field="nr-tabpre"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="120"
+							oldeditable="<%= field.fieldEnabled %>"
+							select-id="nr-tabpre"
+							select-service="mpd.tb-preco-inter.gridselect"
+						>
+							{{ :: 'Tabela Preço' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "vl-preuni") { %>
+						<totvs-grid-column
+							editable="true"
+							field="vl-preuni"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							filter="number : 5"
+							style="text-align: right;"
+						>
+							{{ :: 'Preço Líquido' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "vl-preori") { %>
+						<totvs-grid-column
+							editable="true"
+							field="vl-preori"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							filter="number : <%= field.fieldDecimalNumber %>"
+							style="text-align: right;"
+						>
+							{{ :: 'Preço Original' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "vl-preori-un-fat") { %>
+						<totvs-grid-column
+							editable="true"
+							field="vl-preori-un-fat"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							filter="number : 5"
+							style="text-align: right;"
+						>
+							{{ :: 'Preço Original UM' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "vl-tot-it") { %>
+						<totvs-grid-column
+							editable="true"
+							field="vl-tot-it"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							filter="number : 5"
+							style="text-align: right;"
+						>
+							{{ :: 'Valor Total' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "val-desconto-inform") { %>
+						<totvs-grid-column
+							editable="true"
+							field="val-desconto-inform"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+						>
+							{{ :: 'Desc Informado' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "des-pct-desconto-inform") { %>				
+						<totvs-grid-column
+							editable="true"
+							field="des-pct-desconto-inform"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="100"
+							oldeditable="<%= field.fieldEnabled %>"
+							style="text-align: center;"
+						>
+							{{ :: '% Desc Informado' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "val-pct-desconto-tab-preco") { %>
+						<totvs-grid-column
+							editable="true"
+							field="val-pct-desconto-tab-preco"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="100"
+							oldeditable="<%= field.fieldEnabled %>"
+							filter="number : 2"
+							style="text-align: right;"
+						>
+							{{ :: '% Desc Tab Preço' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "ct-codigo") { %>
+						<totvs-grid-column
+							editable="true"
+							field="ct-codigo"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							select-id="cod_cta_ctbl"
+							select-init="itemsGridController.integrationAccountInit"
+							select-service="utb.cta-ctbl-integr.zoom"
+						>
+							{{ :: 'Conta Contábil' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "sc-codigo") { %>
+						<totvs-grid-column
+							editable="true"
+							field="sc-codigo"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							select-id="cod_ccusto"
+							select-init="itemsGridController.costCenterInit"
+							select-service="utb.ccusto.zoom"
+						>
+							{{ :: 'Centro de Custo' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "custo-contabil") { %>
+						<totvs-grid-column
+							editable="true"
+							field="custo-contabil"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							filter="number : 5"
+						>
+							{{ :: 'Custo Contábil' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "cod-class-fis") { %>
+						<totvs-grid-column
+							editable="true"
+							field="classificacao-fiscal"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							select-id="class-fiscal"
+							select-service="mpd.classif-fisc.zoom"
+						>
+							{{ :: 'Class Fiscal' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "nat-operacao") { %>
+						<totvs-grid-column
+							editable="true"
+							field="nat-operacao"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							select-id="nat-operacao"
+							select-service="mpd.natur-oper.zoom"
+						>
+							{{ :: 'Nat Operação' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "tipo-atend") { %>
+						<totvs-grid-column
+							editable="true"
+							field="tipo-atend"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+						>
+							{{ :: 'Tipo de Atendimento' | i18n : [] : 'dts/mpd' }}
+
+							<option id="1">{{ :: 'Total' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="2">{{ :: 'Parcial' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="3">{{ :: 'Parcial Cancela Saldo' | i18n : [] : 'dts/mpd' }}</option>
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "estab-atend-item") { %>
+						<totvs-grid-column
+							editable="true"
+							field="estab-atend-item"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							select-id="cod-estabel"
+							select-service="mpd.estabelecSE.zoom"
+						>
+							{{ :: 'Estab Atend' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "cod-entrega") { %>
+						<totvs-grid-column
+							editable="true"
+							field="cod-entrega"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							select-id="cod-entrega"
+							select-init="itemsGridController.order['nome-abrev']"
+							select-service="mpd.loc-entr.gridselect"
+						>
+							{{ :: 'Cód Entreg' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "dt-entrega") { %>
+						<totvs-grid-column
+							editable="true"
+							field="dt-entrega"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+							filter="date : dd/MM/yyyy"
+						>
+							{{ :: 'Data Entrega' | i18n : [] : 'dts/mpd' }}
+						</totvs-grid-column>
+					<% } %>
+
+					<% if (field.fieldName == "ind-fat-qtfam") { %>
+						<totvs-grid-column
+							editable="true"
+							field="ind-fat-qtfam-aux"
+							class="#= data['cod-sit-item'] == 6 ? 'cancelled' : ''#"
+							width="180"
+							oldeditable="<%= field.fieldEnabled %>"
+						>
+							{{ :: 'Unidade Faturamento' | i18n : [] : 'dts/mpd' }}
+
+							<option id="1">{{ :: 'Unidade do Item' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="2">{{ :: 'Unidade da Família' | i18n : [] : 'dts/mpd' }}</option>
+							<option id="3">{{ :: 'Unidade do Faturamento' | i18n : [] : 'dts/mpd' }}</option>
+						</totvs-grid-column>
+					<% } %>
+				<% } )%>
+			</totvs-grid>
+		</div>
+	</div>
+</div>

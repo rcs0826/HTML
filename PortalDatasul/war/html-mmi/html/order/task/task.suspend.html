@@ -1,0 +1,48 @@
+<totvs-modal-header>
+        {{ suspendController.model.task['cd-tarefa'] }} - {{ suspendController.model.task['descricao'] }}
+</totvs-modal-header>
+    
+<totvs-modal-body>    
+    <div class="row">
+        <totvs-page-child>        
+            <totvs-page-content>
+
+                <div class="col-sm-12">
+                    <totvs-field totvs-select
+                                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                label="{{ 'l-standard-pend' | i18n }}"
+                                ng-model="suspendController.zoomPendencia"
+                                ng-if="suspendController.model.task['estado-taref'] != 3"
+                                select-id="cd-pend-padr"
+                                id="cd-pend-padr"
+                                select-description="descricao"
+                                select-service="mmi.pendencia.zoom"
+                                zoom-service="mmi.pendencia.zoom"
+                                return-object="select-id"
+                                required
+                                canclean="undefined">
+                    </totvs-field>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <field class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                            type="textarea"
+                            ng-model="suspendController.narrativa"
+                            maxlength="2000"
+                            rows="5">
+                            <label class="field-label">{{ 'l-narrative' | i18n }}</label>
+                    </field>
+                </div>
+            
+
+            </totvs-page-content>
+        </totvs-page-child>
+    </div>			
+</totvs-modal-body>
+
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="suspendController.cancel()">{{ 'l-cancel' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="suspendController.suspende()" ng-if="suspendController.model.task['estado-taref'] != 3">{{ 'l-suspend' | i18n }}</button>       
+    <button type="button" class="btn btn-primary" data-ng-click="suspendController.reativa()" ng-if="suspendController.model.task['estado-taref'] == 3">{{ 'l-reactivate' | i18n }}</button>      
+</totvs-modal-footer>

@@ -1,0 +1,227 @@
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+link(rel="stylesheet" href="/dts/kbn/css/font-awesome.css")
+
+totvs-page
+    totvs-page-navbar
+        totvs-page-breadcrumb
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb(link="#/dts/kbn/board") {{ 'l-list-board' | i18n }}
+            breadcrumb {{controller.cell.cod_chave_erp}}
+        totvs-page-header
+            totvs-page-header-title.col-xs-12.col-sm-8(title="{{controller.cell.des_cel}}")
+            div.check-nivel.pull-right
+                input(type="checkbox" id="andon" ng-change="changeState(controller.cell.andon)" ng-model="controller.cell.andon" value="1" class="ng-untouched ng-valid ng-dirty ng-valid-parse")
+                label.is-pointer(for="andon" title="{{'l-andon' | i18n}}" )
+
+            div.check-nivel.pull-right.is-pointer(title="{{'l-refresh-by-ten-minute' | i18n}}", style="margin-right: 7px; background: #eee;", ng-click="controller.abreModal()", id="refreshButton")
+                span.fa.fa-clock-o.fa-2x(style="margin-left: 7px; margin-top: 7px;")
+
+            div.check-nivel.pull-right.is-pointer(title="{{'l-refresh-board' | i18n}}", style="margin-right: 7px; background: #eee;", ng-click="controller.init()")
+                span.fa.fa-refresh.fa-2x(style="margin-left: 7px; margin-top: 7px;")
+
+            .row
+    totvs-page-content
+        totvs-page-detail
+            .row
+                accordion.quadro.col-xs-12
+                    accordion-group(is-open="true")
+                        accordion-heading
+                            .fa.fa-desktop
+                            span.btn(style="font-size: 16px;font-family: inherit;font-weight: 500;line-height: 1.1;") {{'l-board' | i18n}}
+                            
+                            span.btn.btn-default.pull-right(
+                                title="{{'l-produce-items-manuals' | i18n}}",
+                                ng-click="controller.openManualItems($event)",
+                                ng-if="controller.hasManualItems"
+                                ).fa.fa-gears
+                            span.btn.btn-default.pull-right(
+                                title="{{'l-ranks-by-code' | i18n}}",
+                                ng-click="controller.changeOrder($event)",
+                                ng-if="controller.settings.order == 'priority'"
+                                ).fa.fa-sort-alpha-asc
+                            span.btn.btn-default.pull-right(
+                                title="{{'l-ranks-by-pareto' | i18n}}",
+                                ng-click="controller.changeOrder($event)",
+                                ng-if="controller.settings.order == 'name'"
+                            ).fa.fa-sort-amount-desc
+                            span.btn.btn-default.pull-right(
+                                title="{{'l-hide-manual-items' | i18n}}",
+                                ng-click="controller.changeFilter($event, 'man')", 
+                                ng-if="controller.hasManualItems && controller.showManualIcon(controller.settings.selectManualItens)",
+                                style="font-family: inherit;").fa.fa
+                                strong M
+                            span.btn.btn-default.pull-right(
+                                title="{{'l-show-manual-items' | i18n}}",
+                                ng-click="controller.changeFilter($event, 'man')", 
+                                ng-if="controller.hasManualItems && !controller.showManualIcon(controller.settings.selectManualItens)",
+                                style="font-family: inherit;").fa.fa M
+                            span.btn.btn-default.pull-right(
+                                title="{{'l-hide-automatic-items' | i18n}}",
+                                ng-click="controller.changeFilter($event, 'auto')", 
+                                ng-if="controller.hasManualItems && controller.showAutomaticIcon(controller.settings.selectManualItens)",
+                                style="font-family: inherit;").fa.fa
+                                    strong A
+                            span.btn.btn-default.pull-right(
+                                title="{{'l-show-automatic-items' | i18n}}",
+                                ng-click="controller.changeFilter($event, 'auto')", 
+                                ng-if="controller.hasManualItems && !controller.showAutomaticIcon(controller.settings.selectManualItens)",
+                                style="font-family: inherit;").fa.fa A
+                        .row
+                            .horizontal-scroll(ng-if="!settings.show", set-width, id="quadro")
+                                kanban-stack(ng-repeat="item in controller.listKanban | filter: { itemManual : controller.settings.selectManualItens} | stackOrder : controller.settings.order : controller.quantifyPriority" item="item" item-click="controller.openItemDetail" send-item-to-queue="controller.sendCardToQueue")                        div.board-settings(ng-if="settings.show")
+                        div.board-settings(ng-if="settings.show")
+                            .row
+                                .col-xs-12.col-sm-6
+                                    h3 {{'l-settings' | i18n}}
+                                    h4 {{'l-ordinations' | i18n}}
+                                    .row.btn-group.col-xs-12
+                                        label.btn.btn-default.col-xs-6.col-md-3(ng-model="settings.order" btn-radio="'priority'") {{'l-pareto' | i18n}}
+                                        label.btn.btn-default.col-xs-6.col-md-3(ng-model="settings.order" btn-radio="'name'") {{'l-name' | i18n}}
+                                    h4 {{'l-presentation' | i18n}}
+                                    .row.btn-group.col-xs-12
+                                        label.btn.btn-default.col-xs-6.col-md-3(ng-model="settings.manualItems" btn-checkbox) {{'l-items-manuals' | i18n}}
+
+                                        label.btn.btn-default.col-xs-6.col-md-3(ng-model="settings.automaticItems" btn-checkbox) {{'l-automatic-items' | i18n}}
+                                .col-xs-12.col-sm-6
+                                    h3 {{'l-actions' | i18n}}
+                                    h4 {{'l-production' | i18n}}
+                                    .row.col-xs-12
+                                        button.btn.btn-primary.col-xs-12.col-md-6 {{'l-produce-items-manuals' | i18n}}
+            .row
+                accordion.col-xs-12
+                    accordion-group(is-open="true")
+                        accordion-heading
+                            .fa.fa-arrow-circle-left &nbsp;
+                            span.btn(style="font-size: 16px;font-family: inherit;font-weight: 500;line-height: 1.1;") {{'l-programming-board' | i18n}}
+
+                            span.btn.btn-default.pull-right(
+                                title="{{'l-unlock-cards' | i18n}}",
+                                ng-click="controller.UnlockCards($event)",
+                                ng-if="controller.shouldShowUnlockCardIcon()"
+                                ).fa.fa-unlock
+                            span.btn.btn-default.pull-right(
+                                title="{{'l-block-cads-on-queue' | i18n}}",
+                                ng-click="controller.openQueueLock($event)",
+                                ng-if="controller.shouldShowLockCardIcon()"
+                                ).fa.fa-lock
+                            span.btn.btn-default.pull-right(
+                                title="{{'l-delete-extra-cards' | i18n}}",
+                                ng-click="controller.deleteExtraCards($event)",
+                                ng-if="controller.onlyExtraCardsSelected()"
+                                ).fa.fa-trash
+                        .row 
+                            .col-xs-12.col-sm-2
+                                div(style="margin: auto;")
+                                    .faixa-cartao(style="width:100%")
+                                        .text-center
+
+                                            field.col-md-12(type="select",ng-model="controller.selected", label="{{'l-cell-workcenters' | i18n}}", required)
+                                                include
+                                                    ui-select-match
+                                                        {{$select.selected.cod_chave_erp}}
+                                                    ui-select-choices(repeat="state in controller.worksCenter track by $index")
+                                                        span(data-ng-bind-html="state.cod_chave_erp | highlight: $select.search")
+
+                                        .text-center
+                                            span.fa.fa-cog-4x
+                                            button.btn.btn-primary(ng-click="controller.produceOnCel();", style="margin-top: 10px")
+                                                | {{'l-to-produce' | i18n}}
+                            .col-xs-12.col-sm-10
+                                .horizontal-scroll
+                                    .faixa-cartao.faixa-fixa
+                                        .text-center
+                                            span {{'l-fixed-range' | i18n}}
+                                        div
+                                            .cartao.faixa-kanban-filled(data-ng-repeat="card in controller.listRangeFixed | orderBy: 'idi_ord_etiq'" class="{{controller.colorCard(card.color)}}")
+                                                .cartao-label
+                                                    input(type="checkbox" data-ng-model="card.checked")
+                                                    span &nbsp;
+                                                        {{card.ttCartoesDs.ttItemDetDs.ttItemFilaDs | descGeneric:"{sku} ({exp.short})"}}
+                                                .cartao-conteudo.is-pointer(ng-click="controller.checkCard(card)" ng-dblclick="controller.checkEveryCard(controller.listRangeAction.concat(controller.listRangeFixed), card)")
+                                                    b {{card.ttCartoesDs.ttItemDetDs.ttItemFilaDs | descGeneric:"{ref}"}}
+                                                    span.rounded-text.hidden
+                                                        span.fa.fa-lock
+                                                    br
+                                                    br
+                                                    span.rounded-text
+                                                        span {{card.productionTime | prettyTime }}
+                                    .faixa-cartao
+                                        span &nbsp;
+                                        div
+                                            .cartao.faixa-kanban-filled(data-ng-repeat="card in controller.listRangeBloqued | orderBy: 'idi_ord_etiq'" class="{{controller.colorCard(card.color)}}")
+                                                .cartao-label
+                                                    input(type="checkbox" data-ng-model="card.checked")
+                                                    span &nbsp;
+                                                        {{card.ttCartoesDs.ttItemDetDs.ttItemFilaDs | descGeneric:"{sku} ({exp.short})"}}
+                                                .cartao-conteudo.is-pointer(ng-click="controller.checkCard(card)" ng-dblclick="controller.checkEveryCard(controller.listRangeBloqued, card)")
+                                                    b {{card.ttCartoesDs.ttItemDetDs.ttItemFilaDs | descGeneric:"{ref}"}}
+                                                    br
+                                                    span.rounded-text
+                                                        span.fa.fa-lock
+                                                    br
+                                                    span.rounded-text
+                                                        span {{card.productionTime | prettyTime }}
+                                            .cartao.faixa-kanban-filled(data-ng-repeat="card in controller.listRangeAction | orderBy: 'idi_ord_etiq' | filter: controller.horizonSizeComparator" class="{{controller.colorCard(card.color)}}")
+                                                .cartao-label
+                                                    input(type="checkbox" data-ng-model="card.checked")
+                                                    span &nbsp;
+                                                         {{card.ttCartoesDs.ttItemDetDs.ttItemFilaDs | descGeneric:"{sku} ({exp.short})"}}
+                                                .cartao-conteudo.is-pointer(ng-click="controller.checkCard(card)" ng-dblclick="controller.checkEveryCard(controller.listRangeAction.concat(controller.listRangeFixed), card)")
+                                                    b {{card.ttCartoesDs.ttItemDetDs.ttItemFilaDs | descGeneric:"{ref}"}}
+                                                    span.rounded-text.hidden
+                                                        span.fa.fa-lock
+                                                    br
+                                                    br
+                                                    span.rounded-text
+                                                        span {{card.productionTime | prettyTime }}
+                        .row
+                            .col-md-12
+                                span.pull-right(style="text-decoration: underline; color: #787878")
+                                    {{controller.qtdCartoesSelecionados()}}
+                                    &nbsp;
+                                    span(ng-if="controller.qtdCartoesSelecionados() == 1")
+                                        {{ "l-selected-card" | i18n }}
+                                    span(ng-if="controller.qtdCartoesSelecionados() != 1")
+                                        {{ "l-selected-cards" | i18n }}
+
+            .row
+                accordion.col-xs-12
+                    accordion-group(is-open="true")
+                        accordion-heading
+                            .fa.fa-gears &nbsp;
+                            span.btn(style="font-size: 16px;font-family: inherit;font-weight: 500;line-height: 1.1;") {{'l-production-board' | i18n}}
+
+                        .centro-trabalho
+                            ul.lista-centro-trabalho.horizontal-scroll(ng-model="controller.worksCenter")
+                                li.is-pointer(data-ng-repeat="work in controller.worksCenter" data-ng-click="controller.getWorkCenterModal(work)")
+                                    h4
+                                        {{work.cod_chave_erp}}
+                                    i.fa.fa-cogs.fa-5x
+                                    span.fraction-number
+                                        sup(ng-if="work.qtd_cartoes")
+                                            {{work.qtd_cartoes}}
+                                        sup(ng-if="!work.qtd_cartoes")
+                                            | &nbsp; 0
+
+                        .row.btn-group-bottom
+                            div.col-xs-4.col-sm-6
+                                button.btn.btn-primary.btn-lg.btn-max-width.width-fill(data-ng-click="controller.getTransportSku()" ng-disabled="controller.carryingSize==0")
+                                    strong
+                                        {{controller.carryingSize}} &nbsp;
+                                    span(ng-if="controller.carryingSize == 1")
+                                        {{"l-card-transport"| i18n}}
+                                    span(ng-if="controller.carryingSize == 0 || controller.carryingSize > 1")
+                                        {{"l-cards-transport"| i18n}}
+                                    | &nbsp;
+                                    i.fa.fa-truck.fa-flip-horizontal
+
+                            div.col-xs-4.col-sm-6
+                                button.btn.btn-default.btn-lg.btn-max-width.width-fill(data-ng-click="controller.getLockedSku()" ng-disabled="controller.blockedSize==0")
+                                    strong
+                                        {{controller.blockedSize}} &nbsp;
+                                    span(ng-if="controller.blockedSize == 1")
+                                        {{"l-card-locked"| i18n}}
+                                    span(ng-if="controller.blockedSize == 0 || controller.blockedSize > 1")
+                                        {{"l-cards-lock"| i18n}}
+                                    | &nbsp;
+                                    i.fa.fa-lock

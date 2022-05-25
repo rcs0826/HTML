@@ -1,0 +1,59 @@
+<totvs-page-alert
+	ng-if="!controller.listLeads || controller.listLeads.length <= 0"
+	type="info"
+	message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+</totvs-page-alert>
+
+<totvs-page-alert
+	ng-if="true"
+	type="info"
+	message="{{ 'msg-lead-not-apply-filter-status' | i18n: []: 'dts/mpd' }}">
+</totvs-page-alert>
+
+<totvs-list-item ng-repeat="lead in controller.listLeads"
+				 totvs-custom-element="customListItem">
+
+	<totvs-list-item-header>
+               
+        
+		<totvs-list-item-title title="{{lead['nome-abrev'] ? (lead['nome-abrev'] + ' - ') : ''}} {{lead['nome-emit']}}"
+							   link="#/dts/crm/account/detail/{{lead['cod-emitente']}}?isSourceMpd=true"></totvs-list-item-title>
+
+		<totvs-list-item-action limit-primary-action="2">
+	        <%
+	        _.forEach(data.fields, function(carteiraClienteRepresVisibleFields) {
+                 if (carteiraClienteRepresVisibleFields.fieldName == "btn-new-order-tab-lead") {
+            %>
+			<action ng-if="!controller.newOrderInclusionFlow" 
+					icon="glyphicon-file" 
+					ng-click="controller.openSalesOrder(lead);">
+				{{ 'btn-new-order' | i18n }}
+			</action>
+
+			<!-- novo fluxo de pedido -->
+			<action ng-if="controller.newOrderInclusionFlow"
+					icon="glyphicon-file" 
+					ng-click="controller.openSalesOrder2(true, null, lead);">
+				{{ 'btn-new-order' | i18n }}
+			</action>
+            <%
+                }
+	        });
+            %>   
+			<!-- Tratamento para Nome Abreviado que contem barras -->
+			<action link="#/dts/mpd/salesorders/{{lead['cod-emitente']}}?isLead=true" icon="glyphicon-list">{{ 'btn-list-orders' | i18n }}</action>
+
+		</totvs-list-item-action>  
+	</totvs-list-item-header>
+
+	<totvs-list-item-content>
+		<totvs-lodash-template src="/dts/mpd/html/customers/customers-leads-list-fields.html"
+							   template-data="controller.customerListProfileConfig"></totvs-lodash-template>
+	</totvs-list-item-content>
+
+</totvs-list-item>
+
+<totvs-list-pagination
+		   ng-if="(controller.listResult.length && controller.listLeads.length < controller.totalLeadRecords)"
+		   ng-click="controller.searchLeads(true);">
+</totvs-list-pagination>

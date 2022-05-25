@@ -1,0 +1,109 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{ 'l-select-document' | i18n}}</h3>
+</div>
+
+<div class="modal-body">
+
+    <div class="row">
+        <totvs-page-form ng-controller="acr.inquiredocdetail.Controller as controller">
+
+            <totvs-row>
+                <totvs-field 
+                    totvs-input 
+                    label="{{ 'l-document' | i18n }}" 
+                    placeholder="{{ 'l-select' | i18n }}" 
+                    ng-model="controllerDetail.selectDocs.model.documentCode"
+                    class="col-md-6" 
+                    ng-required="true" 
+                    canclean>
+                    <validator key="required">{{ 'l-required' | i18n }}</validator>
+                </totvs-field>
+
+                <totvs-field 
+                    totvs-input 
+                    label="{{ 'l-parcel' | i18n }}" 
+                    placeholder="{{ 'l-select' | i18n }}"
+                    ng-model="controllerDetail.selectDocs.model.documentParcel" 
+                    class="col-md-6"
+                    canclean>
+                </totvs-field>
+
+            </totvs-row>
+
+            <totvs-row>
+                <totvs-field 
+                    totvs-select 
+                    label="{{ 'l-site' | i18n }}" 
+                    class="col-md-6"
+                    delay="100"
+                    placeholder="{{ 'l-select' | i18n }}"
+                    ng-model="controllerDetail.selectDocs.model.site" 
+                    select-id="cod_estab" 
+                    select-description="nom_abrev"
+                    ng-required="true" 
+                    t-no-data="{{ 'l-no-data' | i18n }}" 
+                    select-service="acr.estabelecimento.zoom"
+                    zoom-service="acr.estabelecimento.zoom" 
+                    canclean>
+                    <validator key="required"> {{ 'l-required' | i18n }} </validator>
+                </totvs-field>
+
+                <totvs-field 
+                    totvs-select 
+                    label="{{ 'l-invoice-series' | i18n }}" 
+                    class="col-md-6" 
+                    delay="100"
+                    placeholder="{{ 'l-select' | i18n }}"
+                    ng-model="controllerDetail.selectDocs.model.documentSeries" 
+                    select-id="cod_ser_fisc_nota"
+                    select-description="des_ser_fisc_nota" 
+                    t-no-data="{{ 'l-no-data' | i18n }}" 
+                    select-service="acr.ser-fisc-nota.zoom"
+                    zoom-service="acr.ser-fisc-nota.zoom" 
+                    canclean>
+                </totvs-field>
+
+            </totvs-row>
+
+            <totvs-row>
+
+                <totvs-field 
+                    totvs-select
+                    canclean
+                    label="{{ 'l-class' | i18n }}"
+                    class="col-md-6"
+                    delay="100"
+                    placeholder="{{ 'l-select' | i18n }}"
+                    ng-model="controllerDetail.selectDocs.model.documentClass"
+                    select-id="cod_espec_docto"
+                    select-description="des_espec_docto"
+                    ng-required="true"
+                    select-service="acr.espec-docto.zoom"
+                    zoom-service="acr.espec-docto.zoom">
+                    <validator key="required"> {{ 'l-required' | i18n }} </validator>
+                </totvs-field>
+
+            </totvs-row>
+
+            <div class="col-xs-12 col-md-12">
+                <totvs-page-disclaimers disclaimer-list="controller.disclaimers" ng-click="controller.removeDisclaimer">
+                </totvs-page-disclaimers>
+            </div>
+        </totvs-page-form>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button
+        type="button"
+        class="btn btn-primary"
+        data-ng-click="controllerDetail.search();">
+        {{ 'btn-search' | i18n }}
+    </button>
+    <button
+        type="button"
+        class="btn btn-default"
+        data-ng-click="controllerDetail.close();">
+        {{ 'btn-cancel' | i18n }}
+    </button>
+</div>

@@ -1,0 +1,269 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>
+        <totvs-page-header>
+            <totvs-page-header-title id="titleApp" title="{{controller.titleText}}"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new="true">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+
+    <!-- Parte 1 -->
+    <totvs-page-content>
+        <totvs-page-form>
+            <fieldset>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-16">
+                    <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-16">
+                        
+                        <!-- ORDEM 
+                            zoom 
+                            zoom-service="mcp.ord-prod.zoom" 
+                            zoom-id="nr-ord-produ"
+                        -->
+                        <field 
+                            type="input" 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-16" 
+                            focus 
+                            ng-model="controller.ttReporte.ordem"
+                            label="{{ 'l-production-order' | i18n }}"
+                            ng-blur="controller.leaveOrdProd()"
+                            maxlength="9" 
+                            onKeyPress="return event.charCode >= 48 && event.charCode <= 57"
+                            ng-disabled="true">
+                        </field>
+
+                        <!-- ITEM 
+                            canclean 
+                            required 
+                            zoom 
+                            zoom-service="men.item.zoom" 
+                            zoom-id="it-codigo" 
+                            zoom-description="desc-item"
+                        -->
+                        <field 
+                            type="input" 
+                            name-id="itemCode" 
+                            class="col-lg-8 col-md-8 col-sm-8 col-xs-16" 
+                            ng-model="controller.ttReporte.itemCode" 
+                            label="{{ 'l-item' | i18n }}"
+                            ng-disabled="true"
+                            zoom 
+                            zoom-service="men.item.zoom" 
+                            zoom-id="it-codigo" 
+                            zoom-description="desc-item">
+                        </field>
+
+                        <field 
+                            type="input" 
+                            class="hidden-lg hidden-md col-sm-12 col-xs-16" 
+                            label="{{ 'l-reference' | i18n }}" 
+                            ng-model="controller.ttReporte.itemRefer"
+                            ng-disabled="true">
+                        </field>
+
+                    </div>
+                    <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-16">
+                        <!-- PERCENTUAL PRODUZIDO -->
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-16" 
+                             style="text-align: center;vertical-align: middle">
+                            <div class="label label-primary col-lg-12 col-md-12 col-sm-12 col-xs-16" 
+                                 style="display: block;margin-top: 8px">
+                                <h6 style="font-weight: bold;margin-top: 6px;margin-bottom: 3px;">{{ 'l-quantity-produced' | i18n }}</h6>
+                                <h2 style="font-weight: bold;margin-top: 0px;margin-bottom: 3px;">{{controller.ptrProd}}%</h2>
+                            </div>
+                        </div>
+                        
+                        <!-- REFERENCIA
+                            canclean 
+                            zoom 
+                            zoom-service="men.referenciaitem.zoom" 
+                            zoom-id="cod-refer"
+                            zoom-init="{'property': 'it-codigo',
+                                        'value': {'start': controller.ttReporte.itemCode,
+                                        'end': controller.ttReporte.itemCode}}"
+                        -->
+                        <field 
+                            type="input" 
+                            class="col-lg-8 col-md-8 hidden-xs hidden-sm" 
+                            label="{{ 'l-reference' | i18n }}" 
+                            ng-model="controller.ttReporte.itemRefer"
+                            ng-disabled="true">
+                        </field>
+                    </div>
+                </div>
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>
+
+    <br>
+    <!-- Parte 3 -->
+    <totvs-page-content>
+        <totvs-page-form>
+            <fieldset>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-16">
+                    
+                    <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-16"
+                            ng-if="controller.showDepLoc">
+                        <!-- DEPOSITO -->
+                        <field 
+                            type="input" 
+                            label="{{ 'l-warehouse' | i18n }}" 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                            ng-model="controller.ttReporte.warehouseCode" 
+                            canclean 
+                            zoom 
+                            zoom-service="mce.deposito.zoom" 
+                            zoom-id="cod-depos" 
+                            zoom-description="nome">
+                        </field>
+
+                        <!-- LOCALIZAÇÃO -->
+                        <field 
+                            type="input" 
+                            label="{{ 'l-localization' | i18n }}" 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12" 
+                            ng-model="controller.ttReporte.locationCode" 
+                            ng-disabled="controller.disableLocation"
+                            canclean 
+                            zoom 
+                            zoom-service="mce.localizacao.zoom" 
+                            zoom-id="cod-localiz" 
+                            zoom-description="descricao">
+                        </field>
+                    </div>
+                    <div class=" row col-lg-12 col-md-12 col-sm-12 col-xs-16"
+                            ng-if="controller.showLotValid"
+                            ng-disabled="controller.disableLoteValid">
+                        <!-- LOTE SERIE -->
+                        <totvs-field 
+                            totvs-input 
+                            label="{{ 'l-lot-serial' | i18n }}" 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-16" 
+                            ng-model="controller.ttReporte.lotCode" 
+                            canclean>
+                        </totvs-field>
+                        <!-- DATA DE VALIDADE -->
+                        <totvs-field 
+                            totvs-datepicker 
+                            label="{{ 'l-validity' | i18n }}" 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-16" 
+                            ng-model="controller.ttReporte.lotDueDate" 
+                            placeholder="dd/mm/yyyy"
+                            t-mask-date
+                            ng-if="controller.showlotDueDate"
+                            canclean>
+                        </totvs-field>
+                    </div>
+                    <div class=" row col-lg-12 col-md-12 col-sm-12 col-xs-16"
+                            ng-if="controller.showPerPpm"
+                            ng-disabled="controller.disablePerPpm">
+                            <!-- FATOR DE CONCENTRAÇÃO -->
+                            <totvs-field 
+                                totvs-decimal 
+                                label="{{ 'l-ppm-conc' | i18n }}" 
+                                m-dec="4" 
+                                v-max="7" 
+                                class="col-lg-6 col-md-6 col-sm-6 col-xs-16" 
+                                ng-model="controller.ttReporte.perppm" 
+                                canclean>
+                            </totvs-field>
+                    </div>
+                    <div class=" row col-lg-12 col-md-12 col-sm-12 col-xs-16" ng-if="controller.isSfc">
+                        <totvs-field 
+                            totvs-datepicker 
+                            name="dataIni"
+                            label="{{ 'l-initial-date' | i18n }}" 
+                            class="mask col-lg-6 col-md-6 col-sm-6 col-xs-16"
+                            ng-model="controller.ttReporte.datIniReporte" 
+                            placeholder="dd/mm/yyyy" 
+                            t-mask-date
+                            canclean>
+                        </totvs-field>
+                        
+                        <totvs-field 
+                            totvs-datepicker 
+                            label="{{ 'l-final-date' | i18n }}" 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-16"
+                            ng-model="controller.ttReporte.datFinReporte" 
+                            placeholder="dd/mm/yyyy"
+                            t-mask-date
+                            canclean>
+                        </totvs-field>
+                    </div>
+                    <div class=" row col-lg-12 col-md-12 col-sm-12 col-xs-16" ng-if="controller.isPcp">
+                        <totvs-field 
+                            totvs-datepicker 
+                            label="{{ 'l-appointment-date' | i18n }}" 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-16"
+                            ng-model="controller.ttReporte.reportDate"
+                            placeholder="dd/mm/yyyy"
+                            t-mask-date
+                            canclean>
+                        </totvs-field>
+                    </div>
+                    <div class=" row col-lg-12 col-md-12 col-sm-12 col-xs-16" ng-if="controller.isSfc">
+                        <totvs-field 
+                            totvs-time 
+                            label="{{ 'l-initial-hour' | i18n }}" 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-16"
+                            ng-model="controller.ttReporte.reportIniTime"
+                            t-mask-time>
+                        </totvs-field>
+
+                        <totvs-field 
+                            totvs-time 
+                            label="{{ 'l-final-hour' | i18n }}" 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-16"
+                            ng-model="controller.ttReporte.reportFinTime">
+                        </totvs-field>
+                    </div>
+
+                    <div class=" row col-lg-12 col-md-12 col-sm-12 col-xs-16">
+                        <!-- QUANTIDADES -->
+                        <totvs-field 
+                            totvs-decimal 
+                            label="{{controller.aptoText}}" 
+                            m-dec="4" 
+                            v-max="9" 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-16" 
+                            ng-model="controller.ttReporte.qtdProd" 
+                            ng-disabled="controller.disabledQtdProd"
+                            canclean>
+                        </totvs-field>
+                        <totvs-field 
+                            totvs-decimal 
+                            m-dec="4" 
+                            v-max="9" 
+                            ng-maxlength="9" 
+                            label="{{ 'l-scrap-quantity-title' | i18n }}" 
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-16" 
+                            ng-model="controller.ttReporte.qtdScrap" 
+                            canclean>
+                        </totvs-field>
+                    </div>
+                </div>
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>
+
+</totvs-page>
+
+<style>
+    .row>field[type=checkbox] {
+        height: 62px;
+    }
+    
+    .panel-group {
+        margin-top: 10px;
+    }
+    
+    tr td field[type=checkbox] {
+        padding: 0px 48%;
+    }
+    
+    tr td field[type=combo] {
+        margin: 0px 17%;
+    }
+
+</style>

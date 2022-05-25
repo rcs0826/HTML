@@ -1,0 +1,41 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{ 'Notas' | i18n : [] : 'dts/mpd'}}</h3>
+</div>
+<div class="modal-body">
+
+	<div class="row">
+		<div class="col-sm-12" style="padding-left: 0px;">
+			<totvs-page-detail-info title="{{ 'Sequência' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-4 col-md-3">
+				{{modalItemInvoiceController.ttOrderItem['nr-sequencia']}}
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info title="{{ 'Item' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-4 col-md-3">
+				{{modalItemInvoiceController.ttOrderItem['it-codigo']}}
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info ng-if="modalItemInvoiceController.ttOrderItem['cod-refer'] != ' '" title="{{ 'Referência' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-4 col-md-3">
+				{{modalItemInvoiceController.ttOrderItem['cod-refer']}}
+			</totvs-page-detail-info>
+		</div>
+	</div>
+	</br>
+	<div class="row">
+		<div class="col-sm-12">
+
+			<totvs-grid grid-data="modalItemInvoiceController.ttSimpleInvoice"
+						grid="modalItemInvoiceController.itemInvoiceGrid"
+						auto-resize-content="true"
+						selectable="row">
+				<totvs-grid-column field="nr-nota-fis" width="50">{{ 'Número Nota' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<totvs-grid-column field="serie" width="50">{{ 'Série' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<totvs-grid-column field="cod-estabel" width="50">{{ 'Estabelecimento' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<totvs-grid-column field="dt-emis-nota" width="50" filter="date">{{ 'Data Emissão' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<totvs-grid-column field="vl-tot-nota" width="50" filter="number:4" style="text-align: right;">{{ 'Valor' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+			</totvs-grid>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-warning" ng-click="modalItemInvoiceController.close()">{{"btn-close"| i18n}}</button>
+</div>
+

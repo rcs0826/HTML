@@ -1,0 +1,57 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{ 'l-advanced-search' | i18n }}</h3>
+</div>
+
+<div class="modal-body">
+
+    <div class="row">
+        <form class="form-horizontal" role="form">
+
+            <field maxlength="16" canclean type="input" ng-model="controller.advancedSearch.model.cddEmbarqIni">
+                <label>{{ 'l-shipment' | i18n }}</label>
+            </field>
+            <field maxlength="16" canclean type="input" ng-model="controller.advancedSearch.model.cddEmbarqFim">
+                <label>{{ 'l-to' | i18n }}</label>
+            </field>
+
+            <field maxlength="12" canclean type="input" ng-model="controller.advancedSearch.model.nomeAbrevIni">
+                <label>{{ 'l-customer' | i18n }}</label>
+            </field>
+            <field maxlength="12" canclean type="input" ng-model="controller.advancedSearch.model.nomeAbrevFim">
+                <label>{{ 'l-to' | i18n }}</label>
+            </field>
+
+            <field maxlength="12" canclean type="input" ng-model="controller.advancedSearch.model.nrPedcliIni">
+                <label>{{ 'nr-pedcli' | i18n }}</label>
+            </field>
+            <field maxlength="12" canclean type="input" ng-model="controller.advancedSearch.model.nrPedcliFim">
+                <label>{{ 'l-to' | i18n }}</label>
+            </field>
+
+            <field type="date" ng-model="controller.advancedSearch.model.dtEmbarqueIni">
+                <label>{{ 'l-dt-shipment' | i18n }}</label>
+            </field>
+
+            <field type="date" ng-model="controller.advancedSearch.model.dtEmbarqueFim">
+                <label>{{ 'l-to' | i18n }}</label>
+            </field>
+
+            <div class="col-xs-12 col-md-12" style="margin-top: 15px">
+                <button ng-if="currentuser['user-hiearchy']" class="btn btn-default" ng-model="controller.selectedRepresentatives" ng-change="controller.onZoomSelectRepresentatives();"
+                    zoom zoom-multiple zoom-service="mpd.repres.zoom" zoom-init="currentuser['listSubord']">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    {{ 'l-bt-repres' | i18n: []: 'dts/mpd/' }}
+                </button>
+            </div>
+            <div class="col-xs-12 col-md-12">
+                <totvs-page-disclaimers disclaimer-list="controller.disclaimers" ng-click="controller.removeDisclaimer">
+                </totvs-page-disclaimers>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" data-ng-click="controller.search();">{{ 'btn-search' | i18n }}</button>
+    <button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'btn-cancel' | i18n }}</button>
+</div>

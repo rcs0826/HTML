@@ -1,0 +1,23 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{'l-home'| i18n}}</breadcrumb>
+            <breadcrumb>{{ controller.dashboard.dashboardName}}</breadcrumb> 			
+        </totvs-page-breadcrumb>
+        <totvs-page-header>		 
+            <totvs-page-header-title title="{{!controller.dashboard.dashboardHeader? i18n('l-loading-dashboard') : controller.dashboard.dashboardHeader}}" settings="controller.settings()">
+            </totvs-page-header-title>
+        </totvs-page-header>		
+    </totvs-page-navbar>
+    
+    <totvs-page-content>
+        <div class="row">
+            <div class="col-xs-12">
+                <br>
+                <div class="dashboard-portlet col-md-12" ng-repeat="widget in controller.widgets" ng-class="{'col-md-6':widget.widgetSize == 'half'}">  
+                    <div ng-include="widget.widgetSource"></div>
+                </div>               
+            </div>
+        </div>
+    </totvs-page-content>
+</totvs-page>

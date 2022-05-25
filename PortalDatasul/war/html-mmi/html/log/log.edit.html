@@ -1,0 +1,163 @@
+
+
+<totvs-modal-header >{{'l-holdover' | i18n}}: {{controller.model.programa}}</totvs-modal-header>
+<totvs-modal-body>		
+    <totvs-page-content style="border:0px">
+        <totvs-page-detail>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <totvs-page-detail-info class="col-md-3"
+                                            title="{{ 'l-requisition' | i18n }}"
+                                            value="{{:: controller.model.nrOrdProdu | orderNumberMask}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info class="col-md-3"
+                                            title="{{ 'l-task' | i18n }}"
+                                            value="{{:: controller.model.cdTarefa | orderNumberMask}}">
+                    </totvs-page-detail-info>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                 ng-if="controller.model.origem === 1">
+                <totvs-field 
+                            totvs-input
+                            ng-disabled="controller.model.consulta"
+                            class="col-lg-7 col-md-7 col-sm-12 col-xs-12"
+                            label="{{'l-technician' | i18n }}"
+                            ng-model="controller.model.tecnico"
+                            canclean="undefined"
+                            id="cd-tecnico"
+                            zoom-id="cd-tecnico"
+                            zoom-description="nome-compl"
+                            zoom-service="mmi.tecn-mi.zoom">
+                </totvs-field>
+            </div>
+            
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                 ng-if="controller.model.origem === 2">
+                    <totvs-field 
+                                totvs-input
+                                ng-disabled="controller.model.consulta"
+                                class="col-lg-7 col-md-7 col-sm-12 col-xs-12"
+                                label="{{ 'l-employee' | i18n }}"
+                                ng-model="controller.model.tecnico"
+                                canclean="undefined"
+                                id="cod-matr"
+                                zoom-id="cod-matr"
+                                zoom-description="nom-func"
+                                zoom-service="mab.mmv-func-ofici.zoom">
+                    </totvs-field>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <totvs-field
+                                ng-disabled="controller.model.consulta"
+                                class="col-md-3"
+                                totvs-datepicker
+                                t-mask-date="99/99/9999"
+                                label="{{ 'l-appointment-date' | i18n }}"
+                                ng-model="controller.model.dataApontamento">
+                    </totvs-field> 
+                    <totvs-field
+                                ng-disabled="controller.model.consulta"
+                                class="col-md-2"
+                                totvs-time
+                                ng-if="!controller.model.grupo"
+                                ng-model="controller.model.horaInicial"
+                                label="{{ 'l-initial-hour' | i18n }}">
+                    </totvs-field>
+                    <totvs-field
+                                ng-disabled="controller.model.consulta"
+                                class="col-md-2"
+                                totvs-time
+                                ng-if="!controller.model.grupo"
+                                ng-model="controller.model.horaFinal"
+                                label="{{ 'l-final-hour' | i18n }}">
+                    </totvs-field>
+
+                    <totvs-field
+                                totvs-decimal
+                                ng-disabled="controller.model.consulta"
+                                class="col-md-2"
+                                ng-if="controller.model.grupo"
+                                ng-model="controller.model.hrNormal"
+                                label="{{ 'l-normal-hour' | i18n }}">
+                    </totvs-field>
+                    <totvs-field
+                                totvs-decimal
+                                ng-disabled="controller.model.consulta"
+                                class="col-md-2"
+                                ng-if="controller.model.grupo"
+                                ng-model="controller.model.hrExtra"
+                                label="{{ 'l-overtime' | i18n }}">
+                    </totvs-field>
+            </div>
+
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <totvs-field
+                            ng-disabled="controller.model.consulta"
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12" 
+                            totvs-checkbox
+                            t-bsswitch="atribute"
+                            label="{{ 'l-end-task' | i18n }}"
+                            ng-model="controller.model.encerrarTarefa">
+                </totvs-field>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                 style="padding-bottom: 10px;">
+                <field      ng-disabled="controller.model.consulta"
+                            class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                            type="textarea"
+                            ng-model="controller.model.observacoes"
+                            label="{{ 'l-observations' | i18n }}">
+                </field>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                 ng-if="controller.habilitaGrid === false">
+                <totvs-page-detail-info 
+                            ng-disabled="controller.model.consulta"
+                            class="brokeLine col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                            title="{{ 'l-errors' | i18n }}"
+                            value="{{controller.model.erros | enterLineTextArea}}">
+                </totvs-page-detail-info>                    
+            </div>       
+        
+            <div class="paddingGrid col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <totvs-grid grid-data="controller.model.ttLogErroLin" 
+                            grid-height="200" 
+                            navigatable="true" 
+                            editable="false" 
+                            auto-resize-content="true"
+                            selectable="row"
+                            scrollable="true"
+                            resizable="true"
+                            ng-if="controller.habilitaGrid"
+                            ng-disabled="controller.model.consulta">
+                    <totvs-grid-column field="num-erro" width="30"style="text-align: right"> {{ 'l-error-code' | i18n }} </totvs-grid-column>                    
+                    <totvs-grid-column field="des-erro" width="100"> {{ 'l-description' | i18n }}</totvs-grid-column>
+                    <totvs-grid-column field="des-help-erro" width="100">{{ 'l-help' | i18n }}</totvs-grid-column>
+                </totvs-grid>
+            </div>
+        </totvs-page-detail>        
+    </totvs-page-content>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="controller.fechar()">{{ 'l-cancel' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="controller.reprocessar()">{{ 'l-reprocess' | i18n }}</button>
+</totvs-modal-footer>
+
+<style>
+    .brokeLine {
+        white-space: pre-line;
+    }
+    .page-details {
+        padding: 0;
+    }
+
+    .paddingGrid {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+</style>

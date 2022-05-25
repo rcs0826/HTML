@@ -1,0 +1,609 @@
+<%
+	if (data.itemShowHead) {
+
+		%>		
+		<totvs-page-detail-info-group>{{ 'l-order-item-identification' | i18n }}</totvs-page-detail-info-group>
+        <%
+
+        _.forEach(data.fields, function(pedItemCadastroVisibleFields) {
+
+            if (pedItemCadastroVisibleFields.fieldName == "cod-refer") {
+
+                %>
+                <div class="col-md-6 row">
+                    <input data-field-id="cod-refer"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           id="cod-refer_{{item['nr-sequencia']}}"
+                           ng-click="controller.addFieldtoModel('cod-refer', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-cod-refer' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('cod-refer', undefined, item['nr-sequencia'])">
+                        {{item['cod-refer']}}
+                    </totvs-page-detail-info>
+                    </div>									
+				<%
+
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "cod-sit-item") {
+
+                %>
+                <div class="col-md-6 row">
+                    <input data-field-id="cod-sit-item"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('cod-sit-item', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-situacao' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('cod-sit-item', undefined, item['nr-sequencia'])">
+                        {{item.situacao}}
+                    </totvs-page-detail-info>
+                    </div>									
+				<%
+
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "ind-componen") {
+
+                %>
+                <div class="col-md-6 row">
+                    <input data-field-id="ind-componen"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('ind-componen', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-component-type' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('ind-componen', undefined, item['nr-sequencia'])">
+                        {{item['ind-componen']}}
+                    </totvs-page-detail-info>
+                    </div>									
+				<%
+
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "it-codigo") {
+
+                %>
+                <div class="col-md-6 row">
+                    <input data-field-id="it-codigo"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           id="it-codigo_{{item['nr-sequencia']}}"
+                           ng-click="controller.addFieldtoModel('it-codigo', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-cod-item' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('it-codigo', undefined, item['nr-sequencia'])">
+                        {{item['it-codigo']}} - {{item.itemDesc}}
+                    </totvs-page-detail-info>
+                    </div>									
+				<%
+
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "nr-sequencia") {
+
+                %>
+                <div class="col-md-6 row">
+                    <input data-field-id="nr-sequencia"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           id="nr-sequencia_{{item['nr-sequencia']}}"
+                           ng-click="controller.addFieldtoModel('nr-sequencia', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-sequencia' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('nr-sequencia', undefined, item['nr-sequencia'])">
+                        {{item['nr-sequencia']}}
+                    </totvs-page-detail-info>
+                    </div>									
+				<%
+
+            }
+
+        });
+
+    }
+
+    if (data.itemShowQndy) {
+
+		%>		
+		<totvs-page-detail-info-group>{{ 'l-quantities' | i18n }}</totvs-page-detail-info-group>
+        <%
+
+        _.forEach(data.fields, function(pedItemCadastroVisibleFields) {
+
+            if (pedItemCadastroVisibleFields.fieldName == "cod-un") {
+
+                %>
+                <!--<input type="checkbox" class="model-cb" ng-click="controller.addFieldtoModel('cod-un', $event, item['nr-sequencia'])"/>-->
+				<div class="col-md-6 row">
+                    <div class="model-cb">&nbsp;</div>
+                    <totvs-page-detail-info title="{{ 'l-unidade-medida' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field">
+                        {{item['cod-un']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "des-un-medida") {
+
+                %>
+                <div class="col-md-6 row">
+                    <input data-field-id="des-un-medida"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('des-un-medida', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-invoicing-UM' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('des-un-medida', undefined, item['nr-sequencia'])">
+                        {{item['des-un-medida']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "qt-pedida") {
+
+                %>
+                <div class="col-md-6 row">
+                    <input data-field-id="qt-pedida"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('qt-pedida', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-delivered-quantity' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('qt-pedida', undefined, item['nr-sequencia'])">
+                        {{item['qt-pedida'] | number:4}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "qt-un-fat") {
+
+                %>
+                <div class="col-md-6 row">
+                    <input data-field-id="qt-un-fat"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('qt-un-fat', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-invoice-UM-quantity' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('qt-un-fat', undefined, item['nr-sequencia'])">
+                        {{item['qt-un-fat'] | number:4}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+        });
+
+    }
+
+    if (data.itemShowPrice) {
+
+		%>		
+		<totvs-page-detail-info-group>{{ 'l-prices' | i18n }}</totvs-page-detail-info-group>
+        <%
+
+        _.forEach(data.fields, function(pedItemCadastroVisibleFields) {
+
+            if (pedItemCadastroVisibleFields.fieldName == "vl-preori") {
+
+                %>
+				<!--<input type="checkbox" class="model-cb" ng-click="controller.addFieldtoModel('vl-preori', $event, item['nr-sequencia'])"/>-->
+				<div class="col-md-6 row">
+				<div class="model-cb">&nbsp;</div>
+				<totvs-page-detail-info title="{{ 'l-original-price' | i18n }}"
+										class="col-xs-12 col-sm-4 col-md-4 model-field">
+					{{item['vl-preori'] | number:4}}
+				</totvs-page-detail-info>
+				</div>
+				<%
+
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "vl-preori-un-fat") {
+
+                %>
+				<!--<input type="checkbox" class="model-cb" ng-click="controller.addFieldtoModel('vl-preori-un-fat', $event, item['nr-sequencia'])"/>-->
+				<div class="col-md-6 row">
+                    <div class="model-cb">&nbsp;</div>
+                    <totvs-page-detail-info title="{{ 'l-original-price-invoice-UM' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field">
+                        {{item['vl-preori-un-fat'] | number:4}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "vl-pretab") {
+
+                %>
+				<!--<input type="checkbox" class="model-cb" ng-click="controller.addFieldtoModel('vl-pretab', $event, item['nr-sequencia'])"/>-->
+				<div class="col-md-6 row">
+                    <div class="model-cb">&nbsp;</div>
+                    <totvs-page-detail-info title="{{ 'l-table-price' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field">
+                        {{item['vl-pretab'] | number:4}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "vl-preuni") {
+
+                %>
+				<!--<input type="checkbox" class="model-cb" ng-click="controller.addFieldtoModel('vl-preuni', $event, item['nr-sequencia'])"/>-->
+				<div class="col-md-6 row">
+                    <div class="model-cb">&nbsp;</div>
+                    <totvs-page-detail-info title="{{ 'l-net-price' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field">
+                        {{item['vl-preuni'] | number:4}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+
+            }
+
+        });
+
+    }
+
+    if (data.itemShowObs) {
+
+		%>		
+		<totvs-page-detail-info-group>{{ 'l-observacoes' | i18n }}</totvs-page-detail-info-group>
+        <%
+
+        _.forEach(data.fields, function(pedItemCadastroVisibleFields) {
+
+            if (pedItemCadastroVisibleFields.fieldName == "observacao") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="observacao"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('observacao', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-observacao' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('observacao', undefined, item['nr-sequencia'])">
+                        {{item.observacao}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+        });
+
+    }
+
+    if (data.itemShowOther) {
+
+		%>		
+		<totvs-page-detail-info-group>{{ 'l-other-information' | i18n }}</totvs-page-detail-info-group>
+        <%
+
+        _.forEach(data.fields, function(pedItemCadastroVisibleFields) {
+
+            if (pedItemCadastroVisibleFields.fieldName == "cod-unid-negoc") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="cod-unid-negoc"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('cod-unid-negoc', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-unidade-negocio' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('cod-unid-negoc', undefined, item['nr-sequencia'])">
+                        {{item['cod-unid-negoc']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "nr-config") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="nr-config"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('nr-config', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-nr-config' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('nr-config', undefined, item['nr-sequencia'])">
+                        {{item['nr-config']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "nr-ord-produ") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="nr-ord-produ"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('nr-ord-produ', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-nr-ord-produ' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('nr-ord-produ', undefined, item['nr-sequencia'])">
+                        {{item['nr-ord-produ']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "cod-ord-compra") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="cod-ord-compra"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('cod-ord-compra', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="Nr Ordem Compra"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('cod-ord-compra', undefined, item['nr-sequencia'])">
+                        {{item['cod-ord-compra']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "nr-progcli") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="nr-progcli"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('nr-progcli', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-nr-progcli' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('nr-progcli', undefined, item['nr-sequencia'])">
+                        {{item['nr-progcli']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "nr-programa") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="nr-programa"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('nr-programa', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-nr-programa' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('nr-programa', undefined, item['nr-sequencia'])">
+                        {{item['nr-programa']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "nr-versao") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="nr-versao"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('nr-versao', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-nr-versao' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('nr-versao', undefined, item['nr-sequencia'])">
+                        {{item['nr-versao']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "num-id-campanha-crm") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="num-id-campanha-crm"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('num-id-campanha-crm', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-campanh-crm' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('num-id-campanha-crm', undefined, item['nr-sequencia'])">
+                        {{item['num-id-campanha-crm']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "parcela") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="parcela"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('parcela', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-parcela' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('parcela', undefined, item['nr-sequencia'])">
+                        {{item.parcela}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+        });
+
+    }
+
+    if (data.itemShowTreatment) {
+
+		%>		
+		<totvs-page-detail-info-group>{{ 'l-attend-information' | i18n }}</totvs-page-detail-info-group>
+        <%
+
+        _.forEach(data.fields, function(pedItemCadastroVisibleFields) {
+
+            if (pedItemCadastroVisibleFields.fieldName == "ind-fat-qtfam") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="ind-fat-qtfam"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('ind-fat-qtfam', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-ind-fat-qtfam' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('ind-fat-qtfam', undefined, item['nr-sequencia'])">
+                        <span ng-if="item['ind-fat-qtfam']">{{ 'l-yes' | i18n }}</span>
+                        <span ng-if="!item['ind-fat-qtfam']">{{ 'l-no' | i18n }}</span>
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "log-canc-saldo") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="log-canc-saldo"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('log-canc-saldo', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-log-canc-saldo' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('log-canc-saldo', undefined, item['nr-sequencia'])">
+                        <span ng-if="item['log-canc-saldo']">{{ 'l-yes' | i18n }}</span>
+                        <span ng-if="!item['log-canc-saldo']">{{ 'l-no' | i18n }}</span>
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "dt-entrega") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="dt-entrega"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('dt-entrega', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-dt-entrega' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('dt-entrega', undefined, item['nr-sequencia'])">
+                        {{item['dt-entrega'] | date : ('l-date-format' | i18n) : 'UTC'}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "dt-max-fat") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="dt-max-fat"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('dt-max-fat', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-dt-lim-fat' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('dt-max-fat', undefined, item['nr-sequencia'])">
+                        {{item['dt-max-fat'] | date : ('l-date-format' | i18n) : 'UTC'}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "dt-min-fat") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="dt-min-fat"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('dt-min-fat', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-dt-minfat' | i18n}}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('dt-min-fat', undefined, item['nr-sequencia'])">
+                        {{item['dt-min-fat'] | date : ('l-date-format' | i18n) : 'UTC'}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "per-minfat") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="per-minfat"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('per-minfat', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-per-minfat' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('per-minfat', undefined, item['nr-sequencia'])">
+                        {{item['per-minfat'] | number:4}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedItemCadastroVisibleFields.fieldName == "tipo-atend") {
+
+                %>
+				<div class="col-md-6 row">
+                    <input data-field-id="tipo-atend"
+                           data-field-sequence="{{ item['nr-sequencia'] }}"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('tipo-atend', $event, item['nr-sequencia'])"/>
+                    <totvs-page-detail-info title="{{ 'l-tipo-atend' | i18n }}"
+                                            class="col-xs-12 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('tipo-atend', undefined, item['nr-sequencia'])">
+                        {{item['tipo-atend']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+        });
+
+    }
+
+
+%>

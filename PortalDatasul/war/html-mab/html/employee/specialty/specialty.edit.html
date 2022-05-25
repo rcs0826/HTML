@@ -1,0 +1,90 @@
+<totvs-modal-header>
+	{{ 'l-specialtys' | i18n }} ({{specialtyEditCtrl.totalRecords}})
+</totvs-modal-header >
+
+<totvs-modal-body>
+	<div class="col-xs-12" 
+		 style="padding-bottom: 10px; padding-left: 0px; padding-right: 0px;">
+		 <div class="filters">
+		 	<div class="search-field ng-scope">
+		 		<form class="ng-pristine ng-valid ng-submitted">
+		 			<div class="input-group">
+		 				<input type="text"
+		 					   autofocus 
+		 					   class="form-control ng-pristine ng-valid ng-scope ng-touched" 
+		 					   ng-model="specialtyEditCtrl.search" 
+		 					   placeholder="{{ 'l-search' | i18n }}"/>
+	 					<span class="input-group-btn">
+	 						<button class="btn btn-default ng-scope" type="button" ng-click="specialtyEditCtrl.search = ''">
+	 					   		<span class="glyphicon glyphicon-remove"></span>
+	 					   	</button>
+	 					    <button class="btn btn-default" type="submit" ng-click="specialtyEditCtrl.pesquisar()">
+	 					   		<span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+	 					   	</button>
+	 					</span>		 					
+		 			</div>
+		 		</form>
+			</div>
+		</div>
+	</div>
+	<br/>
+	<div class="row">
+		<totvs-page-alert
+			ng-if="specialtyEditCtrl.especialidades.length <= 0"
+			ng-animate="'animate-if'"
+			type="info"
+			message="{{ 'msg-not-found' | i18n }}"
+			style="margin-top:25px;margin-bottom:0px">
+		</totvs-page-alert>
+
+		<div class="table-content"
+			 ng-if="specialtyEditCtrl.especialidades.length > 0"
+			 ng-animate="'animate-if'">
+
+			<div class="table-responsive" style="height:500px; overflow:auto">
+
+				<table class="table table-condensed">
+					<colgroup><col span="2" style="position: absolute"></colgroup>
+					<thead>
+						<tr>
+							<th class="col-xs-1">&nbsp;</th>
+							<th class="col-xs-2">{{ 'l-specialty' | i18n }}</th>
+							<th class="col-xs-5">{{ 'l-description' | i18n }}</th>
+							<th class="col-xs-4">{{ 'l-main' | i18n }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="espec in specialtyEditCtrl.especialidades">
+							<td>
+								<input type="checkbox"
+									   ng-value="{{$index}}"
+									   ng-model="espec.selecionada"
+									   ng-click="espec.selecionada = !espec.selecionada"
+									   ng-change="specialtyEditCtrl.selecionaEspecialidade(espec)"									   
+									   bsswitch>
+							</td>
+							<td>{{ espec['tp-especial'] }}</td>
+							<td>{{ espec.descricao }}</td>
+							<td>
+								<totvs-field totvs-checkbox
+									ng-disabled="!espec.selecionada"
+								    ng-change="specialtyEditCtrl.selecionaPrincipal(espec)"
+								    ng-model="espec.principal">
+								</totvs-field>
+							</td>
+						</tr>
+					</tbody>					
+				</table>
+				<totvs-list-pagination
+					ng-click="specialtyEditCtrl.buscaEspecialidades(true)"
+					ng-if="specialtyEditCtrl.especialidades.length < specialtyEditCtrl.totalRecords && specialtyEditCtrl.especialidades.length">
+		        </totvs-list-pagination>
+			</div>
+		</div>
+	</div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="specialtyEditCtrl.cancel()">{{ 'l-close' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="specialtyEditCtrl.save()">{{ 'l-save' | i18n }}</button>
+</totvs-modal-footer>

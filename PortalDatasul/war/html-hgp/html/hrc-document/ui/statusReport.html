@@ -1,0 +1,163 @@
+<style>
+    .tag-success:before {
+        background-color: #6ace39;
+        content: "S";
+    }
+    
+    .tag-failure:before {
+        background-color: #f15a22;
+        content: "F";
+    }
+    
+    .tag-warning:before {
+        background-color: #ffcb05;
+        content: "A";
+    }
+    
+    .undo-page-head{
+        padding-top: 0px;
+        padding-bottom: 0px;
+	    border: none;
+    }
+    
+    .success-list-item{
+        border-left-color: #6ace39 !important;
+    }
+    
+    .warning-list-item{
+        border-left-color: #ffcb05 !important;
+    }
+    
+    .failure-list-item{
+        border-left-color: #f15a22 !important;
+    }
+
+</style>
+
+<totvs-modal-header>
+    {{controller.configs.actionStr}} - Resultados
+</totvs-modal-header>
+
+<totvs-modal-body style="height: 500px; overflow-y: auto;">
+        
+        <totvs-page-detail>
+            
+            <totvs-page-detail-info 
+                class="{{controller.configs.hideMovements != true ? 'col-lg-4 col-md-4 col-sm-4 col-xs-12' : 'col-lg-12 col-md-12 col-sm-12 col-xs-12'}}"
+                title="Documentos"
+                value="{{controller.stats.doctsNumber}}">
+            </totvs-page-detail-info>
+            
+            <totvs-page-detail-info 
+                class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                title="Movimentos"
+                value="{{controller.stats.movtsNumber}}"
+                ng-if="controller.configs.hideMovements != true">
+            </totvs-page-detail-info>
+            
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Doctos {{controller.configs.doneStr}} com Sucesso"
+                value="{{controller.stats.doctsWithSuccess}} ({{controller.stats.doctsSuccessPercent | currency : ''}}%)">
+            </totvs-page-detail-info>
+            
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Doctos com Alertas"
+                value="{{controller.stats.doctsWithWarning}} ({{controller.stats.doctsWarningPercent | currency : ''}}%)">
+            </totvs-page-detail-info>
+            
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Doctos com Erros"
+                value="{{controller.stats.doctsWithError}} ({{controller.stats.doctsErrorPercent | currency : ''}}%)">
+            </totvs-page-detail-info>
+        
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Movtos {{controller.configs.doneStr}} com Sucesso"
+                value="{{controller.stats.movtsWithSuccess}} ({{controller.stats.movtsSuccessPercent | currency : ''}}%)"
+                ng-if="controller.configs.hideMovements != true">
+            </totvs-page-detail-info>
+            
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Movtos com Alertas"
+                value="{{controller.stats.movtsWithWarning}} ({{controller.stats.movtsWarningPercent | currency : ''}}%)"
+                ng-if="controller.configs.hideMovements != true">
+            </totvs-page-detail-info>
+            
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Movtos com Erros"
+                value="{{controller.stats.movtsWithError}} ({{controller.stats.movtsErrorPercent | currency : ''}}%)"
+                ng-if="controller.configs.hideMovements != true">
+            </totvs-page-detail-info>
+        </totvs-page-detail>
+    
+        <div class="page-head undo-page-head">
+            <div class="page-tags">
+                <div class="tag legend tag-failure">Falha</div>
+                <div class="tag legend tag-warning">Alerta</div>
+                <div class="tag legend tag-success">Sucesso</div>
+            </div>
+        </div>
+            
+        <totvs-page-detail >
+            
+            <totvs-list-item style="margin-bottom: 10px"
+                ng-repeat="docto in controller.resultList track by $index"
+                ng-class="{'success-list-item': docto.inStatus==controller.SUCCESS_CONST,
+                           'warning-list-item': docto.inStatus==controller.WARNING_CONST,
+                           'failure-list-item': docto.inStatus==controller.ERROR_CONST}">
+                <totvs-list-item-header>
+                    <totvs-list-item-title
+                        title="{{docto.rotuloDocumento}}">
+                    </totvs-list-item-title>
+                </totvs-list-item-header>
+
+                <totvs-list-item-content>
+                    <totvs-list-item-info ng-repeat="res in docto.results"
+                                          ng-if="res.tpRegistro != 'SUCCESS'"
+                                          class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                          title="Mensagem"
+                                          value="{{res.dsErro}}">
+                    </totvs-list-item-info>
+                    
+                </totvs-list-item-content>   
+                
+                <totvs-page-child type="list"
+                                  ng-repeat="movto in docto.movimentos track by $index"
+                                  class="navbar-btn">
+
+                    <totvs-list-item 
+                        ng-class="{'success-list-item': movto.inStatus==controller.SUCCESS_CONST,
+                                   'warning-list-item': movto.inStatus==controller.WARNING_CONST,
+                                   'failure-list-item': movto.inStatus==controller.ERROR_CONST}">
+                        <totvs-list-item-header>
+                            <totvs-list-item-title
+                                title="{{movto.rotulo}}">
+                            </totvs-list-item-title>
+                        </totvs-list-item-header>
+
+                        <totvs-list-item-content>
+                            <totvs-list-item-info ng-repeat="resMov in movto.results"
+                                                  ng-if="resMov.tpRegistro != 'SUCCESS'"
+                                                  class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                  title="Mensagem"
+                                                  value="{{resMov.dsErro}}">
+                            </totvs-list-item-info>
+
+                        </totvs-list-item-content>
+                    </totvs-list-item>
+
+                </totvs-page-child>
+                
+            </totvs-list-item>
+
+        </totvs-page-detail>
+
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button class="btn" ng-click="controller.cancel()">Fechar</button>
+</totvs-modal-footer>

@@ -1,0 +1,23 @@
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+link(rel="stylesheet" href="/dts/kbn/css/font-awesome.css")
+totvs-modal-header
+	{{'l-remove-flow' | i18n}}
+totvs-modal-body
+	{{'l-remove-flow-all-itens' | i18n}}
+	totvs-page-content		
+		.table-content
+			.table-responsive
+				table.table.table-condensed
+					thead
+						tr
+							th {{ 'l-item' | i18n: []: 'dts/kbn' }}
+							th {{ 'l-type' | i18n: []: 'dts/kbn' }}
+					tbody
+						tr(ng-repeat="flow in controller.itens")
+							td {{ flow | descFlow }}
+							td {{ flow.log_expedic ? 'l-expedition' : (flow.log_comprad ? 'l-bought' : 'l-process') | i18n: []: 'dts/kbn'}}
+totvs-modal-footer
+	button.btn.btn-default(data-ng-click="controller.cancel()")
+		{{ 'l-cancel' | i18n }}
+	button.btn.btn-primary(data-ng-click="controller.confirm()")
+		{{ 'l-to-exclude' | i18n }} 

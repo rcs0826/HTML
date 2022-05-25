@@ -1,0 +1,52 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>  
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mmi/subsystem">{{'l-subsystem' | i18n}}</breadcrumb>
+            <breadcrumb>{{ controller.breadcrumbTitle }}</breadcrumb>
+        </totvs-page-breadcrumb>   
+        <totvs-page-header>
+            <totvs-page-header-title title="{{controller.headerTitle}}"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new="{{controller.idDisabled}}">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>   
+    </totvs-page-navbar>
+    <totvs-page-content>     
+        <totvs-page-form>
+            <fieldset>               
+                <field type="input"
+                	   name-id="cod-sub-sist"
+                       data-ng-disabled="controller.idDisabled"
+                       class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                       data-ng-model="controller.model['cod-sub-sist']"
+                       maxlength="8"
+                       required
+                       focus>
+                    <label>{{ 'l-subsystem' | i18n }}</label>
+                </field>
+                <field type="input"
+                	   name-id="des-sub-sist"
+                       class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                       data-ng-model="controller.model['des-sub-sist']"
+                       maxlength="40"
+                       required>
+                    <label>{{ 'l-description' | i18n }}</label>
+                </field>
+                <field type="input"
+                	   class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+				       data-ng-model="controller.model['cod-sistema']"
+				       zoom 
+				       zoom-id="cod-sistema"
+				       zoom-description="des-sistema"
+				       zoom-service="mmi.mi-sist.zoom"
+				       required
+				       canclean>
+				    <label>{{'l-system' | i18n}}</label> 
+				</field>								
+												
+            </fieldset>           
+        </totvs-page-form>       
+    </totvs-page-content>
+</totvs-page>

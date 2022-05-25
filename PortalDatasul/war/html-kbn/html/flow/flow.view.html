@@ -1,0 +1,154 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/font-awesome.css"/>
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<totvs-page>
+  <totvs-page-breadcrumb>
+    <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+    <breadcrumb link="#/dts/kbn/mapping">{{ 'l-mapping' | i18n }}</breadcrumb>
+    <breadcrumb link="#/dts/kbn/mapping/{{controller.mapping.num_id_mapeamento}}">{{ 'l-nav-flows' | i18n }}</breadcrumb>
+    <breadcrumb>{{ 'l-flow' | i18n }}</breadcrumb>
+  </totvs-page-breadcrumb>
+  <totvs-page-header>
+    <div class="row">
+      <div class="col-xs-12 col-lg-8 col-md-8 col-sm-8">
+        <h4 class="title"><b><span ng-if="controller.itemDetail.log_ativo">{{controller.itemDetail | descGeneric: '{sku} - {desc} {ref}'}} </span><span ng-if="!controller.itemDetail.log_ativo">{{controller.itemDetail | descGeneric: '{sku} - {desc} {ref}'}} ({{'l-inact' | i18n}})</span></b></h4>
+      </div>
+      <div class="col-xs-12 col-lg-4 col-md-4 col-sm-4">
+        <div class="pull-right"><a role="button" href="#/dts/kbn/mapping/flow/edit/{{controller.mapping.num_id_mapeamento}}?flowId={{controller.item}}" ng-show="controller.mapping.idi_status != 3 &amp;&amp; controller.mapping.idi_status != 4" class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span>&nbsp; {{ 'l-batch-edit' | i18n }}</a></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-3">
+        <div class="item-field">
+          <label>{{'l-un' | i18n}}:</label><span>{{controller.itemDetail.cod_un_med_erp}}</span>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-3">
+        <div class="item-field">
+          <label>{{'l-cutoff-date' | i18n}}:</label><span>{{controller.mapping.dat_corte | date: 'dd/MM/yyyy' : 'UTC'}}</span>
+        </div>
+      </div>
+    </div>
+  </totvs-page-header>
+  <totvs-page-content>
+    <totvs-page-detail>
+      <totvs-tabset>
+        <totvs-tab heading="{{ 'l-view-flow' | i18n }}">
+          <div ng-if="controller.shapes.length &gt; 0" class="row">
+            <totvs-diagram t-layout="controller.layout" t-shapes="controller.shapes" t-connections="controller.connections" t-height="700" t-on-click="controller.OnClickDiagram(e)" t-scope-field="controller.diagram"></totvs-diagram>
+          </div>
+        </totvs-tab>
+        <totvs-tab heading="{{ 'l-cells' | i18n }}" ng-click="controller.loadAbaCelula()">
+          <div class="row">
+            <totvs-page type="list">
+              <totvs-page-header ng-if="controller.itemDetail.log_ativo">
+                <totvs-page-header-operation>
+                  <totvs-page-header-operation-filter placeholder="{{ 'l-code-description' | i18n}}" ng-model="quickSearchTextCell" ng-submit="controller.quickSearchCell(quickSearchTextCell)" clean-search="controller.quickSearchCellClean()"></totvs-page-header-operation-filter>
+                </totvs-page-header-operation>
+              </totvs-page-header>
+              <totvs-page-content>
+                <totvs-page-alert ng-if="controller.cells.length === 0" type="info" message="{{ 'msg-not-found' | i18n }}"></totvs-page-alert>
+                <totvs-list-item data-ng-repeat="cell in controller.cells | filter:controller.quickSearchCellFunction  as filterListCells">
+                  <totvs-list-item-header>
+                    <div ng-if="controller.mapping.idi_status != 4 &amp;&amp; controller.itemDetail.log_ativo" class="col-md-6 com-sm-6">
+                      <totvs-list-item-title title="{{cell | descGeneric:&quot;{codeErpCell} {descCell}&quot;}}" ng-click="controller.openModalCellEdit(cell.num_id_cel)"> </totvs-list-item-title>
+                    </div>
+                    <totvs-list-item-title ng-if="controller.mapping.idi_status === 4 || !controller.itemDetail.log_ativo" title="{{cell | descGeneric:&quot;{codeErpCell} {descCell}&quot;}}" ng-click="controller.openModalCellEdit(cell.num_id_cel)"> </totvs-list-item-title>
+                    <totvs-list-item-action limit-primary-action="2">
+                      <action data-ng-click="controller.openModalCellEdit(cell.num_id_cel)">{{ 'l-cell-edit' | i18n }}</action>
+                      <action data-ng-click="controller.openModalCellItem(cell.num_id_cel)">{{ 'l-produced-itens' | i18n }}</action>
+                    </totvs-list-item-action>
+                    <button zoom="zoom" zoom-service="kbn.item-map.zoom" ng-model="" zoom-multiple="zoom-multiple" zoom-init="{'filters':{'num-id-mapeamento': controller.mapping.num_id_mapeamento}}" zoom-selected="controller.retornoZoom(selected, cell)" ng-if="controller.mapping.idi_status != 4 &amp;&amp; controller.itemDetail.log_ativo" style="position: relative;display: inline-block;font-style: normal;-webkit-font-smoothing: antialiased;font-size:12px" class="btn btn-default col-md-1 com-sm-1">
+                      <div class="fa fa-plus"> &nbsp;</div>{{'l-insert-items' | i18n}}
+                    </button>
+                  </totvs-list-item-header>
+                </totvs-list-item>
+              </totvs-page-content>
+            </totvs-page>
+          </div>
+        </totvs-tab>
+        <totvs-tab heading="{{ 'l-items' | i18n }}" ng-click="controller.loadAbaItens()">
+          <div class="row">
+            <totvs-page type="list">
+              <totvs-page-header>
+                <totvs-page-header-operation>
+                  <totvs-page-header-operation-filter placeholder="{{ 'l-code-description' | i18n}}" ng-model="quickSearchTextItem" ng-submit="controller.quickSearchItem(quickSearchTextItem)" clean-search="controller.quickSearchItemClean()"></totvs-page-header-operation-filter>
+                </totvs-page-header-operation>
+              </totvs-page-header>
+              <totvs-page-content>
+                <totvs-page-alert ng-if="filterListItems.length === 0" type="info" message="{{ 'msg-not-found' | i18n }}"></totvs-page-alert>
+                <totvs-list-item data-ng-repeat="item in controller.items | filter:controller.quickSearchItemFunction as filterListItems" class="{{controller.colorTag(item)}}">
+                  <totvs-list-item-header>
+                    <div>
+                      <div title=" {{item | descFlow}}" ng-click="controller.openModalSupermarket([item.num_id_item_det])" class="col-xs-10 col-sm-7 col-md-7 col-lg-7"><a class="title link ng-binding">{{item | descFlow}}</a><span class="title"></span></div>
+                      <div class="col-lg-5 col-md-5 col-sm-5 col-xs-2 actions-group">
+                        <div role="group" aria-label="item-actions" class="btn-group btn-group-sm actions pull-right"><a role="button" data-ng-click="controller.openModalSupermarket([item.num_id_item_det])" class="btn btn-default ng-binding"><span class="fa fa-shopping-cart"></span>&nbsp; {{ 'l-supermarket' | i18n }}</a></div>
+                        <div role="group" aria-label="item-actions" class="btn-group btn-group-sm actions pull-right"><a role="button" data-ng-click="controller.openModalCell(item.num_id_cel,item.num_id_item_det)" class="btn btn-default ng-binding"><span class="fa fa-gears"></span>&nbsp; {{ 'l-cell' | i18n }}</a></div>
+                      </div>
+                    </div>
+                  </totvs-list-item-header>
+                  <totvs-list-item-content>
+                    <totvs-list-item-info title="{{'l-warehouse' | i18n}}" value="{{item.cod_depos_erp}}" class="col-md-2"></totvs-list-item-info>
+                    <totvs-list-item-info title="{{'l-location' | i18n}}" value="{{item.cod_localiz | htmlText}}" class="col-md-3"></totvs-list-item-info>
+                    <totvs-list-item-info title="{{'l-un' | i18n}}" value="{{item.ttItem.cod_un_med_erp | htmlText}}" class="col-md-1"></totvs-list-item-info>
+                    <totvs-list-item-info title="{{'l-type' | i18n}}" value="{{((item.ttItem.log_expedic)?'l-expedition':'l-process') | i18n}}" class="col-md-2"></totvs-list-item-info>
+                    <totvs-list-item-info title="{{'l-controlled' | i18n}}" value="{{item.ttItem.idi_control_kanban | yesOrNo}}" class="col-md-2"></totvs-list-item-info>
+                  </totvs-list-item-content>
+                  <div class="row">
+                    <totvs-list-item-info title="{{'l-cutoff-date' | i18n}}" value="{{ item.ttMapeamento.dat_corte | kbnDateFormat}}" class="col-md-2"></totvs-list-item-info>
+                    <totvs-list-item-info title="{{'l-deactivation-date' | i18n}}" value="{{ item.dtm_alter | date: 'short'}}" ng-show="!item.log_ativo" class="col-md-3"></totvs-list-item-info>
+                    <totvs-list-item-info title="{{'l-user' | i18n}}" value="{{ item.cod_usuar}}" ng-show="!item.log_ativo" class="col-md-2"></totvs-list-item-info>
+                  </div>
+                </totvs-list-item>
+              </totvs-page-content>
+            </totvs-page>
+          </div>
+        </totvs-tab>
+        <totvs-tab ng-if="controller.itemDetail.log_ativo" heading="{{ 'l-structure' | i18n }}" ng-click="controller.loadStructure()">
+          <div class="row">
+            <totvs-page type="list">
+              <totvs-page-header>
+                <totvs-page-header-operation>
+                  <totvs-page-header-operation-filter placeholder="{{ 'l-code-description' | i18n}}" ng-model="quickSearchTextStructure" ng-submit="controller.quickSearchStructure(quickSearchTextStructure)" clean-search="controller.quickSearchStructureClean()"></totvs-page-header-operation-filter>
+                </totvs-page-header-operation>
+              </totvs-page-header>
+              <totvs-page-content>
+                <totvs-grid grid="controller.gridDados" grid-data="controller.structureFuture" grid-height="420" resizable="true" scrollable="false" selectable="false">
+                  <totvs-grid-column field="itemParentTitle" ng-style="controller.obterAlturaItem()">{{ 'l-parent-item' | i18n }}</totvs-grid-column>
+                  <totvs-grid-column field="itemSonTitle" ng-style="controller.obterAlturaItem()">{{ 'l-item-son' | i18n }}</totvs-grid-column>
+                  <totvs-grid-column field="qtdPai" width="100" style="text-align: right">{{ 'l-qtd-father' | i18n }}</totvs-grid-column>
+                  <totvs-grid-column field="qtdFilho" width="100" style="text-align: right">{{ 'l-qtd-son' | i18n }}</totvs-grid-column>
+                  <totvs-grid-column width="35" field="detail" style="text-align: center">
+                    <template><a style="cursor: pointer" data-toggle="tooltip" title="{{ 'l-edit-quantity' | i18n }}" ng-click="controller.editItem(dataItem)" class="glyphicon glyphicon-pencil"></a></template>
+                  </totvs-grid-column>
+                  <totvs-grid-column width="35" field="detail" style="text-align: center">
+                    <template><a style="cursor: pointer" data-toggle="tooltip" title="{{ 'l-delete-link' | i18n }}" ng-click="controller.deleteRelac(dataItem)" class="glyphicon glyphicon-trash"></a></template>
+                  </totvs-grid-column>
+                </totvs-grid>
+              </totvs-page-content>
+            </totvs-page>
+          </div>
+        </totvs-tab>
+        <totvs-tab ng-if="controller.itemDetail.log_ativo &amp;&amp; !controller.itemDetail.log_expedic" heading="{{ 'l-where-it-is-used' | i18n }}" ng-click="controller.loadWhereUse()">
+          <div class="row">
+            <totvs-page type="list">
+              <totvs-page-header>
+                <totvs-page-header-operation>
+                  <totvs-page-header-operation-filter placeholder="{{ 'l-code-description' | i18n}}" ng-model="quickSearchTextWhereUse" ng-submit="controller.quickSearchWhereUse(quickSearchTextWhereUse)" clean-search="controller.quickSearchWhereUseClean()"></totvs-page-header-operation-filter>
+                </totvs-page-header-operation>
+              </totvs-page-header>
+              <totvs-page-content>
+                <totvs-grid grid="controller.gridDadosRelac" grid-data="controller.itensPaiFuture" grid-height="420" resizable="true" scrollable="false" selectable="false">
+                  <totvs-grid-column field="itemParentTitle" width="450">{{ 'l-parent-item' | i18n }}</totvs-grid-column>
+                  <totvs-grid-column field="controlado" width="50">{{ 'l-controlled' | i18n }}</totvs-grid-column>
+                  <totvs-grid-column field="qtdPai" width="80" style="text-align: right">{{ 'l-qtd-father' | i18n }}</totvs-grid-column>
+                  <totvs-grid-column field="qtdFilho" width="80" style="text-align: right">{{ 'l-qtd-son' | i18n }}</totvs-grid-column>
+                </totvs-grid>
+              </totvs-page-content>
+            </totvs-page>
+          </div>
+        </totvs-tab>
+      </totvs-tabset>
+    </totvs-page-detail>
+  </totvs-page-content>
+</totvs-page>

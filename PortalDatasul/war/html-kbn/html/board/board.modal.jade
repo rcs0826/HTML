@@ -1,0 +1,116 @@
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+
+totvs-modal-header
+	{{controller.titleModal}}
+totvs-modal-body
+
+	div.row
+		div.col-md-12.text-right
+
+			div.btn-group
+				button.btn.btn-default.btn-lg(type="button", ng-if="['locked','workcenter'].indexOf(controller.myParams.type) != -1", data-ng-click="controller.transportAllSku()")
+					{{'l-transport-verb'|i18n}} &nbsp;
+					i.fa.fa-truck.fa-flip-horizontal
+			div.btn-group
+				button.btn.btn-default.btn-lg(type="button", ng-if="['transport','workcenter'].indexOf(controller.myParams.type) != -1", data-ng-click="controller.openLockDivGen()")
+					{{'l-lock'|i18n}} &nbsp;
+					i.fa.fa-lock
+			div.btn-group
+				button.btn.btn-default.btn-lg(type="button", ng-if="['transport','workcenter'].indexOf(controller.myParams.type) != -1", data-ng-click="controller.storeAllSku()")
+					{{'l-store-verb'|i18n}} &nbsp;
+					i.fa.fa-shopping-cart
+			div.btn-group
+				button.btn.btn-default.btn-lg(type="button", ng-if="['locked'].indexOf(controller.myParams.type) != -1", data-ng-click="controller.boardAllSku()")
+					{{'l-kanban-board'|i18n}} &nbsp;
+					i.fa.fa-desktop
+
+	detailcontainer(ng-show="controller.flagJustifyLock", id="workcenter-lock-div")
+
+		div.col-md-12
+
+			div.form-group.col-md-6(style="padding-left: 0px;")
+				label(for="justification")
+					{{'l-select-reason'| i18n}}:
+				select.form-control(name="justification" id="justification" ng-options="justif.des_justif for justif in controller.listJustification" ng-model="controller.model.justification" required="required")
+
+			div.col-md-5.text-rigth(style="margin-top: 25px;")
+				button.btn.btn-primary(data-ng-click="controller.lockAllSku(obj);")
+					{{'l-lock' | i18n}}
+				button.btn.btn-default(data-ng-click="controller.closeLockDivGen(obj);")
+					{{'l-cancel' | i18n}}
+
+	div
+		div.alert.alert-info(role="alert" ng-if="!controller.myParams.model.tags.length")
+			h5
+				i.fa.fa-exclamation-triangle
+				| &nbsp; {{'l-not-kanban-workcenter2'| i18n}}
+
+		totvs-list-item(ng-repeat="obj in controller.myParams.model.tags | orderBy: ['ttItemDetModalDs.ttItemModalDs.cod_chave_erp','dtm_ult_mov'] " class="{{controller.colorTag(obj.color)}}")
+			div.col-md-8
+				h4
+					span
+						span {{ obj.ttItemDetModalDs.ttItemModalDs | descFlow }}
+
+			div.col-md-4.text-right
+				div.btn-group
+					button.btn.btn-default(ng-class="{'btn-default': !obj.move, 'btn-primary': obj.move}", type="button" data-ng-click="controller.transportSku(obj)",ng-if="['locked','workcenter'].indexOf(controller.myParams.type) != -1")
+						i.fa.fa-truck.fa-flip-horizontal
+
+				div.btn-group
+					button.btn.btn-default(ng-class="{'btn-default': !obj.lock, 'btn-danger': obj.lock}", type="button" data-ng-click="controller.openLockDivCard(obj)",ng-if="['transport','workcenter'].indexOf(controller.myParams.type) != -1")
+						i.fa.fa-lock
+
+				div.btn-group
+					button.btn.btn-default(ng-class="{'btn-default': !obj.shopping, 'btn-success': obj.shopping}", type="button" data-ng-click="controller.storeSku(obj)", ng-if="['transport','workcenter'].indexOf(controller.myParams.type) != -1")
+						i.fa.fa-shopping-cart
+
+				div.btn-group
+					button.btn.btn-default(ng-class="{'btn-default': !obj.desktop, 'btn-warning': obj.desktop}", type="button" data-ng-click="controller.boardSku(obj)", ng-if="['locked'].indexOf(controller.myParams.type) != -1")
+						i.fa.fa-desktop
+
+			div.col-md-12
+				.row
+					div.col-md-6.text-left
+						label
+							{{'l-date-movement' | i18n}}:
+						&nbsp;
+						span
+							{{ obj.dtm_ult_mov | date: 'short' }}
+					div.col-md-3
+						label
+							{{'l-type' | i18n}}:
+						&nbsp;
+						span
+							{{(obj.ttItemDetModalDs.ttItemModalDs.log_expedic)? 'l-flow-expedition' : 'l-flow-process' | i18n}}
+					div.col-md-3
+						label
+							{{'l-quantity' | i18n}}:
+						&nbsp;
+						span
+							{{ obj.ttItemDetModalDs.qti_tam_kanban }} {{ obj.ttItemDetModalDs.ttItemModalDs.cod_un_med_erp }}
+				.row(ng-if="obj.num_id_justif")
+					div.col-md-6
+						label
+							{{'l-reason' | i18n}}:
+						&nbsp;
+						span
+							{{ obj.ttJustifModalDs.des_justif }}
+
+			detailcontainer(ng-show="obj.flagJustifyLock")
+
+				div.col-md-12
+
+					div.form-group.col-md-6(style="padding-left: 0px;")
+						label(for="justification")
+							{{'l-select-reason'| i18n}}:
+						select.form-control(name="justification" id="justification" ng-options="justif.des_justif for justif in controller.listJustification" ng-model="obj.justification" required="required")
+
+					div.col-md-5.text-rigth(style="margin-top: 25px;")
+						button.btn.btn-primary(data-ng-click="controller.lockSku(obj);")
+							{{'l-lock' | i18n}}
+						button.btn.btn-default(data-ng-click="controller.closeLockDivCard(obj);")
+							{{'l-cancel' | i18n}}
+
+totvs-modal-footer
+	button.btn.btn-default(data-ng-click="controller.cancel();") {{ 'l-close' | i18n }}
+	button.btn.btn-primary(data-ng-click="controller.save();") {{ 'l-apply' | i18n }}

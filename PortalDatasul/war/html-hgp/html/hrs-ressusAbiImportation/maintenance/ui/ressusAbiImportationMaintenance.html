@@ -1,0 +1,212 @@
+<totvs-page type="base"> 
+
+    <totvs-page-navbar >
+
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hrs-ressusAbiImportation/">Central de Movimentação RESSUS</breadcrumb>
+                <breadcrumb>Manutenção de Importacao RESSUS</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title 
+                title="{{controller.titulo}}">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+
+                    <action ng-click="controller.createAbiData()"
+                            class="btn-primary"
+                            ng-if="controller.action === 'INSERT'">Carregar</action>
+
+                    <action ng-click="controller.onCancel();">Cancelar</action>
+                    
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content ng-if="controller.action === 'INSERT'">
+            
+        <totvs-page-form>
+            <fieldset>
+                <legend>Arquivo</legend>
+
+				<totvs-row>
+                    <totvs-field
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        totvs-upload
+                        ng-model="controller.arqImportacao"
+                        t-show-drag-drop="true"
+                        t-drop-files-here="Arraste o arquivo aqui"
+                        t-remove="Remove"
+                        t-multiple="false"
+                        t-with-credentials="false"
+                        t-select="Selecione o arquivo da ABI"
+                        t-show-file-list="false"
+                        t-save-field="Importar"
+                        t-status-uploaded="Upload realizado com sucesso"
+                        t-status-uploading="Realizando upload do arquivo"
+                        t-on-success="controller.onUploadSuccess"
+                        
+                        t-auto-upload="true"
+                        t-save-url="controller.uploadURL">
+                    </totvs-field>
+                    <!--t-on-select="controller.onUploadSelect"-->
+                </totvs-row>
+
+                <legend>Parâmetros</legend>
+
+                <totvs-row>
+                    <field  type="combo" required
+                            data-ng-model="controller.dtAnoNrPerRef"
+                            label="Competência Revisão de Contas"
+                            class="col-lg-2 col-md-2 col-sm-2 col-md-12"
+                            ng-options="o.dtAnoNrPerRef as o.dtAnoNrPerRef for o in controller.periodsList">
+                    </field>
+                <totvs-row>
+
+            </fieldset>
+        </totvs-page-form>        
+    </totvs-page-content>  
+
+      <totvs-page-content>
+        <totvs-page-form>
+            <fieldset>
+                <legend ng-if="controller.action != 'DETAIL'">Informações da ABI</legend>
+
+                <totvs-row>
+                    <totvs-page-detail class="col-lg-12 col-md-12 col-sm-8 col-xs-12">
+                        <totvs-page-detail-info
+                                    class="col-lg-6 col-md-12 col-sm-12 col-xs-12"
+                                    title="Razão Social"
+                                    value="{{controller.ressusAbiImportation.codRazaoSocial}}">
+                        </totvs-page-detail-info>                                                                  
+                    </totvs-page-detail>                                
+                </totvs-row> 
+
+                <totvs-row>
+                    <totvs-page-detail class="col-lg-12 col-md-12 col-sm-4 col-xs-6"> 
+
+                            <totvs-page-detail-info
+                                        class="col-lg-3 col-md-4 col-sm-12 col-xs-12"
+                                        title="Número da ABI"
+                                        value="{{controller.ressusAbiImportation.codAbi}}">
+                            </totvs-page-detail-info>  
+
+                            <totvs-page-detail-info
+                                         class="col-lg-3 col-md-4 col-sm-12 col-xs-12"
+                                         title="Número do Oficio"
+                                         value="{{controller.ressusAbiImportation.codOficio}}">
+                            </totvs-page-detail-info> 
+
+                            <totvs-page-detail-info
+                                        class="col-lg-3 col-md-4 col-sm-12 col-xs-12"
+                                        title="Número do Processo"
+                                        value="{{controller.ressusAbiImportation.codProcesso}}">
+                            </totvs-page-detail-info>     
+
+                            <totvs-page-detail-info
+                                        class="col-lg-3 col-md-4 col-sm-12 col-xs-12"
+                                        title="Quantidade de Atendimentos"
+                                        value="{{controller.ressusAbiImportation.qtdProces}}">
+                            </totvs-page-detail-info>                                                          
+                        </totvs-page-detail-info> 
+                </totvs-row>  
+
+                <totvs-row>
+                    <totvs-page-detail class="col-lg-12 col-md-12 col-sm-4 col-xs-6">
+
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Competência Inicial"
+                                    value="{{controller.ressusAbiImportation.desCompIni}}">
+                        </totvs-page-detail-info>   
+
+
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Competência Final"
+                                    value="{{controller.ressusAbiImportation.desCompFim}}">
+                        </totvs-page-detail-info>   
+                    </totvs-page-detail-info> 
+                </totvs-row>   
+
+                <totvs-row>
+                    <totvs-page-detail class="col-lg-12 col-md-12 col-sm-4 col-xs-6">
+                        <field type="date"                                  
+                                class="col-lg-2 col-md-12 col-sm-12 col-xs-12"
+                                label="Data de Disponibilização"
+                                ng-model="controller.ressusAbiImportation.datRegTrans"
+                                format="dd/MM/yyyy"
+                                ng-disabled="true">
+                        </field>  
+                    </totvs-page-detail-info> 
+                </totvs-row>    
+
+                <legend>Valores</legend>                         
+              
+                <totvs-row>
+                    <field class="col-lg-2 col-md-12 col-sm-12 col-xs-12"
+                           label="Valor Total"
+                           ng-model="controller.ressusAbiImportation.valTotal"
+                           ng-disabled="true">
+                    </field> 
+                    <!--
+                    <field class="col-lg-2 col-md-12 col-sm-12 col-xs-12"
+                           label="Valor Impugnado"
+                           ng-model="controller.ressusAbiImportation.valImpugnado"
+                           ng-disabled="true">
+                    </field>
+
+                    <field class="col-lg-2 col-md-12 col-sm-12 col-xs-12"
+                           label="Valor do Recurso"
+                           ng-model="controller.ressusAbiImportation.valRecurso"
+                           ng-disabled="true">
+                    </field>
+
+                    <field class="col-lg-2 col-md-12 col-sm-12 col-xs-12"
+                           label="Valor Pago"
+                           ng-model="controller.ressusAbiImportation.valPago"
+                           ng-disabled="true">
+                    </field>    -->
+                </totvs-row>
+
+                <legend>Outras Informações</legend>    
+
+                <totvs-row>  
+                    <field type="date"
+                                class="col-lg-2 col-md-12 col-sm-12 col-xs-12"
+                                label="Data Recebimento"
+                                ng-model="controller.ressusAbiImportation.datRecebto"
+                                format="dd/MM/yyyy"
+                                ng-disabled="true">
+                    </field>  
+
+                    <field type="date"                                  
+                                class="col-lg-2 col-md-12 col-sm-12 col-xs-12"
+                                label="Data Importação"
+                                ng-model="controller.ressusAbiImportation.datImport"
+                                format="dd/MM/yyyy"
+                                ng-disabled="true">
+                    </field>                         
+                </totvs-row> 
+
+                <legend>Observações</legend>    
+                <totvs-row>  
+                    <field
+                        type="textarea"
+                        ng-model="controller.ressusAbiImportation.desObservacao"
+                        label="Observação"
+                        ng-disabled="controller.action !== 'INSERT'">
+                    </field>
+                </totvs-row> 
+            </fieldset>
+        </totvs-page-form>        
+    </totvs-page-content>   
+</totvs-page>
+
+

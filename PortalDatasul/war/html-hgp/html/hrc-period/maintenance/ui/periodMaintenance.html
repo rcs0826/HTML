@@ -1,0 +1,149 @@
+<!--<healthcare-workarea>-->
+    <totvs-page type="edit"> 
+
+        <totvs-page-navbar id="navBar">
+
+            <totvs-page-breadcrumb>
+                    <breadcrumb link="#/dts/hgp/hrc-period">Períodos de Movimentação</breadcrumb>
+                    <breadcrumb>Manutenção de Período</breadcrumb>
+            </totvs-page-breadcrumb>
+            
+            <totvs-page-header>
+                <totvs-page-header-title 
+                    title="Manutenção de Período" >
+                </totvs-page-header-title>
+
+                <totvs-page-header-operation>
+                    <totvs-page-header-operation-action on-back      ="controller.onCancel"
+                                                        on-cancel    ="controller.onCancel"
+                                                        hide-edit    ="true"
+                                                        hide-remove  ="true"
+                                                        hide-save-new="true">
+                    </totvs-page-header-operation-action>
+                </totvs-page-header-operation>
+            </totvs-page-header>
+        </totvs-page-navbar>
+
+        <totvs-page-content id="pageContent">
+
+            <totvs-page-form>
+            
+                <fieldset>
+                    <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">    
+                        <field type="input"
+                               class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                               data-ng-model="controller.period.dtAnoref"
+                               label="Ano"
+                               numbers-only
+                               maxlength="4"
+                               canclean
+                               required
+                               ng-disabled ="controller.action != 'INSERT'" >
+                        </field>
+
+                        <field type="input"
+                               class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                               data-ng-model="controller.period.nrPerref"
+                               label="Período"
+                               numbers-only
+                               maxlength="3"
+                               canclean
+                               required
+                               ng-disabled ="controller.action != 'INSERT'" >
+                        </field>
+                    </div>
+                    
+                    <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                       
+                        <totvs-field totvs-select 
+                               ng-model="controller.period.cdSitPer"
+                               class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                               label="Situação"
+                               select-id="cdSitPer"
+                               select-description="dsSitPer"
+                               select-service="hrc.sitPerZoomController"
+                               zoom-service="hrc.sitPerZoomController"
+                               canclean
+                               required 
+                               ng-disabled ="controller.action === 'DETAIL'">                      
+                        </totvs-field>
+                    </div>     
+
+                    <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-field totvs-datepicker
+                               class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                               label="Data Início do Período"
+                               format="dd/MM/yyyy"
+                               ng-model="controller.period.dtInicioPer"
+                               ng-blur ="controller.dtInicioPerBlur()"
+                               culture="pt"
+                               canclean
+                               required
+                               ng-disabled ="controller.action === 'DETAIL'">
+                        </totvs-field>
+                        
+                        <totvs-field totvs-datepicker
+                               class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                               label="Data Fim do Período"
+                               format="dd/MM/yyyy"
+                               ng-model="controller.period.dtFimPer"
+                               culture="pt"
+                               canclean
+                               required
+                               ng-disabled ="controller.action === 'DETAIL'">
+                        </totvs-field>
+                    </div>
+
+                    
+                    <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-field totvs-datepicker
+                               class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                               label="Data Base Valor"
+                               format="dd/MM/yyyy"
+                               ng-model="controller.period.dtBaseValor"
+                               culture="pt"
+                               canclean
+                               required
+                               ng-disabled ="controller.action === 'DETAIL'">
+                        </totvs-field>
+                        
+                        <totvs-field totvs-datepicker
+                               class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                               label="Data Previsão Pagamento"
+                               format='dd/MM/yyyy'
+                               ng-model="controller.period.dtPrevPag"
+                               culture='pt'
+                               canclean
+                               ng-disabled ="controller.action === 'DETAIL'">
+                        </totvs-field>
+                    </div>
+                    
+                    
+                    <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <field type="checkbox"
+                               class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                               label="Visivel no Foundation"
+                               data-ng-model="controller.period.lgVisivelFoundation"
+                               ng-disabled ="controller.action === 'DETAIL'">
+                        </field>
+                    </div>
+                   
+                    <field type="textarea"
+                           label="Observação"
+                           style="width:100%;"
+                           ng-model="controller.period.dsObservacao"
+                           ng-disabled ="controller.action === 'DETAIL'">
+                    </field>  
+                    
+                    <totvs-page-detail class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <totvs-page-detail-info 
+                            title="Atualização"
+                            value="{{controller.period.dtAtualizacao | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+                    </totvs-page-detail>
+
+                </fieldset>
+            </totvs-page-form>
+        </totvs-page-content>	
+    </totvs-page>
+<!--</healthcare-workarea>-->

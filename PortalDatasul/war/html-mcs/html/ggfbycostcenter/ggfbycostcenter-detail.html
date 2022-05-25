@@ -1,0 +1,45 @@
+<totvs-page type="detail" style="height: 100%;">
+    <totvs-page-navbar>
+        
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ i18n('l-home', [], 'dts/mcs') }}</breadcrumb>
+            <breadcrumb link="#/dts/mcs/ggfbycostcenter">{{ i18n('l-ggf-by-cost-center', [], 'dts/mcs') }}</breadcrumb>
+            <breadcrumb>{{ i18n('l-detail', [], 'dts/mcs') }}</breadcrumb>    
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            <totvs-page-header-title title="{{controller.ccCodigo}} - {{controller.ccDesc}} - {{ i18n('l-site-short', [], 'dts/mcs') }} : {{controller.codEstab}}">                   
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+
+                <totvs-page-header-operation-action hide-remove="true" 
+                                                    hide-edit="true"
+                                                    on-back-link="#/dts/mcs/ggfbycostcenter">
+                    <action ng-click="controller.openParameters()" icon="glyphicon glyphicon-cog">{{i18n('l-parameters', [], 'dts/mdb')}}</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+        <totvs-page-detail>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left: 7.5px; padding-right: 0px">
+                <div class="panel panel-default">
+                    <div class="panel-body" style="text-align:center;">
+                        <!-- Gráfico comparação valores Real x Padrão -->
+                        <totvs-chart
+                            t-title="{{ i18n('l-evolution-ggf', [], 'dts/mcs') }}"
+                            t-title-position="top"
+                            t-type-chart="line"
+                            t-label-visible="false"
+                            t-categories="controller.categories"
+                            t-series="controller.series"
+                            t-height="450">
+                        </totvs-chart>
+                    </div>
+                </div>
+            </div>
+        </totvs-page-detail>
+    </totvs-page-content>
+</totvs-page>

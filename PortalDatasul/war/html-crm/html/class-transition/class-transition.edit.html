@@ -1,0 +1,168 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.ttClasse.nom_clas_clien + ' - ' + controller.model.ttProximaClasse.nom_clas_clien : 
+    ('btn-trans-class' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+<totvs-modal-body>
+    
+    <fieldset class="row">
+        <field type="select"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-model="controller.model.ttClasse">
+
+			<label>{{ 'l-class' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-class' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_clas_clien }}
+				</ui-select-match>
+				<ui-select-choices repeat="class in controller.classes | filter: $select.search track by $index">
+					<span ng-bind-html="class.nom_clas_clien | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+        
+        <field type="select"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-model="controller.model.ttProximaClasse">
+
+			<label>{{ 'l-next-class' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-next-class' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_clas_clien }}
+				</ui-select-match>
+				<ui-select-choices repeat="class in controller.classes | filter: $select.search track by $index">
+					<span ng-bind-html="class.nom_clas_clien | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+    </fieldset>
+    
+    <fieldset class="row">
+        <field type="input"
+               numbers-only
+               ng-model="controller.model.num_livre_1"
+               placeholder="{{ 'l-priority' | i18n: []: 'dts/crm' }}"
+               maxlength="6"
+               ng-animate="'animate-if'">
+
+            <label>{{ 'l-priority' | i18n: []: 'dts/crm' }}</label>
+
+            <validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 6</validator>
+        </field>
+        
+        <field type="select"
+			   canclean="undefined"
+			   ng-required="true"
+               placeholder="{{ 'l-trigger-type' | i18n: []: 'dts/crm' }}"
+               ng-change="controller.onChangeTriggerType()"
+			   ng-model="controller.model.idi_vendas">
+
+			<label>{{ 'l-trigger-type' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-trigger-type' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_tipo }}
+				</ui-select-match>
+				<ui-select-choices repeat="type in controller.types | filter: $select.search track by $index">
+					<span ng-bind-html="type.nom_tipo | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+    </fieldset>
+    
+    <totvs-divider></totvs-divider>
+    
+    <fieldset class="row">
+
+		<field type="select"
+			   canclean="undefined"
+			   ng-required="true"
+               ng-if="controller.model.idi_vendas.num_id === 3"
+			   ng-model="controller.model.ttCampanha"
+			   ng-change="controller.onChangeCampaign()">
+
+			<label>{{ 'l-campaign' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-campaign' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_campanha }}
+				</ui-select-match>
+				<ui-select-choices repeat="campaign in controller.campaigns | filter: $select.search track by $index">
+					<span ng-bind-html="campaign.nom_campanha | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   canclean="undefined"
+			   ng-required="true"
+               ng-if="controller.model.idi_vendas.num_id === 3"
+			   ng-model="controller.model.ttAcao"
+			   ng-change="controller.onChangeAction()"
+			   ng-disabled="!controller.model.ttCampanha">
+
+			<label>{{ 'l-action' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-action' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_acao }}
+				</ui-select-match>
+				<ui-select-choices repeat="action in controller.actions | filter: $select.search track by $index">
+					<span ng-bind-html="action.nom_acao | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   canclean="undefined"
+			   ng-required="true"
+               ng-if="controller.model.idi_vendas.num_id === 3"
+			   ng-model="controller.model.ttResultado"
+			   ng-disabled="!controller.model.ttAcao">
+
+			<label>{{ 'l-result' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-result' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_restdo }}
+				</ui-select-match>
+				<ui-select-choices repeat="result in controller.results | filter: $select.search track by $index">
+					<span ng-bind-html="result.nom_restdo | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+        
+        <totvs-field totvs-decimal
+                     ng-model="controller.model.qtd_restdo_acao"
+                     placeholder="{{ 'l-trigger-value' | i18n: []: 'dts/crm' }}"
+                     canclean="undefined"
+                     ng-if="controller.model.idi_vendas"
+                     label="{{ 'l-trigger-value' | i18n: []: 'dts/crm' }}"
+                     m-dec="2"
+                     v-max="9"
+                     ng-required="true">
+        </totvs-field>
+
+	</fieldset>
+    
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button class="btn btn-default" 
+            ng-click="controller.cancel()">
+        {{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+    </button>
+<!--
+    <button class="btn btn-default" 
+            ng-click="controller.save(true)" 
+            ng-if="controller.editMode === false;">
+        {{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+    </button>
+-->
+	<button class="btn btn-primary" 
+            ng-click="controller.save(false)">
+        {{ 'btn-save' | i18n: []: 'dts/crm' }}
+    </button>
+</totvs-modal-footer>

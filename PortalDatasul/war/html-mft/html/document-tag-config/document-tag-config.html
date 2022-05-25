@@ -1,0 +1,105 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{:: 'l-begin' | i18n : [] : 'dts/mft' }}</breadcrumb>
+            <breadcrumb>{{:: 'l-document-tag-config' | i18n : [] : 'dts/mft' }}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{:: 'l-document-tag-config' | i18n : [] : 'dts/mft' }}" total="{{controller.documentTag.length}}">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action>
+                    <action icon="glyphicon-plus" ng-click="controller.createTag()">{{:: 'l-add-tag' | i18n : [] : 'dts/mft' }}</action>
+                    <action icon="glyphicon-edit" ng-disabled="!controller.documentTagSelected" ng-click="controller.editTag()">{{:: 'l-edit-tag' | i18n : [] : 'dts/mft' }}</action>
+                    <action icon="glyphicon-copy" ng-disabled="!controller.documentTagSelected" ng-click="controller.copyTag()">{{:: 'l-copy-tag' | i18n : [] : 'dts/mft' }}</action>                    
+                    <action icon="glyphicon-remove" ng-disabled="!controller.documentTagSelected" ng-click="controller.deleteTag()">{{:: 'l-delete-tag' | i18n : [] : 'dts/mft' }}</action>
+                </totvs-page-header-operation-action>
+                <totvs-page-header-operation-filter placeholder="{{:: 'l-fast-search' | i18n : [] : 'dts/mft' }}"
+                    ng-submit="controller.search()" ng-model="controller.quickSearchText" advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers" ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-detail>
+            <div class="row">
+                <div class="col-xs-12">
+                    <totvs-grid grid-data="controller.documentTag" grid="controller.documentTagGrid" selectable="row"
+                        grid-options="controller.gridoptions" navigatable="true" grid-selected-item="controller.documentTagSelected">
+                        <totvs-grid-column field="cdn-acao" width="90">{{:: 'l-action' | i18n : [] : 'dts/mft'}}
+                            <option id="1">{{:: 'Inclusão de Tag' | i18n : [] : 'dts/mft'}}</option>
+                            <option id="2">{{:: 'Alteração de Tag' | i18n : [] : 'dts/mft'}}</option>
+                        </totvs-grid-column>
+                        <totvs-grid-column field="cod-tag" width="90">{{:: 'l-tag' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                        <totvs-grid-column field="cod-tag-parent" width="90">{{:: 'l-tag-parent' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                        <totvs-grid-column field="cod-docto" width="60">{{:: 'l-document' | i18n : [] : 'dts/mft'}}
+                            <option id="NF-e">{{:: 'NF-e' | i18n : [] : 'dts/mft'}}</option>
+                            <option id="NFS-e">{{:: 'NFS-e' | i18n : [] : 'dts/mft'}}</option>                            
+                        </totvs-grid-column>
+                        <totvs-grid-column field="cod-versao" width="60">{{:: 'l-version' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                        <totvs-grid-column field="dat-inic-valid" width="70" filter="date : shortDate">{{::'l-dt-ini-valid' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                        <totvs-grid-column field="dat-fim-valid" width="70" filter="date : shortDate">{{:: 'l-dt-end-valid' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                        <!--
+                        <totvs-grid-column field="cdn-operac" width="100">{{:: 'l-type-operation' | i18n : [] : 'dts/mft'}}
+                            <option id="1">{{:: 'l-do-not-send' | i18n : [] : 'dts/mft'}}</option>
+                            <option id="2">{{:: 'l-fixed-value' | i18n : [] : 'dts/mft'}}</option>
+                            <option id="3">{{:: 'l-multiplic-by' | i18n : [] : 'dts/mft'}}</option>
+                            <option id="4">{{:: 'l-size' | i18n : [] : 'dts/mft'}}</option>
+                            <option id="5">{{:: 'l-numeric-format' | i18n : [] : 'dts/mft'}}</option>
+                        </totvs-grid-column>                        
+                        <totvs-grid-column field="cod-valor" width="100">{{:: 'l-value' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                        -->
+                        <totvs-grid-group field="cod-docto"></totvs-grid-group>
+                        <totvs-grid-detail>                                                    
+                            <totvs-grid ng-init="controller.getRuleRange(dataItem);" grid-height="350" auto-resize-content="true" 
+                            grid-data="dataItem.ruleRange" grid="controller.tagGrid" selectable="row">
+                                <totvs-grid-column field="des-regra" width="80">{{:: 'l-desc-rule' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                                <totvs-grid-column field="cod-campo" width="80">{{:: 'l-field' | i18n : [] : 'dts/mft'}}
+                                    <option id="CFOP">{{:: 'CFOP' | i18n : [] : 'dts/mft'}}</option>
+                                    <option id="Cidade da Nota">{{:: 'Cidade da Nota' | i18n : [] : 'dts/mft'}}</option>
+                                    <option id="Cidade do Cliente">{{:: 'Cidade do Cliente' | i18n : [] : 'dts/mft'}}</option>
+                                    <option id="Cidade do Estabelecimento">{{:: 'Cidade do Estabelecimento' | i18n : [] : 'dts/mft'}}</option>
+                                    <option id="Classificação Fiscal">{{:: 'Classificação Fiscal' | i18n : [] : 'dts/mft'}}</option>
+                                    <option id="Código do Cliente">{{:: 'Código do Cliente' | i18n : [] : 'dts/mft'}}</option>
+                                    <option id="Código do Estabelecimento">{{:: 'Código do Estabelecimento' | i18n : [] : 'dts/mft'}}</option>
+                                    <option id="Código do Item">{{:: 'Código do Item' | i18n : [] : 'dts/mft'}}</option>
+                                    <option id="Código do Serviço">{{:: 'Código do Serviço' | i18n : [] : 'dts/mft'}}</option>
+                                    <option id="Estado da Nota">{{:: 'Estado da Nota' | i18n : [] : 'dts/mft'}}</option>
+                                    <option id="Estado do Cliente">{{:: 'Estado do Cliente' | i18n : [] : 'dts/mft'}}</option>
+                                    <option id="Estado do Estabelecimento">{{:: 'Estado do Estabelecimento' | i18n : [] : 'dts/mft'}}</option>                        
+                                    <option id="Finalidade da NF-e">{{:: 'Finalidade da NF-e' | i18n : [] : 'dts/mft'}}</option>                        
+                                    <option id="Natureza de Operação">{{:: 'Natureza de Operação' | i18n : [] : 'dts/mft'}}</option>                        
+                                    <option id="País da Nota">{{:: 'País da Nota' | i18n : [] : 'dts/mft'}}</option>
+                                    <option id="País do Cliente">{{:: 'País do Cliente' | i18n : [] : 'dts/mft'}}</option>
+                                    <option id="País do Estabelecimento">{{:: 'País do Estabelecimento' | i18n : [] : 'dts/mft'}}</option>                        
+                                    <option id="Série">{{:: 'Série' | i18n : [] : 'dts/mft'}}</option>            
+                                </totvs-grid-column>
+                                <totvs-grid-column field="cod-val-inic" width="80">{{:: 'l-initial-value' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                                <totvs-grid-column field="cod-val-fim" width="80">{{:: 'l-final-value' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                                <totvs-grid-column field="cdn-operac" width="100">{{:: 'l-type-operation' | i18n : [] : 'dts/mft'}}
+                                        <option id="1">{{:: 'l-do-not-send' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="2">{{:: 'l-fixed-value' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="3">{{:: 'l-multiplic-by' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="4">{{:: 'l-size' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="5">{{:: 'l-numeric-format' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="6">{{:: 'l-program' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="7">{{:: 'l-add-tag' | i18n : [] : 'dts/mft'}}</option>
+                                    </totvs-grid-column>
+                                <totvs-grid-column field="cod-valor" width="100">{{:: 'l-value' | i18n : [] : 'dts/mft'}}</totvs-grid-column>                                                                
+                                <totvs-grid-column field="cod-programa" width="100">{{:: 'l-program' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                                <totvs-grid-column field="cod-xml" width="35">XML
+                                    <template>
+                                        <span><span style="border:none; box-shadow:none; background: none; margin-right: 5px;" class="btn btn-default" ng-click="controller.showXml(dataItem)"><span class="glyphicon glyphicon-list-alt"></span>
+                                    </template>
+                                </totvs-grid-column>
+                                <totvs-grid-group field="des-regra"></totvs-grid-group>                                                            
+                            </totvs-grid>
+                        </totvs-grid-detail>                        
+                    </totvs-grid>
+                </div>
+            </div>
+        </totvs-page-detail>
+    </totvs-page-content>
+</totvs-page>

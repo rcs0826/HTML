@@ -1,0 +1,169 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/report/">{{ 'nav-report' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header ng-if="(controller.model | isDefined)">
+
+			<totvs-page-header-title title="{{ controller.model.nom_relat }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action on-back-link="#/dts/crm/report/"
+													on-edit="controller.onEdit"
+													on-remove="controller.onRemove"
+													hide-actions="true">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert
+			ng-if="(controller.model | isUndefined)"
+			type="info"
+			message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-show="controller.model | isDefined">
+
+			<div class="col-xs-12 no-gutter">
+
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-6 col-md-5"
+					title="{{ 'l-module' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.ttCRMModule.nom_modul_crm }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-6 col-md-5"
+					title="{{ 'l-file' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_arq_relat }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-6 col-md-2"
+					title="{{ 'l-hierarchy' | i18n: []: 'dts/crm' }}">
+					{{ (controller.model.log_hier_time === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</totvs-page-detail-info>
+
+			</div>
+
+			<totvs-tabset>
+
+				<totvs-tab heading="{{ 'l-parameters' | i18n: []: 'dts/crm' }} ({{ controller.model.ttParametro.length || 0 }})">
+
+					<br/>
+
+					<div class="row">
+						<div class="col-xs-12">
+							<button class="btn btn-primary"
+									ng-click="controller.addEditParameter();">
+								<span class="glyphicon glyphicon-plus"></span>
+								{{ 'btn-add-parameter' | i18n: []: 'dts/crm' }}
+							</button>
+						</div>
+					</div>
+
+					<totvs-divider style="margin-top: 10px; margin-bottom: 0px;"></totvs-divider>
+
+					<div class="crm-tab">
+
+						<div ng-repeat="param in controller.model.ttParametro track by $index">
+
+							<div class="row crm-tab-item">
+
+								<div class="col-xs-8 col-sm-10 overflow-ellipsis">
+									<span class="glyphicon glyphicon-cog"></span>
+									&nbsp;&nbsp;&nbsp;
+									<span ng-if="param.log_livre_1 === true">
+										<strong style="color: red;">*</strong>
+									</span>
+									{{ param.nom_param }} ({{ param.ttTipo.nom_tipo }})
+								</div>
+
+								<div class="col-xs-1 col-sm-1 text-right">
+									<a class="clickable"
+									   ng-click="controller.addEditParameter(param);">
+										<span class="glyphicon glyphicon-pencil visible-xs"></span>
+										<span class="hidden-xs">{{ 'btn-edit' | i18n: []: 'dts/crm' }}</span>
+									</a>
+								</div>
+
+								<div class="col-xs-1 col-sm-1 text-right">
+									<a class="clickable"
+									   ng-click="controller.removeParameter(param);">
+										<span class="glyphicon glyphicon-trash visible-xs"></span>
+										<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+									</a>
+								</div>
+
+							</div>
+
+						</div>
+					</div>
+
+				</totvs-tab>
+
+				<totvs-tab heading="{{ 'l-users' | i18n: []: 'dts/crm' }} ({{ controller.model.ttUsuario.length || 0 }})">
+
+					<br/>
+
+					<div class="row">
+						<div class="col-xs-12">
+							<button class="btn btn-primary"
+									ng-model="controller.selectedUsers"
+									ng-change="controller.onZoomSelectUsers();"
+									zoom
+									zoom-multiple
+									zoom-service="crm.crm_usuar.zoom">
+								<span class="glyphicon glyphicon-plus"></span>
+								{{ 'btn-add-users' | i18n: []: 'dts/crm' }}
+							</button>
+						</div>
+					</div>
+
+					<totvs-divider style="margin-top: 10px; margin-bottom: 0px;"></totvs-divider>
+
+					<div class="crm-tab">
+
+						<div ng-repeat="user in controller.model.ttUsuario track by $index">
+
+							<div class="row crm-tab-item">
+
+								<div class="col-xs-10 col-sm-11 overflow-ellipsis">
+									<span class="glyphicon glyphicon-user"></span>
+									&nbsp;&nbsp;&nbsp;
+									{{ user.nom_usuar }}
+								</div>
+
+								<div class="col-xs-1 col-sm-1 text-right">
+									<a class="clickable"
+									   ng-click="controller.removeUser(user);">
+										<span class="glyphicon glyphicon-trash visible-xs"></span>
+										<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+									</a>
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</totvs-tab>
+
+			</totvs-tabset>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

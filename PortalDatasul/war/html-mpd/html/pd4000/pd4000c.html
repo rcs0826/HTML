@@ -1,0 +1,1035 @@
+<div ng-controller="salesorder.pd4000.EditController as editController"  totvs-custom-element="pd4000c">
+
+	<%
+	var basicInformation = false;
+	var priceInformation = false;
+	var deliveryInformation = false;
+	var attendInformation = false;
+	var complementInformation = false;
+	var vendorInformation = false;
+	var obsInformation = false;
+
+	_.forEach(data, function(field) {
+		if (field.fieldName == "cod-estabel") basicInformation = true;
+		if (field.fieldName == "esp-ped") basicInformation = true;
+		if (field.fieldName == "num-pedido-origem") basicInformation = true;
+		if (field.fieldName == "nat-operacao") basicInformation = true;
+		if (field.fieldName == "cod-canal-venda") basicInformation = true;
+		if (field.fieldName == "dt-implant") basicInformation = true;
+		if (field.fieldName == "dt-emissao") basicInformation = true;
+		if (field.fieldName == "contato") basicInformation = true;
+		if (field.fieldName == "e-mail") basicInformation = true;
+		if (field.fieldName == "nome-abrev-tri") basicInformation = true;
+		if (field.fieldName == "cod-des-mer") basicInformation = true;
+		if (field.fieldName == "tp-pedido") basicInformation = true;
+		if (field.fieldName == "cod-priori") basicInformation = true;
+		if (field.fieldName == "num-id-campanha-crm") basicInformation = true;
+		if (field.fieldName == "num-id-oportun-vda") basicInformation = true;
+        if (field.fieldName == "tp-operacao") basicInformation = true;
+        if (field.fieldName == "local-carregamento") basicInformation = true;
+
+		if (field.fieldName == "tp-preco") priceInformation = true;
+		if (field.fieldName == "nr-tabpre") priceInformation = true;
+		if (field.fieldName == "mo-codigo") priceInformation = true;
+		if (field.fieldName == "log-usa-tabela-desconto") priceInformation = true;
+		if (field.fieldName == "val-pct-desconto-tab-preco") priceInformation = true;
+		if (field.fieldName == "desc-txt") priceInformation = true;
+		if (field.fieldName == "perc-desco1") priceInformation = true;
+
+		if (field.fieldName == "dt-entrega") deliveryInformation = true;
+		if (field.fieldName == "dt-entorig") deliveryInformation = true;
+		if (field.fieldName == "cod-entrega") deliveryInformation = true;
+		if (field.fieldName == "cod-rota") deliveryInformation = true;
+		if (field.fieldName == "nome-transp") deliveryInformation = true;
+		if (field.fieldName == "placa") deliveryInformation = true;
+		if (field.fieldName == "nome-tr-red") deliveryInformation = true;
+		if (field.fieldName == "cidade-cif") deliveryInformation = true;
+		if (field.fieldName == "modalidade-frete") deliveryInformation = true;
+
+		if (field.fieldName == "mo-fatur") attendInformation = true;
+		if (field.fieldName == "dt-inivig") attendInformation = true;
+		if (field.fieldName == "dt-minfat") attendInformation = true;
+		if (field.fieldName == "dt-lim-fat") attendInformation = true;
+		if (field.fieldName == "estab-central") attendInformation = true;
+		if (field.fieldName == "ind-lib-nota") attendInformation = true;
+		if (field.fieldName == "ind-fat-par") attendInformation = true;
+		if (field.fieldName == "per-max-canc") attendInformation = true;
+
+		if (field.fieldName == "cod-mensagem") complementInformation = true;
+		if (field.fieldName == "cod-portador") complementInformation = true;
+		if (field.fieldName == "tip-cob-desp") complementInformation = true;
+		if (field.fieldName == "cod-unid-negoc") complementInformation = true;
+		if (field.fieldName == "cod-cond-pag") complementInformation = true;
+		if (field.fieldName == "no-ab-reppri") complementInformation = true;
+		if (field.fieldName == "nr-pedrep") complementInformation = true;
+		if (field.fieldName == "ind-antecip") complementInformation = true;
+
+		if (field.fieldName == "vendor-taxa-cliente") vendorInformation = true;
+		if (field.fieldName == "vendor-cod-cond-pag") vendorInformation = true;
+		if (field.fieldName == "vendor-dias-base") vendorInformation = true;
+		if (field.fieldName == "vendor-data-base") vendorInformation = true;
+
+		if (field.fieldName == "observacoes") obsInformation = true;
+		if (field.fieldName == "cond-redespa") obsInformation = true;
+		if (field.fieldName == "cond-espec") obsInformation = true;
+
+	});
+	%>
+
+
+	<form id="pd4000c" ng-init="editController.setFocus()" style="min-heigth: 250px" novalidate>
+
+	<div style="border:0; padding: 15px;" ng-if="!editController.orderDisabled">
+
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<button class="btn btn-primary" ng-click="editController.save()" focus>
+					<span class="glyphicon glyphicon-save"></span>
+					<span class="hidden-xs ng-binding">&nbsp;&nbsp;Salvar</span>
+				</button>
+				<a class="btn btn-default" role="button" ng-click="editController.cancel()" ng-if="!editController.newOrder">
+					<span class="glyphicon glyphicon-refresh"></span>
+					<span class="hidden-xs ng-binding">&nbsp;&nbsp;Descartar altera&ccedil;&otilde;es</span>
+				</a>
+				<button ng-if="!editController.allGroupsExpanded"
+						class="btn btn-default"
+						ng-click="editController.openCloseGroups(true)"
+						tooltip-html="editController.expandGroups"
+						tooltip-placement="right">
+					<span class="glyphicon glyphicon-chevron-down"></span>
+				</button>
+
+				<button ng-if="editController.allGroupsExpanded"
+						class="btn btn-default"
+						ng-click="editController.openCloseGroups(false)"
+						tooltip-html="editController.resumeGroups"
+						tooltip-placement="right">
+					<span class="glyphicon glyphicon-chevron-up"></span>
+				</button>
+
+			</div>
+		</div>
+	</div>
+
+
+	<div class="pd4000cabecalho" style="overflow-y: auto; min-height: 250px;">
+
+		<accordion close-others="false" class="col-md-12">
+			<div ng-if="editController.ttOrderItemSearch.length">
+				<!--<totvs-page-detail-info-group>
+						{{:: 'Itens do modelo' | i18n : [] : 'dts/mpd' }}
+					</totvs-page-detail-info-group> -->
+
+				<accordion-group is-open="editController.listGroups[0].item.expanded">
+					<accordion-heading>
+						{{ 'Itens do modelo' | i18n: []:  'dts/mpd' }}
+						<i class="pull-right glyphicon"
+						   ng-class="{'glyphicon-chevron-down' :  editController.listGroups[0].item.expanded,
+									  'glyphicon-chevron-right': !editController.listGroups[0].item.expanded}">
+						</i>
+					</accordion-heading>
+
+					<div class="col-xs-12">
+						<totvs-grid grid-data="editController.ttOrderItemSearch"
+							grid-height="150"
+							navigatable="true"
+							editable="true"
+							selectable="row">
+							<totvs-grid-column field="nr-sequencia" width="60">{{:: 'Sequencia' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+							<totvs-grid-column field="it-codigo" width="160">{{:: 'Item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+							<totvs-grid-column field="desc-item" class="text-nowrap" width="350">{{:: 'Descrição' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+							<totvs-grid-column field="cod-refer" width="160">{{:: 'Referência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+							<totvs-grid-column field="qt-un-fat" width="160" editable="true" filter="number : 4" style="text-align: right;">{{:: 'Qtd Pedida UM Fat' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+						</totvs-grid>
+					</div>
+				</accordion-group>
+			</div>
+
+			<!--<% if (basicInformation) { %>
+				<totvs-page-detail-info-group>{{:: 'Informações Básicas' | i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+			<% } %> -->
+
+			<% if (basicInformation) { %>
+				<accordion-group is-open="editController.listGroups[1].item.expanded">
+					<accordion-heading>
+						{{ 'Informações Básicas' | i18n: []:  'dts/mpd' }}
+						<i class="pull-right glyphicon"
+						   ng-class="{'glyphicon-chevron-down' :  editController.listGroups[1].item.expanded,
+									  'glyphicon-chevron-right': !editController.listGroups[1].item.expanded}">
+						</i>
+					</accordion-heading>
+
+					<!--totvs-field totvs-select
+						label="{{:: 'Safra' | i18n : [] : 'dts/mpd'}}"
+						ng-model="editController.order['cod-safra']"
+						ng-disabled="editController.orderDisabled"
+						select-id="cod-safra"
+						select-description="descricao"
+						select-service="salesorder.zoomSafra.Service"
+						zoom-service="salesorder.zoomSafra.Service">
+					</field-->
+
+					<% _.forEach(data, function(field) { %>
+
+						<% if (field.fieldName == "cod-estabel") { %>
+						<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+								label="{{:: 'Estabelecimento' | i18n : [] : 'dts/mpd'}}"
+								ng-model="editController.order['cod-estabel']"
+								ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+								ng-change="editController.applyLeaveOrder('cod-estabel')"
+								select-id="cod-estabel"
+								select-description="nome"
+								select-service="mpd.estabelecSE.select"
+								zoom-service="mpd.estabelecSE.zoom"
+								zoom-init="{setDefaultValue: false}"
+								canclean
+								required>
+								<validator key="required">{{$fieldLabel}} {{:: 'Obrigatório' | i18n : [] : 'dts/mpd' }}</validator>
+						</totvs-field>
+						<% } %>
+
+						<% if (field.fieldName == "esp-ped") { %>
+						<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="combo" ng-model="editController.order['esp-ped']"
+							ng-disabled="<%= field.fieldEnabled ? '!editController.newOrder' : 'true' %>"
+							ng-options="item.espPed as item.descEspPed for item in editController.especiePedido">
+							<label>{{:: 'Espécie de Pedido' | i18n : [] : 'dts/mpd'}}</label>
+						</field>
+						<% } %>
+
+						<% if (field.fieldName == "num-pedido-origem") { %>
+
+						<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="input" ng-model="editController.order['num-pedido-origem']"
+							ng-disabled="<%= field.fieldEnabled ?   'editController.getEnabledField(\'num-pedido-origem\')'  : 'true' %>"
+							maxlength="12">
+							<label>{{:: 'Nr Pedido Origem' | i18n : [] : 'dts/mpd'}}</label>
+						</field>
+						<% } %>
+
+						<% if (field.fieldName == "nat-operacao") { %>
+						<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+							label="{{:: 'Natureza de Operação' | i18n : [] : 'dts/mpd'}}"
+							ng-model="editController.order['nat-operacao']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							ng-change="editController.applyLeaveOrder('nat-operacao')"
+							required
+							select-id="nat-operacao"
+							select-description="denominacao"
+							select-service="mpd.natur-oper.zoom"
+							zoom-service="mpd.natur-oper.zoom"
+							canclean>
+							<validator key="required">{{$fieldLabel}} {{:: 'Obrigatório' | i18n : [] : 'dts/mpd' }}</validator>
+						</totvs-field>
+						<% } %>
+
+						<% if (field.fieldName == "cod-canal-venda") { %>
+						<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+							label="{{:: 'Canal de Venda' | i18n : [] : 'dts/mpd'}}"
+							ng-model="editController.order['cod-canal-venda']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							ng-change="editController.applyLeaveOrder('cod-canal-venda')"
+							select-id="cod-canal-venda"
+							select-description="descricao"
+							select-service="mpd.canal-venda.zoom"
+							zoom-service="mpd.canal-venda.zoom">
+						</totvs-field>
+						<% } %>
+
+						<% if (field.fieldName == "dt-implant") { %>
+						<!--
+							<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="date" ng-model="editController.order['dt-implant']"
+								ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+								ng-change="editController.applyLeaveOrder('dt-implant')">
+								<label>{{:: 'Data de Implantação' | i18n : [] : 'dts/mpd' }}</label>
+							</field>
+						-->
+						<totvs-field
+							totvs-datepicker
+							class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+							ng-model="editController.order['dt-implant']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							ng-change="editController.applyLeaveOrder('dt-implant')"
+							label="{{:: 'Data de Implantação' | i18n : [] : 'dts/mpd' }}">
+						</totvs-field>
+
+						<% } %>
+
+						<% if (field.fieldName == "dt-emissao") { %>
+						<totvs-field totvs-datepicker class="col-lg-4 col-md-4 col-sm-4 col-xs-12" ng-model="editController.order['dt-emissao']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							label="{{:: 'Data de Emissão' | i18n : [] : 'dts/mpd' }}">
+						</totvs-field>
+						<% } %>
+
+						<% if (field.fieldName == "contato") { %>
+						<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="input" ng-model="editController.order.contato"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>">
+							<label>{{:: 'Contato' | i18n : [] : 'dts/mpd'}}</label>
+						</field>
+						<% } %>
+
+						<% if (field.fieldName == "e-mail") { %>
+						<field class="container col-lg-4 col-md-4 col-sm-4 col-xs-12"
+							   type="email"
+							   ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							   ng-model="editController.order['e-mail']"
+							   canclean>
+							<label>E-mail</label>
+							<validator key="email">{{:: 'Informe um e-mail válido' | i18n : [] : 'dts/mpd' }}</validator>
+						</field>
+						<% } %>
+
+						<% if (field.fieldName == "nome-abrev-tri") { %>
+							<totvs-field
+								totvs-select
+								class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+								label="{{ :: 'Cliente operação triangular' | i18n : [] : 'dts/mpd' }}"
+								ng-model="editController.order['nome-abrev-tri']"
+								ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+								select-id="nome-abrev"
+								select-match='[{ "field":"cod-emitente", "separator": " - " }, { "field":"nome-abrev" }]'
+								select-service="mpd.emitenteTriangular.zoom"
+								zoom-init="{ setDefaultValue: false }"
+								zoom-service="mpd.emitenteTriangular.zoom"
+								canclean
+							>
+							</totvs-field>
+						<% } %>
+
+						<% if (field.fieldName == "cod-des-mer") { %>
+						<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="combo" ng-model="editController.order['cod-des-merc']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							ng-options="item.codDesMerc as item.descDesMerc for item in editController.destinosMercadoria">
+							<label>{{:: 'Destino da Mercadoria' | i18n : [] : 'dts/mpd'}}</label>
+						</field>
+						<% } %>
+
+						<% if (field.fieldName == "tp-pedido") { %>
+						<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="input" ng-model="editController.order['tp-pedido']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>">
+							<label>{{:: 'Tipo Pedido' | i18n : [] : 'dts/mpd'}}</label>
+						</field>
+						<% } %>
+
+						<% if (field.fieldName == "cod-priori") { %>
+						<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="number" ng-model="editController.order['cod-priori']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							min="0" max="99">
+							<label>{{:: 'Prioridade' | i18n : [] : 'dts/mpd'}}</label>
+							<validator key="min">{{$fieldLabel}} {{:: 'deve ser pelo menos' | i18n : [] : 'dts/mpd' }} 0</validator>
+							<validator key="max">{{$fieldLabel}} {{:: 'deve ser no máximo' | i18n : [] : 'dts/mpd' }} 100</validator>
+						</field>
+						<% } %>
+
+						<% if (field.fieldName == "num-id-campanha-crm") { %>
+						<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+							label="{{:: 'Campanha CRM' | i18n : [] : 'dts/mpd'}}"
+							ng-model="editController.order['num-id-campanha-crm']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							canclean
+							select-id="num_id"
+							select-description="nom_campanha"
+							select-service="mpd.campanha.zoom"
+							zoom-service="mpd.campanha.zoom">
+						</totvs-field>
+						<% } %>
+
+						<% if (field.fieldName == "num-id-oportun-vda") { %>
+						<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+							label="{{:: 'Oportunidade CRM' | i18n : [] : 'dts/mpd'}}"
+							ng-model="editController.order['num-id-oportun-vda']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							canclean
+							select-id="num_id"
+							select-description="des_oportun_vda"
+							select-service="mpd.oportunidade.zoom"
+							zoom-service="mpd.oportunidade.zoom">
+						</totvs-field>
+						<% } %>
+
+						<% if (field.fieldName == "tp-operacao") { %>
+						<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+							label="{{:: 'l-tp-oper' | i18n : [] : 'dts/mpd'}}"
+							ng-model="editController.order['tp-operacao']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							ng-change="editController.applyLeaveOrder('tp-operacao')"
+							canclean
+							select-id="cdn-tip-ped"
+							select-description="descricao"
+							select-service="mpd.tp-operacao.zoom"
+							zoom-service="mpd.tp-operacao.zoom">
+						</totvs-field>
+                        <% } %>
+                        
+                        <% if (field.fieldName == "local-carregamento") { %>
+                            <totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+                                ng-model="editController.order['local-carregamento']"
+                                ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled || editController.order[\'cod-estabel\'] == undefined ' : 'true' %>"
+                                canclean
+                                label="{{:: 'l-local-carregamento' | i18n : [] : 'dts/mpd'}}"
+                                select-id="customerCode"
+                                select-init="editController.order['cod-estabel']"
+                                select-description="customerName"
+                                select-service="mpd.local-carregamento.zoom"
+                                zoom-init="editController.order['cod-estabel']"
+                                zoom-service="mpd.local-carregamento.zoom">
+                            </totvs-field>
+                            <% } %>
+
+					<% } )%>
+
+					<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="input"
+						   ng-if="editController.isExportOrder && editController.enabledFields.manualProcess"
+						   ng-model="editController.order['nr-proc-exp']"
+						   ng-disabled="editController.orderDisabled"
+						   maxlength="12">
+						<label>{{:: 'Nr Processo de Exportação' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+				</accordion-group>
+
+			<% } %>
+
+
+				<!--<% if (priceInformation) { %>
+					<totvs-page-detail-info-group>{{:: 'Preço' | i18n : [] : 'dts/mpd'}}</totvs-page-detail-info-group>
+				<% } %>-->
+
+			<% if (priceInformation) { %>
+				<accordion-group is-open="editController.listGroups[2].item.expanded">
+					<accordion-heading>
+						{{ 'Preço' | i18n: []:  'dts/mpd' }}
+						<i class="pull-right glyphicon"
+						   ng-class="{'glyphicon-chevron-down' :  editController.listGroups[2].item.expanded,
+									  'glyphicon-chevron-right': !editController.listGroups[2].item.expanded}">
+						</i>
+					</accordion-heading>
+
+					<% _.forEach(data, function(field) { %>
+
+						<% if (field.fieldName == "tp-preco") { %>
+						<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="combo" ng-model="editController.order['tp-preco']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							ng-options="item.tpPreco as item.descTpPreco for item in editController.tipoPreco">
+							<label>{{:: 'Tipo de Preço' | i18n : [] : 'dts/mpd'}}</label>
+						</field>
+						<% } %>
+
+						<% if (field.fieldName == "nr-tabpre") { %>
+						<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+							label="{{:: 'Tabela de Preço' | i18n : [] : 'dts/mpd'}}"
+							ng-model="editController.order['nr-tabpre']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							ng-change="editController.applyLeaveOrder('nr-tabpre')"
+							canclean
+							select-id="nr-tabpre"
+							select-description="descricao"
+							select-service="mpd.tb-preco-inter.zoom"
+							zoom-service="mpd.tb-preco-inter.zoom">
+							<validator key="required">{{$fieldLabel}} {{:: 'Obrigatório' | i18n : [] : 'dts/mpd' }}</validator>
+						</totvs-field>
+						<% } %>
+
+						<% if (field.fieldName == "mo-codigo") { %>
+
+						<!-- Default 0 - Real, é aplicado apenas com select2 e não com totvs-field totvs-select -->
+						<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12"  type="select2"
+								ng-model="editController.order['mo-codigo']"
+								ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+								select-conector="{{'l-mo-codigo' | i18n}}"
+								select-id="mo-codigo"
+								canclean="true"
+								select-description="descricao"
+								select-service="mpd.moeda.zoom">
+								<zoom zoom-service="mpd.moeda.zoom"></zoom>
+							<label>{{:: 'Moeda' | i18n : [] : 'dts/mpd'}}</label>
+							<validator key="required">{{$fieldLabel}} {{:: 'Obrigatório' | i18n : [] : 'dts/mpd' }}</validator>
+						</field>
+
+						<% } %>
+
+						<% if (field.fieldName == "log-usa-tabela-desconto") { %>
+						<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="checkbox" ng-model="editController.order['log-usa-tabela-desconto']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>">
+							<label>{{:: 'Usa Tabela de Desconto' | i18n : [] : 'dts/mpd'}}</label>
+						</field>
+						<% } %>
+
+						<% if (field.fieldName == "val-pct-desconto-tab-preco") { %>
+						<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="decimal" ng-model="editController.order['val-pct-desconto-tab-preco']" ng-model-options="{ updateOn: 'blur' }"
+							data-v-max="999.99" data-m-dec="2" ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>">
+							<label>{{:: '% Desconto Tabela de Preço' | i18n : [] : 'dts/mpd'}}</label>
+						</field>
+						<% } %>
+
+						<% if (field.fieldName == "desc-txt") { %>
+						<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="input" ng-model="editController.order['des-pct-desconto-inform']"
+							maxlength="50" ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>">
+							<label>{{:: '% Desconto Informado' | i18n : [] : 'dts/mpd'}}</label>
+						</field>
+						<% } %>
+
+						<% if (field.fieldName == "perc-desco1") { %>
+						<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="decimal" ng-model="editController.order['perc-desco1']"  ng-model-options="{ updateOn: 'blur' }"
+							data-v-max="999.999" data-m-dec="3"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>">
+							<label>{{:: 'Desconto Cliente' | i18n : [] : 'dts/mpd'}}</label>
+						</field>
+						<% } %>
+
+					<% } )%>
+				</accordion-group>
+			<% } %>
+
+
+		<!--<% if (deliveryInformation) { %>
+			<totvs-page-detail-info-group>{{:: 'Informações de entrega' | i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+		<% } %>-->
+
+		<% if (deliveryInformation) { %>
+			<accordion-group is-open="editController.listGroups[3].item.expanded" totvs-custom-element="pd4000cDeliveryInformation">
+				<accordion-heading>
+					{{ 'Informações de entrega' | i18n: []:  'dts/mpd' }}
+					<i class="pull-right glyphicon"
+					   ng-class="{'glyphicon-chevron-down' :  editController.listGroups[3].item.expanded,
+							  'glyphicon-chevron-right': !editController.listGroups[3].item.expanded}">
+					</i>
+				</accordion-heading>
+
+				<% _.forEach(data, function(field) { %>
+
+					<% if (field.fieldName == "dt-entrega") { %>
+					<totvs-field totvs-datepicker class="col-lg-4 col-md-4 col-sm-4 col-xs-12" ng-model="editController.order['dt-entrega']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+						ng-change="editController.applyLeaveOrder('dt-entrega')"
+						label="{{:: 'Data de Entrega' | i18n : [] : 'dts/mpd' }}">
+					</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "dt-entorig") { %>
+					<totvs-field
+						 totvs-datepicker
+						class="col-lg-4 col-md-4 col-sm-4 col-xs-12" ng-model="editController.order['dt-entorig']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+						label="{{:: 'Data de Entrega Original' | i18n : [] : 'dts/mpd' }}">
+					</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "cod-entrega") { %>
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+						label="{{:: 'Código Local Entrega' | i18n : [] : 'dts/mpd'}}"
+						ng-model="editController.order['cod-entrega']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+
+						select-id="cod-entrega"
+						select-match='[{"field":"cod-entrega"}]'
+						select-init="editController.order['nome-abrev']"
+						select-service="mpd.loc-entr.zoom"
+						ng-change="editController.applyLeaveOrder('cod-entrega')"
+						zoom-service="mpd.loc-entr.zoom"
+						zoom-init="editController.order['nome-abrev']">
+					</totvs-field>
+
+					<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="input" ng-model="editController.order['local-entreg']"
+						ng-disabled="'true'">
+						<label>{{:: 'Local Entrega' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+
+					<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="textarea" ng-model="editController.order.endereco_text"
+						ng-disabled="'true'">
+						<label>{{:: 'Endereço Completo' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+
+					<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="input" ng-model="editController.order.bairro"
+						ng-disabled="'true'">
+						<label>{{:: 'Bairro' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+
+					<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="input" ng-model="editController.order.cidade"
+						ng-disabled="'true'">
+						<label>{{:: 'Cidade' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+						ng-model="editController.order.estado"
+						ng-disabled="true"
+						label="{{:: 'Estado' | i18n : [] : 'dts/mpd'}}"
+						select-init="editController.order.pais"
+						select-id="estado"
+						select-description="no-estado"
+						select-service="mpd.estado.zoom"
+						zoom-service="mpd.estado.zoom"
+						zoom-init="editController.order.pais">
+						<validator key="required">{{$fieldLabel}} {{:: 'Obrigatório' | i18n : [] :'dts/mpd' }}</validator>
+					</totvs-field>
+
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+						ng-model="editController.order.pais"
+						ng-disabled="true"
+						label="{{:: 'País' | i18n : [] : 'dts/mpd'}}"
+						select-id="nome-pais"
+						select-match='[{"field":"nome-pais"}]'
+						select-init="{gotomethod: 'gotopais'}"
+						select-service="mpd.pais.zoom"
+						zoom-service="mpd.pais.zoom">
+					</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "cod-rota") { %>
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+						ng-model="editController.order['cod-rota']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+						canclean
+						label="{{:: 'Rota' | i18n : [] : 'dts/mpd'}}"
+						select-id="cod-rota"
+						select-description="descricao"
+						select-service="mpd.rota.zoom"
+						zoom-service="mpd.rota.zoom">
+					</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "nome-transp") { %>
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+						ng-model="editController.order['nome-transp']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+						canclean
+						label="{{:: 'Transportador' | i18n : [] : 'dts/mpd'}}"
+						select-id="nome-abrev"
+						select-description="nome"
+						select-init="{gotomethod: 'gotonomeabrev'}"
+						select-service="mpd.transporte.zoom"
+						zoom-service="mpd.transporte.zoom">
+					</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "placa") { %>
+					<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="input" ng-model="editController.order.placa"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>">
+						<label>{{:: 'Placa' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+
+					<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="input" ng-model="editController.order['uf-placa']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+						ng-maxlength="2">
+						<label>{{:: 'UF Placa' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+					<% } %>
+
+					<% if (field.fieldName == "nome-tr-red") { %>
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+						ng-model="editController.order['nome-tr-red']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+						canclean
+						label="{{:: 'Transportador de Redespacho' | i18n : [] : 'dts/mpd'}}"
+						select-id="nome-abrev"
+						select-description="nome"
+						select-init="{gotomethod: 'gotonomeabrev'}"
+						select-service="mpd.transporte.zoom"
+						zoom-service="mpd.transporte.zoom">
+					</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "cidade-cif") { %>
+					<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="input" ng-model="editController.order['cidade-cif']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>">
+						<label>{{:: 'Cidade CIF' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+					<% } %>
+
+					<% if (field.fieldName == "modalidade-frete") { %>
+						<totvs-field
+							totvs-select
+							class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+							ng-model="editController.order['cod-modalid-frete']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							label="{{:: 'Modalidade de Frete' | i18n : [] : 'dts/mpd'}}"
+							select-id="cod-modalid-frete"
+							select-description="des-modalid-frete"
+							select-service="mpd.modalidadefrete.zoom"
+							zoom-service="mpd.modalidadefrete.zoom"
+							zoom-init="{setDefaultValue: false}"
+						>
+						</totvs-field>
+					<% } %>
+
+				<% } )%>
+			</accordion-group>
+		<% } %>
+
+
+		<!--<% if (attendInformation) { %>
+			<totvs-page-detail-info-group>{{:: 'Informações de Atendimento' | i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+		<% } %>-->
+
+
+		<% if (attendInformation) { %>
+			<accordion-group is-open="editController.listGroups[4].item.expanded">
+				<accordion-heading>
+					{{ 'Informações de Atendimento' | i18n: []:  'dts/mpd' }}
+					<i class="pull-right glyphicon"
+					   ng-class="{'glyphicon-chevron-down' :  editController.listGroups[4].item.expanded,
+							  'glyphicon-chevron-right': !editController.listGroups[4].item.expanded}">
+					</i>
+				</accordion-heading>
+
+				<% _.forEach(data, function(field) { %>
+
+					<% if (field.fieldName == "mo-fatur") { %>
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+						ng-model="editController.order['mo-fatur']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+						label="{{:: 'Moeda Faturamento' | i18n : [] : 'dts/mpd'}}"
+						select-id="mo-codigo"
+						select-description="descricao"
+						select-service="mpd.moeda.zoom"
+						zoom-service="mpd.moeda.zoom">
+						<validator key="required">{{$fieldLabel}} {{:: 'Obrigatório' | i18n : [] : 'dts/mpd' }}</validator>
+					</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "dt-inivig") { %>
+					<totvs-field
+						 class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						 totvs-datepicker
+						 ng-model="editController.order['dt-inivig']"
+						 ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled || editController.order[\'esp-ped\'] == 1' : 'true' %>"
+						 label="{{:: 'Dt de Início Vigência' | i18n : [] : 'dts/mpd' }}">
+					</totvs-field>
+
+					<totvs-field
+						class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+						totvs-datepicker
+						ng-model="editController.order['dt-fimvig']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled || editController.order[\'esp-ped\'] == 1' : 'true' %>"
+						label="{{:: 'Dt de Término Vigência' | i18n : [] : 'dts/mpd' }}">
+					</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "dt-minfat") { %>
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-datepicker ng-model="editController.order['dt-minfat']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+						label="{{:: 'Dt Mínima de Atendimento' | i18n : [] : 'dts/mpd' }}">
+					</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "dt-lim-fat") { %>
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-datepicker ng-model="editController.order['dt-lim-fat']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+						label="{{:: 'Dt Limite de Atendimento' | i18n : [] : 'dts/mpd' }}">
+					</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "estab-central") { %>
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+						ng-model="editController.order['estab-central']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.getEnabledField(\'estab-central\')' : 'true' %>"
+						ng-change="editController.applyLeaveOrder('estab-central')"
+						label="{{:: 'Estabelecimento Central' | i18n : [] : 'dts/mpd'}}"
+						select-id="cod-estabel"
+						select-description="nome"
+						select-service="mpd.estabelecSE.select"
+						zoom-service="mpd.estabelecSE.zoom"
+						zoom-init="{setDefaultValue: false}">
+					</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "ind-lib-nota") { %>
+					<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="checkbox" ng-model="editController.order['ind-lib-nota']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>">
+						<label>{{:: 'Libera Nota Fiscal' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+					<% } %>
+
+					<% if (field.fieldName == "ind-fat-par") { %>
+					<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="checkbox" ng-model="editController.order['ind-fat-par']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>">
+						<label>{{:: 'Faturamento Parcial' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+					<% } %>
+
+					<% if (field.fieldName == "per-max-canc") { %>
+					<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="decimal" ng-model="editController.order['per-max-canc']" ng-model-options="{ updateOn: 'blur' }"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>">
+						<label>{{:: '% Máx Cancel Saldo' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+					<% } %>
+
+				<% } )%>
+			</accordion-group>
+		<% } %>
+
+		<!--<% if (complementInformation) { %>
+			<totvs-page-detail-info-group>{{:: 'Informações Complementares' | i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+		<% } %>-->
+
+		<% if (complementInformation) { %>
+
+			<accordion-group is-open="editController.listGroups[5].item.expanded">
+				<accordion-heading>
+					{{ 'Informações Complementares' | i18n: []:  'dts/mpd' }}
+					<i class="pull-right glyphicon"
+					   ng-class="{'glyphicon-chevron-down' :  editController.listGroups[5].item.expanded,
+							  'glyphicon-chevron-right': !editController.listGroups[5].item.expanded}">
+					</i>
+				</accordion-heading>
+
+				<!--totvs-field totvs-select
+					ng-model="editController.order['dec-1']"
+					ng-disabled="editController.orderDisabled"
+					canclean
+					label="{{:: 'Código Servico' | i18n : [] : 'dts/mpd'}}"
+					select-id="cod-servico"
+					select-description="descricao"
+					select-service="salesorder.zoomServico.Service"
+					zoom-service="salesorder.zoomServico.Service">
+				</totvs-field-->
+
+				<% _.forEach(data, function(field) { %>
+
+					<% if (field.fieldName == "cod-mensagem") { %>
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+						ng-model="editController.order['cod-mensagem']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+						label="{{:: 'Mensagem' | i18n : [] : 'dts/mpd'}}"
+						select-id="cod-mensagem"
+						select-description="descricao"
+						select-service="mpd.mensagem.zoom"
+						zoom-service="mpd.mensagem.zoom">
+					</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "cod-portador") { %>			
+
+						<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+							ng-model="editController.portador"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							label="{{:: 'Portador' | i18n : [] : 'dts/mpd'}}"
+							select-id="cod-portador"
+							select-match='[{"field":"cod-portador", "separator": " - "},{"field":"nome", "separator": " ("}, {"field":"desc-modalidade", "separator":")"}]'
+							select-init="editController.order['modalidade']"
+							zoom-init="editController.order['modalidade']"
+							select-service="mpd.portador.zoom"
+							zoom-service="mpd.portador.zoom"
+							return-object							
+							canclean							
+							ng-change="editController.setModalidade()">
+						</totvs-field>
+	
+						<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+							   type="combo"
+							   ng-model="editController.order['modalidade']"
+							   ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							   ng-options="item.modalidade as item.descModalidade for item in editController.modalidades"
+							   ng-change="editController.applyLeaveOrder('modalidade')">
+							<label>{{:: 'Modalidade' | i18n : [] : 'dts/mpd'}}</label>
+						</field>
+
+					<% } %>
+
+					<% if (field.fieldName == "tip-cob-desp") { %>
+					<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="combo" ng-model="editController.order['tip-cob-desp']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+						ng-options="item.tipo as item.descricao for item in editController.tipoCobrancaDespesa">
+						<label>{{:: 'Tipo de Cobrança Despesa' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+					<% } %>
+
+					<% if (field.fieldName == "cod-unid-negoc") { %>
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+						ng-model="editController.order['cod-unid-negoc']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+						label="{{:: 'Unidade de Negócio' | i18n : [] : 'dts/mpd'}}"
+						select-id="cod-unid-negoc"
+						select-description="des-unid-negoc"
+						select-service="mpd.unid-negoc.zoom"
+						zoom-service="mpd.unid-negoc.zoom">
+					</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "cod-cond-pag") { %>
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+							label="{{:: 'Condição de Pagamento' | i18n : [] : 'dts/mpd'}}"
+							ng-model="editController.order['cod-cond-pag']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							ng-change="editController.applyLeaveOrder('dt-entrega')"
+							canclean="0"
+							select-id="cod-cond-pag"
+							select-description="descricao"
+							select-service="mpd.cond-pagto-inter.zoom"
+							zoom-service="mpd.cond-pagto-inter.zoom">
+					</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "nr-tab-finan") { %>
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+						ng-model="editController.order['nr-tab-finan']"
+						label="{{:: 'Tabela de Financiamento' | i18n : [] : 'dts/mpd'}}"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+						select-id="nr-tab-finan"
+						select-match='[{"field":"nr-tab-finan"}]'
+						select-service="mpd.tab-finan.zoom"
+						zoom-service="mpd.tab-finan.zoom"
+						ng-change="editController.setIndFinan();">
+					</totvs-field>
+
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+						ng-model="editController.order['nr-ind-finan']"
+						label="{{:: 'Sequência do índice de Financiamento' | i18n : [] : 'dts/mpd'}}"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+						select-id="num-seq"
+						select-description="tab-ind-fin"
+						select-init="editController.order['nr-tab-finan']"
+						select-service="mpd.tab-finan-indice.zoom"
+						zoom-service="mpd.tab-finan-indice.zoom"
+						zoom-init="editController.order['nr-tab-finan']"
+						ng-change="editController.getIndFinan()">
+					</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "no-ab-reppri") { %>
+						<totvs-field
+							totvs-select
+							class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+							label="{{ :: 'Representante Principal' | i18n : [] : 'dts/mpd' }}"
+							ng-model="editController.order['no-ab-reppri']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+							ng-change="editController.applyLeaveOrder('no-ab-reppri')"
+							select-id="nome-abrev"
+							select-description="nome"
+							select-init="{ gotomethod: 'gotonomeabrev' }"
+							select-service="mpd.repres.zoom"
+							zoom-service="mpd.repres.zoom"
+							required
+							canclean
+						>
+							<validator key="required">
+								{{ $fieldLabel }} {{ :: 'Obrigatório' | i18n : [] : 'dts/mpd' }}
+							</validator>
+						</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "nr-pedrep") { %>
+					<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="input" ng-model="editController.order['nr-pedrep']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>"
+						maxlength="12">
+						<label>{{:: 'Nr Pedido Representante' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+					<% } %>
+
+					<% if (field.fieldName == "ind-antecip") { %>
+					<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="checkbox" ng-model="editController.order['ind-antecip']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>">
+						<label>{{:: 'Possui Antecipação' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+					<% } %>
+
+
+				<% } )%>
+			</accordion-group>
+		<% } %>
+
+		<!-- <% if (vendorInformation) { %>
+			<totvs-page-detail-info-group>{{:: 'Vendor' | i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+		<% } %> -->
+
+		<% if (vendorInformation) { %>
+
+			<accordion-group is-open="editController.listGroups[6].item.expanded">
+				<accordion-heading>
+					{{ 'Vendor' | i18n: []:  'dts/mpd' }}
+					<i class="pull-right glyphicon"
+					   ng-class="{'glyphicon-chevron-down' :  editController.listGroups[6].item.expanded,
+							  'glyphicon-chevron-right': !editController.listGroups[6].item.expanded}">
+					</i>
+				</accordion-heading>
+
+				<% _.forEach(data, function(field) { %>
+
+					<% if (field.fieldName == "vendor-taxa-cliente") { %>
+					<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="decimal" ng-model="editController.orderVendor['taxa-cliente']" ng-model-options="{ updateOn: 'blur' }"
+						data-v-max="999.99" data-m-dec="2" ng-disabled="<%= field.fieldEnabled ? 'editController.getEnabledField(\'vendor\')' : 'true' %>">
+						<label>{{:: 'Taxa do Cliente' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+					<% } %>
+
+					<% if (field.fieldName == "vendor-cod-cond-pag") { %>
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-select
+							label="{{:: 'Condição de Pagamento Vendor' | i18n : [] : 'dts/mpd'}}"
+							ng-model="editController.orderVendor['cod-cond-pag']"
+							ng-disabled="<%= field.fieldEnabled ? 'editController.getEnabledField(\'vendor\')' : 'true' %>"
+							required
+							select-id="cod-cond-pag"
+							select-description="descricao"
+							select-service="mpd.cond-pagto-inter.zoom"
+							zoom-service="mpd.cond-pagto-inter.zoom">
+					</totvs-field>
+					<% } %>
+
+					<% if (field.fieldName == "vendor-dias-base") { %>
+					<field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" type="number" ng-model="editController.orderVendor['dias-base']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.getEnabledField(\'vendor\')' : 'true' %>"
+						min="0">
+						<label>{{:: 'Carência' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+					<% } %>
+
+					<% if (field.fieldName == "vendor-data-base") { %>
+					<totvs-field class="col-lg-4 col-md-4 col-sm-4 col-xs-12" totvs-datepicker ng-model="editController.orderVendor['data-base']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.getEnabledField(\'vendor\')' : 'true' %>"
+						label="{{:: 'Dt Base' | i18n : [] : 'dts/mpd' }}">
+					</totvs-field>
+					<% } %>
+
+				<% } )%>
+			</accordion-group>
+		<% } %>
+
+
+		<!--<% if (obsInformation) { %>
+			<totvs-page-detail-info-group>{{:: 'Observações' | i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+		<% } %>-->
+
+		<% if (obsInformation) { %>
+
+			<accordion-group is-open="editController.listGroups[7].item.expanded">
+				<accordion-heading>
+					{{ 'Observações' | i18n: []:  'dts/mpd' }}
+					<i class="pull-right glyphicon"
+					   ng-class="{'glyphicon-chevron-down' :  editController.listGroups[7].item.expanded,
+							  'glyphicon-chevron-right': !editController.listGroups[7].item.expanded}">
+					</i>
+				</accordion-heading>
+
+				<% _.forEach(data, function(field) { %>
+
+					<% if (field.fieldName == "observacoes") { %>
+					<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="textarea" class="col-xs col-sm-12 col-md-12"
+						ng-model="editController.order.observacoes"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>">
+						<label>{{:: 'Observações' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+					<% } %>
+
+					<% if (field.fieldName == "cond-redespa") { %>
+					<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="textarea" class="col-xs col-sm-12 col-md-12"
+						ng-model="editController.order['cond-redespa']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>">
+						<label>{{:: 'Condições de Redespacho' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+					<% } %>
+
+					<% if (field.fieldName == "cond-espec") { %>
+					<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="textarea" class="col-xs col-sm-12 col-md-12"
+						ng-model="editController.order['cond-espec']"
+						ng-disabled="<%= field.fieldEnabled ? 'editController.orderDisabled' : 'true' %>">
+						<label>{{:: 'Condições Especiais' | i18n : [] : 'dts/mpd'}}</label>
+					</field>
+					<% } %>
+
+				<% } )%>
+			</accordion-group>
+		<% } %>
+		</accordion>
+	</div>
+
+	</form>
+</div>
+

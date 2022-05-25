@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="/dts/mmi/html/sprint/dashboard/dashboard.maintenance.css">
+<totvs-modal-header>
+    {{ 'l-chart-view' | i18n }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+  <div class="row dm-clean-margin dm-box-title">
+    <div class="col-md-11 div-resumo" style="border-top-left-radius: 4px;">{{ 'l-planned-maintenance-executed-by-class' | i18n }} ({{dsbGraficoClasse.estatistica}})</div>
+    <div class="col-md-1 div-resumo text-right" style="border-top-right-radius: 4px;">
+      <a href="#" role="button" ng-click="dsbGraficoClasse.exportToPng()" title="{{ 'l-graph-export' | i18n }}">
+        <span class="glyphicon glyphicon-save-file" style="color: #777"></span>
+      </a>
+    </div>
+  </div>
+  <div class="row dm-clean-margin dm-box-content">
+    <totvs-chart t-type-chart="column"
+                t-series="dsbGraficoClasse.manutencao"
+                t-category-axis="dsbGraficoClasse.manutencaoCategories"
+                t-value-axis="dsbGraficoClasse.manutencaoValueAxis"
+                t-chart-tooltip="false"
+                t-set-export="dsbGraficoClasse.setFnExport"
+                class="col-md-12 dm-clean-padding"
+                style="margin-bottom: 2px;">
+    </totvs-chart>
+  </div>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button type="button" class="btn btn-primary" data-ng-click="dsbGraficoClasse.fechar()">{{ 'l-close' | i18n }}</button>
+</totvs-modal-footer>

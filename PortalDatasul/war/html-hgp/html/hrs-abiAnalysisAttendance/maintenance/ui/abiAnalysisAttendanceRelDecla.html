@@ -1,0 +1,320 @@
+<totvs-modal-header>
+    Declarações
+</totvs-modal-header>
+<totvs-modal-body style="height: 520px; overflow-y: auto;"  ng-form="declaController.modelForm">
+    <style>
+        .margem {
+            margin: 7px 0 0 0;
+        }
+    </style>
+    <totvs-tabset>
+        <totvs-tab heading="Beneficiário">
+            <totvs-row>
+                <field type="input"
+                       class="col-lg-6 col-md-6 col-sm-8 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmBeneficiario"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Nome">
+                </field>
+                <field type="input"
+                       class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nrCPF"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="CPF">
+                </field>
+                <field type="date"
+                       class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.dtNascimento"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Data de Nascimento">
+                </field>
+                <field type="input"
+                       class="col-lg-6 col-md-6 col-sm-8 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmNaturalidade"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Naturalidade">
+                </field>
+                <field type="input"
+                       class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nrRG"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="RG">
+                </field>
+                <field type="date"
+                       class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.dtRGExpedicao"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Data de Expedição">
+                </field>
+                <field type="input"
+                       class="col-lg-6 col-md-6 col-sm-8 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmPai"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Nome do Pai">
+                </field>
+                <field type="input"
+                       class="col-lg-6 col-md-6 col-sm-8 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmMae"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Nome da Mãe">
+                </field>
+            </totvs-row>
+            <totvs-row>
+                <p class="margem">Endereço de residência</p>
+                <field type="input"
+                       class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmLogradouro"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Logradouro">
+                </field>
+                <field type="input"
+                       class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nrLogradouroNumero"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Número">
+                </field>
+                <field type="input"
+                       class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmComplemento"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Complemento">
+                </field>
+                <field type="input"
+                       class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmBairro"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Bairro">
+                </field>
+                <field type="input"
+                       class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmMunicipio"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Município">
+                </field>
+                <field type="input"
+                       class="col-lg-1 col-md-1 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmUF"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="UF">
+                </field>
+                <field type="input"
+                       class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmCEP"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="CEP">
+                </field>
+            </totvs-row>
+            <totvs-row>
+                <p class="margem">Contatos</p>
+                <field type="input"
+                       class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmTelefone"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Telefone">
+                </field>
+                <field type="input"
+                       class="col-lg-8 col-md-8 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmEmail"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Email">
+                </field>
+            </totvs-row>
+        </totvs-tab>
+        <totvs-tab heading="Informante ou Declarante">
+            <totvs-row>
+                <totvs-field totvs-radio
+                        class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                        label="Tipo da declaração"
+                        ng-init="declaController.attandenceDeclaration.fgDeclarante = '0'"
+                        ng-model="declaController.attandenceDeclaration.fgDeclarante"
+                        ng-disabled="declaController.idPermissao != 2"
+                        t-options="declaController.inDeclaration">
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <field type="input"
+                       class="col-lg-8 col-md-8 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmDeclaranteNome"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Nome">
+                </field>
+                <field type="input"
+                       class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmDeclaranteParentesco"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Parentesco">
+                </field>
+                <field type="input"
+                       class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nrDeclaranteCPF"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="CPF">
+                </field>
+                <field type="input"
+                       class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nrDeclaranteRG"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="RG">
+                </field>
+                <field type="date"
+                       class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.dtDeclaranteRGExpedicao"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Data de Expedição">
+                </field>
+            </totvs-row>
+            <totvs-row>
+                <p class="margem">Endereço de residência</p>
+                <field type="input"
+                       class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmDeclaranteLogradouro"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Logradouro">
+                </field>
+                <field type="input"
+                       class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nrDeclaranteLogradouroNumero"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Número">
+                </field>
+                <field type="input"
+                       class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmDeclaranteComplemento"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Complemento">
+                </field>
+                <field type="input"
+                       class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmDeclaranteBairro"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Bairro">
+                </field>
+                <field type="input"
+                       class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmDeclaranteMunicipio"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Município">
+                </field>
+                <field type="input"
+                       class="col-lg-1 col-md-1 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmDeclaranteUF"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="UF">
+                </field>
+                <field type="input"
+                       class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmDeclaranteCEP"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="CEP">
+                </field>
+            </totvs-row>
+            <totvs-row>
+                <p class="margem">Contatos</p>
+                <field type="input"
+                       class="col-lg-4 col-md-4 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmDeclaranteTelefone"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Telefone">
+                </field>
+                <field type="input"
+                       class="col-lg-8 col-md-8 col-sm-6 col-xs-12"
+                       ng-model="declaController.attandenceDeclaration.nmDeclaranteEmail"
+                       ng-disabled="declaController.idPermissao != 2"
+                       label="Email">
+                </field>
+            </totvs-row>
+        </totvs-tab>
+        <totvs-tab heading="Declarante" id="tb-declarante" ng-if="declaController.attandenceDeclaration.fgDeclarante == '1'">
+                <totvs-row>
+                        <field type="input"
+                               class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                               ng-model="declaController.attandenceDeclaration.nmOperadoraCargo"
+                               ng-disabled="declaController.idPermissao != 2"
+                               label="Cargo">
+                        </field>
+                        <field type="input"
+                               class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                               ng-model="declaController.attandenceDeclaration.nmOperadoraNome"
+                               ng-disabled="declaController.idPermissao != 2"
+                               label="Nome">
+                        </field>
+                        <field type="input"
+                               class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                               ng-model="declaController.attandenceDeclaration.nrOperadoraCPF"
+                               ng-disabled="declaController.idPermissao != 2"
+                               mask="999.999.999-99"
+                               numbers-only
+                               label="CPF">
+                        </field>
+                        <field type="input"
+                               class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                               ng-model="declaController.attandenceDeclaration.nrOperadoraRG"
+                               ng-disabled="declaController.idPermissao != 2"
+                               label="RG">
+                        </field>
+                        <field type="date"
+                               class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                               ng-model="declaController.attandenceDeclaration.dtOperadoraRGExpedicao"
+                               ng-disabled="declaController.idPermissao != 2"
+                               label="Data de Expedição">
+                        </field>
+                </totvs-row>
+        </totvs-tab>
+        <totvs-tab heading="Dados Finais">
+            <totvs-row>
+                <totvs-field
+                    totvs-date-range
+                    label='Período de internação'
+                    ng-model='declaController.attandenceDeclaration.dtInternacao'
+                    start-placeholder="Inicial"
+                    end-placeholder="Final"
+                    ng-disabled="declaController.idPermissao != 2"
+                    class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                    canclean>
+                </totvs-field>
+                
+                <totvs-field
+                    totvs-select
+                    ng-model="declaController.attandenceDeclaration.fgEsclarecimento"
+                    label="Esclarecimento fornecido pelo"
+                    class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                    placeholder="Selecione.."
+                    ng-disabled="declaController.idPermissao != 2"
+                    select-id="value"
+                    select-description="label"
+                    t-data-source="declaController.inEsclarecimento">
+                </totvs-field>
+                
+                <field type="input"
+                       class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                       ng-disabled="declaController.idPermissao != 2"
+                       ng-model="declaController.attandenceDeclaration.nmInternacaoEstabelecimento"
+                       label="Estabelecimento">
+                </field>
+                <field type="input"
+                       class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                       ng-disabled="declaController.idPermissao != 2"
+                       ng-model="declaController.attandenceDeclaration.nmCidadeDocumento"
+                       label="Cidade">
+                </field>
+                <field type="input"
+                       class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                       ng-disabled="declaController.idPermissao != 2"
+                       ng-model="declaController.attandenceDeclaration.dsTelefoneDocumento"
+                       label="Telefone de contato">
+                </field>
+                <field type="date"
+                       class="col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                       ng-disabled="declaController.idPermissao != 2"
+                       ng-model="declaController.attandenceDeclaration.dtDeclaracao"
+                       label="Data de declaração">
+                </field>
+            </totvs-row>
+        </totvs-tab>        
+    </totvs-row>    
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-primary" ng-if="declaController.idPermissao == 2" ng-click="declaController.generateDeclaration()">Gerar</button>
+    <button class="btn" ng-click="declaController.close()">Fechar</button>
+</totvs-modal-footer>

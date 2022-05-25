@@ -1,0 +1,271 @@
+<style>
+	h5 {
+        margin: 0 0 !important;
+        margin-top: 15px !important;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #ddd;
+	}
+    
+    .bootstrap-switch {
+        height: 23px;
+    }
+
+    a:focus {
+        outline: none;
+    }
+
+    .value-final-label {
+        font-size: 20px;
+    }
+
+    .lbl-green {
+        color: green;
+    }
+
+    .lbl-red {
+        color: red;
+    }
+</style>
+<totvs-page-form>
+    <totvs-modal-header ng-if="!controller.edit">{{ 'l-include-quotation' | i18n: []: i18nContext }}</totvs-modal-header>
+    <totvs-modal-header ng-if="controller.edit">{{ 'l-edit-quotations' | i18n: []: i18nContext }}</totvs-modal-header>
+    <totvs-modal-body>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-8 text-right">
+                {{ 'l-final-unit-price' | i18n: []: i18nContext }}: <span class="value-final-label" ng-class="controller.ttQuotationsDefault['pre-unit-for'] > 0 ? 'lbl-green' : 'lbl-red'">{{ controller.ttQuotationsDefault['pre-unit-for'] | number: 5 }}</span>
+            </div>
+        </div>
+        <accordion close-others="false">
+<!-- Campos da aba Cotação -->
+            <accordion-group is-open="true">
+                <accordion-heading>
+                    <div class="row">
+                        <a ng-click="controller.quotation=!controller.quotation">
+                            <div class="col-xs-10">{{:: 'l-quotation' | i18n: []: i18nContext}}</div>
+                            <div class="col-xs-2 text-right">
+                                <i class="pull-right glyphicon"
+                                    ng-class="{'glyphicon-chevron-right' : controller.quotation,'glyphicon-chevron-down': !controller.quotation}">
+                                </i>
+                            </div>
+                        </a>
+                    </div>
+                </accordion-heading>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <totvs-field totvs-decimal
+                                     ng-model="controller.ttQuotationsDefault['preco-fornec']"
+                                     label="{{ 'l-unit-price' | i18n: []: i18nContext }}"
+                                     class="col-md-4"
+                                     ng-blur="controller.calcFields('preco-fornec')"
+                                     ng-disabled="controller.fields.hasOwnProperty('preco-fornec') ? !controller.fields['preco-fornec'] : false"
+                                     ng-required="true"
+                                     m-dec="5">
+                        </totvs-field>
+                        <totvs-field totvs-combo
+                                     ng-model="controller.ttQuotationsDefault['un']"
+                                     label="{{ 'l-vendor-um' | i18n: []: i18nContext }}"
+                                     t-options="controller.unitMetricList"
+                                     class="col-md-4"
+                                     ng-required="true">
+                        </totvs-field>
+                        <totvs-field totvs-combo
+                                     ng-model="controller.ttQuotationsDefault['manufacturer']"
+                                     label="{{ 'l-manufacturer' | i18n: []: i18nContext }}"
+                                     t-options="controller.itemManufacturers"
+                                     class="col-md-4"
+                                     ng-if="controller.itemManufacturers.length > 0">
+                        </totvs-field>
+                    </div>
+                    <div class="row">
+                        <totvs-field totvs-combo
+                                     ng-model="controller.ttQuotationsDefault['cod-cond-pag']"
+                                     label="{{ 'l-pay-cond' | i18n: []: i18nContext }}"
+                                     t-options="controller.paymentCondition"
+                                     class="col-md-4"
+                                     ng-required="true">
+                        </totvs-field>
+                        <totvs-field totvs-number
+                                     ng-model="controller.ttQuotationsDefault['prazo-entreg']"
+                                     label="{{ 'l-deadline' | i18n: []: i18nContext }}"
+                                     class="col-md-4"
+                                     t-mask="9999">
+                        </totvs-field>
+                        <totvs-field totvs-input
+                                     ng-model="controller.ttQuotationsDefault['contato']"
+                                     label="{{ 'l-seller' | i18n: []: i18nContext }}"
+                                     class="col-md-4"
+                                     maxlength="40">
+                        </totvs-field>
+                    </div>
+                    <h5>{{ 'l-freight' | i18n: []: i18nContext }}</h5>
+                    <div class="row">
+                        <totvs-field totvs-decimal
+                                     ng-model="controller.ttQuotationsDefault['valor-frete']"
+                                     label="{{ 'l-freight-value' | i18n: []: i18nContext }}"
+                                     class="col-md-2"
+                                     ng-disabled="controller.fields.hasOwnProperty('valor-frete') ? !controller.fields['valor-frete'] : false"
+                                     v-max="9"
+                                     m-dec="4">
+                        </totvs-field>
+                        <totvs-field totvs-checkbox
+                                     ng-model="controller.ttQuotationsDefault['frete']"
+                                     label="{{ 'l-included-freight' | i18n: []: i18nContext }}"
+                                     class="col-md-2"
+                                     ng-disabled="controller.fields.hasOwnProperty('frete') ? !controller.fields['frete'] : false">
+                        </totvs-field>
+                        <totvs-field totvs-decimal
+                                     ng-model="controller.ttQuotationsDefault['aliquota-ipi']"
+                                     label="{{ 'l-aliquot-ipi' | i18n: []: i18nContext }}"
+                                     class="col-md-2"
+                                     ng-blur="controller.calcFields('aliquota-ipi')"
+                                     ng-disabled="controller.fields.hasOwnProperty('aliquota-ipi') ? !controller.fields['aliquota-ipi'] : false"
+                                     v-max="3"
+                                     m-dec="2">
+                        </totvs-field>
+                        <totvs-field totvs-checkbox
+                                     ng-model="controller.ttQuotationsDefault['codigo-ipi']"
+                                     label="{{ 'l-included-ipi' | i18n: []: i18nContext }}"
+                                     class="col-md-2"
+                                     ng-click="controller.calcFields('codigo-ipi')"
+                                     ng-disabled="controller.fields.hasOwnProperty('codigo-ipi') ? !controller.fields['codigo-ipi'] : false">
+                        </totvs-field>
+                        <totvs-field totvs-decimal
+                                     ng-model="controller.ttQuotationsDefault['aliquota-icm']"
+                                     label="{{ 'l-icms-tax' | i18n: []: i18nContext }}"
+                                     class="col-md-2"
+                                     ng-blur="controller.calcFields('aliquota-icm')"
+                                     ng-disabled="controller.fields.hasOwnProperty('aliquota-icm') ? !controller.fields['aliquota-icm'] : false"
+                                     v-max="3"
+                                     m-dec="2">
+                        </totvs-field>
+                    </div>
+                    <div class="row">
+                        <totvs-field totvs-combo
+                                     ng-model="controller.ttQuotationsDefault['cod-transp']"
+                                     label="{{ 'l-carrier' | i18n: []: i18nContext }}"
+                                     t-options="controller.carriers"
+                                     class="col-md-8">
+                        </totvs-field>
+                    </div>
+                </div>
+            </accordion-group>
+<!-- Campos da aba Informações Financeiras -->
+            <accordion-group is-open="false">
+                <accordion-heading>
+                    <div class="row">
+                        <a ng-click="controller.financialInformation=!controller.financialInformation">
+                            <div class="col-xs-10">{{:: 'l-financial-information' | i18n: []: i18nContext}}</div>
+                            <div class="col-xs-2 text-right">
+                                <i class="pull-right glyphicon"
+                                    ng-class="{'glyphicon-chevron-down' :  controller.financialInformation,'glyphicon-chevron-right': !controller.financialInformation}">
+                                </i>
+                            </div>
+                        </a>
+                    </div>
+                </accordion-heading>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <totvs-field totvs-checkbox
+                                     ng-model="controller.ttQuotationsDefault['taxa-financ']"
+                                     label="{{ 'l-financial-charges' | i18n: []: i18nContext }}"
+                                     class="col-md-2"
+                                     ng-change="controller.calcFields('taxa-financ')"
+                                     ng-disabled="controller.fields.hasOwnProperty('taxa-financ') ? !controller.fields['taxa-financ'] : false"></totvs-field>
+                        </totvs-field>
+                        <totvs-field totvs-decimal
+                                     ng-model="controller.ttQuotationsDefault['valor-taxa']"
+                                     label="{{ 'l-financial-rate' | i18n: []: i18nContext }}"
+                                     class="col-md-3"
+                                     ng-disabled="controller.fields.hasOwnProperty('valor-taxa') ? !controller.fields['valor-taxa'] : false"
+                                     ng-blur="controller.calcFields('valor-taxa')"
+                                     v-max="4"
+                                     m-dec="2">
+                        </totvs-field>
+                        <totvs-field totvs-number
+                                     ng-model="controller.ttQuotationsDefault['nr-dias-taxa']"
+                                     label="{{ 'l-financial-rate-days' | i18n: []: i18nContext }}"
+                                     class="col-md-3"
+                                     ng-disabled="controller.fields.hasOwnProperty('nr-dias-taxa') ? !controller.fields['nr-dias-taxa'] : false"
+                                     ng-blur="controller.calcFields('nr-dias-taxa')"
+                                     t-mask="999">
+                        </totvs-field>
+                        <totvs-field totvs-combo
+                                     ng-model="controller.ttQuotationsDefault['mo-codigo']"
+                                     label="{{ 'l-currency' | i18n: []: i18nContext }}"
+                                     t-options="controller.currencies"
+                                     class="col-md-4">
+                        </totvs-field>
+                    </div>
+                    <h5>{{ 'l-discount' | i18n: []: i18nContext }}</h5>
+                    <div class="row">
+                        <totvs-field totvs-decimal
+                                     ng-model="controller.ttQuotationsDefault['perc-descto']"
+                                     label="{{ 'l-discount-perc-short' | i18n: []: i18nContext }}"
+                                     class="col-md-4"
+                                     ng-blur="controller.calcFields('perc-descto')"
+                                     ng-disabled="controller.fields.hasOwnProperty('perc-descto') ? !controller.fields['perc-descto'] : false"
+                                     v-max="2"
+                                     m-dec="5">
+                        </totvs-field>
+                        <totvs-field totvs-decimal
+                                     ng-model="controller.ttQuotationsDefault['valor-descto']"
+                                     label="{{ 'l-discount-value' | i18n: []: i18nContext }}"
+                                     class="col-md-4"
+                                     ng-blur="controller.calcFields('valor-descto')"
+                                     ng-disabled="controller.fields.hasOwnProperty('valor-descto') ? !controller.fields['valor-descto'] : false"
+                                     v-max="9"
+                                     m-dec="4">
+                        </totvs-field>
+                        <totvs-field totvs-number
+                                     ng-model="controller.ttQuotationsDefault['dias-validade']"
+                                     label="{{ 'l-validity-days' | i18n: []: i18nContext }}"
+                                     class="col-md-4"
+                                     t-mask="999">
+                        </totvs-field>
+                    </div>
+                </div>
+            </accordion-group>
+<!-- Campos da aba Comentários -->
+            <accordion-group is-open="false">
+                <accordion-heading>
+                    <div class="row">
+                        <a ng-click="controller.comment=!controller.comment">
+                            <div class="col-xs-10">{{:: 'l-comments' | i18n: []: i18nContext}}</div>
+                            <div class="col-xs-2 text-right">
+                                <i class="pull-right glyphicon"
+                                    ng-class="{'glyphicon-chevron-down' :  controller.comment,'glyphicon-chevron-right': !controller.comment}">
+                                </i>
+                            </div>
+                        </a>
+                    </div>
+                </accordion-heading>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <field
+                            type="textarea"
+                            ng-model="controller.ttQuotationsDefault['narrativa']"
+                            class="col-md-12">
+                        </field>
+                    </div>
+                </div>
+            </accordion-group>
+        </accordion>
+    </totvs-modal-body>
+    <totvs-modal-footer>
+        <button type="button" 
+                class="btn btn-default btn-primary" 
+                ng-mousedown="controller.save(true)"
+                ng-disabled="controller.ttQuotationsDefault['cod-cond-pag'] < 1">{{ 'l-save' | i18n: []: i18nContext }}
+        </button>
+        <button type="button" 
+                class="btn btn-default" 
+                ng-mousedown="controller.save(false)"
+                ng-disabled="controller.ttQuotationsDefault['cod-cond-pag'] < 1"
+                ng-if="!controller.edit">{{ 'l-save-new' | i18n: []: i18nContext }}
+        </button>
+        <button type="button" 
+                class="btn btn-default" 
+                ng-mousedown="controller.closeModal()">{{ 'l-close' | i18n: []: i18nContext }}
+        </button>
+    </totvs-modal-footer>
+</totvs-page-form>

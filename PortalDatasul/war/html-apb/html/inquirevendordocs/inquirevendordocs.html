@@ -1,0 +1,283 @@
+<totvs-page type="list" totvs-custom-element="customPage">
+
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-inquire-vendor-docs' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		<totvs-page-header>
+
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-title">
+				<totvs-page-header-title title="{{currentuser['user-entity']}}{{ 'l-vendor-docs' | i18n }} ({{controller.totalRecords}})"></totvs-page-header-title>
+			</div>
+			<totvs-page-header-operation>
+
+				<totvs-page-header-operation-action>
+
+					<action icon="glyphicon-list" class="btn-default" ng-click="controller.showList()">
+						{{ 'btn-list' | i18n: []: 'dts/apb' }}
+					</action>
+
+					<action icon="glyphicon-stats" class="btn-default" ng-click="controller.showChart()">
+						{{ 'btn-chart' | i18n: []: 'dts/apb' }}
+					</action>
+
+				</totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter placeholder="{{ 'l-fast-search-bill' | i18n }}" 
+													ng-submit="controller.loadData(false);"
+													ng-model="controller.quickSearchText"
+													advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+			<totvs-page-disclaimers ng-hide="controller.chartShow"
+									ng-if="controller.disclaimers" 
+									disclaimer-list="controller.disclaimers" 
+									ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+
+			<totvs-page-tags ng-hide="controller.chartShow">
+				<tag class="tag-1 btn btn-link" ng-click="controller.setQuickFilter('VENCIDOS');">{{ 'l-overdue' | i18n }}</tag>
+				<tag class="tag-2 btn btn-link" ng-click="controller.setQuickFilter('AVENCER');">{{ 'l-ondue' | i18n }}</tag>
+				<tag class="tag-3 btn btn-link" ng-click="controller.setQuickFilter('ANTECIPADOS');">{{ 'l-antecipation' | i18n}}</tag>
+			</totvs-page-tags>
+
+			<div class="col-lg-12 col-md-12"></div>
+
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<div>
+		<div ng-show=controller.listShow>
+			<totvs-page-content>
+
+				<totvs-list-item 
+					ng-repeat="inquirevendordocs in controller.listResult" 
+					ng-class="{'tag-1':inquirevendordocs.numSituacao == 1 , 'tag-2':inquirevendordocs.numSituacao == 2, 'tag-3':inquirevendordocs.numSituacao == 3}">
+
+					<totvs-list-item-header>
+
+						<totvs-list-item-title 
+							class="clickable btn-link" 
+							ng-class="{'tag-1':inquirevendordocs.numSituacao == 1 , 'tag-2':inquirevendordocs.numSituacao == 2, 'tag-3':inquirevendordocs.numSituacao == 3}" 
+							ng-click="controller.openDetail(inquirevendordocs.codEstab,inquirevendordocs.cdnFornecedor,inquirevendordocs.codEspecDocto,inquirevendordocs.codSerDocto,inquirevendordocs.codTitApb,inquirevendordocs.codParcela)">
+							<span ng-if="inquirevendordocs.numSituacao == 1" class="page-tags situacao situacao-1">{{inquirevendordocs.numSituacao}}</span>
+                    		<span ng-if="inquirevendordocs.numSituacao == 2" class="page-tags situacao situacao-2">{{inquirevendordocs.numSituacao}}</span>
+							<span ng-if="inquirevendordocs.numSituacao == 3" class="page-tags situacao situacao-3">{{inquirevendordocs.numSituacao}}</span>
+							{{inquirevendordocs.codTitApb}} / {{inquirevendordocs.codParcela}}
+						</totvs-list-item-title>
+						
+					</totvs-list-item-header>
+					<totvs-list-item-content>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-site' | i18n}}">
+							{{inquirevendordocs.codEstab}}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-vendor' | i18n}}">
+							{{inquirevendordocs.nomAbrev}}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-class' | i18n}}">
+							{{inquirevendordocs.codEspecDocto}}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-invoice-series' | i18n}}">
+							{{inquirevendordocs.codSerDocto}}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-currency' | i18n}}">
+							{{inquirevendordocs.codIndicEcon}}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-original-amount' | i18n}}">
+							{{inquirevendordocs.valOriginTitApb | currency: ('l-currency-format' | i18n: []: 'dts/apb') }}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-balance' | i18n}}">
+							{{inquirevendordocs.valSdoTitApb | currency: ('l-currency-format' | i18n: []: 'dts/apb') }}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{ 'l-print-date' | i18n}}">
+							{{inquirevendordocs.datEmisDocto | date: ('l-date-format' | i18n: []: 'dts/apb') }}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{'l-dt-vencimento' | i18n}}">
+							{{inquirevendordocs.datVenctoTitApb | date: ('l-date-format' | i18n: []: 'dts/apb') }}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-payment-forecast' | i18n}}">
+							{{inquirevendordocs.datPrevisPagto | date: ('l-date-format' | i18n: []: 'dts/apb') }}
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-due-date-range' | i18n}}" 
+							value="{{controller.traduzFaixa(inquirevendordocs['numFaixaVencto'])}}">
+						</totvs-list-item-info>
+
+						<totvs-list-item-info 
+							class="col-xs-12 col-sm-6 col-md-3" 
+							title="{{'l-currency-balance' | i18n}}"
+							ng-if="(inquirevendordocs.codIndicEcon != 'real' && inquirevendordocs.codIndicEcon != 'REAL')">
+							$ {{inquirevendordocs['valSdoIndicEcon'] }}
+						</totvs-list-item-info>
+
+					</totvs-list-item-content>
+
+				</totvs-list-item>
+
+				<totvs-list-pagination 
+					ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+			 		ng-click="controller.loadData(true);">
+				</totvs-list-pagination>
+
+			</totvs-page-content>
+
+		</div>
+		<div ng-show="controller.chartShow">
+			<totvs-page-content>
+				<totvs-page-content-header>
+					<div class="col-md-6">
+						
+						<h4 class="col-md-6 text-center">
+							<b>{{ 'l-expired' | i18n : [] : 'dts/apb/' }}</b>
+						</h4>
+
+						<h4 class="col-md-6 text-center" 
+							ng-if="controller.vencidos == undefined">
+							{{ 'l-loading-portlet' | i18n : [] : 'dts/apb'}}</h4>
+
+						<h4 class="col-md-6 text-center"
+							ng-if="controller.vencidos != undefined">
+							<span ng-if="controller.vencidos != 0" ng-click="controller.reload(1, null)" class="clickable btn-link">
+								<b>{{controller.vencidos | currency }}</b>
+							</span>
+							<span ng-if="controller.vencidos == 0">
+								<b>{{controller.vencidos | currency }}</b>
+							</span>
+						</h4>
+
+					</div>
+					<div class="col-md-6">
+
+						<h4 class="col-md-6 text-center">
+							<b>{{ 'l-not-expired' | i18n : [] : 'dts/apb/' }}</b>
+						</h4>
+
+						<h4 class="col-md-6 text-center" 
+							ng-if="controller.aVencer == undefined">
+							{{ 'l-loading-portlet' | i18n : [] : 'dts/apb'}}
+						</h4>
+
+						<h4 class="col-md-6 text-center"
+							ng-if="controller.aVencer != undefined">
+							<span ng-if="controller.aVencer != 0" ng-click="controller.reload(2, null)" class="clickable btn-link">
+								<b>{{controller.aVencer | currency }}</b>
+							</span>
+							<span ng-if="controller.aVencer == 0">
+								{{controller.aVencer | currency }}
+							</span>
+						</h4>
+
+					</div>
+					<div class="col-md-12">
+
+						<div class="col-md-6">
+							<apb-totvs-chart 
+								t-type-chart="column"
+								t-on-click="controller.onClick"
+								t-series="controller.series">
+							</apb-totvs-chart>
+						</div>
+
+						<div class="col-md-6">
+							<apb-totvs-chart 
+								t-type-chart="column"
+								t-on-click="controller.onClick"
+								t-series="controller.seriesAvenc">
+							</apb-totvs-chart>
+						</div>
+						
+					</div>		
+				</totvs-page-content-header>
+			</totvs-page-content>
+		</div>
+	</div>
+</totvs-page>
+
+<style>
+	.page-tags{ width: 15px; }
+
+	.p-title { padding-left: 15px !important; }
+
+	.page-tags.situacao{
+	    border-radius: 50%;
+	    height: 15px;
+	    width: 15px;
+	    font-size: 10px;
+	    text-align: center;
+	    vertical-align: middle;
+	    display: inline-block;
+	    color: #fff;
+	    margin-right: 10px;
+	}
+
+	.page-head .page-tags .tag-1:before {
+		background-color: #f15a22;
+	}
+	.page-content .list-item.tag-1 {
+    	border-left: 5px solid #f15a22;
+	}
+	.page-head .page-tags .tag-2:before {
+		background-color: #faa61a ;
+	}
+	.page-content .list-item.tag-2 {
+    	border-left: 5px solid #faa61a ;
+	}
+	.page-head .page-tags .tag-3:before {
+		background-color: #f0ca38;
+	}
+	.page-content .list-item.tag-3 {
+    	border-left: 5px solid #f0ca38;
+	}
+
+	.situacao-1 {
+		background-color: #f15a22;
+	}
+
+	.situacao-2 {
+		background-color: #faa61a;
+	}
+
+	.situacao-3 {
+		background-color: #f0ca38;
+	}
+
+	.page-tags > .tag {
+		cursor: pointer;
+	}
+
+</style>

@@ -1,0 +1,40 @@
+<!-- necessario implementar a politica para saber se o item e composto
+	 se implementado a politica, entao somente deixar manutenir componente para
+	 produtos n integrados ao ERP, pq o CRM nao desce alteracao de produto para o ERP -->
+
+<totvs-modal-header>
+	{{ 'btn-new-component' | i18n: []: 'dts/crm'  }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+		<field type="select" class="col-xs-12"
+			   ng-model="controller.model.component"
+			   canclean="undefined">
+
+			<label>{{ 'l-component' | i18n: []: 'dts/crm' }}</label>
+
+			<!-- zoom-init="{ findCustom: controller.findCustom }" -->
+			<zoom zoom-service="crm.crm_produt.padrao.zoom"></zoom>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-component' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_produt }} {{ ($select.selected.cod_item_erp ? '(' + $select.selected.cod_item_erp + ')' : '') }}
+				</ui-select-match>
+				<ui-select-choices repeat="product in controller.products track by $index"
+								   refresh="controller.getProducts($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="product.nom_produt + (product.cod_item_erp ? ' (' + product.cod_item_erp + ')' : '') | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>
+

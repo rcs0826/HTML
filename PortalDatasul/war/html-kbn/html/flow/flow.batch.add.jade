@@ -1,0 +1,40 @@
+totvs-modal-header {{ 'l-new-batch-flow' | i18n}}
+totvs-modal-body
+    div(ng-show="controller.barProgress" style='display: inline-block; vertical-align:middle;')
+        div.progress-bar.progress-bar-striped.active(style='width: 110px; height: 34px; border-radius:4px; padding:6px 12px; font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; font-size:14px; ')
+            {{'l-importing' | i18n}}
+
+    label.btn.btn-warning(role="button", for="file-input", ng-show="!controller.barProgress")
+
+        span.glyphicon.glyphicon-import
+        | &nbsp; {{'l-import-flow' | i18n}}
+        span.file-text
+        input(id="file-input" type="file" style="position:fixed;top:-999px;" ngf-select ngf-change="controller.uploadFiles($files);" ngf-multiple="false" ngf-allow-dir="false" accept=".Csv")
+    totvs-page-form
+        totvs-field.col-lg-6.col-xs-6.col-sm-6(
+            totvs-input,
+            name="item",
+            ng-model="controller.itemImput.sku",
+            required,
+            label="{{'l-item' | i18n}}", 
+            focus)
+        totvs-field.col-lg-4.col-xs-4.col-sm-4(
+            totvs-input,
+            name="refer",
+            ng-model="controller.itemImput.refer",
+            label="{{'l-reference' | i18n}}")
+        button.btn.btn-success(class="glyphicon glyphicon-plus",data-ng-click="controller.addItem()",ng-disabled='!controller.itemImput.sku', tooltip="{{'l-add' | i18n}}",style="margin-top: 29px;")
+    totvs-page-alert(ng-if="controller.preListItems.length === 0" type="info" message="{{ 'l-msg-batch-add' | i18n }}")
+    totvs-divider(ng-if='controller.preListItems.length > 0')
+    totvs-list-item(ng-if='controller.preListItems.length > 0',data-ng-repeat='item in controller.preListItems')
+        totvs-list-item-header
+            totvs-list-item-content
+                totvs-list-item-info.col-lg-6.col-xs-6.col-sm-6(title="{{'l-item' | i18n}}", value="{{item.sku}}")
+                totvs-list-item-info.col-lg-4.col-xs-4.col-sm-4(title="{{'l-reference' | i18n}}", value="{{item.refer}}")
+                totvs-list-item-action.col-lg-2.col-xs-2.col-sm-2(limit-primary-action="1")
+                    action(icon="glyphicon-trash", data-ng-click="controller.removeItem($index)", tooltip="{{'l-to-exclude' | i18n}}")
+totvs-modal-footer
+    button.btn.btn-default(data-ng-click="controller.cancel();")
+        {{ 'l-cancel' | i18n}}
+    button.btn.btn-primary(data-ng-click="controller.save();", ng-disabled="controller.preListItems.length === 0")
+        {{ 'l-generate-flows' | i18n}}

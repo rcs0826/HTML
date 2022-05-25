@@ -1,0 +1,61 @@
+<div class="modal-header">
+            <h3 class="modal-title">{{:: 'l-risk' | i18n}}</h3>
+</div>
+
+<div class="modal-body">
+    <div>
+        <div class="row">
+            <div>
+                <totvs-page-detail-info class="col-xs-12 col-lg-12" style="padding-bottom: 10px" title="{{'l-customer' | i18n}}">                     {{controller.customer['cod-emitente']}} - {{controller.customer['nome-abrev']}}</totvs-page-detail-info>
+                <totvs-page-detail-info class="col-xs-6 col-lg-3" style="padding-bottom: 10px" title="{{'l-supplier-partner-status' | i18n}}">        {{controller.supplierCustomerCredit['idi-status-emit']}} - {{controller.supplierCustomerCredit['des-status-emit']}}</totvs-page-detail-info>
+                <totvs-page-detail-info class="col-xs-6 col-lg-3" style="padding-bottom: 10px" title="{{'l-supplier-limit' | i18n}}">                 {{controller.supplierCustomerCredit['val-limit-compra-tot'] | number : 4}}</totvs-page-detail-info>
+                <totvs-page-detail-info class="col-xs-6 col-lg-3" style="padding-bottom: 10px" title="{{'l-supplier-available-limit' | i18n}}">       {{controller.supplierCustomerCredit['val-limit-compra-dispon'] | number : 4}}</totvs-page-detail-info>
+                <totvs-page-detail-info class="col-xs-6 col-lg-3" style="padding-bottom: 10px" title="{{'l-supplier-released-limit' | i18n}}">        {{controller.supplierCustomerCredit['val-limit-compra-liberd'] | number : 4}}</totvs-page-detail-info>
+                <totvs-page-detail-info class="col-xs-6 col-lg-3" style="padding-bottom: 10px" title="{{'l-supplier-pre-authorized-limit' | i18n}}">  {{controller.supplierCustomerCredit['val-limit-compra-pre-autor'] | number : 4}}</totvs-page-detail-info>
+                <totvs-page-detail-info class="col-xs-6 col-lg-3" style="padding-bottom: 10px" title="{{'l-supplier-used-limit' | i18n}}">            {{controller.supplierCustomerCredit['val-limit-compra-utlzad'] | number : 4}}</totvs-page-detail-info>                    
+                <totvs-page-detail-info class="col-xs-6 col-lg-3" style="padding-bottom: 10px" title="{{'l-supplier-days-late' | i18n}}">             {{controller.supplierCustomerCredit['num-dia-atraso']}}</totvs-page-detail-info>            
+                <totvs-page-detail-info class="col-xs-6 col-lg-3" style="padding-bottom: 10px" title="{{'l-supplier-partner-last-update' | i18n}}">   {{controller.supplierCustomerCredit['dtm-ultima-atualiz']}}</totvs-page-detail-info> 
+            </div>   
+        </div> 
+        <br>
+        <div class="row">
+            <totvs-page-detail-info-group>
+                {{'l-supplier-granting-credit' | i18n}}
+            </totvs-page-detail-info-group>
+            <div class="col-sm-12" style="margin-top: 5px">
+                <totvs-grid grid-data="controller.supplierCustomerCreditConcessi"
+                    grid="controller.supplierCustomerCreditGrid"
+                    auto-resize-content="true"
+                    grid-height="145"
+                    selectable="row">
+                    <totvs-grid-column field="val-limit-cr-desej" width="40" filter="number : 4">{{ 'l-supplier-desired-credit-limit' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="val-limit-cr-aprov" width="40" filter="number : 4">{{ 'l-supplier-approved-credit-limit' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="dtm-solicitacao" width="40" >{{ 'l-supplier-request-date-time' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="dtm-avaliac" width="40">{{ 'l-supplier-evaluation-date-time' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="des-status-concess" width="40">{{ 'l-supplier-granting-credit-status' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="des-observacao" width="80">{{ 'l-supplier-obs-risk' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                </totvs-grid>
+            </div>
+        </div>
+        </br>
+
+        <div class="row">
+            <totvs-page-detail-info-group>
+                {{'l-grant-new-credit-limit' | i18n}}
+            </totvs-page-detail-info-group>
+            <field type="decimal"
+                ng-model="controller.newCreditLimit"
+                data-m-dec="4"
+                placeholder="0,0000"
+                canclean>
+                <label>{{ 'l-supplier-desired-credit-limit' | i18n }}</label>
+            </field>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" data-ng-click="controller.supplierGrantCredit();">{{ 'btn-grant-credit' | i18n }}</button>
+    <button type="button" class="btn btn-default" data-ng-click="controller.refreshSupplierCustomerCredit();">{{ 'btn-refresh' | i18n }}</button>
+	<button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'btn-close' | i18n }}</button>
+</div>

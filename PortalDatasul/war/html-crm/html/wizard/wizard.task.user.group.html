@@ -1,0 +1,118 @@
+<totvs-page-child type="list">
+
+	<totvs-page-detail-info
+		class="row col-xs-12"
+		ng-if="model.page === controller.page"
+		title="{{ 'l-step' | i18n: []: 'dts/crm' }} {{model.page}} : {{model.title}}">
+		<br> {{ model.description }}
+	</totvs-page-detail-info>
+
+	<div class="col-xs-12 crm-no-gutter"
+		 ng-if="((model.id === 2 || model.id === 4) && (model.page === controller.page))">
+		<input type="checkbox"
+			   ng-value="{{$index}}"
+			   ng-model="model.value"
+			   bsswitch>
+	</div>
+
+	<div class="col-xs-12 crm-no-gutter"
+		 ng-if="((model.id === 3) && (model.page === controller.page))">
+		<field type="select"
+			   class="col-xs-12 crm-no-gutter"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-model="model.ttGroupUser">
+
+			<label>{{ 'l-default-group' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-group-user' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_grp_usuar }}
+				</ui-select-match>
+				<ui-select-choices repeat="group in controller.groups | filter: $select.search track by $index">
+					<span ng-bind-html="group.nom_grp_usuar | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+	</div>
+
+	<totvs-divider ng-if="model.page === controller.page"></totvs-divider>
+
+	<div class="crm-tab"
+		 ng-if="(model.id === 3 && model.page === controller.page)">
+
+		<br>
+
+		<div class="row">
+			<div class="col-xs-9">
+				<h4 style="margin-top: 0px;">
+					{{ 'l-users' | i18n: []: 'dts/crm' }} ({{ (model.ttUsuario ? model.ttUsuario.length : 0) }})
+				</h4>
+			</div>
+
+			<div class="col-xs-3 text-right"
+				 ng-animate="'animate-if'"
+				 ng-if="true">
+				<button class="btn btn-primary"
+						ng-model="controller.selectedUsers"
+						ng-change="controller.onZoomSelectUsers(model);"
+						zoom
+						zoom-multiple
+						zoom-service="crm.crm_usuar.zoom">
+					<span class="glyphicon glyphicon-plus"></span>
+					{{ 'btn-add-users' | i18n: []: 'dts/crm' }}
+				</button>
+			</div>
+
+		</div>
+
+		<totvs-divider></totvs-divider>
+
+		<br ng-if="!model.ttUsuario || model.ttUsuario.length <= 0">
+
+		<totvs-page-alert
+			ng-if="!model.ttUsuario || model.ttUsuario.length <= 0"
+			ng-animate="'animate-if'"
+			type="info"
+			message="{{ 'msg-select-user-to-update-default-group' | i18n: []: 'dts/crm' }}">
+		</totvs-page-alert>
+
+		<div class="col-xs-12 crm-tab-item"
+			 ng-repeat="user in model.ttUsuario | orderBy: 'cod_usuario' track by $index">
+			<div>
+				<div class="col-xs-12 col-md-6 crm-no-gutter">
+					{{user.cod_usuario}} - {{user.nom_usuar}}
+				</div>
+
+				<field type="select"
+					   class="col-xs-12 col-md-5"
+					   canclean="undefined"
+					   ng-required="true"
+					   ng-model="user.ttGroupUser">
+
+					<include>
+						<ui-select-match placeholder="{{ 'l-group-user' | i18n: []: 'dts/crm' }}">
+							{{ $select.selected.nom_grp_usuar }}
+						</ui-select-match>
+						<ui-select-choices repeat="group in controller.groups | filter: $select.search track by $index">
+							<span ng-bind-html="group.nom_grp_usuar | highlight: $select.search"></span>
+						</ui-select-choices>
+					</include>
+
+					<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+				</field>
+
+				<div class="col-xs-2 col-md-1 text-right">
+					<a class="clickable"
+					   ng-click="controller.removeUser(model.ttUsuario, $index);">
+						{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+					</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</totvs-page-child>

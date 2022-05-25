@@ -1,0 +1,143 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_acao : ('btn-new-campaign-action' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="select"
+			   class="col-xs-11 col-sm-5 col-md-5"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-model="controller.model.ttAcao"
+			   ng-disabled="controller.editMode">
+
+			<label>{{ 'l-action' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-action' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_acao }}
+				</ui-select-match>
+				<ui-select-choices repeat="action in controller.actions | filter: $select.search track by $index">
+					<span ng-bind-html="action.nom_acao | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<div class="col-xs-1 col-sm-1 col-md-1 crm-field-extra-button">
+			<button class="btn btn-default"
+					ng-click="controller.addAction();"
+					ng-disabled="controller.editMode">
+				<span class="glyphicon glyphicon-plus"></span>
+			</button>
+		</div>
+
+		<field type="select"
+			   class="col-xs-12 col-sm-6 col-md-6"
+			   canclean="undefined"
+			   ng-model="controller.model.ttProcessoRelacionado">
+
+			<label>{{ 'l-related-process' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-related-process' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.name }}
+				</ui-select-match>
+				<ui-select-choices repeat="process in controller.relatedProcess | filter: $select.search track by $index">
+					<span ng-bind-html="process.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+        
+        <totvs-field class="col-xs-6 col-sm-4 col-md-2"
+                     totvs-checkbox
+                     ng-model="controller.model.log_acao_default"
+                     label="{{ 'l-default' | i18n: []: 'dts/crm' }}"
+                     ng-disabled="false"
+                     t-bsswitch>
+		</totvs-field>
+        
+        <totvs-field class="col-xs-6 col-sm-4 col-md-2"
+                     totvs-checkbox
+                     ng-model="controller.model.log_gps_obrig"
+                     label="{{ 'l-require-gps' | i18n: []: 'dts/crm' }}"
+                     t-bsswitch>
+        </totvs-field>
+        
+	</fieldset>
+
+	<totvs-divider ng-if="controller.isIntegratedECM"></totvs-divider>
+
+	<fieldset class="row"
+			  ng-if="controller.isIntegratedECM">
+
+		<field type="select"
+			   canclean="undefined"
+			   ng-model="controller.model.ttWorkflow">
+
+			<label>{{ 'l-workflow' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-workflow' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_workflow_process }} {{ ' - ' }} {{ $select.selected.nom_workflow }}
+				</ui-select-match>
+				<ui-select-choices repeat="workflow in controller.workflows | filter: $select.search track by $index">
+					<span ng-bind-html="workflow.nom_workflow_process + ' - ' + workflow.nom_workflow | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   canclean="undefined"
+			   ng-model="controller.model.ttGrupoInformacao"
+			   ng-if="controller.model.ttWorkflow">
+
+			<label>{{ 'l-information-group' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-information-group' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_grp_inform }}
+				</ui-select-match>
+				<ui-select-choices repeat="info in controller.informationGroups | filter: $select.search track by $index">
+					<span ng-bind-html="info.nom_grp_inform | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+        
+        <totvs-field class="col-xs-4 col-sm-2"
+                     totvs-checkbox
+                     ng-model="controller.model.log_alter_tar_fluig"
+                     ng-if="controller.model.ttWorkflow"
+                     label="{{ 'l-update-workflow' | i18n: []: 'dts/crm' }}"
+                     t-bsswitch>
+        </totvs-field>
+        
+        <totvs-field class="col-xs-4 col-sm-2"
+                     totvs-checkbox
+                     ng-model="controller.model.log_workflow_finaliza"
+                     ng-if="controller.model.ttWorkflow"
+                     label="{{ 'l-workflow-close-task' | i18n: []: 'dts/crm' }}"
+                     t-bsswitch>
+        </totvs-field>
+        
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default"
+			ng-click="controller.close()">
+		{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-default"
+			ng-click="controller.save(true)"
+			ng-if="controller.editMode === false;">
+		{{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-primary"
+			ng-click="controller.save()">
+		{{ 'btn-save' | i18n: []: 'dts/crm' }}
+	</button>
+</totvs-modal-footer>

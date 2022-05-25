@@ -1,0 +1,570 @@
+<style type="text/css">
+  h5{
+    margin-top: 15px !important;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+  }
+  .checkbox-container{
+    margin-top: 5px;
+  }
+  .checkbox-container label, .detail-field .field-label{
+    font-family: 'Arial';
+    margin-bottom: 5px;
+    font-weight: 200 !important;
+    font-size: 12px;
+    color: gray;
+  }
+  .page-head .page-tags .tag-1:before {
+    content: "1";
+  }
+  .page-content .list-item.tag-1{
+    border-left-color: gray;
+    margin-bottom: 5px;
+  }
+</style>
+<totvs-page type="edit" totvs-custom-element="customPurchaseOrderline_edit">
+    <totvs-page-navbar>  
+
+        <!-- Se for uma edição e o usuário veio a partir do detalhe da requisição -->
+        <totvs-page-breadcrumb ng-if="controller.isUpdate && controller.showDetail">
+            <breadcrumb link="#/">
+                <span class="hidden-xs">{{'l-home' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg glyphicon glyphicon-home"></span>
+            </breadcrumb>
+            <breadcrumb link="#/dts/mcc/purchaseorderline">
+                <span class="hidden-xs">{{'l-purchase-orderlines' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-requisitions' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb> 
+            <breadcrumb link="#/dts/mcc/purchaseorderline/detail/{{controller.model.ttPurchaseRequisition['numero-ordem']}}">
+                <span class="hidden-xs">{{'l-orderline-details' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-detail' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+            <breadcrumb>
+                <span class="hidden-xs">{{'l-edit-orderline' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-edit' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <!-- Se for uma edição e o usuário veio a partir da lista de requisições -->
+        <totvs-page-breadcrumb ng-if="controller.isUpdate && !controller.showDetail">
+            <breadcrumb link="#/">
+                <span class="hidden-xs">{{'l-home' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg glyphicon glyphicon-home"></span>
+            </breadcrumb>
+            <breadcrumb link="#/dts/mcc/purchaseorderline">
+                <span class="hidden-xs">{{'l-purchase-orderlines' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-requisitions' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+            <breadcrumb>
+                <span class="hidden-xs">{{'l-edit-orderline' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-edit' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <!-- Se for uma inclusão -->
+        <totvs-page-breadcrumb ng-if="!controller.isUpdate">
+            <breadcrumb link="#/">
+                <span class="hidden-xs">{{'l-home' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg glyphicon glyphicon-home"></span>
+            </breadcrumb>
+            <breadcrumb link="#/dts/mcc/purchaseorderline">
+                <span class="hidden-xs">{{'l-purchase-orderlines' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-requisitions' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+            <breadcrumb>
+                <span class="hidden-xs">{{'l-new-orderline' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{'l-new-order' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb> 
+
+      <totvs-page-header>
+
+        <totvs-page-header-title title="{{'l-purchase-orderline' | i18n: []: 'dts/mcc'}} {{controller.model.ttPurchaseRequisition['numero-ordem']}}" ng-if="controller.isUpdate"></totvs-page-header-title>
+
+        <totvs-page-header-title title="{{'l-new-orderline' | i18n: []: 'dts/mcc'}}" ng-if="!controller.isUpdate"></totvs-page-header-title>
+
+        <totvs-page-header-operation>
+          <totvs-page-header-operation-action hide-save-new="{{controller.isUpdate}}">
+          </totvs-page-header-operation-action>
+        </totvs-page-header-operation>
+      </totvs-page-header>   
+    </totvs-page-navbar>
+    <totvs-page-content>     
+        <totvs-page-form>
+            
+            <field type="input"
+                   class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                   numbers-only
+                   required
+                   name-id="orderlineNumber"
+                   maxlength="8"
+                   ng-model="controller.model.ttPurchaseRequisition['numero-ordem']"
+                   ng-disabled="controller.enableFields && !controller.enableFields['numero-ordem']">
+                <label>{{ 'l-purchase-orderline' | i18n: []: 'dts/mcc' }}</label>                                           
+            </field>            
+          
+            <totvs-page-detail class="col-lg-9 col-md-9 col-sm-9 col-xs-12" style="padding: 5px 15px">
+                <totvs-page-detail-info
+                    id="statusDesc"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    title="{{ 'l-status' | i18n }}"
+                    value="{{controller.model.ttPurchaseRequisition['situacao-desc']}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info
+                    id="originDesc"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    title="{{ 'l-origin' | i18n }}"
+                    value="{{controller.model.ttPurchaseRequisition['origem-desc']}}">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info
+                    id="expectationTrue"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    title="{{ 'l-purchase-expectation' | i18n }}"
+                    value="{{ 'l-yes' | i18n }}"
+                    ng-if="controller.model.ttPurchaseRequisition['expectativa'] == true">
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info
+                    id="expectationFalse"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    title="{{ 'l-purchase-expectation' | i18n }}"
+                    value="{{ 'l-no' | i18n }}"
+                    ng-if="controller.model.ttPurchaseRequisition['expectativa'] == false">
+                </totvs-page-detail-info>
+            </totvs-page-detail>
+            
+            <div class="col-xs-12" style="padding: 0">
+              <totvs-field totvs-select
+                  id="item"
+                  required
+                  class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                  ng-model="controller.model.ttPurchaseRequisition['it-codigo']"
+                  ng-change="controller.fieldLeave('it-codigo')"
+                  ng-disabled="controller.enableFields && !controller.enableFields['it-codigo']"
+                  label="{{ 'l-item' | i18n }}"
+                  select-id="it-codigo"
+                  select-description="desc-item"
+                  select-match='[{"field":"it-codigo", "separator":" - "}, {"field":"desc-item"}]'
+                  select-service="men.item.zoom"
+                  zoom-service="men.item.zoom"
+                  canclean>
+              </totvs-field> 
+            </div>
+            <div class="col-xs-12">
+                <h5>{{ 'l-necessity-informations' | i18n: []: 'dts/mcc' }}</h5>  
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="padding: 0">
+              <field type="decimal"
+                   class="col-md-8 col-sm-12 col-xs-12"
+                   data-m-dec="4"
+                   name-id="quantity"
+                   data-v-max="999999999.9999"
+                   ng-model-options="{ updateOn: 'blur' }"
+                   ng-model="controller.model.ttPurchaseRequisition['qt-solic']"
+                   ng-disabled="controller.enableFields && !controller.enableFields['qt-solic']"
+                   required>
+                <label>{{ 'l-quantity' | i18n: []: 'dts/mcc' }}</label>
+              </field>
+            </div>
+            
+            <totvs-field totvs-select
+                  required
+                  id="unitOfMeasure"
+                  class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                  ng-model="controller.model.ttPurchaseRequisition['un']"
+                  ng-disabled="controller.enableFields && !controller.enableFields['un']"
+                  label="{{ 'l-measure-unit' | i18n }}"
+                  select-id="un"
+                  select-description="descricao"
+                  select-match='[{"field":"un", "separator":" - "}, {"field":"descricao"}]'
+                  select-service="mcc.tab-unidade.zoom"
+                  zoom-service="mcc.tab-unidade.zoom"
+                  canclean>
+              </totvs-field> 
+
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="padding: 0">
+                  <totvs-field totvs-datepicker
+                          id="deliveryDate"
+                          label="{{ 'l-unique-delivery' | i18n: []: 'dts/mcc' }}"
+                          class=" col-md-6 col-sm-12 col-xs-12"
+                          ng-model="controller.model.ttPurchaseRequisition['data-entrega']"
+                          ng-disabled="(controller.model.ttDeliverySchedule.length > 0)">
+                  </totvs-field>
+              </div>
+
+              <div class="col-xs-12" style="padding: 0">
+                <totvs-field totvs-select
+                    required
+                    id="site"
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-model="controller.model.ttPurchaseRequisition['cod-estabel']"
+                    ng-change="controller.fieldLeave('cod-estabel')"
+                    ng-disabled="controller.enableFields && !controller.enableFields['cod-estabel']"
+                    label="{{ 'l-site' | i18n }}"
+                    select-id="cod-estabel"
+                    select-description="nome"
+                    select-match='[{"field":"cod-estabel", "separator":" - "}, {"field":"nome"}]'
+                    select-service="mpd.estabelecSE.zoom"
+                    zoom-service="mpd.estabelecSE.zoom"
+                    canclean>
+                </totvs-field>
+              </div>
+
+              <totvs-field totvs-select
+                    required
+                    id="warehouse"
+                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    ng-model="controller.model.ttPurchaseRequisition['dep-almoxar']"
+                    ng-change="controller.fieldLeave('cod-depos')"
+                    label="{{ 'l-warehouse' | i18n }}"
+                    select-id="cod-depos"
+                    select-description="nome"
+                    select-match='[{"field":"cod-depos", "separator":" - "}, {"field":"nome"}]'
+                    select-service="mce.deposito.zoom"
+                    zoom-service="mce.deposito.zoom"
+                    canclean>
+              </totvs-field> 
+
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="padding: 0">
+                <field type="combo"
+                  id="purchaseType"
+                  class="col-md-8 col-sm-8 col-xs-12"
+                    ng-options="type.value as type.name for type in controller.purchaseTypes"
+                    ng-model="controller.model.ttPurchaseRequisition['natureza']"
+                    ng-change="controller.fieldLeave('natureza')"
+                    label="{{ 'l-type-mcc' | i18n: []: 'dts/mcc' }}">
+                </field>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" style="padding: 0">
+                <field
+                    name-id="icmCode"
+                    type="combo"
+                    class="col-md-8 col-sm-8 col-xs-12"
+                    ng-model="controller.model.ttPurchaseRequisition['codigo-icm']"
+                    ng-disabled="controller.enableFields && !controller.enableFields['codigo-icm']"
+                    ng-options="icmsType.value as icmsType.name for icmsType in controller.icmsTypes"
+                    label="{{ 'l-icms' | i18n: []: 'dts/mcc' }}">
+                    
+                </field>
+              </div>
+              <div class="col-xs-12 text-right" style="margin-top: 15px;">
+                <a class="clickable" ng-click="controller.onExpandAll()">{{ 'l-expand-contract-all' | i18n: []: 'dts/mcc' }}</a>
+              </div>
+
+              <accordion close-others="false" class="col-xs-12">
+                <accordion-group is-open="controller.group.authorities.open">
+
+                  <accordion-heading>
+                    {{ 'l-authorities' | i18n: []:  'dts/mcc' }}
+                    <i class="pull-right glyphicon"
+                       ng-class="{'glyphicon-chevron-down' :  controller.group.authorities.open,
+                            'glyphicon-chevron-right': !controller.group.authorities.open}">
+                    </i>
+                  </accordion-heading>
+
+                  <fieldset class="row">
+                    <totvs-field totvs-select
+                        required
+                        id="requester"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        ng-model="controller.model.ttPurchaseRequisition['requisitante']"
+                        label="{{ 'l-requester' | i18n }}"
+                        select-id="nome-abrev"
+                        select-description="nome"
+                        select-match='[{"field":"nome-abrev", "separator":" - "}, {"field":"nome"}]'
+                        select-service="mcc.requisitante.select"
+                        zoom-service="mcc.requisitante.zoom"
+                        canclean>
+                    </totvs-field> 
+                     <totvs-field totvs-select
+                        id="buyer"
+                        required
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        ng-model="controller.model.ttPurchaseRequisition['cod-comprado']"
+                        label="{{ 'l-buyer' | i18n }}"
+                        select-id="cod-comprado"
+                        select-description="nome"
+                        select-match='[{"field":"cod-comprado", "separator":" - "}, {"field":"nome"}]'
+                        select-service="mcc.comprador.zoom"
+                        zoom-service="mcc.comprador.zoom"
+                        canclean>
+                    </totvs-field> 
+                  </fieldset>
+                </accordion-group>
+
+                <accordion-group is-open="controller.group.supplements.open">
+                  <accordion-heading>
+                    {{ 'l-supplements' | i18n: []:  'dts/mcc' }}
+                    <i class="pull-right glyphicon"
+                       ng-class="{'glyphicon-chevron-down' :  controller.group.supplements.open,
+                            'glyphicon-chevron-right': !controller.group.supplements.open}">
+                    </i>
+                  </accordion-heading>
+
+                  <fieldset class="row">
+                    <totvs-field totvs-select
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        id="managerSite"
+                        ng-model="controller.model.ttPurchaseRequisition['cod-estab-gestor']"
+                        ng-disabled="controller.enableFields && !controller.enableFields['cod-estab-gestor']"
+                        label="{{ 'l-manager-site' | i18n }}"
+                        select-id="cod-estabel"
+                        select-description="nome"
+                        select-match='[{"field":"cod-estabel", "separator":" - "}, {"field":"nome"}]'
+                        select-service="mpd.estabelecSE.select"
+                        zoom-service="mpd.estabelecSE.zoom"
+                        canclean>
+                    </totvs-field>
+                    <div class="col-xs-12" style="padding:0"> 
+                      <div class="checkbox-container col-md-3 col-sm-4 col-xs-12">
+                        <label>{{ 'l-print-quotation-sheet' | i18n: []: 'dts/mcc' }}</label>
+                        <br>
+                        <input type="checkbox"
+                            id="printQuotationSheet"
+                            ng-model="controller.model.ttPurchaseRequisition['impr-ficha']"
+                            bsswitch>                
+                        </input>
+                      </div>
+
+                      <div class="checkbox-container col-md-3 col-sm-4 col-xs-12">
+                        <label class="span-label">{{ 'l-orderline-printed' | i18n: []: 'dts/mcc' }}</label>
+                        <br>
+                        <input type="checkbox"
+                            id="orderlinePrinted"
+                            ng-model="controller.model.ttPurchaseRequisition['ordem-emitida']"
+                            bsswitch>                
+                        </input>
+                      </div>
+
+                      <field type="combo"
+                        class="col-md-3 col-sm-4 col-xs-12"
+                          name-id="approvalPriority"
+                          ng-model="controller.model.ttPurchaseRequisition['prioridade-aprov']"
+                          ng-options="priority.value as priority.name for priority in controller.approvalPriorities"
+                          label="{{ 'l-approval-priority' | i18n: []: 'dts/mcc' }}">
+                          
+                      </field>
+                    </div>
+                  </fieldset>
+                </accordion-group>
+
+                <accordion-group is-open="controller.group.deliveries.open">
+                  <accordion-heading>
+                    {{ 'l-deliveries' | i18n: []:  'dts/mcc' }}
+                    <i class="pull-right glyphicon"
+                       ng-class="{'glyphicon-chevron-down' :  controller.group.deliveries.open,
+                            'glyphicon-chevron-right': !controller.group.deliveries.open}">
+                    </i>
+                  </accordion-heading>
+
+                  <fieldset class="row">
+                    
+                    <div ng-include="'/dts/mcc/html/deliveryschedule/list/deliveryschedule.list.html'" 
+                       class="col-xs-12"></div>  
+                  </fieldset>
+                </accordion-group>
+
+                <accordion-group is-open="controller.group.integrations.open">
+                  <accordion-heading>
+                    {{ 'l-integrations' | i18n: []:  'dts/mcc' }}
+                    <i class="pull-right glyphicon"
+                       ng-class="{'glyphicon-chevron-down' :  controller.group.integrations.open,
+                            'glyphicon-chevron-right': !controller.group.integrations.open}">
+                    </i>
+                  </accordion-heading>
+
+                  <fieldset class="row">
+                    <div class="col-xs-12" style="padding: 0">
+                      <totvs-field totvs-select
+                          id="investmentOrder"
+                          class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                          ng-model="controller.model.ttPurchaseRequisition['num-ord-inv']"
+                          ng-change="controller.fieldLeave('num-ord-inv')"
+                          ng-disabled="controller.enableFields && !controller.enableFields['num-ord-inv']"
+                          label="{{ 'l-investment-order' | i18n }}"
+                          select-id="num-ord-magnus"
+                          select-description="ep-codigo"
+                          select-match='[{"field":"num-ord-magnus", "separator":" - "}, {"field":"ep-codigo"}]'
+                          select-service="mcc.sub-div-ordem.zoom"
+                          zoom-service="mcc.sub-div-ordem.zoom"
+                          zoom-init="controller.investmentOrderInit"
+                          select-init="controller.investmentOrderInit"
+                          canclean>
+                          
+                      </totvs-field>
+                      <totvs-page-detail-info
+                          class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                          id="company"
+                          title="{{ 'l-company' | i18n }}"
+                          value="{{controller.companyInvestmentOrder}}"
+                          style="margin-top: 10px">
+                      </totvs-page-detail-info>
+                    </div>
+                    <totvs-field totvs-select
+                        id="serviceOrder"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        ng-model="controller.model.ttPurchaseRequisition['ordem-servic']"
+                        ng-change="controller.fieldLeave('ordem-servic')"
+                        ng-disabled="controller.enableFields && !controller.enableFields['ordem-servic']"
+                        label="{{ 'l-service-order' | i18n }}"
+                        select-id="nr-ord-produ"
+                        select-description="it-codigo"
+                        select-match='[{"field":"nr-ord-produ", "separator":" - "}, {"field":"it-codigo"}]'
+                        select-service="mcp.ord-prod.zoom"
+                        zoom-service="mcp.ord-prod.zoom"
+                        canclean>
+                    </totvs-field>
+
+                    <totvs-field totvs-select
+                        id="operation"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        ng-model="controller.model.ttPurchaseRequisition['op-codigo']"
+                        ng-disabled="controller.enableFields && !controller.enableFields['op-codigo']"
+                        label="{{ 'l-operation' | i18n }}"
+                        select-id="op-codigo"
+                        select-description="descricao"
+                        select-match='[{"field":"op-codigo", "separator":" - "}, {"field":"descricao"}]'
+                        select-service="mcp.oper-ord.zoom"
+                        zoom-service="mcp.oper-ord.zoom"
+                        zoom-init="controller.operationInit"
+                        select-init="controller.operationInit"
+                        canclean>
+                    </totvs-field>
+
+                    <totvs-field totvs-select
+                        id="account"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        ng-model="controller.accountZoomField"
+                        ng-disabled="controller.enableFields && !controller.enableFields['ct-codigo']"
+                        ng-change="controller.fieldLeave('ct-codigo')"
+                        label="{{ 'l-account-book' | i18n }}"
+                        select-id="cod_cta_ctbl"
+                        select-description="des_cta_ctbl"
+                        select-match='[{"field":"cod_cta_ctbl", "separator":" - "}, {"field":"des_cta_ctbl"}]'
+                        select-service="utb.cta-ctbl-integr.zoom"
+                        zoom-service="utb.cta-ctbl-integr.zoom"
+                        zoom-init="controller.integrationAccountInit"
+                        select-init="controller.integrationAccountInit"
+                        canclean>
+                    </totvs-field>
+                    
+                    <totvs-field totvs-select
+                        id="costCenter"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        ng-model="controller.model.ttPurchaseRequisition['sc-codigo']"
+                        
+                        ng-disabled="controller.enableFields && !controller.enableFields['sc-codigo']"
+                        label="{{ 'l-cost-center' | i18n }}"
+                        select-id="cod_ccusto"
+                        select-description="des_tit_ctbl"
+                        select-match='[{"field":"cod_ccusto", "separator":" - "}, {"field":"des_tit_ctbl"}]'
+                        select-service="utb.ccusto.zoom"
+                        zoom-service="utb.ccusto.zoom"
+                        zoom-init="controller.costCenterInit"
+                        select-init="controller.costCenterInit"
+                        canclean>
+                    </totvs-field>
+
+                    <div class="col-xs-12" style="padding: 0">
+                      <totvs-field totvs-select
+                        id="expenseType"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        ng-model="controller.model.ttPurchaseRequisition['tp-despesa']"
+                        label="{{ 'l-expense-type' | i18n }}"
+                        select-id="tp-codigo"
+                        select-description="descricao"
+                        select-match='[{"field":"tp-codigo", "separator":" - "}, {"field":"descricao"}]'
+                        select-service="mcc.tipo-rec-desp.zoom"
+                        zoom-service="mcc.tipo-rec-desp.zoom"
+                        zoom-init="{filter : {tipo : 2}}"
+                        select-init="{filter : {tipo : 2}}"
+                        canclean>
+                      </totvs-field>
+                    </div>
+                    <div class="col-xs-12" style="padding: 0">
+                      <totvs-field totvs-select
+                        id="contract"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        ng-model="controller.contract"
+                        ng-change="controller.fieldLeave('nr-contrato');"
+                        ng-disabled="controller.enableFields && !controller.enableFields['nr-contrato']"
+                        label="{{ 'l-purchase-contract' | i18n }}"
+                        select-id="nr-contrato"
+                        select-description="it-codigo"
+                        select-match='[{"field":"nr-contrato", "separator":" - "}, {"field":"it-codigo"}]'
+                        select-service="mcc.item-contrat.zoom"
+                        zoom-service="mcc.item-contrat.zoom"
+                        zoom-init="controller.itemContractZoomInit"
+                        select-init="controller.itemContractSelectInit"
+                        return-object
+                        canclean>
+                      </totvs-field>
+                      <totvs-page-detail-info
+                          id="itemSequence"
+                          class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                          title="{{ 'l-item-sequence' | i18n }}"
+                          value="{{controller.model.ttPurchaseRequisition['num-seq-item']}}"
+                          style="margin-top: 10px">
+                      </totvs-page-detail-info>
+                    </div>
+                    <totvs-field totvs-select
+                      id="purchasePackage"
+                      class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                      ng-model="controller.model.ttPurchaseRequisition['nr-processo']"
+                      ng-disabled="controller.enableFields && !controller.enableFields['nr-processo']"
+                      label="{{ 'l-purchase-package' | i18n }}"
+                      select-id="nr-processo"
+                      select-description="descricao"
+                      select-match='[{"field":"nr-processo", "separator":" - "}, {"field":"descricao"}]'
+                      select-service="mcc.proc-compra.zoom"
+                      zoom-service="mcc.proc-compra.zoom"
+                      canclean>
+                    </totvs-field>
+
+                  </fieldset>
+                </accordion-group>
+
+                <accordion-group is-open="controller.group.description.open">
+                  <accordion-heading>
+                    {{ 'l-supplementary-description' | i18n: []:  'dts/mcc' }}
+                    <i class="pull-right glyphicon"
+                       ng-class="{'glyphicon-chevron-down' :  controller.group.description.open,
+                            'glyphicon-chevron-right': !controller.group.description.open}">
+                    </i>
+                  </accordion-heading>
+
+                  <fieldset class="row">
+                    <field type="textarea"
+                     id="complementDescription"
+                     required
+                     class="col-xs-12"
+                     rows="10"
+                     maxlength="2000"
+                     ng-model="controller.model.ttPurchaseRequisition['narrativa']">
+                    </field>
+                  </fieldset>
+                </accordion-group>
+
+                <accordion-group is-open="controller.group.businessunit.open" ng-if="controller.model.ttGenericBusinessUnit && controller.model.ttGenericBusinessUnit.length > 0">
+                  <accordion-heading>
+                    {{ 'l-business-unit' | i18n: []:  'dts/mcc' }}
+                    <i class="pull-right glyphicon"
+                       ng-class="{'glyphicon-chevron-down' :  controller.group.businessunit.open,
+                            'glyphicon-chevron-right': !controller.group.businessunit.open}">
+                    </i>
+                  </accordion-heading>
+
+                  <fieldset class="row">
+                    <div ng-if="controller.model.showBusinessUnit" 
+                         class="col-md-12 col-sm-12"
+                         ng-include="'/dts/mcc/html/request/detail/businessunit.detail.html'"></div>
+                  </fieldset>
+                </accordion-group>
+
+              </accordion>
+        </totvs-page-form>            
+    </totvs-page-content>
+</totvs-page>

@@ -1,0 +1,208 @@
+<totvs-page-content>
+
+	<totvs-page-content-header ng-if="controllerHistroyList.isChild !== true">
+		<totvs-page-quick-filter filters-list="controllerHistroyList.quickFilters"
+					 on-select-filter="controllerHistroyList.selectQuickFilter"
+					 orderby-list="controllerHistroyList.listOfOrderBy"
+					 on-select-orderby="controllerHistroyList.selectOrderBy"
+					 filters-list-custom="controllerHistroyList.listOfCustomFilters"
+					 on-remove-custom="controllerHistroyList.removeCustomFilter"
+					 on-add-edit-custom="controllerHistroyList.addEditCustomFilters">
+		 </totvs-page-quick-filter>
+	</totvs-page-content-header>
+
+	<totvs-page-alert
+		ng-if="controllerHistroyList.listOfHistory.length <= 0"
+		type="info"
+		message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+		<% if ((!data["btn-new-history"] || data["btn-new-history"].log_visivel === true)) { %>
+		<br ng-if="controllerHistroyList.isEnabled">
+		<button type="button"
+				class="btn btn-primary"
+				ng-click="controllerHistroyList.addEdit();"
+				ng-if="controllerHistroyList.isEnabled">
+			<span class="glyphicon glyphicon-plus"></span>
+			&nbsp;&nbsp;{{ 'btn-new-history' | i18n: []: 'dts/crm' }}
+		</button>
+		<% } %>
+	</totvs-page-alert>
+
+	<totvs-list-item
+		 id="history{{history.num_id}}"
+		 ng-repeat="history in controllerHistroyList.listOfHistory track by $index">
+
+		<totvs-list-item-header>
+
+			<totvs-list-item-title
+				ng-class="[(history.log_anexo ? 'crm-attachment' : ''), (history.idi_outlook_type > 1 ? 'crm-email' : '')]">
+				<a href="#/dts/crm/history/detail/{{history.num_id}}"
+				   ng-if="history.ttConta.log_acesso">
+					{{ history.num_id }}
+					<% if ((!data["l-action"] || data["l-action"].log_visivel === true)) { %>
+					- {{history.ttAcao.nom_acao}}
+					<% } %>
+				</a>
+				<span ng-if="history.ttConta.log_acesso !== true">
+					<span class="glyphicon glyphicon-lock"></span>
+					{{ history.num_id }}
+					<% if ((!data["l-action"] || data["l-action"].log_visivel === true)) { %>
+					- {{history.ttAcao.nom_acao}}
+					<% } %>
+				</span>
+			</totvs-list-item-title>
+
+			<totvs-list-item-action limit-primary-action="3">
+
+				<% if ((!data["btn-edit"] || data["btn-edit"].log_visivel === true)) { %>
+				<action icon="glyphicon-pencil"
+						ng-click="controllerHistroyList.addEdit(history);"
+						ng-hide="!controllerHistroyList.canEditHistory"
+						ng-if="history.canEdit === true && history.ttConta.log_acesso === true && !history.log_orig_app && history.idi_outlook_type < 2">
+					{{ 'btn-edit' | i18n: []: 'dts/crm' }}
+				</action>
+				<% } %>
+
+				<% if ((!data["btn-remove"] || data["btn-remove"].log_visivel === true)) { %>
+				<action icon="glyphicon-trash"
+						ng-click="controllerHistroyList.onRemove(history);"
+						ng-hide="!controllerHistroyList.canRemoveHistory"
+						ng-if="history.canEdit === true && history.ttConta.log_acesso === true && !history.log_orig_app">
+					{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+				</action>
+				<% } %>
+
+				<% if ((!data["btn-send-email"] || data["btn-send-email"].log_visivel === true)) { %>
+				<!--action icon="glyphicon-envelope"
+						ng-click="controllerHistroyList.sendEmail(history)" >
+					{{ 'btn-send-email' | i18n: []: 'dts/crm' }}
+				</action-->
+				<% } %>
+
+				<% if ((!data["btn-expense"] || data["btn-expense"].log_visivel === true)) { %>
+				<action icon="glyphicon-usd"
+						ng-if="controllerHistroyList.canOverrideTicket == true && history.ttConta.log_acesso && history.ttConta.log_acesso === true"
+						ng-click="controllerHistroyList.addExpense(history)">
+					{{ 'btn-expense' | i18n: []: 'dts/crm' }}
+				</action>
+				<% } %>
+
+			</totvs-list-item-action>
+		</totvs-list-item-header>
+
+		<totvs-list-item-content>
+
+			<% if ((!data["l-campaign"] || data["l-campaign"].log_visivel === true)) { %>
+			<totvs-list-item-info
+				value-break="false"
+				class="col-xs-12 col-sm-6 col-md-4"
+				title="{{ 'l-campaign' | i18n: []: 'dts/crm' }}"
+				value="{{ (history.ttCampanha ? history.ttCampanha.nom_campanha : '') }}">
+			</totvs-list-item-info>
+			<% } %>
+
+			<% if ((!data["l-result"] || data["l-result"].log_visivel === true)) { %>
+			<totvs-list-item-info
+				value-break="false"
+				class="col-xs-12 col-sm-6 col-md-4"
+				title="{{ 'l-result' | i18n: []: 'dts/crm' }}"
+				value="{{ history.ttResultado.nom_restdo }}">
+			</totvs-list-item-info>
+			<% } %>
+
+			<% if ((!data["l-date"] || data["l-date"].log_visivel === true)) { %>
+			<totvs-list-item-info
+				value-break="false"
+				class="col-xs-12 col-sm-6 col-md-4"
+				title="{{ 'l-date' | i18n: []: 'dts/crm' }}">
+				{{ history.dat_inic | date : ('l-date-format' | i18n: []: 'dts/crm') }} - {{ history.dat_fim | date : ('l-date-format' | i18n: []: 'dts/crm') }} {{ 'l-as' | i18n: []: 'dts/crm' }} {{ history.hra_inic }} - {{ history.hra_fim }}
+			</totvs-list-item-info>
+			<% } %>
+
+			<% if ((!data["l-account"] || data["l-account"].log_visivel === true)) { %>
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-6 col-md-4"
+				title="{{ 'l-account' | i18n: []: 'dts/crm' }}"
+				value-break="false">
+
+				<span ng-if="history.ttConta.log_matriz"
+					  class="glyphicon glyphicon-globe">
+				</span>
+
+				<a href="#/dts/crm/account/detail/{{history.ttConta.num_id}}" ng-if="history.ttConta.log_acesso">
+					{{ history.ttConta.nom_razao_social }}
+					{{ (history.ttConta.cod_pessoa_erp ? '(' + history.ttConta.cod_pessoa_erp + ')' : '') }}
+				</a>
+
+				<span ng-if="history.ttConta.log_acesso !== true">
+					<span class="glyphicon glyphicon-lock"></span>
+					&nbsp; {{ history.ttConta.nom_razao_social }}
+					{{ (history.ttConta.cod_pessoa_erp ? '(' + history.ttConta.cod_pessoa_erp + ')' : '') }}
+				</span>
+
+			</totvs-list-item-info>
+			<% } %>
+
+			<% if ((!data["l-user-create"] || data["l-user-create"].log_visivel === true)) { %>
+			<totvs-list-item-info
+				value-break="false"
+				class="col-xs-12 col-sm-6 col-md-4"
+				title="{{ 'l-user-open' | i18n: []: 'dts/crm' }}">
+					<a role="button"
+					   ng-click="controllerHistroyList.openUserSummary(history.ttUsuarioAbertura)">
+						{{ history.ttUsuarioAbertura.nom_usuar }}
+					</a>
+			</totvs-list-item-info>
+			<% } %>
+
+			<% if ((!data["l-related"] || data["l-related"].log_visivel === true)) { %>
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-6 col-md-4"
+				title="{{ (history.idi_rel_a ? history.idi_rel_a : 'l-related') | i18n: []: 'dts/crm' }}"
+				value-break="false">
+				<span class="word-wrap"
+					  ng-if="history.dsl_rel"
+					  ng-bind-html="history.dsl_rel"
+					  tooltip="{{ (history.idi_rel_a ? history.idi_rel_a : 'l-related') | i18n: []: 'dts/crm' }}">
+				</span>
+			</totvs-list-item-info>
+			<% } %>
+
+		</totvs-list-item-content>
+
+		<% if ((!data["l-contact"] || data["l-contact"].log_visivel === true)
+				|| (!data["l-description"] || data["l-description"].log_visivel === true)) { %>
+		<totvs-list-item-content-detail ng-if="history.ttConta.log_acesso" ng-click="controllerHistroyList.loadItemDetail(history);">
+
+			<% if ((!data["l-contact"] || data["l-contact"].log_visivel === true)) { %>
+			<totvs-list-item-info
+				value-break="false"
+				class="col-xs-12 col-sm-5 "
+				title="{{ 'l-contact' | i18n: []: 'dts/crm' }}"
+				value="{{ (history.ttContato ? history.ttContato.nom_razao_social : '') }}">
+			</totvs-list-item-info>
+			<% } %>
+
+			<% if ((!data["l-description"] || data["l-description"].log_visivel === true)) { %>
+			<totvs-list-item-info
+				class="col-xs-12 description"
+				title="{{ 'l-description' | i18n: []: 'dts/crm' }}">
+			</totvs-list-item-info>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+					<pre ng-if="history.idi_outlook_type !== 2 && history.idi_outlook_type !== 3" style="padding-left: 5px;" class="description" bind-html-compile="history.dsl_histor_acao"></pre>
+                    <pre ng-if="history.idi_outlook_type === 2 || history.idi_outlook_type === 3" style="padding-left: 5px;" class="description">{{ history.dsl_histor_acao }}</pre>
+                </div>
+            </div>
+            <% } %>
+
+		</totvs-list-item-content-detail>
+		<% } %>
+
+	</totvs-list-item>
+
+	<totvs-list-pagination
+		ng-if="controllerHistroyList.listOfHistory.length < controllerHistroyList.listOfHistoryCount && controllerHistroyList.listOfHistory.length"
+		ng-click="controllerHistroyList.search(true);">
+	</totvs-list-pagination>
+
+</totvs-page-content>

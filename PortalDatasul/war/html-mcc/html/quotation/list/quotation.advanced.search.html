@@ -1,0 +1,525 @@
+<style type="text/css" scoped>
+	.customLabel{
+		font-family: 'Arial';
+		margin-bottom: 5px;
+		font-weight: 200;
+		font-size: 12px;
+		color: gray;
+		font-weight: 500 !important;
+	}
+	.subtitle{
+		padding: 25px 30px 5px 30px;
+	}
+	.subtitle label{
+		padding:0px;
+		border-bottom: 1px solid #e8e8e8;		
+	}
+	.nopadding{
+		padding:0px !important;
+	}
+</style>
+<totvs-modal-header>
+	{{ 'l-advanced-search' | i18n: []: 'dts/mcc' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<div class="row">
+		<form role="form">
+			<div class="col-xs-12 nopadding">
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.orderline.start"
+						label="{{:: 'l-initial-orderline' | i18n}}"
+						numbers-only
+						maxlength="8"
+						canclean
+						ng-disabled="controller.model.unlinked"
+						placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.orderline.end"
+						label="{{:: 'l-final-orderline' | i18n}}"
+						numbers-only
+						maxlength="8"
+						canclean
+						ng-disabled="controller.model.unlinked"
+						placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+			</div>
+			
+			<div class="col-xs-12 nopadding">
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.requestQuotation.start"
+						label="{{:: 'l-initial-quotation-process' | i18n}}"
+						numbers-only
+						canclean
+						ng-disabled="controller.model.unlinked"
+						placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.requestQuotation.end"
+						label="{{:: 'l-final-quotation-process' | i18n}}"
+						numbers-only
+						canclean
+						ng-disabled="controller.model.unlinked"
+						placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+			</div>
+
+			<div class="col-xs-12 nopadding">
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.vendorCode.start"
+						label="{{:: 'l-initial-vendor' | i18n}}"
+						maxlength="5"
+						canclean
+						placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.vendorCode.end"
+						label="{{:: 'l-final-vendor' | i18n}}"
+						maxlength="5"
+						canclean
+						placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+			</div>
+
+			<div class="col-xs-12 nopadding">
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.site.start"
+						label="{{:: 'l-initial-site' | i18n}}"
+						maxlength="5"
+						canclean
+						ng-disabled="controller.model.unlinked"
+						placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.site.end"
+						label="{{:: 'l-final-site' | i18n}}"
+						maxlength="5"
+						canclean
+						ng-disabled="controller.model.unlinked"
+						placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+			</div>
+			<div class="col-xs-12 nopadding">
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.buyer.start"
+						label="{{:: 'l-initial-buyer' | i18n}}"
+						maxlength="12"
+						canclean
+						placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.buyer.end"
+						label="{{:: 'l-final-buyer' | i18n}}"
+						maxlength="12"
+						canclean
+						placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+			</div>
+			
+
+			<div class="col-xs-12 subtitle">
+				<label class="col-sm-12">{{ 'l-item' | i18n: []: 'dts/mcc' }}</label>
+			</div>
+
+			<div class="col-xs-12 nopadding">
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.itemCode.start"
+						label="{{:: 'l-initial-code' | i18n}}"
+						maxlength="16"
+						canclean
+						placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.itemCode.end"
+						label="{{:: 'l-final-code' | i18n}}"
+						maxlength="16"
+						canclean
+						placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+			</div>
+
+			<div class="col-xs-12 nopadding">
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.itemDescription.start"
+						label="{{:: 'l-initial-description' | i18n}}"
+						maxlength="60"
+						canclean
+						placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.itemDescription.end"
+						label="{{:: 'l-final-description' | i18n}}"
+						maxlength="60"
+						canclean
+						placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+			</div>
+
+			<div class="col-xs-12 nopadding">
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.itemCompCode.start"
+						label="{{:: 'l-initial-supplementary-code' | i18n}}"
+						maxlength="20"
+						canclean
+						placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.itemCompCode.end"
+						label="{{:: 'l-final-supplementary-code' | i18n}}"
+						maxlength="20"
+						canclean
+						placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+			</div>
+
+			<div class="col-xs-12 nopadding">
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.itemCompInfo.start"
+						label="{{:: 'l-initial-supplementary-info' | i18n}}"
+						maxlength="16"
+						canclean
+						placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+
+				<div class="col-xs-12 col-sm-6">
+					<totvs-field 
+						totvs-input
+						class="col-xs-12"
+						ng-model="controller.model.itemCompInfo.end"
+						label="{{:: 'l-final-supplementary-info' | i18n}}"
+						maxlength="16"
+						canclean
+						placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}">
+					</totvs-field>
+				</div>
+			</div>
+
+
+			<div class="col-xs-12 subtitle">
+				<label class="col-sm-12">{{ 'l-view' | i18n: []: 'dts/mcc' }}</label>	
+			</div>			
+
+			<div class="col-xs-12">
+				<div class="field-container ng-scope col-xs-4 col-sm-3">
+					<label class="customLabel" tooltip="{{:: 'l-pending' | i18n }}" tooltip-placement="top">{{:: 'l-pending' | i18n }}</label>
+					<div class="field-input">
+						<div class="input-group">
+							<totvs-field totvs-checkbox
+								t-bsswitch
+								ng-model="controller.model.withoutAnswer"
+								ng-disabled="controller.model.unlinked2">
+							</totvs-field>
+						</div>
+					</div>
+				</div>
+
+				<div class="field-container ng-scope col-xs-4 col-sm-3">
+					<label class="customLabel" tooltip="{{:: 'l-with-answer' | i18n }}" tooltip-placement="top">{{:: 'l-with-answer' | i18n }}</label>
+					<div class="field-input">
+						<div class="input-group">
+							<totvs-field totvs-checkbox
+								t-bsswitch
+								ng-model="controller.model.withAnswer"
+								ng-disabled="controller.model.unlinked2">
+							</totvs-field>
+						</div>
+					</div>
+				</div>
+
+				<div class="field-container ng-scope col-xs-4 col-sm-3">
+					<label class="customLabel" tooltip="{{:: 'l-unlinked' | i18n }}" tooltip-placement="top">{{:: 'l-unlinked' | i18n }}</label>
+					<div class="field-input">
+						<div class="input-group">
+							<totvs-field totvs-checkbox
+								t-bsswitch
+								ng-model="controller.model.unlinked"
+								ng-change="controller.changeUnlinked()">
+							</totvs-field>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12">
+                <field type="daterange"
+                    class="col-xs-12 col-sm-8 col-md-6"
+                    ng-model="controller.model.quotationDate"
+                    start-placeholder="{{ 'l-home' | i18n: []: 'dts/mcc' }}"
+                    end-placeholder="{{ 'l-end' | i18n: []: 'dts/mcc' }}"
+					start-date="31/12/1969"
+					ng-disabled="(!controller.model.unlinked && !controller.model.withAnswer)">
+                    <label>{{ 'l-quotation-date' | i18n: []: 'dts/mcc' }}</label>
+                </field>
+			</div>
+			<div class="col-xs-12 subtitle">
+				<label class="col-sm-12">{{ 'l-requisitions' | i18n: []: 'dts/mcc' }}</label>
+			</div>
+			<div class="col-xs-12">
+				<div class="field-container ng-scope col-xs-6 col-sm-3">
+					<label class="customLabel" tooltip="{{:: 'l-not-confirmed' | i18n }}" tooltip-placement="top">{{:: 'l-not-confirmed' | i18n }}</label>
+					<div class="field-input">
+						<div class="input-group">
+							<totvs-field totvs-checkbox
+								t-bsswitch
+								ng-model="controller.model.notConfirmed"
+								ng-disabled="!controller.model.withoutAnswer">
+							</totvs-field>
+						</div>
+					</div>
+				</div>
+				<div class="field-container ng-scope col-xs-6 col-sm-3">
+					<label class="customLabel" tooltip="{{:: 'l-in-quotation' | i18n }}" tooltip-placement="top">{{:: 'l-in-quotation' | i18n }}</label>
+					<div class="field-input">
+						<div class="input-group">
+							<totvs-field totvs-checkbox
+								ng-model="controller.model.inQuotation"
+								ng-disabled="controller.model.unlinked2"
+								t-bsswitch>
+							</totvs-field>
+						</div>
+					</div>
+				</div>
+				<div class="field-container ng-scope col-xs-6 col-sm-3">
+					<label class="customLabel" tooltip="{{:: 'l-quoted' | i18n }}" tooltip-placement="top">{{:: 'l-quoted' | i18n }}</label>
+					<div class="field-input">
+						<div class="input-group">
+							<totvs-field totvs-checkbox
+								ng-model="controller.model.quoted"
+								ng-disabled="controller.model.unlinked2"
+								t-bsswitch>
+							</totvs-field>
+						</div>
+					</div>
+				</div>
+				<div class="field-container ng-scope col-xs-6 col-sm-3">
+					<label class="customLabel" tooltip="{{:: 'l-confirmed-gen' | i18n }}" tooltip-placement="top">{{:: 'l-confirmed-gen' | i18n }}</label>
+					<div class="field-input">
+						<div class="input-group">
+							<totvs-field totvs-checkbox
+								ng-model="controller.model.confirmed"
+								ng-disabled="controller.model.unlinked2"
+								t-bsswitch>
+							</totvs-field>
+						</div>
+					</div>
+				</div>
+				<div class="field-container ng-scope col-xs-6 col-sm-3">
+					<label class="customLabel" tooltip="{{:: 'l-received' | i18n }}" tooltip-placement="top">{{:: 'l-received' | i18n }}</label>
+					<div class="field-input">
+						<div class="input-group">
+							<totvs-field totvs-checkbox
+								ng-model="controller.model.received"
+								ng-disabled="controller.model.unlinked2"
+								t-bsswitch>
+							</totvs-field>
+						</div>
+					</div>
+				</div>
+				<div class="field-container ng-scope col-xs-6 col-sm-3">
+					<label class="customLabel" tooltip="{{:: 'l-deleted' | i18n }}" tooltip-placement="top">{{:: 'l-deleted' | i18n }}</label>
+					<div class="field-input">
+						<div class="input-group">
+							<totvs-field totvs-checkbox
+								ng-model="controller.model.deleted"
+								ng-disabled="controller.model.unlinked2"
+								t-bsswitch>
+							</totvs-field>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xs-12 subtitle">
+				<label class="col-sm-12">{{ 'l-reference-price' | i18n: []: 'dts/mcc' }}</label>
+			</div>
+			<div class="col-xs-12">
+				<field type="radio" 
+                       class="col-xs-12 col-sm-12 col-md-6"
+					   ng-model="controller.model.referencePriceType"
+					   ng-change="controller.changeReferencePriceType()">
+                    <totvs-options>
+                        <totvs-option value="1">{{ 'l-last-purchase' | i18n: []: 'dts/mcc' }}</totvs-option>
+						<totvs-option value="2">{{ 'l-base-price' | i18n: []: 'dts/mcc' }}</totvs-option>
+						<totvs-option value="3">{{ 'l-base-table' | i18n: []: 'dts/mcc' }}</totvs-option>
+                    </totvs-options>
+                </field>
+			</div>
+			<div class="col-xs-12">
+                <totvs-field totvs-combo class="col-xs-12 col-sm-12 col-md-6"
+                             t-options="controller.priceTableList" 
+                             label="{{ 'l-price-table' | i18n: []: 'dts/mcc' }}"
+							 ng-model="controller.model.priceTableRowid"
+							 ng-disabled="(controller.model.referencePriceType < 3)">
+                </totvs-field> 
+            </div>
+
+			<div class="col-xs-12 subtitle">
+				<label class="col-sm-12">{{ 'l-approval-status' | i18n: []: 'dts/mcc' }}</label>
+			</div>
+
+			<div class="col-xs-12">
+				<div class="field-container ng-scope col-xs-6 col-sm-3">
+					<label class="customLabel" tooltip="{{:: 'l-approved' | i18n }}" tooltip-placement="top">{{:: 'l-approved' | i18n }}</label>
+					<div class="field-input">
+						<div class="input-group">
+							<totvs-field totvs-checkbox
+								ng-model="controller.model.approved"
+								ng-disabled="controller.model.unlinked2"
+								t-bsswitch>
+							</totvs-field>
+						</div>
+					</div>
+				</div>
+
+				<div class="field-container ng-scope col-xs-6 col-sm-3">
+					<label class="customLabel" tooltip="{{:: 'l-rejected' | i18n }}" tooltip-placement="top">{{:: 'l-rejected' | i18n }}</label>
+					<div class="field-input">
+						<div class="input-group">
+							<totvs-field totvs-checkbox
+								ng-model="controller.model.rejected"
+								ng-disabled="controller.model.unlinked2"
+								t-bsswitch>
+							</totvs-field>
+						</div>
+					</div>
+				</div>
+
+				<div class="field-container ng-scope col-xs-6 col-sm-3">
+					<label class="customLabel" tooltip="{{:: 'l-pending-approval' | i18n }}" tooltip-placement="top">{{:: 'l-pending-approval' | i18n }}</label>
+					<div class="field-input">
+						<div class="input-group">
+							<totvs-field totvs-checkbox
+								ng-model="controller.model.withPendency"
+								ng-disabled="controller.model.unlinked2"
+								t-bsswitch>
+							</totvs-field>
+						</div>
+					</div>
+				</div>
+
+				<div class="field-container ng-scope col-xs-6 col-sm-3">
+					<label class="customLabel" tooltip="{{:: 'l-without-pendency' | i18n }}" tooltip-placement="top">{{:: 'l-without-pendency' | i18n }}</label>
+					<div class="field-input">
+						<div class="input-group">
+							<totvs-field totvs-checkbox
+								ng-model="controller.model.withoutPendency"
+								ng-disabled="controller.model.unlinked2"
+								t-bsswitch>
+							</totvs-field>
+						</div>
+					</div>
+				</div>
+			</div>	
+            
+            <div class="col-xs-12 subtitle">
+                <label class="col-sm-12">{{ 'l-convert-to' | i18n: []: 'dts/mcc' }}</label>	
+            </div>
+            
+            <div class="col-xs-12">
+                <totvs-field totvs-combo class="col-xs-12 col-sm-12 col-md-4"
+                             t-options="controller.currencies" 
+                             label="{{ 'l-currency' | i18n: []: 'dts/mcc' }}"
+                             ng-model="controller.model.currency">
+                </totvs-field> 
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <field type="radio" 
+                       class="col-xs-12 col-sm-12 col-md-6"
+                       ng-model="controller.model.dateOptionConvert"
+                       ng-change="controller.changeDateOptionConvert()">
+                    <totvs-options>
+                        <totvs-option value="1">{{ 'l-vendor-quote-date' | i18n: []: 'dts/mcc' }}</totvs-option>
+                        <totvs-option value="2">{{ 'l-entered-date' | i18n: []: 'dts/mcc' }}</totvs-option>
+                    </totvs-options>
+                </field>
+                <field type="date"
+                       class="col-md-3 col-sm-4 col-xs-12"
+                       ng-model="controller.model.dateConvert" 
+                       ng-disabled="controller.model.dateOptionConvert == 1">
+                </field>
+            </div>
+		</form>
+	</div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n: []: 'dts/mcc' }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply()">{{ 'l-apply' | i18n: []: 'dts/mcc' }}
+	</button>
+</totvs-modal-footer>

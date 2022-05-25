@@ -1,0 +1,32 @@
+<totvs-modal-header>
+    Parâmetros do Gráfico
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <totvs-page-form>
+        <!--<legend>{{ 'l-parameters' | i18n }}</legend>-->
+        <fieldset class="form-horizontal" role="form">
+            <field 
+                type="date"
+                class="col-md-12"
+                ng-model="controller.model.dtTrans">
+                <label>{{ 'l-transaction-date' | i18n }}</label>
+            </field>
+            
+            <totvs-field
+                totvs-multi-select
+                class="col-md-12"
+                label="Tipos de ACT"
+                ng-model="controller.model.selectedActTypes"
+                t-multi-id="value"
+                t-multi-description="label"
+                t-data="controller.actTypes">
+            </totvs-field>
+        </fieldset>
+    </totvs-page-form>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()">{{ 'btn-apply' | i18n }}</button>
+</totvs-modal-footer>

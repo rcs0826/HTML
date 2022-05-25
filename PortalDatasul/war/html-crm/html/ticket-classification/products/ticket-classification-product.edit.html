@@ -1,0 +1,43 @@
+<totvs-modal-header>
+	{{ 'new-product' | i18n: []: 'dts/crm' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <fieldset>
+        <field 
+           class="col-xs-12 col-sm-12"
+           type="select"
+           ng-model="controller.model.ttProdutoSuport"
+           ng-animate="'animate-if'"
+           ng-required="true"
+           canclean="undefined">
+
+            <zoom zoom-service="crm.crm_produt_suport.zoom"></zoom>
+
+            <label>{{ 'l-product' | i18n: []: 'dts/crm' }}</label>
+
+            <include>
+                <ui-select-match placeholder="{{ 'l-product' | i18n: []: 'dts/crm' }}">
+                    <span>
+                        {{ $select.selected.nom_produt }} {{ $select.selected.cod_item_erp ? ' (' + $select.selected.cod_item_erp + ')' : '' }}
+                    </span>
+                </ui-select-match>
+
+                <ui-select-choices repeat="product in controller.listOfProducts track by $index"
+                                   refresh="controller.getProducts($select.search)"
+                                   refresh-delay="500">
+                    <span ng-bind-html="product.nom_produt + (product.cod_item_erp ? ' (' + product.cod_item_erp + ')' : '') | highlight: $select.search">
+                    </span>
+                </ui-select-choices>
+            </include>
+
+            <validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+        </field>
+    </fieldset>
+    
+</totvs-modal-body>
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+    <button class="btn btn-default" ng-click="controller.save(true)">{{ 'btn-save-new' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save(false)">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

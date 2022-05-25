@@ -1,0 +1,330 @@
+<legend>Dados da Pessoa</legend>
+
+    <!-- <totvs-field totvs-select 
+        id="personZoom"
+        name-id="personZoom"
+        ng-model="controller.person.cdCpf"
+        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+        label="CPF"
+        return-object
+        ui-mask="999.999.999-99"
+        canclean
+        select-service="hvp.demographicZoomController"
+        zoom-service="hvp.demographicZoomController"
+        select-match='[{"field": "cdCpf"}]'
+        select-id="cdCpf" 
+        ng-disabled="controller.action === 'DETAIL'">
+    </totvs-field> -->
+
+    <field type="input"
+        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+        ng-model="person['cd-cpf']"
+        label="CPF"
+        ui-mask="999.999.999-99"
+        ng-disabled="controller.action === 'DETAIL'">
+    </field>
+
+    <field type="input"
+           label="fake" style="visibility: hidden"
+           class="col-lg-9 col-md-9 col-sm-9 col-xs-9 col-sm-height">
+    </field>
+
+    <field type="input"
+        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+        maxlength="70"
+        required
+        data-ng-model="person['nm-pessoa']"
+        label="Nome"
+        ng-disabled="controller.action === 'DETAIL'">
+    </field>
+
+    <field type="date"
+        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+        required
+        data-ng-model="person['dt-nascimento']"
+        label="Data de Nascimento"
+        ng-disabled="controller.action === 'DETAIL'">
+    </field>
+
+    <field type="input"
+           label="fake" style="visibility: hidden"
+           class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height">
+    </field>
+
+    <field type="input"
+        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+        maxlength="25"
+        data-ng-model="person['nm-cartao']"
+        label="Nome no Cartão"
+        ng-disabled="controller.action === 'DETAIL'">
+    </field>
+
+    <field type="input"
+        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+        data-ng-model="person['nm-internacional']"
+        label="Nome Internacional"
+        ng-disabled="controller.action === 'DETAIL'">
+    </field>
+
+    <totvs-field totvs-select canclean
+                 ng-model="person['cd-municipio-nasc']"
+                 class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                 label="Município de Nascimento"
+                 select-service="hcg.cityZoomController"
+                 zoom-service="hcg.cityZoomController"
+                 select-id="cdCidade"
+                 select-description="nmCidade"
+                 ng-disabled="controller.action === 'DETAIL'">
+    </totvs-field>
+
+     <field type="input"
+        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+        data-ng-model="person['nm-social']"
+        label="Nome Social"
+        ng-disabled="controller.action === 'DETAIL'">
+    </field>
+
+    <field  type="radio"
+        data-ng-model="person['in-sexo']"
+        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+        label="Sexo"
+        ng-init="person['in-Sexo'] = 'M'"
+        ng-disabled="controller.action === 'DETAIL'"
+        required>
+        <totvs-options>
+            <totvs-option value="M">Masculino</totvs-option>
+            <totvs-option value="F">Feminino</totvs-option>
+        </totvs-options>
+    </field>
+
+    <field  type="combo"
+        required
+        data-ng-model="person['in-estado-civil']"
+        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+        ng-options="ec.data as ec.label for ec in controller.maritalStatusValue"
+        label="Estado Civil"
+        ng-disabled="controller.action === 'DETAIL'">
+    </field>
+
+    <field type="input"
+        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+        data-ng-model="person['nm-conjuge']"
+        label="Cônjuge"
+        ng-disabled="controller.action === 'DETAIL'">
+    </field>
+
+    <legend>Dados ANS</legend>
+
+    <field type="input"
+        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+        maxlength="12"
+        data-ng-model="person['nr-cei']"
+        label="CEI"
+        ng-disabled="controller.action === 'DETAIL'">
+    </field>
+
+    <field type="input"
+        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+        ui-mask="999.9999.999-9"
+        data-ng-model="person['nr-pis-pasep']"
+        label="PIS / PASEP"
+        ng-disabled="controller.action === 'DETAIL'">
+    </field>
+
+    <field type="input"
+        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+        maxlength="15"
+        data-ng-model="person['cd-cartao-nacional-saude']"
+        label="Cartão Nacional de Saúde"
+        ng-disabled="controller.action === 'DETAIL'"
+        required>
+    </field>
+
+    <field type="input"
+        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+        maxlength="11"
+        data-ng-model="person['dns']"
+        label="Declaração Nascido"
+        ng-disabled="controller.action === 'DETAIL'">
+    </field>
+
+    <field type="input"
+        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+        maxlength="70"
+        data-ng-model="person['nm-pai']"
+        label="Nome do Pai"
+        ng-disabled="controller.action === 'DETAIL'">
+    </field>
+
+    <field type="input"
+           label="fake" style="visibility: hidden"
+           class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height">
+    </field>
+
+    <field type="input"
+        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+        maxlength="70"
+        data-ng-model="person['nm-mae']"
+        label="Nome da Mãe"
+        ng-disabled="controller.action === 'DETAIL'"
+        required>
+    </field>
+
+    <field type="checkbox"
+        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+        label="Sem Validação no Nome do Beneficiário no SIB"
+        data-ng-model="person['lg-valida-nome-benef-sib']"
+        ng-disabled="controller.action === 'DETAIL'">
+    </field>
+    
+    <totvs-page-form>
+        <legend>Documentação</legend>
+
+        <field type="input"
+            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+            maxlength="14"
+            data-ng-model="person['nr-identidade']"
+            label="Número Documento de Identidade"
+            ng-disabled="controller.action === 'DETAIL'">
+        </field>
+
+        <field type="input"
+            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+            maxlength="40"
+            data-ng-model="person['ds-natureza-doc']"
+            label="Natureza do Documento de Identidade"
+            ng-disabled="controller.action === 'DETAIL'">
+        </field>
+         
+        <field  type="combo"                        
+            data-ng-model="person['ds-orgao-emissor-ident']"
+            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+            ng-options="o.data as o.label for o in controller.identityDepartmentValue"
+            label="Orgão Emissor da Identidade"
+            ng-disabled="controller.action === 'DETAIL'"
+            required>
+        </field>
+
+        <field  type="combo"                        
+            data-ng-model="person['nm-pais-emissor-ident']"
+            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+            ng-options="o.nmPais as o.nmPais for o in controller.countrys"
+            label="País Emissor da Identidade"
+            ng-disabled="controller.action === 'DETAIL'"
+            required>
+        </field>
+        <field type="date"
+            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+            maxlength="20"
+            data-ng-model="person['dt-emissao-ident']"
+            label="Data de Emissão da Identidade"
+            ng-disabled="controller.action === 'DETAIL'">
+        </field>
+        <field type="input"
+               label="fake" style="visibility: hidden"
+               class="col-lg-1 col-md-1 col-sm-1 col-xs-12 col-sm-height">
+        </field>   
+        <field type="combo"
+               data-ng-model="person['uf-emissor-ident']"
+               class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+               ng-options="o.enUf as o.enUf for o in controller.ufs"
+               label="UF Emissora da Identidade"
+               ng-disabled="controller.action === 'DETAIL'">
+        </field>
+        <field type="input"
+            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+            maxlength="40"
+            data-ng-model="person['ds-nacionalidade']"
+            label="Nacionalidade"
+            ng-disabled="controller.action === 'DETAIL'">
+        </field>
+        <field type="checkbox"
+            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+            label="Portador de Necessidades Especiais"
+            data-ng-model="person['lg-port-necessid-especiais']"
+            ng-disabled="controller.action === 'DETAIL'">
+        </field>
+
+        <legend>Informações Complementares</legend>
+
+        
+        <field  type="decimal"
+                class="col-lg-1 col-md-1 col-sm-1 col-xs-12"
+                data-ng-model="person['val-peso-pfis']"
+                m-dec="2"
+                data-v-max="999.99"
+                ng-disabled="controller.action == 'DETAIL'"
+                label="Peso">
+        </field>
+        <field  type="decimal"
+                class="col-lg-1 col-md-1 col-sm-1 col-xs-12"
+                data-ng-model="person['val-alt-pfis']"
+                m-dec="2"
+                data-v-max="9.99"
+                ng-disabled="controller.action == 'DETAIL'"
+                label="Altura">
+        </field>
+
+        <field type="input"
+            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+            data-ng-model="person['des-alerg']"
+            label="Alergia"
+            ng-disabled="controller.action === 'DETAIL'">
+        </field>
+        <field type="checkbox"
+            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+            label="Desconsidera na Unificação de Pessoa"
+            data-ng-model="person['log-descons-unif-pessoa']"
+            ng-disabled="controller.action === 'DETAIL'">
+        </field>
+        <field type="input"
+               label="fake" style="visibility: hidden"
+               class="col-lg-2 col-md-2 col-sm-2 col-xs-12 col-sm-height">
+        </field> 
+        <field type="input"
+            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+            data-ng-model="person['des-hos-atendim']"
+            label="Hospital de Atendimento"
+            ng-disabled="controller.action === 'DETAIL'">
+        </field>
+        <field type="input"
+            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+            data-ng-model="person['des-medic-atendim']"
+            label="Médico de Atendimento"
+            ng-disabled="controller.action === 'DETAIL'">
+        </field>
+        <field type="checkbox"
+            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+            label="Cadastro Homologado"
+            data-ng-model="person['lg-cadastro-homologado']"
+            ng-disabled="controller.action === 'DETAIL'">
+        </field>
+        <field type="input"
+               label="fake" style="visibility: hidden"
+               class="col-lg-2 col-md-2 col-sm-2 col-xs-12 col-sm-height">
+        </field> 
+        <field type="textarea"
+               class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+               data-ng-model="person['des-medicto-uso']"
+               label="Medicamento em Uso"
+               ng-disabled="controller.action === 'DETAIL'">
+        </field>
+        <field type="textarea"
+               class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+               data-ng-model="person['des-doenca']"
+               label="Doenças"
+               ng-disabled="controller.action === 'DETAIL'">
+        </field>
+        <field type="textarea"
+               class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+               data-ng-model="person['des-cirurgia-realzda']"
+               label="Cirurgias Realizadas"
+               ng-disabled="controller.action === 'DETAIL'">
+        </field>
+        <field type="textarea"
+               class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+               data-ng-model="person['des-obs']"
+               label="Observações"
+               ng-disabled="controller.action === 'DETAIL'">
+        </field>
+    </totvs-page-form>

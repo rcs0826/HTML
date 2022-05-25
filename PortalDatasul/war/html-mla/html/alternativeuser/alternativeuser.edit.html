@@ -1,0 +1,85 @@
+<style type="text/css" scoped="true">
+	@media (max-width: 992px){
+		.page-content {
+		    height: 80%;
+		}
+	} 
+</style>
+<totvs-page type="edit" totvs-custom-element="customAlternativeuser_edit">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mla/alternativeuser/">
+                <span class="hidden-xs">{{'l-alternative-users' | i18n}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{ 'l-alternative-users-short' | i18n }}</span>
+            </breadcrumb>
+            <breadcrumb>
+				<span class="hidden-xs">{{controller.breadcrumb}}</span>
+				<span class="hidden-sm hidden-md hidden-lg">{{controller.breadcrumbShort}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+		<totvs-page-header>
+			<totvs-page-header-title title="{{controller.model['cod-usuar']}} - {{controller.username}}">
+			</totvs-page-header-title>
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action
+					hide-save-new="{{controller.isEdit}}">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+	<totvs-page-content>
+		<totvs-page-form>
+			<fieldset>
+				<form>
+					<div class="col-xs-12 col-sm-12 col-md-12" ng-if="controller.isEdit">
+						<field type="input"
+							ng-disabled="controller.isEdit"
+							class="col-md-3"
+							ng-model="controller.model['cod-usuar-altern']"
+							required>
+							<label>{{ 'l-alternative' | i18n }}</label>
+						</field>
+					</div>
+
+					<!-- Zoom para dispotivos md e lg -->
+					<div class="col-xs-12 col-sm-12 col-md-12" ng-if="!controller.isEdit">
+
+	                     <totvs-field 
+	                     	totvs-select
+	                        name-id="codUsuar"
+	                        ng-model="controller.model['cod-usuar-altern']"
+	                        label="{{:: 'l-alternative' | i18n : [] : 'dts/mla'}}"
+	                        select-id="cod-usuar"
+	                        select-description="nome-usuar"
+	                        select-service="mla.mla-usuar-aprov.zoom"
+	                        zoom-service="mla.mla-usuar-aprov.zoom"	                        
+	                        zoom-init="{filters: {'perm-aprov':true}}"
+	                        select-init="{filters: {'perm-aprov':true}}"
+	                        canclean
+	                        required
+	                        focus>
+	                    </totvs-field>
+					</div>
+
+					<div class="col-md-12">
+                        <field type="date"
+                            data-ng-model="controller.validStart"
+                            label="{{ 'l-initial-validity' | i18n }}"
+                            class="col-xs-12 col-sm-12 col-md-3">
+                        </field>
+
+                        <field type="date"
+                            data-ng-model="controller.validEnd"
+                            label="{{ 'l-end-validity' | i18n }}"
+                            class="col-xs-12 col-sm-12 col-md-3">
+                        </field>
+                        
+                        
+					</div>
+				</form>
+			</fieldset>
+		</totvs-page-form>
+	</totvs-page-content>
+</totvs-page>

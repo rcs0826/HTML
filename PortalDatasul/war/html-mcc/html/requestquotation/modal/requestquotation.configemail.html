@@ -1,0 +1,138 @@
+<style>
+
+    .no-margin {
+        padding: 0 !important;
+    }
+
+</style>
+
+
+<totvs-modal-header>
+	{{ 'l-email-configuration' | i18n: []: 'dts/mcc' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+   <totvs-page-form>
+       <fieldset>
+           <form>
+               <div class="col-xs-12">
+                   <h5>{{ 'l-email' | i18n: []: 'dts/mcc' }}</h5>   
+               </div>
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                   <field type="input"
+                          class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                          name-id="emailTitle"
+                          maxlength="100"
+                          ng-model="controller.model.infoSend['assunto-email']">
+                      <label>{{ 'l-subject-mail' | i18n: []: 'dts/mcc' }}</label>                                           
+                   </field>            
+               </div>
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <totvs-field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" totvs-select
+                        ng-model="controller.model.infoSend['cdn-mensagem']"
+                        ng-change="controller.onChangeMessage()"
+						label="{{'l-default-text' | i18n : [] : 'dts/mcc'}}"
+						select-id="cod-mensagem"
+						select-description="descricao"
+						select-service="mpd.mensagem.zoom"
+						zoom-service="mpd.mensagem.zoom">
+					</totvs-field>
+               </div>
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <field type="textarea"
+                         class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                         ng-model="controller.model.infoSend['dsl-texto']"
+                         name-id="emailText"
+                         maxlength="2000">
+                      <label>{{ 'l-text' | i18n: []: 'dts/mcc' }}</label>
+                  </field>
+                </div>
+                <div class="col-xs-12">
+                    <h5>{{ 'l-quotation-answer' | i18n: []: 'dts/mcc' }}</h5>   
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6">
+                        <span>{{ 'l-send-quotation-spreadsheet' | i18n: []: 'dts/mcc' }}</span> 
+                        <br>
+                        <input type="checkbox"
+                             name-id="sendSpreadsheet"
+                             class="col-lg-6 col-md-6 col-sm-6 col-xs-6"
+                             ng-model="controller.model.infoSend['log-planilha-envda']"
+                             bsswitch/>
+                    </div>
+                    <div class="col-md-6">
+                        <span>{{ 'l-vendor-answer-by-web' | i18n: []: 'dts/mcc' }}</span> 
+                        <br>
+                        <input type="checkbox"
+                             name-id="sendSpreadsheet"
+                             class="col-lg-6 col-md-6 col-sm-6 col-xs-6"
+                             ng-model="controller.model.infoSend['log-responde-via-web']"
+                             bsswitch/>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" padding-left="15" padding-right="15">
+                        <br>
+                        <span>{{ 'l-valid-period-quotation' | i18n: []: 'dts/mcc' }}</span> 
+                        <br>
+                    </div>
+                </div>
+                <!-- Período de validade para respostas --> 
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <span>{{ 'l-from-label' | i18n }}</span> 
+                        <br>
+                        <field type="date"
+                               class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-margin"
+                               ng-model="controller.model.dateSendFrom"
+                               canclean
+                               required
+                               ng-disabled="!controller.model.infoSend['log-responde-via-web']">
+                        </field>
+                    </div>
+                    
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <br>
+                        <field type="time"
+                               class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-margin"
+                               ng-model="controller.model.timeSendFrom"
+                               bottom="0px"
+                               margin-bottom="0px"
+                               canclean
+                               required
+                               ng-disabled="!controller.model.infoSend['log-responde-via-web']">
+                        </field>
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <span>{{ 'l-to-mcc' | i18n }}</span> 
+                        <br>
+                        <field type="date"
+                               class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-margin"
+                               ng-model="controller.model.dateSend"    
+                               canclean
+                               required>
+                        </field>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <br>
+                        <field type="time"
+                               class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-margin"
+                               ng-model="controller.model.timeSend"  
+                               bottom="0px"
+                               margin-bottom="0px"
+                               canclean
+                               required>
+                        </field>
+                    </div>
+                </div>
+           </form>
+       </fieldset>
+    </totvs-page-form>
+</totvs-modal-body>
+
+<totvs-modal-footer>	
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-close' | i18n: []: 'dts/mcc' }}</button> 	
+    <button class="btn btn-default" ng-click="controller.apply('new');">{{ 'l-apply-to-new' | i18n: []: 'dts/mcc' }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply('all');">{{ 'l-apply-to-all' | i18n: []: 'dts/mcc' }}</button>
+</totvs-modal-footer>

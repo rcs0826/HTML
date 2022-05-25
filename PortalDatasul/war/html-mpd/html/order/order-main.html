@@ -1,0 +1,367 @@
+<style>
+
+@media only screen and (max-width: 768px) {
+
+	.page-navbar .breadcrumb {
+		padding-left: 0px !important;
+	}
+
+	.totvs-style-guide .row {
+		margin-right: 0px !important;
+		margin-left: 0px !important;
+	}
+
+	.page-form {
+		padding: 5px 0px 20px 0px;
+	}
+
+	.no-padding-on-xs-order{
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+
+	.col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+
+}
+
+</style>
+
+<totvs-page type="detail" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#{{defaultPageHome}}">{{ 'l-home-page' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-salesorder' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title>
+				{{ 'l-salesorder' | i18n }} {{controller.orderDetail['nr-pedido']}}
+				<span class="label label-warning"
+					  ng-if="controller.orderDetail['log-cotacao'] == true"
+					  style="font-size: 18px;">
+					{{ 'l-status-order-11' | i18n }}
+				</span>
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action
+					limit-primary-action="6"
+					hide-remove='true'
+					<% if (data.hasEditableOrderFields) { %>
+					hide-edit='{{controller.orderDisabled}}'
+					<% } else { %>
+							hide-edit='true'
+					<% } %>
+					hide-back='true'
+					on-edit="controller.editOrder">
+					<action ng-if="controller.orderDisabled" ng-click="controller.editOrder()" icon="glyphicon-file">{{ 'l-detail' | i18n }}</action>
+					<action ng-click="controller.print()" icon="glyphicon-print">{{ 'l-print' | i18n }}</action>
+
+					<!-- Verifica se o botão cancelar esta configurado para aparecer depois de liberado o pedido-->
+					<action ng-click="controller.openCancelModal('order')" ng-if="controller.orderDetail['data-1'] == null && (controller.orderDetail['can-cancel'] && <%=data.showButtonCancel %> == true)" icon="glyphicon-ban-circle">{{ 'btn-cancel' | i18n }}</action>
+
+					<!-- Não verifica se o botão cancelar esta configurado para aparecer, antes de liberar o pedido para atendimento o representnate ou cliente pode cancelar pois esta em digitação-->
+					<action ng-click="controller.openCancelModal('order')" ng-if="controller.orderDetail['data-1'] != null && controller.orderDetail['can-cancel']" icon="glyphicon-ban-circle">{{ 'btn-cancel' | i18n }}</action>
+
+					<action ng-click="controller.recalculate()" class="btn-success"  ng-if="controller.disableOrderProcess == true && !controller.orderDisabled" icon="glyphicon-usd">{{ 'l-calculate' | i18n }}</action>
+					<action ng-click="controller.recalculate()" class="btn-default"  ng-if="controller.disableOrderProcess == false && !controller.orderDisabled" icon="glyphicon-usd">{{ 'l-calculate' | i18n }}</action>
+					<action ng-click="controller.freightSimulation()" class="btn-default"  ng-if="controller.enableFreightSimulation == true && controller.orderDetail['log-cotacao'] == false && !controller.orderDisabled" icon="glyphicon-usd">{{ 'l-simulacao-frete' | i18n }}</action>
+					<action class="btn-success" ng-hide="controller.appSource"
+							ng-click="controller.process(controller.orderDetail['log-cotacao'])"
+							ng-if="controller.disableOrderProcess == false" icon="glyphicon-ok">{{ (controller.orderDetail['log-cotacao'] === true ? 'l-release-quotation' : 'l-release') | i18n }}</action>
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<div class="col-xs">
+			<totvs-page-detail>
+
+				<accordion close-others="false" class="col-md-12">
+
+					<accordion-group is-open="controller.listGroups[0].item.expanded"
+									 ng-if="controller.userMessagesData.length > 0"
+									 style="background-color: #ffffff;">
+
+						<accordion-heading class="panel-danger">
+							{{ 'l-messages' | i18n: []:  'dts/mpd' }}
+							<i class="pull-right glyphicon"
+							   ng-class="{'glyphicon-chevron-down' :  controller.listGroups[0].item.expanded,
+										  'glyphicon-chevron-right': !controller.listGroups[0].item.expanded}">
+							</i>
+						</accordion-heading>
+
+						<ul>
+							<li ng-repeat="m in controller.userMessagesData">
+								{{m}}
+							</li>
+						</ul>
+					</accordion-group>
+
+					<accordion-group is-open="controller.listGroups[1].item.expanded">
+
+						<accordion-heading class="panel-danger">
+							{{ 'l-order-information' | i18n: []:  'dts/mpd' }}
+							<i class="pull-right glyphicon"
+							   ng-class="{'glyphicon-chevron-down' :  controller.listGroups[1].item.expanded,
+										  'glyphicon-chevron-right': !controller.listGroups[1].item.expanded}">
+							</i>
+						</accordion-heading>
+
+						<div class="row">
+							<div class="col-md-12">
+								<totvs-page-detail-info title="{{ 'l-nr-pedido' | i18n }}" class="col-xs-6 col-sm-2 col-md-2">
+									{{controller.orderDetail['nr-pedido']}}
+								</totvs-page-detail-info>
+								<totvs-page-detail-info title="{{ 'l-nr-pedcli' | i18n }}" class="col-xs-6 col-sm-2 col-md-2">
+									{{controller.orderDetail['nr-pedcli']}}
+								</totvs-page-detail-info>
+								<totvs-page-detail-info title="{{((controller.orderDetail['log-cotacao'] == true && controller.orderDetail['cod-id-prosp']) ? 'l-lead' : 'l-customer') | i18n }}" class="col-xs-6 col-sm-2 col-md-2">
+									<span ng-if="!controller.orderDetail['cod-id-prosp']">{{controller.orderDetail['nome-abrev']}}</span>
+
+									<span ng-if="controller.orderDetail['log-cotacao'] == true && controller.orderDetail['cod-id-prosp']" style="background-color:#FCF6AB">
+										{{controller.orderDetail['crmAccountName']}}
+										{{controller.orderDetail['crmAccountShortName'] ? '(' + controller.orderDetail['crmAccountShortName'] + ')' : ''}}
+									</span>
+								</totvs-page-detail-info>
+
+								<%
+								_.forEach(data.fieldsSummary, function(pedVendaResumoVisibleField) {
+
+									if (pedVendaResumoVisibleField.fieldName == "peso-atendido") {
+								%>
+								<totvs-page-detail-info title="{{ 'l-peso-atendido' | i18n }}" class="col-xs-6 col-sm-3 col-md-2">
+									{{controller.orderDetail['pesoTotalAtendido']}}
+								</totvs-page-detail-info>
+								<%
+									}
+
+									if (pedVendaResumoVisibleField.fieldName == "total-peso") {
+								%>
+								<totvs-page-detail-info title="{{ 'l-total-peso' | i18n }}" class="col-xs-6 col-sm-3 col-md-2">
+									{{controller.orderDetail['pesoTotal']}}
+								</totvs-page-detail-info>
+								<%
+									}
+								});
+
+								if (data.hasEditableSummaryOrderFields) { %>
+								<totvs-group-content style="padding-left: 15px;" title="{{ 'l-more-order-details' | i18n }}">
+									<totvs-lodash-template src="/dts/mpd/html/order/order-header-fields.html" template-data="controller.pedVendaResumoVisibleFields"/></totvs-lodash-template>
+								</totvs-group-content>
+								<% } %>
+
+							</div>
+						</div>
+
+					</accordion-group>
+
+					<div class="row" >
+						<div class="col-md-12 no-padding-on-xs-order" style="padding-top: 25px;">
+							<div ng-show="controller.orderItens.length > 0" class="btn-group pull-left" style="margin-bottom: 10px; margin-top: 5px;">
+								<label class="btn btn-default" ng-class="{active: controller.orderItemsWithGrid == false}"  ng-click="controller.setOrderItemsWithGrid()" title="{{ 'l-order-grid-items' | i18n }}"><span class="glyphicon glyphicon-align-justify"></span></label>
+								<label class="btn btn-default" ng-class="{active: controller.orderItemsWithGrid == true}" ng-click="controller.setOrderItemsWithGrid()" title="{{ 'l-order-detail-items' | i18n }}"><span class="glyphicon glyphicon-th"></span></label>
+							</div>
+
+							<%
+							_.forEach(data.fields, function(pedVendaCadastroVisibleField) {
+								if (pedVendaCadastroVisibleField.fieldName == "order-show-child-item") {
+
+							%>
+							<div ng-show="controller.orderItens.length > 0" class="btn-group pull-left" style="margin-bottom: 10px; margin-top: 5px; margin-left: 5px;">
+								<label class="btn btn-default"><input type="checkbox" style="margin: 0px 0 0;" ng-change="controller.setQuickFilterShowChildren();" ng-model="controller.showChild"><span> &nbsp; {{ 'l-order-show-child-item' | i18n }}</span></label>
+							</div>
+							<%
+								}
+							});
+							%>
+							<div class="btn-group pull-right" style="margin-bottom: 10px; margin-top: 5px;">
+								<button type="button" class="btn btn-primary" ng-hide="controller.orderDisabled" ng-click="controller.openAddItemModal(null)"><span class="glyphicon glyphicon-search"></span>&nbsp;{{ 'l-order-search-products' | i18n }}</button>
+							</div>
+						</div>
+					</div>
+
+					<div ng-if="controller.orderItens.length < 1" class="alert alert-info">
+						  <strong>{{ 'l-alert-to-add-items' | i18n }}!</strong> {{ 'l-alert-to-use-button-add-item' | i18n }}.
+					</div>
+
+					<accordion-group is-open="controller.listGroups[2].item.expanded" ng-if="controller.orderItens.length > 0">
+
+						<accordion-heading class="panel-danger">
+							{{ 'l-order-items' | i18n: []:  'dts/mpd' }} ({{controller.orderItens.length}})
+							<i class="pull-right glyphicon"
+							   ng-class="{'glyphicon-chevron-down' :  controller.listGroups[2].item.expanded,
+										  'glyphicon-chevron-right': !controller.listGroups[2].item.expanded}">
+							</i>
+						</accordion-heading>
+
+						<div>
+
+							<div >
+								<totvs-list-item totvs-custom-element="OrderListItem" ng-if="controller.orderItemsWithGrid == true" ng-repeat="item in controller.orderItens | filter:{showChildren:true}">
+									<totvs-list-item-header>
+										<totvs-list-item-title class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+											{{ 'l-sequencia' | i18n }}: {{item['nr-sequencia']}}
+										</totvs-list-item-title>
+										<totvs-list-item-action limit-primary-action="5" class="col-xs-8 col-sm-8 col-md-8 col-lg-8 pull-right">
+											<action ng-show="!controller.orderDisabled && item.situacao != controller.cancelledStatus && item['prod-config'] != 0 && item['cod-refer'] == ''" ng-click="controller.configProduct(item)" icon="glyphicon-cog" class="btn btn-primary">Configurar</action>
+											<action ng-show="controller.orderDisabled || item.situacao == controller.cancelledStatus" ng-click="controller.openItemModal(item)" icon="glyphicon-file">{{ 'l-detail' | i18n }}</action>
+											<action ng-show="!controller.orderDisabled && item.situacao != controller.cancelledStatus && item['ind-componen'] == 2" ng-click="controller.openAddItemModal(item['nr-sequencia'])" icon="glyphicon-plus">{{ 'l-order-add-child-item' | i18n }}</action>
+											<action ng-hide="controller.orderDisabled || item.situacao == controller.cancelledStatus" ng-click="controller.openItemModal(item)" icon="glyphicon-pencil">{{ 'l-edit' | i18n }}</action>
+											<action ng-hide="controller.orderDisabled || item.situacao == controller.cancelledStatus" ng-click="controller.removeOrderItem(item)" icon="glyphicon-remove">{{ 'remove' | i18n }}</action>
+											<action ng-hide="controller.orderDisabled || item.situacao == controller.cancelledStatus" ng-click="controller.openCancelModal('item', item)" icon="glyphicon-ban-circle">{{ 'btn-cancel' | i18n }}</action>
+										</totvs-list-item-action>
+									</totvs-list-item-header>
+									<totvs-list-item-content>
+										<totvs-lodash-template src="/dts/mpd/html/order/order-item-list.html" template-data="controller.pedItemListaVisibleFields"/></totvs-lodash-template>
+									</totvs-list-item-content>
+								</totvs-list-item>
+								<div ng-if="controller.orderItemsWithGrid == false"  style="margin: -15px;">
+
+									<totvs-lodash-template totvs-custom-element="OrderItemGridHeader" src="/dts/mpd/html/order/order-item-grid.html" template-data="controller.pedItemListaVisibleFields"/></totvs-lodash-template>
+
+									<div style="width:100%; height: 70px; background-color: #f5f5f5">
+										<button class="btn btn-default"
+												style="margin-bottom: 10px; margin-top: 10px; margin-left: 10px;"
+												ng-disabled="controller.currentPage == 0"
+												ng-click="controller.currentPage=controller.currentPage-1">
+											<span class="glyphicon glyphicon-chevron-left"></span>
+										</button>
+										{{controller.currentPage+1}}/{{controller.numberOfPages()}}
+										<button class="btn btn-default"
+												ng-disabled="controller.currentPage >= controller.orderItens.length/controller.pageSize - 1"
+												ng-click="controller.currentPage=controller.currentPage+1">
+											<span class="glyphicon glyphicon-chevron-right"></span>
+										</button>
+
+										<div class="btn-group pull-right" style="margin-bottom: 10px; margin-top: 10px; margin-right: 10px;">
+											<label class="btn btn-primary"
+												   ng-click="controller.itemsGridActions('configproduct',controller.selectedRowItemGrid)"
+												   ng-show="!controller.orderDisabled && controller.selectedRowItemGrid.situacao != controller.cancelledStatus && controller.selectedRowItemGrid['prod-config'] != 0 && controller.selectedRowItemGrid['cod-refer'] == ''">
+												   <span class="glyphicon glyphicon-cog"></span>
+												   &nbsp; {{ 'l-config' | i18n }}
+											</label>
+											<label class="btn btn-default"
+												   ng-click="controller.itemsGridActions('openitem', controller.selectedRowItemGrid)"
+												   ng-if="controller.orderDisabled || controller.selectedRowItemGrid.situacao == controller.cancelledStatus">
+												   <span class="glyphicon glyphicon-file"></span>
+												   &nbsp; {{ 'l-detail' | i18n }}
+											</label>
+											<label class="btn btn-default"
+												   ng-click="controller.itemsGridActions('additemchild',controller.selectedRowItemGrid['nr-sequencia'])"
+												   ng-if="!controller.orderDisabled && controller.selectedRowItemGrid.situacao != controller.cancelledStatus && controller.selectedRowItemGrid['ind-componen'] == 2">
+												   <span class="glyphicon glyphicon-plus"></span>
+												   &nbsp; {{ 'l-order-add-child-item' | i18n }}
+											</label>
+											<label class="btn btn-default"
+												   ng-click="controller.itemsGridActions('edititem', controller.selectedRowItemGrid)"
+												   ng-hide="controller.orderDisabled || controller.selectedRowItemGrid.situacao == controller.cancelledStatus">
+												   <span class="glyphicon glyphicon-pencil"></span>
+												   &nbsp; {{ 'l-edit' | i18n }}
+											</label>
+											<label class="btn btn-default"
+												   ng-click="controller.itemsGridActions('removeitem', controller.selectedRowItemGrid)"
+												   ng-hide="controller.orderDisabled || controller.selectedRowItemGrid.situacao == controller.cancelledStatus">
+												   <span class="glyphicon glyphicon-remove"></span>
+												   &nbsp; {{ 'remove' | i18n }}
+											</label>
+											<label class="btn btn-default"
+												   ng-click="controller.itemsGridActions('cancelitem', 'item', controller.selectedRowItemGrid)"
+												   ng-hide="controller.orderDisabled || controller.selectedRowItemGrid.situacao == controller.cancelledStatus">
+												   <span class="glyphicon glyphicon-ban-circle"></span>
+												   &nbsp; {{ 'btn-cancel' | i18n }}
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</accordion-group>
+				</accordion>
+
+				<div class="row">
+					<div class="col-md-12 no-padding-on-xs-order">
+						<totvs-page-detail-info-group>
+							{{ 'l-order-totals' | i18n }}
+						</totvs-page-detail-info-group>
+					</div>
+				</div>
+
+				<totvs-page-form>
+					<fieldset>
+						<field class="col-md-4  col-xs-12 col-sm-12" type="decimal" ng-model="controller.orderDetail['vl-tot-ped']" disabled="true">
+							<label>{{ 'l-vl-tot-ped' | i18n }}</label>
+						</field>
+						<%
+
+						_.forEach(data.fields, function(pedVendaCadastroVisibleField) {
+							if (pedVendaCadastroVisibleField.fieldName == "cod-cond-pag") {
+
+						%>
+
+						<totvs-field totvs-select
+							style="font-size: 14px"
+							class="col-md-4  col-xs-12 col-sm-12"							
+							label="{{'l-condicao-pagamento' | i18n}}"
+							ng-model="controller.orderDetail['cod-cond-pag']"
+							select-id="cod-cond-pag"
+							select-description="descricao"
+							select-service="salesorder.zoomCondicaoPagamento.Service"
+							zoom-service="salesorder.zoomCondicaoPagamento.Service"
+							zoom-init="{setDefaultValue: false}"
+							ng-change="controller.setOrderPayTerm(null, controller.orderDetail['cod-cond-pag'])"
+							canclean
+							ng-disabled=
+							<% if (!pedVendaCadastroVisibleField.fieldEnabled) { %>
+								"true"
+							<% }else{ %>
+								"controller.orderDisabled"
+							<% } %>>
+						</totvs-field>
+												
+						<%
+							}
+						});
+						%>
+						
+						<div class="col-md-4 col-xs-12 col-sm-12">
+							<div class="btn-group pull-right" style="margin-bottom: 10px; margin-top: 29px;">
+
+								<!-- Verifica se o botão cancelar esta configurado para aparecer depois de liberado o pedido-->
+								<label class="btn btn-default"
+									ng-click="controller.openCancelModal('order')" ng-if="controller.orderDetail['data-1'] == null && (controller.orderDetail['can-cancel'] && <%=data.showButtonCancel %> == true)">
+									<span class="glyphicon glyphicon-ban-circle"></span> &nbsp; {{ 'btn-cancel' | i18n }}
+								</label>
+
+								<!-- Não verifica se o botão cancelar esta configurado para aparecer, antes de liberar o pedido para atendimento o representnate ou cliente pode cancelar pois esta em digitação-->
+								<label class="btn btn-default"
+									ng-click="controller.openCancelModal('order')" ng-if="controller.orderDetail['data-1'] != null && controller.orderDetail['can-cancel']">
+									<span class="glyphicon glyphicon-ban-circle"></span> &nbsp; {{ 'btn-cancel' | i18n }}
+								</label>
+
+								<label class="btn btn-success"
+									ng-click="controller.recalculate()" ng-if="controller.disableOrderProcess == true && !controller.orderDisabled">
+									<span class="glyphicon glyphicon-usd"></span> &nbsp; {{ 'l-calculate' | i18n }}
+								</label>
+								<label class="btn btn-default"
+									ng-click="controller.recalculate()" ng-if="controller.disableOrderProcess == false && !controller.orderDisabled">
+									<span class="glyphicon glyphicon-usd"></span> &nbsp; {{ 'l-calculate' | i18n }}
+								</label>
+								<label class="btn btn-success"
+									ng-click="controller.process(controller.orderDetail['log-cotacao'])" ng-if="!controller.disableOrderProcess" ng-hide="controller.appSource">
+									<span class="glyphicon glyphicon-ok"></span> &nbsp; {{ (controller.orderDetail['log-cotacao'] === true ? 'l-release-quotation' : 'l-release') | i18n }}
+								</label>
+							</div>
+						</div>
+					</fieldset>
+				</totvs-page-form>
+			</totvs-page-detail>
+		</div>
+	</totvs-page-content>
+</totvs-page>

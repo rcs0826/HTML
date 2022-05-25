@@ -1,0 +1,27 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{ 'l-copy-parameters' | i18n : [] : 'dts/mpd' }}</h3>
+</div>
+<div class="modal-body">
+    
+    <div class="row">
+        <div class="col-xs-12">
+            <totvs-grid grid-data="copyItemsController.copyItems"
+                        grid-height="400" 
+                        navigatable="true" 
+                        editable="true" 
+                        auto-resize-content="true"
+                        selectable="row, multiple"
+                        add-select-column="separate">
+                <totvs-grid-column field="nr-sequencia" width="50">{{ 'l-sequencia' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                <totvs-grid-column field="it-codigo" width="160">{{ 'l-cod-item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                <totvs-grid-column field="desc-item" class="text-nowrap" width="350">{{ 'l-descricao' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                <totvs-grid-column field="qt-pedida" width="90" editable="true" filter="number : 4" style="text-align: right;">{{ 'l-requested-quantity' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                <totvs-grid-column field="dt-entrega" width="90" filter="date : dd/MM/yyyy" style="text-align: right;">{{ 'l-dt-entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            </totvs-grid>
+        </div>
+    </div>    
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="copyItemsController.confirm()">{{ 'l-confirmar' | i18n : [] : 'dts/mpd' }}</button>    
+    <button class="btn btn-warning" ng-click="copyItemsController.close()">{{ 'l-close' | i18n : [] : 'dts/mpd' }}</button>
+</div>

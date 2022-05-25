@@ -1,0 +1,53 @@
+<totvs-modal-header>
+    {{ controller.headerTitle | i18n }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-page-content style="border:0px">           
+        <totvs-page-detail style="padding-top:0px">
+	            <totvs-field
+	                totvs-select
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+			        ng-model="controller.pendenciaPadrao"
+                    ng-if="controller.estadoOm != 3"
+			        select-id="cd-pend-padr"
+			        id="cd-pend-padr"
+			        select-description="descricao"
+			        select-service="mmi.pendencia.zoom"
+			        zoom-service="mmi.pendencia.zoom"
+			        return-object="select-id"
+			        label="{{ 'l-holdover' | i18n }}"
+			        required
+			        canclean="undefined">
+                </totvs-field>              
+                <field
+                	ng-if="controller.estadoOm == 3"
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    type="textarea"
+                    ng-model="controller.narrativa"
+                    maxlength="2000"
+                    rows="4"
+                    autofocus>
+                    <label class="field-label">{{ 'l-narrative' | i18n }}</label>
+                </field>
+                <field
+                	ng-if="controller.estadoOm != 3"
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    type="textarea"
+                    ng-model="controller.narrativa"
+                    maxlength="2000"
+                    rows="4">
+                    <label class="field-label">{{ 'l-narrative' | i18n }}</label>
+                </field>
+		</totvs-page-detail>
+				
+	</totvs-page-content>
+	
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="controller.cancel()">{{ 'l-cancel' | i18n }}</button>
+    <button ng-if="controller.estadoOm != 3" type="button" class="btn btn-primary" data-ng-click="controller.suspend()">{{ 'l-suspend' | i18n }}</button>
+    <button ng-if="controller.estadoOm == 3" type="button" class="btn btn-primary" data-ng-click="controller.reactivate()">{{ 'l-reactivate' | i18n }}</button>
+</totvs-modal-footer>

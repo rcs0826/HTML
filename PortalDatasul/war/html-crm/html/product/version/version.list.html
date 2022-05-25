@@ -1,0 +1,65 @@
+<totvs-page-child type="list">
+
+	<br/>
+
+	<totvs-page-content class="crm-tab">
+
+		<div class="row">
+
+			<div class="col-xs-10">
+				<h3 style="margin-top: 0px;">
+					{{ 'nav-version' | i18n: []: 'dts/crm' }} ({{ (controller.model.ttProdutoSuporteVersao  && controller.model.ttProdutoSuporteVersao.length) ? controller.model.ttProdutoSuporteVersao.length : 0 }})
+				</h3>
+			</div>
+			<totvs-page-header>
+				<totvs-page-header-operation>
+
+					<totvs-page-header-operation-action>
+						<action icon="glyphicon-plus"
+								ng-click="controller.addVersion();">
+							{{ 'btn-add' | i18n: []: 'dts/crm' }}
+						</action>
+					</totvs-page-header-operation-action>
+
+				</totvs-page-header-operation>
+			</totvs-page-header>
+		</div>
+
+		<!--totvs-divider></totvs-divider-->
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-version' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.model.ttProdutoSuporteVersao || controller.model.ttProdutoSuporteVersao.length <= 0">
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addVersion();">
+				<span class="glyphicon glyphicon-plus"></span>
+				<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+			</button>
+		</totvs-page-alert>
+
+		<div class="crm-tab"
+			 ng-if="controller.model.ttProdutoSuporteVersao.length">
+
+			<div class="row crm-tab-item"
+				 ng-repeat="version in controller.model.ttProdutoSuporteVersao">
+
+				<div class="col-xs-10 overflow-ellipsis">
+					{{ version.nom_vers_produt }}
+				</div>
+
+				<div class="col-xs-2 text-right">
+					<a class="clickable"
+					   ng-click="controller.removeVersion(version, $index);">
+						<span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+						<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+					</a>
+				</div>
+
+			</div>
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

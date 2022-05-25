@@ -1,0 +1,111 @@
+<totvs-page-child type="list">
+
+	<br/>
+
+	<totvs-page-content class="crm-tab">
+
+		<div class="row">
+
+			<div class="col-xs-9">
+				<h3 style="margin: 0 0 0 15px;">
+					{{ 'nav-user' | i18n: []: 'dts/crm' }} ({{ controller.selectedAction.ttUsuario.length || 0 }})
+				</h3>
+			</div>
+
+			<div class="col-xs-3">
+				<div class="pull-right" style="margin: 0 15px 0 0;">
+					<button type="button"
+							class="btn btn-primary"
+							ng-model="controller.selectedUsers"
+							ng-change="controller.addActionUser(controller.selectedAction, controller.selectedUsers);"
+							zoom
+							zoom-multiple
+							zoom-service="crm.crm_usuar.zoom">
+						<span class="glyphicon glyphicon-plus"></span>
+						<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+					</button>
+				</div>
+			</div>
+
+			<div class="col-xs-12">
+				<totvs-divider></totvs-divider>
+			</div>
+
+		</div>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-campaign-action-user' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.selectedAction.ttUsuario || controller.selectedAction.ttUsuario.length <= 0">
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-model="controller.selectedUsers"
+					ng-change="controller.addActionUser(controller.selectedAction, controller.selectedUsers);"
+					zoom
+					zoom-multiple
+					zoom-service="crm.crm_usuar.zoom">
+				<span class="glyphicon glyphicon-plus"></span>
+				<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+			</button>
+		</totvs-page-alert>
+
+		<div class="crm-tab"
+			 ng-if="controller.selectedAction.ttUsuario.length">
+
+			<div class="row crm-tab-item header">
+				<strong>
+					<div class="col-xs-2 col-sm-2 col-md-1">
+						{{ 'l-default' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-sm-2 col-md-2 hidden-xs">
+						{{ 'l-user-login' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-xs-7 col-sm-5 col-md-7">
+						{{ 'l-name' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-xs-2 col-sm-3 col-md-2">
+						{{ 'l-group' | i18n: []: 'dts/crm' }}
+					</div>
+				</strong>
+			</div>
+
+			<div class="row crm-tab-item hover"
+				 ng-repeat="user in controller.selectedAction.ttUsuario">
+				<div class="col-xs-2 col-sm-2 col-md-1">
+					<span class="glyphicon glyphicon-star crm-starred-default"
+						  ng-if="user.log_livre_1 === true">
+					</span>
+					<span class="glyphicon glyphicon-star-empty clickable"
+						  ng-if="user.log_livre_1 === false"
+						  ng-click="controller.setActionUserDefault(controller.selectedAction, user);">
+					</span>
+				</div>
+
+				<div class="col-sm-2 col-md-2 hidden-xs overflow-ellipsis">
+					{{ user.cod_usuario }}
+				</div>
+
+				<div class="col-xs-7 col-sm-5 col-md-7 overflow-ellipsis">
+					{{ user.nom_usuar }}
+				</div>
+
+				<div class="col-xs-2 col-sm-2 col-md-1 overflow-ellipsis">
+					{{ (user.log_grp_usuar === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</div>
+
+				<div class="col-sm-1 text-right">
+					<a class="clickable"
+					   ng-click="controller.removeActionUser(controller.selectedAction, user, $index);">
+						<span class="visible-xs-inline visible-sm-inline glyphicon glyphicon-trash"></span>
+						<span class="hidden-xs hidden-sm">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+					</a>
+				</div>
+			</div>
+
+			<br/>
+
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

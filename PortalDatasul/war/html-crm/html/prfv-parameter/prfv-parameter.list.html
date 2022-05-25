@@ -1,0 +1,148 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb>{{ 'nav-prfv-parameter' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'nav-prfv-parameter' | i18n: []: 'dts/crm' }}"
+									 total="{{ controller.listOfParametersCount }}"
+									 settings="controller.userSettings();">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<totvs-page-header-operation-action>
+					<action icon="glyphicon-plus"
+							ng-click="controller.addEdit();">
+						{{ 'btn-new-prfv-parameter' | i18n: []: 'dts/crm' }}
+					</action>
+				</totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+													ng-submit="controller.search()"
+													ng-model="controller.quickSearchText">
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+			<totvs-page-disclaimers disclaimer-list="controller.disclaimers"
+									ng-click="controller.removeDisclaimer"
+									ng-if="controller.disclaimers.length > 0">
+			</totvs-page-disclaimers>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}"
+						  ng-if="controller.listOfParameters.length <= 0">
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addEdit();">
+				<span class="glyphicon glyphicon-plus"></span>
+				&nbsp;&nbsp;{{ 'btn-new-prfv-parameter' | i18n: []: 'dts/crm' }}
+			</button>
+		</totvs-page-alert>
+
+		<totvs-list-item id="item{{ item.num_id }}"
+						 ng-repeat="item in controller.listOfParameters">
+
+			<totvs-list-item-header>
+
+				<totvs-list-item-title>
+					<a href="#/dts/crm/prfv-parameter/detail/{{ item.num_id }}">
+						{{ item.des_prfv}}
+					</a>
+				</totvs-list-item-title>
+
+				<totvs-list-item-action limit-primary-action="3">
+
+					<action icon="glyphicon glyphicon-play"
+							ng-click="controller.execute(item);">
+						{{ 'btn-execute' | i18n: []: 'dts/crm' }}
+					</action>
+
+					<action icon="glyphicon-pencil"
+							ng-click="controller.addEdit(item)">
+						{{ 'btn-edit' | i18n: []: 'dts/crm' }}
+					</action>
+
+					<action icon="glyphicon-trash"
+							ng-click="controller.remove(item)">
+						{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+					</action>
+
+				</totvs-list-item-action>
+
+			</totvs-list-item-header>
+
+			<totvs-list-item-content>
+
+				<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3"
+					  title="{{ 'l-font' | i18n: []: 'dts/crm' }}"
+					  value="{{ controller.sources[item.idi_fonte_prfv  - 1].nom_fonte }}"
+					  value-break="false">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3"
+					  title="{{ 'l-prfv-evaluate-type' | i18n: []: 'dts/crm' }}"
+					  value="{{ controller.types[item.idi_tip_calc_prfv  - 1].nom_tipo }}"
+					  value-break="false">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3"
+					  title="{{ 'l-prfv-band' | i18n: []: 'dts/crm' }}"
+					  value="{{ item.ttPRFVFaixa.des_faixa_prfv }}"
+					  value-break="false">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3"
+					  title="{{ 'l-public' | i18n: []: 'dts/crm' }}"
+					  value="{{ item.ttPublico.nom_public_alvo }}"
+					  value-break="false">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3"
+					  title="{{ 'l-potential' | i18n: []: 'dts/crm' }}"
+					  value="{{ item.ttPotencialidade.nom_potencd }}"
+					  value-break="false">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3"
+					  title="{{ 'l-posterior-recency' | i18n: []: 'dts/crm' }}"
+					  value="{{ item.dat_recenc_poster_a | date : ('l-date-format' | i18n: []: 'dts/crm') }}"
+					  value-break="false">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3"
+					  title="{{ 'l-recency-weight' | i18n: []: 'dts/crm' }}"
+					  value="{{ item.qti_recenc_poster_a }}"
+					  value-break="false">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3"
+					  title="{{ 'l-last-execution' | i18n: []: 'dts/crm' }}"
+					  value="{{ item.cod_livre_1 | date : ('l-date-format' | i18n: []: 'dts/crm') }}"
+					  value-break="false">
+				</totvs-list-item-info>
+
+			</totvs-list-item-content>
+
+		</totvs-list-item>
+
+		<totvs-list-pagination ng-click="controller.search(true);"
+							   ng-if="controller.listOfParameters.length < controller.listOfParametersCount && controller.listOfParameters.length">
+		</totvs-list-pagination>
+
+	</totvs-page-content>
+
+</totvs-page>

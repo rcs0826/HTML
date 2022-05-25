@@ -1,0 +1,72 @@
+<style type="text/css">
+    .status-1 {
+        background-color: #fa2a00 !important;
+    }
+    .status-2 {
+        background-color: #56a642 !important;
+    }
+</style>
+<totvs-modal-header>
+	{{:: 'l-sended-solicitations' | i18n: []: 'dts/mcc' }} ({{controller.model.purchOrderLineNumber}})
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <div ng-if="controller.model.sendsOfQuotation.length <= 0" class="alert alert-info" role="alert" style="margin-bottom: 5px">
+        {{ 'l-msg-not-sended-solic' | i18n: []: 'dts/mcc' }}
+    </div>
+    <totvs-page-child type="list">
+        <totvs-list-item ng-repeat="send in controller.model.sendsOfQuotation" totvs-custom-element="customSendedProcessQuotation_listSends">
+            <totvs-list-item-header>
+                <totvs-list-item-title title="{{send['seq']}} - {{send['dat-envio'] | date :'dd/MM/yyyy'}}" />
+            </totvs-list-item-header>          
+            <totvs-list-item-content>
+	            <totvs-list-item-info
+	                title="{{ 'l-validity' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-12 col-sm-12"
+	                value="">
+                    <span ng-class="send['statusClass']" class="badge">
+                        {{ 'l-from-label' | i18n: []: 'dts/mcc' }} {{send['dtm-liber'] | date :'dd/MM/yyyy HH:mm'}}
+                           {{ 'l-to-mcc' | i18n: []: 'dts/mcc' }} {{send['dtm-expirac'] | date :'dd/MM/yyyy HH:mm'}}
+                    </span>
+	            </totvs-list-item-info>
+            </totvs-list-item-content>
+            <totvs-list-item-content-detail>
+                <div class="col-xs-12">
+                    <h5>{{ 'l-vendors-solic' | i18n: []: 'dts/mcc' }}</h5>   
+                </div>
+                <div class="col-xs-12">
+                    <totvs-list-item ng-repeat="itemSend in ::controller.model.sendsOfItemQuotation"  ng-if="itemSend['seq'] == send['seq']">
+                        <totvs-list-item-header>
+                            <totvs-list-item-title title="{{itemSend['cdn-fornec']}} - {{itemSend['nome-abrev']}}" 
+                                                   class="col-xs-10 col-sm-8">
+                            </totvs-list-item-title> 
+                            
+                            <totvs-list-item-action limit-primary-action="2" class="col-xs-2 col-sm-4">
+                                <action icon="glyphicon-list-alt" class="btn-default" tooltip="{{ 'l-to-detail' | i18n }}" ng-click="controller.onDetailSended(itemSend['cdd-solicit'], controller.model.purchOrderLineNumber,itemSend['cdn-fornec'],itemSend['seq'])">{{ 'l-to-detail' | i18n }}</action>
+                            </totvs-list-item-action>
+                        </totvs-list-item-header>
+                       
+                        <totvs-list-item-info class="col-xs col-sm-6 col-md-6"
+                            title="{{ 'l-name' | i18n}}"
+                            value="{{itemSend['nome-emit']}}">
+                        </totvs-list-item-info>
+                       
+                        <totvs-list-item-info class="col-xs col-sm-6 col-md-6"
+                            title="{{ 'l-cnpj-cpf' | i18n}}"
+                            value="{{itemSend['cgc']}}">
+                        </totvs-list-item-info>
+                       
+                        <totvs-list-item-info class="col-xs col-sm-12 col-md-12"
+                            title="{{ 'l-email-to' | i18n}}"
+                            value="{{itemSend['des-e-mail']}}">
+                        </totvs-list-item-info>
+                    </totvs-list-item>
+                </div>
+            </totvs-list-item-content-detail>     
+        </totvs-list-item>       
+    </totvs-page-child>
+</totvs-modal-body>
+
+<totvs-modal-footer>	
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-close' | i18n: []: 'dts/mcc' }}</button> 	
+</totvs-modal-footer>

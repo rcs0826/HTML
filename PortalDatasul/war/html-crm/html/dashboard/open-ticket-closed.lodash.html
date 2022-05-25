@@ -1,0 +1,42 @@
+<div ng-controller="crm.dashboard.open-ticket-closed.controller as controller">
+	<totvs-widget>
+		<crm-totvs-widget-header refresh="controller.refresh()"
+							 settings="controller.showConfig()"
+							 title="{{'l-ticket-open-closed' | i18n : [] : 'dts/crm/' }}">
+		</crm-totvs-widget-header>
+
+		<totvs-widget-body>
+			<p style="text-align:center;margin:0px">{{ controller.title }}</p>
+			<div style="max-height:282px;">
+				<div ng-if="controller.series" style="height:100%">
+					<crm-totvs-chart t-id="open-ticket-closed"
+						t-options="controller.options"
+						t-type-chart="line"
+						t-on-click="controller.onClickData"
+						t-series="controller.series"
+						t-categories="controller.categories">
+					</crm-totvs-chart>
+				</div>
+			</div>
+		</totvs-widget-body>
+
+		<totvs-widget-footer>
+			<crm-totvs-widget-footer-actions>
+				<action ng-click="controller.onClickDetail()">{{ 'l-detail' | i18n : [] : 'dts/crm/'}}</action>
+
+				<% if ((!data["btn-new-ticket"] || data["btn-new-ticket"].log_visivel === true)) { %>
+				<action ng-click="controller.openTicket()">{{ 'btn-new-ticket' | i18n : [] : 'dts/crm/'}}</action>
+				<% } %>
+
+			</crm-totvs-widget-footer-actions>
+			<div>
+				<i class="glyphicon glyphicon-user hidden-xs pull-right"
+				   style="padding:2px 6px;"
+				   ng-if="controller.accountSelected"
+				   tooltip-placement="bottom"
+				   tooltip-html="controller.tooltip">
+				</i>
+			</div>
+		</totvs-widget-footer>
+	</totvs-widget>
+</div>

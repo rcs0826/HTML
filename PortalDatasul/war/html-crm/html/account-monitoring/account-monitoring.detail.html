@@ -1,0 +1,186 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/account-monitoring/">{{ 'nav-account-monitoring' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ controller.model.cod_livre_1 }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action on-back-link="#/dts/crm/account-monitoring/"
+													on-edit="controller.onEdit"
+													on-remove="controller.onRemove"
+													hide-actions="true">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}"
+						  ng-if="(controller.model | isUndefined)">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-show="controller.model | isDefined">
+
+			<div class="col-xs-12 no-gutter">
+				<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ controller.model.cod_livre_1 }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-transfer-accounts' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ (controller.model.log_transf_cta === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-monitoring-type' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ controller.model.ttTipo.nom_tipo }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-filter' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					<span ng-if="controller.model.ttTipo.num_id === 1">{{ controller.model.ttFiltro.nom_hier_time }}</span>
+					<span ng-if="controller.model.ttTipo.num_id === 2">{{ controller.model.ttFiltro.nom_grp_usuar }}</span>
+					<span ng-if="controller.model.ttTipo.num_id === 3">{{ controller.model.ttFiltro.nom_grp_clien }}</span>
+				</totvs-page-detail-info>
+			</div>
+
+			<div class="col-xs-12 no-gutter">
+				<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-segmentation' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ controller.model.ttSegmentacao.nom_segmtcao_public }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-days-monitoring' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ controller.model.num_dias }}
+				</totvs-page-detail-info>
+			</div>
+			<div class="col-xs-12 no-gutter">
+				<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-notification-user-group' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ controller.model.ttGrupo.nom_grp_usuar }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-transfer-user' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ controller.model.ttUsuario.nom_usuar }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-email-layout' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ controller.model.ttLayout.nom_layout }}
+				</totvs-page-detail-info>
+			</div>
+			<div class="col-xs-12 crm-group-accordion">
+
+				<totvs-divider style="margin-top: 0px; margin-bottom: 10px;"></totvs-divider>
+
+				<accordion close-others="false">
+
+					<accordion-group is-open="controller.group.monitoring.open"
+									 class="crm-panel">
+						<accordion-heading>
+							<div class="row">
+								<div class="col-xs-12">
+									{{ 'l-monitoring' | i18n: []: 'dts/crm' }}
+									<i class="pull-right glyphicon"
+									   ng-class="{'glyphicon-chevron-down' :  controller.group.monitoring.open,
+												  'glyphicon-chevron-right': !controller.group.monitoring.open}">
+									</i>
+								</div>
+							</div>
+						</accordion-heading>
+
+						<div class="col-xs-12 no-gutter">
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-enabled-email' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ (controller.model.log_email_1 === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-sales-order' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ (controller.model.log_ped_cotac === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-ticket' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ (controller.model.log_ocor === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-task' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ (controller.model.log_tar === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-history' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ (controller.model.log_histor === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-opportunity' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ (controller.model.log_oportun_vda === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-account' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ (controller.model.log_cta === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-sales-simulation' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ (controller.model.log_plano === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-cotation' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ (controller.model.log_cotac === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+							</totvs-page-detail-info>
+
+						</div>
+
+					</accordion-group>
+
+				</accordion>
+
+				<totvs-divider style="margin-top: 10px;"></totvs-divider>
+
+			</div>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

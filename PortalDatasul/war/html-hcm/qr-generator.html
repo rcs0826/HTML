@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Totvs QR Code Generator</title>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+      integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4"
+      crossorigin="anonymous"
+    />
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png" />
+
+    <style>
+      @font-face {
+        font-family: Orkney;
+        src: url('assets/fonts/orkney-regular.woff2') format('woff2'),
+          url('assets/fonts/orkney-regular.woff') format('woff');
+        font-weight: normal;
+      }
+      @font-face {
+        font-family: Orkney;
+        src: url('assets/fonts/orkney-bold.woff2') format('woff2'), url('assets/fonts/orkney-bold.woff') format('woff');
+        font-weight: bold;
+      }
+
+      .new-font {
+        font-family: 'Orkney';
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      body .qr {
+        margin: 0 auto;
+      }
+
+      h2 {
+        font-weight: 600;
+        font-size: 1.4em;
+      }
+
+      .form-qr-code {
+        background: #ffffff url(assets/img/white-squares.gif);
+        background-size: cover;
+        height: 100vh;
+        position: relative;
+      }
+
+      .form-qr-code h2 {
+        color: #302462;
+        margin-bottom: 32px;
+      }
+
+      .share-qr-code {
+        background: #0c9abe url(assets/img/blue-stripes.gif);
+        background-size: cover;
+        height: 100vh;
+        display: none;
+        position: relative;
+      }
+
+      .share-qr-code h2 {
+        color: #ffffff;
+        margin-bottom: 32px;
+      }
+
+      .share-qr-code label {
+        color: #ffffff;
+      }
+
+      .qr-actions {
+        margin-top: 20px;
+      }
+
+      img {
+        border-radius: 12px;
+      }
+
+      .container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .invert-logo-color {
+        filter: brightness(3);
+      }
+
+      .btn-primary {
+        color: #fff;
+        background: linear-gradient(to bottom right, #673ab7 0%, #9b129b 100%);
+        padding: 20px 30px;
+        border-radius: 50px;
+        border: none;
+        height: 64px;
+      }
+
+      .btn-primary:hover,
+      .btn-primary:not(:disabled):not(.disabled):active {
+        color: #fff;
+        background: linear-gradient(to bottom right, #9b129b 0%, #d5590d 100%);
+        box-shadow: rgba(155, 18, 155, 0.5) 0px 5px 20px;
+        transition: ease-in-out 0.5s;
+        border: none;
+      }
+
+      .btn-link,
+      .btn-link:hover,
+      .btn-link:not(:disabled):not(.disabled):active {
+        color: #fff;
+      }
+
+      @media (min-width: 1200px) {
+        .form-qr-code .container,
+        .share-qr-code .container {
+          width: 480px;
+        }
+      }
+
+      .appear-1 {
+        animation: firstsight 1.5s linear;
+        animation-timing-function: ease-in-out;
+      }
+      .appear-2 {
+        animation: firstsight 2s linear;
+        animation-timing-function: ease-in-out;
+      }
+      .appear-3 {
+        animation: firstsight 2.5s linear;
+        animation-timing-function: ease-in-out;
+      }
+
+      @keyframes firstsight {
+        0% {
+          opacity: 0;
+          position: relative;
+          top: 40px;
+        }
+        50% {
+          opacity: 0;
+          position: relative;
+          top: 20px;
+        }
+        100% {
+          opacity: 1;
+          position: relative;
+          top: 0px;
+        }
+      }
+
+      .numbers {
+        font-variant-numeric: tabular-nums;
+        -moz-font-feature-settings: 'tnum';
+        -webkit-font-feature-settings: 'tnum';
+        font-feature-settings: 'tnum';
+      }
+
+      .logo {
+        text-align: center;
+        width: 100%;
+        position: absolute;
+        bottom: 3px;
+      }
+
+      .qr-code-container {
+        padding: 0px 40px;
+      }
+
+      @media (min-width: 576px) {
+        h2 {
+          font-weight: 600;
+          font-size: 34px;
+        }
+      }
+
+      .img-qr {
+        max-width: 100%;
+      }
+
+      @media (max-height: 480px) {
+        .form-qr-code {
+          height: 530px;
+        }
+
+        .share-qr-code {
+          height: 0 auto;
+        }
+      }
+
+      @media (max-height: 600px) and (min-width: 576px) {
+        .logo img {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="new-font">
+    <div class="form-qr-code" id="qr-values">
+      <form action="#qr-share">
+        <div class="container">
+          <h2 id="pageTitle" class="text-center appear-1">Configurar o QR Code</h2>
+          <div class="form-group appear-2">
+            <label class="form-control-label" for="url"
+              >URL
+              <small id="urlRequired" class="text-muted display-none"></small>
+            </label>
+            <input class="form-control" type="text" id="url" required />
+          </div>
+          <div class="form-group appear-2">
+            <label class="form-control-label" for="rest-url"
+              >Rest URL
+              <small id="urlRequired" class="text-muted display-none">(Somente para Protheus - Opcional)</small>
+            </label>
+            <input class="form-control" type="text" id="rest-url" required />
+          </div>
+          <div class="form-group appear-2">
+            <label class="form-control-label" for="environmentId"
+              >Identificador
+              <small id="environmentIdRequired" class="text-muted display-none"></small>
+            </label>
+            <input class="form-control" type="text" id="environmentId" required />
+          </div>
+          <div class="form-group appear-2">
+            <label class="form-control-label" for="environmentName"
+              >Ambiente
+              <small id="environmentNameRequired" class="text-muted display-none"></small>
+            </label>
+            <input class="form-control" type="text" id="environmentName" required />
+          </div>
+          <div class="text-center appear-3">
+            <a href="#qr-share" class="btn btn-primary toscroll" id="btn-generate" onclick="GenerateQRCode();"
+              >Gerar QR Code</a
+            >
+          </div>
+        </div>
+      </form>
+      <div class="logo d-none d-sm-block"><img src="assets/img/totvs.png" /></div>
+    </div>
+
+    <div class="share-qr-code" id="qr-share">
+      <div class="container text-center">
+        <h2 class="text-center appear-3">Agora é só compartilhar</h2>
+        <div class="qr-code-container mx-auto appear-1">
+          <img class="img-qr" id="imgQrCode" crossorigin="anonymous" />
+        </div>
+        <div class="qr-actions text-center appear-2">
+          <a id="btn-topo" href="#qr-values" class="btn btn-link toscroll">Voltar ao topo e ajustar código</a>
+          <a
+            id="downloadQrCode"
+            href=""
+            class="btn btn-primary"
+            data-downloadurl=""
+            download="qr-code"
+            onclick="ClickDownload()"
+            >Baixar</a
+          >
+        </div>
+      </div>
+      <div class="logo d-none d-sm-block invert-logo-color"><img src="assets/img/totvs.png" /></div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      /*Scroll transition to anchor*/
+      $('a.toscroll').on('click', function (e) {
+        var url = e.target.href;
+        var hash = url.substring(url.indexOf('#') + 1);
+        $('html, body').animate(
+          {
+            scrollTop: $('#' + hash).offset().top,
+          },
+          1000,
+        );
+        return false;
+      });
+
+      function GenerateQRCode() {
+        let urlComponent = $('#url'),
+          restUrlComponent = $('#rest-url'),
+          environmentIdComponent = $('#environmentId'),
+          environmentNameComponent = $('#environmentName');
+
+        if (urlComponent.val() == '') {
+          $('#urlRequired').removeClass('display-none');
+          urlComponent.focus();
+          $('#qr-share').hide();
+          return;
+        } else if (environmentIdComponent.val() == '') {
+          $('#environmentIdRequired').removeClass('display-none');
+          environmentIdComponent.focus();
+          $('#qr-share').hide();
+          return;
+        } else if (environmentNameComponent.val() == '') {
+          $('#environmentNameRequired').removeClass('display-none');
+          environmentNameComponent.focus();
+          $('#qr-share').hide();
+          return;
+        } else {
+          $('#qr-share').show();
+        }
+
+        var url = urlComponent.val();
+        var restUrl = restUrlComponent.val();
+        var environmentId = environmentIdComponent.val();
+        var environmentName = environmentNameComponent.val();
+        var user = '';
+
+        var qrcodeText = environmentId + '|' + environmentName + '|' + url + '|' + user + '|' + restUrl;
+
+        console.log('Texto utilizado para gerar QRCode : ' + qrcodeText);
+
+        var imgQrCode =
+          'https://chart.googleapis.com/chart?cht=qr&chs=350x350&chl=' + encodeURI(qrcodeText) + '&choe=UTF-8';
+        $('#imgQrCode').attr('src', imgQrCode);
+      }
+
+      function ClickDownload() {
+        var imgEl = $('#imgQrCode').get(0);
+        var canvas = document.createElement('canvas');
+        canvas.width = imgEl.width * 1;
+        canvas.height = imgEl.height * 1;
+        var context = canvas.getContext('2d');
+        context.drawImage(imgEl, 0, 0);
+        var downloadUrl = canvas.toDataURL();
+        $('#downloadQrCode').attr('href', downloadUrl);
+        $('#downloadQrCode').attr('data-downloadurl', 'image/png:qr-code.png:' + downloadUrl);
+      }
+    </script>
+  </body>
+</html>

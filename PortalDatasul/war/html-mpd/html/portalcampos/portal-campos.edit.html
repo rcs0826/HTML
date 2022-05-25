@@ -1,0 +1,250 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-initial-page' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalconfigpdp/">{{ 'l-portal-config-clien-rep' | i18n }}</breadcrumb>
+            <breadcrumb>{{ 'l-portal-campos' | i18n }}</breadcrumb>                        
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            <totvs-page-header-title title="{{ 'l-config-campos' | i18n }}"></totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 operations">
+                    <button type="button" class="btn btn-default" ng-click="controller.openCopyModal()">
+                        <span class="glyphicon glyphicon-copy" style="margin-right: 4px;"></span>
+
+                        {{ 'l-copy-reg' | i18n }}
+                    </button>
+                </div>
+
+                <totvs-page-header-operation-action hide-save-new='true'></totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+        <totvs-page-form>
+            <totvs-tab-content-transclude>
+                <totvs-tabset type="tabs">
+                    <totvs-tab heading="{{ 'l-order' | i18n }}" ng-click="controller.selectTab(1)">
+                        <fieldset>
+                            <div class="list-group col-lg-3 col-md-3 col-sm-4" style="margin-top: 5px;">
+                                <a
+                                    type="button"
+                                    style="cursor:pointer"
+                                    class="list-group-item"
+                                    ng-repeat="listTables in controller.tables"
+                                    ng-click="controller.clickListButton(listTables.c_table,false);"
+                                    ng-class="{ 'select-table-row':listTables.$selected == true }"
+                                >
+                                    {{ listTables.c_label }}
+                                   
+                                    <i
+                                        class="glyphicon glyphicon-question-sign pull-right hidden-xs"
+                                        tooltip-placement="right"
+                                        tooltip-html="listTables.image"
+                                    >
+                                    </i>
+                                </a>
+                            </div>
+
+                            <div class="col-lg-9 col-md-9 col-sm-7">
+                                <div ng-animate="'animate-if'">
+                                    <fieldset>
+                                        <div class="row" style="margin-top: 10px; font-weight: bold;">
+                                                <div class="col-xs-12 col-sm-5 col-xs-5">{{ 'l-field' | i18n }}</div>
+
+                                                <div>
+                                                    <div
+                                                        class="btn-group pull-right"
+                                                        style="margin-bottom: 0px; margin-top: -5px; margin-right: 15px;  margin-left: 0px;"
+                                                    >
+                                                        <label class="btn btn-default" style="display: flex; align-items: center;">
+                                                            <input
+                                                                type="checkbox"
+                                                                style="margin: 0px 0 0;"
+                                                                ng-change="controller.setQuickAllFields();"
+                                                                ng-model="controller.showAllFields"
+                                                                class="ng-valid ng-dirty ng-valid-parse ng-touched"
+                                                            >
+
+                                                            <span class="ng-binding" style="margin-left: 5px;">{{'l-show-all' | i18n}}</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xs-12 col-sm-2 col-xs-2 pull-right" style="margin-right: 0px;">
+                                                    {{ 'l-visible' | i18n }}
+
+                                                    <i
+                                                        class="glyphicon glyphicon-question-sign"
+                                                        tooltip-placement="left"
+                                                        tooltip-html="controller.help"
+                                                    >
+                                                    </i>
+                                                </div>
+                                        </div>
+
+                                        <div ng-nestable ng-model="controller.listFields">
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-5 name">
+                                                    {{ $item['c-label'] }}
+                                                    <span ng-show="$item['obrigatorio']" style="color: red; font-weight: bold;">*</span>
+                                                </div>
+
+                                                <div
+                                                    class="btn-group btn-group-xs pull-right" 
+                                                    style="padding-right:20px" 
+                                                    ng-mousedown="controller.onMousedown($event)"
+                                                    ng-show="$item['obrigatorio'] != true"
+                                                >
+                                                    <label
+                                                        class="btn btn-default" 
+                                                        ng-class="{active: $item['i-visible'] == 2, 'select-visible' : $item['i-visible'] == 2}" 
+                                                        ng-click="$item['i-visible'] = '2'"
+                                                    >
+                                                        {{ 'l-nao-def' | i18n }}
+                                                    </label>
+                                                    <label
+                                                        class="btn btn-default" 
+                                                        ng-class="{active: $item['i-visible'] == 1, 'select-visible' : $item['i-visible'] == 1}" 
+                                                        ng-click="$item['i-visible'] = '1'"
+                                                    >
+                                                        {{ 'l-display' | i18n }}
+                                                    </label>
+                                                    <label
+                                                        class="btn btn-default" 
+                                                        ng-class="{active: $item['i-visible'] == 0, 'select-visible' : $item['i-visible'] == 0}" 
+                                                        ng-click="$item['i-visible'] = '0'"
+                                                    >
+                                                        {{ 'l-esconder' | i18n }}
+                                                    </label>
+                                                </div>
+
+                                                <div class="pull-right" ng-show="$item['obrigatorio']" style="margin-right: 22px;">
+                                                    <span>Campo obrigatório.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </totvs-tab>
+
+                    <totvs-tab
+                        heading="{{ 'l-quotations' | i18n }}" 
+                        ng-if="controller.tag == 3 || controller.tag == 4"
+                        ng-click="controller.selectTab(2)" 
+                        ng-hide="!(controller.enableQuotations && controller.perfilEnableQuotations)"
+                    >
+                        <fieldset>
+                            <div class="list-group col-lg-3 col-md-3 col-sm-4" style="margin-top: 5px;">
+                                <a
+                                    type="button"
+                                    style="cursor:pointer" 
+                                    class="list-group-item" 
+                                    ng-repeat="listTables in controller.tables"
+                                    ng-click="controller.clickListButton(listTables.c_table,true);"
+                                    ng-class="{'select-table-row':listTables.$selected == true}"
+                                >
+                                    {{ listTables.c_label }}
+
+                                    <i
+                                        class="glyphicon glyphicon-question-sign pull-right hidden-xs"
+                                        tooltip-placement="right"
+                                        tooltip-html="listTables.image"
+                                    >
+                                    </i>
+                                </a>
+                            </div>
+
+                            <div class="col-lg-9 col-md-9 col-sm-7">
+                                <div ng-animate="'animate-if'">
+                                    <fieldset>
+                                        <div class="row" style="margin-top: 10px; font-weight: bold;">
+                                                <div class="col-xs-12 col-sm-5 col-xs-5">{{ 'l-field' | i18n }}</div>
+
+                                                <div>
+                                                    <div
+                                                        class="btn-group pull-right"
+                                                        style="margin-bottom: 0px; margin-top: -5px; margin-right: 15px;  margin-left: 0px;"
+                                                    >
+                                                        <label class="btn btn-default" style="display: flex; align-items: center;">
+                                                            <input
+                                                                type="checkbox"
+                                                                style="margin: 0px 0 0;"
+                                                                ng-change="controller.setQuickAllFields();"
+                                                                ng-model="controller.showAllFields"
+                                                                class="ng-valid ng-dirty ng-valid-parse ng-touched"
+                                                            >
+
+                                                            <span class="ng-binding" style="margin-left: 5px;">{{'l-show-all' | i18n}}</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xs-12 col-sm-2 col-xs-2 pull-right" style="margin-right: 0px;">
+                                                    {{ 'l-visible' | i18n }}
+
+                                                    <i
+                                                        class="glyphicon glyphicon-question-sign"
+                                                        tooltip-placement="left"
+                                                        tooltip-html="controller.help"
+                                                    >
+                                                    </i>
+                                                </div>
+                                        </div>
+
+                                        <div ng-nestable ng-model="controller.listFields">
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-5 name">
+                                                    {{ $item['c-label'] }}
+                                                    <span ng-show="$item['obrigatorio']" style="color: red; font-weight: bold;">*</span>
+                                                </div>
+
+                                                <div
+                                                    class="btn-group btn-group-xs pull-right" 
+                                                    style="padding-right:20px" 
+                                                    ng-mousedown="controller.onMousedown($event)"
+                                                    ng-show="$item['obrigatorio'] != true"
+                                                >
+                                                    <label
+                                                        class="btn btn-default" 
+                                                        ng-class="{active: $item['i-visible'] == 2, 'select-visible' : $item['i-visible'] == 2}" 
+                                                        ng-click="$item['i-visible'] = '2'"
+                                                    >
+                                                        {{ 'l-nao-def' | i18n }}
+                                                    </label>
+                                                    <label
+                                                        class="btn btn-default" 
+                                                        ng-class="{active: $item['i-visible'] == 1, 'select-visible' : $item['i-visible'] == 1}" 
+                                                        ng-click="$item['i-visible'] = '1'"
+                                                    >
+                                                        {{ 'l-display' | i18n }}
+                                                    </label>
+                                                    <label
+                                                        class="btn btn-default" 
+                                                        ng-class="{active: $item['i-visible'] == 0, 'select-visible' : $item['i-visible'] == 0}" 
+                                                        ng-click="$item['i-visible'] = '0'"
+                                                    >
+                                                        {{ 'l-esconder' | i18n }}
+                                                    </label>
+                                                </div>
+
+                                                <div class="pull-right" ng-show="$item['obrigatorio']" style="margin-right: 22px;">
+                                                    <span>Campo obrigatório.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </totvs-tab>
+                </totvs-tabset>
+            </totvs-tab-content-transclude>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

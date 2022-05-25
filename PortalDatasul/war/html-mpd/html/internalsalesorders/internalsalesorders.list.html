@@ -1,0 +1,191 @@
+<style type="text/css" scoped>
+.page-head .page-tags .tag-7:before {
+	background-color: #703593;
+	content: "7";
+}
+.page-head .page-tags .tag-8:before {
+	background-color: #582A1A;
+	content: "8";
+}
+.page-content .list-item.tag-7 {
+	border-left: 5px solid #703593;
+}
+.page-content .list-item.tag-8 {
+	border-left: 5px solid #582A1A;
+}
+
+.k-grid-header:first-child{
+	border-radius: 0px 0px 0 0;
+}
+
+.k-grid{
+	border-radius: 0px;
+}
+
+.page-content .page-content-header {
+	border-bottom: 0px solid #e4e4e4 !important;
+}
+
+</style>
+
+<totvs-page type="list" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{:: 'l-home' | i18n}}</breadcrumb>
+			<breadcrumb>{{:: 'l-order-portfolio' | i18n}}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header style="height: 140px">
+
+			<totvs-page-header-title title="{{:: 'l-order-portfolio' | i18n}}"
+				total="{{controller.orderList.length}}/{{controller.orderListCount}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action limit-primary-action="3">
+					<action ng-if="!controller.hideNewOrder" icon="glyphicon-plus" link="#/dts/mpd/pd4000/new">
+						{{:: 'btn-new-order' | i18n: []: 'dts/mpd' }}
+					</action>
+					<action ng-if="!controller.hideEditOrder" icon="glyphicon-folder-open"
+							ng-class="{'disabled': !controller.orderListSelectedOrder}"
+							ng-click="controller.orderButton('btopen');">
+						{{:: 'l-edit-order' | i18n: []: 'dts/mpd' }}
+					</action>
+					<action ng-if="!controller.hideOrderDetails" icon="glyphicon-file"
+							ng-click="controller.orderButton('btdetail');"
+							ng-class="{'disabled': !controller.orderListSelectedOrder}">
+						{{:: 'l-order-details' | i18n: []: 'dts/mpd' }}
+					</action>
+
+					<action ng-if="!controller.hideCopyOrder" ng-click="controller.orderButton('btcopy');"
+							ng-hide="(controller.orderListSelectedOrder && controller.orderListSelectedOrder['log-cotacao'] == true)">
+						{{:: 'btn-copy-order' | i18n: []: 'dts/mpd' }}
+					</action>
+
+					<action ng-if="!controller.hidePrintOrder" ng-click="controller.orderButton('btprint');">
+						{{:: 'btn-print-order' | i18n: []: 'dts/mpd' }}
+					</action>
+
+					<action ng-if="!controller.hideOrderHistory" ng-click="controller.orderButton('bthistory');">
+						{{:: 'l-order-history' | i18n: []: 'dts/mpd' }}
+					</action>
+
+					<action ng-if="!controller.hideRemoveOrder" ng-click="controller.orderButton('btdelete');">
+						{{:: 'l-remove-order' | i18n : [] : 'dts/mpd' }}
+					</action>
+
+					<action ng-if="!controller.hideCustomerDetails" ng-click="controller.orderButton('btcustomerdetail');">
+						{{:: 'btn-customer-details' | i18n: []: 'dts/mpd' }}
+					</action>
+
+					<action ng-if="!controller.hideSelectCustomer" ng-click="controller.orderButton('btselectcustomer');"
+							ng-hide="(controller.orderListSelectedOrder && controller.orderListSelectedOrder['log-cotacao'] == true)">
+						{{:: 'btn-select-customer-order' | i18n: []: 'dts/mpd' }}
+					</action>
+
+					<action ng-if="!controller.hideNewOrderCustomer" ng-click="controller.newordertoselectedcustomer();"
+							ng-hide="(controller.orderListSelectedOrder && controller.orderListSelectedOrder['log-cotacao'] == true)">
+						{{:: 'btn-new-order-to-selected-customer' | i18n: []: 'dts/mpd' }}
+					</action>
+
+				</totvs-page-header-operation-action>
+
+			   <totvs-page-header-operation-filter
+					placeholder="{{:: 'l-fast-search-order' | i18n }}"
+					ng-submit="controller.applySimpleFilter();"
+					ng-model="controller.quickSearch"
+					advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+			<totvs-page-disclaimers
+				disclaimer-list="controller.disclaimers"
+				ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-content-header style="height: 50px">
+			<totvs-page-quick-filter filters-list="controller.quickFilters"
+									 on-select-filter="controller.setQuickFilter"
+									 filters-list-custom="controller.listOfCustomFilters"
+									 on-remove-custom="controller.removeCustomFilter"
+									 on-add-edit-custom="controller.addEditCustomFilters">
+		   </totvs-page-quick-filter>
+		</totvs-page-content-header>
+
+		<div style="margin-left: 10px; margin-right: 10px;">
+				<totvs-grid grid-data="controller.orderList"
+							grid="controller.orderListGrid"
+							grid-height="200"
+							navigatable="true"
+							editable="false"
+							auto-resize-content="true"
+							selectable="row"
+							grid-selected-item="controller.orderListSelectedOrder"
+							resizable="true"
+							reorderable="true"
+							sortable="true"
+							on-data="controller.customGridData()">
+					<totvs-grid-column field="nr-pedido" width="120">{{'l-nr-pedido' | i18n : [] : 'dts/mpd'}}
+						<template>
+							<a href="\\#/dts/mpd/internalorderdetail/{{dataItem['nr-pedido']}}">{{dataItem['nr-pedido']}}</a>
+						</template>
+					</totvs-grid-column>
+					<totvs-grid-column field="nome-abrev" width="200">
+						{{'l-customer' | i18n : [] : 'dts/mpd'}}<template>
+							<a ng-if="!dataItem['cod-id-prosp']" href="\\#/dts/mpd/internalcustomerdetail/{{dataItem['cod-emitente']}}">{{dataItem['nome-abrev']}}</a>
+							<a href="\\#/dts/crm/account/detail/{{dataItem['cod-id-prosp']}}"
+							   ng-if="dataItem['cod-id-prosp'] && dataItem['log-cotacao'] == true">
+								Lead: {{dataItem['crmAccountName']}} 										{{dataItem['crmAccountShortName'] ? '(' + dataItem['crmAccountShortName'] + ')' : ''}}
+							</a>
+						</template>
+					</totvs-grid-column>
+					<totvs-grid-column field="nr-pedcli" width="120">{{'l-nr-pedcli' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					<totvs-grid-column field="vl-tot-ped" style="text-align: right;" filter="currency : " width="150">{{'l-vl-tot-ped' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					<totvs-grid-column field="cod-sit-aval-desc" width="150">{{'l-credit-aval' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					<totvs-grid-column field="cod-sit-com-desc" width="150">{{'l-comercial-perm' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					<totvs-grid-column field="cod-sit-ped-desc" width="200">{{'l-status' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					<totvs-grid-column field="completo-desc" width="120">{{'l-order-compl-descr' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					<totvs-grid-column field="dt-emissao" filter="date : dd/MM/yyyy" width="140">{{'l-dt-emissao' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					<totvs-grid-column field="dt-entrega" filter="date : dd/MM/yyyy" width="120">{{'l-dt-entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					<totvs-grid-column field="cod-entrega" width="120">{{'l-cod-entrega-loc-entr' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					<totvs-grid-column field="no-ab-reppri" width="180">{{'l-no-ab-reppri' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					<totvs-grid-column field="siteId" width="140">{{'l-estabel' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					<totvs-grid-column field="orderAdder" width="150">{{'l-user-order-adder' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					<totvs-grid-detail size="table">
+						<div ng-controller="salesorder.internalSalesOrderItems.Controller as internalSalesOrderItemsCtrl" ng-init="internalSalesOrderItemsCtrl.getItems(dataItem);">
+							<totvs-grid grid-data="internalSalesOrderItemsCtrl.orderItemList"
+										grid-height="255"
+										navigatable="true">
+								<totvs-grid-column width="50" field="nr-sequencia">{{'l-short-sequence' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column width="150" field="it-codigo">{{'l-cod-item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column width="250" field="it-codigo-desc">{{'l-description' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column width="120" field="cod-refer">{{'l-cod-refer' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column width="120" field="qt-pedida" style="text-align: right;" filter="number : 4">{{'l-quantity' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column width="120" field="qt-atendida" style="text-align: right;" filter="number : 4">{{'l-delivered-quantity' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column width="120" field="qtd-alocar" style="text-align: right;" filter="number : 4">{{'l-qty-to-allocate' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column width="120" field="qt-alocada" style="text-align: right;" filter="number : 4">{{'l-allocated-qty' | i18n : [] : 'dts/mpd'}}</totvs-grid-column> -->
+								<totvs-grid-column width="120" field="dt-entrega" filter="date : dd/MM/yyyy">{{'l-dt-entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column width="120" field="vl-preori" style="text-align: right;" filter="number : 4">{{'l-original-price' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column width="150" field="vl-tot-it" style="text-align: right;" filter="number : 4">{{'l-vl-tot-it' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column width="150" field="cod-sit-item-desc">{{'l-status' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+							</totvs-grid>
+						</div>
+					</totvs-grid-detail>
+				</totvs-grid>
+			</div>
+		<div class="more-results" style="margin-left: 10px; margin-right: 10px; height: 50px">
+			<button ng-show="controller.orderList.length && controller.orderList.length < controller.orderListCount"
+					ng-click="controller.search(true)"
+						class="btn btn-primary col-xs-12"
+						style="padd">
+					{{'l-more' | i18n}}
+				</button>
+			</div>
+
+	</totvs-page-content>
+
+</totvs-page>

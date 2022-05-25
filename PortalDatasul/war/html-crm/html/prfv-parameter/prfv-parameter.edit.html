@@ -1,0 +1,272 @@
+<totvs-modal-header>
+	<span ng-if="!(controller.model.num_id > 0)">
+		{{ 'btn-new-prfv-parameter' | i18n: []: 'dts/crm' }}
+	</span>
+
+	<span ng-if="controller.model.num_id > 0">
+		{{ controller.model.des_prfv }}
+	</span>
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="input"
+			   ng-required="true"
+			   ng-model="controller.model.des_prfv"
+			   canclean="undefined"
+			   placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+			   maxlength="40">
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttPRFVFaixa"
+			   ng-animate="'animate-if'"
+			   ng-required="true"
+			   canclean="undefined">
+			<label>{{ 'l-prfv-band' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-placeholder-enter-range' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.des_faixa_prfv }}
+				</ui-select-match>
+				<ui-select-choices repeat="band in controller.bands track by $index"
+								   refresh="controller.getPRFVBands($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="band.des_faixa_prfv | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttTipoPRFV"
+			   canclean="undefined"
+			   ng-required="true">
+
+			<label>{{ 'l-prfv-evaluate-type' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-prfv-evaluate-type' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_tipo }}
+				</ui-select-match>
+				<ui-select-choices repeat="type in controller.types | filter: $select.search track by $index">
+					<span ng-bind-html="type.nom_tipo | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttPublico"
+			   ng-required="true"
+			   canclean="undefined">
+
+			<label>{{ 'l-public' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-placeholder-enter-public' | i18n: []: 'dts/crm'  }}">
+					{{$select.selected.nom_public_alvo}}
+				</ui-select-match>
+				<ui-select-choices repeat="public in controller.publics track by $index"
+								   refresh="controller.getPublics($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="public.nom_public_alvo | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttFontePRFV"
+			   ng-required="true"
+			   canclean="undefined">
+			<label>{{ 'l-font' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-font' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_fonte }}
+				</ui-select-match>
+				<ui-select-choices repeat="source in controller.sources  | filter: $select.search track by $index">
+					<span ng-bind-html="source.nom_fonte | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttPotencialidade"
+			   ng-required="true"
+			   canclean="undefined">
+
+			<label>{{ 'l-potential' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-placeholder-enter-potential' | i18n: []: 'dts/crm' }}">
+					{{$select.selected.nom_potencd}}
+				</ui-select-match>
+				<ui-select-choices repeat="pot in controller.potentialities track by $index"
+								   refresh="controller.getPotentialities($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="pot.nom_potencd | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+	</fieldset>
+
+	<div class="row">
+        <br>
+        <div class="crm-group-accordion">
+            <accordion close-others="false">
+
+                <accordion-group is-open="controller.group.recency.open" class="crm-panel">
+
+                    <accordion-heading>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span >{{ 'l-recency' | i18n: []:  'dts/crm' }}</span>
+                                <i class="pull-right glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  controller.group.recency.open,
+                                            'glyphicon-chevron-right': !controller.group.recency.open}">
+                                </i>
+                            </div>
+                        </div>
+                    </accordion-heading>
+
+                    <fieldset class="row">
+
+                        <totvs-field
+                            totvs-decimal
+                            ng-model="controller.model.qti_recenc_poster_a"
+                            m-dec="0"
+                            label="{{ 'l-recency-weight' | i18n: []: 'dts/crm' }}"
+                            canclean="0"
+                            placeholder="{{ 'l-recency-weight' | i18n: []: 'dts/crm' }}"
+                            v-max="8"
+                            ng-required="true">
+                        </totvs-field>
+
+                        <field type="date"
+                            placeholder="{{ 'l-posterior-recency' | i18n: []: 'dts/crm' }}"
+                            ng-model="controller.model.dat_recenc_poster_a"
+                            ng-required="true">
+                            <label>{{ 'l-posterior-recency' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+
+                    </fieldset>
+
+                </accordion-group>
+
+                <accordion-group is-open="controller.group.frequency.open" class="crm-panel">
+
+                    <accordion-heading>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span >{{ 'l-frequency' | i18n: []:  'dts/crm' }}</span>
+                                <i class="pull-right glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  controller.group.frequency.open,
+                                            'glyphicon-chevron-right': !controller.group.frequency.open}">
+                                </i>
+                            </div>
+                        </div>
+                    </accordion-heading>
+
+                    <fieldset class="row">
+
+                        <field type="date"
+                            placeholder="{{ 'l-posterior-frequency' | i18n: []: 'dts/crm' }}"
+                            ng-model="controller.model.dat_freq_poster_a"
+                            ng-required="true">
+                            <label>{{ 'l-posterior-frequency' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+
+                        <field type="select"
+                            ng-model="controller.model.ttFrequencia"
+                            ng-animate="'animate-if'"
+                            ng-required="true"
+                            ng-change="controller.onChangeFrequency();">
+                            <label>{{ 'l-frequency' | i18n: []: 'dts/crm' }}</label>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-frequency' | i18n: []: 'dts/crm' }}">
+                                    {{ $select.selected.nom_frequencia }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="frequency in controller.frequencies | filter: $select.search track by $index">
+                                    <span ng-bind-html="frequency.nom_frequencia | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+
+                            <validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+                        </field>
+
+                        <totvs-field
+                            totvs-decimal
+                            ng-model="controller.model.qti_freq_poster_a"
+                            m-dec="0"
+                            label="{{ 'l-frequency-weight' | i18n: []: 'dts/crm' }}"
+                            canclean="0"
+                            placeholder="{{ 'l-frequency-weight' | i18n: []: 'dts/crm' }}"
+                            v-max="8"
+                            ng-required="true">
+                        </totvs-field>
+
+                        <totvs-field
+                            totvs-decimal
+                            ng-model="controller.model.qti_sema"
+                            m-dec="0"
+                            label="{{ 'l-weeks' | i18n: []: 'dts/crm' }}"
+                            canclean="0"
+                            placeholder="{{ 'l-weeks' | i18n: []: 'dts/crm' }}"
+                            v-max="8"
+                            ng-disabled="controller.model.ttFrequencia.num_id !== 1"
+                            ng-required="controller.model.ttFrequencia.num_id === 1">
+                        </totvs-field>
+
+                    </fieldset>
+
+                </accordion-group>
+                <accordion-group is-open="controller.group.value.open" class="crm-panel">
+
+                    <accordion-heading>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span >{{ 'l-value' | i18n: []:  'dts/crm' }}</span>
+                                <i class="pull-right glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  controller.group.value.open,
+                                            'glyphicon-chevron-right': !controller.group.value.open}">
+                                </i>
+                            </div>
+                        </div>
+                    </accordion-heading>
+
+                    <fieldset class="row">
+                        <totvs-field
+                            totvs-decimal
+                            ng-model="controller.model.qti_val_poster_a"
+                            m-dec="0"
+                            label="{{ 'l-value-weight' | i18n: []: 'dts/crm' }}"
+                            canclean="0"
+                            placeholder="{{ 'l-value-weight' | i18n: []: 'dts/crm' }}"
+                            v-max="8"
+                            ng-required="true">
+                        </totvs-field>
+
+                        <field type="date"
+                            placeholder="{{ 'l-posterior-value' | i18n: []: 'dts/crm' }}"
+                            ng-model="controller.model.dat_val_poster_a"
+                            ng-required="true">
+                            <label>{{ 'l-posterior-value' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+                    </fieldset>
+
+                </accordion-group>
+
+            </accordion>
+        </div>
+	</div>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

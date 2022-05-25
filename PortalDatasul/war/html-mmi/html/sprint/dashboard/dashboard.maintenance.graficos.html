@@ -1,0 +1,118 @@
+<div class="row dm-border" ng-style="dashboardCtrl.obterAlturaConteudo()">
+    <totvs-tabset type="tabs" style="padding-left: 0px; padding-right: 0px; padding-top: 2px;">
+        <totvs-tab heading="{{ 'l-maintenance-order' | i18n }}">
+          <div class="row dm-clean-margin dm-box-title">
+            <div class="col-md-12 div-resumo" style="border-top-left-radius: 4px; border-top-right-radius: 4px;" >{{ 'l-sumary-by-statistics' | i18n }}</div>
+          </div>
+          <div class="row dm-clean-margin dm-box-content">
+              <totvs-grid
+                    grid="dashboardCtrl.gridDados"
+                    grid-data="dashboardCtrl.pnlDadosOm"	
+                    selectable="row"
+                    scrollable="false"
+                    navigatable="true"
+                    grid-height="290"
+                    resizable="true"
+                    auto-resize-column="false">
+                  <totvs-grid-column width="32" field="detail" style="text-align: center">
+                    <template>
+                      <!--Preventiva-->
+                      <a class="glyphicon glyphicon-chevron-right"
+                         style="cursor: pointer"
+                         data-toggle="tooltip" 
+                         title="{{ 'l-preventive-class' | i18n }}"
+                         ng-click="dashboardCtrl.classType(1)"
+                         ng-if="!dataItem.classe && dataItem.tipo === 1 && !dashboardCtrl.controlPrev"></a>
+                      <a class="glyphicon glyphicon-chevron-down" 
+                         style="cursor: pointer"
+                         data-toggle="tooltip" 
+                         title="{{ 'l-close' | i18n }}"
+                         ng-click="dashboardCtrl.classType(1)"
+                         ng-if="!dataItem.classe && dataItem.tipo === 1 && dashboardCtrl.controlPrev"></a>
+                      <!--Corretiva-->
+                      <a class="glyphicon glyphicon-chevron-right" 
+                         style="cursor: pointer"
+                         data-toggle="tooltip" 
+                         title="{{ 'l-corrective-class' | i18n }}"
+                         ng-click="dashboardCtrl.classType(2)"
+                         ng-if="!dataItem.classe && dataItem.tipo === 2 && !dashboardCtrl.controlCorretiva"></a>
+                      <a class="glyphicon glyphicon-chevron-down" 
+                         style="cursor: pointer"
+                         data-toggle="tooltip" 
+                         title="{{ 'l-close' | i18n }}"
+                         ng-click="dashboardCtrl.classType(2)"
+                         ng-if="!dataItem.classe && dataItem.tipo === 2 && dashboardCtrl.controlCorretiva"></a>
+                      <!--Preditiva-->
+                      <a class="glyphicon glyphicon-chevron-right" 
+                         style="cursor: pointer"
+                         data-toggle="tooltip" 
+                         title="{{ 'l-predictive-class' | i18n }}"
+                         ng-click="dashboardCtrl.classType(3)"
+                         ng-if="!dataItem.classe && dataItem.tipo === 3 && !dashboardCtrl.controlPreditiva"></a>
+                      <a class="glyphicon glyphicon-chevron-down" 
+                         style="cursor: pointer"
+                         data-toggle="tooltip" 
+                         title="{{ 'l-close' | i18n }}"
+                         ng-click="dashboardCtrl.classType(3)"
+                         ng-if="!dataItem.classe && dataItem.tipo === 3 && dashboardCtrl.controlPreditiva"></a>
+                      <!--Outros-->
+                      <a class="glyphicon glyphicon-chevron-right" 
+                         style="cursor: pointer"
+                         data-toggle="tooltip" 
+                         title="{{ 'l-others-class' | i18n }}"
+                         ng-click="dashboardCtrl.classType(4)"
+                         ng-if="!dataItem.classe && dataItem.tipo === 4 && !dashboardCtrl.controlOutros"></a>
+                      <a class="glyphicon glyphicon-chevron-down" 
+                         style="cursor: pointer"
+                         data-toggle="tooltip" 
+                         title="{{ 'l-close' | i18n }}"
+                         ng-click="dashboardCtrl.classType(4)"
+                         ng-if="!dataItem.classe && dataItem.tipo === 4 && dashboardCtrl.controlOutros"></a>
+                    </template>
+                  </totvs-grid-column>
+                  <totvs-grid-column width="160" title="{{ 'l-statistic' | i18n }}">
+                    <template>
+                      <div style="width: 100%; display: flex;" >
+                        <div style="width: 70%">
+                          <span ng-style="dashboardCtrl.validaTamanhoFonte(dataItem.classe)">{{ dataItem.estatistica }}</span>
+                        </div>
+                        <div style="width: 30%; text-align: center;" ng-if="!dataItem.classe && dataItem.tipo < 10">
+                          <a class="glyphicon glyphicon-stats" 
+                             style="cursor: pointer"
+                             data-toggle="tooltip" 
+                             title="{{ 'l-planned-maintenance-executed-by-class' | i18n }}"
+                             ng-click="dashboardCtrl.exibirGraficoPorClasse(dataItem)"></a>
+                        </div>
+                      </div>
+                    </template>
+                  </totvs-grid-column>
+                  <totvs-grid-column field="previsto" style="text-align: right" filter="number" width="160">{{ 'l-forecasted' | i18n }}</totvs-grid-column>
+                  <totvs-grid-column field="previsto-realizado" style="text-align: right" filter="number" width="160">{{ 'l-forecasted-fulfilled' | i18n }}</totvs-grid-column>
+                  <totvs-grid-column field="perc-previsto-realizado" style="text-align: right" filter="number: 2" width="160">% {{ 'l-forecasted-fulfilled' | i18n }}</totvs-grid-column>
+                  <totvs-grid-column field="programado" style="text-align: right" filter="number" width="160">{{ 'l-scheduled' | i18n }}</totvs-grid-column>
+                  <totvs-grid-column field="programado-realizado" style="text-align: right" filter="number" width="160">{{ 'l-scheduled-fulfilled' | i18n }}</totvs-grid-column>
+                  <totvs-grid-column field="perc-programado-realizado" style="text-align: right" filter="number: 2" width="160">% {{ 'l-scheduled-fulfilled' | i18n }}</totvs-grid-column>
+            </totvs-grid>
+          </div>
+          <div class="row dm-clean-margin dm-box-title">
+            <div class="col-md-11 div-resumo" style="border-top-left-radius: 4px;">{{ 'l-planned-maintenance-executed' | i18n }}</div>
+            <div class="col-md-1 div-resumo text-right" style="border-top-right-radius: 4px;">
+              <a href="#" role="button" ng-click="dashboardCtrl.exportToPng()" title="{{ 'l-graph-export' | i18n }}">
+                <span class="glyphicon glyphicon-save-file" style="color: #777"></span>
+              </a>
+            </div>
+          </div>
+          <div class="row dm-clean-margin dm-box-content">
+            <totvs-chart t-type-chart="column"
+                         t-series="dashboardCtrl.manutencao"
+                         t-category-axis="dashboardCtrl.manutencaoCategories"
+                         t-value-axis="dashboardCtrl.manutencaoValueAxis"
+                         t-chart-tooltip="false"
+                         t-set-export="dashboardCtrl.setFnExport"
+                         class="col-md-12 dm-clean-padding"
+                         style="margin-bottom: 2px;">
+            </totvs-chart>
+          </div>
+        </totvs-tab>
+    </totvs-tabset>
+</div>

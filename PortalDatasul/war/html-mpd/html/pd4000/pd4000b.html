@@ -1,0 +1,333 @@
+<div ng-controller="salesorder.pd4000SearchItem.Controller as searchController"  totvs-custom-element="pd4000b">
+
+	<div id="loading-screen" class="overlay ng-scope" ng-if="searchController.customLoading == true">
+		<img src="assets/img/loading.gif">
+		<p class="text-center text-muted ng-binding">{{:: 'loading' | i18n : [] : 'dts/mpd'}}</p>
+	</div>
+
+	<div class="row">
+		<div style="border:0; padding: 15px;">
+
+		<div class="row">
+
+		<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+			<form ng-submit="searchController.searchButton()"><div class="input-group pull-right">
+				<input autocomplete="off" ng-click="searchController.applySelectRange($event);" type="text" class="form-control" ng-model="searchController.quickSearchText"  id="pd4000searchitem">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button" ng-click="searchController.quickSearchText = ''" tabindex="-1">
+						<span class="glyphicon glyphicon-remove"></span>
+					</button>
+					<button class="btn btn-default" type="submit" tabindex="-1">
+						<span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+					</button>
+				</span>
+			</div></form>
+		</div>
+
+		<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+			<button class="btn btn-primary" role="button" ng-click="searchController.addItensWithTimeOut(false)" tabindex="-1">
+				<span class="glyphicon glyphicon-plus"></span>
+				<span class="hidden-xs ng-binding">&nbsp;&nbsp;{{:: 'Adicionar Itens' | i18n : [] : 'dts/mpd'}}</span>
+			</button>
+
+			<a class="btn btn-default" role="button" ng-click="searchController.consigSearchItens()" tabindex="-1">
+				<span class="glyphicon glyphicon-cog"></span>
+				<span class="hidden-xs ng-binding">&nbsp;&nbsp;{{:: 'Parâmetros' | i18n : [] : 'dts/mpd'}}</span>
+			</a>
+		</div>
+		</div>
+		</div>
+
+
+	</div>
+	<div class="row">
+
+		<div class="col-sm-12" id="divSearchItemsGrid">
+						<totvs-grid
+						grid-data="searchController.listResult"
+						grid="searchController.searchItemsGrid"
+						grid-height="250"
+						navigatable="true"
+						editable="true"
+						selectable="row"
+						reorderable="true"
+						grid-options="searchController.gridOptions"
+						on-edit="searchController.itemsGridEdit(event, column)"
+						on-save="searchController.itemsGridSave(event, column, value, original, currentIndex)"
+						grid-selected-item="searchController.selectedSearchItem"
+						show-header-edit-icon="searchController.showEdit"
+						on-data="searchController.customItemsGrid()">
+				<totvs-grid-column field="it-codigo" editable="true" width="160">{{:: 'Item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<totvs-grid-column field="desc-item" editable="true" class="text-nowrap" width="350">{{:: 'Descrição' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+<% _.forEach(data, function(field) { %>
+	<% if (field.fieldName == "cod-refer") { %>
+				<totvs-grid-column field="cod-refer" editable="true" width="160">{{:: 'Referência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "qtd-disponivel") { %>
+				<totvs-grid-column field="qtd-disponivel" editable="true" width="200" filter="number : 4" style="text-align: right;">
+					<template>
+						{{dataItem['qtd-disponivel'] | number : 4}}
+						<a class="btn btn-default btn-sm" role="button" ng-click="searchController.itemStock(dataItem)">
+							<span class="glyphicon glyphicon-book"></span>
+						</a>
+					</template>
+					{{:: 'Qtde Disponível' | i18n : [] : 'dts/mpd'}}
+				</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "qt-un-fat") { %>
+				<totvs-grid-column field="qt-un-fat" editable="true" width="160" oldeditable="<%= field.fieldEnabled %>" filter="number : 4" style="text-align: right;">{{:: 'Qtde Pedida UM' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "des-un-medida") { %>
+				<totvs-grid-column field="des-un-medida" editable="true" width="120" oldeditable="<%= field.fieldEnabled %>"
+					editor="searchController.editorUM">{{:: 'UM Fatur' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "qt-pedida") { %>
+				<totvs-grid-column field="qt-pedida" editable="true" width="110" filter="number : 4" style="text-align: right;">{{:: 'Qtde Pedida' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "cod-un") { %>
+				<totvs-grid-column field="cod-un" editable="true" width="50">{{:: 'UM' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "log-usa-tabela-desconto") { %>
+				<totvs-grid-column field="log-usa-tabela-desconto" editable="true" width="110" filter="booleanI18N" oldeditable="<%= field.fieldEnabled %>">{{:: 'Usa Tab Desc' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "nr-tabpre") { %>
+				<totvs-grid-column field="nr-tabpre" editable="true" width="120"  oldeditable="<%= field.fieldEnabled %>"
+					select-id="nr-tabpre" select-service="mpd.tb-preco-inter.gridselect">{{:: 'Tab Preço' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "vl-preori") { %>
+				<totvs-grid-column field="vl-preori" editable="true" width="180" oldeditable="<%= field.fieldEnabled %>" filter="number : <%= field.fieldDecimalNumber %>" style="text-align: right;">{{:: 'Preço Original' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "vl-preori-un-fat") { %>
+				<totvs-grid-column field="vl-preori-un-fat" editable="true" width="180" filter="number : 5" style="text-align: right;">{{:: 'Preço Original UM Fat' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "val-desconto-inform") { %>
+				<totvs-grid-column field="val-desconto-inform" editable="true" width="180" oldeditable="<%= field.fieldEnabled %>">{{:: 'Desc Informado' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "des-pct-desconto-inform") { %>
+				<totvs-grid-column field="des-pct-desconto-inform" editable="true" width="100" oldeditable="<%= field.fieldEnabled %>" filter="number : 2" style="text-align: right;">{{:: '% Des Informado' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "val-pct-desconto-tab-preco") { %>
+				<totvs-grid-column field="val-pct-desconto-tab-preco" editable="true" width="100" oldeditable="<%= field.fieldEnabled %>" filter="number : 2" style="text-align: right;">{{:: '% Desc Tab Preço' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "ct-codigo") { %>
+				<totvs-grid-column field="ct-codigo" width="180" editable="true" oldeditable="<%= field.fieldEnabled %>"
+					select-id="cod_cta_ctbl" select-init="orderController.integrationAccountInit" select-service="utb.cta-ctbl-integr.zoom">{{:: 'Conta Contábil' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "sc-codigo") { %>
+				<totvs-grid-column field="sc-codigo" width="180" editable="true" oldeditable="<%= field.fieldEnabled %>"
+					select-id="cod_ccusto" select-init="orderController.costCenterInit" select-service="utb.ccusto.zoom">{{:: 'Centro Custo' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "custo-contabil") { %>
+				<totvs-grid-column field="custo-contabil" editable="true" width="180" oldeditable="<%= field.fieldEnabled %>" filter="number : 5">{{:: 'Custo Contábil' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "cod-class-fis") { %>
+				<totvs-grid-column field="classificacao-fiscal" editable="true" width="180" oldeditable="<%= field.fieldEnabled %>"
+					select-id="class-fiscal" select-service="mpd.classif-fisc.zoom">{{:: 'Class Fiscal' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "nat-operacao") { %>
+				<totvs-grid-column field="nat-operacao" editable="true" width="180" oldeditable="<%= field.fieldEnabled %>"
+					select-id="nat-operacao" select-service="mpd.natur-oper.zoom">{{:: 'Nat Operação' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "tipo-atend") { %>
+				<totvs-grid-column field="tipo-atend" editable="true" width="180" oldeditable="<%= field.fieldEnabled %>">{{:: 'Tipo Atend' | i18n : [] : 'dts/mpd'}}
+					<option id="1">{{:: 'Total' | i18n : [] : 'dts/mpd'}}</option>
+					<option id="2">{{:: 'Parcial' | i18n : [] : 'dts/mpd'}}</option>
+					<option id="3">{{:: 'Parcial Cancela Saldo' | i18n : [] : 'dts/mpd'}}</option>
+				</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "estab-atend-item") { %>
+				<totvs-grid-column field="estab-atend-item" editable="true" width="180" oldeditable="<%= field.fieldEnabled %>"
+					select-id="cod-estabel" select-service="mpd.estabelecSE.zoom">{{:: 'Estab Atend' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "cod-entrega") { %>
+				<totvs-grid-column field="cod-entrega" editable="true" width="180" oldeditable="<%= field.fieldEnabled %>"
+					select-id="cod-entrega" select-init="orderController.order['nome-abrev']" select-service="mpd.loc-entr.gridselect">{{:: 'Cód Entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "dt-entrega") { %>
+				<totvs-grid-column field="dt-entrega" editable="true" width="180" oldeditable="<%= field.fieldEnabled %>" filter="date : dd/MM/yyyy">{{:: 'Data Entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "ind-fat-qtfam") { %>
+				<totvs-grid-column field="ind-fat-qtfam-aux" editable="true" width="180" oldeditable="<%= field.fieldEnabled %>">{{:: 'UM Fat' | i18n : [] : 'dts/mpd'}}
+					<option id="1">{{:: 'Unidade do Item' | i18n : [] : 'dts/mpd'}}</option>
+					<option id="2">{{:: 'Unidade da Família' | i18n : [] : 'dts/mpd'}}</option>
+					<option id="3">{{:: 'Unidade do Faturamento' | i18n : [] : 'dts/mpd'}}</option>
+				</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "item-cli") { %>
+				<totvs-grid-column field="item-cli" editable="true" width="160">{{:: 'Item do Cliente' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+	<% if (field.fieldName == "codigo-refer") { %>
+				<totvs-grid-column field="codigo-refer" editable="true" width="160">{{:: 'Código Complementar' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+	<% } %>
+<% } )%>
+				<totvs-grid-detail size="table">
+					<div class="row" style="margin: 0;" ng-init="master = model">
+						<totvs-tabset style="padding: 0;">
+							<totvs-tab heading="{{:: 'Produtos Obrigatórios' | i18n : [] : 'dts/mpd'}}" select="orderController.select()" ng-if="dataItem.ttOrderItemSearchObrigatorio">
+								<div class="row" style="margin: 0;">
+									<div class="col-xs-12" style="padding: 5px 0 0;">
+										<totvs-grid grid-data="dataItem.ttOrderItemSearchObrigatorio"
+											grid-height="250"
+											navigatable="true"
+											editable="!orderController.orderDisabled"
+											selectable="row">
+											<totvs-grid-column field="cod-obrig" width="160">{{:: 'Item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="desc-item" class="text-nowrap" width="350">{{:: 'Descrição' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="cod-refer" width="160">{{:: 'Referência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="qtd-disponivel" width="150" filter="number : 4" style="text-align: right;">{{:: 'Qtd Disponível' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="qt-un-fat" width="160" filter="number : 4" style="text-align: right;">{{:: 'Qtd Pedida UM Fat' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="des-un-medida" width="120">{{:: 'UM Faturamento' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="qt-pedida" width="110" filter="number : 4" style="text-align: right;">{{:: 'Qtd Pedida' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="cod-un" width="50">{{:: 'UM' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="vl-preori" width="180" filter="number : 5" style="text-align: right;">{{:: 'Preço Original' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="vl-preori-un-fat" width="180" filter="number : 5" style="text-align: right;">{{:: 'Preço UM Fat' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+										</totvs-grid>
+									</div>
+								</div>
+							</totvs-tab>
+							<totvs-tab heading="{{:: 'Produtos Equivalentes' | i18n : [] : 'dts/mpd'}}" select="orderController.select()" ng-if="dataItem.ttOrderItemSearchEquivalente">
+								<div class="row" style="margin: 0;">
+									<div class="col-xs-12" style="padding: 5px 0 0;">
+										<totvs-grid grid-data="dataItem.ttOrderItemSearchEquivalente"
+											grid-height="250"
+											navigatable="true"
+											editable="!orderController.orderDisabled"
+											on-save="searchController.relatedItemsGridSave(column, value, currentIndex, master, 'ttOrderItemSearchEquivalente')"
+											selectable="row">
+											<totvs-grid-column field="cod-equiv" width="160">{{:: 'Item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="desc-item" class="text-nowrap" width="350">{{:: 'Descrição' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="cod-refer" width="160">{{:: 'Referência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="qtd-disponivel" width="150" filter="number : 4" style="text-align: right;">{{:: 'Qtd Disponível' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column width="40">
+												<template>
+													<a class="btn btn-default btn-xs" role="button"
+														ng-click="searchController.copyQtd(dataItem, 'ttOrderItemSearchEquivalente', master)">
+														<span class="glyphicon glyphicon-menu-right"></span>
+													</a>
+												</template>
+											</totvs-grid-column>
+											<totvs-grid-column field="qt-un-fat" width="160" editable="true" filter="number : 4" style="text-align: right;">{{:: 'Qtd Pedida UM Fat' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="des-un-medida" width="120">{{:: 'UM Faturamento' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="qt-pedida" width="110" filter="number : 4" style="text-align: right;">{{:: 'Qtd Pedida' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="cod-un" width="50">{{:: 'UM' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="vl-preori" width="180" filter="number : 5" style="text-align: right;">{{:: 'Preço Original' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="vl-preori-un-fat" width="180" filter="number : 5" style="text-align: right;">{{:: 'Preço UM Fat' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+										</totvs-grid>
+									</div>
+								</div>
+							</totvs-tab>
+							<totvs-tab heading="{{:: 'Produtos Cross Selling' | i18n : [] : 'dts/mpd'}}" select="orderController.select()" ng-if="dataItem.ttOrderItemSearchCrossSelling">
+								<div class="row" style="margin: 0;">
+									<div class="col-xs-12" style="padding: 5px 0 0;">
+										<totvs-grid grid-data="dataItem.ttOrderItemSearchCrossSelling"
+											grid-height="250"
+											navigatable="true"
+											editable="!orderController.orderDisabled"
+											on-save="searchController.relatedItemsGridSave(column, value, currentIndex, master, 'ttOrderItemSearchCrossSelling')"
+											selectable="row">
+											<totvs-grid-column field="cod-cross-selling" width="160">{{:: 'Item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="desc-item" class="text-nowrap" width="350">{{:: 'Descrição' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="cod-refer" width="160">{{:: 'Referência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="qtd-disponivel" width="150" filter="number : 4" style="text-align: right;">{{:: 'Qtd Disponível' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column width="40">
+												<template>
+													<a class="btn btn-default btn-xs" role="button"
+														ng-click="searchController.copyQtd(dataItem, 'ttOrderItemSearchCrossSelling', master)">
+														<span class="glyphicon glyphicon-menu-right"></span>
+													</a>
+												</template>
+											</totvs-grid-column>
+											<totvs-grid-column field="qt-un-fat" width="160" editable="true" filter="number : 4" style="text-align: right;">{{:: 'Qtd Pedida UM Fat' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="des-un-medida" width="120">{{:: 'UM Faturamento' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="qt-pedida" width="110" filter="number : 4" style="text-align: right;">{{:: 'Qtd Pedida UM Fat' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="cod-un" width="50">{{:: 'UM' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="vl-preori" width="180" filter="number : 5" style="text-align: right;">{{:: 'Preço Original' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="vl-preori-un-fat" width="180" filter="number : 5" style="text-align: right;">{{:: 'Preço Original UM Fat' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+										</totvs-grid>
+									</div>
+								</div>
+							</totvs-tab>
+							<totvs-tab heading="{{:: 'Produtos Up Selling' | i18n : [] : 'dts/mpd'}}" select="orderController.select()" ng-if="dataItem.ttOrderItemSearchUpSelling">
+								<div class="row" style="margin: 0;">
+									<div class="col-xs-12" style="padding: 5px 0 0;">
+										<totvs-grid grid-data="dataItem.ttOrderItemSearchUpSelling"
+											grid-height="250"
+											navigatable="true"
+											editable="!orderController.orderDisabled"
+											on-save="searchController.relatedItemsGridSave(column, value, currentIndex, master, 'ttOrderItemSearchUpSelling')"
+											selectable="row">
+											<totvs-grid-column field="cod-up-selling" width="160">{{:: 'Item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="desc-item" class="text-nowrap" width="350">{{:: 'Descrição' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="cod-refer" width="160">{{:: 'Referência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="qtd-disponivel" width="150" filter="number : 4" style="text-align: right;">{{:: 'Qtd Disponível' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column width="40">
+												<template>
+													<a class="btn btn-default btn-xs" role="button"
+														ng-click="searchController.copyQtd(dataItem, 'ttOrderItemSearchUpSelling', master)">
+														<span class="glyphicon glyphicon-menu-right"></span>
+													</a>
+												</template>
+											</totvs-grid-column>
+											<totvs-grid-column field="qt-un-fat" width="160" editable="true" filter="number : 4" style="text-align: right;">{{:: 'Qtd Pedida UM Fat' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="des-un-medida" width="120">{{:: 'UM Faturamento' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="qt-pedida" width="110" filter="number : 4" style="text-align: right;">{{:: 'Qtd Pedida UM Fat' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="cod-un" width="50">{{:: 'UM' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="vl-preori" width="180" filter="number : 5" style="text-align: right;">{{:: 'Preço Original' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="vl-preori-un-fat" width="180" filter="number : 5" style="text-align: right;">{{:: 'Preço Original UM Fat' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+										</totvs-grid>
+									</div>
+								</div>
+							</totvs-tab>
+							<totvs-tab heading="{{:: 'Outros Preços/Unidades' | i18n : [] : 'dts/mpd'}}" select="orderController.select()" ng-if="dataItem.ttOrderItemSearchUM">
+								<div class="row" style="margin: 0;">
+									<div class="col-xs-12" style="padding: 5px 0 0;">
+										<totvs-grid grid-data="dataItem.ttOrderItemSearchUM"
+											grid-height="250"
+											navigatable="true"
+											selectable="row">
+											<totvs-grid-column width="15">
+												<template>
+													<a class="btn btn-default btn-xs" role="button"
+														ng-click="searchController.copyPriceSelected(dataItem, master)">
+														<span class="glyphicon glyphicon-menu-up"></span>
+													</a>
+												</template>
+											</totvs-grid-column>
+											<totvs-grid-column field="cod-unid-med" width="120">{{:: 'UM' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="preco-venda" width="180" filter="number : 5" style="text-align: right;">{{:: 'Preço de Venda' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="quant-min" width="110" filter="number : 4" style="text-align: right;">{{:: 'Quantidade Mínima' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+										</totvs-grid>
+									</div>
+								</div>
+							</totvs-tab>
+							<totvs-tab heading="{{:: 'Items filhos' | i18n : [] : 'dts/mpd'}}" select="orderController.select()" ng-if="dataItem.ttOrderItemSearchComposto">
+								<div class="row" style="margin: 0;">
+									<div class="col-xs-12" style="padding: 5px 0 0;">
+										<totvs-grid grid-data="dataItem.ttOrderItemSearchComposto"
+											grid-height="250"
+											navigatable="true"
+											selectable="row">
+											<totvs-grid-column field="it-filho" width="160">{{:: 'Item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="descricao" class="text-nowrap" width="350">{{:: 'Descrição' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="cod-refer" width="160">{{:: 'Referência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											<totvs-grid-column field="quantidade" width="150" filter="number : 4" style="text-align: right;">{{:: 'Qtd Filho' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+										</totvs-grid>
+									</div>
+								</div>
+							</totvs-tab>
+						</totvs-tabset>
+					</div>
+				</totvs-grid-detail>
+			</totvs-grid>
+		</div>
+
+		<div class="col-sm-12">
+			<totvs-list-pagination ng-if="searchController.hasMore"
+								ng-click="searchController.loadMore();">
+			</totvs-list-pagination>
+		</div>
+
+	</div>
+
+</div>
+

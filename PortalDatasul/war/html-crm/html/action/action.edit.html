@@ -1,0 +1,47 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_acao : ('btn-new-action' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="input"
+			   ng-required="true"
+			   ng-model="controller.model.nom_acao"
+			   canclean="undefined"
+			   placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="checkbox"
+			   class="col-xs-6 col-sm-3"
+			   ng-model="controller.model.log_lote"
+			   label="{{ 'l-lote' | i18n: []: 'dts/crm' }}">
+		</field>
+
+		<field type="checkbox"
+			   class="col-xs-6 col-sm-3"
+			   ng-model="controller.model.log_mktg"
+			   label="{{ 'l-campaign-marketing' | i18n: []: 'dts/crm' }}">
+		</field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" 
+			ng-click="controller.close()">
+		{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-default" 
+			ng-click="controller.save(true)"
+			ng-if="controller.editMode === false;">
+		{{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-primary" 
+			ng-click="controller.save()">
+		{{ 'btn-save' | i18n: []: 'dts/crm' }}
+	</button>
+</totvs-modal-footer>

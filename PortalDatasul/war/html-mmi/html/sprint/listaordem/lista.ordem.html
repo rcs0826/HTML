@@ -1,0 +1,161 @@
+<link rel="stylesheet" href="/dts/mmi/html/sprint/listaordem/lista-ordem.css">
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+	
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-list-order-period' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+	
+		<totvs-page-header>
+		
+			<totvs-page-header-operation>
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" 
+					 style="padding-left: 0px">
+					<button class="btn btn-link col-md-1"
+							type="button" 
+							id="btPesquisar"
+							tooltip="{{ l-search-programming | i18n }}"
+							tooltip-placement="right"
+							align="right"
+							style="width: 35px; height: 38px;"
+							data-ng-click="listaordemCtrl.pesquisaProgramacao()">
+					  <span class="glyphicon glyphicon-search"></span>
+					</button>
+
+					<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10" style="padding-left: 0px;">
+						<h4> 
+							<a data-ng-click="listaordemCtrl.pesquisaProgramacao()"
+							   style="cursor:pointer">{{listaordemCtrl.tituloProgramacao}}</a> 
+						</h4>
+					</div>
+				</div>
+				<totvs-page-header-operation-action 
+								  class="col-md-3 alinha-operation-action">
+					<action ng-click="listaordemCtrl.emitirFichas()"
+									ng-if="listaordemCtrl.periodoSelecionado" 
+						      icon="glyphicon glyphicon-list">{{'l-print-sheets' | i18n }}
+					</action>
+				</totvs-page-header-operation-action>
+
+				<div class="dropdown col-md-4 alinha-menu-dropdown">
+						<button class="btn btn-default dropdown-toggle"
+										type="button"
+										ng-if="listaordemCtrl.periodoSelecionado" 
+										style="margin-top: 10px;" 
+										id="dropdownMenu1" 
+										data-toggle="dropdown" 
+										aria-haspopup="true" 
+										aria-expanded="true">
+							    	{{ 'l-export-csv' | i18n }}
+							<span class="caret"></span>
+						</button>
+					
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							<li><a href="#" ng-click="listaordemCtrl.exportaVisaoOmCsv()">{{'l-export-order-view' | i18n}}</a></li>
+							<li><a href="#" ng-click="listaordemCtrl.exportaVisaoReprogramacao()">{{'l-export-reprogramming' | i18n}}</a></li>
+							<li><a href="#" ng-click="listaordemCtrl.exportaMateriaisPeriodoCsv()">{{'l-detailed-materials-list' | i18n}}</a></li>
+							<li><a href="#" ng-click="listaordemCtrl.exportaVisaoEspecialidades()">{{'l-detailed-order-speciality-view' | i18n}}</a></li>
+						</ul>
+				</div>
+				<totvs-page-header-operation-filter 
+						ng-if="listaordemCtrl.periodoSelecionado" 
+						placeholder="{{ 'l-orderline-number' | i18n }}"
+						ng-submit="listaordemCtrl.search(listaordemCtrl.nrOrdem)"
+						ng-model="listaordemCtrl.nrOrdem"
+						advanced-search="listaordemCtrl.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+			</totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+	
+  <totvs-page-content>
+  
+  		<totvs-page-content-header>
+			<totvs-page-quick-select
+				ng-if="listaordemCtrl.listaOrdens.length > 0" 
+				list="listaordemCtrl.listaOrdens"
+				title="{{ 'l-selected-all' | i18n }}">
+			</totvs-page-quick-select>
+		</totvs-page-content-header>
+  
+		<totvs-page-alert
+			ng-if="listaordemCtrl.listaOrdens.length <=  0 && listaordemCtrl.periodoSelecionado"
+			type="info"
+			message="{{ 'msg-search-not-found' | i18n }}">
+		</totvs-page-alert>  	
+		
+			<totvs-list-item ng-repeat="order in listaordemCtrl.listaOrdens | orderBy: ['cdEquipto', 'nrOrdProdu']"
+											 id="order{{order['nr-ord-produ']}}"
+											 selected="order">
+
+			<totvs-list-item-header>
+
+				<totvs-list-item-title class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+										title="{{order['nrOrdProdu'] | number }}">
+				</totvs-list-item-title>
+				
+				<totvs-list-item-info class="col-lg-6 col-md-6 col-sm-6 col-xs-6"
+															title="{{ 'l-equipment' | i18n }}"
+															value="{{order['cdEquipto']}} - {{order['desEquipto']}}">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+															title="{{ 'l-entrance-date' | i18n }}"
+															value="{{order['datEntr'] | date:'dd/MM/yyyy'}}">
+				</totvs-list-item-info>
+
+			</totvs-list-item-header>
+				
+			<totvs-list-item-content-detail>
+                   
+                
+				
+				<totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+															title="{{ 'l-status' | i18n }}"
+															value="{{order['desIdiStatus']}}">
+				</totvs-list-item-info>
+				
+				<totvs-list-item-info class="col-lg-6 col-md-6 col-sm-6 col-xs-6"
+															title="{{ 'l-state' | i18n }}"
+															value="{{order['desEstadoOM']}}">
+				</totvs-list-item-info>
+
+				
+
+				<totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+															title="{{ 'l-workshop' | i18n }}"
+															value="{{order['codOficina']}} - {{order['descOficina']}}">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+															title="{{ 'l-planner' | i18n }}"
+															value="{{order['codPlanejador']}} - {{order['nomPlanejador']}}">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info class="col-lg-6 col-md-6 col-sm-6 col-xs-6"
+															title="{{ 'l-statistic' | i18n }}"
+															value="{{order['descTipo']}}">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-3"
+															title="{{ 'l-class' | i18n }}"
+															value="{{order['descTpManut']}}">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+															title="{{ 'l-site' | i18n }}"
+															value="{{order['codEstabel']}} - {{order['descEstabel']}}">
+				</totvs-list-item-info>
+			</totvs-list-item-content-detail>
+			</totvs-list-item>
+
+			<totvs-list-pagination
+                    ng-click="listaordemCtrl.buscaListaOm(true)"
+                    ng-if="listaordemCtrl.listaOrdens.length < listaordemCtrl.totalRecords && listaordemCtrl.listaOrdens.length">
+            </totvs-list-pagination>
+
+  </totvs-page-content>
+
+</totvs-page>

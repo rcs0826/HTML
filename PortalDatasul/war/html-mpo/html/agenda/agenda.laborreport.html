@@ -1,0 +1,201 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mpo/agenda">{{'l-agenda-technician' | i18n}}</breadcrumb>
+            <breadcrumb>{{ 'l-labor-report' | i18n }}</breadcrumb>            
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{controller.model.nrOrdem | ordemMask }} - {{controller.model.descOrdem}}"></totvs-page-header-title>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="operations page-detail-actions">
+						<action class="btn btn-default" ng-click="controller.back()">{{ 'l-back' | i18n }}</action>
+						<action class="btn btn-primary ng-binding ng-scope" ng-click="controller.save();">{{ 'l-save' | i18n }}</action>	                	
+                	</div>
+               	</div>
+            </div>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+		<totvs-page-form>
+            <fieldset>  
+            	<totvs-page-detail class="col-lg-12 col-md-12 col-sm-12 col-xs-16">
+    		  		<totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                            title="{{ 'l-task' | i18n }}"
+		                            value="{{controller.model.cdTarefa}} - {{controller.model.descTarefa}}">
+		    		</totvs-page-detail-info>
+    		  		<totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                            title="{{ 'l-specialty' | i18n }}"
+		                            value="{{controller.model.tpEspecial}} - {{controller.model.descEspecial}}">
+		    		</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                            title="{{ 'l-technician' | i18n }}"
+		                            value="{{controller.cdTecnico | tecnicoMask }} - {{controller.model.descTecnico}}">
+		    		</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                            title="{{ 'l-cost-center' | i18n }}"
+		                            value="{{controller.model.scCodigo}} - {{controller.model.descCcCodigo}}">
+		    		</totvs-page-detail-info>
+					<totvs-page-detail-info class="col-lg-10 col-md-10 col-sm-10 col-xs-12"
+		                            title="{{ 'l-narrative-task' | i18n }}"
+		                            value="{{controller.model.narrativaTaref}}">
+		    		</totvs-page-detail-info>
+		    	</totvs-page-detail>
+            	<div class="row col-lg-12 col-md-12 col-sm-12 col-xs-16">             	                
+	                <field type="select"
+				           ng-model="controller.selectedTurno" 
+				           ng-change="controller.selectTurno()" 
+				           ng-disabled="controller.isDisabled"
+				           class="col-lg-4 col-md-4 col-sm-4 col-xs-12 m-bottom"
+				           label="{{ 'l-shift' | i18n }}">
+				       <include>
+				            <ui-select-match placeholder="{{ 'l-select-shift' | i18n }}">{{$select.selected.cdTurno}} {{controller.hifen}} {{$select.selected.descTurno}}</ui-select-match>				            
+				            <ui-select-choices repeat="state in controller.listSelectTurno track by $index"
+				                               refresh="controller.getListTurno($select.search)"
+				                               refresh-delay="500">
+				                <span data-ng-bind-html="state.cdTurno | highlight: $select.search"></span> - <span data-ng-bind-html="state.descTurno | highlight: $select.search"></span>
+				            </ui-select-choices>
+				        </include>
+				    </field>
+					<totvs-field totvs-checkbox class="col-md-12" 
+                           t-bsswitch 
+                           ng-disabled="false"
+		            	   ng-model="controller.model.lApontaIntervalo"
+		            	   ng-disabled="controller.isDisabled"
+		            	   label="{{ 'l-points-during-break' | i18n }}" >
+		            </totvs-field>
+		            <totvs-field totvs-checkbox class="col-md-12"
+                           t-bsswitch 
+                           ng-disabled="false"
+		            	   name-id="lEncerraTarefa"
+		            	   ng-model="controller.model.lEncerraTarefa"
+		            	   ng-click="controller.selectedEncerraTarefa()"
+		            	   ng-disabled="controller.isDisabled"
+		            	   label="{{ 'l-end-task' | i18n }}" >
+		            </totvs-field>
+		            <div class="row col-xs-12"> 
+		                <totvs-field
+						    totvs-datepicker
+						    class="col-lg-2 col-md-3 col-sm-3 col-xs-12"
+						    label="{{ 'l-date' | i18n }}"
+						    ng-model="controller.model.datAgenda"
+						    ng-disabled="controller.isDisabled">
+						</totvs-field>
+						<field type="input"
+		                	   name-id="hraInitial"
+		                       ng-disabled="controller.isDisabled"
+		                       class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+		                       ng-model="controller.model.hraInicial"
+		                       ng-change="controller.changeHraInicial()"
+		                       ng-blur="controller.calculaPeriodo()"
+		                       ng-hide="controller.isHraInicial"
+		                       placeholder="00:00"
+		                       maxlength="5">	
+		                    <label>{{ 'l-initial-hour' | i18n }}</label>
+		                </field>
+			    		<field type="input"
+		                	   name-id="hraFinal"
+		                       ng-disabled="controller.isDisabled"
+		                       class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+		                       ng-model="controller.model.hraFinal"
+		                       ng-change="controller.changeHraFinal()"
+		                       ng-blur="controller.calculaPeriodo()"
+		                       ng-hide="controller.isHraFinal"
+		                       placeholder="00:00"
+		                       maxlength="5">	
+		                    <label>{{ 'l-final-hour' | i18n }}</label>
+		                </field>
+						<field type="input"
+		                	   name-id="hraNormal"
+		                       class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+		                       ng-model="controller.model.hraNormal"
+		                       ng-hide="controller.isHraNormal"
+		                       ng-change="controller.changeHraNormal()"
+		                       placeholder="00,0000"
+		                       ng-disabled="controller.isDisabled"
+		                       maxlength="7">	
+		                    <label>{{ 'l-normal-hour' | i18n }}</label>
+		                </field>
+		                <field type="input"
+		                	   name-id="hraExtra"
+		                       class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+		                       ng-model="controller.model.hraExtra"
+		                       ng-change="controller.changeHraExtra()"
+		                       ng-hide="controller.isHraExtra"
+		                       ng-disabled="controller.isDisabled"
+		                       placeholder="00,0000"
+		                       maxlength="7">	
+		                    <label>{{ 'l-overtime' | i18n }}</label>
+		                </field>
+		                <field type="input"
+		                	   name-id="hraTot"
+		                	   ng-disabled="true"
+		                       class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+		                       ng-model="controller.model.hraTot"
+		                       ng-hide="controller.isHraTot"
+		                       placeholder="00,0000"
+		                       ng-change="controller.changeHraTot()"
+		                       maxlength="7">	
+		                    <label>{{ 'l-total-hours' | i18n }}</label>
+		                </field>
+	                </div>
+	                <div class="row col-xs-12">
+	                	<field type="input"
+		                		name-id="tempo"
+		                       	ng-disabled="controller.idDisabled"
+		                       	class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+		                       	ng-model="controller.model.tempo"
+		                       	ng-disabled="controller.isDisabled"
+		                       	ng-hide="true" >	
+	                    	<label>{{ 'l-tempo' | i18n }}</label>
+		                </field>
+		    		</div>
+	                <div class="row col-xs-12 input-group-content">
+						<field type="input"
+		                	   name-id="percentConclusao"
+		                       class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+		                       ng-model="controller.model.percentConclusao"
+		                       ng-change="controller.changePercentConclusao()"
+		                       ng-disabled="controller.isDisablePercent"
+		                       maxlength="6"
+		                       placeholder="000,00%"
+		                       label = "{{ 'l-percentage-completion' | i18n }}" >
+		                </field>
+						<!-- <span class="input-group-addon">%</span> -->		                		   		    
+	                </div>
+					<field type="textarea"
+	                	   name-id="desAgenda"
+	                       ng-disabled="controller.isDisabled"
+	                       class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+	                       ng-model="controller.model.narrativaTarefa"
+	                       maxlength="2000" >	
+	                    <label>{{ 'l-appointment-obs' | i18n }}</label>
+	                </field>
+	   			</div>
+   			</fieldset>
+   		</totvs-page-form>
+    </totvs-page-content>
+</totvs-page>
+<style>
+
+	textarea { resize: none; }
+
+	fieldset .page-details { margin-left: 0px; }
+	
+	.input-group-content .input-group-addon {
+	    margin-top: 30px;
+    	float: left;
+   		height: 34px;
+		padding-left: 6px;
+	    padding-right: 6px;
+	    width: 33px;
+	    padding-top: 9px;
+	    padding-bottom: 0px;
+	}
+	
+	.input-group-content field { padding-right: 0px; }
+    
+    .m-bottom { margin-bottom: 10px; }	
+	
+</style>

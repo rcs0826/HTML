@@ -1,0 +1,307 @@
+<style scoped>
+	.grey { color: #c3c3c3; }
+</style>
+
+<totvs-page-child type="list">
+
+	<br/>
+
+	<totvs-page-content class="crm-tab">
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<h3 style="margin-top: 0px;">
+					{{ 'nav-sales-order-quotation' | i18n: []: 'dts/crm' }} ({{ salesOrderController.listOfSalesOrderCount }})
+				</h3>
+			</div>
+			<div class="col-xs-12 visible-xs">
+				<% if ((!data["btn-generate-quotation"] || data["btn-generate-quotation"].log_visivel === true)) { %>
+				<div class="pull-right" role="group"
+					 ng-animate="'animate-if'">
+					<button class="btn btn-primary col-xs-12"
+							ng-disabled="(salesOrderController.parent.ttFaseDesenvolvimento.log_permite_alter == false) ||(salesOrderController.parent.log_suspenso == true) || (salesOrderController.parent.dat_fechto_oportun)"
+							ng-click="salesOrderController.generateQuotation();">
+						<span class="glyphicon glyphicon-plus"></span>
+						{{ 'btn-generate-quotation' | i18n: []: 'dts/crm' }}
+					</button>
+				<% } %>
+				&nbsp
+				<% if ((!data["btn-generate-sales-order"] || data["btn-generate-sales-order"].log_visivel === true)) { %>
+					<button class="btn btn-primary col-xs-12"
+							ng-disabled="(salesOrderController.parent.ttFaseDesenvolvimento.log_permite_alter == false) || (salesOrderController.parent.log_suspenso == true) ||
+							(salesOrderController.parent.dat_fechto_oportun)"
+							ng-click="salesOrderController.generateSalesOrder();">
+						<span class="glyphicon glyphicon-plus"></span>
+						{{ 'btn-generate-sales-order' | i18n: []: 'dts/crm' }}
+					</button>
+				</div>
+				<% } %>
+
+			</div>
+			<div class="col-xs-12 col-sm-6 hidden-xs">
+				<% if ((!data["btn-generate-quotation"] || data["btn-generate-quotation"].log_visivel === true)) { %>
+				<div class="pull-right" role="group"
+					 ng-animate="'animate-if'">
+					<button class="btn btn-primary"
+							ng-disabled="(salesOrderController.parent.ttFaseDesenvolvimento.log_permite_alter == false) || (salesOrderController.parent.dat_fechto_oportun) || (salesOrderController.parent.log_suspenso == true)"
+							ng-click="salesOrderController.generateQuotation();">
+						<span class="glyphicon glyphicon-plus"></span>
+						{{ 'btn-generate-quotation' | i18n: []: 'dts/crm' }}
+					</button>
+				<% } %>
+				&nbsp
+				<% if ((!data["btn-generate-sales-order"] || data["btn-generate-sales-order"].log_visivel === true)) { %>
+					<button class="btn btn-primary "
+							ng-disabled="(salesOrderController.parent.ttFaseDesenvolvimento.log_permite_alter == false) || (salesOrderController.parent.dat_fechto_oportun) || (salesOrderController.parent.log_suspenso == true)"
+							ng-click="salesOrderController.generateSalesOrder();">
+						<span class="glyphicon glyphicon-plus"></span>
+						{{ 'btn-generate-sales-order' | i18n: []: 'dts/crm' }}
+					</button>
+				</div>
+				<% } %>
+			</div>
+		</div>
+
+		<totvs-divider></totvs-divider>
+
+		<br/>
+
+		<totvs-page-alert
+			ng-if="salesOrderController.listOfSalesOrder.length <= 0"
+			type="info"
+			message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+		</totvs-page-alert>
+
+		<div class="crm-tab">
+
+			<div class="col-xs-12 crm-tab-item header"
+				 ng-if="salesOrderController.salesorder.length > 0">>
+				<strong>
+					<div class="col-xs-3">
+						{{ 'l-number' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-xs-3">
+						{{ 'l-type-address-delivery' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-xs-3">
+						{{ 'l-situation' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-xs-3 text-right">
+						{{ 'l-total-value' | i18n: []: 'dts/crm' }}
+					</div>
+
+				</strong>
+			</div>
+
+			<div ng-repeat="salesorder in salesOrderController.listOfSalesOrder | orderBy:['quotation','customerOrderNumber'] : true | groupBy:['quotation']">
+
+				<div class="no-gutter"
+					 ng-if="salesorder.isNewGroup">
+
+					<totvs-list-item-info class="col-xs-12 col-sm-4"
+										  title="{{ 'l-group' | i18n: []: 'dts/crm' }}"
+										  style="margin-top:15px;">
+						{{ (salesorder.quotation == true ? 'l-quotation-plural' : 'l-sales-order') | i18n: []: 'dts/crm' }}
+					</totvs-list-item-info>
+
+					<!--cabecalho -->
+					<div class="crm-tab">
+
+						<div class="col-xs-12 crm-tab-item header hidden-xs">
+							<strong>
+								<div class="col-xs-2">
+									{{ 'l-number' | i18n: []: 'dts/crm' }}
+								</div>
+								<div class="col-xs-2">
+									{{ 'l-delivery' | i18n: []: 'dts/crm' }}
+								</div>
+								<div class="col-xs-2">
+									{{ 'l-emission' | i18n: []: 'dts/crm' }}
+								</div>
+								<div class="col-xs-2">
+									{{ 'l-situation' | i18n: []: 'dts/crm' }}
+								</div>
+								<div class="col-xs-2 text-right">
+									{{ 'l-value' | i18n: []: 'dts/crm' }}
+								</div>
+								<div class="col-xs-1 text-right">
+									{{ 'l-calculate' | i18n: []: 'dts/crm' }}
+								</div>
+								<div class="col-xs-1 text-right">
+									{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+								</div>
+							</strong>
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="col-xs-12 crm-tab-item"
+					 ng-animate="'animate-if'">
+
+					<!-- layout adaptativo para mobile, boilerplate foi inevitavel-->
+
+					<% if ((!data["l-number"] || data["l-number"].log_visivel === true)) { %>
+					<div class="col-xs-12 visible-xs"
+						 ng-if="salesorder.quotation == true">
+						 <b>{{ 'l-number' | i18n: []: 'dts/crm' }}:</b>
+						 <span ng-if="salesOrderController.isPortalContext !== true">
+							<a class="clickable" ng-click="salesOrderController.openCotacProgress([salesorder.orderNumber, salesOrderController.parent.num_id])">
+								{{ salesorder.customerOrderNumber }}
+							</a>
+							<span ng-if="salesorder.orderNumber">
+								<small class="grey">({{ salesorder.orderNumber }})</small>
+							</span>
+						 </span>
+						 <span ng-if="salesOrderController.isPortalContext === true">
+                            <span ng-if="salesOrderController.currentUserRepresentativeOrClient === true && salesOrderController.hasDetailQuotation === true">
+								<a class="clickable" ng-click="salesOrderController.openQuotationProgram([salesorder.orderNumber])">
+									{{ salesorder.customerOrderNumber }}
+								</a>
+							</span>
+							<span ng-if="salesOrderController.currentUserRepresentativeOrClient !== true || !salesOrderController.hasDetailQuotation">
+								{{ salesorder.customerOrderNumber }}
+							</span>
+							<span ng-if="salesorder.orderNumber">
+								<small class="grey">({{ salesorder.orderNumber }})</small>
+							</span>
+						 </span>
+					</div>
+					<div class="col-xs-2 visible-xs"
+						 ng-if="salesorder.quotation == false">
+						<b>{{ 'l-number' | i18n: []: 'dts/crm' }}:</b>
+						<span ng-if="salesOrderController.isPortalContext === true">
+							<span ng-if="salesOrderController.currentUserRepresentativeOrClient === true">
+								<a class="clickable" ng-click="salesOrderController.openOrderProgram([salesorder.orderNumber])">
+									{{ salesorder.customerOrderNumber }}
+								</a>
+							</span>
+							<span ng-if="salesOrderController.currentUserRepresentativeOrClient !== true">
+								{{ salesorder.customerOrderNumber }}
+							</span>
+						</span>
+						<span ng-if="salesOrderController.isPortalContext !== true">
+							<a class="clickable" ng-click="salesOrderController.openOrderProgram([salesorder.orderNumber])">
+								{{ salesorder.customerOrderNumber }}
+							</a>
+						</span>
+						<span ng-if="salesorder.orderNumber">
+							<small class="grey">({{ salesorder.orderNumber }})</small>
+						</span>
+					</div>
+
+					<div class="col-xs-2 hidden-xs"
+						 ng-if="salesorder.quotation == true">
+
+						 <span ng-if="salesOrderController.isPortalContext !== true">
+							<a class="clickable" ng-click="salesOrderController.openCotacProgress([salesorder.orderNumber, salesOrderController.parent.num_id])">
+								{{ salesorder.customerOrderNumber }}
+							</a>
+							<span ng-if="salesorder.orderNumber">
+								<small class="grey">({{ salesorder.orderNumber }})</small>
+							</span>
+						 </span>
+                         <span ng-if="salesOrderController.isPortalContext === true">
+                            <span ng-if="salesOrderController.currentUserRepresentativeOrClient === true && salesOrderController.hasDetailQuotation === true">
+								<a class="clickable" ng-click="salesOrderController.openQuotationProgram([salesorder.orderNumber])">
+									{{ salesorder.customerOrderNumber }}
+								</a>
+							</span>
+							<span ng-if="salesOrderController.currentUserRepresentativeOrClient !== true || !salesOrderController.hasDetailQuotation">
+								{{ salesorder.customerOrderNumber }}
+							</span>
+							<span ng-if="salesorder.orderNumber">
+								<small class="grey">({{ salesorder.orderNumber }})</small>
+							</span>
+						 </span>
+
+					</div>
+					<div class="col-xs-2 hidden-xs"
+						 ng-if="salesorder.quotation == false">
+
+						<span ng-if="salesOrderController.isPortalContext === true">
+							<span ng-if="salesOrderController.currentUserRepresentativeOrClient === true">
+								<a class="clickable" ng-click="salesOrderController.openOrderProgram([salesorder.orderNumber])">
+									{{ salesorder.customerOrderNumber }}
+								</a>
+							</span>
+							<span ng-if="salesOrderController.currentUserRepresentativeOrClient !== true">
+								{{ salesorder.customerOrderNumber }}
+							</span>
+						</span>
+						<span ng-if="salesOrderController.isPortalContext !== true">
+							<a class="clickable" ng-click="salesOrderController.openOrderProgram([salesorder.orderNumber])">
+								{{ salesorder.customerOrderNumber }}
+							</a>
+						</span>
+						<span ng-if="salesorder.orderNumber">
+							<small class="grey">({{ salesorder.orderNumber }})</small>
+						</span>
+
+					</div>
+					<% } %>
+
+					<% if ((!data["l-delivery"] || data["l-delivery"].log_visivel === true)) { %>
+					<div class="col-xs-12 visible-xs">
+						<b>{{ 'l-delivery' | i18n: []: 'dts/crm' }}:</b> {{ salesorder.dtDelivery }}
+					</div>
+					<div class="col-xs-2 hidden-xs">
+						{{ salesorder.dtDelivery }}
+					</div>
+					<% } %>
+
+					<% if ((!data["l-emission"] || data["l-emission"].log_visivel === true)) { %>
+					<div class="col-xs-12 visible-xs">
+						<b>{{ 'l-emission' | i18n: []: 'dts/crm' }}:</b> {{ salesorder.dtEmission }}
+					</div>
+
+					<div class="col-xs-2 hidden-xs">
+						{{ salesorder.dtEmission }}
+					</div>
+					<% } %>
+
+					<% if ((!data["l-situation"] || data["l-situation"].log_visivel === true)) { %>
+					<div class="col-xs-12 visible-xs">
+						<b>{{ 'l-situation' | i18n: []: 'dts/crm' }}:</b> {{ salesorder.nom_situation }}
+					</div>
+
+					<div class="col-xs-2 hidden-xs">
+						{{ salesorder.nom_situation }}
+					</div>
+					<% } %>
+
+					<% if ((!data["l-total-value"] || data["l-total-value"].log_visivel === true)) { %>
+					<div class="col-xs-12 visible-xs">
+						<b>{{ 'l-value' | i18n: []: 'dts/crm' }}:</b> {{ salesorder.orderValue | number }}
+					</div>
+					<div class="col-xs-2 text-right hidden-xs">
+						{{ salesorder.orderValue | number }}
+					</div>
+					<% } %>
+
+					<% if ((!data["l-calculate"] || data["l-calculate"].log_visivel === true)) { %>
+					<div class="col-xs-1 text-right hidden-xs"
+						 ng-if="salesorder.situation !== 6">
+						<button class="btn btn-primary btn-xs" ng-click="salesOrderController.calculateSalesOrder(salesorder)">
+							<b>&sum;</b>
+						</button>
+					</div>
+					<% } %>
+
+					<% if ((!data["l-cancel"] || data["l-cancel"].log_visivel === true)) { %>
+					<div class="col-xs-1 text-right hidden-xs"
+						 ng-if="salesorder.situation !== 6">
+						<button class="btn btn-default btn-xs glyphicon glyphicon-ban-circle" ng-click="salesOrderController.cancelQuotationOrSalesOrder(salesorder)">
+						</button>
+					</div>
+					<% } %>
+
+				</div>
+
+			</div>
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

@@ -1,0 +1,149 @@
+<totvs-page-child type="list">
+
+	<totvs-page-header class="row" style="margin-bottom: -20px;">
+
+		<totvs-page-header-operation>
+
+			<% if ((!data["btn-add"] || data["btn-add"].log_visivel === true)) { %>
+			<totvs-page-header-operation-action>
+				<action icon="glyphicon-plus"
+						ng-if="ticketSubjectController.isEnabled"
+						ng-click="ticketSubjectController.openAddubject();">
+					{{ 'btn-add' | i18n }}
+				</action>
+			</totvs-page-header-operation-action>
+			<% } %>
+
+		</totvs-page-header-operation>
+
+		<div ng-include="'/dts/crm/html/ticket-subject/ticket-subject.legend.html'"
+             ng-if="!ticketSubjectController.isIntegratedWithGP"></div>
+
+	</totvs-page-header>
+
+	<totvs-divider></totvs-divider>
+
+	<totvs-page-content ng-if="ticketSubjectController.isIntegratedWithGP == true">
+
+		<totvs-page-alert
+			ng-if="ticketSubjectController.listOfTicketSubject.length <= 0"
+			ng-animate="'animate-if'"
+			type="info"
+			message="{{ 'msg-not-found-subject' | i18n }}">
+		</totvs-page-alert>
+        
+        <div class="crm-tab"
+			 ng-if="ticketSubjectController.listOfTicketSubject.length">
+
+			<div class="row crm-tab-item header hidden-xs">
+				<strong>
+                    <div class="col-xs-6 col-sm-3">
+                        {{ 'l-subject' | i18n: []: 'dts/crm' }}
+                    </div>
+                    
+                    <div class="col-xs-6 col-sm-3">
+                        {{ 'l-status' | i18n: []: 'dts/crm' }}
+                    </div>
+                    
+					<div class="col-xs-6 col-sm-2">
+						{{ 'l-priority' | i18n: []: 'dts/crm' }}
+					</div>
+                    
+                    <div class="col-xs-4 col-sm-2">
+						{{ 'l-sla-minute' | i18n: []: 'dts/crm' }}
+					</div>
+                    
+                    <div class="col-xs-2 col-sm-2">
+                    </div>   
+				</strong>
+			</div>
+            
+            <div class="row crm-tab-item"
+				 ng-repeat="ticketSubject in ticketSubjectController.listOfTicketSubject">
+                             
+                <div class="col-xs-6 col-sm-3 overflow-ellipsis">
+                    <a href="#/dts/crm/ticket-subject/detail/{{ticketSubject.num_id_assunto_ocor}}">
+                        {{ticketSubject.nom_assunto_ocor}}
+                    </a>
+                </div>
+
+                <div class="col-xs-6 col-sm-3 overflow-ellipsis">
+                    {{(ticketSubject.log_suspenso === true ? 'l-suspended' : 'l-active') | i18n: []: 'dts/crm' }}
+                </div>
+
+                <div class="col-xs-6 col-sm-2 overflow-ellipsis">
+                    {{ticketSubject.nom_priorid_ocor}}
+                </div>                  
+
+                <div class="col-xs-4 col-sm-2 overflow-ellipsis">
+                    {{ticketSubject.qtd_tempo_previs_atendim}}
+                </div>   
+
+                <div class="col-xs-1 col-sm-1 text-right"
+                     ng-if="ticketSubjectController.isEnabled">
+                    <a class="clickable"
+                       ng-click="ticketSubjectController.addEdit(ticketSubject, $index);"
+                       ng-if="!ticketSubject.log_suspenso">
+                        <span class="visible-xs-inline glyphicon glyphicon-edit"></span>
+                        <span class="hidden-xs">{{ 'btn-edit' | i18n: []: 'dts/crm' }}</span>
+                    </a>
+                </div>                
+
+                <div class="col-xs-1 col-sm-1 text-right"
+                     ng-if="ticketSubjectController.isEnabled">
+                    <a class="clickable"
+                       ng-click="ticketSubjectController.remove(ticketSubject)">
+                        <span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+                        <span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+                    </a>
+                </div>
+                
+            </div>
+            
+        </div>
+        
+
+	</totvs-page-content>
+            
+    <totvs-page-content ng-if="!ticketSubjectController.isIntegratedWithGP">
+
+		<totvs-page-alert
+			ng-if="ticketSubjectController.listOfTicketSubject.length <= 0"
+			ng-animate="'animate-if'"
+			type="info"
+			message="{{ 'msg-not-found-subject' | i18n }}">
+		</totvs-page-alert>
+
+		<totvs-list-item
+			 id="ticketSubject{{ticketSubject.num_id}}"
+			 ng-class="ticketSubject.nom_cor"
+			 ng-repeat="ticketSubject in ticketSubjectController.listOfTicketSubject">
+
+			<totvs-list-item-header>
+
+				<totvs-list-item-title
+					class="legend"
+					ng-class="ticketSubject.nom_cor">
+					<a href="#/dts/crm/ticket-subject/detail/{{ticketSubject.num_id_assunto_ocor}}">
+						{{ticketSubject.nom_assunto_ocor}}
+					</a>
+				</totvs-list-item-title>
+
+				<% if ((!data["btn-remove"] || data["btn-remove"].log_visivel === true)) { %>
+				<totvs-list-item-action limit-primary-action="1" ng-if="ticketSubjectController.isEnabled">
+
+					<action icon="glyphicon-trash"
+							ng-click="ticketSubjectController.remove(ticketSubject)">
+						{{ 'btn-remove' | i18n }}
+					</action>
+
+				</totvs-list-item-action>
+				<% } %>
+
+			</totvs-list-item-header>
+
+		</totvs-list-item>
+
+	</totvs-page-content>            
+
+</totvs-page-child>

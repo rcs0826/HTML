@@ -1,0 +1,304 @@
+
+<totvs-page-content-header ng-if="controllerOpportunityList.isChild !== true">
+	<totvs-page-quick-filter filters-list="controllerOpportunityList.quickFilters"
+				 on-select-filter="controllerOpportunityList.selectQuickFilter"
+				 orderby-list="controllerOpportunityList.listOfOrderBy"
+				 on-select-orderby="controllerOpportunityList.selectOrderBy"
+				 filters-list-custom="controllerOpportunityList.listOfCustomFilters"
+				 on-remove-custom="controllerOpportunityList.removeCustomFilter"
+				 on-add-edit-custom="controllerOpportunityList.addEditCustomFilters">
+	 </totvs-page-quick-filter>
+</totvs-page-content-header>
+
+
+<totvs-page-alert
+	ng-if="controllerOpportunityList.listOfOpportunity.length <= 0"
+	type="info"
+	message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+	<% if ((!data["btn-new-opportunity"] || data["btn-new-opportunity"].log_visivel === true)) { %>
+	<br/>
+	<button type="button"
+			class="btn btn-primary"
+			ng-click="controllerOpportunityList.addEdit();">
+		<span class="glyphicon glyphicon-plus"></span>
+		&nbsp;&nbsp;{{ 'btn-new-opportunity' | i18n: []: 'dts/crm' }}
+	</button>
+	<% } %>
+</totvs-page-alert>
+
+<totvs-list-item
+	 id="opportunity{{opportunity.num_id}}"
+	 ng-class="opportunity.nom_cor"
+	 ng-repeat="opportunity in controllerOpportunityList.listOfOpportunity">
+
+	<totvs-list-item-header>
+
+		<totvs-list-item-title
+			class="legend"
+			ng-class="[opportunity.nom_cor, (opportunity.log_anexo ? 'crm-attachment' : '')]">
+			<a href="#/dts/crm/opportunity/detail/{{opportunity.num_id}}"
+			   ng-if="opportunity.ttConta.log_acesso">
+				{{ opportunity.num_id }}
+				<% if ((!data["l-description"] || data["l-description"].log_visivel === true)) { %>
+				- {{opportunity.des_oportun_vda}}
+				<% } %>
+			</a>
+			<span ng-if="opportunity.ttConta.log_acesso !== true">
+				<span class="glyphicon glyphicon-lock"></span>
+				{{ opportunity.num_id }}
+				<% if ((!data["l-description"] || data["l-description"].log_visivel === true)) { %>
+				- {{opportunity.des_oportun_vda}}
+				<% } %>
+			</span>
+		</totvs-list-item-title>
+
+		<totvs-list-item-action limit-primary-action="3">
+
+			<% if ((!data["btn-edit"] || data["btn-edit"].log_visivel === true)) { %>
+			<action icon="glyphicon-pencil"
+					ng-if="opportunity.ttConta.log_acesso === true"
+					ng-click="controllerOpportunityList.addEdit(opportunity)">
+				{{ 'btn-edit' | i18n: []: 'dts/crm' }}
+			</action>
+			<% } %>
+
+			<% if ((!data["btn-remove"] || data["btn-remove"].log_visivel === true)) { %>
+			<action icon="glyphicon-trash"
+					ng-if="opportunity.ttConta.log_acesso === true"
+					ng-click="controllerOpportunityList.onRemove(opportunity)">
+				{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+			</action>
+			<% } %>
+
+			<% if ((!data["btn-reactivate"] || data["btn-reactivate"].log_visivel === true)) { %>
+			<action icon="glyphicon-retweet"
+					ng-if="(opportunity.log_suspenso == true) && (opportunity.ttConta.log_acesso === true)"
+					ng-click="controllerOpportunityList.toogleSuspend(opportunity)" >
+				{{ 'btn-reactivate' | i18n: []: 'dts/crm' }}
+			</action>
+			<% } %>
+
+			<% if ((!data["btn-suspend"] || data["btn-suspend"].log_visivel === true)) { %>
+			<action icon="glyphicon-retweet"
+					ng-if="(opportunity.log_suspenso == false && opportunity.dat_fechto_oportun | isUndefined) && (opportunity.ttConta.log_acesso === true)"
+					ng-click="controllerOpportunityList.toogleSuspend(opportunity)" >
+				{{ 'btn-suspend' | i18n: []: 'dts/crm' }}
+			</action>
+			<% } %>
+
+			<% if ((!data["btn-lost"] || data["btn-lost"].log_visivel === true)) { %>
+			<action icon="glyphicon-ban-circle"
+					ng-if="(opportunity.dat_fechto_oportun | isUndefined) && (opportunity.ttConta.log_acesso === true)"
+					ng-click="controllerOpportunityList.lost(opportunity)" >
+				{{ 'btn-lost' | i18n: []: 'dts/crm' }}
+			</action>
+			<% } %>
+
+			<% if ((!data["btn-reopen"] || data["btn-reopen"].log_visivel === true)) { %>
+			<action icon="glyphicon-repeat"
+					ng-if="(!(opportunity.dat_fechto_oportun | isUndefined)) && opportunity.ttConta.log_acesso === true"
+					ng-click="controllerOpportunityList.reopen(opportunity)" >
+				{{ 'btn-reopen' | i18n: []: 'dts/crm' }}
+			</action>
+			<% } %>
+
+			<% if ((!data["btn-new-history"] || data["btn-new-history"].log_visivel === true)) { %>
+			<action icon="glyphicon-flash"
+					ng-click="controllerOpportunityList.registerHistory(opportunity)">
+				{{ 'btn-new-history' | i18n: []: 'dts/crm' }}
+			</action>
+			<% } %>
+
+			<% if ((!data["btn-new-task"] || data["btn-new-task"].log_visivel === true)) { %>
+			<action icon="glyphicon-pushpin"
+					ng-click="controllerOpportunityList.registerTask(opportunity)">
+				{{ 'btn-new-task' | i18n: []: 'dts/crm' }}
+			</action>
+			<% } %>
+
+			<% if ((!data["btn-send-email"] || data["btn-send-email"].log_visivel === true)) { %>
+			<!--action icon="glyphicon-envelope"
+					ng-click="controllerOpportunityList.sendEmail(opportunity)" >
+				{{ 'btn-send-email' | i18n: []: 'dts/crm' }}
+			</action-->
+			<% } %>
+		</totvs-list-item-action>
+
+	</totvs-list-item-header>
+
+	<totvs-list-item-content>
+
+		<% if ((!data["l-account"] || data["l-account"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-4"
+			title="{{ 'l-account' | i18n: []: 'dts/crm' }}">
+
+			<span ng-if="opportunity.ttConta.log_matriz"
+				  class="glyphicon glyphicon-globe">
+			</span>
+
+			<a href="#/dts/crm/account/detail/{{opportunity.ttConta.num_id}}"
+			   ng-if="opportunity.ttConta.log_acesso">
+				{{ opportunity.ttConta.nom_razao_social }}
+				{{ (opportunity.ttConta.cod_pessoa_erp ? '(' + opportunity.ttConta.cod_pessoa_erp + ')' : '') }}
+			</a>
+
+			<span ng-if="opportunity.ttConta.log_acesso !== true">
+				<span class="glyphicon glyphicon-lock"></span>
+				&nbsp; {{ opportunity.ttConta.nom_razao_social }}
+				{{ (opportunity.ttConta.cod_pessoa_erp ? '(' + opportunity.ttConta.cod_pessoa_erp + ')' : '') }}
+			</span>
+
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-phase"] || data["l-phase"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-4"
+			title="{{ 'l-phase' | i18n: []: 'dts/crm' }}"
+			value="{{ opportunity.ttFaseDesenvolvimento.des_fase }}">
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-user-responsible"] || data["l-user-responsible"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-4"
+			title="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}"
+			value-break="false">
+			<a role="button" ng-click="controllerOpportunityList.openUserSummary(opportunity)">
+				{{ opportunity.ttResponsavel.nom_usuar }}
+			</a>
+		</totvs-list-item-info>
+		<% } %>
+
+	</totvs-list-item-content>
+
+	<totvs-list-item-content-detail ng-click="controllerOpportunityList.loadItemDetail(opportunity);">
+
+		<% if ((!data["l-sales-strategy"] || data["l-sales-strategy"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-4 "
+			title="{{ 'l-sales-strategy' | i18n: []: 'dts/crm' }}"
+			value="{{ (opportunity.ttEstrategia ? opportunity.ttEstrategia.des_estrateg_vda : '') }}">
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-probability-of-sale"] || data["l-probability-of-sale"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-4 "
+			title="{{ 'l-probability-of-sale' | i18n: []: 'dts/crm' }}"
+			value="{{ (opportunity.ttProbabilidade ? opportunity.ttProbabilidade.des_probab_fechto : '') }}">
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-campaign"] || data["l-campaign"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-4 "
+			title="{{ 'l-campaign' | i18n: []: 'dts/crm' }}"
+			value="{{ (opportunity.ttCampanha ? opportunity.ttCampanha.nom_campanha : '') }}">
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-date-create"] || data["l-date-create"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-4 "
+			title="{{ 'l-date-create' | i18n: []: 'dts/crm' }}"
+			value="{{ opportunity.dat_cadastro | date : ('l-date-format' | i18n: []: 'dts/crm') }}">
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-date-close"] || data["l-date-close"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-4 "
+			title="{{ 'l-date-close' | i18n: []: 'dts/crm' }}"
+			value="{{ opportunity.dat_fechto_oportun | date : ('l-date-format' | i18n: []: 'dts/crm') }}">
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-date-close-forecast"] || data["l-date-close-forecast"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-4 "
+			title="{{ 'l-date-close-forecast' | i18n: []: 'dts/crm' }}"
+			value="{{ opportunity.dat_prev_fechto | date : ('l-date-format' | i18n: []: 'dts/crm') }}">
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-opportunity-value"] || data["l-opportunity-value"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-4 "
+			title="{{ 'l-opportunity-value' | i18n: []: 'dts/crm' }}"
+			value="{{opportunity.val_oportun_vda | currency : opportunity.ttMoeda.nom_prefix_moeda}}">
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-budget"] || data["l-budget"].log_visivel === true)) { %>
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-4 "
+				title="{{ 'l-budget' | i18n: []: 'dts/crm' }}"
+				value="{{ opportunity.val_bgc  | currency : opportunity.ttMoeda.nom_prefix_moeda}}">
+			</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-quantity-items"] || data["l-quantity-items"].log_visivel === true)) { %>
+			<totvs-list-item-info
+				ng-if="controllerOpportunityList.isIntegratedWithGP !== true"
+				class="col-xs-12 col-sm-4 "
+				title="{{ 'l-quantity-items' | i18n: []: 'dts/crm' }}"
+				value="{{ opportunity.qti_nume_vida | number }}">
+			</totvs-list-item-info>
+		<% } %>
+
+
+		 <% if ((!data["l-value-simulation"] || data["l-value-simulation"].log_visivel === true)) { %>
+			<totvs-list-item-info
+				ng-if="controllerOpportunityList.isIntegratedWithGP === true"
+				class="col-xs-12 col-sm-4 "
+				title="{{ 'l-value-simulation' | i18n: []: 'dts/crm' }}"
+				value="{{ opportunity.val_realzdo_simul | currency : opportunity.ttMoeda.nom_prefix_moeda}}">
+			</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-number-of-lifes"] || data["l-number-of-lifes"].log_visivel === true)) { %>
+			<totvs-list-item-info
+				ng-if="controllerOpportunityList.isIntegratedWithGP === true"
+				class="col-xs-12 col-sm-4 "
+				title="{{ 'l-number-of-lifes' | i18n: []: 'dts/crm' }}"
+				value="{{ opportunity.qti_nume_vida | number }}">
+			</totvs-list-item-info>
+		<% } %>
+
+
+		<% if ((!data["l-average-life-value"] || data["l-average-life-value"].log_visivel === true)) { %>
+			<totvs-list-item-info
+				ng-if="controllerOpportunityList.isIntegratedWithGP === true"
+				class="col-xs-12 col-sm-4 "
+				title="{{ 'l-average-life-value' | i18n: []: 'dts/crm' }}"
+				value="{{ opportunity.val_med_vida | currency : opportunity.ttMoeda.nom_prefix_moeda}}">
+			</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-number-of-lifes-accomplished"] || data["l-number-of-lifes-accomplished"].log_visivel === true)) { %>
+			<totvs-list-item-info
+				ng-if="controllerOpportunityList.isIntegratedWithGP === true"
+				class="col-xs-12 col-sm-4 "
+				title="{{ 'l-number-of-lifes-accomplished' | i18n: []: 'dts/crm' }}"
+				value="{{ opportunity.qti_nume_vida_realzdo | number }}">
+			</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-observation"] || data["l-observation"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12 col-sm-12 "
+			title="{{ 'l-observation' | i18n: []: 'dts/crm' }}"
+			value="{{ opportunity.dsl_oportun_vda }}">
+		</totvs-list-item-info>
+		<% } %>
+
+	</totvs-list-item-content-detail>
+
+</totvs-list-item>
+
+<totvs-list-pagination
+	ng-if="controllerOpportunityList.listOfOpportunity.length < controllerOpportunityList.listOfOpportunityCount && controllerOpportunityList.listOfOpportunity.length"
+	ng-click="controllerOpportunityList.search(true);">
+</totvs-list-pagination>

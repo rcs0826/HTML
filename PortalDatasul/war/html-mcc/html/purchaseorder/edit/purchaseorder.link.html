@@ -1,0 +1,70 @@
+<totvs-modal-header>
+	{{:: 'l-link-to-purchase' | i18n: []: 'dts/mcc' }} ({{controller.purchaseNumber}})
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<div class="row" style="margin-bottom: 15px;">
+		<totvs-field totvs-combo
+					 ng-model="controller.selectedFilterOption"
+					 t-options="controller.filterOptions"
+					 class="col-md-3">
+		</totvs-field>
+		
+		<totvs-field totvs-input
+					 ng-model="controller.filterValue"
+					 class="col-md-3"
+					 id="filterValueId"
+					 ng-change="controller.filter()">
+		</totvs-field>
+		
+		<totvs-field totvs-checkbox
+					 t-bsswitch 
+					 class="col-md-1"
+					 ng-model="controller.ordersEstablishmentDifferentOrder"
+					 ng-change="controller.onChangeEstabDifferent()">
+		</totvs-field>
+
+		<span class="col-md-5" style="margin-top: 8px;">
+			{{ 'l-orders-establishment-different-order' | i18n }}
+		</span>
+	</div>
+
+	<div class="row" style="margin: 0px;">
+		<totvs-grid grid-data="controller.orders"
+					grid-height="250"
+					resizable="true"
+					navigatable="true"
+					selectable="multiple, row"
+					add-select-column="separate"
+					grid-selected-item="controller.selectedItem"
+					grid-selected-items="controller.selectedItems"
+					on-change="controller.onGridChange()">
+
+			<totvs-grid-column width="100" field="numero-ordem" style="text-align: right;">{{:: 'l-requisition' | i18n }}</totvs-grid-column>
+			<totvs-grid-column width="150" field="it-codigo">{{:: 'l-item' | i18n }}</totvs-grid-column>
+			<totvs-grid-column width="180" field="cdd-solicit" style="text-align: right;">{{:: 'l-quotation-process' | i18n }}</totvs-grid-column>
+			<totvs-grid-column width="150" field="qt-solic" style="text-align: right;" filter="number : 4">{{:: 'l-quantity' | i18n }}</totvs-grid-column>
+			<totvs-grid-column width="100" field="data-emissao" filter="date:dd/MM/yyyy">{{:: 'l-print' | i18n }}</totvs-grid-column>
+			<totvs-grid-column width="100" field="data-entrega" filter="date:dd/MM/yyyy">{{:: 'l-delivery' | i18n }}</totvs-grid-column>
+			<totvs-grid-column width="100" field="cod-comprado">{{:: 'l-buyer' | i18n }}</totvs-grid-column>
+			<totvs-grid-column width="100" field="requisitante">{{:: 'l-requester' | i18n }}</totvs-grid-column>
+			
+		</totvs-grid>
+	</div>
+
+	<div class="row">
+		<field  type="textarea"
+				ng-model="controller.description"
+				label="{{:: 'l-description-complementary-order' | i18n: []: 'dts/mcc' }}"
+				class="col-xs-12 col-md-12 col-lg-12"
+				readonly>
+		</field>
+	</div>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{:: 'l-cancel' | i18n: []: 'dts/mcc' }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply()" ng-disabled="controller.selectedItems.length == 0" >{{:: 'l-confirm' | i18n: []: 'dts/mcc' }}</button>
+</totvs-modal-footer>

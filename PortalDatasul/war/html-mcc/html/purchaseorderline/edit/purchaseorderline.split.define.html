@@ -1,0 +1,86 @@
+<style type="text/css">
+  h4{
+    margin-top: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+  }
+  .checkbox-container label, .detail-field .field-label{
+    font-family: 'Arial';
+    margin-bottom: 5px;
+    font-weight: 200 !important;
+    font-size: 12px;
+    color: gray;
+  }
+  .k-grid{
+    margin-top: 110px;
+  }
+  totvs-field .field-container{
+    margin-top: 0px !important;
+  }
+
+  @media screen and (max-width: 767px) {
+    .k-grid{
+      margin-top: 160px !important;
+    }
+  }
+
+</style>
+<totvs-modal-header>
+    {{ 'l-split-delivery-vendor' | i18n }} 
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <totvs-page-detail class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 5px 0px">
+        <totvs-page-detail-info
+            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+            title="{{ 'l-purchase-orderline' | i18n }}"
+            value="{{controller.model['numero-ordem']}}">
+        </totvs-page-detail-info>
+
+        <totvs-page-detail-info
+            class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+            title="{{ 'l-quantity-order' | i18n }}"
+            value="{{controller.model['qt-solic'] | number:4}}">
+        </totvs-page-detail-info>
+        <div class="col-xs-12">
+          <h4>{{ 'l-programmed-deliveries' | i18n: []: 'dts/mcc' }}</h4>  
+        </div>
+        
+    </totvs-page-detail>
+    <totvs-page-content>
+      <totvs-grid grid-data="controller.model.splitPurchaseRequisitionList"
+                editable="true"
+                groupable="true"
+                grid-height="500"
+                >
+          <totvs-grid-column field="data-entrega" width="120" filter="date : dd/MM/yyyy">
+              {{ 'l-delivery-date' | i18n}}
+          </totvs-grid-column>
+
+          <totvs-grid-column field="fornec" width="80">
+              {{ 'l-vendor' | i18n }}
+          </totvs-grid-column>
+          
+          <totvs-grid-column field="nome-fornec" width="100">
+              {{ 'l-short-name' | i18n }}
+          </totvs-grid-column>
+
+          <totvs-grid-column field="quantidade" width="150" editable="true" filter="number : 4" >
+              {{'l-quantity' | i18n}}
+          </totvs-grid-column>
+
+          <totvs-grid-column field="contr-forn" width="70" title="{{'l-contract' | i18n}}">
+              <option id="true">{{'l-yes' | i18n}}</option>
+              <option id="false">{{'l-no' | i18n}}</option>
+          </totvs-grid-column>
+          
+          <totvs-grid-group field="data-entrega"></totvs-grid-group>
+
+        </totvs-grid>
+    </totvs-page-content>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()">{{ 'l-confirm-split' | i18n }}</button>
+</totvs-modal-footer>

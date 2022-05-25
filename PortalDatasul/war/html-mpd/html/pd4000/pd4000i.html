@@ -1,0 +1,177 @@
+<div ng-controller="salesorder.pd4000Representative.Controller as representativeController" totvs-custom-element="pd4000i">
+<% if (data) { %>
+	<div class="row">
+		<div class="col-sm-12" style="padding: 0;">
+			<totvs-tabset>
+				<totvs-tab heading="{{:: 'Por Item' | i18n : [] : 'dts/mpd'}}"
+					ng-if="orderController.pd4000['aba-representantes-item']"
+					select="orderController.select()">
+					<div class="row">
+						<div class="col-sm-12">
+							<br>
+							<totvs-grid grid-data="representativeController.orderItens"
+										grid-height="230"
+										navigatable="true"
+										editable="false"
+										auto-resize-content="true"
+										selectable="row">
+								<totvs-grid-column field="nr-sequencia" width="60">{{:: 'Sequência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column field="it-codigo" width="160">{{:: 'Item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column field="desc-item" class="text-nowrap" width="350">{{:: 'Descrição' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column field="cod-refer" width="160">{{:: 'Referência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column field="vl-preuni" width="130" filter="number : 5" style="text-align: right;">{{:: 'Preço Líq' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column field="qt-pedida" width="90" filter="number : 4" style="text-align: right;">{{:: 'Qtd Pedida' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column field="cod-un" width="50">{{:: 'UM' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column field="vl-tot-it" width="150" filter="number : 5" style="text-align: right;">{{:: 'Valor Total' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-detail size="table">
+									<div ng-controller="salesorder.pd4000ItemRepresentative.Controller as itemRepresentativeController" ng-init="itemRepresentativeController.init(dataItem)">
+										<div class="row" style="padding-bottom: 5px; margin: 0;" ng-if="!itemRepresentativeController.orderDisabled">
+											<a class="btn btn-default" role="button" tabindex="0"
+												ng-click="itemRepresentativeController.save()"
+												ng-disabled="!itemRepresentativeController.canSave()">
+												<span class="glyphicon glyphicon-save"></span>
+												<span class="hidden-xs ng-binding">&nbsp;&nbsp;{{:: 'Salvar' | i18n : [] : 'dts/mpd'}}</span>
+											</a>
+											<a class="btn btn-default" role="button" tabindex="0"
+												ng-click="itemRepresentativeController.reload()"
+												ng-disabled="!itemRepresentativeController.canSave()">
+												<span class="glyphicon glyphicon-refresh"></span>
+												<span class="hidden-xs ng-binding">&nbsp;&nbsp;{{:: 'Descartar Alterações' | i18n : [] : 'dts/mpd'}}</span>
+											</a>
+											<a class="btn btn-default" role="button" ng-click="itemRepresentativeController.add()">
+												<span class="glyphicon glyphicon-plus"></span>
+												<span class="hidden-xs ng-binding">{{:: 'Adicionar' | i18n : [] : 'dts/mpd' }}</span>
+											</a>
+											<a ng-hide="" class="btn btn-default" role="button"
+												ng-click="itemRepresentativeController.remove()"
+												ng-disabled="!itemRepresentativeController.gridSelectedItems.length">
+												<span class="glyphicon glyphicon-remove"></span>
+												<span class="hidden-xs ng-binding">{{:: 'Remover' | i18n : [] : 'dts/mpd' }}</span>
+											</a>
+
+										</div>
+										<div class="row" style="margin: 0;">
+											<totvs-grid grid="itemRepresentativeController.gridItemOrderRepresentative"
+												grid-data="itemRepresentativeController.ttItemOrderRepresentative"
+												grid-height="150"
+												navigatable="true"
+												editable="!itemRepresentativeController.orderDisabled"
+												selectable="row"
+												on-edit="itemRepresentativeController.itemsGridEdit(event)"
+												grid-selected-item="itemRepresentativeController.gridSelectedItem"
+												grid-selected-items="itemRepresentativeController.gridSelectedItems">
+												<totvs-grid-column editable="true" field="nome-ab-rep" width="110"
+													select-id="cod-rep"
+													select-description="nome-abrev"
+													select-service="mpd.repres.zoom">{{:: 'Representante' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="val-base-comis" width="160" filter="number : 5">{{:: 'Vl Base Comissão' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column editable="true" field="perc-comis"  width="90" filter="number:4">{{:: '% Comissão' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="val-comis" width="160" filter="number : 5">{{:: 'Vl Comissão Emissão' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column editable="true" field="comis-emis" width="120" filter="number:4">{{:: '% Comissão Emissão' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+												<totvs-grid-column field="val-comis-emis" width="160" filter="number : 5">{{:: 'Vl Comissão Emissão' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+											</totvs-grid>
+										</div>
+									</div>
+								</totvs-grid-detail>
+							</totvs-grid>
+						</div>
+					</div>
+				</totvs-tab>
+				<totvs-tab heading="{{:: 'Do Pedido' | i18n : [] : 'dts/mpd'}}"
+					ng-if="orderController.pd4000['aba-representantes-pedido']"
+					select="orderController.select()">
+<% } %>
+					<div class="row">
+						<div style="border:0; padding: 15px 0;">
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="col-xs-6" ng-if="!representativeController.orderDisabled">
+										<a class="btn btn-default" role="button" tabindex="0"
+											ng-click="representativeController.save()"
+											ng-disabled="!representativeController.canSave()">
+											<span class="glyphicon glyphicon-save"></span>
+											<span class="hidden-xs ng-binding">&nbsp;&nbsp;Salvar</span>
+										</a>
+										<a class="btn btn-default" role="button" tabindex="0"
+											ng-click="representativeController.reload()"
+											ng-disabled="!representativeController.canSave()">
+											<span class="glyphicon glyphicon-refresh"></span>
+											<span class="hidden-xs ng-binding">&nbsp;&nbsp;Descartar Alterações</span>
+										</a>
+										<a class="btn btn-default" role="button" ng-click="representativeController.add()">
+											<span class="glyphicon glyphicon-plus"></span>
+											<span class="hidden-xs ng-binding">{{:: 'Adicionar' | i18n : [] : 'dts/mpd' }}</span>
+										</a>
+										<a class="btn btn-default" role="button"
+											ng-click="representativeController.remove()"
+											ng-disabled="!representativeController.canDelete()"
+											tooltip="Representante principal não pode ser removido">
+											<span class="glyphicon glyphicon-remove"></span>
+											<span class="hidden-xs ng-binding">{{:: 'Remover' | i18n : [] : 'dts/mpd' }}</span>
+										</a>
+									</div>
+									<div class="nolabel">
+										<totvs-field totvs-select
+											ng-model="representativeController.order['no-ab-reppri']"
+											ng-disabled="representativeController.orderDisabled"
+											ng-change="representativeController.changeNoAbReppri()"
+											class="col-xs-6"
+											select-id="nome-abrev"
+											select-description="nome"
+											select-init="{gotomethod: 'gotonomeabrev'}"
+											select-service="mpd.repres.zoom"
+											zoom-service="mpd.repres.zoom">
+										</totvs-field>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<totvs-grid grid="representativeController.gridOrderRepresentative"
+										grid-data="representativeController.ttOrderRepresentative"
+										grid-height="200"
+										navigatable="true"
+										editable="!representativeController.orderDisabled"
+										auto-resize-content="true"
+										selectable="row"
+										on-edit="representativeController.gridEdit(event)"
+										grid-selected-item="representativeController.gridSelectedItem"
+										grid-selected-items="representativeController.gridSelectedItems">
+								<totvs-grid-column editable="true" field="nome-ab-rep" width="250"
+									select-id="nome-abrev"
+									select-description="cod-rep"
+									select-init="{gotomethod: 'gotonomeabrev'}"
+									select-service="mpd.repres.zoom">{{:: 'Representante' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column field="val-base-comis" width="160" filter="number : 5">{{:: 'Vl Base Comissão' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column editable="true" field="perc-comis"  width="160" filter="number:4">{{:: '% Comissão' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column field="val-comis" width="160" filter="number : 5">{{:: 'Vl Comissão' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column editable="true" field="comis-emis" width="200" filter="number:4">{{:: '% Comissão Emissão' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column field="val-comis-emis" width="160" filter="number : 5">{{:: 'Vl Comissão Emissão' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+								<totvs-grid-column editable="true" field="idi-liber-pagto-comis-agent" width="270">{{:: 'Liberação de Pagamento' | i18n : [] : 'dts/mpd'}}
+									<option id="1">{{:: 'Padrão' | i18n : [] : 'dts/mpd'}}</option>
+									<option id="2">{{:: 'Final do Processo de Exportação' | i18n : [] : 'dts/mpd'}}</option>
+									<option id="3">{{:: 'Após a Liquidação do Último Título' | i18n : [] : 'dts/mpd'}}</option>
+								</totvs-grid-column>
+								<totvs-grid-column editable="true" field="idi-tip-base-comis-agent" width="260">{{:: 'Tipo de Base' | i18n : [] : 'dts/mpd'}}
+									<option id="1">{{:: 'Valor FOB' | i18n : [] : 'dts/mpd'}}</option>
+									<option id="2">{{:: 'Valor INCOTERM Negociada' | i18n : [] : 'dts/mpd'}}</option>
+								</totvs-grid-column>
+								<totvs-grid-column editable="true" field="idi-tip-comis-agent" width="200">{{:: 'Tipo Comissão Agente' | i18n : [] : 'dts/mpd'}}
+									<option id="1">{{:: 'Nenhum' | i18n : [] : 'dts/mpd'}}</option>
+									<option id="2">{{:: 'A Remeter' | i18n : [] : 'dts/mpd'}}</option>
+									<option id="3">{{:: 'Conta Gráfica' | i18n : [] : 'dts/mpd'}}</option>
+									<option id="4">{{:: 'Faturada' | i18n : [] : 'dts/mpd'}}</option>
+								</totvs-grid-column>
+							</totvs-grid>
+						</div>
+					</div>
+<% if (data) { %>
+				</totvs-tab>
+			</totvs-tabset>
+		</div>
+	</div>
+<% } %>
+</div>
+

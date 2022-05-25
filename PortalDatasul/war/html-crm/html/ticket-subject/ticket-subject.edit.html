@@ -1,0 +1,96 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_assunto_ocor : ('btn-new-subject' | i18n )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="input"
+			   class="col-xs-12"
+			   ng-model="controller.model.nom_assunto_ocor"
+			   maxlength="50"
+			   required
+			   canclean>
+			<label>{{ 'l-description' | i18n }}</label>
+		</field>
+	</fieldset>
+
+    <fieldset class="row">
+        <field type="select"
+			   class="col-xs-12 col-sm-6"
+			   ng-model="controller.model.ttManifestationType"
+			   ng-animate="'animate-if'"
+               ng-if="controller.isIntegratedWithGP == true"
+               required
+               ng-change="controller.filterServiceCategory()"
+			   canclean>
+
+			<label>{{ 'l-manifestation-type' | i18n }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-manifestation-type' | i18n }}">
+					{{ $select.selected.nom_tipo }}
+				</ui-select-match>
+				<ui-select-choices repeat="manifestationType in controller.manifestationTypes | filter: $select.search track by $index">
+					<span ng-bind-html="manifestationType.nom_tipo | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+        
+        <field type="select"
+			   class="col-xs-12 col-sm-6"
+			   ng-model="controller.model.ttServiceCategory"
+			   ng-animate="'animate-if'"
+               ng-if="controller.isIntegratedWithGP == true"
+               ng-disabled="!controller.model.ttManifestationType || (controller.model.ttManifestationType && controller.model.ttManifestationType.num_id < 1)"
+               ng-required="!controller.model.ttManifestationType || (controller.model.ttManifestationType && controller.model.ttManifestationType.num_id > 1)"
+			   canclean>
+
+			<label>{{ 'l-service-category' | i18n }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-service-category' | i18n }}">
+					{{ $select.selected.nom_tipo }}
+				</ui-select-match>
+				<ui-select-choices repeat="serviceCategory in controller.serviceCategories | filter: $select.search track by $index">
+					<span ng-bind-html="serviceCategory.nom_tipo | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+	</fieldset>	
+
+	<fieldset class="row">		
+		<field type="select"
+		       ng-if="!controller.isIntegratedWithGP"	
+			   class="col-xs-12 col-sm-6"
+			   ng-model="controller.model.ttType"
+			   ng-animate="'animate-if'"
+			   canclean>
+
+			<label>{{ 'l-type' | i18n }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-type' | i18n }}">
+					{{ $select.selected.nom_tipo }}
+				</ui-select-match>
+				<ui-select-choices repeat="type in controller.types | filter: $select.search track by $index">
+					<span ng-bind-html="type.nom_tipo | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+        <totvs-field class="col-xs-12 col-sm-6"
+                     totvs-checkbox
+                     ng-model="controller.model.log_suspenso"
+                     label="{{ 'l-suspended' | i18n: []: 'dts/crm' }}"
+                     t-bsswitch>
+        </totvs-field>
+    </fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n }}</button>
+</totvs-modal-footer>

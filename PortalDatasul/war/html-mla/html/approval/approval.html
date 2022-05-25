@@ -1,0 +1,74 @@
+<totvs-page type="list" totvs-custom-element="customApproval">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>
+                <span class="hidden-xs">{{ 'l-documents-approval' | i18n }}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{ 'l-approval-short' | i18n }}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+		<totvs-page-header>
+            <totvs-page-header-title title="{{ 'l-documents-approval' | i18n }}" 
+                                     id="pageTitle"
+                                     settings="controller.settings()">
+			</totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="2"
+                                                    items="controller.approvalDocuments"
+                                                    items-as="approvaldoc">
+                    <action link="#/dts/mla/historic/" icon="glyphicon-time" tooltip="{{ controller.isTouchDevice ? null : 'l-approval-history' | i18n }}">{{ 'l-history' | i18n }}</action>
+                    <action link="#/dts/mla/alternativeuser/" icon="glyphicon-user" tooltip="{{ controller.isTouchDevice ? null : 'l-alternative-users' | i18n }}">{{ 'l-alternative-users' | i18n }}</action>
+                </totvs-page-header-operation-action>
+                <totvs-page-header-operation-filter placeholder="{{ 'l-search' | i18n }}"
+                                                    ng-submit="controller.search()"
+                                                    ng-model="controller.searchInputText"
+													advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>    
+            </totvs-page-header-operation>	
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers"
+                        	        ng-click="controller.removeDisclaimer">
+		</totvs-page-header>
+	</totvs-page-navbar>
+		
+	<totvs-page-content>
+		<totvs-list-item
+            id="approvaldoc{{approvaldoc['cod-tip-doc']}}"
+            ng-class="'request-1'"
+            ng-repeat="approvaldoc in controller.approvalDocuments | filter:controller.searchInputText"
+            totvs-custom-element="customApproval_listApprovaldoc">
+            <totvs-list-item-header>
+                <totvs-list-item-title
+                    title="{{approvaldoc['desc-tip-doc']}}"
+                    link="#/dts/mla/approval/list/{{approvaldoc['cod-tip-doc']}}"
+                    class="col-xs-7 col-sm-6">
+                </totvs-list-item-title>
+
+                <totvs-list-item-action limit-primary-action="1" class="col-xs-5 col-sm-6">
+                    <action link="#/dts/mla/approval/list/{{approvaldoc['cod-tip-doc']}}" icon="glyphicon-ok-circle"        tooltip="{{ controller.isTouchDevice ? null : 'l-do-approvations' | i18n }}">{{ 'l-do-approvations' | i18n }}</action>
+                </totvs-list-item-action>
+
+                <totvs-list-item-info class="col-xs-12 col-sm-4 col-md-3 col-lg-3"
+                    title="{{ 'l-my-pendencies' | i18n }}"
+                    value="{{approvaldoc['nr-doc-pend-aprov-prin']}}">
+                </totvs-list-item-info>    
+				<totvs-list-item-info class="col-xs-12 col-sm-4 col-md-3 col-lg-3"
+                    title="{{ 'l-master-pendencies' | i18n }}"
+                    value="{{approvaldoc['nr-doc-pend-aprov-mes']}}"
+					ng-show="{{controller.isMasterUser}}">
+                </totvs-list-item-info> 					
+
+                <totvs-list-item-info class="col-xs-12 col-sm-4 col-md-3 col-lg-3"
+                    title="{{ 'l-alternalte-pendencies' | i18n }}"
+                    value="{{approvaldoc['nr-doc-pend-aprov-alter']}}">
+                </totvs-list-item-info>                
+
+                <totvs-list-item-info class="col-xs-12 col-sm-4 col-md-3 col-lg-3"
+                    title="{{ 'l-total' | i18n }}"
+                    value="{{approvaldoc['nr-doc-pend-aprov-total']}}">
+                </totvs-list-item-info>
+            </totvs-list-item-header>
+        </totvs-list-item>	
+	</totvs-page-content>
+</totvs-page>

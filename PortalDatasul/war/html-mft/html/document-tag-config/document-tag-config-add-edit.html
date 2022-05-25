@@ -1,0 +1,161 @@
+<totvs-page type="detail">
+        <totvs-page-navbar>
+            <totvs-page-breadcrumb>
+                <breadcrumb link="#/">{{'l-begin' | i18n}}</breadcrumb>
+                <breadcrumb link="#/dts/mft/document-tag-config/">{{:: 'l-document-tag-config' | i18n : [] : 'dts/mft' }}</breadcrumb>
+                <breadcrumb>{{:: controller.state == 'new' ? 'l-add-tag-document' : controller.state == 'edit' ? 'l-add-tag-document' : 'l-copy-tag-document' | i18n : [] : 'dts/mft' }}</breadcrumb>
+            </totvs-page-breadcrumb>
+            <totvs-page-header>
+                <totvs-page-header-title title="{{:: controller.state == 'new' ? 'l-add-tag-document' : controller.state == 'edit' ? 'l-add-tag-document' : 'l-copy-tag-document' | i18n : [] : 'dts/mft' }}"></totvs-page-header-title>
+                <totvs-page-header-operation>
+                    <totvs-page-header-operation-action hide-remove='true' hide-back='true' hide-edit='true'>
+                    <action ng-click="controller.confirm()">
+                        {{:: 'Confirmar' | i18n: []: 'dts/mft' }}
+                    </action>
+                    <action ng-click="controller.cancel()">
+                        {{:: 'Cancelar' | i18n: []: 'dts/mft' }}
+                    </action>                    
+                </totvs-page-header-operation-action>
+                </totvs-page-header-operation>
+            </totvs-page-header>
+        </totvs-page-navbar>
+        <totvs-page-content>
+            <accordion close-others="false" class="col-xs-12">
+                <accordion-group is-open="controller.tagInf">
+                    <accordion-heading>
+                        <div>
+                            {{ 'Informações da Tag' | i18n: []: 'dts/mft' }}
+                            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down' :  controller.tagInf,
+                                                'glyphicon-chevron-right': !controller.tagInf}">
+                            </i>
+                        </div>
+                    </accordion-heading>
+                    <totvs-page-form>
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                            <field class="row" type="combo" ng-disabled="controller.state == 'edit'" style="border-radius: 4px" ng-model="controller.tag['cdn-acao']" ng-options="item.id as item.desc for item in controller.actionOption" 
+                                required ng-required="true">
+                                <label>{{ "Ação" | i18n }} </label>
+                            </field>                            
+                        </div>
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                            <field class="row" type="combo" ng-disabled="controller.state == 'edit'" style="border-radius: 4px" ng-model="controller.tag['cod-docto']" ng-options="item.id as item.desc for item in controller.documentOption" 
+                                required ng-required="true">
+                                <label>{{ "Documento" | i18n }} </label>
+                            </field>
+                        </div>
+                        <div class="col-lg-4 col-sm-4 col-md-4 col-xs-4">
+                            <field class="row" type="input" ng-disabled="controller.state == 'edit'" ng-model="controller.tag['cod-versao']" canclean maxlength="6" required
+                                ng-required="true">
+                                <label>{{ "Versão" | i18n }} </label>
+                            </field>
+                        </div>
+                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                            <field class="row" type="input" ng-disabled="controller.state == 'edit'" ng-model="controller.tag['cod-tag']" canclean maxlength="50" required
+                                ng-required="true">
+                                <label>{{ "Tag" | i18n }} </label>
+                            </field>
+                        </div>
+                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                            <field class="row" type="input" ng-disabled="controller.state == 'edit'" ng-model="controller.tag['cod-tag-parent']" canclean maxlength="50" required
+                                ng-required="true">
+                                <label>{{ "Tag Pai" | i18n }} </label>
+                            </field>
+                        </div>                        
+                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                            <totvs-field totvs-datepicker class="row" ng-model="controller.tag['dat-inic-valid']" output-format="date"
+                                label="{{::'Início de Validade' | i18n : [] : 'dts/mft'}}" canclean required>
+                            </totvs-field>
+                        </div>
+                        <div class="col-lg-3 col-sm-3 col-md-3 col-xs-3">
+                            <totvs-field totvs-datepicker class="row" ng-model="controller.tag['dat-fim-valid']" output-format="date"
+                                label="{{::'Fim de Validade' | i18n : [] : 'dts/mft'}}" canclean required>
+                            </totvs-field>
+                        </div>                     
+                    </div>
+                    </totvs-page-form>
+                </accordion-group>
+                <accordion-group is-open="controller.ruleInf">
+                    <accordion-heading>
+                        <div>
+                            {{ 'Regras da Tag' | i18n: []: 'dts/mft' }}
+                            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down' :  controller.ruleInf,
+                                                                       'glyphicon-chevron-right': !controller.ruleInf}">
+                            </i>
+                        </div>
+                    </accordion-heading>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="controller.state == 'new' || controller.state == 'copy'">
+                        <br>
+                        <alert type="info">{{ controller.state == 'new' ? 'Para adicionar regras, é necessário confirmar a inclusão da Tag' : 'Para alterar as regras, é necessário confirmar a cópia da Tag' | i18n : [] : 'dts/mft'}}</alert>
+                    </div>
+                    <div class="col-sm-12">
+                        <br>                    
+                        <div>
+                            <div class="row" style="padding-bottom: 5px; margin: 0;">
+                                <a class="{{controller.state == 'edit' ? 'btn btn-success' : 'btn btn-default'}}" role="button" ng-disabled="controller.state != 'edit'" tabindex="0" ng-click="controller.addRule()">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    <span class="hidden-xs ng-binding">Adicionar Regra</span>
+                                </a>
+                                <a class="btn btn-default" role="button" ng-disabled="!controller.ruleSelected || controller.state != 'edit'" ng-click="controller.editRule()">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                    <span class="hidden-xs ng-binding">Editar Regra</span>
+                                </a>
+                                <a class="btn btn-default" role="button" ng-disabled="!controller.ruleSelected || controller.state != 'edit'" ng-click="controller.copyRule()">
+                                    <span class="glyphicon glyphicon-copy"></span>
+                                    <span class="hidden-xs ng-binding">Copiar Regra</span>
+                                </a>
+                                <a ng-hide="" class="btn btn-default" role="button" ng-disabled="!controller.ruleSelected || controller.state != 'edit'" ng-click="controller.deleteRule()">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                    <span class="hidden-xs ng-binding">Excluir Regra</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row" style="margin: 0; margin-top: 10px">
+                            <totvs-grid ng-if="controller.range.length > 0" grid-data="controller.range" grid="controller.ruleGrid" grid-height="350" selectable="row"
+                                navigatable="true" grid-selected-item="controller.ruleSelected" auto-resize-content="true">
+                                <totvs-grid-column field="des-regra" width="80">{{:: 'l-desc-rule' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                                <totvs-grid-column field="cod-campo" width="80">{{:: 'l-field' | i18n : [] : 'dts/mft'}}
+                                        <option id="CFOP">{{:: 'CFOP' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="Cidade da Nota">{{:: 'Cidade da Nota' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="Cidade do Cliente">{{:: 'Cidade do Cliente' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="Cidade do Estabelecimento">{{:: 'Cidade do Estabelecimento' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="Classificação Fiscal">{{:: 'Classificação Fiscal' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="Código do Cliente">{{:: 'Código do Cliente' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="Código do Estabelecimento">{{:: 'Código do Estabelecimento' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="Código do Item">{{:: 'Código do Item' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="Código do Serviço">{{:: 'Código do Serviço' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="Estado da Nota">{{:: 'Estado da Nota' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="Estado do Cliente">{{:: 'Estado do Cliente' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="Estado do Estabelecimento">{{:: 'Estado do Estabelecimento' | i18n : [] : 'dts/mft'}}</option>                        
+                                        <option id="Finalidade da NF-e">{{:: 'Finalidade da NF-e' | i18n : [] : 'dts/mft'}}</option>                        
+                                        <option id="Natureza de Operação">{{:: 'Natureza de Operação' | i18n : [] : 'dts/mft'}}</option>                        
+                                        <option id="País da Nota">{{:: 'País da Nota' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="País do Cliente">{{:: 'País do Cliente' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="País do Estabelecimento">{{:: 'País do Estabelecimento' | i18n : [] : 'dts/mft'}}</option>                        
+                                        <option id="Série">{{:: 'Série' | i18n : [] : 'dts/mft'}}</option>                          
+                                </totvs-grid-column>
+                                <totvs-grid-column field="cod-val-inic" width="80">{{:: 'l-initial-value' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                                <totvs-grid-column field="cod-val-fim" width="80">{{:: 'l-final-value' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                                <totvs-grid-column field="cdn-operac" width="100">{{:: 'l-type-operation' | i18n : [] : 'dts/mft'}}
+                                        <option id="1">{{:: 'l-do-not-send' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="2">{{:: 'l-fixed-value' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="3">{{:: 'l-multiplic-by' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="4">{{:: 'l-size' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="5">{{:: 'l-numeric-format' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="6">{{:: 'l-program' | i18n : [] : 'dts/mft'}}</option>
+                                        <option id="7">{{:: 'l-add-tag' | i18n : [] : 'dts/mft'}}</option>
+                                    </totvs-grid-column>
+                                <totvs-grid-column field="cod-programa" width="100">{{:: 'l-program' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                                <totvs-grid-column field="cod-valor" width="100">{{:: 'l-value' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                                <totvs-grid-column field="cod-xml" width="35">XML
+                                    <template>
+                                        <span><span style="border:none; box-shadow:none; background: none; margin-right: 5px;" class="btn btn-default" ng-click="controller.showXml(dataItem)"><span class="glyphicon glyphicon-list-alt"></span>
+                                    </template>
+                                </totvs-grid-column>
+                                <totvs-grid-group field="des-regra"></totvs-grid-group>
+                            </totvs-grid>                           
+                        </div>
+                    </div>
+                </accordion-group>
+            </accordion>    
+        </totvs-page-content>
+    </totvs-page>

@@ -1,0 +1,85 @@
+<totvs-page type="edit" totvs-custom-element="customAlternativeBuyer_edit">
+    <totvs-page-navbar>
+
+        <totvs-page-breadcrumb ng-if="!controller.isUpdate">
+            <breadcrumb link="#/">{{:: 'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/mcc/alternativebuyer">
+                <span class="hidden-xs">{{:: 'l-alternative-buyers' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{:: 'l-alternative-buyer-short' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+            <breadcrumb>
+                <span>{{:: 'l-add' | i18n}} </span>
+                <span class="hidden-xs">{{:: 'l-alternative-buyer' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-breadcrumb ng-if="controller.isUpdate">
+            <breadcrumb link="#/">{{:: 'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb link="#/dts/mcc/alternativebuyer">
+                <span class="hidden-xs">{{:: 'l-alternative-buyers' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{:: 'l-alternative-buyer-short' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+            <breadcrumb>
+                <span>{{:: 'l-edit' | i18n}} </span>
+                <span class="hidden-xs">{{:: 'l-alternative-buyer' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            <totvs-page-header-title ng-if="!controller.isUpdate" title="{{:: 'l-new-alternative' | i18n}}"></totvs-page-header-title>
+            <totvs-page-header-title ng-if="controller.isUpdate"  title="{{controller.model['cod-comprado']}} - {{controller.model['nome']}}"></totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new="{{controller.isUpdate}}" on-save="controller.save" on-save-new="controller.saveNew" on-cancel="controller.cancel">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form>
+            <div class="row">
+                <div class="col-md-12">
+                    <totvs-field totvs-select
+                        required
+                        class="col-md-6"
+                        ng-model="controller.model['cod-comprado']"
+                        label="{{:: 'l-main-buyer' | i18n: []: 'dts/mcc'}}"
+                        select-id="cod-comprado"
+                        ng-disabled="controller.isUpdate"
+                        select-description="nome"
+                        select-match='[{"field":"cod-comprado", "separator":" - "}, {"field":"nome"}]'
+                        select-service="mcc.comprador.zoom"
+                        zoom-service="mcc.comprador.zoom"
+                        canclean>
+                    </totvs-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <totvs-field totvs-select
+                        required
+                        class="col-md-6"
+                        ng-model="controller.model['cod-cmprdor-altern']"
+                        label="{{:: 'l-alternative-buyer' | i18n: []: 'dts/mcc'}}"
+                        select-id="cod-comprado"
+                        select-description="nome"
+                        select-match='[{"field":"cod-comprado", "separator":" - "}, {"field":"nome"}]'
+                        select-service="mcc.comprador.zoom"
+                        zoom-service="mcc.comprador.zoom"
+                        canclean>
+                    </totvs-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <field
+                        required
+                        type="daterange"
+                        ng-model="controller.validity"
+                        label="{{:: 'l-validity' | i18n: []: 'dts/mcc'}}">
+                    </field>
+                </div>
+            </div>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

@@ -1,0 +1,112 @@
+<totvs-page-child type="detail">
+
+	<totvs-page-content class="crm-tab">
+
+		<div class="row"
+			 ng-animate="'animate-if'"
+			 ng-if="attributeController.isEnabled && attributeController.isEdit">
+		</div>
+
+		<totvs-page-alert
+			ng-if="attributeController.listOfAttribute.length <= 0"
+			type="info"
+			message="{{ 'msg-not-found-attribute' | i18n: []: 'dts/crm' }}">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-if="(controller.model | isDefined) && controller.model.ttConta.log_acesso !== false">
+
+			<div class="col-xs-12 no-gutter">
+				<div ng-animate="'animate-if'"
+					 ng-repeat="attribute in attributeController.listOfAttribute track by $index">
+
+
+					<!--
+						 1. Texto
+							 2. Multipla Seleção
+						 3. Seleção Única
+						 4. Radio
+							 5. Checkbox
+							 6. Data
+							 7. Hora
+							 8. Inteiro
+							 9. Decimal
+					 10. Zoom  ( omitido )
+					 11. Outros  ( omitido )
+					-->
+
+					<!-- texto/Radio/Seleção Única -->
+					<totvs-page-detail-info
+						value-break="false"
+						class="col-xs-12 col-sm-6 col-md-3"
+						title="{{ attribute.nom_atrib | i18n: []: 'dts/crm' }}"
+						ng-if="(attribute.idi_tip_atrib === 1 && attribute.dsl_atrib_json.num_max_length < 101) || attribute.idi_tip_atrib === 3 || attribute.idi_tip_atrib === 4">
+
+						{{ (attribute.dsl_atrib_json.nom_mask) ? (attribute.dsl_atrib | mask : attribute.dsl_atrib_json.nom_mask) : (attribute.dsl_atrib) }}
+
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info
+						value-break="false"
+						class="col-xs-12 col-sm-12 col-md-12"
+						title="{{ attribute.nom_atrib | i18n: []: 'dts/crm' }}"
+						ng-if="((attribute.idi_tip_atrib === 1) && (!attribute.dsl_atrib_json.num_max_length || attribute.dsl_atrib_json.num_max_length > 100))">
+
+						<pre class="description">{{ (attribute.dsl_atrib_json.nom_mask) ? (attribute.dsl_atrib | mask : attribute.dsl_atrib_json.nom_mask) : (attribute.dsl_atrib) }}</pre>
+
+					</totvs-page-detail-info>
+					<!-- fim tipo 1 / 3 / 4 -->
+
+					<!-- hora -->
+					<totvs-page-detail-info
+						value-break="false"
+						class="col-xs-12 col-sm-6 col-md-3"
+						title="{{ attribute.nom_atrib | i18n: []: 'dts/crm' }}"
+						ng-if="attribute.idi_tip_atrib === 7 ">
+						  {{ attribute.hra_atrib }}
+					</totvs-page-detail-info>
+
+					<!-- inteiro -->
+					<totvs-page-detail-info
+						value-break="false"
+						class="col-xs-12 col-sm-6 col-md-3"
+						title="{{ attribute.nom_atrib | i18n: []: 'dts/crm' }}"
+						ng-if="attribute.idi_tip_atrib === 8 ">
+						  {{ (attribute.num_atrib === undefined || attribute.num_atrib === null) ? '' : attribute.num_atrib }}
+					</totvs-page-detail-info>
+
+					<!-- 2 / 5 -->
+					<totvs-page-detail-info
+						value-break="false"
+						class="col-xs-12 col-sm-6 col-md-3"
+						title="{{ attribute.nom_atrib | i18n: []: 'dts/crm' }}"
+						ng-if="attribute.idi_tip_atrib === 2 || attribute.idi_tip_atrib === 5 ">
+						  {{ attribute.dsl_atrib }}
+					</totvs-page-detail-info>
+
+					<!-- Data (decimal) -->
+					<totvs-page-detail-info
+						value-break="false"
+						class="col-xs-12 col-sm-6 col-md-3"
+						title="{{ attribute.nom_atrib | i18n: []: 'dts/crm' }}"
+						ng-if="attribute.idi_tip_atrib === 6 ">
+						{{ attribute.val_atrib | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+					</totvs-page-detail-info>
+
+					<!-- Decimal  -->
+					<totvs-page-detail-info
+						value-break="false"
+						class="col-xs-12 col-sm-6 col-md-3"
+						title="{{ attribute.nom_atrib | i18n: []: 'dts/crm' }}"
+						ng-if="attribute.idi_tip_atrib === 9 "
+						 value="{{ attribute.dsl_atrib ? ((attribute.dsl_atrib_json.ttDecimalPrecision.value) ? (attribute.dsl_atrib | number:attribute.dsl_atrib_json.ttDecimalPrecision.value) : (attribute.dsl_atrib | number:2)) : '' }}">
+					</totvs-page-detail-info>
+
+					<div class="clearfix" ng-if="attribute.isClearFix === true"></div>
+
+				</div>
+			</div>
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page-child>

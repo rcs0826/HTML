@@ -1,0 +1,196 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb id="breadcrumb">
+                <breadcrumb>Cálculo/Previsão de Comissões/Agenciamento</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="Cálculo/Previsão de Comissões/Agenciamento">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="1">
+                    <action class="glyphicon glyphicon-export"
+                            ng-click="controller.realizarCalculo();">
+                        Gerar
+                    </action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.filtersForm">
+            <legend>
+                Parâmetros
+            </legend>
+            <totvs-row>
+                <totvs-field totvs-datepicker
+                            class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+                            label="Data Base Geração"
+                            ng-model="controller.dadosTela.dtGeracao"
+                            format="dd/MM/yyyy"
+                            culture="pt">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+                <totvs-field totvs-combo
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+                    label="Comissão ou Agenciamento"
+                    t-options= "controller.listComissAgenc"
+                    ng-model="controller.dadosTela.inComissaoAgenciamento"
+                    min="1">
+                    <validator key="min">Este campo é obrigatório!</validator>
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+                <totvs-field totvs-combo
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+                    label="Previsão ou Cálculo"
+                    t-options= "controller.listPrevisaoCalculo"
+                    ng-model="controller.dadosTela.inPrevisaoCalculo"
+                    min="1">
+                    <validator key="min">Este campo é obrigatório!</validator>
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-checkbox
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+                    label="Vigência Contrato"
+                    ng-model="controller.dadosTela.lgVigenciaContrato">
+                </totvs-field>
+
+                <totvs-field totvs-checkbox
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+                    label="Vigência Modulos"
+                    ng-model="controller.dadosTela.lgVigenciaModulos">
+                </totvs-field>
+                <totvs-field totvs-checkbox
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+                    label="Desconsidera Contratantes Ativos"
+                    ng-model="controller.dadosTela.lgNovosContratantes">
+                </totvs-field>				
+                <totvs-field totvs-checkbox
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+                    label="Relatório Separado por Representante"
+                    ng-model="controller.dadosTela.lgSeparaRepresentante">
+                </totvs-field>	
+            </totvs-row>
+            <totvs-row ng-if="controller.dadosTela.lgNovosContratantes"> <!-- style="padding-top: 30px;"  -->
+                <legend>Modalidades</legend>
+                <field type="input"
+                    label="fake" style="visibility: hidden"
+                    class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+                </field>
+                <div class="col-lg-4 col-md-6 col-sm-8 col-xs-12">
+                    <totvs-page-content>
+                        <totvs-table
+                            t-items="controller.tmpModalidade"
+                            t-items-as="item"
+                            style="height: 150px; display:block; ">
+
+                            <column title="Código" width="25" >
+                                {{item.cdModalidade}}
+                            </column>
+
+                            <column title="Modalidade" width="120">
+                                {{item.dsModalidade}}
+                            </column>
+                        </totvs-table>
+                    </totvs-page-content>
+                </div>
+            </totvs-row>
+            <legend>
+                Seleção
+            </legend>
+            <totvs-row>
+                <field
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+                    type="inputrange"
+                    ng-model="controller.dadosTela.rangeFuncao"
+                    start-placeholder="1"
+                    end-placeholder="999"
+                    label="Função">
+                </field>
+                <field
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+                    type="inputrange"
+                    ng-model="controller.dadosTela.rangeRepresentante"
+                    start-placeholder="1"
+                    end-placeholder="999999"
+                    label="Representante">
+                </field>
+
+                <field
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+                    type="inputrange"
+                    ng-model="controller.dadosTela.rangeModalidade"
+                    start-placeholder="1"
+                    end-placeholder="99"
+                    label="Modalidade">
+                </field>
+                <field
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+                    type="inputrange"
+                    ng-model="controller.dadosTela.rangeContratante"
+                    start-placeholder="1"
+                    end-placeholder="99999999"
+                    label="Contratante">
+                </field>
+            </totvs-row>
+            <totvs-row> 
+                <totvs-field totvs-datepicker
+                    depth="year"
+                    format="MM/yyyy"
+                    class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+                    ng-model="controller.dadosTela.dtCompetencia"                    
+                    label="Período Competência">
+                </totvs-field> 			
+                <totvs-field totvs-date-range
+                    depth="year"
+                    format="MM/yyyy"
+                    class="col-lg-3 col-md-4 col-sm-6 col-xs-12"
+                    ng-model="controller.dadosTela.rangeVigencia"
+					ng-disabled="!controller.dadosTela.lgVigenciaContrato"
+                    label="Período Vigência Contrato">
+                </totvs-field>               
+                <totvs-field totvs-date-range
+                    depth="year"
+                    format="MM/yyyy"
+                    class="col-lg-3 col-md-4 col-sm-6 col-xs-12"
+                    ng-model="controller.dadosTela.rangeVigenciaMod"
+					ng-disabled="!controller.dadosTela.lgVigenciaModulos"
+                    label="Período Vigência Módulos">
+                </totvs-field>            
+            </totvs-row>
+
+            <legend>
+                Layout
+            </legend>
+            <totvs-row>
+                <totvs-table
+                    t-items="controller.tmpLayouts"
+                    t-items-as="item"
+                    type-select="OFF">
+                    <column title="" style="text-align: center;" width="50">
+                        <input type="radio" name="selected" 
+                               ng-checked="item.selected"
+                               ng-click="controller.onLayoutChanged(item)">
+                    </column>
+
+                    <column title="Específico" width="100">
+                        {{item.lgLayoutEspecifico ? 'Sim' : 'Não'}}
+                    </column>
+
+                    <column title="Código" width="200">
+                        {{item.cdLayout}}
+                    </column>
+
+                    <column title="Descrição">
+                        {{item.dsLayout}}
+                    </column>
+                </totvs-table>
+            </totvs-row>
+        </totvs-page-form>
+
+    </totvs-page-content>
+</totvs-page>
+
+

@@ -1,0 +1,26 @@
+﻿<html>
+<body>
+    <script language="JavaScript">
+		// tratamento do hashtag
+		// de:   http://produto:8080/?parametro=valor#/dts/mla/approval/email
+		// para: http://produto:8080/#/dts/mla/approval/email?parametro=valor
+		
+		var url = document.location.origin;
+		
+		/* Verifica se existe o parâmetro menu setado como portal
+		para direcionar para o menu do portal após a ação, 
+		caso não encontre será direcionado para o menu principal do produto */
+
+		if(document.location.search.indexOf("menu=portal&") > -1){
+			url = url + "/portal/menu/#/dts/mla/approval/email?";
+		} else {
+			url = url + "/totvs-menu/#/dts/mla/approval/email?";
+		}
+				
+		url = url + document.location.search.replace("?","");
+				
+		document.location = url; 
+			
+    </script>
+</body>
+</html>

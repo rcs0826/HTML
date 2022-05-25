@@ -1,0 +1,132 @@
+<totvs-modal-header>
+    {{ i18n('l-advanced-search', [], 'dts/mpl') }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <totvs-page-form>
+        <accordion close-others="false">
+
+            <!-- Parâmetros -->
+            <accordion-group is-open="status.open" >
+                <accordion-heading>
+                        {{ i18n('l-parameters', [], 'dts/mpl') }}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                </accordion-heading>
+
+                <fieldset class="form-horizontal">
+                    <!-- Item -->
+                    <field 
+                        class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+                        type="input"
+                        ng-model="controller.model.itemString"
+                        maxlength="16"
+                        label="{{ i18n('l-item', [], 'dts/mpl') }}"
+                        canclean>
+                    </field>
+
+                    <!-- Estabelecimento -->
+                    <!-- <field 
+                        class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
+                        type="input"
+                        ng-model="controller.model.siteCode"
+                        maxlength="5"
+                        label="{{ i18n('l-site', [], 'dts/mpl') }}"
+                        canclean>
+                    </field> -->
+
+                    <!-- Família -->
+                    <field 
+                        class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+                        type="input"
+                        ng-model="controller.model.familyString"
+                        maxlength="8"
+                        label="{{ i18n('l-family', [], 'dts/mpl') }}"
+                        canclean>
+                    </field>
+
+                    <!-- Grupo de Estoque -->
+                    <field 
+                        class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+                        type="decimal"
+                        ng-model="controller.model.stockGroupString"
+                        m-dec="0"
+                        v-max="99"
+                        label="{{ i18n('l-stock-group', [], 'dts/mpl') }}"
+                        canclean>
+                    </field>
+
+                    <!-- Planejador -->
+                    <field 
+                        class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+                        type="input"
+                        ng-model="controller.model.plannerString"
+                        maxlength="12"
+                        label="{{ i18n('l-planner', [], 'dts/mpl') }}"
+                        canclean>
+                    </field>
+
+                    <!-- Cliente -->
+                    <field 
+                        class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+                        type="input"
+                        ng-model="controller.model.customerRequestString"
+                        maxlength="12"
+                        label="{{ i18n('l-customer', [], 'dts/mpl') }}"
+                        canclean>
+                    </field>
+
+                    <!-- Pedido Cliente -->
+                    <field 
+                        class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+                        type="input"
+                        ng-model="controller.model.requestNumberString"
+                        maxlength="12"
+                        label="{{ i18n('l-customer-request', [], 'dts/mpl') }}"
+                        canclean>
+                    </field>
+
+                    <!-- Data de Emissão -->
+                    <totvs-field totvs-date-range
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        ng-model="controller.model.printDate"
+                        label="{{ i18n('l-emission-date', [], 'dts/mpl') }}">
+                    </totvs-field>
+
+                    <!-- Data de Entrega -->
+                    <totvs-field totvs-date-range
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        ng-model="controller.model.deliveryDate"
+                        label="{{ i18n('l-delivery-date', [], 'dts/mpl') }}">
+                    </totvs-field>
+
+                    <!-- Data Necessidades -->
+                    <totvs-field totvs-date-range
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        ng-model="controller.model.needDate"
+                        label="{{ i18n('l-needs-date', [], 'dts/mpl') }}">
+                    </totvs-field>
+
+                    <!-- Quantidade Aumentada -->
+                    <totvs-field totvs-checkbox
+                        t-bsswitch
+                        class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
+                        label="{{ i18n('l-changed-quantity-up', [], 'dts/mpl') }}"
+                        ng-model="controller.model.isChangedQuantityUp">
+                    </totvs-field>
+
+                    <!-- Quantidade diminuída -->
+                    <totvs-field totvs-checkbox
+                        t-bsswitch
+                        class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
+                        label="{{ i18n('l-changed-quantity-down', [], 'dts/mpl') }}"
+                        ng-model="controller.model.isChangedQuantityDown">
+                    </totvs-field>
+                </fieldset>
+            </accordion-group>
+        </accordion>
+    </totvs-page-form>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ i18n('l-cancel', [], 'dts/mpl') }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()">{{ i18n('l-apply', [], 'dts/mpl') }}</button>
+</totvs-modal-footer>

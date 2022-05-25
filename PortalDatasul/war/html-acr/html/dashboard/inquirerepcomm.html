@@ -1,0 +1,245 @@
+<div id="inquirerepcomm_div"
+     ng-controller="acr.dashboard.inquirerepcomm.Controller as dashInquireRepCommCtrl">
+    <totvs-widget>
+        <acr-totvs-widget-header list="dashInquireRepCommCtrl.showList()"
+                                 charts="dashInquireRepCommCtrl.showCharts()"
+                                 settings="dashInquireRepCommCtrl.showConfig()"
+								 title="{{'l-representative-comm' | i18n : [] : 'dts/acr/' }}">
+			<i class="glyphicon glyphicon-info-sign hidden-xs"
+			   tooltip-placement="bottom"
+			   tooltip-html="dashInquireRepCommCtrl.tooltipHelp">
+			</i>
+		</acr-totvs-widget-header>
+        <totvs-widget-body>
+
+            <div>			
+                <div class="no-gutter" ng-show="dashInquireRepCommCtrl.listShow">
+		        <br>
+                    <div class="col-md-12">
+
+                        <h5 class="col-md-3">
+                            <b>{{ 'l-not-executed' | i18n : [] : 'dts/acr/' }}</b>
+                        </h5>
+
+                        <h5 class="col-md-3 text-right" 
+                            ng-if="dashInquireRepCommCtrl.predicted == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/acr' }}
+                        </h5>
+
+                        <h5 class="col-md-3 text-right clickable btn-link" 
+                            ng-click="dashInquireRepCommCtrl.openList(2);" 
+                            ng-if="dashInquireRepCommCtrl.predicted != undefined">
+                            <b>{{ dashInquireRepCommCtrl.predicted | currency }}</b>
+                        </h5>
+
+                        <h5 class="col-md-3">
+                            <b>{{ 'l-executed' | i18n : [] : 'dts/acr/' }}</b>
+                        </h5>
+
+                        <h5 class="col-md-3 text-right" 
+                            ng-if="dashInquireRepCommCtrl.performed == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/acr' }}
+                        </h5>
+
+                        <h5 class="col-md-3 text-right clickable btn-link" 
+                            ng-click="dashInquireRepCommCtrl.openList(1);"
+                            ng-if="dashInquireRepCommCtrl.performed != undefined">
+                            <b>{{ dashInquireRepCommCtrl.performed | currency }}</b>
+                        </h5>
+                        
+                    </div>
+
+                    <br><br>
+
+                    <div class="col-md-12" 
+                        ng-if="(((dashInquireRepCommCtrl.performed != 0) || (dashInquireRepCommCtrl.predicted != 0)) && dashInquireRepCommCtrl.listRepComm != undefined)">
+                        
+                        <totvs-grid 
+                            grid-data="dashInquireRepCommCtrl.listRepComm" 
+                            grid-height="300" 
+                            selectable="false"
+                            sortable="true"
+                            auto-resize-content="true">
+
+                            <totvs-grid-column
+                                field="name"
+                                title="{{ 'l-customer' | i18n: []: 'dts/acr' }}">
+                                {{ dataItem.name }}
+                            </totvs-grid-column>
+
+                            <totvs-grid-column
+                                class="text-right" 
+                                field="predicted"
+                                title="{{ 'l-not-executed' | i18n: []: 'dts/acr' }}">
+                                <template>
+                                    {{ dataItem.predicted | number : 2 }}
+                                </template>
+                            </totvs-grid-column>
+
+                            <totvs-grid-column
+                                class="text-right"
+                                field="performed"
+                                title="{{ 'l-executed' | i18n: []: 'dts/acr' }}">
+                                <template>
+                                    {{ dataItem.performed | number : 2 }}
+                                </template>
+                            </totvs-grid-column>
+
+                            <totvs-grid-column
+                                class="text-right"
+                                field="total"
+                                title="{{ 'l-all' | i18n: []: 'dts/acr' }}">
+                                <template>
+                                    {{ dataItem.total | number : 2 }}
+                                </template>
+                            </totvs-grid-column>
+
+                        </totvs-grid>
+
+                    </div>
+                    <div ng-if="((dashInquireRepCommCtrl.performed == 0) && (dashInquireRepCommCtrl.predicted == 0) && dashInquireRepCommCtrl.listRepComm != undefined)">
+                        <div class="col-md-12 no-gutter">
+                            <totvs-divider></totvs-divider>
+                            <totvs-widget>
+                                <totvs-widget-header class="text-center">
+                                    {{ 'msg-no-documents' | i18n: []: 'dts/acr' }}
+                                </totvs-widget-header>
+                            </totvs-widget>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="no-gutter" ng-show="dashInquireRepCommCtrl.chartsShow">
+                <br>
+                    <div class="col-md-4">
+
+                        <h5 class="col-md-12 text-center">
+                            <b>{{ 'l-not-executed' | i18n : [] : 'dts/acr/' }}</b>
+                        </h5>
+
+                        <h5 class="col-md-12 text-center"
+                            ng-if="dashInquireRepCommCtrl.predicted == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/acr'}}
+                        </h5>
+
+                        <h5 class="col-md-12 text-center clickable btn-link" 
+                            ng-click="dashInquireRepCommCtrl.openList(2);"
+                            ng-if="dashInquireRepCommCtrl.predicted != undefined">
+                            <b>{{ dashInquireRepCommCtrl.predicted | currency }}</b>
+                        </h5>
+
+                        <acr-totvs-chart
+                            class="col-md-12"
+                            t-on-click="dashInquireRepCommCtrl.onClick"
+                            t-height="dashInquireRepCommCtrl.tamGrafico"
+                            t-width="dashInquireRepCommCtrl.tamGrafico"
+                            t-series="[{}]"
+                            t-options="dashInquireRepCommCtrl.optionsPredicted">
+                        </acr-totvs-chart><br /><br /><br />
+
+                    </div>
+                    <div class="col-md-4">
+
+                        <h5 class="col-md-12 text-center">
+                            <b>{{ 'l-executed' | i18n : [] : 'dts/acr/' }}</b>
+                        </h5>
+
+                        <h5 class="col-md-12 text-center"
+                            ng-if="dashInquireRepCommCtrl.performed == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/acr'}}
+                        </h5>
+
+                        <h5 class="col-md-12 text-center clickable btn-link"
+                            ng-click="dashInquireRepCommCtrl.openList(1);"
+                            ng-if="dashInquireRepCommCtrl.performed != undefined">
+                            <b>{{ dashInquireRepCommCtrl.performed | currency }}</b>
+                        </h5>
+
+                        <acr-totvs-chart
+                            class="col-md-12"
+                            t-on-click="dashInquireRepCommCtrl.onClick"
+                            t-height="dashInquireRepCommCtrl.tamGrafico"
+                            t-width="dashInquireRepCommCtrl.tamGrafico"
+                            t-series="[{}]"
+                            t-options="dashInquireRepCommCtrl.optionsPerformed">
+                        </acr-totvs-chart><br /><br /><br />
+                    </div>
+                    <div class="col-md-4">
+
+                        <h5 class="col-md-12 text-center">
+                            <b>{{ 'l-total' | i18n : [] : 'dts/acr/' }}</b>
+                        </h5>
+
+                        <h5 class="col-md-12 text-center"
+                            ng-if="dashInquireRepCommCtrl.performed == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/acr'}}
+                        </h5>
+
+                        <h5 class="col-md-12 text-center clickable btn-link"
+                            ng-click="dashInquireRepCommCtrl.openList(null);"
+                            ng-if="dashInquireRepCommCtrl.performed != undefined">
+                            <b>{{ (dashInquireRepCommCtrl.predicted + dashInquireRepCommCtrl.performed) | currency}}</b>
+                        </h5>
+
+                        <acr-totvs-chart 
+                            class="col-md-12"
+                            t-on-click="dashInquireRepCommCtrl.onClick"
+                            t-height="dashInquireRepCommCtrl.tamGrafico"
+                            t-width="dashInquireRepCommCtrl.tamGrafico"
+                            t-series="[{}]"
+                            t-options="dashInquireRepCommCtrl.optionsTotal">
+                        </acr-totvs-chart><br /><br /><br />
+                    </div>
+                <br />
+                </div>
+                <div ng-hide="dashInquireRepCommCtrl.listShow == true || dashInquireRepCommCtrl.chartsShow == true">
+                    <form>
+                        <div class="row">
+
+                            <totvs-field
+                                totvs-date-range
+                                class="col-md-12"
+                                label="{{ 'l-transaction-date' | i18n: []: 'dts/acr' }}"
+                                t-mask-date="00/00/0000" 
+                                ng-model="dashInquireRepCommCtrl.dateRange"
+                                required="true">
+                                <validator key="required">{{ 'l-required' | i18n: [] : 'dts/acr' }}</validator>
+                            </totvs-field>
+
+                            <field type="select"
+                                canclean="undefined"
+                                ng-required="false"
+                                ng-model="dashInquireRepCommCtrl.model.ttCustomer"
+                                ng-change="dashInquireRepCommCtrl.onChangeCustomer(dashInquireRepCommCtrl.model.ttCustomer)">
+
+                                <label>{{ 'l-customer' | i18n: []: 'dts/acr' }}</label>
+
+                                <include>
+                                    <ui-select-match placeholder="{{ 'l-all-customers' | i18n: []: 'dts/acr' }}">{{ $select.selected.nomAbrev }} ({{ $select.selected.cdnCliente }})</ui-select-match>
+                                    <ui-select-choices repeat="customer in dashInquireRepCommCtrl.customersOfRepres | filter: $select.search track by $index"
+                                                       refresh="dashInquireRepCommCtrl.getCustomers($select.search)"
+                                                       refresh-delay="500">
+                                        <span ng-bind-html="customer.nomAbrev + ' (' + customer.cdnCliente + ')' | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </include>
+
+                            </field>																								
+                        </div>
+                    </form>
+                    <hr>            	                
+                    <a role="button" class="btn btn-default pull-right" ng-click="dashInquireRepCommCtrl.applyConfig()">&nbsp; {{ 'btn-apply' | i18n : [] : 'dts/acr/' }} &nbsp; </a>	                                
+                </div>			
+            </div>
+			
+        </totvs-widget-body>
+
+        <totvs-widget-footer>
+            <totvs-widget-footer-body>
+            </totvs-widget-footer-body>
+            <totvs-widget-footer-actions>
+                <action class="clickable btn-link" ng-click="dashInquireRepCommCtrl.openList(null);">{{ 'l-detail' | i18n : [] : 'dts/acr/' }}</action>
+            </totvs-widget-footer-actions>            
+        </totvs-widget-footer>
+    </totvs-widget>
+</div>       
+        

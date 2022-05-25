@@ -1,0 +1,95 @@
+<style type="text/css" scoped>
+	.page-head .page-tags .portal-list-order-light-blue-tag:before {
+		background-color: #a0c2ff;
+		content: "1";
+	}
+	.page-content .list-item.portal-list-order-light-blue-tag {
+		border-left: 5px solid #a0c2ff;
+	}
+	.page-head .page-tags .tag-5:before {
+		background-color: #d7df23;
+		content: "2";
+	}
+	.page-content .list-item.tag-5 {
+		border-left: 5px solid #d7df23;
+	}
+	.page-head .page-tags .tag-7:before {
+		background-color: #f15a22;
+		content: "3";
+	}
+	.page-content .list-item.tag-7 {
+		border-left: 5px solid #f15a22;
+	}
+
+	.title-color > a {
+		color: #333 !important; 
+	}
+</style>
+<totvs-page type="list" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#{{defaultPageHome}}">{{'l-home' | i18n}}</breadcrumb>
+			<breadcrumb>{{'l-quotation-portfolio' | i18n}}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{currentuser['user-entity']}} ({{controller.totalRecords}} {{ 'l-quotation-orders-qtd' | i18n }})"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12"></div>
+				<totvs-page-header-operation-filter placeholder="{{ 'l-fast-search-quotation' | i18n }}"
+													ng-submit="controller.applySimpleFilter();"
+													ng-model="controller.quickSearchText"
+													advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+			</totvs-page-header-operation>
+			<totvs-page-disclaimers disclaimer-list="controller.filterBy"
+									ng-click="controller.removeSelectedFilter"></totvs-page-disclaimers>
+
+			<totvs-page-tags>
+				<tag class="portal-list-order-light-blue-tag btn btn-link" ng-click="controller.setQuickFilter(controller.statusPortalQuotation2);">{{ 'l-status-quotation-2' | i18n }}</tag>
+				<tag class="tag-5 btn btn-link" ng-click="controller.setQuickFilter(controller.statusPortalQuotation5);">{{ 'l-status-quotation-5' | i18n }}</tag>
+				<tag class="tag-7 btn btn-link" ng-click="controller.setQuickFilter(controller.statusPortalQuotation7);">{{ 'l-status-quotation-7' | i18n }}</tag>
+			</totvs-page-tags>
+
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-list-item ng-class="{'tag-1':quotation['cod-sit-ped-portal'] == 103, 'portal-list-order-light-blue-list':quotation['cod-sit-ped-portal'] == 101, 'tag-3':quotation['cod-sit-ped-portal'] == 102,	'tag-4':quotation['cod-sit-ped-portal'] == 2,'tag-5':quotation['cod-sit-ped-portal'] == 3,'tag-6':quotation['cod-sit-ped-portal'] == 5,'tag-7':quotation['cod-sit-ped-portal'] == 6,'tag-8':quotation['cod-sit-ped-portal'] == 104}"
+						 ng-repeat="quotation in controller.listResult"
+						 totvs-custom-element="customListItem">
+			<totvs-list-item-header>
+				<totvs-list-item-title title="{{quotation['nr-pedido']}}" class="title-color"></totvs-list-item-title>
+				<totvs-list-item-action limit-primary-action="2">
+					<action link="#/dts/mpd/quotation/{{quotation['nr-pedido']}}/edit" icon="glyphicon-pencil">{{ 'btn-edit'| i18n }}</action>
+					<action ng-click="controller.print(quotation['nr-pedido'])" icon="glyphicon-print">{{ 'l-print'| i18n }}</action>
+					<action link="#/dts/mpd/salesorders/quotation/{{quotation['nr-pedido']}}" icon="glyphicon-list">{{ 'btn-view-orders'| i18n }}</action>
+					<action ng-if="controller.canCreateModel" link="#/dts/mpd/newmodel/{{quotation['nr-pedido']}}?modelType=2" icon="glyphicon-flash">{{'btn-create-new-model'|i18n}}</action>
+					<action link="#/dts/mpd/quotationhistory/{{quotation['nr-pedido']}}" icon="glyphicon-calendar">{{'btn-historic'|i18n}}</action>
+				</totvs-list-item-action>
+			</totvs-list-item-header>
+			<totvs-list-item-content>
+				<totvs-lodash-template src="/dts/mpd/html/quotations/quotation-list-fields.html" template-data="controller.quotationsProfileConfig"/></totvs-lodash-template>
+			</totvs-list-item-content>
+
+			<totvs-list-item-content-detail open="controller.getQuotationsItens(quotation)">
+				<totvs-list-item ng-repeat="item in quotation.quotationItens">
+					<totvs-list-item-content>
+						<img class="col-xs-2" alt="tst" ng-if="item.nomImagem" ng-src="/dts/mpd/resource/product/imagem?image={{item.nomImagem}}">
+						<totvs-lodash-template src="/dts/mpd/html/quotations/quotation-item-list-fields.html" template-data="controller.quotationsProfileConfig"/></totvs-lodash-template>
+					</totvs-list-item-content>
+				</totvs-list-item>
+			</totvs-list-item-content-detail>
+
+		</totvs-list-item>
+
+	</totvs-page-content>
+
+	<totvs-list-pagination ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+							   ng-click="controller.loadMore()">
+	</totvs-list-pagination>
+</totvs-page>

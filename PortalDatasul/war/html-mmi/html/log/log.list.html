@@ -1,0 +1,101 @@
+<totvs-page type="list">
+
+    <totvs-page-navbar>
+
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{ 'l-pending-log' | i18n }}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title title="{{ 'l-pending-log' | i18n }} ({{controller.totalRecords}})">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action>
+                    <action icon="glyphicon-refresh" ng-click="controller.buscaDadosLog(false)">{{ 'l-reload' | i18n }}
+                    </action>
+                </totvs-page-header-operation-action>
+                <totvs-page-header-operation-filter
+                    placeholder="{{ 'l-document' | i18n }} {{ 'l-or' | i18n }} {{ 'l-user' | i18n }}"
+                    ng-submit="controller.search()" ng-model="controller.valorDaBusca"
+                    advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+
+        <totvs-page-alert ng-if="controller.listResult.length <= 0" type="info"
+            message="{{ 'msg-search-not-found' | i18n }}">
+        </totvs-page-alert>
+
+        <totvs-list-item id="log{{log.id}}" ng-repeat="log in controller.listResult">
+
+            <totvs-list-item-header>
+
+                <totvs-list-item-title title="{{'l-holdover' | i18n}}: {{log.programa}}"
+                    ng-click="controller.editarLog(log, true)">
+                </totvs-list-item-title>
+
+                <totvs-list-item-action>
+                    <action ng-click="controller.editarLog(log, false) " icon="glyphicon-pencil">{{ 'l-edit' | i18n }}
+                    </action>
+                    <action ng-click="controller.removerLog(log)" icon="glyphicon-trash">{{ 'l-remove' | i18n }}
+                    </action>
+                </totvs-list-item-action>
+
+            </totvs-list-item-header>
+
+            <totvs-list-item-info class="col-lg-2 col-md-2 col-sm-2 col-xs-2" title="{{ 'l-document' | i18n }}"
+                value="{{log.nrOrdProdu | orderNumberMask}}">
+            </totvs-list-item-info>
+
+            <totvs-list-item-info class="col-lg-2 col-md-2 col-sm-2 col-xs-2" title="{{ 'l-date' | i18n }}"
+                value="{{log.data | date:'dd/MM/yyyy'}}">
+            </totvs-list-item-info>
+
+            <totvs-list-item-info class="col-lg-2 col-md-2 col-sm-2 col-xs-2" title="{{ 'l-time' | i18n }}"
+                value="{{log.hora}}">
+            </totvs-list-item-info>
+
+            <totvs-list-item-info class="col-lg-2 col-md-2 col-sm-2 col-xs-2" title="{{ 'l-user' | i18n }}"
+                value="{{log.usuario}}">
+            </totvs-list-item-info>
+        </totvs-list-item>
+
+        <div class="more-results ng-scope" ng-if="controller.paginate && controller.listResult.length > 1"
+            ng-click="controller.buscaDadosLog(true)">
+            <a class="btn btn-primary col-xs-12 ng-binding">{{ 'l-displaying' | i18n }}
+                {{ controller.listResult.length }} {{ 'l-results' | i18n }}. {{ 'msg-click-to-get-more' | i18n }}.</a>
+        </div>
+        <div class="more-results ng-scope" ng-if="controller.paginate && controller.listResult.length === 1"
+            ng-click="controller.buscaDadosLog(true)">
+            <a class="btn btn-primary col-xs-12 ng-binding">{{ 'l-displaying' | i18n }}
+                {{ controller.listResult.length }} {{ 'l-result-lower' | i18n }}.
+                {{ 'msg-click-to-get-more' | i18n }}.</a>
+        </div>
+        <div class="more-results ng-scope"
+            ng-if="controller.totalRecords > 0 && !controller.paginate && controller.listResult.length > 0 && controller.totalRecords > 1"
+            ng-href="#">
+            <a ng-disabled="true" class="btn btn-primary col-xs-12 ng-binding">{{ 'l-total-of' | i18n }}
+                {{ controller.listResult.length }} {{ 'l-results-found' | i18n }}.</a>
+        </div>
+        <div class="more-results ng-scope"
+            ng-if="controller.totalRecords > 0 && !controller.paginate && controller.listResult.length > 0 && controller.totalRecords == 1"
+            ng-href="#">
+            <a ng-disabled="true" class="btn btn-primary col-xs-12 ng-binding">{{ 'l-total-of' | i18n }}
+                {{ controller.listResult.length }} {{ 'l-result-found' | i18n }}.</a>
+        </div>
+
+    </totvs-page-content>
+
+</totvs-page>
+
+<style>
+    .item-actions a {
+        cursor: pointer;
+    }
+</style>

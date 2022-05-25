@@ -1,0 +1,75 @@
+<fieldset ng-form="sdController.modelForm">
+           <totvs-page-content>
+                <totvs-table
+                    ng-if="sdController.doctoAtendimentoArr.length > 0"
+                    items="sdController.doctoAtendimentoArr"
+                    items-as="doctoAtendimento"
+                    t-selectable="OFF"
+                    t-resizable="true"
+                    t-reorderable="true"
+                    t-highlight-selected="true">
+
+                    <column title=""
+                            width="25" >
+                        <input 
+                            type="checkbox"   
+                            ng-change="sdController.removeDoc(doctoAtendimento)"                            
+                            data-ng-model="doctoAtendimento.$selected"
+                            ng-disabled="!sdController.impugnationMotiveModalController.maintenancePermission">
+                    </column>
+
+                    <column title="Documentos do Atendimento"
+                            width="500">    
+                        {{doctoAtendimento.nmDocumento + sdController.docComp[doctoAtendimento.idImpugdocs].dsAnexo}}
+                    </column>      
+					<column title="Motivos" width="65">    
+                        {{doctoAtendimento.dsMotivo}}
+				    </column>
+                    <column title="Anexo"
+                            width="75">                         
+                        
+                        <span 
+                            style="margin-right: 10px;" 
+                            class="clickable glyphicon glyphicon-pencil"
+                            ng-click="sdController.openAttachmentModel(doctoAtendimento)" 
+                            tooltip="Editar Arquivo">
+                        </span>
+                        
+                        <span 
+                            style="margin-left: 10px;" 
+                            class="glyphicon glyphicon-ok"
+                            ng-if="doctoAtendimento.possuiAnexo">
+                        </span>  
+                    </column>
+                    
+                </totvs-table>
+        </totvs-page-content>
+        <br>
+        <totvs-page-content>
+            <totvs-table
+                ng-if="sdController.doctoDisponivelArr.length > 0"
+                items="sdController.doctoDisponivelArr"
+                items-as="doctoDisponivel"
+                t-selectable="OFF"
+                t-resizable="true"
+                t-reorderable="true"
+                t-highlight-selected="true">
+
+                <column title=""
+                        width="25" >
+                    <input 
+                        type="checkbox"   
+                        ng-change="sdController.addDocument(doctoDisponivel)"                            
+                        data-ng-model="doctoDisponivel.$selected"
+                        ng-disabled="!sdController.impugnationMotiveModalController.maintenancePermission">
+                </column>
+
+                <column title="Documentos Disponí­veis"
+                        width="500">    
+                    {{doctoDisponivel.nmDocumento + sdController.docComp[doctoDisponivel.idImpugdocs].dsAnexo}}
+                </column>      
+                
+            </totvs-table>
+        </totvs-page-content>    
+       
+</fieldset>

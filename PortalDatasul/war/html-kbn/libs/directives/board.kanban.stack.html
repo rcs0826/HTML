@@ -1,0 +1,18 @@
+
+<div class="pilha-kanban">
+  <div class="faixa-kanban col-xs-12 faixa-kanban-label">
+    <div class="text-center content width-fill"><a href="#" data-ng-click="itemClick($event, item)">{{item.sku}} {{ item.reference }} ({{ item.expedition ? "F" : "P"}}) &nbsp;</a><a href="#" ng-click="sendItemToQueue($event, item)" ng-if="item.showSendItemToQueue" data-toggle="tooltip" title="{{'l-send-to-queue' | i18n}}" data-placement="bottom" class="fa fa-arrow-circle-left"></a></div>
+  </div>
+  <div class="faixa-kanban col-xs-12">
+    <div ng-style="{ height: (item | kanbanPercent:'red')}" class="faixa-kanban-fill bg-vermelho width-fill"></div>
+    <div class="text-center content width-fill"><sup>{{ item | countKanban:'red' }}</sup><span>/</span><sub>{{ item.totalRedZone }}</sub></div>
+  </div>
+  <div class="faixa-kanban col-xs-12">
+    <div ng-style="{ height: (item | kanbanPercent:'yellow')}" class="faixa-kanban-fill bg-amarelo width-fill"></div>
+    <div class="text-center content width-fill"><sup>{{ item | countKanban:'yellow' }}</sup><span>/</span><sub>{{ item.totalYellowZone }}</sub></div>
+  </div>
+  <div class="faixa-kanban col-xs-12">
+    <div ng-style="{ height: (item | kanbanPercent:'green')}" class="faixa-kanban-fill bg-verde width-fill"></div>
+    <div class="text-center content width-fill"><sup>{{ item | countKanban:'green' }}</sup><span>/</span><sub>{{ item.totalGreenZone }}</sub></div>
+  </div>
+</div>

@@ -1,0 +1,278 @@
+<totvs-page type="edit">
+
+    <!-- Cabeçalho -->
+    <totvs-page-navbar>  
+
+        <!-- Facilitador de navegação -->
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n: []: 'dts/cmg'}}</breadcrumb>
+            <breadcrumb link="#/dts/cmg/importbankstatement">{{'l-import-bank-statement' | i18n: []: 'dts/cmg'}}</breadcrumb>
+            <breadcrumb>{{controller.model.num_id_regra_extrat ? ('l-edit' | i18n : []: 'dts/cmg') : ('l-new' | i18n : []: 'dts/cmg')}}
+                        {{controller.model.num_id_regra_extrat ? controller.model.num_id_regra_extrat : '' }}
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            
+            <!-- Título -->
+            <totvs-page-header-title title="{{controller.model.num_id_regra_extrat ? ('l-edit' | i18n : []: 'dts/cmg') 
+                                            : ('l-new' | i18n : []: 'dts/cmg') }} {{controller.model.num_id_regra_extrat ?
+                                            controller.model.num_id_regra_extrat : '' }}">
+            </totvs-page-header-title> 
+
+            <!-- Operações -->
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action 
+                    hide-save-new="{{controller.model.num_id_regra_extrat ? true : false}}">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+            
+        </totvs-page-header>   
+    </totvs-page-navbar>
+    
+    <!-- Conteúdo da página -->
+    <totvs-page-content>    
+        <totvs-page-form>
+            <fieldset>
+                
+                <!-- DESCRIÇÃO -->
+                <field type="input"
+                       class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                       data-ng-model="controller.model.des_regra_extrat"
+                       required
+                       focus>
+                    <label>{{ 'l-description' | i18n: []: 'dts/cmg'}}</label>
+                </field>
+
+                <!-- BANCO -->
+                <field type="select"
+                       ng-model="controller.model.bank"
+                       class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                       canclean
+                       required>
+                    <label>{{'l-bank' | i18n: []: 'dts/cmg'}}</label>
+                    <zoom zoom-init="{addFields: 'cod_layout_extrat'}"
+                          zoom-service="cmg.banco.zoom"></zoom>
+                    <include>
+                        <ui-select-match placeholder="{{'l-bank' | i18n: []: 'dts/cmg'}}">
+                        {{$select.selected.objSelected ? $select.selected.toString() : 
+                         ($select.selected.cod_banco + ' - ' +
+                          $select.selected.nom_banco)}}
+                        </ui-select-match>
+                        <ui-select-choices repeat="bank in
+                                                   controller.serviceBank.selectResultList 
+                                                   track by $index"
+                                           refresh="controller.serviceBank.getSelectResultList(
+                                                    $select.search, {addFields: 'cod_layout_extrat'})"
+                                           refresh-delay="500">
+                            <span ng-bind-html="bank.cod_banco + ' - ' + 
+                                                bank.nom_banco | highlight: $select.search">
+                            </span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+
+                <!-- CONTA CORRENTE -->
+                <field type="select"
+                       class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                       ng-model="controller.model.listCheckingAcct"
+                       ng-disabled="controller.disabledCheckingAcct"
+                       canclean
+                       required>
+                    <label>{{'l-checking-account' | i18n: []: 'dts/cmg'}}</label>
+                    <zoom zoom-init="controller.listCheckingAcctInit"
+                          zoom-service="cmg.cta-corren.zoom"
+                          zoom-multiple></zoom>
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-checking-account-bank-pch' | i18n:[] : 'dts/cmg'}}">
+                            {{$select.selected.objSelected ? $select.selected.toString() : 
+                             ($select.selected.cod_cta_corren + ' - ' +
+                              $select.selected.nom_abrev)}}
+                        </ui-select-match>
+                        <ui-select-choices repeat="checkingAcct in
+                                                   controller.serviceCheckingAcct.selectResultList 
+                                                   track by $index"
+                                           refresh="controller.serviceCheckingAcct.getSelectResultList(
+                                                    $select.search, controller.listCheckingAcctInit)"
+                                           refresh-delay="500">
+                            <span ng-bind-html="checkingAcct.cod_cta_corren + ' - ' + 
+                                                checkingAcct.nom_abrev | highlight: $select.search">
+                            </span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+
+                <!-- LAYOUT -->
+                <field type="select"
+                       ng-model="controller.model.bankStatementLayout"
+                       class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                       canclean
+                       required>
+                    <label>{{'l-stmnt-layout' | i18n: []: 'dts/cmg'}}</label>
+                    <zoom zoom-service="cmg.layout-extrat.zoom"></zoom>
+                    <include>
+                        <ui-select-match placeholder="{{'l-stmnt-layout' | i18n: []: 'dts/cmg'}}">
+                        {{$select.selected.objSelected ? $select.selected.toString() : 
+                         ($select.selected.cod_layout_extrat + ' - ' +
+                          $select.selected.des_layout_extrat)}}
+                        </ui-select-match>
+                        <ui-select-choices repeat="bankStatementLayout in
+                                                   controller.serviceStmntLayout.selectResultList 
+                                                   track by $index"
+                                           refresh="controller.serviceStmntLayout.getSelectResultList(
+                                                    $select.search, undefined)"
+                                           refresh-delay="500">
+                            <span ng-bind-html="bankStatementLayout.cod_layout_extrat + ' - ' + 
+                                                bankStatementLayout.des_layout_extrat | highlight: $select.search">
+                            </span>
+                        </ui-select-choices>
+                    </include>
+                </field>           
+            </fieldset>
+            <fieldset>
+                
+                <!-- UPLOAD -->
+                <field type="checkbox"
+                       class="col-lg-1 col-md-1 col-sm-1 col-xs-3"
+                       ng-model="controller.model.log_upload"
+                       ng-required="controller.model.log_upload"
+                       ng-change="controller.onChangeIsUpload();">
+                    <label>{{'l-upload' | i18n: []: 'dts/cmg'}}</label>
+                </field>
+                
+                <!-- ARQUIVO -->
+                <field type="input"
+                       class="col-lg-11 col-md-11 col-sm-11 col-xs-9"
+                       data-ng-model="controller.model.dsl_arq_import"
+                       ng-required="!controller.model.log_upload"
+                       ng-if="!controller.model.log_upload">
+                    <label>{{ 'l-file' | i18n: []: 'dts/cmg'}}</label>
+                </field>
+                
+                <!-- UPLOAD LISTA -->
+                <div class="field-file" ng-if="controller.model.log_upload">
+
+                    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-9" style="margin-top: 15px;">
+
+                        <label class="btn btn-default pull-left"
+                               role="button"
+                               for="file-input">
+                            {{ 'l-select-files' | i18n: []: 'dts/cmg'}}
+                        </label>
+
+                        <span class="glyphicon glyphicon-info-sign"
+                              style="margin-top: 8px; margin-left: 10px"
+                              tooltip="{{ 'msg-only-text-file-10-mb' | i18n: []: 'dts/cmg'}}"></span>
+                        <label class="hidden-xs">
+                            {{ 'msg-only-text-file-10-mb' | i18n: []: 'dts/cmg'}}
+                        </label>
+
+                        <span class="file-text"></span>
+
+                        <input id="file-input"
+                               type="file"
+                               style="position:fixed;top:-999px;"
+                               ngf-select
+                               ngf-change="controller.onChangeUpload($files);"
+                               ngf-multiple="true"
+                               ngf-allow-dir="false"
+                               accept=".txt, .ret"
+                               ngf-accept="'.ret,.txt'"
+                               ngf-max-size="10000000">
+                        </input>
+                    </div>
+                
+                    <totvs-divider></totvs-divider>
+
+                    <totvs-page-alert
+                        style="margin-top: 10px; margin-left: 15px; margin-right: 15px;"
+                        ng-if="(controller.model.log_upload && (controller.listFiles.length <= 0 ||
+                                controller.removeAllFiles === true))"
+                        type="danger"
+                        message="{{ 'msg-file-not-selected' | i18n: []: 'dts/cmg'}}">
+                    </totvs-page-alert>
+
+                    <div style="margin-top: 10px; margin-left: 15px; margin-right: 15px;"
+                         class="row file-row"
+                         ng-animate="'animate-if'"
+                         ng-repeat="fileUpload in controller.listFiles track by $index"
+                         ng-if="!fileUpload.remove">
+
+                        <div class="file-progress"
+                             ng-style="{ width: fileUpload.progress}"
+                             ng-class="{'loading'	: fileUpload.status <   2,
+                                        'loaded'	: fileUpload.status === 4,
+                                        'canceled'	: fileUpload.status === 3}">
+                        </div>
+
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-10">
+                            <span class="glyphicon glyphicon-file hidden-xs">
+                            </span>
+                            <span class="visible-xs" 
+                                  tooltip="{{fileUpload.file.name}}"
+                                  ng-if="!fileUpload.urlDownload">
+                                {{ ((fileUpload.file.name.length > 15) ?
+                                   (fileUpload.file.name | limitTo:15) + '...' :
+                                    fileUpload.file.name) }}
+                            </span>
+                            <span class="hidden-xs"
+                                  ng-if="!fileUpload.urlDownload">
+                                {{ fileUpload.file.name }}
+                            </span>
+                            <a target="_self"
+                               class="hidden-xs"
+                               href="{{fileUpload.urlDownload}}"
+                               ng-if="fileUpload.urlDownload">
+                                {{ fileUpload.file.name }}
+                            </a>
+                            <a target="_self"
+                               class="visible-xs" 
+                               href="{{fileUpload.urlDownload}}"
+                               ng-if="fileUpload.urlDownload">
+                                {{ ((fileUpload.file.name.length > 15) ?
+                                   (fileUpload.file.name | limitTo:15) + '...' :
+                                    fileUpload.file.name) }}
+                            </a>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right">
+                            <a ng-disabled="file.status != 2"
+                                   class="pull-right"
+                                   role="button"
+                                   ng-click="controller.onClickFileRemove(fileUpload);">
+                                <span>{{'l-remove' | i18n: []: 'dts/cmg'}}</span>
+                            </a>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 hidden-xs pull-right">
+                            <span class="text-center">
+                                {{fileUpload.file.lastModifiedDate | dateFormat}}
+                            </span>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 hidden-xs pull-right">
+                            <span class="text-center">
+                                {{fileUpload.file.size | convertSize}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <!-- TRANSFERE -->
+                <field type="checkbox"
+                       class="col-lg-1 col-md-1 col-sm-1 col-xs-3"
+                       ng-model="controller.model.log_transf_arq"
+                       ng-change="controller.onChangeIsTransfer();">
+                    <label>{{'l-transfer' | i18n: []: 'dts/cmg'}}</label>
+                </field>
+
+                <!-- DIRETORIO -->
+                <field type="input"
+                       class="col-lg-11 col-md-11 col-sm-11 col-xs-9"
+                       ng-required="controller.model.log_transf_arq"
+                       data-ng-model="controller.model.dsl_dir_transf"
+                       ng-disabled="!controller.model.log_transf_arq">
+                    <label>{{'l-directory' | i18n: []: 'dts/cmg'}}</label>
+                </field>
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

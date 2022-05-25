@@ -1,0 +1,12 @@
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+field.col-md-12.col-lg-12.col-sm-12(
+    type="select",
+    ng-model="establishmentSelectController.localModel",
+    label="{{'l-site' | i18n : [] : 'dts/kbn'}}",
+    required
+)
+    include
+        ui-select-match(placeholder="{{ 'l-code-description' | i18n : [] : 'dts/kbn'}}")
+            {{$select.selected.cod_estab_erp}} - {{$select.selected.des_estab}}
+        ui-select-choices.truncate(repeat="estab in establishmentSelectController.listEstab | descIdContains: $select.search track by $index")
+            span(ng-bind-html="texto=(estab.cod_estab_erp + ' - ' + estab.des_estab) | highlight: $select.search")

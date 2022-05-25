@@ -1,0 +1,56 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/font-awesome.css"/>
+<totvs-page>
+  <totvs-page-navbar>
+    <totvs-page-breadcrumb>
+      <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+      <breadcrumb link="#/dts/kbn/cellprogramming">{{ 'l-cell-programming' | i18n }}</breadcrumb>
+      <breadcrumb>{{ 'l-cell' | i18n }}</breadcrumb>
+    </totvs-page-breadcrumb>
+    <totvs-page-header>
+      <totvs-page-header-title title="{{ 'l-cell-programming-2' | i18n }} {{controller.codigoCell}} - {{controller.descCell}}"></totvs-page-header-title>
+    </totvs-page-header>
+  </totvs-page-navbar>
+  <totvs-page-content>
+    <totvs-page-detail>
+      <totvs-tabset>
+        <totvs-tab ng-click="controller.loadDataProd()" heading="{{ 'l-into-production' | i18n| capitalize}}">
+          <div style="padding-bottom: 15px"></div>
+          <accordion data-ng-repeat="ct in controller.ttCt" class="col-xs-12">
+            <accordion-group is-open="true">
+              <accordion-heading>
+                <div class="fa fa-gears">&nbsp;</div>{{ct.cod_chave_erp}} - {{ct.des_ct_erp}}
+              </accordion-heading>
+              <totvs-page-content>
+                <totvs-table items="ct.ttItemCelulaDs" items-as="itemProd" t-resizable="true" t-selectable="off">
+                  <column title="{{'l-item' | i18n}}">{{itemProd | descGeneric:'{sku} - {desc} {ref} ({exp})'}}</column>
+                  <column title="{{'l-cards-production' | i18n}}" width="150">{{itemProd.qtdCartoes}}</column>
+                  <column title="{{'l-quantity' | i18n}}" width="100">{{itemProd.quantidade}} {{itemProd.un}}</column>
+                  <column title="{{'l-total-time' | i18n}}" width="100">{{itemProd.tempoTotal | prettyTime}}</column>
+                  <column title="{{'l-status' | i18n}}" width="100">{{itemProd.situacao | statusDesc | uppercase}}</column>
+                </totvs-table>
+                <totvs-page-alert ng-if="ct.ttItemCelulaDs.length == null" type="info" message="{{ 'msg-no-cards-workcenter' | i18n }}"></totvs-page-alert>
+              </totvs-page-content>
+            </accordion-group>
+          </accordion>
+        </totvs-tab>
+        <totvs-tab ng-click="controller.loadDataFila()" heading="{{ 'l-program-queue' | i18n }}">
+          <div class="row">
+            <totvs-page type="list">
+              <totvs-page-content>
+                <totvs-table items="controller.ttItemDet" items-as="item" t-resizable="true" t-selectable="off">
+                  <column title="{{'l-item' | i18n}}">{{item | descGeneric:'{sku} - {desc} {ref} ({exp})'}}</column>
+                  <column title="{{'l-cards-queue' | i18n}}" width="120">{{item.qtdCartoes}}</column>
+                  <column title="{{'l-quantity' | i18n}}" width="100">{{item.quantidade}} {{item.un}}</column>
+                  <column title="{{'l-total-time' | i18n}}" width="100">{{item.tempoTotal | prettyTime}}</column>
+                  <column title="{{'l-status' | i18n}}" width="100">{{item.situacao | statusDesc | uppercase }}</column>
+                </totvs-table>
+                <totvs-page-alert ng-if="controller.ttItemDet.length === 0" type="info" message="{{ 'msg-no-cards-queue' | i18n }}"></totvs-page-alert>
+              </totvs-page-content>
+            </totvs-page>
+          </div>
+        </totvs-tab>
+      </totvs-tabset>
+    </totvs-page-detail>
+  </totvs-page-content>
+</totvs-page>

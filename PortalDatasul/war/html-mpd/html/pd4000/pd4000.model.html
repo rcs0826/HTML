@@ -1,0 +1,124 @@
+<totvs-page type="edit">
+<!---style type="text/css" scoped>
+
+	.model-field{
+		float: left;
+		width: 95%;
+		word-wrap: break-word;
+	}
+
+	.model-cb{
+		float: left;
+		width: 5%;
+	}
+
+</style-->
+	<totvs-page-navbar>
+	<totvs-page-breadcrumb>
+		<breadcrumb link="#/">{{:: 'Início' | i18n : [] : 'dts/mpd' }}</breadcrumb>
+		<breadcrumb>{{:: 'Seleção de Modelo' | i18n : [] : 'dts/mpd' }}</breadcrumb>
+	</totvs-page-breadcrumb>
+	<totvs-page-header>
+			<totvs-page-header-title>
+				{{:: 'Novo Pedido de Venda' | i18n : [] : 'dts/mpd' }}
+			</totvs-page-header-title>
+
+			<totvs-page-form style="padding: 0px 0px 0px 0px;">
+				<div  class="col-md-12" style="padding-left: 0px; padding-right: 0px">
+					<totvs-field totvs-select
+							label="{{:: 'Cliente' | i18n : [] : 'dts/mpd' }}"
+							ng-model="modelController.selectedCustomer"
+							ng-disabled="modelController.paramCustomer"
+							class="col-md-5"
+							select-match='[{"field":"cod-emitente", "separator": " - "},{"field":"nome-abrev", "separator": ""}]'
+							select-id="cod-emitente"
+							select-description="nome-abrev"
+							select-service="mpd.emitente.zoom"
+							zoom-service="mpd.emitente.zoom"
+							zoom-init="{setDefaultValue: false} "
+							return-object
+							ng-change="modelController.selectCustomer()"
+							focus
+							canclean
+							required>
+					</totvs-field>
+
+					<field  type="input"
+							ng-model="modelController.newCustOrderNo"
+							class="col-md-3"
+							canclean="{{modelController.newNrOrder}}"
+							ng-disabled="!modelController.nrPedcliEnabled"
+							ng-maxlength="12"
+							required
+							ng-required="true">
+						<label>{{:: 'Nr Pedido Cliente' | i18n : [] : 'dts/mpd' }} </label>
+						<validator key="required">{{$fieldLabel}} {{:: 'Nr Pedido Cliente é obrigatório' | i18n : [] : 'dts/mpd' }}</validator>
+						<validator key="maxlength">{{$fieldLabel}} {{:: 'Tamanho Máximo do Nr Pedido Cliente é 12 caracteres' | i18n : [] : 'dts/mpd' }}</validator>
+					</field>
+
+					<div class="col-md-2 col-sm-6 col-xs-12">
+						<button class="btn btn-primary btn-block" ng-click="modelController.valNewOrderNo(0)" style="margin-top: 30px;">
+							<span class="glyphicon glyphicon-plus"></span>
+							{{:: 'Adicionar Pedido' | i18n : [] : 'dts/mpd' }}
+						</button>
+					</div>
+
+					<div class="col-md-2 col-sm-6 col-xs-12">
+						<button class="btn btn-default btn-block" ng-click="modelController.openOrder()" style="margin-top: 30px;">
+							<span class="glyphicon glyphicon-search"></span>
+							{{:: 'Pesquisar Pedidos' | i18n : [] : 'dts/mpd' }}
+						</button>
+					</div>
+				</div>
+			</totvs-page-form>
+			</br>
+		</totvs-page-header>
+	</totvs-page-navbar>
+	<div>
+		<totvs-page-content style="padding-left: 15px; padding-right: 15px; padding-bottom: 15px">
+
+			<totvs-page-header-operation ng-if="modelController.models.length > 0">
+
+				</br>
+				<div class="col-md-12">
+					<h3 style="margin-top: 15px;">
+						{{:: 'Modelos de pedido' | i18n : [] : 'dts/mpd' }}
+						</h3>
+				</div>
+
+				<div class="col-md-12" style="padding-left: 0px; padding-right: 0px">
+					<totvs-page-header-operation-filter placeholder="{{:: 'Pesquisar Modelos' | i18n : [] : 'dts/mpd' }}"
+														ng-model="modelController.quickSearchText"
+														ng-submit="modelController.search();">
+					</totvs-page-header-operation-filter>
+
+					<div class="col-md-2 col-sm-3 col-xs-12">
+						<span class="btn btn-default"
+							ng-click="modelController.setQuickFilter(!modelController.quickFilter['log-favorito'])">
+							<span class="glyphicon"
+								  aria-hidden="true"
+								  ng-class="{'glyphicon-star': modelController.quickFilter['log-favorito'], 'glyphicon-star-empty':modelController.quickFilter['log-favorito'] == undefined}">
+							</span>
+							{{:: 'Modelos Favoritos' | i18n : [] : 'dts/mpd' }}
+						</span>
+					</div>
+				</div>
+
+			</totvs-page-header-operation>
+			</br>
+			<totvs-list-item ng-repeat="model in modelController.models | filter:modelController.quickFilter">
+				<totvs-list-item-header>
+					<totvs-list-item-title>{{model['nom-model']}}</totvs-list-item-title>
+					<totvs-list-item-action limit-primary-action="2">
+						<action ng-click="modelController.valNewOrderNo(model['idi-model'])" icon="glyphicon-plus">{{:: 'Utilizar modelo' | i18n : [] : 'dts/mpd' }}</action>
+						<action ng-click="modelController.setFavoriteModel(model['idi-model'], model['log-favorito']);" icon="{{ model['log-favorito'] ? 'glyphicon-star' : 'glyphicon-star-empty' }}">{{:: 'Favorito' | i18n : [] : 'dts/mpd' }}</action>
+					</totvs-list-item-action>
+				</totvs-list-item-header>
+				<totvs-list-item-content>
+					<totvs-list-item-info class="col-xs-12">{{model['nom-desc']}}</totvs-list-item-info>
+				</totvs-list-item-content>
+			</totvs-list-item>
+		</totvs-page-content>
+	</div>
+</totvs-page>
+

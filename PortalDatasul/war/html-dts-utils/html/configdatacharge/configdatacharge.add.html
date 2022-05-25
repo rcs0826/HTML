@@ -1,0 +1,60 @@
+
+<!-- 
+<style>
+
+.label-field{
+	font-family: 'Arial';
+	margin-bottom: 5px;
+	font-weight: 200;
+	font-size: 12px;
+	color: gray;
+}
+
+.tooltip-inner{	
+	margin-top: 34px;	
+}
+
+.tooltip-arrow{	
+	margin-top: 34px;
+	margin-left: -95px !important;
+}
+
+</style>
+-->
+
+<div class="modal-header">
+	<h3 class="modal-title">{{:: 'l-add-new-integ' | i18n : [] : 'dts/dts-utils' }}</h3>
+</div>
+
+<div class="modal-body">
+	<div class="row">
+		<field class="col-lg-6 col-md-6 col-sm-6 col-xs-6" type="combo" ng-model="controller.integDesc.model.idDefaultIntegration"
+		 ng-options="tipo.idDefaultIntegration as tipo.codName for tipo in controller.integDesc.types" ng-required="false" ng-change="controller.selectedInteg(controller.integDesc.model.idDefaultIntegration)">
+			<label>{{'l-app-default'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>
+	</div>
+	<div class="row">
+		<field class="col-lg-6 col-md-6 col-sm-6 col-xs-6" type="input" canclean required ng-model="controller.integName" ng-required="true" ng-disabled="controller.disableCodName">
+			<label>{{'l-app-name'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>
+	</div>
+	<div class="row">
+		<field class="col-lg-12 col-md-12 col-sm-12 col-xs-12" type="textarea" ng-model="controller.descInteg" ng-required="true" ng-disabled="controller.disableDescName">
+			<label>{{'l-app-desc'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>
+	</div>
+
+	<div class="row">
+		<field class="col-lg-6 col-md-6 col-sm-6 col-xs-6" type="combo" ng-model="controller.integType.model.type" ng-options="tipo.type as tipo.descType for tipo in controller.integType.types"
+		 ng-required="false" ng-disabled="controller.disableType">
+			<label>{{'l-app-type'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>
+	</div>
+
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" ng-click="controller.save(controller.integDesc.model.idDefaultIntegration);">{{:: 'l-save' | i18n : [] : 'dts/mpd'}}</button>
+	<!-- <button type="button" class="btn btn-primary" ng-click="controller.saveandnew($event);">{{:: 'Salvar e Novo' | i18n : [] : 'dts/mpd'}}</button> -->
+	<button type="button" class="btn btn-default" ng-click="controller.close();">{{:: 'l-cancel' | i18n : [] : 'dts/mpd'}}</button>
+</div>

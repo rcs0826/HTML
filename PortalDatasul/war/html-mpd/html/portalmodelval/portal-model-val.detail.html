@@ -1,0 +1,54 @@
+<totvs-page type="detail">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-initial-page' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalconfigpdp/">{{ 'l-portal-config-clien-rep' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalmodel/{{ controller.idPortalConfigur }}/{{ controller.father }}">
+                {{ 'l-portal-model' | i18n }}
+            </breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalmodelval/{{ controller.idPortalConfigur }}/{{ controller.father }}">
+                {{ 'l-portal-model-val' | i18n }}
+            </breadcrumb>
+            <breadcrumb>{{ 'l-detail' | i18n }}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            <totvs-page-header-title >{{ 'l-model-field' | i18n }} {{ controller.father }}</totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action
+                    on-back-link="#/dts/mpd/portalmodelval/{{ controller.idPortalConfigur }}/{{ controller.model['idi-model'] }}"
+                    on-edit-link="#/dts/mpd/portalmodelval/edit/{{ controller.idPortalConfigur }}/{{ controller.model['idi-model'] }}/{{ controller.model['num-seq-campo'] }}"
+                    on-remove="controller.onRemove"
+                >
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+        <totvs-page-detail>
+            <totvs-page-detail-info
+                ng-if="controller.model['num-seq-item'] > 0" 
+                class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                title="{{ 'l-seq-item' | i18n }}"
+                value="{{ controller.model['num-seq-item'] }}"
+            >
+            </totvs-page-detail-info>
+
+            <totvs-page-detail-info
+                class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                title="{{ 'l-cod-campo' | i18n }}"
+                value="{{ controller.model['_']['desc-campos'] }}"
+            >
+            </totvs-page-detail-info>
+
+            <totvs-page-detail-info
+                class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                title="{{ 'l-cod-valor' | i18n }}"
+                value="{{ controller.model['cod-valor'] }}"
+            >
+            </totvs-page-detail-info>
+        </totvs-page-detail>
+    </totvs-page-content>
+</totvs-page>

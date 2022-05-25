@@ -1,0 +1,83 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb id="breadcrumb">
+                <breadcrumb>Percentual Histórico de Cobrança</breadcrumb>
+        </totvs-page-breadcrumb>
+        
+        <totvs-page-header>
+
+            <totvs-page-header-title title="Percentual Histórico de Cobrança" 
+                                     total="{{controller.listOfPercHistorImpugCount}}"
+                                     settings="controller.openConfigWindow()">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+
+                <totvs-page-header-operation-action limit-primary-action="1">
+                    <action class="glyphicon-plus"
+                            link="#/dts/hgp/hrs-adjustmentPercentage/new">
+                        Incluir
+                    </action>
+
+                </totvs-page-header-operation-action>
+
+                <totvs-page-header-operation-filter placeholder="Ano/Mês (9999/99)"
+                                                    ng-submit="controller.search()"
+                                                    ng-model="controller.searchInputText">
+                </totvs-page-header-operation-filter>
+
+            </totvs-page-header-operation>
+    
+            <totvs-page-disclaimers
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+            
+        </totvs-page-header>
+    </totvs-page-navbar>
+    
+    <totvs-page-content>
+
+        <totvs-page-alert ng-if="controller.listOfPercHistorImpug.length <= 0"
+                    type="info"
+                    message="Nenhum registro encontrado">
+        </totvs-page-alert>
+
+        <totvs-list-item ng-repeat="PercHistorImpug in controller.listOfPercHistorImpug">
+
+            <totvs-list-item-header>
+
+                <totvs-list-item-title
+                    title="{{PercHistorImpug.numAno}}/{{PercHistorImpug.numMes}} - {{PercHistorImpug.valPerc}}%">
+                </totvs-list-item-title>
+
+                <totvs-list-item-action limit-primary-action="1">
+                    <action ng-click="controller.removePercHistorImpug(PercHistorImpug)" 
+                            icon="glyphicon-trash">
+                            Remover
+                    </action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+            <totvs-list-item-content>
+                 <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                       title="Data Atualização"
+                                       value="{{PercHistorImpug.datUltAtualiz | date : 'dd/MM/yyyy'}}">
+                 </totvs-list-item-info>
+                 <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                       title="Hora Atualização"
+                 					   value="{{PercHistorImpug.hraUltAtualiz}}">
+                 </totvs-list-item-info>
+                 <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                       title="Usuário Atualização"
+                 					   value="{{PercHistorImpug.codUsuarUltAtualiz}}">
+                 </totvs-list-item-info>
+            </totvs-list-item-content>
+        </totvs-list-item>
+
+        <totvs-list-pagination
+            ng-if="controller.listOfPercHistorImpug.length < controller.listOfPercHistorImpugCount && controller.listOfPercHistorImpug.length"
+            ng-click="controller.search(true);">
+        </totvs-list-pagination>
+
+    </totvs-page-content>
+</totvs-page>

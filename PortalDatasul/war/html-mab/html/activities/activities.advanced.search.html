@@ -1,0 +1,36 @@
+<totvs-modal-header>{{ 'l-advanced-search' | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+    <div class="row">
+        <form class="form-horizontal" role="form">
+            <field type="input" class="col-md-6" 
+            	   data-ng-model="controller.advancedSearch.codini" 
+            	   maxlength="8" autofocus>
+                <label>{{ 'l-initial-code' | i18n }}</label>
+            </field>
+            <field type="input" class="col-md-6" 
+            	   data-ng-model="controller.advancedSearch.codfin"
+            	   maxlength="8">
+                <label>{{ 'l-final-code' | i18n }}</label>
+            </field>
+            <field type="input" class="col-md-12" 
+            	   data-ng-model="controller.advancedSearch.descricao"
+            	   maxlength="40">
+                <label>{{ 'l-description-contains' | i18n }}</label>
+            </field>             
+            <field ng-if="controller.atividadeAgricola"
+                   type="radio"
+                   ng-model="controller.advancedSearch.agricola"
+                   label="{{'l-activity-agro' | i18n }}" >
+                <totvs-options>
+                    <totvs-option value="1">{{'l-yes' | i18n }}</totvs-option>
+                    <totvs-option value="2">{{'l-no' | i18n }}</totvs-option>
+                    <totvs-option value="3">{{'l-both' | i18n }}</totvs-option>
+                </totvs-options>
+            </field>
+        </form>
+    </div>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button type="button" class="btn btn-primary" data-ng-click="controller.search();">{{ 'l-search' | i18n }}</button>
+    <button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'l-cancel' | i18n }}</button>
+</totvs-modal-footer>

@@ -1,0 +1,96 @@
+<accordion-heading>
+	{{ 'nav-expense' | i18n: []: 'dts/crm' }}
+	<i class="pull-right glyphicon"
+	   ng-class="{'glyphicon-chevron-down' :  controller.group.expenses.open,
+				  'glyphicon-chevron-right': !controller.group.expenses.open}">
+	</i>
+</accordion-heading>
+
+<fieldset class="row">
+
+	<div class="col-xs-11">
+
+		<totvs-page-alert type="info"
+						  ng-if="!controller.model.ttAcaoTipDespes || controller.model.ttAcaoTipDespes.length < 1"
+						  message="{{ 'msg-history-expense-new' | i18n: []: 'dts/crm' }}"
+						  style="margin-bottom: 0px; margin-top: 10px; padding: 0 15px;">
+		</totvs-page-alert>
+
+	</div>
+
+	<div class="col-xs-1 crm-field-extra-button"
+		 style="margin-top: 10px;">
+
+		<button class="btn btn-primary"
+				ng-click="controller.addExpense();">
+			<span class="glyphicon glyphicon-plus"></span>
+		</button>
+
+	</div>
+
+</fieldset>
+
+<totvs-divider style="margin-bottom: 15px;"
+			   ng-animate="'animate-if'"
+			   ng-if="controller.model.ttAcaoTipDespes.length">
+</totvs-divider>
+
+<div class="crm-tab">
+
+	<div class="row crm-tab-item header"
+			ng-if="controller.model.ttAcaoTipDespes.length > 0">
+		<strong>
+			<div class="col-xs-3">
+				{{ 'l-type' | i18n: []: 'dts/crm' }}
+			</div>
+			<div class="col-xs-2">
+				{{ 'l-quantity' | i18n: []: 'dts/crm' }}
+			</div>
+			<div class="col-xs-2">
+				{{ 'l-total-value' | i18n: []: 'dts/crm' }}
+			</div>
+			<div class="col-xs-2">
+				{{ 'l-expense-date' | i18n: []: 'dts/crm' }}
+			</div>
+			<div class="col-xs-2">
+				{{ 'l-unit-of-measurement' | i18n: []: 'dts/crm' }}
+			</div>
+			<div class="col-xs-1 text-right">
+			</div>
+		</strong>
+	</div>
+
+	<div class="row crm-panel-item"
+		 ng-repeat="expense in controller.model.ttAcaoTipDespes track by $index">
+
+		<div class="col-xs-3">
+			{{ expense.model.ttTipo.nom_tip_despes }}
+		</div>
+
+		<div class="col-xs-2">
+			{{ expense.model.qtd_itens_despes_realzdo | number : 2 }}
+		</div>
+
+		<div class="col-xs-2">
+			{{ expense.model.val_despes_realzdo | currency }}
+		</div>
+
+		<div class="col-xs-2">
+			{{ expense.model.dat_livre_1 | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+		</div>
+
+		<div class="col-xs-2">
+			<span ng-if="(expense.model.ttUnidadeMedida && expense.model.ttUnidadeMedida.num_id > 0)">
+				{{ expense.model.ttUnidadeMedida.nom_unid_medid }} - {{ expense.model.ttUnidadeMedida.nom_sig_umd }}
+			</span>
+		</div>
+
+		<div class="col-xs-1 text-right">
+			<a class="clickable"
+			   ng-click="controller.removeExpense($index);">
+				{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+			</a>
+		</div>
+	</div>
+
+</div>

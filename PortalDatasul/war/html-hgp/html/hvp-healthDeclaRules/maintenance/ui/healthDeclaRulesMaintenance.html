@@ -1,0 +1,156 @@
+<!--<healthcare-workarea>-->
+    <totvs-page type="base"> 
+        <link type="text/css" rel="stylesheet" href="/dts/hgp/html/assets/css/hvp.css"/>
+<!--        ng-controller="hrc.documentMaintenance.Control as controller"-->
+
+        <totvs-page-navbar id="navBar">
+
+            <totvs-page-breadcrumb>
+                    <breadcrumb link="#/dts/hgp/hvp-healthDeclaRules/">&#193rea de Trabalho</breadcrumb>
+                    <breadcrumb>Adicionar Regras da Declaração de Saúde</breadcrumb>
+            </totvs-page-breadcrumb>
+            
+            <totvs-page-header>
+
+                <totvs-page-header-title 
+                    title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Regra de Declaração de Saúde" >
+                </totvs-page-header-title>
+
+                <totvs-page-header-operation>
+                    <totvs-page-header-operation-action>
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                    <action ng-click="controller.save();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar</action>													
+                    </totvs-page-header-operation-action>
+                </totvs-page-header-operation>
+
+            </totvs-page-header>
+
+        </totvs-page-navbar>
+        <totvs-page-content id="pageContent">
+
+            <form>
+                <fieldset>
+	
+                    <legend ng-if="controller.action !== 'INSERT'"></legend>
+
+                    <field type="number"
+						   min="0" 						   
+                           label="Código do contratante"
+                           class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                           data-ng-model="controller.tmpRegraDeclaSaude.cdContratante"
+                           ng-change="controller.changeContrat()"
+                           ng-disabled="controller.isDisabled || controller.isGrpContrat">
+                    </field>     
+
+                    <field type="input"							
+                           label="Grupo Contratante"
+						   maxlength="20"
+                           class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                           data-ng-model="controller.tmpRegraDeclaSaude.cdGrupoContratante"
+                           ng-change="controller.changeGrpContrat()"
+                           ng-disabled="controller.isDisabled || controller.isContrat">
+                    </field>   
+
+                    <field type="number"
+					       min="0" 
+                           label="Quantidade de Beneficiarios:"
+                           class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                           data-ng-model="controller.tmpRegraDeclaSaude.qtdBenef"
+                           ng-disabled="controller.isDisabled">
+                    </field> 
+                         
+                    <field type="select"							
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            ng-model="controller.tmpRegraDeclaSaude.inTipAnexo"
+							ng-disabled="controller.isDisabled"
+                            label="Tipo de anexo">
+                            <include>					 
+                                    <ui-select-match placeholder="Selecione tipo de anexo">{{$select.selected.desTipAnexo}}</ui-select-match>
+                                    <ui-select-choices repeat="listAnexo.desTipAnexo as listAnexo in controller.listAnexo | filter: $select.search track by $index">
+                                      <span data-ng-bind-html="listAnexo.desTipAnexo | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                            </include>
+                    </field>                
+
+                    <field type="radio"          
+                            ng-model="controller.tmpRegraDeclaSaude.inTipMovto"                 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            label="Tipo de Movimento" 
+							ng-disabled="controller.isDisabled"		>    
+					
+                            <totvs-options>
+                                <totvs-option value="1">Portal Empresa</totvs-option>
+                                <totvs-option value="2">Produto Padrão</totvs-option>
+                                <totvs-option value="3">Ambos</totvs-option>
+                            </totvs-options>                                      
+                    </field>  
+                    <span class="glyphicon glyphicon-info-sign" title="Conforme RN 162 regra não será considerada para beneficiários com mais de 24 meses de vínculo&#013;Conforme RN 195 regra não será considerada para: &#013;- beneficiários com menos de 30 dias de vida&#013;- beneficiários de propostas com trinta vidas ou mais, ingressos em até 30 dias da admissão ou início do contrato" style="top:37px"></span>						
+
+					
+                        <!-- descobrir um jeito melhor de quebrar a linha :) -->
+                        <field type="input"
+                               label="fake" style="visibility: hidden"
+                               class="col-lg-2 col-md-2 col-sm-2 col-xs-2 col-sm-height">
+                        </field>
+						
+
+					<div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">	
+					<h2> Propostas Vinculadas </h2>
+					<hr>
+
+					<div class="field-container ng-scope col-lg-2 col-md-2 col-sm-2 col-xs-12 ng-pristine ng-untouched ng-valid">
+					     <div class="field-container ng-scope">
+					     	<label class="field-label" tooltip="Código do contratante" tooltip-placement="top">Modalidade</label>
+						     <div class="field-input">
+							     <div class="input-group">
+								     <input class="form-control" min="0"  ng-hide="controller.isDisabled" type="number" label="Código da Modalidade" name="cdModalidade" id="cdModalidade">									
+							     </div>	
+						     </div>
+					     </div>
+					</div>
+		            <div class="field-container ng-scope col-lg-2 col-md-2 col-sm-2 col-xs-12 ng-pristine ng-untouched ng-valid">
+     					<div class="field-container ng-scope">
+						     <label class="field-label" tooltip="Código da Proposta" tooltip-placement="top">Proposta</label>
+						     <div class="field-input">
+							     <div class="input-group">
+								     <input class="form-control" min="0"  type="number" label="Código da Modalidade" ng-hide="controller.isDisabled" name="nrProposta" id="nrPropost">
+							     </div>	
+						     </div>
+					     </div>
+                    </div>
+
+					 <button ng-click="controller.adicionarProposta()" class="btn btn-primary" ng-hide="controller.isDisabled" style="margin-top:25px"label="Adicionar">Adicionar </button>
+					 										 
+					 <br/>					                        
+					<dl>	
+					 <div class="field-container ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                style="padding-top: 10px; padding-bottom: 25px; border: 2px solid #d0d0d0; 
+                                    border-radius: 25px;margin-top:5px ;margin-bottom: 10px;">
+									<div ng-repeat="propost in controller.tmpPropostDeclaSaude track by $index">
+								    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                   <field type="number" label="Modalidade" 
+								          class="col-lg-2 col-md-12 col-sm-2 col-xs-12"
+                                          data-ng-model="propost.cdModalidade" disabled>                                        
+                                   </field>
+                                
+                                   <field type="number" label="Proposta" 
+								          class="col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                                          data-ng-model="propost.nrPropost" disabled>                                        
+                                   </field>
+
+								          <button class="btn btn-primary" style="position:relative;top:30px" ng-hide="controller.isDisabled" ng-click="controller.excluirProposta(propost)"><span class="glyphicon glyphicon-remove" > </span> Excluir </button>
+
+								    </div>
+					        </div>								   
+					</div>
+					</dl>
+				</div>
+            </fieldset>
+			
+			
+            </form>
+        </totvs-page-content>	
+    </totvs-page>
+<!--</healthcare-healthDeclaRules>-->

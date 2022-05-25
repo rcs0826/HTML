@@ -1,0 +1,118 @@
+<totvs-page type="list">
+
+    <totvs-page-navbar>
+        
+        <totvs-page-breadcrumb id="breadcrumb">
+                <breadcrumb>Manutenção Associativa Transações x Usuários</breadcrumb>
+
+                <breadcrumb></breadcrumb>
+        </totvs-page-breadcrumb>
+        
+        <totvs-page-header>
+
+            <totvs-page-header-title title="Manutenção Associativa Transações x Usuários" 
+                                     total="{{controller.listOftransactionVsUserAssociativeCount}}"
+                                     settings="controller.openConfigWindow()">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+
+                <totvs-page-header-operation-action on-new="controller.onNew"
+                                                    limit-primary-action="1">
+                    <action class="glyphicon-plus"
+                            link="#/dts/hgp/hrc-transactionVsUserAssociative/new">
+                            Incluir
+                    </action>
+
+                    <action ng-click="controller.userCopy()" icon="glyphicon-duplicate">Copiar Usuário</action>
+
+                    <action ng-click="controller.transactionCopy()" icon="glyphicon-duplicate">Copiar Transação</action>                    
+
+                </totvs-page-header-operation-action>
+
+                <totvs-page-header-operation-filter placeholder="Código do Usuário ou Código da Transação"                     
+                                                    ng-submit="controller.search()"
+                                                    ng-model="controller.searchInputText"
+                                                    advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+
+            </totvs-page-header-operation>
+
+            <totvs-page-disclaimers
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+            
+        </totvs-page-header>
+    </totvs-page-navbar>
+    
+    <totvs-page-content>
+
+        <totvs-page-alert ng-if="controller.listOftransactionVsUserAssociative.length <= 0"
+                    type="info"
+                    message="Nenhum registro encontrado">
+        </totvs-page-alert>
+
+        <totvs-list-item
+            ng-repeat="transactionVsUserAssociative in controller.listOftransactionVsUserAssociative">
+
+            <totvs-list-item-header>
+
+
+                 <totvs-list-item-title>
+                    <span> 
+                        <a href="#/dts/hgp/hrc-transactionVsUserAssociative/detail/{{transactionVsUserAssociative.urlChave}}"> 
+                            <b>Transação</b> {{transactionVsUserAssociative.rotuloTransacao}}  
+                            | <b>Usuário</b> {{transactionVsUserAssociative.rotuloUseridTransacao}}
+                             
+                        </a>
+                    </span>
+                </totvs-list-item-title>
+
+
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/hgp/hrc-transactionVsUserAssociative/edit/{{transactionVsUserAssociative.urlChave}}" icon="glyphicon-pencil">Editar</action>
+                    
+                    <action ng-click="controller.removeTransactionVsUserAssociative(transactionVsUserAssociative)" 
+                            icon="glyphicon-trash">Remover</action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+
+            <!-- Guilherme alterar aqui com os itens que vao aparecer na lista -->
+            <totvs-list-item-content>
+                
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Situação Única"
+                                      value="{{transactionVsUserAssociative.lgUnicaSitPeriodo ? 'Sim' : 'Não'}}">      
+                </totvs-list-item-info>                 
+
+                <div ng-if="transactionVsUserAssociative.lgUnicaSitPeriodo">                
+                    <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                          title="Situação Período"
+                                          value="{{transactionVsUserAssociative.rotuloSituacao}}">      
+                    </totvs-list-item-info>
+                </div>
+                <div ng-if="!transactionVsUserAssociative.lgUnicaSitPeriodo">                  
+                    <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                          title="fake" style="visibility: hidden"
+                                          value="">      
+                    </totvs-list-item-info>                    
+                </div>                
+
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Permite Validar"
+                                      value="{{transactionVsUserAssociative.lgAutorizaDigitacao ? 'Sim' : 'Não'}}">      
+                </totvs-list-item-info>              
+                
+            </totvs-list-item-content>
+
+        </totvs-list-item>
+
+        <totvs-list-pagination
+            ng-if="controller.listOftransactionVsUserAssociative.length < controller.listOftransactionVsUserAssociativeCount && controller.listOftransactionVsUserAssociative.length"
+            ng-click="controller.search(true);">
+        </totvs-list-pagination>
+
+    </totvs-page-content>
+</totvs-page>
+

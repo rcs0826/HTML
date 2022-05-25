@@ -1,0 +1,28 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb>{{'nav-ticket' | i18n: []: 'dts/crm'}}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title
+				title="{{'nav-ticket' | i18n: []: 'dts/crm'}}"
+				total="{{controllerTicketList.listOfTicketCount}}"
+				settings="controllerTicketList.userSettings();">
+			</totvs-page-header-title>
+
+			<totvs-lodash-template src="/dts/crm/html/ticket/ticket.list.header.html"
+					   template-data="controllerTicketList.accessRestriction"/>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-lodash-template src="/dts/crm/html/ticket/ticket.list.content.html"
+			   template-data="controllerTicketList.accessRestriction"/>
+
+</totvs-page>

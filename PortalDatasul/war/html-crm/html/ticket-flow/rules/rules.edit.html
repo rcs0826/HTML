@@ -1,0 +1,148 @@
+<totvs-modal-header>
+	{{ controller.editMode ? ('l-edit-rule' | i18n: []: 'dts/crm') : ('l-new-rule' | i18n: []: 'dts/crm') }}
+
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="select"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-model="controller.model.ttAttributeType"
+			   ng-change="controller.onChangeType()">
+			<label>{{ 'l-attribute-type' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-attribute-type' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.name }}
+				</ui-select-match>
+				<ui-select-choices repeat="attribute in controller.attributeTypes | filter: $select.search track by $index">
+					<span ng-bind-html="attribute.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-model="controller.model.ttOperator">
+			<label>{{ 'l-operator' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-operator' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.name }}
+				</ui-select-match>
+				<ui-select-choices repeat="operator in controller.logicalOperator | filter: $select.search track by $index">
+					<span ng-bind-html="operator.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttType"
+			   ng-animate="'animate-if'"
+			   canclean
+			   ng-if="controller.type === 'ticketType'">
+
+			<label>{{ 'l-ticket-type' | i18n }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-ticket-type' | i18n }}">
+					{{ $select.selected.nom_tip_ocor }}
+				</ui-select-match>
+				<ui-select-choices repeat="type in controller.ticketTypes | filter: $select.search track by $index">
+					<span ng-bind-html="type.nom_tip_ocor | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttType"
+			   ng-animate="'animate-if'"
+			   canclean
+			   ng-if="controller.type === 'priority'">
+
+			<label>{{ 'l-priority' | i18n }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-priority' | i18n }}">
+					{{ $select.selected.nom_priorid_ocor }}
+				</ui-select-match>
+				<ui-select-choices repeat="priority in controller.priorieties | filter: $select.search track by $index">
+					<span ng-bind-html="priority.nom_priorid_ocor | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttType"
+			   ng-animate="'animate-if'"
+			   canclean
+			   ng-if="controller.type === 'version'">
+
+			<label>{{ 'l-version' | i18n }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-version' | i18n }}">
+					{{ $select.selected.nom_vers_produt }}
+				</ui-select-match>
+				<ui-select-choices repeat="origin in controller.versions | filter: $select.search track by $index">
+					<span ng-bind-html="origin.nom_vers_produt | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttType"
+			   ng-animate="'animate-if'"
+			   canclean
+			   ng-if="controller.type === 'origin'">
+
+			<label>{{ 'l-origin' | i18n }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-origin' | i18n }}">
+					{{ $select.selected.nom_orig_ocor }}
+				</ui-select-match>
+				<ui-select-choices repeat="origin in controller.origins | filter: $select.search track by $index">
+					<span ng-bind-html="origin.nom_orig_ocor | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+
+		<field type="select"
+			   class="col-xs-6 col-sm-6 col-md-6"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-model="controller.model.ttRelationalOperator">
+			<label>{{ 'l-logical-operator' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-logical-operator' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.name }}
+				</ui-select-match>
+				<ui-select-choices repeat="condition in controller.relationalOperator | filter: $select.search track by $index">
+					<span ng-bind-html="condition.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default"
+			ng-click="controller.close()">
+		{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-default"
+			ng-click="controller.save(true)"
+			ng-if="controller.editMode === false;">
+		{{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-primary"
+			ng-click="controller.save()">
+		{{ 'btn-save' | i18n: []: 'dts/crm' }}
+	</button>
+</totvs-modal-footer>

@@ -1,0 +1,289 @@
+<totvs-modal-header>
+	<span ng-if="!(controller.model.num_id > 0)">
+		{{ 'btn-new-account-monitoring' | i18n: []: 'dts/crm' }}
+	</span>
+
+	<span ng-if="controller.model.num_id > 0">
+		{{ controller.model.cod_livre_1 }}
+	</span>
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="input"
+			   ng-required="true"
+			   ng-model="controller.model.cod_livre_1"
+			   canclean="undefined"
+			   placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+			   maxlength="40">
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="checkbox"
+			   ng-model="controller.model.log_transf_cta">
+			<label>{{ 'l-transfer-accounts' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+	</fieldset>
+	<fieldset class="row">
+
+		<field type="select"
+			   ng-model="controller.model.ttTipo"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-change="controller.onChangeFilter()">
+
+			<label>{{ 'l-monitoring-type' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-monitoring-type' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_tipo }}
+				</ui-select-match>
+				<ui-select-choices repeat="type in controller.types | filter: $select.search track by $index">
+					<span ng-bind-html="type.nom_tipo | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttFiltro"
+			   ng-animate="'animate-if'"
+			   ng-required="true"
+			   canclean="undefined"
+			   ng-if="controller.model.ttTipo.num_id === 1">
+			<label>{{ 'l-filter' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-placeholder-enter-hierarchy' | i18n: []: 'dts/crm' }}">
+					{{$select.selected.nom_hier_time}}
+				</ui-select-match>
+				<ui-select-choices repeat="hierarchy in controller.hierarchies track by $index"
+								   refresh="controller.getHierarchies($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="hierarchy.nom_hier_time | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttFiltro"
+			   ng-animate="'animate-if'"
+			   ng-required="true"
+			   canclean="undefined"
+			   ng-if="controller.model.ttTipo.num_id === 2">
+			<label>{{ 'l-filter' | i18n: []: 'dts/crm' }}</label>
+
+			<zoom zoom-service="crm.crm_grp_usuar.zoom"></zoom>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-group-user' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_grp_usuar }}
+				</ui-select-match>
+				<ui-select-choices repeat="group in controller.groups track by $index"
+								   refresh="controller.getGroups($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="group.nom_grp_usuar | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttFiltro"
+			   ng-animate="'animate-if'"
+			   ng-required="true"
+			   canclean="undefined"
+			   ng-if="controller.model.ttTipo.num_id === 3">
+			<label>{{ 'l-filter' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-placeholder-enter-group-client' | i18n: []: 'dts/crm'  }}">
+					{{$select.selected.nom_grp_clien}}
+				</ui-select-match>
+				<ui-select-choices repeat="group in controller.clientGroups track by $index"
+								   refresh="controller.getClientGroups($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="group.nom_grp_clien | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttSegmentacao"
+			   canclean="undefined">
+
+			<label>{{ 'l-segmentation' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-placeholder-enter-segmentation' | i18n: []: 'dts/crm'  }}">
+					{{$select.selected.nom_segmtcao_public}}
+				</ui-select-match>
+				<ui-select-choices repeat="segmentation in controller.segmentations track by $index"
+								   refresh="controller.getSegmentation($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="segmentation.nom_segmtcao_public | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<totvs-field
+			totvs-decimal
+			ng-model="controller.model.num_dias"
+			m-dec="0"
+			label="{{ 'l-days-monitoring' | i18n: []: 'dts/crm' }}"
+			canclean="0"
+			placeholder="{{ 'l-days-monitoring' | i18n: []: 'dts/crm' }}"
+			v-max="3"
+			ng-required="true">
+		</totvs-field>
+
+		<field type="select"
+			   ng-model="controller.model.ttGrupo"
+			   ng-required="true"
+			   canclean="undefined">
+
+			<label>{{ 'l-notification-user-group' | i18n: []: 'dts/crm' }}</label>
+
+			<zoom zoom-service="crm.crm_grp_usuar.zoom"></zoom>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-notification-user-group' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_grp_usuar }}
+				</ui-select-match>
+				<ui-select-choices repeat="group in controller.groups track by $index"
+								   refresh="controller.getGroups($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="group.nom_grp_usuar | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttUsuario"
+			   ng-required="controller.model.log_transf_cta"
+			   canclean="undefined"
+			   ng-disabled="!controller.model.log_transf_cta">
+
+			<label>{{ 'l-transfer-user' | i18n: []: 'dts/crm' }}</label>
+
+			<zoom zoom-service="crm.crm_usuar.zoom"></zoom>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-transfer-user' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_usuar }}
+				</ui-select-match>
+				<ui-select-choices repeat="user in controller.users track by $index"
+								   refresh="controller.getUsers($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="user.nom_usuar | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.ttLayout"
+			   canclean="undefined">
+
+			<label>{{ 'l-email-layout' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-placeholder-enter-layout' | i18n: []: 'dts/crm' }}">
+					{{$select.selected.nom_layout}}
+				</ui-select-match>
+				<ui-select-choices repeat="layout in controller.layouts track by $index"
+								   refresh="controller.getLayouts($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="layout.nom_layout | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+	</fieldset>
+
+	<div class="row">
+        <br>
+        <div class="crm-group-accordion">
+            <accordion close-others="false">
+
+                <accordion-group is-open="controller.group.monitoring.open" class="crm-panel">
+
+                    <accordion-heading>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <span >{{ 'l-monitoring' | i18n: []:  'dts/crm' }}</span>
+                                <i class="pull-right glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  controller.group.monitoring.open,
+                                            'glyphicon-chevron-right': !controller.group.monitoring.open}">
+                                </i>
+                            </div>
+                        </div>
+                    </accordion-heading>
+
+                    <fieldset class="row">
+
+                        <field type="checkbox"
+                            ng-model="controller.model.log_email_1">
+                            <label>{{ 'l-enabled-email' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+
+                        <field type="checkbox"
+                            ng-model="controller.model.log_ped_cotac">
+                            <label>{{ 'l-sales-order' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+
+                        <field type="checkbox"
+                            ng-model="controller.model.log_ocor">
+                            <label>{{ 'l-ticket' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+
+                        <field type="checkbox"
+                            ng-model="controller.model.log_tar">
+                            <label>{{ 'l-task' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+
+                        <field type="checkbox"
+                            ng-model="controller.model.log_histor">
+                            <label>{{ 'l-history' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+
+                        <field type="checkbox"
+                            ng-model="controller.model.log_oportun_vda">
+                            <label>{{ 'l-opportunity' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+
+                        <field type="checkbox"
+                            ng-model="controller.model.log_cta">
+                            <label>{{ 'l-account' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+
+                        <field type="checkbox"
+                            ng-model="controller.model.log_plano">
+                            <label>{{ 'l-sales-simulation' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+
+                        <field type="checkbox"
+                            ng-model="controller.model.log_cotac">
+                            <label>{{ 'l-cotation' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+
+                    </fieldset>
+
+                </accordion-group>
+
+            </accordion>
+        </div>
+	</div>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

@@ -1,0 +1,219 @@
+<totvs-page-form ng-if="controller.lgManutencaoPrestadores == false">
+    <legend>Endereços</legend>
+
+    <totvs-page-form>
+        <div ng-include="'/dts/hgp/html/hvp-person/maintenance/ui/addressMaintenanceFields.html'"></div>
+    </totvs-page-form>
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <!-- style="padding-top: 15px; padding-bottom: 15px;" -->
+        <button class="btn btn-default pull-right" 
+                id="addAddressButton"
+                ng-click="controller.addAddress();">
+            Adicionar Endereço
+        </button>                        
+    </div>
+</totvs-page-form>
+
+<totvs-page-form ng-if="controller.lgManutencaoPrestadores == false">
+    <!--       
+    <div class="field-label"
+         ng-if="!(controller.provider.pessoa.contatos.length > 0)"
+         >Este prestador não possui contatos cadastrados.</div>
+    -->    
+    <totvs-page-child type="list" style="margin-bottom: 3px">
+    
+        <totvs-list-item ng-repeat="address in person.enderecos">
+            <totvs-list-item-header>
+                <totvs-list-item-title
+                    class="col-lg-10 col-md-10 col-sm-10 col-xs-12"
+                    title="{{address.dsEndereco}}">
+                </totvs-list-item-title>
+
+                <totvs-list-item-action limit-primary-action="2"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                    <action icon="glyphicon-pencil"
+                            ng-click="controller.editAddress(address, $index)"
+                            ng-if="controller.action != 'DETAIL'">Editar</action>
+                    <action icon="glyphicon-trash"
+                            ng-click="controller.removeAddress($index, address, controller.getAddressIndex($event))"
+                            ng-if="controller.action != 'DETAIL'">Remover</action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+
+            <totvs-list-item-content>
+                <totvs-list-item-info class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                      title="Principal"
+                                      value="{{address.lgPrincipal == true ? 'Sim' : 'Não'}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                      title="CEP"
+                                      value="{{address.cdCep | cep}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                      title="Bairro"
+                                      value="{{address.dsBairro}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                      title="Cidade"
+                                      value="{{address.dsCidade}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                      title="UF"
+                                      value="{{address.cdUf}}">
+                </totvs-list-item-info>
+            </totvs-list-item-content>
+        </totvs-list-item>
+    </totvs-page-child>
+</totvs-page-form>
+
+<totvs-page-form>
+    <legend>Contatos</legend>
+    <div ng-if="isContactVisible == true">
+        <totvs-page-form>
+            <div ng-include="'/dts/hgp/html/hvp-person/maintenance/ui/contactMaintenanceFields.html'"></div>
+        </totvs-page-form>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <button class="btn btn-default pull-right" 
+                    style="margin-top: 15px;"
+                    id="addContactButton"
+                    ng-click="controller.addContact();">
+                Adicionar Contato
+            </button>                        
+        </div>
+    </div>
+</totvs-page-form>
+
+<totvs-page-form>
+    <!--       
+    <div class="field-label"
+         ng-if="!(controller.person.contatos.length > 0)"
+         >Esta pessoa não possui contatos cadastrados.</div>
+    -->    
+    <totvs-page-child type="list" style="margin-bottom: 3px">
+    
+        <totvs-list-item ng-repeat="contact in person.contatos">
+            <totvs-list-item-header>
+                <totvs-list-item-title
+                                title="{{contact['ds-contato']}}" 
+                                class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                </totvs-list-item-title>
+
+                <totvs-list-item-action limit-primary-action="2"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                    <action icon="glyphicon-pencil"
+                            ng-click="controller.editContact(contact, $index)"
+                            ng-if="controller.action != 'DETAIL'"
+                            >Editar</action>
+                    <action icon="glyphicon-trash"
+                            ng-click="controller.removeContact(contact, $index)"
+                            ng-if="controller.action != 'DETAIL'"
+                            >Remover</action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+
+            <totvs-list-item-content>
+                <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                      title="Tipo"
+                                      value="{{controller.getLabelContactTypeByKey(contact['tp-contato'])}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                      title="Nome"
+                                      value="{{contact['nm-contato']}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                      title="Ramal"
+                                      value="{{contact['ds-ramal']}}">
+                </totvs-list-item-info>
+            </totvs-list-item-content>
+        </totvs-list-item>
+    </totvs-page-child>
+</totvs-page-form>
+
+<totvs-page-form>
+    <legend>Anexos</legend>
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <button class="btn btn-default pull-left" 
+                id="addAttachmentButton"
+                ng-click="controller.addAttachment();">
+            Selecionar Documento
+        </button>                        
+    </div>
+</totvs-page-form>
+
+<totvs-page-detail class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <totvs-page-detail-info 
+        class="col-lg-8 col-md-8 col-sm-8 col-xs-12" 
+        title="Nome"
+        value="Arquivo de teste protótipo.txt">
+    </totvs-page-detail-info>
+
+    <totvs-page-detail-info 
+        class="col-lg-4 col-md-4 col-sm-4 col-xs-12" 
+        title="Tamanho"
+        value="176,5 KB">
+    </totvs-page-detail-info>
+</totvs-page-detail>
+
+<totvs-page-form>
+
+    <totvs-field totvs-select canclean
+        ng-model="controller.attachment.tpDocumento"
+        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+        label="Tipo de Documento"
+        select-service="hcg.attachmentTypeZoomController"
+        zoom-service="hcg.attachmentTypeZoomController"
+        select-id="cdnTipAnexo"
+        select-description="desTipAnexo"
+        ng-disabled="controller.action === 'DETAIL'">
+    </totvs-field>
+
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <button class="btn btn-default pull-right" 
+                id="addAttachmentButton"
+                ng-click="controller.addAttachment();">
+            Adicionar Anexo
+        </button>                        
+    </div>
+
+</totvs-page-form>
+
+<totvs-page-form>
+    <totvs-page-child type="list" style="margin-bottom: 3px">
+
+        <totvs-list-item  >
+            <!-- ng-repeat="contact in controller.provider.pessoa.contatos" -->
+            <totvs-list-item-header>
+                <totvs-list-item-title
+                    title="Teste do gerson.txt" class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                </totvs-list-item-title>
+
+                <totvs-list-item-action limit-primary-action="2"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <action icon="glyphicon-download"
+                            ng-click="controller.editAttachment(attachment, controller.getAttachmentIndex($event))"
+                            ng-if="controller.action != 'DETAIL'"
+                            >Download</action>
+                    <action icon="glyphicon-trash"
+                            ng-click="controller.removeAttachment($index, attachment, controller.getAttachmentIndex($event))"
+                            ng-if="controller.action != 'DETAIL'"
+                            >Remover</action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+
+            <totvs-list-item-content>
+                <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                      title="Tamanho"
+                                      value="170,8 KB">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                      title="Tipo de Documento"
+                                      value="1 - Identidade">
+                </totvs-list-item-info>
+            </totvs-list-item-content>
+        </totvs-list-item>
+    </totvs-page-child>
+</totvs-page-form>

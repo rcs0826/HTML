@@ -1,0 +1,179 @@
+<div class="modal-header">
+	<h3 class="modal-title">
+		<span ng-if="!exportExpenseController.isEdit">{{:: 'Adicionar Despesa' | i18n : [] : 'dts/mpd' }}</span>
+		<span ng-if="exportExpenseController.isEdit">{{:: 'Editar Despesa' | i18n : [] : 'dts/mpd' }}</span>
+	</h3>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<totvs-field totvs-select
+			ng-disabled="true"
+			class="col-md-6"
+			ng-model="exportExpenseController.model['cod-itiner']"
+			ng-change="exportExpenseController.getItineraryPoints();"
+			label="{{:: 'Itinerário' | i18n : [] : 'dts/mpd'}}"
+			select-id="cod-itiner"
+			select-match='[{"field":"cod-itiner", "separator": " - "},{"field":"descricao"}]'
+			select-service="mpd.itinerario.zoom"
+			zoom-service="mpd.itinerario.zoom"
+			canclean>
+		</totvs-field>
+
+		<totvs-field totvs-select
+			class="col-md-6"
+			ng-model="exportExpenseController.model['cod-pto-contr']"
+			label="{{:: 'Ponto de Controle' | i18n : [] : 'dts/mpd'}}"
+			select-id="cod-pto-contr"
+			select-match='[{"field":"cod-pto-contr", "separator": " - "},{"field":"_.descricao"}]'
+			select-service="mpd.pto-itiner.zoom"
+			select-init="{
+				gotomethod: 'gotokeyitinerpto',
+				codItiner: exportExpenseController.model['cod-itiner'],
+				properties: ['cod-itiner'],
+				values: [exportExpenseController.model['cod-itiner']]
+			}"
+			zoom-service="mpd.pto-itiner.zoom"
+			zoom-init="{
+				properties: ['cod-itiner'],
+				values: [exportExpenseController.model['cod-itiner']]
+			}"
+			canclean>
+		</totvs-field>
+
+		<div class="clearfix"></div>
+
+		<totvs-field totvs-select
+			ng-disabled="exportExpenseController.isEdit"
+			class="col-md-6"
+			ng-model="exportExpenseController.model['cdn-despes']"
+			ng-change="exportExpenseController.onChangeExpense()"
+			label="{{:: 'Cód. Despesa' | i18n : [] : 'dts/mpd'}}"
+			select-id="cod-desp"
+			select-match='[{"field":"cod-desp", "separator": " - "},{"field":"descricao"}]'
+			select-init="{gotomethod: ''}"
+			select-service="mpd.desp-imp.zoom"
+			zoom-service="mpd.desp-imp.zoom"
+			canclean>
+		</totvs-field>
+
+		<totvs-field totvs-select
+			class="col-md-6"
+			ng-model="exportExpenseController.model['cod-emitente-desp']"
+			ng-change="exportExpenseController.onChangeVendor()"
+			label="{{:: 'Fornecedor Despesa' | i18n : [] : 'dts/mpd' }}"
+			select-id="cod-emitente"
+			select-match='[{"field":"cod-emitente", "separator": " - "},{"field":"nome-abrev"}]'
+			select-init="{gotomethod: 'gotocodemitente'}"
+			select-service="mpd.emitente.zoom"
+			zoom-service="mpd.emitente.zoom"
+			zoom-init="{setDefaultValue: false} "
+			canclean>
+		</totvs-field>
+
+		<div class="clearfix"></div>
+
+		<totvs-field totvs-select
+			class="col-md-6"
+			ng-model="exportExpenseController.model['mo-codigo']"
+			label="{{:: 'Moeda' | i18n : [] : 'dts/mpd'}}"
+			select-id="mo-codigo"
+			select-match='[{"field":"mo-codigo", "separator": " - "},{"field":"descricao"}]'
+			select-init="{gotomethod: ''}"
+			select-service="mpd.moeda.zoom"
+			zoom-service="mpd.moeda.zoom"
+			canclean>
+		</totvs-field>
+
+		<totvs-field totvs-select
+			class="col-md-6"
+			ng-model="exportExpenseController.model['cod-cond-pag']"
+			label="{{:: 'Condição Pagamento' | i18n : [] : 'dts/mpd'}}"
+			select-id="cod-cond-pag"
+			select-match='[{"field":"cod-cond-pag", "separator": " - "},{"field":"descricao"}]'
+			select-init="{gotomethod: ''}"
+			select-service="mpd.cond-pagto-inter.zoom"
+			zoom-service="mpd.cond-pagto-inter.zoom"
+			canclean>
+		</totvs-field>
+
+		<div class="clearfix"></div>
+
+		<totvs-field
+		     totvs-datepicker				
+			  class="col-md-6"
+			 ng-model="exportExpenseController.model['dat-base-cobr-despes']"
+			 label="{{:: 'Dt Base Cobr Desp' | i18n : [] : 'dts/mpd' }}">			
+		</totvs-field>
+
+		<div class="col-md-3 field">
+			<div class="field-container">
+				<label class="field-label" for="log-despes-integr-ap">{{:: 'Considera Despesa no AP' | i18n : [] : 'dts/mpd'}}</label>
+				<div class="clearfix"></div>
+				<input type="checkbox" id="log-despes-integr-ap" bsswitch="small" ng-model="exportExpenseController.model['log-despes-integr-ap']"/>
+			</div>
+		</div>
+
+		<div class="col-md-3 field">
+			<div class="field-container">
+				<label class="field-label" for="log-forma-preco">{{:: 'Forma Preço Venda' | i18n : [] : 'dts/mpd'}}</label>
+				<div class="clearfix"></div>
+				<input type="checkbox" id="log-forma-preco" bsswitch="small" ng-model="exportExpenseController.model['log-forma-preco']"/>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+
+		<field
+			class="col-md-6"
+			type="select"
+			ng-model="exportExpenseController.model['cdn-classif-despes']"
+			label="{{:: 'Classificação Despesa' | i18n : [] : 'dts/mpd'}}">
+			<include>
+				<ui-select-match>{{$select.selected.value}}</ui-select-match>
+				<ui-select-choices repeat="item.key as item in exportExpenseController.classifDespOptions | filter: $select.search">
+					<span data-ng-bind-html="item.value | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<div class="col-md-3 field">
+			<div class="field-container">
+				<label class="field-label" for="log-despesa-inclusa">{{:: 'Despesa Inclusa' | i18n : [] : 'dts/mpd'}}</label>
+				<div class="clearfix"></div>
+				<input type="checkbox" id="log-despesa-inclusa" bsswitch="small" ng-model="exportExpenseController.model['log-despesa-inclusa']"/>
+			</div>
+		</div>
+
+		<div class="col-md-3 field">
+			<div class="field-container">
+				<label class="field-label" for="log-destaca-despesa">{{:: 'Destaca Despesa' | i18n : [] : 'dts/mpd'}}</label>
+				<div class="clearfix"></div>
+				<input type="checkbox" id="log-destaca-despesa" bsswitch="small" ng-model="exportExpenseController.model['log-destaca-despesa']"/>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+
+		<field type="decimal" ng-model-options="{ updateOn: 'blur' }"
+			   class="col-md-3"
+			   m-dec="2"
+			   v-max="999999999.99"
+			   ng-model="exportExpenseController.model['val-despes']">
+			<label>{{:: 'Valor Despesa' | i18n : [] : 'dts/mpd'}}</label>
+		</field>
+
+		<div class="col-md-3 field">
+			<div class="field-container">
+				<label class="field-label" for="log-val-tot-faturam">{{:: 'Valor Total no Faturamento Parcial' | i18n : [] : 'dts/mpd'}}</label>
+				<div class="clearfix"></div>
+				<input type="checkbox" id="log-val-tot-faturam" bsswitch="small" ng-model="exportExpenseController.model['log-val-tot-faturam']"/>
+			</div>
+		</div>
+
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-default" ng-click="exportExpenseController.close()">{{:: 'Fechar' | i18n : [] : 'dts/mpd' }}</button>
+	<button class="btn btn-primary" ng-click="exportExpenseController.save()">{{:: 'Salvar' | i18n : [] : 'dts/mpd' }}</button>
+</div>
+

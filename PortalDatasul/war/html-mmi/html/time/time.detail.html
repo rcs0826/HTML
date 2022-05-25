@@ -1,0 +1,36 @@
+<totvs-page type="detail">
+        <totvs-page-navbar>
+            <totvs-page-breadcrumb>
+                <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+                <breadcrumb link="#/dts/mmi/time">{{'l-hour-type' | i18n}}</breadcrumb>
+                <breadcrumb>{{ 'l-detail' | i18n }}</breadcrumb>            
+            </totvs-page-breadcrumb>
+            <totvs-page-header>
+                <totvs-page-header-title title="{{controller.model['cod-tip-hora']}} - {{controller.model['des-tip-hora']}}"></totvs-page-header-title>
+                <totvs-page-header-operation>
+                    <totvs-page-header-operation-action on-back-link="#/dts/mmi/time"
+                                                        hide-edit="true"
+                                                        hide-remove="true">
+                        <action link="#/dts/mmi/time/edit/{{controller.model['cod-tip-hora']}}" icon="glyphicon-pencil" >{{ 'l-edit' | i18n }}</action>
+                        <action ng-click="controller.delete(controller.model)" icon="glyphicon-trash" >{{ 'l-remove' | i18n }}</action>		
+                    </totvs-page-header-operation-action>
+                </totvs-page-header-operation>
+            </totvs-page-header>
+        </totvs-page-navbar>
+        <totvs-page-content>
+            <totvs-page-detail>
+                <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                        title="{{ 'l-capacity' | i18n }}"
+                                        value="{{ controller.model._['desIdiTipHora'] }}">
+                </totvs-page-detail-info>
+                <totvs-page-detail-info class="col-lg-10 col-md-10 col-sm-10 col-xs-12"
+                                        title="{{ 'l-value-type' | i18n }}"
+                                        value="{{ controller.model._['desIdiTipVal'] }}">
+                </totvs-page-detail-info>
+                <totvs-page-detail-info class="col-lg-10 col-md-10 col-sm-10 col-xs-12"
+                                        title="{{ 'l-observation' | i18n }}"
+                                        value="{{ controller.model['des-obs'] }}">
+                </totvs-page-detail-info>
+            </totvs-page-detail>
+        </totvs-page-content>
+    </totvs-page>

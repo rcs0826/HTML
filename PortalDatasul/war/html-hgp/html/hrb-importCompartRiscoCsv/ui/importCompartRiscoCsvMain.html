@@ -1,0 +1,43 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-header>
+            <totvs-page-header-title title="Importação Compartilhamento de Risco CSV">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="4">
+
+                    <action class="btn btn-primary" ng-click="controller.generate();" style="padding-right: 15px;">
+                        Enviar
+                    </action> 
+
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.filtersForm">       
+
+            <a name="execucao" id="execucao" style="display: block;
+            position: relative;
+            visibility: hidden;"></a>
+
+            <totvs-execution hide-repeat="true" ng-model="controller.execution">
+                <totvs-execution-item type="execution">
+                    <gps-totvs-schedule program-name="importBenefCompartRisco" ng-model="controller.schedule">
+                    </gps-totvs-schedule>
+                    <totvs-field 
+                            totvs-select 
+                            ng-model="controller.dadosTela.servidor" 
+                            label="Servidor de Execução" 
+                            t-no-data="Sem dados" 
+                            placeholder="Selecione.."
+                            select-id="cdServidor" select-description="dsServidor" t-data-source="controller.options.servidores"
+                            canclean>
+                    </totvs-field>
+                </totvs-execution-item>
+            </totvs-execution>
+
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

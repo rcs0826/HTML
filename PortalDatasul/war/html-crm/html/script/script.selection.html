@@ -1,0 +1,88 @@
+<totvs-modal-header>
+	{{ 'nav-script' | i18n }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<div class="row">
+
+		<field type="input"
+			   class="col-xs-12"
+			   maxlength="50"
+			   canclean="undefined"
+			   ng-model="controller.filterScript"
+			   placeholder="{{ 'l-script' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-script' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+	</div>
+
+	<totvs-divider style="margin-top: 10px; margin-bottom: 10px;"></totvs-divider>
+
+	<totvs-page-alert
+		ng-if="controller.scripts.length === 0"
+		type="info"
+		message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+	</totvs-page-alert>
+
+    <div class="crm-group-accordion">
+        <accordion close-others="false"
+                ng-if="controller.types.length > 0">
+
+            <accordion-group ng-repeat="scriptTypes in controller.types track by $index"
+                            is-open="scriptTypes.isOpen"
+                            ng-if="(scriptTypes.ttQuestionario | filter: controller.filterScript).length > 0"
+                            class="crm-panel">
+
+                <accordion-heading>
+                    <div class="row">
+                        <div class="col-xs-10 overflow-ellipsis">
+                            <span>{{ scriptTypes.nom_tip_script }}</span>
+                        </div>
+                        <div class="col-xs-2 text-right">
+                            <i class="pull-right glyphicon"
+                            ng-class="{'glyphicon-chevron-down' :  scriptTypes.isOpen,
+                                        'glyphicon-chevron-right': !scriptTypes.isOpen}">
+                            </i>
+                        </div>
+                    </div>
+                </accordion-heading>
+
+                <div class="row crm-tab"
+                    ng-animate="'animate-if'">
+
+                    <div class="col-xs-12 crm-tab-item"
+                        ng-repeat="script in scriptTypes.ttQuestionario | filter: { 'nom_script': controller.filterScript } : strict track by $index"
+                        ng-init="script.isOpen = false;">
+
+                        <div>
+
+                            <div class="col-xs-8 overflow-ellipsis crm-no-gutter">
+                                {{ script.nom_script }}
+                            </div>
+
+                            <div class="col-xs-4 text-right">
+                                <a class="clickable"
+                                ng-click="controller.select(script)">
+                                    {{ 'l-execute' | i18n: []: 'dts/crm' }}
+                                </a>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </accordion-group>
+        </div>
+
+	</accordion>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n }}</button>
+
+</totvs-modal-footer>

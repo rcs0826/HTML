@@ -1,0 +1,51 @@
+link(rel="stylesheet" href="/dts/kbn/css/font-awesome.css")
+totvs-modal-header
+    | {{ "l-produce-items-manuals" | i18n }}
+totvs-modal-body
+    totvs-page-content
+        totvs-list-item(ng-repeat="item in controller.items | filter: {itemManual: true}" class="{{controller.colorTag(item)}}")
+            totvs-list-item-header
+                .col-xs-12
+                    span.initialwrap.title.link {{item | descGeneric:'{sku} - {desc} {ref} ({exp})'}}
+            totvs-list-item-content(style="padding-bottom: 5px;")
+                totvs-divider
+                .col-xs-2
+                    label.input-label {{ 'l-board' | i18n }}
+                    .input-group
+                        input.form-control(ng-disabled="true", ng-model="item.totalKanbans")
+                .col-xs-3
+                    label.input-label {{ 'l-to-produce' | i18n }}
+                    .input-group(ng-class="{'has-error': controller.quantityValidationError(item)}")
+                        input.form-control(ng-model="item.quantity"
+                                            ng-change="controller.validNumbers(item,'quantity') && controller.updateItemTotal(item)"
+                                            integer)
+                    .tooltip.bottom.in(ng-if="item.quantity == null")
+                        .tooltip-inner.btn-danger
+                            .help-inline.ng-binding.ng-scope {{'l-invalid-quantity' | i18n}}
+                        .tooltip-arrow.arrow-danger
+                    .tooltip.bottom.in(ng-if="item.quantity > item.totalKanbans")
+                        .tooltip-inner.btn-danger
+                            .help-inline.ng-binding.ng-scope {{'l-to-produce-validation' | i18n}}
+                        .tooltip-arrow.arrow-danger
+                .col-xs-3
+                    label.input-label {{ 'l-quantity' | i18n }}
+                    .input-group
+                        input.form-control(ng-disabled="true", ng-model="item.total")
+                        span.input-group-addon {{item.unitOfMeasure}}
+                .col-xs-4
+                    label.input-label {{ 'l-cell-workcenters' | i18n }}
+                    .row(style="margin-top: -5px")
+                        field.col-md-12(type="select",ng-model="item.workcenter", required)
+                            include
+                                ui-select-match
+                                    {{$select.selected.cod_chave_erp}} 
+                                ui-select-choices(repeat="state in controller.workcenters track by $index")
+                                    span(data-ng-bind-html="state.cod_chave_erp | highlight: $select.search")
+                    .tooltip.bottom.in(ng-if="controller.workCenterValidationError(item)")
+                        .tooltip-inner.btn-danger
+                            .help-inline.ng-binding.ng-scope {{'l-work-center-must-be-selected' | i18n}}
+                        .tooltip-arrow.arrow-danger
+totvs-modal-footer
+    button.btn.btn-default(ng-click="controller.close()") {{ 'l-cancel' | i18n }}
+    button.btn.btn-primary(ng-disabled="controller.validateInfo(controller.items)" 
+                           ng-click="controller.save(controller.items)") {{ 'l-apply' | i18n }}

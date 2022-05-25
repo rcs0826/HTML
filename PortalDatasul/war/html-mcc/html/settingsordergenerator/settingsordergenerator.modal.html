@@ -1,0 +1,88 @@
+<totvs-modal-header>
+	{{ 'l-settings-order-generator' | i18n: []: 'dts/mcc' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<div class="row">
+		<form class="form-horizontal" role="form">
+			<div class="col-md-12">
+				<field
+					type="radio"
+					ng-model="controller.model.icms"
+					ng-init="controller.model.icms=1"
+					label="{{ 'l-icms' | i18n: []: 'dts/mcc' }}">
+					<totvs-options>
+						<totvs-option value="1">{{ 'l-industrialization' | i18n: []: 'dts/mcc' }}</totvs-option>
+						<totvs-option value="2">{{ 'l-usage' | i18n: []: 'dts/mcc' }}</totvs-option>
+					</totvs-options>
+				</field>
+
+				<field 
+					type="combo"
+					ng-model="controller.model.typeOrder"
+					ng-init="controller.model.typeOrder='1'"
+					label="{{ 'l-type-order' | i18n: []: 'dts/mcc' }}">
+					<totvs-options>
+						<totvs-option value="1">{{ 'l-like-item' | i18n: []: 'dts/mcc' }}</totvs-option>
+						<totvs-option value="2" ng-disabled="controller.generateOrdersByPurchaseGroup">{{ 'l-material' | i18n: []: 'dts/mcc' }}</totvs-option>
+						<totvs-option value="3">{{ 'l-service' | i18n: []: 'dts/mcc' }}</totvs-option>
+						<totvs-option value="4">{{ 'l-subcontracting' | i18n: []: 'dts/mcc' }}</totvs-option>
+					</totvs-options>
+				</field>
+			</div>
+
+			<div class="col-md-12">
+				<div class="col-md-12" style="border-bottom:1px solid #e8e8e8; margin-top:20px; margin-bottom:10px">{{ 'l-general' | i18n: []: 'dts/mcc' }}</div>
+
+				<div class="col-md-6">
+					<span>{{ 'l-split-orders-between-suppliers' | i18n: []: 'dts/mcc' }}</span>
+					<br>
+					<input type="checkbox"
+						ng-model="controller.model.splitOrdersBetweenSuppliers"
+						bsswitch
+						class="col-sm-3">                
+					</input>
+				</div>
+
+				<div class="col-md-6">
+					<span>{{ 'l-group-items' | i18n: []: 'dts/mcc' }}</span>
+					<br>
+					<input type="checkbox"
+						ng-model="controller.model.groupItems"
+						bsswitch
+						class="col-sm-3">                
+					</input>
+				</div>
+			</div>
+
+			<div class="col-md-12">
+				<div class="col-md-12" style="border-bottom:1px solid #e8e8e8; margin-top:20px; margin-bottom:10px">{{ 'l-relate-generated-order-to' | i18n: []: 'dts/mcc' }}</div>
+							
+				<totvs-field totvs-radio 
+					class="col-xs-12"
+		   			t-options="controller.radioOptions"
+		   			ng-model="controller.model.generatedOrderTo">
+				</totvs-field>
+
+			 	<totvs-field totvs-select
+					class="col-xs-8"
+					style="margin-top:10px;"
+					ng-model="controller.model.buyerId"
+					label="Comprador"
+					select-id="cod-comprado"
+					select-description="nome"
+					select-match='[{"field":"cod-comprado", "separator":" - "}, {"field":"nome"}]'
+					select-service="mcc.comprador.zoom"
+					zoom-service="mcc.comprador.zoom"
+					canclean
+					ng-disabled="controller.model.generatedOrderTo != 3">
+				</totvs-field>
+			</div>
+		</form> 
+	</div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n: []: 'dts/mcc' }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply()">{{ 'l-apply' | i18n: []: 'dts/mcc' }}</button>
+</totvs-modal-footer>

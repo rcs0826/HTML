@@ -1,0 +1,91 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<totvs-modal-header>{{controller.titleModal}}</totvs-modal-header>
+<totvs-modal-body>
+  <div class="row">
+    <div class="col-md-12 text-right">
+      <div class="btn-group">
+        <button type="button" ng-if="['locked','workcenter'].indexOf(controller.myParams.type) != -1" data-ng-click="controller.transportAllSku()" class="btn btn-default btn-lg">{{'l-transport-verb'|i18n}} &nbsp;<i class="fa fa-truck fa-flip-horizontal"></i></button>
+      </div>
+      <div class="btn-group">
+        <button type="button" ng-if="['transport','workcenter'].indexOf(controller.myParams.type) != -1" data-ng-click="controller.openLockDivGen()" class="btn btn-default btn-lg">{{'l-lock'|i18n}} &nbsp;<i class="fa fa-lock"></i></button>
+      </div>
+      <div class="btn-group">
+        <button type="button" ng-if="['transport','workcenter'].indexOf(controller.myParams.type) != -1" data-ng-click="controller.storeAllSku()" class="btn btn-default btn-lg">{{'l-store-verb'|i18n}} &nbsp;<i class="fa fa-shopping-cart"></i></button>
+      </div>
+      <div class="btn-group">
+        <button type="button" ng-if="['locked'].indexOf(controller.myParams.type) != -1" data-ng-click="controller.boardAllSku()" class="btn btn-default btn-lg">{{'l-kanban-board'|i18n}} &nbsp;<i class="fa fa-desktop"></i></button>
+      </div>
+    </div>
+  </div>
+  <detailcontainer ng-show="controller.flagJustifyLock" id="workcenter-lock-div">
+    <div class="col-md-12">
+      <div style="padding-left: 0px;" class="form-group col-md-6">
+        <label for="justification">{{'l-select-reason'| i18n}}:</label>
+        <select name="justification" id="justification" ng-options="justif.des_justif for justif in controller.listJustification" ng-model="controller.model.justification" required="required" class="form-control"></select>
+      </div>
+      <div style="margin-top: 25px;" class="col-md-5 text-rigth">
+        <button data-ng-click="controller.lockAllSku(obj);" class="btn btn-primary">{{'l-lock' | i18n}}</button>
+        <button data-ng-click="controller.closeLockDivGen(obj);" class="btn btn-default">{{'l-cancel' | i18n}}</button>
+      </div>
+    </div>
+  </detailcontainer>
+  <div>
+    <div role="alert" ng-if="!controller.myParams.model.tags.length" class="alert alert-info">
+      <h5><i class="fa fa-exclamation-triangle"></i>&nbsp; {{'l-not-kanban-workcenter2'| i18n}}</h5>
+    </div>
+    <totvs-list-item ng-repeat="obj in controller.myParams.model.tags | orderBy: ['ttItemDetModalDs.ttItemModalDs.cod_chave_erp','dtm_ult_mov'] " class="{{controller.colorTag(obj.color)}}">
+      <div class="col-md-8">
+        <h4><span><span>{{ obj.ttItemDetModalDs.ttItemModalDs | descFlow }}</span></span></h4>
+      </div>
+      <div class="col-md-4 text-right">
+        <div class="btn-group">
+          <button ng-class="{'btn-default': !obj.move, 'btn-primary': obj.move}" type="button" data-ng-click="controller.transportSku(obj)" ng-if="['locked','workcenter'].indexOf(controller.myParams.type) != -1" class="btn btn-default"><i class="fa fa-truck fa-flip-horizontal"></i></button>
+        </div>
+        <div class="btn-group">
+          <button ng-class="{'btn-default': !obj.lock, 'btn-danger': obj.lock}" type="button" data-ng-click="controller.openLockDivCard(obj)" ng-if="['transport','workcenter'].indexOf(controller.myParams.type) != -1" class="btn btn-default"><i class="fa fa-lock"></i></button>
+        </div>
+        <div class="btn-group">
+          <button ng-class="{'btn-default': !obj.shopping, 'btn-success': obj.shopping}" type="button" data-ng-click="controller.storeSku(obj)" ng-if="['transport','workcenter'].indexOf(controller.myParams.type) != -1" class="btn btn-default"><i class="fa fa-shopping-cart"></i></button>
+        </div>
+        <div class="btn-group">
+          <button ng-class="{'btn-default': !obj.desktop, 'btn-warning': obj.desktop}" type="button" data-ng-click="controller.boardSku(obj)" ng-if="['locked'].indexOf(controller.myParams.type) != -1" class="btn btn-default"><i class="fa fa-desktop"></i></button>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-6 text-left">
+            <label>{{'l-date-movement' | i18n}}:</label>&nbsp;<span>{{ obj.dtm_ult_mov | date: 'short' }}</span>
+          </div>
+          <div class="col-md-3">
+            <label>{{'l-type' | i18n}}:</label>&nbsp;<span>{{(obj.ttItemDetModalDs.ttItemModalDs.log_expedic)? 'l-flow-expedition' : 'l-flow-process' | i18n}}</span>
+          </div>
+          <div class="col-md-3">
+            <label>{{'l-quantity' | i18n}}:</label>&nbsp;<span>{{ obj.ttItemDetModalDs.qti_tam_kanban }} {{ obj.ttItemDetModalDs.ttItemModalDs.cod_un_med_erp }}</span>
+          </div>
+        </div>
+        <div ng-if="obj.num_id_justif" class="row">
+          <div class="col-md-6">
+            <label>{{'l-reason' | i18n}}:</label>&nbsp;<span>{{ obj.ttJustifModalDs.des_justif }}</span>
+          </div>
+        </div>
+      </div>
+      <detailcontainer ng-show="obj.flagJustifyLock">
+        <div class="col-md-12">
+          <div style="padding-left: 0px;" class="form-group col-md-6">
+            <label for="justification">{{'l-select-reason'| i18n}}:</label>
+            <select name="justification" id="justification" ng-options="justif.des_justif for justif in controller.listJustification" ng-model="obj.justification" required="required" class="form-control"></select>
+          </div>
+          <div style="margin-top: 25px;" class="col-md-5 text-rigth">
+            <button data-ng-click="controller.lockSku(obj);" class="btn btn-primary">{{'l-lock' | i18n}}</button>
+            <button data-ng-click="controller.closeLockDivCard(obj);" class="btn btn-default">{{'l-cancel' | i18n}}</button>
+          </div>
+        </div>
+      </detailcontainer>
+    </totvs-list-item>
+  </div>
+</totvs-modal-body>
+<totvs-modal-footer>
+  <button data-ng-click="controller.cancel();" class="btn btn-default">{{ 'l-close' | i18n }}</button>
+  <button data-ng-click="controller.save();" class="btn btn-primary">{{ 'l-apply' | i18n }}</button>
+</totvs-modal-footer>

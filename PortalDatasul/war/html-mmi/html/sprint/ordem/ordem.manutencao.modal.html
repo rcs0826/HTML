@@ -1,0 +1,124 @@
+<totvs-modal-header>{{ 'l-generate-ord' | i18n }}</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-page-form>
+        <fieldset>
+        	<div class="row">
+  				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				    <totvs-field totvs-datepicker
+				    			 autofocus
+				    			 focus
+				                 ng-model="ordemManutencaoModalCtrl.model.datEntr"
+				                 culture="pt"
+				                 label="{{ 'l-document-in' | i18n }}"
+				                 t-mask-date
+				                 class="col-md-6"
+				                 ng-blur="ordemManutencaoModalCtrl.ajustaDataTermino()">
+				    </totvs-field>
+				
+				    <totvs-field totvs-time
+				                 ng-model="ordemManutencaoModalCtrl.model.hraEntr"
+				                 label="{{ 'l-hour' | i18n }}"
+				                 class="col-md-6">
+				    </totvs-field>
+				</div>
+			    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				    <totvs-field totvs-datepicker
+				                 ng-model="ordemManutencaoModalCtrl.model.datTerm"
+				                 culture="pt"
+				                 label="{{ 'l-end-forecast' | i18n }}"
+				                 t-mask-date
+				                 class="col-md-6">
+				    </totvs-field>
+				
+				    <totvs-field totvs-time
+				                 ng-model="ordemManutencaoModalCtrl.model.hraTerm"
+				                 label="{{ 'l-hour' | i18n }}"
+				                 class="col-md-6">
+				    </totvs-field>
+        </div>
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <totvs-field totvs-select
+                       class="col-md-12"
+					   					 ng-model="ordemManutencaoModalCtrl.model.tpManut"
+                       select-id="cd-tipo"
+                       select-description="descricao"
+                       select-service="mmi.tipo-manut.zoom"
+                       zoom-service="mmi.tipo-manut.zoom"
+                       label="{{ 'l-maintenance-type' | i18n }}"
+					   canclean>
+          </totvs-field>
+        </div>
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				    <totvs-field totvs-select
+				                 class="col-md-12"
+				                 ng-model="ordemManutencaoModalCtrl.model.codPlanejador"
+				                 select-id="cod-plandor"
+				                 select-description="nom-plandor"
+				                 select-service="mab.mmv-plandor.zoom"
+				                 zoom-service="mab.mmv-plandor.zoom"
+				                 label="{{ 'l-planner' | i18n }}"
+				                 canclean>
+				    </totvs-field>
+				</div>
+			    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				    <totvs-field totvs-select 
+				                 label="{{ 'l-workshop' | i18n }}"
+				                 ng-model="ordemManutencaoModalCtrl.model.codOficina"
+				                 select-id="cod-ofici"
+				                 select-description="des-ofici"
+				                 select-service="mab.oficina.zoom"
+				                 zoom-service="mab.oficina.zoom"
+				                 class="col-md-12"
+				                 canclean>
+				    </totvs-field>
+				</div>
+			   	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				    <totvs-field totvs-select 
+				                 label="{{ 'l-sector' | i18n }}"
+				                 ng-model="ordemManutencaoModalCtrl.model.codSetor"
+				                 select-id="cod-setor-ofici"
+				                 select-description="des-setor-ofici"
+				                 select-service="mab.mmvSetorOfici.zoom"
+				                 zoom-service="mab.mmvSetorOfici.zoom"
+				                 class="col-md-12"
+				                 canclean>
+				    </totvs-field>
+				</div>
+			    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				    <totvs-field totvs-select
+				                 class="col-md-12"
+				                 ng-model="ordemManutencaoModalCtrl.model.codCausa"
+				                 select-id="cd-causa-padr"
+				                 select-description="descricao"
+				                 select-service="mmi.causa.zoom"
+				                 zoom-service="mmi.causa.zoom"
+				                 label="{{ 'l-cause' | i18n }}"
+				                 canclean="undefined">
+				      </totvs-field>
+				    </totvs-field>
+				</div>
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				    <totvs-field totvs-select
+				                 class="col-md-12"
+				                 ng-model="ordemManutencaoModalCtrl.model.codSintoma"
+				                 select-id="cd-sint-padr"
+				                 select-description="descricao"
+				                 select-service="mmi.sintoma.zoom"
+				                 zoom-service="mmi.sintoma.zoom"
+				                 label="{{ 'l-sympthom' | i18n }}"
+				                 canclean="undefined">
+				    </totvs-field>
+				</div>
+		  </div>
+		</fieldset>
+		
+	</totvs-page-form>
+	
+</totvs-modal-body>
+
+<totvs-modal-footer>
+  <button type="button" class="btn btn-default" ng-click="ordemManutencaoModalCtrl.fechar()">{{ 'l-close' | i18n }}</button>
+  <button type="button" class="btn btn-primary" ng-click="ordemManutencaoModalCtrl.salvar()">{{ 'l-save' | i18n }}</button>
+</totvs-modal-footer>

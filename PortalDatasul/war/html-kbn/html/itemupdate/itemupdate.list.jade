@@ -1,0 +1,34 @@
+link(rel="stylesheet" href="/dts/kbn/css/font-awesome.css")
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+totvs-page(type='list')
+    totvs-page-navbar
+        totvs-page-breadcrumb
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb {{ 'l-item-update' | i18n }}
+        totvs-page-header
+            totvs-page-header-title(title="{{ 'l-item-update' | i18n }}" total="{{controller.totalRecords}}")
+            totvs-page-header-operation
+                div.col-md-7.col-sm-7
+                totvs-page-header-operation-filter(
+                    placeholder="{{ 'l-code-description' | i18n}}", 
+                    ng-submit="controller.quickSearch()", 
+                    advanced-search="controller.openAdvancedSearch",
+                        ng-model="controller.quickSearchText")
+            totvs-page-disclaimers(disclaimer-list="controller.filtersApplied", ng-click="controller.removeFilter")
+    totvs-page-content
+                                            
+        totvs-page-alert(ng-if="!controller.hasEstab()" type="info" message="{{ 'msg-estab-not-selected' | i18n }}")        
+        totvs-page-alert(ng-if="controller.hasEstab() && controller.totalRecords == 0" type="info" message="{{ 'msg-not-found' | i18n }}")
+        
+        totvs-list-item(data-ng-repeat="itens in controller.itens")
+            totvs-list-item-header
+                totvs-list-item-title.col-xs-7.col-lg-7.col-md-7.col-sm-7(title='{{itens | descGeneric:"{sku} - {desc} {ref} ({exp})"}}')
+                totvs-list-item-action(limit-primary-action="1")
+                    action(icon="glyphicon-pencil", data-ng-click="controller.openModalItemUpdateEdit(itens)") {{ 'l-edit' | i18n }}                  
+            totvs-list-item-content
+                totvs-list-item-info.col-md-3(title="{{'l-id' | i18n}}", value="{{itens.num_id_item}}")
+                totvs-list-item-info.col-md-3(title="{{'l-un' | i18n}}", value="{{itens.cod_un_med_erp}}")
+                totvs-list-item-info.col-md-3(title="{{'l-controlled' | i18n}}", value="{{itens.idi_control_kanban | kbnControlled }}")
+                
+        .container(align="center")
+                pagination.pagination-sm(total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages", items-per-page="controller.pageSize", previous-text="{{'l-previous' | i18n}}", next-text="{{'l-next' | i18n}}")

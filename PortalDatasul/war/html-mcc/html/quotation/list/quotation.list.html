@@ -1,0 +1,551 @@
+<style type="text/css" scoped="true">
+	.subtitulo{
+		padding-left: 15px;
+	    margin: 15px 0px 5px 0px;
+	    font-size: 16px;
+	    font-weight: bold;	    
+	    float: left;
+	    color: #337ab7;
+	    width: 100%;
+	}
+	.suggested{
+		font-weight: bold !important;
+	}
+	#loading-screen-custom{
+		width: 100%;
+		height:100%;
+	}
+	#loading-screen-custom img{
+		width: 42px;
+		height: 42px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-left: -21px;
+	}
+	#loading-screen-custom  p {
+		color: white;
+		position: absolute;
+		top: 50%;
+		margin-top: 50px;
+		width: 100%;
+	}
+</style>
+<totvs-page type="list" totvs-custom-element="customQuotationList">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{:: 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{:: 'l-quotations' | i18n }}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+		<totvs-page-header>
+			<totvs-page-header-title  
+                ng-if="!controller.isJustForView"                                     
+				id="pageTitle"
+				settings="controller.settings()"
+                title="{{:: 'l-quotations' | i18n }}">
+			</totvs-page-header-title>
+            <totvs-page-header-title  
+                ng-if="controller.isJustForView"                                     
+				id="pageTitle2"
+				settings="controller.settings()" 
+                title="{{:: 'l-view-quotation-plural' | i18n }}">
+			</totvs-page-header-title>
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action limit-primary-action="3">
+                    <action link="#/dts/mcc/quotation/new" 
+                    		icon="glyphicon-plus" 
+                    		class="btn-primary" 
+                    		tooltip="{{:: 'l-add' | i18n }}" 
+                            ng-if="!controller.isJustForView">{{:: 'l-add' | i18n }}</action>
+                </totvs-page-header-operation-action>
+				<totvs-page-header-operation-filter 
+					placeholder="{{:: 'l-orderline-number' | i18n }}, {{:: 'l-item-code' | i18n }}"
+					ng-submit="controller.loadData(false)"
+					clean-search="controller.loadData(false)"
+					ng-model="controller.searchInputText"
+					advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+			</totvs-page-header-operation>
+
+			<totvs-page-disclaimers 
+				disclaimer-list="controller.disclaimers"
+				ng-click="controller.removeDisclaimer">
+    	    </totvs-page-disclaimers>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+
+
+	<totvs-page-content>
+		<totvs-page-content-header>
+			<div class="col-md-3 col-sm-4 col-xs-8">
+				<totvs-field totvs-checkbox
+				    class="col-xs-1"
+					ng-model="controller.selectAll"
+					ng-click="controller.onChangeSelectAll($event)">
+				</totvs-field>
+				<h5 class="col-xs-10" style="margin-top: 8px">{{:: 'l-selected-all' | i18n: []: 'dts/mcc'}}</h5>
+			</div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
+                <h5 class="col-md-12">{{:: 'l-selected-amount' | i18n: []: 'dts/mcc'}}: <span class="badge">{{controller.totalValueSelected | currency: controller.currencySign + " "}}</span></h5>
+            </div>
+            <totvs-page-quick-filter
+                class="col-md-5 col-sm-4"
+                orderby-list="controller.orderbyList"
+                orderby-selected="controller.orderBySelected"
+                on-select-orderby="controller.selectOrderBy"
+                ng-if="!controller.notFound">
+            </totvs-page-quick-filter>
+        </totvs-page-content-header>
+
+		<totvs-page-child type="base">
+			<div class="col-xs-12" totvs-custom-element="customQuotationGrid">
+				<totvs-grid 
+					grid-data="controller.model.ttQuotationList"
+					reorderable="true"
+					resizable="true"
+					navigatable="true"
+					selectable="multiple,row"
+					add-select-column="separate"
+					grid-height="{{controller.altura}}"
+					grid="controller.myGrid"
+					grid-selected-item="controller.selectedItem"
+					grid-selected-items="controller.selected"
+					on-change="controller.onChange(event)"
+					on-data="controller.onData(data)">
+
+					<totvs-grid-column field="suggested">
+						{{:: 'l-suggested' | i18n: []: 'dts/mcc' }}
+						<template>
+							<span ng-if="dataItem['suggested']" class="suggested glyphicon glyphicon-star" style="color: green; text-align: center; width: 100%"></span>
+						</template>
+					</totvs-grid-column>
+					<totvs-grid-column field="seq-cotac" width="100">
+						{{:: 'l-seq' | i18n: []: 'dts/mcc' }}
+						<template>
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['seq-cotac']}}</span>				
+						</template>
+					</totvs-grid-column>
+					<totvs-grid-column field="numero-ordem" width="100">
+						{{:: 'l-requisition' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['numero-ordem']}}</span>					
+						</template> 
+					</totvs-grid-column>
+					<totvs-grid-column field="nr-processo" width="100">
+						{{:: 'l-process' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['nr-processo']}}</span>					
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="nr-solicit-cotac" width="100">
+						{{:: 'l-quotation-request' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['nr-solicit-cotac']}}</span>				
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="it-codigo" width="100">
+						{{:: 'l-item' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['it-codigo']}}</span>		
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="it-codigo-desc" width="100">
+						{{:: 'l-item-description' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['it-codigo-desc']}}</span>					
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="cod-refer" width="100">
+						{{:: 'l-reference' | i18n: []: 'dts/mcc' }}
+						<template>
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['cod-refer']}}</span>							
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="inform-compl" width="100">
+						{{:: 'l-supplementary-info' | i18n: []: 'dts/mcc' }}
+						<template>
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['inform-compl']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="cod-estabel" width="100">
+						{{:: 'l-site-short' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['cod-estabel']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="cod-emitente" width="100">
+						{{:: 'l-vendor' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['cod-emitente']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="nome-abrev" width="100">
+						{{:: 'l-abrev-name' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['nome-abrev']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="nome-emit" width="100">
+						{{:: 'l-vendor-name' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['nome-emit']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="data-cotacao-desc" width="100">
+						{{:: 'l-quotation-date' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['data-cotacao-desc']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="un" width="100">
+						{{:: 'l-un' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['un']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="qt-solic" width="100" >
+						{{:: 'l-request-quantity-short' | i18n: []: 'dts/mcc' }}
+						<template>
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['qt-solic'] | number:4}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="un-interna" width="100">
+						{{:: 'l-internal-um' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['un-interna']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="cdn-fabrican" width="100">
+						{{:: 'l-manufacturer' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['cdn-fabrican']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="nom-fabrican" width="100">
+						{{:: 'l-manufacturer-name' | i18n: []: 'dts/mcc' }}
+						<template>
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['nom-fabrican']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="preco-fornec" width="100" >						
+						{{:: 'l-vendor-price' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['preco-fornec'] | currency: dataItem['mo-codigo-sigla']+" "}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="preco-referencia" width="100" >						
+						{{:: 'l-reference-price' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['preco-referencia'] | currency: dataItem['mo-codigo-sigla']+" "}}</span> 
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="preco-final" width="100" >						
+						{{:: 'l-final-price' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['preco-final'] | currency: dataItem['mo-codigo-sigla']+" "}}</span> 
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="preco-total" width="100" >						
+						{{:: 'l-total-price' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['preco-total'] | currency: dataItem['mo-codigo-sigla']+" "}}</span> 
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="mo-codigo" width="100">
+						{{:: 'l-original-currency' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['mo-codigo']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="mo-codigo-desc" width="100">
+						{{:: 'l-currency-description' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['mo-codigo-desc']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="cotacao-moeda" width="100">						
+						{{:: 'l-currency-quote' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['cotacao-moeda'] | number:8}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="cod-transp" width="100">
+						{{:: 'l-carrier' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['cod-transp']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="cod-transp-desc" width="100">
+						{{:: 'l-carrier-name' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['cod-transp-desc']}}</span>
+						</template> 				
+					</totvs-grid-column>
+					<totvs-grid-column field="taxa-financ" width="100">
+						{{:: 'l-financial-rate' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['taxa-financ'] | booleanI18N}}</span> 							
+						</template> 				
+					</totvs-grid-column>
+					<totvs-grid-column field="valor-taxa" width="100">						
+						{{:: 'l-total-fee' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['valor-taxa']}}</span> 					
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="nr-dias-taxa" width="100">
+						{{:: 'l-days-tax' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['nr-dias-taxa']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="codigo-ipi" width="100">
+						{{:: 'l-included-ipi' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['codigo-ipi'] | booleanI18N}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="frete" width="100">
+						{{:: 'l-included-freight' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['frete'] | booleanI18N}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="reajusta-cotacao" width="100">
+						{{:: 'l-readjustment-quotation' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['reajusta-cotacao'] | booleanI18N}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="possui-reaj" width="100">
+						{{:: 'l-has-readjust' | i18n: []: 'dts/mcc' }}
+						<template>
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['possui-reaj'] | booleanI18N}}</span>
+						</template> 		
+					</totvs-grid-column>
+					<totvs-grid-column field="valor-frete" width="100">
+						{{:: 'l-freight-value' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['valor-frete'] | currency: ""}}</span> 
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="dias-validade" width="100">
+						{{:: 'l-validity-days' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['dias-validade']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="prazo-entreg" width="100">
+						{{:: 'l-deliverer-time' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['prazo-entreg']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="aliquota-ipi" width="100">
+						{{:: 'l-aliquot-ipi' | i18n: []: 'dts/mcc' }}
+						<template>
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['aliquota-ipi'] | number:2}} %</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="aliquota-icm" width="100">
+						{{:: 'l-icms-tax' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['aliquota-icm'] | number:2}} %</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="aliquota-iss" width="100">
+						{{:: 'l-aliquot-iss' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['aliquota-iss'] | number:2}} %</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="perc-descto" width="100">
+						{{:: 'l-discount-percentage' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['perc-descto'] | number:2}} %</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="valor-descto" width="100">
+						{{:: 'l-discount-value' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['valor-descto'] | currency: dataItem['mo-codigo-sigla']+" "}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="prazo-medio-pagto" width="100">
+						{{:: 'l-average-payment-period' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['prazo-medio-pagto']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="cod-cond-pag" width="100">
+						{{:: 'l-payment-term' | i18n: []: 'dts/mcc' }}
+						<template>
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['cod-cond-pag']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="cod-cond-pag-desc" width="100">
+						{{:: 'l-payment-term-description' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['cod-cond-pag-desc']}}</span>
+						</template> 				
+					</totvs-grid-column>
+					<totvs-grid-column field="cod-comprado" width="100">
+						{{:: 'l-buyer' | i18n: []: 'dts/mcc' }}
+						<template>
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['cod-comprado']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="cod-comprado-desc" width="100">
+						{{:: 'l-description-buyer' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['cod-comprado-desc']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="contato" width="100">
+						{{:: 'l-contact' | i18n: []: 'dts/mcc' }}
+						<template>
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['contato']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="narrativa" width="100">
+						{{:: 'l-narrative' | i18n: []: 'dts/mcc' }}
+						<template>
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['narrativa']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="cot-aprovada" width="100">
+						{{:: 'l-approved-quotation' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['cot-aprovada'] | booleanI18N}}</span>
+						</template> 					
+					</totvs-grid-column>
+                    <totvs-grid-column field="motivo-apr" width="100">
+						{{:: 'l-reason-aprv-reject' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['motivo-apr']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="pend-aprov" width="100">
+						{{:: 'l-pending-approval' | i18n: []: 'dts/mcc' }}
+						<template> 						
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['pend-aprov'] | booleanI18N}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="rejeitada" width="100">
+						{{:: 'l-rejected' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['rejeitada'] | booleanI18N}}</span>
+						</template> 				
+					</totvs-grid-column>
+					<totvs-grid-column field="mapa-cotacao" width="100">
+						{{:: 'l-quotation-map' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['mapa-cotacao']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="cod-incoterm" width="100">
+						{{:: 'l-incoterm' | i18n: []: 'dts/mcc' }}
+						<template>
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['cod-incoterm']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="cod-pto-contr" width="100">
+						{{:: 'l-control-point' | i18n: []: 'dts/mcc' }}
+						<template>
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['cod-pto-contr']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="cdn-pais-orig" width="100">
+						{{:: 'l-source-country' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['cdn-pais-orig']}}</span>
+						</template> 				
+					</totvs-grid-column>
+					<totvs-grid-column field="class-fiscal" width="100">
+						{{:: 'l-tax-classification' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['class-fiscal']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="regime-impot" width="100">
+						{{:: 'l-import-system' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['regime-impot']}}</span>
+						</template> 				
+					</totvs-grid-column>
+					<totvs-grid-column field="aliquota-ii" width="100">
+						{{:: 'l-aliquot-ii' | i18n: []: 'dts/mcc' }}
+						<template> 	
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['aliquota-ii']}}</span>
+						</template> 					
+					</totvs-grid-column>
+					<totvs-grid-column field="itinerario" width="100">
+						{{:: 'l-itinerary' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['itinerario']}}</span>
+						</template> 				
+					</totvs-grid-column>
+					<totvs-grid-column field="log-gerac-autom-despes" width="100">
+						{{:: 'l-expense-automatic-generation' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['log-gerac-autom-despes'] | booleanI18N}}</span>
+						</template> 			
+					</totvs-grid-column>	
+                    <totvs-grid-column field="despesas-importacao" width="100">
+						{{:: 'l-expenses-import' | i18n: []: 'dts/mcc' }}
+						<template> 							
+							<span class="text-nowrap" ng-class="{'suggested' : dataItem['suggested']}">{{dataItem['despesas-importacao'] | currency: dataItem['mo-codigo-sigla']+" ":5}}</span>
+						</template> 			
+					</totvs-grid-column>
+				</totvs-grid>
+				<!-- MAIS RESULTADOS -->
+				<totvs-list-pagination 
+					ng-if="controller.hasNext" 
+					ng-click="controller.loadData(true)">
+				</totvs-list-pagination>
+			</div>
+
+	        <div class="col-xs-12" style="margin: 10px 0">
+				<div class="btn-group" ng-if="!controller.isJustForView">
+					<button type="button" class="btn btn-default" ng-click="controller.editQuotation()"
+                            ng-if="!controller.isJustForView">{{:: 'l-to-update' | i18n: []: 'dts/mcc' }}</button>
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="caret"></span>
+						<span class="sr-only">Toggle Dropdown</span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a ng-click="controller.copyQuotation()">{{:: 'l-copy' | i18n: []: 'dts/mcc' }}</a></li>
+						<li><a ng-click="controller.removeQuotations()">{{:: 'l-remove' | i18n: []: 'dts/mcc' }}</a></li>
+						<li><a ng-click="controller.detailQuotation()">{{:: 'l-to-detail' | i18n: []: 'dts/mcc' }}</a></li>
+                        <li ng-if="!controller.isUnlinked"><a ng-click="controller.detailPurchaseOrderline()">{{:: 'l-detail-purchaseorderline' | i18n: []: 'dts/mcc' }}</a></li>
+					</ul>
+				</div>				
+				<button class="btn btn-default" ng-if="!controller.isJustForView" ng-click="controller.requestQuotation()" ng-disabled="controller.isUnlinked">{{:: 'l-request-quotation' | i18n: []: 'dts/mcc' }}</button>
+				<button class="btn btn-default" ng-if="!controller.isJustForView" ng-click="controller.approveQuotation()" ng-disabled="controller.isUnlinked">{{:: 'l-approve' | i18n: []: 'dts/mcc' }}</button>         
+                <button class="btn btn-default" ng-if="controller.isJustForView" 
+                        ng-click="controller.detailQuotation()">{{:: 'l-to-detail' | i18n: []: 'dts/mcc' }}</button>
+				<button class="btn btn-default" ng-if="controller.isJustForView && !controller.isUnlinked" 
+                        ng-click="controller.detailPurchaseOrderline()">{{:: 'l-detail-purchaseorderline' | i18n: []: 'dts/mcc' }}</button>
+			</div>
+
+			<div class="col-xs-12">				
+                <totvs-tabset style="padding-right: 0px;padding-left: 0px">
+                    <totvs-tab heading="{{:: 'l-last-purchases-vendor' | i18n: []: 'dts/mcc' }}">
+                        <div class="col-xs-12" style="margin: 10px 0" id="lastpurchvendor"
+                             ng-include="'/dts/mcc/html/lastpurchase/lastpurchases.vendor.html'" ></div>
+                    </totvs-tab>
+                    <totvs-tab heading="{{:: 'l-last-purchases-item' | i18n: []: 'dts/mcc' }}">
+                        <div class="col-xs-12" style="margin: 10px 0" id="lastpurchvendor"
+                             ng-include="'/dts/mcc/html/lastpurchase/lastpurchases.item.html'" ></div>                         
+                    </totvs-tab>
+                </totvs-tabset>
+			</div>
+		</totvs-page-child>
+    </totvs-page-content>
+</totvs-page>
+<div id="loading-screen-custom" class="overlay ng-scope" ng-if="controller.hasPendingView">
+	<img src="assets/img/loading.gif">
+	<p class="text-center text-muted ng-binding">{{:: 'l-status-uploading' | i18n: []: 'dts/mcc' }}</p>
+</div>

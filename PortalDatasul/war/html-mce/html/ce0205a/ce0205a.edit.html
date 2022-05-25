@@ -1,0 +1,153 @@
+<totvs-page type="edit">  
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/">{{'l-material-requisition-return' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-material-requisition-return' | i18n}}">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <div class="col-xs-12">
+                    <div class="operations page-detail-actions ">
+                        <button class="btn btn-primary ng-binding ng-scope " ng-click="controller.validateAndCreateRequisitionReturn() ">
+                            {{ 'l-save' | i18n }}
+                        </button>
+                    </div>
+                </div>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+        <totvs-page-form>
+            <div id="returnFormFields">
+                <fieldset>
+                    <!-- ESTABELECIMENTO -->
+                    <field type="input" class="col-lg-4 col-md-4 col-sm-6 col-xs-12" data-ng-model="controller.ttManualRequisition['cod-estabel']" zoom zoom-service="mpd.estabelecSE.zoom" zoom-id="cod-estabel" zoom-description="nome" zoom-selected="controller.getDefaults('cod-estabel')" canclean name-id="estab" focus>
+                        <label>{{ 'l-site' | i18n }}</label>
+                    </field>
+
+                    <!-- DOCUMENTO-->
+                    <field type="input" class="col-lg-2 col-md-2 col-sm-6 col-xs-12" data-ng-model="controller.ttManualRequisition['nro-docto']" label="{{'l-document' | i18n}}" maxlength=16 canclean>
+                    </field>
+
+                    <!-- SERIE DOCUMENTO -->
+                    <field type="input" class="col-lg-2 col-md-2 col-sm-6 col-xs-12" data-ng-model="controller.ttManualRequisition['serie-docto']" label="{{'l-serie-document' | i18n}}" maxlength=5 canclean>
+                    </field>
+
+                    <!-- DATA TRANSACAO -->
+                    <field type="date" class="col-lg-2 col-md-2 col-sm-6 col-xs-6 " data-ng-model="controller.ttManualRequisition['dt-trans']" ng-change="controller.getDefaults('dt-trans')" required label="{{'l-transaction-date' | i18n}}">
+                    </field>
+                    <!-- DATA SAÃ�DA -->
+                    <field type="date" class="col-lg-2 col-md-2 col-sm-6 col-xs-6 " data-ng-model="controller.ttManualRequisition['dt-nf-saida']" ng-change="controller.getDefaults('dt-nf-saida')" required label="{{'l-out-date' | i18n}}">
+                    </field>
+
+                </fieldset>
+
+                <fieldset>
+                    <legend>{{'l-item' | i18n}}</legend>
+                    <!-- ITEM-->
+                    <field type="input" class="col-lg-4 col-md-4 col-sm-5 col-xs-12 " data-ng-model="controller.ttManualRequisition['it-codigo']" zoom zoom-id="it-codigo" zoom-description="desc-item" zoom-service="men.item.zoom" zoom-selected="controller.getDefaults('it-codigo')" zoom-refresh-delay=1000 canclean required label="{{ 'l-item' | i18n }}" zoom-valid-search-values="['']">
+                    </field>
+
+                    <!-- DEPOSITO -->
+                    <field type="input" class="col-lg-4 col-md-4 col-sm-5 col-xs-12 " data-ng-model="controller.ttManualRequisition['cod-depos']" zoom zoom-id="cod-depos" zoom-description="nome" zoom-service="mce.deposito.zoom" zoom-selected="controller.getDefaults('cod-depos')" required label="{{ 'l-warehouse' | i18n }}" canclean>
+                    </field>
+
+                    <!-- LOCALIZACAO -->
+                    <field type="input" class="col-lg-4 col-md-4 col-sm-5 col-xs-12" data-ng-model="controller.ttManualRequisition['cod-localiz']" ng-disabled="!controller.isFieldEnabled('cod-localiz')" zoom zoom-id="cod-localiz" zoom-description="descricao" zoom-service="mce.localizacao.zoom" zoom-init="{'filters':{'cod-estabel': controller.ttManualRequisition['cod-estabel'],
+                                                    'cod-depos'  : controller.ttManualRequisition['cod-depos']}}" zoom-refresh-delay=1000 canclean zoom-valid-search-values="['']">
+                        <label>{{ 'l-localization' | i18n }}</label>
+                    </field>
+
+                </fieldset>
+                <!-- LOTE -->
+                <fieldset>
+                    <field type="input" class="col-lg-5 col-md-5 col-sm-4 col-xs-12" data-ng-model="controller.ttManualRequisition['lote']" zoom zoom-id="lote" ng-change="controller.getDefaults('lote')" ng-model-options="{ debounce: 1000}" ng-disabled="!controller.isFieldEnabled('lote')" zoom-service="mce.saldo-estoq.zoom" zoom-init="{'filters': {'cod-estabel': controller.ttManualRequisition['cod-estabel'],
+                                                      'cod-depos'  : controller.ttManualRequisition['cod-depos'],
+                                                      'cod-localiz': controller.ttManualRequisition['cod-localiz'], 
+                                                      'it-codigo'  : controller.ttManualRequisition['it-codigo']}}"
+													  zoom-selected="controller.fillBalanceFieldsLote(selected, oldValue)"
+													  canclean zoom-refresh-delay=1000>
+                        <label>{{ 'l-lot-serial' | i18n }}</label>
+                    </field>
+
+                    <!-- DATA VALIDADE LOTE -->
+                    <field type="date" class="col-lg-3 col-md-3 col-sm-4 col-xs-6" data-ng-model="controller.ttManualRequisition['dt-vali-lote']" ng-disabled="!controller.isFieldEnabled('dt-vali-lote')">
+                        <label>{{ 'l-dateValidLot' | i18n }}</label>
+                    </field>
+
+                    <!-- REFERENCIA-->
+                    <field type="input" class="col-lg-4 col-md-4 col-sm-4 col-xs-12" data-ng-model="controller.ttManualRequisition['cod-refer']" ng-disabled="!controller.isFieldEnabled('cod-refer')" zoom zoom-id="cod-refer" zoom-description="descricao" zoom-service="mcc.referencia.zoom" canclean zoom-refresh-delay=1000>
+                        <label>{{ 'l-reference' | i18n }}</label>
+                    </field>
+
+                    <!-- QUANTIDADE -->
+                    <field type="decimal" class="col-lg-3 col-md-3 col-sm-6 col-xs-12" data-ng-model="controller.ttManualRequisition['quantidade']" ng-disabled="!controller.isFieldEnabled('quantidade')" required label="{{'l-quantity' | i18n}}" data-m-dec="4" data-v-max="999999999" data-a-pad="false" canclean a-dec="," a-sep=".">
+                    </field>
+
+                    <!-- UNIDADE DE MEDIDA -->
+                    <field type="input" class="col-lg-4 col-md-4 col-sm-6 col-xs-12" data-ng-model="controller.ttManualRequisition['un']" zoom zoom-id="un" zoom-description="descricao" zoom-service="mcc.tab-unidade.zoom" canclean>
+                        <label>{{ 'l-unit-of-measure' | i18n }}</label>
+                    </field>
+
+                </fieldset>
+                <fieldset>
+                    <!-- INTEGRAÃƒâ€¡Ãƒâ€¢ES -->
+                    <legend>{{'l-integrations' | i18n}}</legend>
+                    <!-- ORDEM DE PRODUCAO -->
+                    <field type="input" class="col-lg-5 col-md-5 col-sm-5 col-xs-12" data-ng-model="controller.ttManualRequisition['nr-ord-produ']" ng-disabled="!controller.isFieldEnabled('nr-ord-produ')" label="{{'l-productionOrder' | i18n}}" zoom-selected="controller.getDefaults('nr-ord-produ')" zoom zoom-id="nr-ord-produ" zoom-description="it-codigo" zoom-service="mcp.ord-prod.zoom" zoom-refresh-delay=1000 numbers-only canclean>
+                    </field>
+
+                    <!-- ORDEM DE INVESTIMENTO -->
+                    <field type="input" class="col-lg-3 col-md-3 col-sm-3 col-xs-12" zoom-selected="controller.getDefaults('num-ord-inv')" ng-disabled="!controller.isFieldEnabled('num-ord-inv')" data-ng-model="controller.ttManualRequisition['num-ord-inv']" canclean numbers-only zoom zoom-id="num-ord-magnus" zoom-service="mcc.sub-div-ordem.zoom">
+                        <label>{{ 'l-investment-order' | i18n }}</label>
+                    </field>
+
+                    <!-- ATUALIZA QUANTIDADE ATENDIDA -->
+                    <field type="checkbox" class="col-lg-4 col-md-4 col-sm-4 col-xs-12" data-ng-model="controller.ttManualRequisition['tog-atualiza']" ng-change="controller.getDefaults('tog-atualiza')" ng-disabled="!controller.isFieldEnabled('tog-atualiza')" label="{{'l-updates-quantity-answered' | i18n}}">
+                    </field>
+
+                </fieldset>
+
+                <fieldset>
+                    <!-- CONTA CONTABIL INTEGRACAO -->
+                    <field type="input" ng-model="controller.ttManualRequisition['ct-codigo']" class="col-lg-4 col-md-4 col-sm-4 col-xs-12" canclean zoom zoom-id='cod_cta_ctbl' zoom-description='des_cta_ctbl' zoom-service="utb.cta-ctbl-integr.zoom" zoom-init="controller.integrationAccountInit" zoom-selected="controller.changeAccount()" zoom-refresh-delay=1000 ng-disabled="!controller.isFieldEnabled('ct-codigo')">
+                        <label>{{'l-account' | i18n}}</label>
+                    </field>
+
+                    <!-- CCUSTO -->
+                    <field type="input" ng-model="controller.ttManualRequisition['sc-codigo']" class="col-lg-4 col-md-4 col-sm-4 col-xs-12" canclean zoom zoom-id='cod_ccusto' zoom-description='des_tit_ctbl' zoom-service="utb.ccusto.zoom" zoom-init="controller.costCenterInit" zoom-refresh-delay=1000 ng-disabled="!controller.isFieldEnabled('sc-codigo')">
+                        <label>{{'l-cost-center' | i18n}}</label>
+                    </field>
+
+                    <!-- UNIDADE NEGOCIO -->
+                    <field type="input" class="col-lg-4 col-md-4 col-sm-4 col-xs-12" ng-disabled="!controller.isFieldEnabled('cod-unid-negoc')" data-ng-model="controller.ttManualRequisition['cod-unid-negoc']" zoom zoom-id="cod-unid-negoc" zoom-description="des-unid-negoc" zoom-service="mce.unid-negoc.zoom" canclean>
+                        <label>{{ 'l-business-unit' | i18n }}</label>
+                    </field>
+
+                </fieldset>
+
+                <!-- ORDEM PRODUCAOO-->
+                <fieldset>
+                    <legend>{{'l-productionOrder' | i18n}}</legend>
+
+                    <field type="input" class="col-lg-4 col-md-4 col-sm-4 col-xs-12" data-ng-model="controller.ttManualRequisition['item-pai']" ng-change="controller.getDefaults('item-pai')" ng-disabled="!controller.isFieldEnabled('item-pai')" label="{{'l-parent-item' | i18n}}" ng-model-options="{ debounce: 1000}">
+                    </field>
+
+                    <field type="input" class="col-lg-4 col-md-4 col-sm-6 col-xs-12" data-ng-model="controller.ttManualRequisition['cod-roteiro']" ng-change="controller.getDefaults('cod-reteiro')" ng-disabled="!controller.isFieldEnabled('cod-roteiro')" label="{{'l-routing' | i18n}}" ng-model-options="{ debounce: 1000}">
+                    </field>
+                    <field type="input" class="col-lg-4 col-md-4 col-sm-6 col-xs-12" data-ng-model="controller.ttManualRequisition['op-codigo']" ng-change="controller.getDefaults('op-codigo')" ng-disabled="!controller.isFieldEnabled('op-codigo')" label="{{'l-operation' | i18n}}" ng-model-options="{ debounce: 1000}">
+                    </field>
+
+                    <field type="textarea" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" data-ng-model="controller.ttManualRequisition['descricao-db']" rows="3">
+                        <label>{{ 'l-observation' | i18n }}</label>
+                    </field>
+                </fieldset>
+                <!-- FIM ORDEM PRODUÃ¯Â¿Â½Ã¯Â¿Â½O -->
+            </div>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

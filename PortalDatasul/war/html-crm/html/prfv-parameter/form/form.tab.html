@@ -1,0 +1,71 @@
+<totvs-page-child type="list">
+
+	<br/>
+
+	<totvs-page-content class="crm-tab">
+
+		<div class="row">
+
+			<div class="col-xs-10">
+				<h3 style="margin-top: 0px;">
+					{{ 'nav-prfv-forms' | i18n: []: 'dts/crm' }} ({{ controller.model.ttForma.length || 0 }})
+				</h3>
+			</div>
+
+			<div class="col-xs-2">
+				<div class="pull-right">
+					<button type="button"
+							class="btn btn-primary"
+							ng-click="controller.addEditForm(controller.model);">
+						<span class="glyphicon glyphicon-plus"></span>
+						<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<totvs-divider></totvs-divider>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-record-not-found' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.model.ttForma || controller.model.ttForma.length <= 0">
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addEditForm(controller.model);">
+				<span class="glyphicon glyphicon-plus"></span>
+				<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+			</button>
+		</totvs-page-alert>
+
+		<div class="crm-tab"
+			 ng-if="controller.model.ttForma.length">
+
+			<div class="row crm-tab-item header hidden-xs">
+				<strong>
+					<div class="col-sm-10">
+						{{ 'l-prfv-form' | i18n: []: 'dts/crm' }}
+					</div>
+				</strong>
+			</div>
+
+			<div class="row crm-tab-item"
+				 ng-repeat="prfvForm in controller.model.ttForma">
+
+				<div class="hidden-xs col-sm-10 overflow-ellipsis">
+					{{ prfvForm.ttPRFVForma.nom_form }}
+				</div>
+
+				<div class="col-xs-3 col-sm-2 text-right">
+					<a class="clickable"
+					   ng-click="controller.removeForm(controller.model.ttForma, prfvForm, $index);">
+						<span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+						<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+					</a>
+				</div>
+			</div>
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

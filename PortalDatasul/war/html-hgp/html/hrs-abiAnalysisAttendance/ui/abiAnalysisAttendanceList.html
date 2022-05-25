@@ -1,0 +1,372 @@
+<style> 
+    .list-item.tag-1 {
+        border-left: 5px solid #BDBDBD !important;
+    }
+
+    .tag-1:before {
+        background-color: #BDBDBD !important;
+    }
+
+    .list-item.tag-2 {
+        border-left: 5px solid #FF0000  !important; 
+    }
+
+    .tag-2:before {
+        background-color: #FF0000 !important;
+    }
+
+    .list-item.tag-3 {
+        border-left: 5px solid #F0CA38 !important;
+    }
+
+    .tag-3:before {
+        background-color: #F0CA38 !important;
+    }
+
+    .list-item.tag-4 {
+        border-left: 5px solid #4385F5 !important;
+    }
+
+    .tag-4:before {
+        background-color: #4385F5 !important;
+    }
+
+    .list-item.tag-5 {
+        border-left: 5px solid #6ace39 !important;
+    }
+
+    .tag-5:before {
+        background-color: #6ace39 !important;
+    }
+
+    .list-item.tag-6 {
+        border-left: 5px solid #7E3795 !important;
+    }
+
+    .tag-6:before {
+        background-color: #7E3795 !important;
+    }
+
+    .list-item.tag-7 {
+        border-left: 5px solid #00205f !important;
+    }
+
+    .tag-7:before {
+        background-color: #00205f !important;
+    }
+
+    .list-item.tag-8 {
+        border-left: 5px solid #0B6121 !important;
+    }
+
+    .tag-8:before {
+        background-color: #0B6121 !important;
+    }
+
+    .abi-status-1{
+        background: #BDBDBD !important;
+    }   
+
+    .abi-status-2{
+        background: #FF0000 !important;
+    } 
+
+    .abi-status-3{
+        background: #F0CA38 !important;
+    }   
+
+    .abi-status-4{
+        background: #4385F5 !important;
+    }  
+
+    .abi-status-5{
+        background: #6ace39 !important;
+    }  
+
+    .abi-status-6{
+        background: #7E3795 !important;
+    }  
+
+    .abi-status-7{
+        background: #00205f !important;
+    }  
+
+    .abi-status-8{
+        background: #0B6121 !important;
+    }
+
+    .abi-status-geral{
+        border-radius: 3.01px !important;
+        color: #fff !important;
+        display: inline-block !important;
+        font-size: 14px !important;
+        font-weight: normal !important;
+        line-height: 1 !important;
+        padding: 2px 5px !important;
+        margin: 0 5px 0 0 !important;
+        text-align: left !important;
+        text-decoration: none !important;
+    }
+
+    .abi-status-component{
+        background: #BDBDBD !important;
+    } 
+
+    .abi-status-geral:after{
+        font-size: 10px !important;
+    }
+
+</style>
+
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <link type="text/css" rel="stylesheet" href="/dts/hgp/html/assets/css/hrs.css"/>
+        
+        <totvs-page-breadcrumb id="breadcrumb">
+            <breadcrumb link="#/dts/hgp/hrs-ressusAbiImportation">Central de Movimentação RESSUS</breadcrumb>
+            
+            <breadcrumb>ABI: {{controller.codAbi}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        
+        <totvs-page-header>
+            <totvs-page-header-title title="ABI: {{controller.codAbi}} {{controller.getAbiSituatuionLabel()}}"
+                                     total="{{controller.listOfAbiAnalysisAttendanceCount}} atendimentos">
+        </totvs-page-header-title>
+            
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="1">
+                    <action ng-click="controller.generateCSV(controller.listOfAbiAnalysisAttendance)"
+                            icon="glyphicon glyphicon-save">Gerar CSV
+                    </action>
+                    
+                    <action ng-click="controller.generateImpugApealBatch(controller.listOfAbiAnalysisAttendance)">
+                        Gerar Impugnações/Recursos
+                    </action>                    
+                    <action ng-click="controller.generateRessusBondDeclarationBatch()">
+                        Gerar Declaração
+                    </action>                  
+
+                    <action ng-click="controller.updateAttendanceGru()"
+                            icon="glyphicon glyphicon-inbox">Informar GRU
+                    </action>
+
+                    <action ng-click="controller.changeSubStatus()">
+                        Alterar Status da Análise
+                    </action>    
+
+                </totvs-page-header-operation-action>
+
+                <totvs-page-header-operation-filter placeholder="Protocolo de Atendimento"
+                                                    ng-submit="controller.search()"
+                                                    ng-model="controller.searchInputText"
+                                                    advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+
+             <totvs-page-tags>
+                <tag class="tag-{{$index + 1}}" ng-repeat="item in ATTENDANCE_STATUS_ENUM.ENUMERATION_VALUES">{{item.label}}</tag>
+            </totvs-page-tags>
+
+            <totvs-page-disclaimers
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    
+    <totvs-page-content>
+        <totvs-page-alert ng-if="controller.listOfAbiAnalysisAttendance.length <= 0"
+                          type="info"
+                          message="Nenhum registro encontrado">
+        </totvs-page-alert>
+
+        <totvs-list-item ng-repeat="abiAnalysisAttendance in controller.listOfAbiAnalysisAttendance"
+                         class="tag-{{abiAnalysisAttendance.idiStatus}}"                         
+                         selected="abiAnalysisAttendance">
+            <totvs-list-item-header>
+                <totvs-list-item-title class="col-xl-2 col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                    <span>
+                        <a href="#/dts/hgp/hrs-abiAnalysisAttendance/maintenance/{{abiAnalysisAttendance.cddRessusAbiAtendim}}/{{controller.codAbi}}/{{controller.codProcesso.replace('/','.')}}"> 
+                            <b>{{abiAnalysisAttendance.codTipAtendim}}:</b> {{abiAnalysisAttendance.cddAtendim}}
+                        </a>
+                    </span>
+                </totvs-list-item-title>
+
+                <totvs-list-item-info title=""
+                                      class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+
+                    <totvs-editable class="abi-status-geral abi-status-component pull-right" 
+                                    value="{{controller.getSubSituatuionLabel(abiAnalysisAttendance)}}"
+                                    on-complete="controller.onAbiAnalysisSubStatusComplete(abiAnalysisAttendance)"
+                                    ng-if="controller.getSubStatusMaintenancePermission(abiAnalysisAttendance) && !abiSituation">
+                        <field type="select"
+                               class="col-md-12"
+                               ng-model="abiAnalysisAttendance.idiSubStatus"
+                               label="Status da Análise">
+                            <include>
+                                <ui-select-match placeholder="Selecione a Situação">{{$select.selected.nmSituacao}}</ui-select-match>
+
+                                <ui-select-choices repeat="abiSituation.idSituacao as abiSituation in controller.abiSituation | filter: $select.search track by $index">
+                                    <span data-ng-bind-html="abiSituation.nmSituacao | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                    </totvs-editable>
+                </totvs-list-item-info>
+
+                <totvs-list-item-action limit-primary-action="4" class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <action  ng-click="controller.getRessusAbiAtendimData(abiAnalysisAttendance)"
+                             link="#/dts/hgp/hrs-abiAnalysisAttendance/maintenance/{{abiAnalysisAttendance.cddRessusAbiAtendim}}/{{controller.codAbi}}/{{controller.codProcesso.replace('/','.')}}"
+                             icon="glyphicon glyphicon-pencil">
+                             {{abiAnalysisAttendance.inAcao}}
+                    </action>
+
+                    <action ng-click="controller.updateAttendanceGru(abiAnalysisAttendance)"
+                            icon="glyphicon glyphicon-inbox"
+                            ng-if="abiAnalysisAttendance.idiStatus === ATTENDANCE_STATUS_ENUM.AGUARDANDO_GRU || 
+                                   abiAnalysisAttendance.idiStatus === ATTENDANCE_STATUS_ENUM.AGUARDANDO_PAGAMENTO">
+                            Informar GRU
+                    </action> 
+
+                    <action ng-click="controller.openImpugnationMotive(abiAnalysisAttendance)"
+                            icon="glyphicon glyphicon-exclamation-sign"
+                            ng-if="abiAnalysisAttendance.idiStatus === ATTENDANCE_STATUS_ENUM.EM_ANALISE|| 
+                                   abiAnalysisAttendance.idiStatus === ATTENDANCE_STATUS_ENUM.ANALISE_CONCLUIDA">
+                            Análise de Motivos
+                    </action>
+
+                    <action ng-click="controller.openResultImpugRecurso(abiAnalysisAttendance, controller.getPermissionSituationSecurity(abiAnalysisAttendance.idSituacao))"
+                            icon="glyphicon glyphicon-exclamation-sign"
+                            ng-if="controller.getImpugResultMaintenancePermission(abiAnalysisAttendance)">
+                            Informar Resultado
+                    </action>
+
+                    <action ng-click="controller.openDeclaracoes(abiAnalysisAttendance, controller.getPermissionSituationSecurity(abiAnalysisAttendance.idSituacao))"
+                            icon="glyphicon glyphicon-pencil"
+                            ng-if="controller.getActionMaintenancePermission(abiAnalysisAttendance)">
+                            Declaração de atendimento
+                    </action>
+
+                    <action ng-click="controller.generateImpugApeal(abiAnalysisAttendance)"
+                            icon="glyphicon glyphicon-pencil"
+                            ng-if="controller.getGenerateImpugApealPermission(abiAnalysisAttendance)">
+                            {{controller.getLabelGenerateImpugApeal(abiAnalysisAttendance)}}
+                    </action>
+
+                    <action ng-click="controller.openAttendanceErrors(abiAnalysisAttendance.cddRessusAbiAtendim)"
+                            icon="glyphicon glyphicon-alert">
+                            Erros do Atendimento
+                    </action>
+
+                    <action ng-click="controller.attendanceReprocess(abiAnalysisAttendance)"
+                            icon="glyphicon glyphicon-alert"
+                            ng-if="(abiAnalysisAttendance.idiStatus === ABI_STATUS_ENUM.CARGA_COM_ERRO
+                                    || abiAnalysisAttendance.idiStatus === ABI_STATUS_ENUM.IMPORTACAO_COM_ERRO) 
+                                    && abiAnalysisAttendance.inAcao == 'Editar'">
+                            Reprocessar
+                    </action>
+
+                    <action ng-click="controller.openAttendanceHistoric(abiAnalysisAttendance)"
+                            icon="glyphicon glyphicon-alert">
+                            Histórico
+                    </action>
+
+                    <action link="#/dts/hgp/hrc-document/detail/{{abiAnalysisAttendance.documentKey}}"
+                            ng-if="abiAnalysisAttendance.documentKey !== ''">
+                            Visualizar Documento no RC
+                    </action> 
+                </totvs-list-item-action>             
+            </totvs-list-item-header>
+
+            <totvs-list-item-content>
+                <totvs-row ng-if="abiAnalysisAttendance.rotuloProcedimentoPrincipal !== ''">
+                    <totvs-list-item-info title="Procedimento Principal"
+                                          value-break="false"
+                                          class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <span>{{abiAnalysisAttendance.rotuloProcedimentoPrincipal}} </span>
+                    </totvs-list-item-info> 
+
+                    <totvs-list-item-info title="Motivos de Impugnação"  
+                                          value-break="false"
+                                          value="{{abiAnalysisAttendance.desMotivoImpugnacao != '' ? abiAnalysisAttendance.desMotivoImpugnacao : 'Sem Motivos'}}" 
+                                          class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    </totvs-list-item-info>
+
+                    <totvs-list-item-info title="GRU"  
+                                          value-break="false"
+                                          value="{{abiAnalysisAttendance.cddGru}}"
+                                          ng-if="abiAnalysisAttendance.cddGru > 0"
+                                          class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    </totvs-list-item-info>
+                </totvs-row>
+
+                <totvs-row>
+
+                    <totvs-list-item-info  title="Beneficiário" 
+                                           value-break="false"
+                                           class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                        <a  ng-if="abiAnalysisAttendance.idPessoa == 0"
+                            href="#/menu-html/program-html/hvp.personInformation/#/F/{{abiAnalysisAttendance.idPessoa}}">
+                            {{abiAnalysisAttendance.rotuloBeneficiario}}
+                        </a>
+                        <a  ng-if="abiAnalysisAttendance.idPessoa != 0"
+                            href="#/menu-html/program-html/hvp.personInformation/#/I/{{abiAnalysisAttendance.rotuloBeneficiario.substring(0,4)}}{{abiAnalysisAttendance.rotuloBeneficiario.substring(5,19)}}">
+                            {{abiAnalysisAttendance.rotuloBeneficiario}}
+                        </a>
+                    </totvs-list-item-info>
+
+                    <totvs-list-item-info  title="Prestador"   
+                                           value-break="false"      
+                                           value="{{abiAnalysisAttendance.rotuloPrestador}}" 
+                                           class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    </totvs-list-item-info> 
+
+                    <totvs-list-item-info  title="Localidade"   
+                                            value-break="false"       
+                                           value="{{abiAnalysisAttendance.rotuloEndereco}}" 
+                                           class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    </totvs-list-item-info> 
+
+                </totvs-row>
+                <totvs-row>
+
+                    <totvs-list-item-info  title="Data do Atendimento" 
+                                           value="{{abiAnalysisAttendance.datInicAtendim | date : 'dd/MM/yyyy'}} a {{abiAnalysisAttendance.datFimAtendim | date : 'dd/MM/yyyy'}}"     
+                                           class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    </totvs-list-item-info> 
+
+                    <totvs-list-item-info  title="Competência"
+                                           value="{{abiAnalysisAttendance.codComptcia}}"
+                                           class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    </totvs-list-item-info> 
+
+                    <totvs-list-item-info  title="Caráter de Atendimento" 
+                                           value="{{abiAnalysisAttendance.idiCaraterAtendim == '1' ? 'Eletivo' : 'Urgência/Emergência'}}"     
+                                           class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs- ">
+                    </totvs-list-item-info> 
+                </totvs-row>
+                <totvs-row>
+
+                    <totvs-list-item-info  title="Valor Cobrado" 
+                                           value="{{abiAnalysisAttendance.valTotal | currency : 'R$'}}"     
+                                           class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    </totvs-list-item-info>
+
+                    <totvs-list-item-info  title="Valor Reconhecido" 
+                                           value="{{abiAnalysisAttendance.valDeferido | currency : 'R$'}}"     
+                                           class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    </totvs-list-item-info>
+
+                    <totvs-list-item-info  title="Valor Glosado" 
+                                           value="{{abiAnalysisAttendance.valGlosado | currency : 'R$'}}"     
+                                           class="col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                    </totvs-list-item-info> 
+                </totvs-row>
+            </totvs-list-item-content>
+        </totvs-list-item>
+
+        <totvs-list-pagination ng-if="controller.listOfAbiAnalysisAttendance.length < controller.listOfAbiAnalysisAttendanceCount && controller.listOfAbiAnalysisAttendance.length"
+                               ng-click="controller.search(true);">
+        </totvs-list-pagination>
+    </totvs-page-content>
+</totvs-page>

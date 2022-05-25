@@ -1,0 +1,23 @@
+<totvs-modal-header>{{ 'l-input-new-cust-order-number' | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+    <div class="row">
+        <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+            <field  type="input"
+                    ng-model="controller.nrPedidoClienteNovo"                    
+                    ng-maxlength="12"
+                    ng-pattern="/^[a-zA-Z0-9/]*$/"
+                    canclean
+                    required                    
+                    ng-required="true">
+                <label>{{ "nr-order" | i18n }} </label>
+                <validator key="required">{{"required-nrorder"| i18n}}</validator>
+                <validator key="maxlength">{{ "maxlength-nrorder" | i18n }}</validator>
+                <validator key="pattern">{{ 'l-special-character' | i18n }}</validator>
+            </field>
+        </div>         
+    </div>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button class="btn btn-primary" ng-click="controller.confirm()">{{ 'l-copy' | i18n }}</button>    
+    <button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'btn-cancel' | i18n }}</button>
+</totvs-modal-footer>

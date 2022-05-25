@@ -1,0 +1,171 @@
+<totvs-modal-header>
+	<span ng-if="controller.isContactChange !== true">
+		{{ controller.model.nom_razao_social }}
+		<span ng-if="controller.isAccount">
+			{{ (controller.model.cod_pessoa_erp ? '(' + controller.model.cod_pessoa_erp + ')' : '') }}
+		</span>
+	</span>
+	<span ng-if="controller.isContactChange === true">
+		{{ 'btn-update-contact' | i18n: []: 'dts/crm' }}
+	</span>
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-list-item-content ng-if="controller.isContactChange !== true">
+
+		<% if ((!data["l-type-bond"] || data["l-type-bond"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="controller.model.ttBond"
+			class="col-xs-12"
+			title="{{ 'l-type-bond' | i18n: []: 'dts/crm' }}">
+			{{ controller.model.nom_tip_vinc }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-cpf"] || data["l-cpf"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="controller.model.nom_cpf.length > 0 && controller.model.idi_tip_pessoa === 1"
+			class="col-xs-12"
+			title="{{ 'l-cpf' | i18n: []: 'dts/crm' }}">
+			{{ controller.model.nom_cpf | mask : '999.999.999-99' }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-cnpj"] || data["l-cnpj"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="controller.model.nom_cnpj.length > 0 && controller.model.idi_tip_pessoa === 1"
+			class="col-xs-12"
+			title="{{ 'l-cnpj' | i18n: []: 'dts/crm' }}">
+			{{ controller.model.nom_cnpj | mask : '99.999.999/9999-99' }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-email"] || data["l-email"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="controller.model.nom_email_1.length > 0"
+			class="col-xs-12"
+			title="{{'l-email' | i18n: []: 'dts/crm'}}">
+			<a href="mailto:{{controller.model.nom_email_1}}">
+				{{ controller.model.nom_email_1 }}
+			</a>
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-email-2"] || data["l-email-2"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="controller.model.nom_email_2.length > 0"
+			class="col-xs-12"
+			title="{{'l-email-2' | i18n: []: 'dts/crm'}}">
+			<a href="mailto:{{controller.model.nom_email_2}}">
+				{{ controller.model.nom_email_2 }}
+			</a>
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-mailing-address"] || data["l-mailing-address"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="controller.model.ttEnderecoCorrespondencia"
+			class="col-xs-12"
+			title="{{'l-mailing-address' | i18n: []: 'dts/crm'}}">
+			{{ controller.model.ttEnderecoCorrespondencia.nom_lograd_ender }},
+			{{ controller.model.ttEnderecoCorrespondencia.nom_bairro }}
+			- {{ controller.model.ttEnderecoCorrespondencia.nom_cidade }},
+			{{ controller.model.ttEnderecoCorrespondencia.nom_unid_federac }}
+			- {{ controller.model.ttEnderecoCorrespondencia.nom_pais }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-phones"] || data["l-phones"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="controller.model.ttTelefone"
+			ng-repeat="phone in controller.model.ttTelefone"
+			class="col-xs-12"
+			title="{{ phone.nom_tip_telef }}">
+			{{ phone.nom_telefone }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-home-page"] || data["l-home-page"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="controller.model.nom_home_page > 0"
+			class="col-xs-12"
+			title="{{'l-home-page' | i18n: []: 'dts/crm'}}">
+			<a target="_blank"
+			   href="{{ controller.model.nom_home_page }}">
+				{{ controller.model.nom_home_page }}
+			</a>
+		</totvs-list-item-info>
+		<% } %>
+
+	</totvs-list-item-content>
+
+	<fieldset class="row"
+			  ng-if="controller.isContactChange === true">
+
+		<field type="select"
+			   class="col-sm-12 col-md-12 col-lg-12"
+			   ng-model="controller.newContact"
+			   canclean="undefined">
+			<label>{{ 'l-contact' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-contact' | i18n: []: 'dts/crm' }}">
+					<span>
+						<span ng-class="{'glyphicon glyphicon-lock': !$select.selected.log_acesso}"></span>
+						&nbsp;{{ $select.selected.nom_razao_social }}
+					</span>
+				</ui-select-match>
+				<ui-select-choices repeat="contact in controller.contacts | filter: $select.search track by $index">
+					<span ng-if="!contact.log_acesso" class="glyphicon glyphicon-lock">&nbsp;</span>
+					<span ng-bind-html="contact.nom_razao_social | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+
+	<span ng-if="controller.isContactChange !== true">
+
+		<% if ((!data["btn-change"] || data["btn-change"].log_visivel === true)) { %>
+		<button class="btn btn-default"
+				ng-click="controller.openChangeContact()"
+				ng-if="controller.isAccount !== true && controller.canChangeContact === true">
+			{{ 'btn-change' | i18n: []: 'dts/crm' }}
+		</button>
+		<% } %>
+
+		<% if ((!data["btn-detail"] || data["btn-detail"].log_visivel === true)) { %>
+		<a role="button"
+		   class="btn btn-default"
+		   href="#/dts/crm/{{ controller.isAccount ? 'account' : 'contact' }}/detail/{{controller.model.num_id}}"
+		   ng-click="controller.close()"
+		   ng-if="controller.model.log_acesso">
+			{{ 'btn-detail' | i18n: []: 'dts/crm' }}
+		</a>
+		<% } %>
+
+		<button class="btn btn-primary"
+				ng-click="controller.close()">
+			{{ 'btn-close' | i18n: []: 'dts/crm' }}
+		</button>
+
+	</span>
+
+	<span ng-if="controller.isContactChange === true">
+
+		<button class="btn btn-primary"
+				ng-click="controller.applyChangeContact()">
+			{{ 'btn-apply' | i18n: []: 'dts/crm' }}
+		</button>
+
+		<button class="btn btn-default"
+				ng-click="controller.close()">
+			{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+		</button>
+
+	</span>
+</totvs-modal-footer>

@@ -1,0 +1,64 @@
+<div ng-controller="salesorder.dashboard.scheduleSummary.Controller as scheduleSummaryController">
+	<totvs-widget>
+		<totvs-widget-header title="{{ 'l-schedule-summary' | i18n : [] : 'dts/mpd/'}}">
+		</totvs-widget-header>
+		<totvs-widget-body>
+			<div style="height:300px;">
+				<div style="height: 305px">
+					<div class="btn-group">
+						<label class="btn btn-default" ng-model="scheduleSummaryController.selected" btn-radio="1">{{ 'l-schedule-late' | i18n : [] : 'dts/mpd/'}}</label>
+						<label class="btn btn-default" ng-model="scheduleSummaryController.selected" btn-radio="2">{{ 'l-schedule-today' | i18n : [] : 'dts/mpd/'}}</label>
+						<label class="btn btn-default" ng-model="scheduleSummaryController.selected" btn-radio="3">{{ 'l-schedule-next' | i18n : [] : 'dts/mpd/'}}</label>
+					</div>
+					<div ng-show="scheduleSummaryController.selected == 1">
+						<h3>{{ 'l-visit-late' | i18n : [] : 'dts/mpd/'}}</h3>
+						<table class="table table-center">
+							<tr ng-repeat="schedule in scheduleSummaryController.lateSchedules">
+								<td><a href="#/dts/mpd/customer/{{schedule['cdn-emitente']}}">{{schedule['nom-emitente']}}</a></td>
+								<td>
+									<button type="button" class="btn btn-default" ng-click="scheduleSummaryController.reschedule(schedule)">{{ 'btn-update' | i18n : [] : 'dts/mpd/' }}</button>
+									<button type="button" class="btn btn-default" ng-click="scheduleSummaryController.cancelSchedule(schedule)">{{ 'btn-cancel' | i18n : [] : 'dts/mpd/' }}</button>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div ng-show="scheduleSummaryController.selected == 2">
+						<h3>{{ 'l-visit-today' | i18n : [] : 'dts/mpd/'}}</h3>
+						<table class="table table-center">
+							<tr ng-repeat="schedule in scheduleSummaryController.todaySchedules">
+								<td><a href="#/dts/mpd/customer/{{schedule['cdn-emitente']}}">{{schedule['nom-emitente']}}</a></td>
+								<td>{{schedule.hora}}</td>
+								<td>
+									<button type="button" class="btn btn-default" ng-click="scheduleSummaryController.reschedule(schedule)">{{ 'btn-update' | i18n : [] : 'dts/mpd/' }}</button>
+									<button type="button" class="btn btn-default" ng-click="scheduleSummaryController.cancelSchedule(schedule)">{{ 'btn-cancel' | i18n : [] : 'dts/mpd/' }}</button>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div  ng-show="scheduleSummaryController.selected == 3">
+						<h3>{{ 'l-visit-next' | i18n : [] : 'dts/mpd/'}}</h3>
+						<table class="table table-center">
+							<tr ng-repeat="schedule in scheduleSummaryController.nextSchedules">
+								<td><a href="#/dts/mpd/customer/{{schedule['cdn-emitente']}}">{{schedule['nom-emitente']}}</a></td>
+								<td>{{schedule['dat-agenda'] | date : ('l-date-format' | i18n) : 'UTC'}}<br>
+								{{schedule.hora}}</td>
+								<td>
+									<button type="button" class="btn btn-default" ng-click="scheduleSummaryController.reschedule(schedule)">{{ 'btn-update' | i18n : [] : 'dts/mpd/' }}</button>
+									<button type="button" class="btn btn-default" ng-click="scheduleSummaryController.cancelSchedule(schedule)">{{ 'btn-cancel' | i18n : [] : 'dts/mpd/' }}</button>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</totvs-widget-body>
+
+		<totvs-widget-footer>
+			<totvs-widget-footer-body>
+			</totvs-widget-footer-body>
+			<totvs-widget-footer-actions>
+				<action link="#/dts/mpd/schedule">{{ 'l-detail' | i18n : [] : 'dts/mpd/'}}</action>
+			</totvs-widget-footer-actions>
+		</totvs-widget-footer>
+	</totvs-widget>
+</div>

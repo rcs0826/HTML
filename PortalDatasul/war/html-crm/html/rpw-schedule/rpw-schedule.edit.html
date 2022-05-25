@@ -1,0 +1,106 @@
+<totvs-modal-header>
+	{{ 'l-configure-execution' | i18n: []: 'dts/crm' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<style scoped>
+		label.field-label-crm {
+			box-sizing:border-box;
+			color:rgb(128, 128, 128);
+			cursor:default;
+			display:inline-block;
+			font-family:Arial;
+			font-size:12px;
+			font-weight:200;
+			height:17px;
+			line-height:17.1429px;
+			margin-bottom:5px;
+			max-width:100%;
+			width:86px;
+		}
+
+		input.checkboxalign {
+			margin-top: 1px !important;
+		}
+	</style>
+
+	<fieldset class="row">
+		<field
+			type="date"
+			class="col-xs-12 col-sm-6"
+			canclean="undefined"
+			start-date="controller.model.executeDate"
+			ng-required="true"
+			ng-model="controller.model.executeDate"
+		>
+			<label>{{ 'l-date' | i18n: []: 'dts/crm' }}</label>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field
+			type="time"
+			class="col-xs-12 col-sm-6 time-range-from"
+			ng-required="true"
+			ng-model="controller.model.initialHour"
+		>
+			<label>{{ 'l-time' | i18n: []: 'dts/crm' }}</label>
+		</field>
+	</fieldset>
+
+	<fieldset class="row">
+		<field
+			type="select"
+			class="col-xs-12 col-md-6 col-sm-6"
+			ng-required="true"
+			ng-model="controller.model.RPWServer"
+			ng-animate="'animate-if'"
+			canclean="undefined"
+			ng-change="controller.onChangeRPWServer()"
+			placeholder="{{ 'l-rpw-server' | i18n: []: 'dts/crm' }}"
+		>
+			<label>{{ 'l-rpw-server' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-rpw-server' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.des_servid_exec }}
+				</ui-select-match>
+
+				<ui-select-choices
+					repeat="item in controller.serverList track by $index"
+					refresh="controller.getRPWServers($select.search)"
+					refresh-delay="500"
+				>
+					<span ng-bind-html="item.des_servid_exec | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<totvs-field
+			class="col-xs-12 col-sm-6"
+			totvs-checkbox
+			ng-model="controller.model.isAutomaticCalendar"
+			label="{{ 'l-automatic-calendar' | i18n: []: 'dts/crm' }}"
+			ng-change="controller.onChangeAutomaticShedulle()"
+			t-bsswitch
+			ng-disabled="controller.isDisableSchedule===true"
+			ng-if="controller.isVisibleSchedule===true"
+		>
+		</totvs-field>
+	</fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">
+		{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+	</button>
+	<button
+		class="btn btn-default"
+		ng-if="controller.isVisibleSchedule===true"
+		ng-click="controller.openProgressCreateCalendar()"
+	>
+		{{ 'btn-agenda' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-primary" ng-click="controller.save()">
+		{{ 'btn-schedule' | i18n: []: 'dts/crm' }}
+	</button>
+</totvs-modal-footer>

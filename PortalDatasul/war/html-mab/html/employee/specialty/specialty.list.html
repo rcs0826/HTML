@@ -1,0 +1,42 @@
+<br/>
+<div>
+	<div>
+		<button class="btn btn-primary"
+				ng-click="specialtyListCtrl.openEdit()">
+			<span class="glyphicon glyphicon-edit"></span>
+			{{ 'l-configure' | i18n }}
+		</button>
+	</div>
+	
+	<totvs-divider style="margin-top: 10px; margin-bottom: 10px;">
+	</totvs-divider>
+</div>		
+<totvs-page-content>
+							                                  		
+	<totvs-grid
+			grid="specialtyListCtrl.myGrid"
+			grid-data="specialtyListCtrl.especialidades" 
+	        grid-height="270" 
+	        navigatable="true" 
+	        selectable="row"
+	        scrollable="true"
+        	sortable="true"
+        	auto-resize-column="false">
+        <totvs-grid-column style="text-align: center" field="principal" width="70">{{ 'l-main' | i18n }}
+			<template>
+				<a ng-if="dataItem.principal === true"
+				   class="glyphicon glyphicon-ok btn-ok"></a>
+			</template>
+		</totvs-grid-column>	        
+		<totvs-grid-column field="tp-especial" width="250">{{ 'l-specialty' | i18n }}</totvs-grid-column>
+		<totvs-grid-column field="descricao" width="664">{{ 'l-description' | i18n }}</totvs-grid-column>
+	</totvs-grid>
+</totvs-page-content>
+
+<style>
+		.btn-ok { color: green !important; }
+	
+		.btn-errors { color: red !important; }
+		
+</style>
+	

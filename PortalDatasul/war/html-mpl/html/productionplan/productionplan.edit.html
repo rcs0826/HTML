@@ -1,0 +1,558 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>  
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mpl/productionplan">{{'l-production-plan' | i18n}}</breadcrumb>
+            <breadcrumb>{{ controller.breadcrumbTitle }}</breadcrumb>
+        </totvs-page-breadcrumb>   
+        <totvs-page-header>
+            <totvs-page-header-title title="{{controller.headerTitle}}"></totvs-page-header-title>       
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new="true">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>   
+    </totvs-page-navbar>
+    <totvs-page-content>     
+        <totvs-page-form>
+            <fieldset>  
+            	<div class="row col-lg-12 col-md-12 col-sm-12 col-xs-16">             
+	                <field type="input"
+	                	   name-id="planCode"
+	                       ng-disabled="controller.idDisabled"
+	                       class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+	                       ng-model="controller.model.planCode"
+	                       maxlength="3"
+	                       ng-change="controller.changePlanCode()"
+	                       required
+	                       focus >
+	                    <label>{{ 'l-production-plan' | i18n }}</label>
+	                </field>
+	                <field type="input"
+	                	   name-id="planDescription"
+	                       class="col-lg-6 col-md-6 col-sm-6 col-xs-10"
+	                       ng-model="controller.model.planDescription"
+	                       maxlength="30"
+	                       required>
+	                    <label>{{ 'l-description' | i18n }}</label>
+	                </field>    
+	                <field type="combo"
+	                       class="col-lg-2 col-md-2 col-sm-2 col-xs-6"
+	                       ng-model="controller.model.planType"
+	                       ng-options="item.codigo as item.descricao for item in controller.comboTypePlan"
+	                       ng-change="controller.changePlanType(controller.model.planType);"
+	                       ng-init="controller.model.planType = '1'"
+	                       label="{{ 'l-type-plan' | i18n }}"	                       
+	                       required 
+	                       >
+	                </field> 	
+                </div>
+                <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-16">
+	           		<field 	type="select"
+						ng-model="controller.model.periodType"
+						class="col-lg-6 col-md-6 col-sm-6 col-xs-10"
+						ng-change="controller.changePeriodType()"
+						canclean>
+						<label>{{ 'l-type-period' | i18n }}</label>
+						<zoom zoom-service="mpl.tipo-per.zoom"
+						ng-change="controller.changePeriodType()"></zoom>								  
+						<include>
+							<ui-select-match placeholder="{{ 'l-initial-period' | i18n }}" >
+								{{$select.selected['cd-tipo'] + " - " + $select.selected['descricao'] }}
+							</ui-select-match>
+							<ui-select-choices 	repeat="periodType in controller.serviceZoomTipoPer.periodTypeList track by $index"
+												refresh="controller.serviceZoomTipoPer.getPeriodType($select.search, undefined )"
+												refresh-delay="500">
+								<span ng-bind-html="periodType['cd-tipo'] + ' - ' + periodType['descricao'] | highlight: $select.search"></span>
+							</ui-select-choices>
+						</include>
+           			</field> 
+					<field type="number"
+	                       class="col-lg-2 col-md-2 col-sm-2 col-xs-6"
+	                       ng-model="controller.model.nrDay"
+	                       ng-disabled="true"
+	                       maxlength="40"
+	                       required>
+	                    <label>{{ 'l-days' | i18n }}</label>
+	                </field>
+					<field type="checkbox"
+	                       class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+	                       ng-model="controller.model.grossRequirements"
+	                       required >
+	                    <label>{{ 'l-gross-need' | i18n }}</label>
+	                </field>
+                </div>
+                <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-16">
+					<field 	type="select"
+							ng-model="controller.model.initialPeriodString"
+							class="col-lg-3 col-md-8 col-sm-8 col-xs-12"
+							ng-change="controller.changeIniPeriodString()"
+							canclean>
+							<label>{{ 'l-initial-period' | i18n }}</label>
+							<zoom zoom-service="mpl.periodo.zoom"
+							ng-change="controller.changeIniPeriodString()"></zoom>								  
+							<include>
+								<ui-select-match placeholder="{{ 'l-initial-period' | i18n }}" >
+									{{$select.selected['nr-periodo'] + "/" + $select.selected['ano'] }}
+								</ui-select-match>
+								<ui-select-choices 	repeat="iniPeriod in controller.serviceZoomPeriodo.inicialPeriodList track by $index"
+													refresh="controller.serviceZoomPeriodo.getInitialPeriod($select.search, {filters : { 'cd-tipo': controller.model.periodType['cd-tipo']}} )"
+													refresh-delay="500">
+									<span ng-bind-html="iniPeriod['nr-periodo'] + '/' + iniPeriod['ano'] | highlight: $select.search"></span>
+								</ui-select-choices>
+							</include>
+	           		</field> 
+					<field type="date"
+	                       class="col-lg-3 col-md-8 col-sm-8 col-xs-12"
+	                       ng-model="controller.model.initialDateIni"
+	                       data-ng-change="controller.changeInitialDateIni()"
+	                       required >
+	                    <label>{{ 'l-initial-date' | i18n }}</label>
+	                </field>
+	                <field type="date"
+	                       class="col-lg-3 col-md-8 col-sm-8 col-xs-12"
+	                       ng-model="controller.model.finalDateIni"
+	                       ng-disabled="true"
+	                       required >
+	                    <label>{{ 'l-final-date' | i18n }}</label>
+	                </field>   
+                </div>  
+                <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-16">
+		            <field 	type="select"
+							ng-model="controller.model.finalPeriodString"
+							class="col-lg-3 col-md-8 col-sm-8 col-xs-12"
+							ng-change="controller.changeFinalPeriodString()"
+							canclean>
+							<label>{{ 'l-end-period' | i18n }}</label>
+							<zoom zoom-service="mpl.periodo.zoom"
+							ng-change="controller.changeFinalPeriodString()"></zoom>								  
+							<include>
+								<ui-select-match placeholder="{{ 'l-end-period' | i18n }}" >
+									{{$select.selected['nr-periodo'] + "/" + $select.selected['ano'] }}
+								</ui-select-match>
+								<ui-select-choices 	repeat="fimPeriod in controller.serviceZoomPeriodo.finalPeriodList track by $index"
+													refresh="controller.serviceZoomPeriodo.getFinalPeriod($select.search, {filters : { 'cd-tipo': controller.model.periodType['cd-tipo'] }} )"
+													refresh-delay="500">
+									<span ng-bind-html="fimPeriod['nr-periodo'] + '/' + fimPeriod['ano'] | highlight: $select.search"></span>
+								</ui-select-choices>
+							</include>
+	           		</field>    
+					<field type="date"
+		                      class="col-lg-3 col-md-8 col-sm-8 col-xs-12"
+		                      ng-model="controller.model.initialDateFim"
+		                      data-ng-change="controller.changeFinalDateIni()"
+		                      required>
+		                   <label>{{ 'l-initial-date' | i18n }}</label>
+	               	</field>
+					<field type="date"
+		                      class="col-lg-3 col-md-8 col-sm-8 col-xs-12"
+		                      ng-model="controller.model.finalDateFim"
+		                      ng-disabled="true"
+		                      required>
+		                   <label>{{ 'l-final-date' | i18n }}</label>
+	               </field>             
+                </div>  
+                <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-16">
+	               	<div>
+	              		<accordion close-others="controller.closeOther">
+	              			<accordion-group is-open="status.isFirstOpen">
+								<accordion-heading>
+									{{'l-parameters' | i18n }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.isFirstOpen, 'glyphicon-chevron-right': !status.isFirstOpen}"></i>
+        						</accordion-heading>
+								<div class="row">
+								    <field type="input"
+										   class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+										   ng-model="controller.model.fixedHorizon"
+										   maxlength="3"
+										   ng-change="controller.changeFixedHorizon()"
+										   required>
+										<label>{{ 'l-fixed-horizon' | i18n }}</label>
+	               					</field> 
+									<field type="checkbox"
+										   class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+										   ng-model="controller.model.considersConfirmQuantity"
+										   ng-disabled="controller.isConsidersConfirmQuantity"
+										   required>
+										<label>{{ 'l-considers-qty-set' | i18n }}</label>
+	               					</field> 
+	               				</div>
+	               				<div class="row">
+								    <field type="input"
+										   class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+										   ng-model="controller.model.safetyDaysNumber"
+										   maxlength="4"
+										   ng-change="controller.changeSafetyDaysNumber()"
+										   required>
+										<label>{{ 'l-safety-horizon' | i18n }}</label>
+	               					</field> 
+									<field type="checkbox"
+										   class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+										   ng-model="controller.model.planStatus"
+										   ng-disabled="controller.isPlanStatus"
+										   required>
+										<label>{{ 'l-active-plan' | i18n }}</label>
+	               					</field> 
+	               				</div>
+	               				<div class="row">
+								    <field type="combo"
+					                      class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+					                      ng-model="controller.model.planInHorizon"
+                    	                  ng-options="item.codigo as item.descricao for item in controller.comboPlanHorizFix"
+	                       				  ng-init="controller.model.planInHorizon = '1'"
+							 			  ng-change="controller.changePlanInHorizon(controller.model.planInHorizon)"
+					                      label="{{ 'l-plans-horizon' | i18n }}"
+					                      required>
+									</field> 	       
+								    <field type="checkbox"
+										   class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+										   ng-model="controller.model.isMultiSites"
+										   ng-disabled="controller.isMultiSites"
+										   required>
+										<label>{{ 'l-considers-multi-sites' | i18n }}</label>
+	               					</field>
+	               				</div> 
+	    					</accordion-group>
+							<accordion-group is-open="status.open" >
+								<accordion-heading>
+            						{{'l-purchased-manufactured' | i18n }}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+        						</accordion-heading>
+	      						<div class="table-responsive">
+					  				<table class="table">
+										<tr>
+											<td></td>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"><h5 class="ng-binding text-center"><strong>{{ 'l-purchased' | i18n }}</strong></h5></td>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-12"><h5 class="ng-binding text-center"><strong>{{ 'l-manufactured' | i18n }}</strong></h5></td>
+										</tr>
+										<tr>
+											<td class="col-lg-4 col-md-4 col-sm-4 col-xs-8">
+												<label class="pull-left">{{'l-reprogramming-manufactured' | i18n}}</label>
+											</td>
+											<td class="col-lg-4 col-md-4 col-sm-4 col-xs-8">
+								                <field type="combo"
+								                       class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+								                       ng-model="controller.model.purchasedReprogramming"
+													   ng-options="item.codigo as item.descricao for item in controller.comboReprogramming"
+                       				  				   ng-init="controller.model.purchasedReprogramming = 1"
+								                       required>
+								                </field> 
+										    </td>
+										    <td class="col-lg-4 col-md-4 col-sm-4 col-xs-8" >
+										    	<field type="combo"
+								                       class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+								                       ng-model="controller.model.reprogrammingMade"
+													   ng-options="item.codigo as item.descricao for item in controller.comboReprogramming"
+                       				  				   ng-init="controller.model.reprogrammingMade = 1"
+								                       required>
+								                </field>
+										    </td>
+									    </tr>
+										<tr>
+											<td class="col-lg-4 col-md-4 col-sm-4 col-xs-8">
+												<label class="pull-left">{{ 'l-represents-demand' | i18n }}</label>
+											</td>
+											<td class="col-lg-4 col-md-4 col-sm-4 col-xs-8">
+   										       <field 	type="combo"
+   										       			class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+								                       	ng-model="controller.model.repressionDemandPurch"
+								                       	ng-disabled="controller.isRepressionDemandPurch"
+													   	ng-options="item.codigo as item.descricao for item in controller.comboDemand"
+								                       	required>
+								                </field> 
+										    </td>
+										    <td class="col-lg-4 col-md-4 col-sm-4 col-xs-8" >
+	       										<field 	type="combo"
+														class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+								                      	ng-model="controller.model.repressionDemandMade"
+								                      	ng-disabled="controller.isRepressionDemandMade"
+								                      	ng-options="item.codigo as item.descricao for item in controller.comboDemand"
+								                      	required>
+												</field>  
+										    </td>
+									    </tr>	
+									    <tr>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+												<label class="pull-left">{{'l-reprograms-orders-in-progress' | i18n}}</label>
+											</td>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+	    										<field type="checkbox"
+												   	ng-model="controller.model.reprogramInProgressReqPurch"
+												   	required>
+				              					</field> 
+										    </td>
+										    <td class="col-lg-8 col-md-8 col-sm-8 col-xs-12" >
+											    <field type="checkbox"
+												   	ng-model="controller.model.reprogramInProgressReqMade"
+												   	required >
+				              					</field>
+										    </td>
+									    </tr>								
+										<tr>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+												<label class="pull-left">{{'l-considers-inventory-security' | i18n}}</label>
+											</td>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.considersSafetyStockPurch"
+												   	required>
+				              					</field>
+										    </td>
+										    <td class="col-lg-8 col-md-8 col-sm-8 col-xs-12" >
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.considersSafetyStockMade"
+												   	required>
+				              					</field>
+										    </td>
+									    </tr>
+									    <tr>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+												<label class="pull-left">{{'l-considers-order' | i18n}}</label>
+											</td>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.considersPurchaseReq"
+												   	required>
+				              					</field>
+										    </td>
+										    <td class="col-lg-8 col-md-8 col-sm-8 col-xs-12" >
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.considersProductionReq"
+												   	required>
+				              					</field>
+										    </td>
+									    </tr>     
+								       	<tr>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+												<label class="pull-left">{{'l-considers-reservation' | i18n}}</label>
+											</td>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.considersPurchNeeds"
+												   	required>
+				              					</field>
+										    </td>
+										    <td class="col-lg-8 col-md-8 col-sm-8 col-xs-12" >
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.considersMadeNeeds"
+												   	ng-click="controller.changeConsidersMadeNeeds()"
+												   	required>
+				              					</field>
+										    </td>
+									    </tr>  
+							       		<tr>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+												<label class="pull-left">{{'l-order-portfolio-short' | i18n}}</label>
+											</td>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.considersBacklogPurch"
+												   	ng-click="controller.changeConsidersBacklogPurch()"
+												   	required>
+				              					</field>
+										    </td>
+										    <td class="col-lg-8 col-md-8 col-sm-8 col-xs-12" >
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.considersBacklogMade"
+												   	ng-click="controller.changeConsidersBacklogMade()"
+												   	required>
+				              					</field>
+										    </td>
+									    </tr>  
+								       	<tr>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+												<label class="pull-left">{{'l-only-approved-orders' | i18n}}</label>
+											</td>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.onlyApprovedPurchOrders"
+												   	ng-disabled="controller.isOnlyApprovedPurchOrders"
+												   	required>
+				              					</field>
+										    </td>
+										    <td class="col-lg-8 col-md-8 col-sm-8 col-xs-12" >
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.onlyApprovedMadeOrders"
+												   	ng-disabled="controller.isOnlyApprovedMadeOrders"
+												   	required>
+				              					</field>
+										    </td>
+									    </tr>  
+								    	<tr>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+												<label class="pull-left">{{'l-considers-balance-stock' | i18n}}</label>
+											</td>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-6">
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.considersStockBalancePurch"
+												   	ng-click="controller.changeConsidersStockBalancePurch()"
+												   	required>
+				              					</field>
+										    </td>
+										    <td class="col-lg-8 col-md-8 col-sm-8 col-xs-12" >
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.considersStockBalanceMade"
+												   	ng-click="controller.changeConsidersStockBalanceMade()"
+												   	required>
+				              					</field>
+										    </td>
+									    </tr>
+									    <tr>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+												<label class="pull-left">{{'l-considers-balance-outsourced' | i18n}}</label>
+											</td>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.thirdpartyBalancePurch"
+												   	ng-disabled="controller.isThirdpartyBalancePurch"
+												   	ng-click="controller.changeThirdpartyBalancePurch()"
+												   	required>
+				              					</field>
+										    </td>
+										    <td class="col-lg-8 col-md-8 col-sm-8 col-xs-12" >
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.thirdpartyBalanceMade"
+												   	ng-disabled="controller.isThirdpartyBalanceMade"
+												   	ng-click="controller.changeThirdpartyBalanceMade()"
+												   	required>
+				              					</field>
+										    </td>
+									    </tr>
+									    <tr>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+												<label class="pull-left">{{'l-considers-processing-shipping' | i18n}}</label>
+											</td>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.deliveryPurchProcessing"
+											   		ng-disabled="controller.isDeliveryPurchProcessing"
+												   	required>
+				              					</field>
+										    </td>
+										    <td class="col-lg-8 col-md-8 col-sm-8 col-xs-12" >
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.deliveryMadeProcessing"
+												   	ng-disabled="controller.isDeliveryMadeProcessing"
+												   	required>
+				              					</field>
+										    </td>
+									    </tr>
+									    <tr>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+												<label class="pull-left">{{'l-considers-entrance-processing' | i18n}}</label>
+											</td>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.entryPurchProcessing"
+												   	ng-disabled="controller.isEntryPurchProcessing"
+												   	required>
+				              					</field>
+										    </td>
+										    <td class="col-lg-8 col-md-8 col-sm-8 col-xs-12" >
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.entryMadeProcessing"
+												   	ng-disabled="controller.isEntryMadeProcessing"
+												   	required >
+				              					</field>
+										    </td>
+									    </tr>
+									    <tr>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+												<label class="pull-left">{{'l-considers-balance-transit' | i18n}}</label>
+											</td>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.considersTransitBalancePurch"
+												   	ng-disabled="controller.isConsidersTransitBalancePurch"
+												   	required >
+				              					</field>
+										    </td>
+										    <td class="col-lg-8 col-md-8 col-sm-8 col-xs-12" >
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.considersTransitBalanceMade"
+												   	ng-disabled="controller.isConsidersTransitBalanceMade"
+												   	required >
+				              					</field>
+										    </td>
+									    </tr>
+									    <tr>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+												<label class="pull-left">{{'l-considers-consignment-shipment' | i18n}}</label>
+											</td>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.deliveryPurchPayroll"
+												   	ng-disabled="controller.isDeliveryPurchPayroll"
+												   	required>
+				              					</field>
+										    </td>
+										    <td class="col-lg-8 col-md-8 col-sm-8 col-xs-12" >
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.deliveryMadePayroll"
+												   	ng-disabled="controller.isDeliveryMadePayroll"
+												   	required>
+				              					</field>
+										    </td>
+									    </tr>
+									    <tr>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+												<label class="pull-left">{{'l-considers-input-assignment' | i18n}}</label>
+											</td>
+											<td class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.entryPurchPayroll"
+												   	ng-disabled="controller.isEntryPurchPayroll"
+												   	required>
+				              					</field>
+										    </td>
+										    <td class="col-lg-8 col-md-8 col-sm-8 col-xs-12" >
+											    <field type="checkbox"
+										   			class="col-lg-4 col-md-4 col-sm-4 col-xs-8"
+												   	ng-model="controller.model.entryMadePayroll"
+												   	ng-disabled="controller.isEntryMadePayroll"
+												   	required>
+				              					</field>
+										    </td>
+									    </tr>  
+							   		</table>
+			                	</div> 
+	    					</accordion-group>
+						</accordion>
+					</div>
+				</div>			  		 	
+            </fieldset>           
+        </totvs-page-form>       
+    </totvs-page-content>
+</totvs-page>
+<style>
+	.row > field[type=checkbox]{
+		height: 62px;
+	}
+	.panel-group { margin-top: 10px; }
+	
+	tr td field[type=checkbox]{ padding: 0px 48%; }
+	
+	tr td field[type=combo]{ margin: 0px 17%; }
+	
+</style>

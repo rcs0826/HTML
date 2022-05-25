@@ -1,0 +1,28 @@
+<div ng-controller="apd.dashboard.orderappsummaryapd.Controller as orderAppSumController">
+	<totvs-widget>
+    	<style type="text/css" scoped>
+    		.tooltip-inner {
+    			max-width: 400px;
+    			text-align: left;                               
+    		}                                                                                                                       
+    	</style>
+                                            
+        <totvs-widget-body>             
+            <div style="height:300px;" ng-show="orderAppSumController.summaryShow">                                                        
+                <totvs-page-form>                                                                                                                           
+                    <h3>{{ 'l-ped-pend-aprov' | i18n : [] : 'dts/mpd/'}}:</h3><p ng-if="orderAppSumController.orderPendAprov == undefined">{{ 'l-loading-portlet' | i18n : [] : 'dts/mpd'}}</p> <p ng-if="orderAppSumController.orderPendAprov != undefined">{{orderAppSumController.orderPendAprov}}</p>
+                    <h3>{{ 'l-ped-aprov-today' | i18n : [] : 'dts/mpd/'}}:</h3><p ng-if="orderAppSumController.orderAprovToday == undefined">{{ 'l-loading-portlet' | i18n : [] : 'dts/mpd'}}</p> <p ng-if="orderAppSumController.orderAprovToday != undefined">{{orderAppSumController.orderAprovToday}}</p>
+                  <h3>{{ 'l-ped-reprov-today' | i18n : [] : 'dts/mpd/'}}:</h3><p ng-if="orderAppSumController.orderReprovToday == undefined">{{ 'l-loading-portlet' | i18n : [] : 'dts/mpd'}}</p> <p ng-if="orderAppSumController.orderReprovToday != undefined">{{orderAppSumController.orderReprovToday}}</p>                                                                                                                      
+                </totvs-page-form>
+            </div>                                                                                                                                                                                                                 
+		</totvs-widget-body>
+        
+        <totvs-widget-footer>
+            <totvs-widget-footer-body>
+            </totvs-widget-footer-body>
+            <totvs-widget-footer-actions>
+	    	<action link="#/dts/mpd/approvalorder">{{ 'l-aprov-ped-venda' | i18n : [] : 'dts/mpd/'}}</action>
+            </totvs-widget-footer-actions>            
+        </totvs-widget-footer>
+	</totvs-widget>
+</div>

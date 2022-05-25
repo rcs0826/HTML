@@ -1,0 +1,78 @@
+<totvs-modal-header>
+    Editar Motivos/ Justificativas / Teses / Artigos
+</totvs-modal-header>
+<totvs-modal-body>
+    <fieldset ng-modal='model' ng-form="ajController.modelForm">
+
+            <legend>Motivos de Impugnação/Recurso</legend>
+            <totvs-grid grid-data="ajController.reasonList"
+                        grid-height="275px"                        
+                        add-select-column="separate"
+                        selectable="multiple"     
+                        resizable= "true"
+                        grid="ajControler.gridJustifications"
+                        editable="true">
+
+                <totvs-grid-column field="idMotivo" width="75" >
+                    {{ ::'Código' | i18n : [] : 'js/grid' }}
+                </totvs-grid-column>
+                
+                <totvs-grid-column field="idNatureza" width="75" >
+                    {{ ::'Natureza' | i18n : [] : 'js/grid' }}
+                </totvs-grid-column>
+
+                <totvs-grid-column field="dsMotivo" width="275">
+                    {{ ::'Descrição' | i18n : [] : 'js/grid' }}
+                </totvs-grid-column>
+
+                <totvs-grid-column  field="dsObservacao" width="250" editable="true">
+                    {{ ::'Observação' | i18n : [] : 'js/grid' }}
+                </totvs-grid-column>
+
+                <totvs-grid-column  field="ds_memoria_calculo" width="225" editable="true">
+                    {{ ::'Memoria de Cálculo' | i18n : [] : 'js/grid' }}
+                </totvs-grid-column>
+                    
+            </totvs-grid>
+
+            <br></br>
+            
+            <legend>Justificativas/Teses/Artigos</legend>
+            <totvs-grid grid-data="ajController.listOfJustification"
+                        grid-height="275px"
+                        add-select-column="separate"
+                        selectable="multiple"
+                        auto-resize-content = "true"
+                        resizable= "true"
+                        grid="ajControler.gridJustifications"
+                        editable="true">
+
+                <totvs-grid-column field='idMotivo' width="75">
+                    {{ ::'Motivo' | i18n : [] : 'js/grid' }}
+                </totvs-grid-column>
+
+                <totvs-grid-column field="idJustificativa" width="75" >
+                    {{ ::'Código' | i18n : [] : 'js/grid' }}
+                </totvs-grid-column>
+                
+                <totvs-grid-column field="idNatureza" width="75" >
+                    {{ ::'Natureza' | i18n : [] : 'js/grid' }}
+                </totvs-grid-column>
+
+                <totvs-grid-column field="dsJustificativa" width="300">
+                    {{ ::'Descriação' | i18n : [] : 'js/grid' }}
+                </totvs-grid-column>
+
+                <totvs-grid-column field="dsObservacao" width="375" editable="true">
+                    {{ ::'Editar Texto' | i18n : [] : 'js/grid' }}
+                </totvs-grid-column>
+                    
+            </totvs-grid>
+       
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn"             ng-click="ajController.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-if="ajController.idPermissao == 2" ng-click="ajController.save()">Salvar</button>
+</totvs-modal-footer>

@@ -1,0 +1,17 @@
+<form ng-submit="itemController.save()" name="itemController.itemForm">
+	<div class="modal-header">
+		<h3 class="modal-title">{{:: 'Item do Pedido' | i18n : [] : 'dts/mpd' }}</h3>
+	</div>
+	<div class="modal-body">
+		<div class="page-form" style="height: 430px; overflow-x: none; overflow-y: auto;">
+			<totvs-lodash-template src="/dts/mpd/html/pd4000/pd4000.item.fields.html" template-data="itemController.fields"/>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" role="button" ng-if="itemController.newItem">{{:: 'Salvar e Novo' | i18n : [] : 'dts/mpd' }}</button>
+		<button class="btn btn-primary" role="button" ng-if="!itemController.newItem && !itemController.itemDisabled">{{:: 'Salvar' | i18n : [] : 'dts/mpd' }}</button>
+		<a class="btn btn-default" ng-if="itemController.newItem && !itemController.itemDisabled" ng-click="itemController.save(true)">{{:: 'Salvar' | i18n : [] : 'dts/mpd' }}</a>
+		<a class="btn btn-warning" ng-click="itemController.cancel()">{{:: 'Fechar' | i18n : [] : 'dts/mpd' }}</a>
+	</div>
+</form>
+

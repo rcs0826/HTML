@@ -1,0 +1,57 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/prfv-range/">{{ 'nav-prfv-range' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ controller.model.des_faixa_prfv }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action on-back-link="#/dts/crm/prfv-range/"
+													on-edit="controller.onEdit"
+													on-remove="controller.onRemove"
+													hide-actions="true">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}"
+						  ng-if="(controller.model | isUndefined)">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-show="controller.model | isDefined">
+
+			<div class="col-xs-12 no-gutter">
+				<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ controller.model.des_faixa_prfv }}
+				</totvs-page-detail-info>
+			</div>
+
+			<totvs-tabset class="no-border">
+
+				<tabset>
+					<tab heading="{{ 'l-ranges' | i18n: []: 'dts/crm' }} ({{ controller.model.ttFaixa.length || 0 }})">
+						<ng-include src="'/dts/crm/html/prfv-range/range/range.tab.html'"></ng-include>
+					</tab>
+				</tabset>
+			</totvs-tabset>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

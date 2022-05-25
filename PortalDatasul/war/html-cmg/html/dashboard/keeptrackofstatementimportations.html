@@ -1,0 +1,94 @@
+<div ng-controller="cmg.dashboard.keeptrackofstatementimportations.Controller as controller">
+    <totvs-widget>
+
+        <cmg-totvs-widget-header 
+            list="controller.showList()" 
+            settings="controller.showConfig()" 
+            title="{{'l-statement-importations' | i18n : [] : 'dts/cmg/' }}">
+            <i class="glyphicon glyphicon-info-sign hidden-xs" tooltip-placement="bottom" tooltip-html="controller.tooltipHelp">
+            </i>
+        </cmg-totvs-widget-header>
+        <totvs-widget-body>
+
+            <div>
+                <div ng-show="controller.listShow">
+                    <br>
+                    <div class="col-md-12">
+
+                        <totvs-grid 
+                            grid-data="controller.listResult" 
+                            grid-height="300" 
+                            selectable="false" 
+                            auto-resize-content="true" 
+                            sortable="true" 
+                            resizable="true">
+
+                            <totvs-grid-column 
+                                field="chekingAccount" 
+                                reorderable="true" 
+                                width="75"
+                                title="{{ 'l-account' | i18n: []: 'dts/cmg' }}">
+                                <template>
+                                    <a ng-if="dataItem.statementUpdated" style="color:blue;">{{ dataItem.chekingAccount }}</a>
+                                    <a ng-if="!dataItem.statementUpdated" style="color:red;">{{ dataItem.chekingAccount }}</a>
+                                </template>
+                            </totvs-grid-column>
+
+                            <totvs-grid-column 
+                                field="shortName" 
+                                reorderable="true" 
+                                width="150"
+                                title="{{ 'l-short-name' | i18n: []: 'dts/cmg' }}">
+                                <template>
+                                    <a ng-if="dataItem.statementUpdated" style="color:blue;">{{ dataItem.shortName }}</a>
+                                    <a ng-if="!dataItem.statementUpdated" style="color:red;">{{ dataItem.shortName }}</a>
+                                </template>
+                            </totvs-grid-column>
+
+                            <totvs-grid-column 
+                                field="lastTransDate" 
+                                filter="date: shortDate" 
+                                width="150"
+                                title="{{ 'l-last-transaction' | i18n: []: 'dts/cmg' }}">
+                                <template>
+                                    <a ng-if="dataItem.statementUpdated" style="color:blue;">{{ dataItem.lastTransDate | date: ('l-date-format' | i18n: []: 'dts/cmg') }}</a>
+                                    <a ng-if="!dataItem.statementUpdated" style="color:red;">{{ dataItem.lastTransDate | date: ('l-date-format' | i18n: []: 'dts/cmg') }}</a>
+                                </template>
+                            </totvs-grid-column>
+
+                        </totvs-grid>
+
+                    </div>
+                </div>
+
+                <div ng-show="controller.configShow">
+                    <form>
+
+                        <totvs-table 
+                            t-items="controller.listOfBanks" 
+                            t-items-as="account" 
+                            t-table="controller.selectedItems">
+
+                            <column title="{{'l-account' | i18n : [] : 'dts/cmg'}}">
+                                {{ account.chekingAccount }} - {{ account.shortName }}
+                            </column>
+
+                        </totvs-table>
+
+                    </form>
+                    <a role="button" class="btn btn-default pull-right" ng-click="controller.applyConfig()">&nbsp; {{ 'btn-apply' | i18n : [] : 'dts/cmg/' }} &nbsp; </a>
+                </div>
+            </div>
+
+        </totvs-widget-body>
+
+        <totvs-widget-footer>
+            <cmg-totvs-widget-footer-actions class="actions">
+
+                <action class="button btn-primary" ng-click="controller.openCMG705();">{{ 'l-insert' | i18n : [] : 'dts/cmg/' }}</action>
+                <action class="button btn-default" ng-click="controller.openImportBankStatement();">{{ 'l-import' | i18n : [] : 'dts/cmg/' }}</action>
+
+            </cmg-totvs-widget-footer-actions>
+        </totvs-widget-footer>
+    </totvs-widget>
+</div>

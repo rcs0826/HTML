@@ -1,0 +1,817 @@
+<!--<healthcare-workarea> --> 
+    <totvs-page id="benefPage" type="detail"
+        ng-controller="hvp.benefDetail.Control as controller"> 
+        
+        <link type="text/css" rel="stylesheet" href="/dts/hgp/html/assets/css/hvp.css"/>
+        
+        <totvs-page-navbar id="navBar">
+
+            <totvs-page-breadcrumb>
+                    <breadcrumb link="#/dts/hgp/hrc-document">Central Guias TISS</breadcrumb>
+                    <breadcrumb>Dados do Beneficiário</breadcrumb>
+            </totvs-page-breadcrumb>
+
+            <totvs-page-header>
+                <totvs-page-header-title 
+                    title="Dados do Beneficiário" >
+                </totvs-page-header-title>
+
+                <totvs-page-header-operation>
+                    <totvs-page-header-operation-action on-back="controller.onCancel"
+                                                        hide-edit="true"
+                                                        hide-remove="true">
+                    </totvs-page-header-operation-action>
+                </totvs-page-header-operation>
+            </totvs-page-header> 
+        </totvs-page-navbar>
+        
+        <!--<div class="row"> pageContent--> 
+                
+            <totvs-page-content>
+                
+<!--                <nav id="scrollSpy" class="page-fixed" 
+                     style="width: 210px;background: transparent; padding-right: 15px; 
+                            margin-left: 1px; padding-top: 20px" >
+                    <ul class="nav nav-pills nav-stacked">
+                        <li class="active">
+                            <a href="#lgdBenef">
+                                Beneficiário
+                            </a></li>
+                        <li><a href="#lgdModulesAndGraces">
+                                Módulos e Carências
+                            </a></li>
+                        <li><a href="#lgdFamily">
+                                Família
+                            </a></li>
+                        <li><a href="#lgdContractualInformations">
+                                Informações Contratuais
+                            </a></li>
+                        <li><a href="#lgdRepass">
+                                Repasse
+                            </a></li>
+                        <li><a href="#lgdHealthDeclaration">
+                                Declaração de Saúde
+                            </a></li>
+                    </ul>
+                </nav>    -->
+                
+                <!-- NO DETALHE, SUGIRO QUE O DESENVOLVEDOR INFORME O TAMANHO DO
+                     CAMPO CONFORME COLUNA DO BOOTSTRAP (PRA MOBILE SEMPRE 12). -->
+                <totvs-page-detail style="margin-left: 50px">
+                    
+                    <legend id="lgdBenef" >Beneficiário</legend>
+
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Código"
+                        value="{{controller.beneficiary.cdUsuario}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-lg-8 col-md-8 col-sm-8 col-xs-12 col-sm-height"
+                        title="Nome"
+                        value="{{controller.beneficiary.pessoaFisica.nmPessoa}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Situação"
+                        value="{{controller.beneficiary.situacaoUsuarioLabel}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height" 
+                        title="Carteira"
+                        value="{{controller.beneficiary.cdUnidCdCarteiraInteira}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Validade Carteira"
+                        value="{{controller.beneficiary.carteiraPrinc.dtValidade | date : 'dd/MM/yyyy'}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Sexo"
+                        value="{{(controller.beneficiary.pessoaFisica.lgSexo == true ? 'Masculino' : 'Feminino')}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Nascimento"
+                        value="{{controller.beneficiary.pessoaFisica.dtNascimento | date : 'dd/MM/yyyy'}} ( {{controller.beneficiary.idade}} )">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Estado Civil"
+                        value="{{MARITAL_STATUS_ENUM.getLabelByKey(controller.beneficiary.pessoaFisica.inEstadoCivil)}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="CPF"
+                        value="{{controller.beneficiary.pessoaFisica.cdCpf | cpf}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Identidade"
+                        value="{{controller.beneficiary.pessoaFisica.nrIdentidade}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Nome da mãe"
+                        value="{{controller.beneficiary.pessoaFisica.nmMae}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height"
+                        title="Contratante"
+                        value="{{controller.beneficiary.propost.contrat.rotulo}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Modalidade"
+                        value="{{controller.beneficiary.modalidadeLabel}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-8 col-md-8 col-sm-8 col-xs-12 col-sm-height"
+                        title="Contrato"
+                        value="{{StringTools.fill(controller.beneficiary.nrTerAdesao, '0', 6)}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Plano"
+                        value="{{controller.beneficiary.propost.tipoPlano.plasau.rotulo}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Tipo de Plano"
+                        value="{{controller.beneficiary.propost.tipoPlano.rotulo}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Forma de Pagamento"
+                        value="{{controller.beneficiary.propost.formpaga.rotulo}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Classe Hospitalar"
+                        value="{{controller.beneficiary.propost.tipoPlano.clashosp.rotulo}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-8 col-md-8 col-sm-8 col-xs-12 col-sm-height"
+                        title="Participação"
+                        value="{{(controller.beneficiary.propost.participationLabel === true ? 'Sim' : 'Não')}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Data de Vínculo"
+                        value=" {{controller.beneficiary.dtInicioVinculoUnidade | date : 'dd/MM/yyyy'}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Data de Inclusão"
+                        value="{{controller.beneficiary.dtInclusaoPlano | date : 'dd/MM/yyyy'}}">
+                    </totvs-page-detail-info>
+                    
+                    <totvs-page-detail-info 
+                        ng-if="controller.beneficiary.dtFalecimento != null"
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Data de Falecimento"
+                        value="{{controller.beneficiary.dtFalecimento | date : 'dd/MM/yyyy'}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        ng-if="controller.beneficiary.dtFalecimento == null"
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="fake"
+                        value="fake" style="visibility: hidden">
+                     </totvs-page-detail-info>
+                    
+                    <totvs-page-detail-info 
+                        ng-if="controller.beneficiary.dtExclusaoPlano != null"
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Data de Exclusão"
+                        value="{{controller.beneficiary.dtExclusaoPlano | date : 'dd/MM/yyyy'}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        ng-if="controller.beneficiary.dtExclusaoPlano !== null"
+                        class="col-lg-8 col-md-8 col-sm-8 col-xs-12 col-sm-height"
+                        title="Motivo de Exclusão"
+                        value="{{controller.beneficiary.motivoCancelamentoLabel}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Classe Contrat./Benef."
+                        value="{{CONTACTING_PARTY_TYPE_ENUM.getLabelByKey(controller.beneficiary.propost.contrat.classificacaoContratante)}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Formador de Opinião"
+                        value="{{(controller.beneficiary.lgFormadorOpiniao === true ? 'Sim' : 'Não')}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        ng-if="controller.beneficiary.dtAdmissaoEmpresa != null"
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Data de Admissão"
+                        value="{{controller.beneficiary.dtAdmissaoEmpresa | date : 'dd/MM/yyyy'}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        ng-if="controller.beneficiary.dtAdmissaoEmpresa == null"
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="fake"
+                        value="fake" style="visibility: hidden">
+                     </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                        title="Funcionário"
+                        value="{{controller.beneficiary.cdFuncionario}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-8 col-md-8 col-sm-8 col-xs-12 col-sm-height"
+                        title="CBO"
+                        value="{{controller.beneficiary.cboLabel}}">
+                    </totvs-page-detail-info>
+
+                    <div style="padding-bottom: 15px;">
+                        <legend>Endereços</legend>
+                    
+                        <div class="field-label"
+                             ng-if="!(controller.beneficiary.pessoaFisica.enderecos.length > 0)"
+                             >Este beneficiário não possui endereço cadastrado.
+                        </div>
+
+                        <totvs-list-item ng-repeat="address in controller.beneficiary.pessoaFisica.enderecos" >
+
+                            <totvs-list-item-header>
+                                <totvs-list-item-title
+                                    title="{{address.dsEndereco}}" >
+                                </totvs-list-item-title>
+                            </totvs-list-item-header>
+
+                            <totvs-list-item-content>
+                                <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                                      title="CEP"
+                                                      value="{{address.cdCep | cep}}">
+                                </totvs-list-item-info>
+
+                                <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                                      title="Cidade"
+                                                      value="{{address.dsCidade}}">
+                                </totvs-list-item-info>
+
+                                <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                                      title="Principal"
+                                                      value="{{(address.lgPrincipal === true ? 'Sim' : 'Não')}}">
+                                </totvs-list-item-info>
+
+                                <totvs-list-item-info class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                                      title="Cobrança"
+                                                      value="{{(address.lgEndCobranca === true ? 'Sim' : 'Não')}}">
+                                </totvs-list-item-info>
+
+                                <totvs-list-item-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                      title="Complemento"
+                                                      value="{{address.dsComplemento}}">
+                                </totvs-list-item-info>
+
+                            </totvs-list-item-content>
+                        </totvs-list-item>
+                    </div>
+
+                    <div style="padding-bottom: 15px;">
+                        <legend>Contatos</legend>
+                        
+                        <div class="field-label"
+                             ng-if="!(controller.beneficiary.pessoaFisica.contatos.length > 0)"
+                             >Este beneficiário não possui contatos cadastrados.
+                        </div>
+                        
+
+                        <totvs-list-item ng-repeat="contact in controller.beneficiary.pessoaFisica.contatos" >
+
+                            <totvs-list-item-header>
+                                <totvs-list-item-title
+                                    title="{{contact.dsContato}}" >
+                                </totvs-list-item-title>
+                            </totvs-list-item-header>
+
+                            <totvs-list-item-content>
+                                <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                      title="Tipo"
+                                                      value="{{controller.getLabelContactTypeByKey(contact.tpContato)}}">
+                                </totvs-list-item-info>
+
+                                <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                      title="Ramal"
+                                                      value="{{contact.dsRamal}}">
+                                </totvs-list-item-info>
+
+                                <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                      title="Nome Contato"
+                                                      value="{{contact.nmContato}}">
+                                </totvs-list-item-info>
+                            </totvs-list-item-content>
+                        </totvs-list-item>
+                    </div>
+                    
+                    <div ng-show="controller.wrapper.benefModules.length > 0" >  <!-- Modulos e Carencias --> 
+                        
+                        <legend id="lgdModulesAndGraces">Módulos e Carências</legend>
+                        
+                        <totvs-page-detail-info                            
+                            class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height"
+                            title="Padrão de Cobertura"
+                            ng-show="controller.beneficiary.cdPadraoCobertura != ''"
+                            value="{{controller.beneficiary.cdPadraoCobertura}}"> 
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                            title="Considerar Carência"
+                            value="{{(controller.beneficiary.lgCarencia === true ? 'Sim' : 'Não')}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height" 
+                            title="Dias de Carência"
+                            value="{{controller.beneficiary.nrDias}}"> 
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                            title="Fazer Aproveitamento de Carência"
+                            value=" {{(controller.beneficiary.lgAprovCar === true ? 'Sim' : 'Não')}}">
+                        </totvs-page-detail-info>
+
+                        <div class="page-head undo-page-head" 
+                                 style="border: none">   
+                            <div class="page-tags"
+                                 style="border: none">                            
+                                    <totvs-page-header-operation>
+                                        <h4>Carência por Módulos/Procedimentos e Insumos</h4>
+                                        <totvs-page-tags>
+                                            <tag class="tag-1">Em Carência</tag>
+                                            <tag class="tag-2">Carência não permitida pela proposta</tag>
+                                            <tag class="tag-3">Sem Carência/Carência Cumprida</tag>
+                                        </totvs-page-tags>
+                                    </totvs-page-header-operation>
+                            </div>
+                        </div>
+
+                            <totvs-tabset>
+
+                                <totvs-tab heading="Módulos">
+                                    <totvs-page-child>
+
+                                        <totvs-page-header class="row">
+
+                                            <totvs-list-item type="list" ng-repeat="module in controller.wrapper.benefModules"
+                                                             class="tag-{{controller.getGraceTag(module)}}">
+
+                                                <totvs-list-item-header>
+                                                    <totvs-list-item-title
+                                                        title="Módulo: {{module['cd-modulo']}} - {{module['ds-modulo']}}"
+                                                        link="">
+                                                    </totvs-list-item-title>
+                                                </totvs-list-item-header>
+
+                                                <totvs-list-item-content>
+                                                    <totvs-list-item-info
+                                                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                        title="Data Início"
+                                                        value="{{module['dt-inicio']|date: 'dd/MM/yyyy'}}">
+                                                    </totvs-list-item-info>
+
+                                                    <totvs-list-item-info
+                                                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                        title="Data Fim"
+                                                        value="{{module['dt-fim']|date: 'dd/MM/yyyy'}}">
+                                                    </totvs-list-item-info>
+
+                                                    <totvs-list-item-info
+                                                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                        title="Último Faturamento"
+                                                        value="{{module['mm-ult-fat']}} / {{module['aa-ult-fat']}}">
+                                                    </totvs-list-item-info>
+
+                                                    <totvs-list-item-info
+                                                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                        ng-if="module['dt-cancelamento'] != null"
+                                                        title="Data Cancelamento"
+                                                        value="{{module['dt-cancelamento']}}">
+                                                    </totvs-list-item-info>
+
+                                                    <totvs-list-item-info
+                                                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-sm-height"
+                                                        title="Motivo"
+                                                        ng-if="module['cd-motivo-cancel'] > 0"
+                                                        value="{{module['cd-motivo-cancel']}} - {{module['ds-motivo-cancel']}} ">
+                                                    </totvs-list-item-info>
+
+                                                </totvs-list-item-content>
+
+                                                <totvs-list-item-content-detail>							
+                                                    <div style="margin-top: 20px">
+                                                        <div class="col-xs-6 col-sm-6 col-md-6" id="one" style="border-right: 1px dashed gray;">
+                                                            <p  style="font-weight: bold;">Carência Eletiva 
+                                                                                           {{((module['lg-carencia'] == true) && (module['in-ctrl-carencia-proced'] != 0 || module['in-ctrl-carencia-insumo'] != 0)) ?
+                                                                                             controller.getRemainingDaysLabel(module['dt-fim-carencia-eletiva'])
+                                                                                             : 'Isento'}}</p>
+                                                            <br/>
+
+                                                            <totvs-page-detail-info 
+                                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                                                                title="Data Base"
+                                                                value="{{controller.getEndDateWithoutChange(module['dt-fim-carencia-eletiva'],module['nr-dias'])|date: 'dd/MM/yyyy'}}">
+                                                            </totvs-page-detail-info>
+
+                                                            <totvs-page-detail-info 
+                                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                                                                title="{{module['lg-bonifica-penaliza'] == true ? 'Bonifica' : 'Penaliza'}}"
+                                                                value="{{module['nr-dias'] != 0 ? controller.getChangeDaysLabel(module['nr-dias']) : ''}}">
+                                                            </totvs-page-detail-info>
+
+                                                            <totvs-page-detail-info 
+                                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                                                                title="Data Final"
+                                                                value="{{module['dt-fim-carencia-eletiva'] | date : 'dd/MM/yyyy'}}">
+                                                            </totvs-page-detail-info>
+
+                                                        </div>
+                                                        <div class="col-xs-6 col-sm-6 col-md-6" id="two">
+                                                            <p  style="font-weight: bold;">Carência Urgência 
+                                                                                           {{((module['lg-carencia'] == true) && (module['in-ctrl-carencia-proced'] != 0 || module['in-ctrl-carencia-insumo'] != 0)) ?
+                                                                                             controller.getRemainingDaysLabel(module['dt-fim-carencia-urgencia'])
+                                                                                             : 'Isento'}}</p>
+                                                            <br/>
+
+                                                            <totvs-page-detail-info 
+                                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                                                                title="Data Base"
+                                                                value="{{controller.getEndDateWithoutChange(module['dt-fim-carencia-urgencia'],module['nr-dias'])|date: 'dd/MM/yyyy'}}">
+                                                            </totvs-page-detail-info>
+
+                                                            <totvs-page-detail-info 
+                                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                                                                title="{{module['lg-bonifica-penaliza'] == true ? 'Bonifica' : 'Penaliza'}}"
+                                                                value="{{module['nr-dias'] != 0 ? controller.getChangeDaysLabel(module['nr-dias']) : ''}}">
+                                                            </totvs-page-detail-info>
+
+                                                            <totvs-page-detail-info
+                                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                                                                title="Data Final"
+                                                                value="{{module['dt-fim-carencia-urgencia'] | date : 'dd/MM/yyyy'}}">
+                                                            </totvs-page-detail-info>
+                                                        </div>
+                                                    </div>
+                                                </totvs-list-item-content-detail>
+                                            </totvs-list-item>
+                                        </totvs-page-header>
+                                    </totvs-page-child>
+
+                                </totvs-tab>
+
+                                <totvs-tab heading="Procedimentos/Insumos" ng-click="controller.getGracesPerServiceForBenef()">
+
+                                    <div class="page-head undo-page-head"
+                                         ng-show="controller.hasGracesService == false"
+                                         style="border: none">
+                                        <h5>Nenhuma carência a nível de movimento cadastrada</h5> 
+                                    </div>
+
+                                    <totvs-page-child type="list" ng-show="controller.hasGracesService == true">
+
+                                        <totvs-page-header class="row">
+
+                                            <!--
+                                            <totvs-page-header-operation>
+
+                                                <h4>Procedimentos/Insumos</h4>
+
+                                                <totvs-page-tags>
+                                                    <tag class="tag-1">Com Carência</tag>
+                                                    <tag class="tag-2">Sem Carência</tag>
+                                                    <tag class="tag-3">Carência não permitida pela proposta</tag>
+                                                </totvs-page-tags>
+                                            </totvs-page-header-operation>
+                                            -->
+
+                                            <!-- <totvs-page-child> -->
+
+                                                <totvs-list-item type="list" 
+                                                                 ng-repeat="module in controller.wrapper.benefModules"
+                                                                 ng-show="module.gracesPerServiceModule != undefined"
+                                                                 class="tag-{{controller.getGraceTag(module)}}">
+
+                                                <totvs-list-item-header>
+                                                    <totvs-list-item-title
+                                                            title="Módulo: {{module['cd-modulo']}} - {{module['ds-modulo']}}"
+                                                        link="">
+                                                    </totvs-list-item-title>
+                                                </totvs-list-item-header>
+
+                                                    <totvs-list-item-content-detail>	
+
+                                                        <!-- <totvs-page-child type="list" > -->                                                 
+
+                                                            <totvs-list-item type="list" 
+                                                                             ng-repeat="graceService in module.gracesPerServiceModule">
+
+                                                                <totvs-list-item-header>
+                                                                    <totvs-list-item-title
+                                                                        title="{{graceService['cd-proced-insumo']}} - {{graceService['ds-proced-insumo']}}"
+                                                                        link="">
+                                                                    </totvs-list-item-title>
+                                                                </totvs-list-item-header>
+
+                                                                <totvs-list-item-content>
+                                                                    <totvs-list-item-info title="Tipo Insumo"          value="{{graceService['cd-tipo-insumo']}} - {{graceService['ds-tipo-insumo']}}"
+                                                                                          ng-show="graceService['lg-procedimento'] == false"></totvs-list-item-info>
+                                                                    <totvs-list-item-info title="Data de Inicio"       value="{{graceService['dt-inicio'] | date : 'dd/MM/yyyy'}}"></totvs-list-item-info>
+                                                                    <totvs-list-item-info title="Data de Cancelamento" value="{{graceService['dt-cancelamento'] | date : 'dd/MM/yyyy'}}"></totvs-list-item-info>
+                                                                    <totvs-list-item-info title="{{graceService['in-carencia'] == 3 ? 'Bonifica' : 'Penaliza'}}"
+                                                                                          value="{{graceService['nr-dias'] != 0 ? controller.getChangeDaysLabel(graceService['nr-dias']) : ''}}">
+                                                                </totvs-list-item-content>                                                            
+
+                                                            </totvs-list-item>  
+
+                                                </totvs-list-item-content-detail>
+                                            </totvs-list-item>
+
+                                            <!--  </totvs-page-child> -->
+
+                                        </totvs-page-header>
+
+                                    <!-- </totvs-page-child> -->
+                                </totvs-tab>
+                            </totvs-tabset>
+                        <br>
+                    
+                    </div>
+                    
+                    <div id="family" ng-if="controller.wrapper.benefFamily.length > 0">
+                        <legend id="lgdFamily">Família</legend>
+
+                        <totvs-page-child type="list" 
+                                ng-repeat="familyBenef in controller.wrapper.benefFamily">
+                            <totvs-list-item>
+                                <totvs-list-item-header>
+                                    <totvs-list-item-title
+                                        title="{{familyBenef.cdUsuario}} - {{familyBenef.nmUsuario}}"
+                                        link="">
+                                    </totvs-list-item-title>
+                                </totvs-list-item-header>
+                                <totvs-list-item-content>
+                                    <totvs-list-item-info
+                                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                        title="Grau de Parentesco"
+                                        value="{{familyBenef.grauParentescoLabel}}">
+                                    </totvs-list-item-info>
+                                    <totvs-list-item-info
+                                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-sm-height"
+                                        title="Situação"
+                                        value="{{familyBenef.situacaoUsuarioLabel}}">
+                                    </totvs-list-item-info>
+                                    <totvs-list-item-info
+                                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                        title="Carteira"
+                                        value="{{familyBenef.carteiraPrinc.cdCarteiraInteira}}">
+                                    </totvs-list-item-info>
+                                    <totvs-list-item-info
+                                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-sm-height"
+                                        title="Situação da Carteira"
+                                        value="{{(familyBenef.carteiraPrinc.cdSitCarteira === 1 ? 'Ativa' : 'Inativa')}}">
+                                    </totvs-list-item-info>
+                                </totvs-list-item-content>
+                            </totvs-list-item>
+                        </totvs-page-child>    
+                    </div>
+                    
+                    <br>
+                    
+                    <div id="contractualInformations" ng-if="(controller.wrapper.planTypeContractualInfo != undefined)
+                                                             && (controller.wrapper.planTypeContractualInfo != '' 
+                                                                 || controller.wrapper.contractContractualInfo != ''
+                                                                 || controller.wrapper.benefContractualInfo    != '')">    
+                        <legend id="lgdContractualInformations">Informações contratuais</legend>	
+
+                        <totvs-tabset>
+                            <tabset>
+                                <tab heading="Plano">
+
+                                    <form class="form-horizontal" role="form" style="width:100%;">
+                                        <field type="textarea" style="width:100%;" 
+                                               data-ng-model="controller.wrapper.planTypeContractualInfo" readonly>
+                                        </field>     
+                                    </form>
+                                </tab>
+                                <tab heading="Contrato">
+                                    <form class="form-horizontal" role="form" style="width:100%;">
+                                        <field type="textarea" style="width:100%;" 
+                                               data-ng-model="controller.wrapper.contractContractualInfo" readonly>
+                                        </field>     
+                                    </form>
+                                </tab>
+                                <tab heading="Beneficiário">
+                                    <form class="form-horizontal" role="form" style="width:100%;">
+                                        <field type="textarea" style="width:100%;" 
+                                               data-ng-model="controller.wrapper.benefContractualInfo" readonly>
+                                        </field>     
+                                    </form>
+                                </tab>
+                            </tabset>
+                        </totvs-tabset>	
+                    </div>
+                    
+                    <br>
+                    
+                    <div id="repass" ng-if="controller.wrapper.benefRepasses.length > 0">
+                        <legend id="lgdRepass">Repasse</legend>
+
+                        <totvs-list-item ng-repeat="repass in controller.wrapper.benefRepasses">
+
+                            <totvs-list-item-header>
+                                <totvs-list-item-title
+                                    title="Identificação: {{repass.cdIdentificUniDestino}} / Unidade Destino: {{repass.rotuloUnidDestino}}">
+                                </totvs-list-item-title>
+                            </totvs-list-item-header>
+
+                             <totvs-list-item-content-detail>
+                                <totvs-list-item-info 
+                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                                    title="Data de Intercâmbio"
+                                    value="{{repass.dtIntercambio | date : 'dd/MM/yyyy'}}">
+                                </totvs-list-item-info>
+                                <totvs-list-item-info 
+                                    class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                    title="Forma de Pagto Negoc."
+                                    value="{{repass.rotuloFormaPagamentoNegociacao}}">
+                                </totvs-list-item-info>
+                                <totvs-list-item-info 
+                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                    title="Repassar Taxa de Inscrição"
+                                    value="{{repass.lgInscRepasse === true ? 'Sim' : 'Não'}}">
+                                </totvs-list-item-info>
+                                <totvs-list-item-info 
+                                    class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                    title="Cobrar Taxa de Inscrição"
+                                    value="{{repass.lgInscFatura === true ? 'Sim' : 'Não'}}">
+                                </totvs-list-item-info>
+                                <totvs-list-item-info 
+                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                    title="Primeiro Repasse"
+                                    value="{{repass.mmPriRep}}/{{repass.aaPriRep}}">
+                                </totvs-list-item-info>
+                                <totvs-list-item-info 
+                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                    title="Data Saída do Repasse"
+                                    value="{{repass.dtSaida | date : 'dd/MM/yyyy'}}">
+                                </totvs-list-item-info>
+                                <totvs-list-item-info 
+                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                    title="Último Repasse"
+                                    value="{{repass.mmUltRepasse}}/{{repass.aaUltRepasse}}">
+                                </totvs-list-item-info>
+                                <totvs-list-item-info 
+                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                    title="Data Alteração"
+                                    value="{{repass.dtMvtoAlteracao | date : 'dd/MM/yyyy'}}">
+                                </totvs-list-item-info>
+                                <totvs-list-item-info 
+                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                    title="Impressão Carta Intercâmbio"
+                                    value="{{CARD_PRINT_TYPE_ENUM.getLabelByKey(repass.inTipoImpressaoCarta)}}">
+                                </totvs-list-item-info>
+                                <totvs-list-item-info 
+                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                    title="Movimento Carta Intercâmbio"
+                                    value="{{CARD_MOVEMENT_TYPE_ENUM.getLabelByKey(repass.inTipoMovtoCarta)}}">
+                                </totvs-list-item-info>
+                                <totvs-list-item-info 
+                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                    title="Data Emissão da Carta"
+                                    value="{{repass.dtCartaInterc | date : 'dd/MM/yyyy'}}">
+                                </totvs-list-item-info>
+                                <totvs-list-item-info 
+                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                    title="Usuário Intercâmbio"
+                                    value="{{repass.cdUseridCartaInterc}}">
+                                </totvs-list-item-info>
+
+                                 <div style="padding-top: 10px" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                                    <p  style="font-weight: bold;">Unidade(s) de Atendimento:</p>
+                                    <totvs-list-item ng-repeat="unit in repass.unidadesAtendimento">
+                                        <totvs-list-item-header>
+                                            <totvs-list-item-title class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                title="{{unit.cdUnidadeAtendimento}} - {{unit.nmUnidadeAtendimento}} ">
+                                            </totvs-list-item-title>
+                                        </totvs-list-item-header>
+                                        <totvs-list-item-content>
+                                            <totvs-list-item-info
+                                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-sm-height"
+                                                title="Data de Intercâmbio"
+                                                value="{{unit.dtIntercambioAtendimento | date : 'dd/MM/yyyy'}}">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-sm-height"
+                                                title="Data Saída"
+                                                value="{{unit.dtSaidaAtendimento | date : 'dd/MM/yyyy'}}">
+                                            </totvs-list-item-info>
+                                        </totvs-list-item-content>
+                                    </totvs-list-item>
+                                </div>
+
+                            </totvs-list-item-content-detail>
+                        </totvs-list-item>	
+                    </div>
+                    
+                    <br>
+                    
+                    <div id="healthDeclaration" ng-if="controller.wrapper.benefHealthConditions.length > 0">
+                        <legend id="lgdHealthDeclaration">Declaração de Saúde</legend>
+
+                        <totvs-list-item ng-repeat="healthCond in controller.wrapper.benefHealthConditions">
+
+                            <totvs-list-item-header>
+                                <totvs-list-item-title
+                                    title="Condição de Saúde: {{healthCond['cd-condicao-saude']}} - {{healthCond['ds-condicao-saude']}}">
+                                </totvs-list-item-title>
+                            </totvs-list-item-header>
+
+                            <totvs-list-item-content-detail>
+                                <div class="col-xs-6 col-sm-6 col-md-6" style="border-right: 1px dashed gray;">
+                                    <p  style="font-weight: bold;">CIDs</p>
+                                    <totvs-list-item ng-repeat="cid in healthCond.cids">
+                                        <totvs-list-item-header>
+                                            <totvs-list-item-title class="col-lg-12 col-md-12 col-sm-12 col-xs-12"              
+                                                title="{{cid['cd-cid']}} - {{cid['ds-doenca']}}">
+                                            </totvs-list-item-title>
+                                        </totvs-list-item-header>
+                                        <totvs-list-item-content>
+                                            <totvs-list-item-info
+                                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-sm-height"
+                                                title="Verif. Procedência"
+                                                value="{{(cid['lg-verifica-procedimento'] === true ? 'Sim' : 'Não')}}">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-sm-height"
+                                                title="Carência"
+                                                value="{{cid['dt-fim-carencia'] | date : 'dd/MM/yyyy'}} - {{cid['nr-carencia-cpt']}} Dias">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height"
+                                                title="Observação"
+                                                value="{{cid['ds-observacao']}}">
+                                            </totvs-list-item-info>
+                                        </totvs-list-item-content>
+                                    </totvs-list-item>
+                                </div>
+                                <div class="col-xs-6 col-sm-6 col-md-6">
+                                    <p  style="font-weight: bold;">Prestadores</p>
+                                    <totvs-list-item ng-repeat="provider in healthCond.providers">
+                                        <totvs-list-item-header>
+                                            <totvs-list-item-title class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                                title="{{StringTools.fill(provider['cd-unidade'], '0', 4)}}{{StringTools.fill(provider['cd-prestador'], '0', 8)}} - {{provider['nm-prestador']}}">
+                                            </totvs-list-item-title>
+                                        </totvs-list-item-header>
+                                        <totvs-list-item-content>
+                                            <totvs-list-item-info
+                                                class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height"
+                                                title="Parecer"
+                                                value="{{provider['ds-parecer']}}">
+                                            </totvs-list-item-info>
+                                        </totvs-list-item-content>
+                                    </totvs-list-item>
+                                </div>
+                            </totvs-list-item-content-detail>
+                        </totvs-list-item>
+                    </div>
+                    
+                    <div id="whiteDiv"></div>
+                </totvs-page-detail>
+
+            </totvs-page-content>	
+        <!--</div>-->
+    </totvs-page>
+<!--</healthcare-workarea>-->

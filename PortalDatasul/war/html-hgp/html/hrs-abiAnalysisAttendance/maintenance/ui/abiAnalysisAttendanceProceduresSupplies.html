@@ -1,0 +1,165 @@
+<totvs-modal-header>
+    Procedimentos e Insumos
+</totvs-modal-header>
+<totvs-modal-body style="height: 650px; overflow-y: auto;">
+    <fieldset ng-form="psController.modelForm">
+    
+        <!-- ************** Dados da ABI ******************* -->
+        <totvs-row>
+
+            <p>Dados da ABI</p>
+
+            <!-- Ofício -->
+            <field  type="input"
+                    class="{{psController.listItemInfoClasses2col}}"
+                    ng-model="psController.abiAnalysis.nrOficio"
+                    label="Ofício"
+                    editable="false"
+                    disabled>
+            </field>
+
+            <!-- Protocolo -->
+            <field  type="input"
+                    class="{{psController.listItemInfoClasses2col}}"
+                    ng-model="psController.abiAnalysis.cdProtocoloAbi"
+                    editable="false"
+                    disabled
+                    label="Protocolo"
+                    disabled="true">
+            </field>
+
+            <!-- Competência -->
+            <field  type="input"
+                    class="{{psController.listItemInfoClasses2col}}"
+                    ng-model="psController.abiAnalysis.dsCompetencia"
+                    editable="false"
+                    disabled
+                    label="Competência">
+            </field>
+
+            <!-- Processo -->
+            <field  type="input"
+                    class="{{psController.listItemInfoClasses2col}}"
+                    ng-model="psController.abiAnalysis.nrProcesso"
+                    editable="false"
+                    disabled
+                    label="processo">
+            </field>
+
+            <!-- Situação -->
+            <field  type="input"
+                    class="{{psController.listItemInfoClasses2col}}"
+                    ng-model="psController.abiAnalysis.inSituacao"
+                    editable="false"
+                    disabled
+                    label="Situação">
+            </field>
+
+        </totvs-row>
+
+        <p></br></p>
+
+        <!-- ************** Detalhes do Atendimento ******************* -->
+           <totvs-row>
+
+                <p>Detalhes do Atendimento</p>
+            <!-- Numero do Atendimento -->
+            <field  type="input"
+                    class="{{psController.listItemInfoClasses2col}}"
+                    ng-model="psController.abiAnalisysAtendance.cdCco"
+                    editable="false"
+                    disabled
+                    label="Ofício">
+            </field>
+
+            <!-- Competência -->
+            <field  type="input"
+                    class="{{psController.listItemInfoClasses2col}}"
+                    ng-model="psController.abiAnalisysAtendance.dsCompetencia"
+                    editable="false"
+                    disabled
+                    label="Protocolo">
+            </field>
+
+            <!-- Código do Beneficiário -->
+            <field  type="input"
+                    class="{{psController.listItemInfoClasses2col}}"
+                    ng-model="psController.abiAnalisysAtendance.idBeneficiario"
+                    editable="false"
+                    disabled
+                    label="Competência">
+            </field>
+
+            <!-- protocolo -->
+            <field  type="input"
+                    class="{{psController.listItemInfoClasses2col}}"
+                    ng-model="psController.abiAnalisysAtendance.cdProtocoloAih"
+                    editable="false"
+                    disabled
+                    label="Oficio">
+            </field>
+
+           </totvs-row> 
+
+        <p></br></p>
+
+           <totvs-row>
+               <totvs-list-item  ng-repeat="procedure in psController.abiAnalysisAttendanceProcedures">
+                   <totvs-list-item-header>
+                        <totvs-list-item-title class= "{{psController.listItemInfoClasses2col}}"
+                                title="Procedimento {{procedure.cdProcedure}}: {{procedure.dsProcedureReduz}}">
+                           </totvs-list-item-title>
+
+                        <totvs-list-item-action limit-primary-action="1">
+                                
+                                <action ng-click="psController.editProcedure(procedure)" icon="glyphicon glyphicon-pencil">Editar</action>
+
+                        </totvs-list-item-action>
+                   </totvs-list-item-header>
+                   <totvs-list-item-content>
+                           <totvs-row>
+                                   <totvs-list-item-info class= "{{psController.listItemInfoClasses6col}}"
+                                                   value= "{{(procedure.dsType === 'P' ? 'Principal'  :
+                                                             (procedure.dsType === 'S' ? 'Secundário' :
+                                                             (procedure.dsType === 'E' ? 'Especial'   :
+                                                             procedure.dsType)))}}"
+                                                   title= "Tipo">
+                                   </totvs-list-item-info>
+                           </totvs-row>
+                           <totvs-row>
+                                <totvs-list-item-info class= "{{psController.listItemInfoClasses2col}}"
+                                                   value= "{{StringTools.formatNumberToCurrency(procedure.qtProcedure)}}"
+                                                   title= "Qtd">
+                                   </totvs-list-item-info>
+                                <totvs-list-item-info class="{{psController.listItemInfoClasses2col}}"
+                                                   value= "{{StringTools.formatNumberToCurrency(procedure.vlProcedure)}}"
+                                                   title= "Valor">
+                                   </totvs-list-item-info>
+                                   <totvs-list-item-info class= "{{psController.listItemInfoClasses6col}}"
+                                                   value= "{{StringTools.formatNumberToCurrency(procedure.vlDeferred)}}"
+                                                   title= "Valor Deferido">
+                                   </totvs-list-item-info>
+                                   <totvs-list-item-info class= "{{psController.listItemInfoClasses6col}}"
+                                                   value= "{{StringTools.formatNumberToCurrency(procedure.vlPaid)}}"
+                                                   title= "Valor Pago">
+                                   </totvs-list-item-info>
+                                   <totvs-list-item-info class= "{{psController.listItemInfoClasses6col}}"
+                                                   value= "{{StringTools.formatNumberToCurrency(procedure.vlOperadorEle)}}"
+                                                   title= "Valor Oper. Ele.">
+                                   </totvs-list-item-info>
+                                   <totvs-list-item-info class= "{{psController.listItemInfoClasses6col}}"
+                                                   value= "{{StringTools.formatNumberToCurrency(procedure.vlOperadorUrg)}}"
+                                                   title= "Valor Oper. Urg.">
+                                   </totvs-list-item-info>
+                           </totvs-row>
+                   </totvs-list-item-content>
+               </totvs-list-item>
+           </totvs-row>
+            
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn" ng-click="psController.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-if="psController.idPermissao == 2" ng-click="psController.save()">Salvar</button>
+</totvs-modal-footer>

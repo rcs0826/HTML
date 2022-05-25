@@ -1,0 +1,32 @@
+
+
+<totvs-modal-header>
+	{{:: 'l-vendors-order' | i18n: []: 'dts/mcc' }} ({{controller.purchaseOrderNumber}})
+</totvs-modal-header>
+
+<totvs-modal-body>	
+
+		<totvs-grid grid-selected-items="controller.mrSelected"
+					grid-height="400"
+				    grid-data="controller.vendors"
+					grid="controller.mrGrid"		            
+		            auto-resize-content="true"
+		            auto-resize-column="true"
+		            add-select-column="separate"
+		            reorderable="true"
+		            selectable="multiple,row"
+		            resizable="true"
+		            editable="true">    
+
+
+			<totvs-grid-column field="cod-emitente">{{:: 'l-code' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+			<totvs-grid-column field="nome-abrev">{{:: 'l-abrev-name' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+			<totvs-grid-column field="nome-emit">{{:: 'l-name' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+			<totvs-grid-column field="cgc">{{:: 'l-cnpj' | i18n: []: 'dts/mcc' }}</totvs-grid-column>
+		</totvs-grid>	
+</totvs-modal-body>
+
+<totvs-modal-footer>	
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-close' | i18n: []: 'dts/mcc' }}</button> 	
+	<button class="btn btn-primary" ng-click="controller.apply();">{{ 'l-apply' | i18n: []: 'dts/mcc' }}</button>
+</totvs-modal-footer>

@@ -1,0 +1,244 @@
+<style>
+	.cell-style {
+		display: block;
+		margin: 5px 0;
+		padding: 10px;
+		text-decoration: none;
+		border: 1px solid #c0c0c0;
+		border-left: 5px solid #337ab6 ;
+	}
+
+	.select-exclude {
+		background-color: #8B0000 !important;
+		color: #ffffff !important;
+	}
+
+	.top-label-rules-fields{
+		margin-top: 15px;
+	}
+
+	.rf-field .field-container{
+		margin-top: 0px !important;
+	}
+
+	.rh-field-more-detail-dot{
+		border-top: 1px dotted #cecece;
+		margin-top: 5px;
+		padding-top: 2px;
+	}
+
+	.totvs-style-guide .form-control {
+		width: inherit;
+	}
+
+</style>
+<totvs-page type="edit" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{:: 'l-rules-operation-type' | i18n : [] : 'dts/mpd' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		<totvs-page-header>
+			<totvs-page-header-title title="{{'l-rules-operation-type' | i18n : [] : 'dts/mpd/'}}"
+									 total="{{controller.fieldsOperationType.length}}">
+			</totvs-page-header-title>
+			<totvs-page-header-operation>
+				<div class="col-xs-12">
+					<div class="col-lg-5 col-md-5 col-ms-5 col-xs-5" style="margin-top: 10px; padding-left: 0px; ">
+						<button ng-disabled="controller.saveprior" class="btn btn-primary" role="button" ng-click="controller.postNewPrior();">
+							<span class="glyphicon glyphicon-ok"></span>
+							<span class="hidden-xs ng-binding">{{:: 'l-save-sorter' | i18n : [] : 'dts/mpd' }}</span>
+						</button>
+						<button class="btn btn-default" role="button" ng-click="controller.addNewRule(false);">
+							<span class="glyphicon glyphicon-plus"></span>
+							<span class="hidden-xs ng-binding">{{:: 'l-field-custom' | i18n : [] : 'dts/mpd' }}</span>
+						</button>
+
+						<!--<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+								<span class="glyphicon glyphicon-plus">
+								</span>&nbsp;{{ 'btn-add' | i18n }}
+								<span class="caret"></span>
+							</button>									
+		
+							<ul class="dropdown-menu" role="menu">
+								<li>                               
+									<a ng-click="controller.addNewRule(true);">{{'l-field-default-custom' | i18n}}</a>                               
+								</li>
+								<li>
+									<a ng-click="controller.addNewRule(false);">{{'l-field-custom' | i18n}}</a>                                
+								</li>									
+							</ul>                        
+						</div>-->
+
+						<button class="btn btn-default" role="button" ng-click="controller.init();">
+							<span class="glyphicon glyphicon-refresh"></span>
+							<span class="hidden-xs ng-binding"></span>
+						</button>
+					</div>
+					<div class="col-lg-5 col-md-5 col-ms-5 col-xs-5 pull-right" style="margin-top: 10px; padding-left: 0px; padding-right: 0px;">
+						<div class="input-group">
+							<input type="text" ng-model="controller.filtered" class="form-control" placeholder="{{:: 'l-placeholder-fields-filter' | i18n : [] : 'dts/mpd'}}">
+							<span class="input-group-btn">
+								<button ng-click="controller.removeMethodFiltered();" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</totvs-page-header-operation>
+			<br>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<fieldset>
+			<div class="col-lg-12 col-md-12 col-sm-12">
+				<div class="row" style="padding-bottom: 5px;">
+					<strong>
+						<div class="col-xs-12 col-sm-3 col-xs-3 top-label-rules-fields">
+							{{ 'l-rule-name' | i18n }}
+							<i class="glyphicon glyphicon-question-sign"
+							   tooltip-placement="right"
+							   tooltip-html="controller.helprule"></i>
+						</div>
+						<div class="col-xs-12 col-sm-3 col-xs-3 top-label-rules-fields">
+							{{ 'l-default' | i18n }}
+							<i class="glyphicon glyphicon-question-sign"
+							   tooltip-placement="right"
+							   tooltip-html="controller.helpdefault"></i>
+						</div>
+						<div class="col-xs-12 col-sm-3 col-xs-3 top-label-rules-fields">
+							{{ 'l-prior-nat' | i18n }}
+							<i class="glyphicon glyphicon-question-sign"
+							   tooltip-placement="right"
+							   tooltip-html="controller.helppriori"></i>
+						</div>
+						<div class="col-xs-12 col-sm-3 col-xs-3 top-label-rules-fields">
+							{{ 'l-considera-regra' | i18n }}
+							<i class="glyphicon glyphicon-question-sign"
+							   tooltip-placement="left"
+							   tooltip-html="controller.helpvisible"></i>
+							   <div class="btn-group pull-right" style="margin-bottom: 0px; margin-top: -5px; margin-left: 0px;">
+									<label class="btn btn-default"><input type="checkbox" style="margin: 0px 0 0;" ng-change="controller.setQuickAllFields();" ng-model="controller.showAllFields" class="ng-valid ng-dirty ng-valid-parse ng-touched"><span class="ng-binding"> &nbsp; {{'l-all' | i18n}}</span></label>
+							   </div>
+						</div>
+					</strong>
+				</div>
+				<div class="cell-style crm-tab-item hover" style="padding-bottom: 0px;" ng-repeat="field in controller.fieldsOperationType | filter:controller.filtered" ng-drag="true" ng-drag-data="field" ng-drop="true" ng-drop-success="controller.onPageDropComplete($index, $data, $event)">
+					<div  style="cursor: move">
+						<div class="row">
+							<div class="col-xs-12 col-sm-3 col-xs-3">
+								<span class="hidden-xs glyphicon glyphicon-resize-vertical"
+									  style="margin-right: 5px;">
+								</span>
+								{{ field['des_label_campo'] }}
+							</div>
+							<div class="col-xs-12 col-sm-3 col-xs-3">
+								{{ field['c_trad_padrao'] }}
+							</div>
+
+							<input autocomplete="off" ng-keydown="controller.keydownInput($event)" name="field_val_peso" maxlength="4" class="form-control ng-pristine ng-valid ng-touched col-xs-2 col-sm-2 col-xs-2 rf-field" type="text" ng-model="field.val_peso" ng-blur="controller.applyWeightToLeave($index, field, $event, controller.filtered, controller.fieldsOperationType);" ng-click="controller.setFocusInputClick($index, field, $event);"/>
+
+							<div class="pull-right" style="padding-right:20px">
+
+								<div ng-if="controller.cvavailable == false && field['nom_tabela'] == 'ped-item' && field['nom_campo'] == 'char-1,80,5'">
+
+									<div class="alert alert-danger" style="padding: 5px;">
+										<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+										<span class="sr-only">Error:</span> {{'Apenas com Central de Vendas' | i18n}}  </div>
+
+								</div>
+
+								<div ng-if="controller.cvavailable == true && field['nom_tabela'] == 'ped-item' && field['nom_campo'] == 'char-1,80,5'">
+									<div class="btn-group btn-group">
+										<label class="btn btn-default"
+											   ng-class="{active: field['i_visible'] == 1, 'select-visible' : field['i_visible'] == 1}"
+											   ng-click="field['i_visible'] = '1'">{{'l-yes' | i18n}}</label>
+										<label class="btn btn-default"
+											   ng-class="{active: field['i_visible'] == 0, 'select-visible' : field['i_visible'] == 0}"
+											   ng-click="field['i_visible'] = '0'" >{{'l-no' | i18n}}</label>
+									</div>
+									<button class="btn btn-default select-exclude"
+										ng-if="field['log_default'] === false"
+										ng-click="controller.deleteField(field['c_trad_padrao'] ,field['cdd_id_campo'])">{{'l-del-rule' | i18n}}</button>
+
+									<!--<button class="btn btn-primary"										
+										ng-click="controller.editField(field)">{{'l-edit' | i18n}}</button>-->
+
+								</div>
+
+								<div ng-if="(field['nom_tabela'] == 'ped-item' && field['nom_campo'] == 'char-1,80,5') == false">
+									<div class="btn-group btn-group">
+										<label class="btn btn-default"
+											   ng-class="{active: field['i_visible'] == 1, 'select-visible' : field['i_visible'] == 1}"
+											   ng-click="field['i_visible'] = '1'">{{'l-yes' | i18n}}</label>
+										<label class="btn btn-default"
+											   ng-class="{active: field['i_visible'] == 0, 'select-visible' : field['i_visible'] == 0}"
+											   ng-click="field['i_visible'] = '0'" >{{'l-no' | i18n}}</label>
+									</div>
+									<button class="btn btn-default select-exclude"
+										ng-if="field['log_default'] === false"
+										ng-click="controller.deleteField(field['c_trad_padrao'] ,field['cdd_id_campo'])">{{'l-del-rule' | i18n}}</button>
+
+									<button class="btn btn-primary"		
+									    ng-if="field['log_default'] === false"								
+										ng-click="controller.editField(field)">{{'l-edit' | i18n}}</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="row" style="margin-top: 5px; margin-left: 5px; margin-right: 5px; margin-bottom: 5px">
+							<div class="col-md-12 rh-field-more-detail-dot text-center">
+								<a class="clickable" ng-click="field.show_detail = !field.show_detail;">
+									<span ng-show="!field.show_detail" style="opacity:.8;" class="ng-binding">&#9660; &nbsp; Exibir detalhes...</span>
+									<span ng-show="field.show_detail" style="opacity:.8;" class="ng-binding">&#9650; &nbsp; Ocultar detalhes...</span>
+								</a>
+							</div>
+							<div ng-show="field.show_detail">
+								<div class="item-field col-lg-12 col-md-12 col-sm-12">
+									<br>
+									<div class="row">
+										<div class="col-xs-12 col-sm-3 col-xs-3">
+											<label class="ng-binding ng-scope">{{'l-database' | i18n}}:</label>
+											<span class="ng-scope"><span class="ng-binding ng-scope">{{field['nom_banco']}}</span></span>
+										</div>
+										<div class="col-xs-12 col-sm-3 col-xs-3">
+											<label class="ng-binding ng-scope">{{'l-cod-tabela' | i18n}}:</label>
+											<span class="ng-scope"><span class="ng-binding ng-scope">{{field['nom_tabela']}}</span></span>
+										</div>
+										<div class="col-xs-12 col-sm-3 col-xs-3">
+											<label class="ng-binding ng-scope">{{'l-field' | i18n}}:</label>
+											<span class="ng-scope"><span class="ng-binding ng-scope">{{field['nom_campo']}}</span></span>
+										</div>
+										<div class="col-xs-12 col-sm-3 col-xs-3">
+											<label class="ng-binding ng-scope">{{'l-has-search' | i18n}}:</label>
+											<span class="ng-scope"><span class="ng-binding ng-scope">{{field['log_livre_1'] | booleanI18N}}</span></span>
+										</div>
+										<div class="col-xs-12 col-sm-3 col-xs-3">
+											<label class="ng-binding ng-scope">{{'l-search-description' | i18n}}:</label>
+											<span class="ng-scope"><span class="ng-binding ng-scope">{{field['nom_campo_descr']}}</span></span>
+										</div>
+										<div ng-if="field['nom_bco_corresp'] != ''" class="col-xs-12 col-sm-3 col-xs-3">
+											<label class="ng-binding ng-scope ">{{'l-order-database-match' | i18n}}:</label>
+											<span class="ng-scope"><span class="ng-binding ng-scope">{{field['nom_bco_corresp']}}</span></span>
+										</div>
+										<div ng-if="field['nom_tab_corresp'] != ''" class="col-xs-12 col-sm-3 col-xs-3">
+											<label class="ng-binding ng-scope ">{{'l-order-table-match' | i18n}}:</label>
+											<span class="ng-scope"><span class="ng-binding ng-scope">{{field['nom_tab_corresp']}}</span></span>
+										</div>
+										<div ng-if="field['nom_campo_corresp'] != ''" class="col-xs-12 col-sm-3 col-xs-3">
+											<label class="ng-binding ng-scope ">{{'l-order-field-match' | i18n}}:</label>
+											<span class="ng-scope"><span class="ng-binding ng-scope">{{field['nom_campo_corresp']}}</span></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+	</totvs-page-content>
+</totvs-page>
+
+

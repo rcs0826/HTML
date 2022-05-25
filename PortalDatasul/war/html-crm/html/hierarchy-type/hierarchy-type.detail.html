@@ -1,0 +1,127 @@
+<totvs-page type="detail">
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/hierarchy-type/">{{ 'nav-hierarchy-type' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ controller.model.nom_tip_hier }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action on-back-link="#/dts/crm/hierarchy-type/"
+													on-edit="controller.onEdit"
+													on-remove="controller.onRemove"
+													hide-actions="true">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+    
+    <totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.model">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-show="controller.model">
+            
+            <div class="col-xs-12 no-gutter">
+
+                <totvs-page-detail-info class="col-xs-12 col-sm-3"
+										title="{{ 'l-active' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ (controller.model.log_ativ === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</totvs-page-detail-info>
+
+            </div>
+            
+             <totvs-tabset class="no-border">
+
+				<tabset>
+					<tab heading="{{ 'nav-hierarchies' | i18n: []: 'dts/crm' }}">
+                        <br/>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button type="button"
+                                        ng-click="controller.addEditHierarchy(false)"
+                                        class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    <span class="hidden-xs">{{ 'btn-hierarchy' | i18n: []: 'dts/crm' }}</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <br/>
+                            <div class="col-sm-12" ng-if="!controller.levels || (controller.levels && controller.levels.length === 0)">
+                                <totvs-page-alert type="info"
+                                                  message="{{ 'msg-not-found-levels' | i18n: []: 'dts/crm' }}">
+                                </totvs-page-alert>
+                            </div>
+                            
+                            <div ng-if="controller.levels && controller.levels.length > 0">
+                                <div class="col-sm-6">
+                                    <crm-tree-view nodes="controller.levels"
+                                                   show-users="controller.showUsers"
+                                                   remove="controller.removeNode">
+                                    </crm-tree-view>
+                                </div>
+                            
+                                <div class="col-sm-6" ng-if="controller.selectedNode" style="padding-left: 0px;">
+                                    <div class="row">
+                                        <div class="col-xs-8" style="padding-top: 5px; word-break: break-all">
+                                            <h3 style="margin-top: 0px;">
+                                                {{ controller.selectedNode.nom_hier_time }}
+                                            </h3>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <div class="pull-right">
+                                                <button type="button"
+                                                        ng-click="controller.addEditHierarchy(true)"
+                                                        class="btn btn-primary">
+                                                    <span class="glyphicon glyphicon-pencil"></span>
+                                                    <span class="hidden-xs">{{ 'btn-edit' | i18n: []: 'dts/crm' }}</span>
+                                                </button>
+
+                                                <button type="button"
+                                                        class="btn btn-default"
+                                                        ng-click="controller.remove()">
+                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                    <span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+                                                </button>
+                                            </div>
+                                       </div>
+                                    </div>
+
+                                    <totvs-tabset style="padding-left: 0px;">
+                                        <totvs-tab heading="{{ 'l-users' | i18n: []: 'dts/crm' }}">
+                                            <div ng-controller="hier.hier_usuar.tab.control as userController" ng-init="userController.search(controller.selectedNode.num_id)" ng-include="'/dts/crm/html/hierarchy-type/hierarchy/users/users.tab.html'"></div>
+                                        </totvs-tab>
+                                    </totvs-tabset>
+                                </div>
+                            </div>
+                        </div>
+                        <!--div class="row">
+                            <div class="col-sm-6">
+                                <crm-tree-view nodes="controller.levelsNoReport"
+                                               show-users="controller.showUsers"
+                                               remove="controller.removeNode">
+                                </crm-tree-view>
+                            </div>
+                        </div-->
+					</tab>
+				</tabset>
+                 
+            </totvs-tabset>
+        </totvs-page-detail>
+        
+        
+    </totvs-page-content>
+
+</totvs-page>

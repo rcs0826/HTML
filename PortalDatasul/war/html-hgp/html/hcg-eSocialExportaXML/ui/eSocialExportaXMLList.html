@@ -1,0 +1,162 @@
+<link type="text/css"  rel="stylesheet" href="/dts/hgp/html/assets/css/hcg.css" />
+
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb id="breadcrumb">
+                <breadcrumb>Central de Exportações eSocial</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="Central de Exportações eSocial">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="2">
+                    <action class="glyphicon glyphicon-export"
+                            ng-click="controller.exportarRegistros();">
+                        Exportar
+                    </action>
+                    <action class="glyphicon glyphicon-search"
+                            link="#/dts/hgp/hcg-eSocialExportaXML/eventDelete">
+                        Consultar Envios
+                    </action>
+                    <action ng-if="controller.dadosTAF.integraTaf"
+                            class="glyphicon glyphicon-refresh"
+                            ng-click="controller.verificarStatusTAF();"
+                            title="Atualizar status de conexão com o TAF">
+                        Status TAF
+                    </action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.filtersForm">
+            <div ng-if="controller.dadosTAF.integraTaf">
+                <totvs-row>
+                    <span class="{{controller.dadosTAF.styleClass}}">
+                          TAF {{controller.dadosTAF.statusServico}}
+                    </span>
+                </totvs-row>
+                </br>
+            </div>
+            <totvs-row>
+                <totvs-field totvs-datepicker
+                            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                            label="Data Inicial"
+                            ng-model="controller.dadosTela.dtInicial"
+                            culture="pt"
+                            t-mask-date="00/00/0000"
+                            ng-required="true">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+                <totvs-field totvs-datepicker
+                            class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                            label="Data Final"
+                            ng-model="controller.dadosTela.dtFinal"
+                            culture="pt"
+                            t-mask-date="00/00/0000"
+                            ng-required="true">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+                <totvs-field totvs-checkbox
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            label="Reenvio"
+                            ng-model="controller.dadosTela.reenvio">
+                </totvs-field>
+            </totvs-row>        
+            
+            <totvs-row>
+                <totvs-field totvs-select
+                             class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                             ng-model="controller.dadosTela.cdGrupoPrestIni"
+                             label="Grupo Inicial" 
+                             canclean                         
+                             select-service="hcg.providerGroupZoomController"
+                             zoom-service="hcg.providerGroupZoomController"
+                             select-id="cdGrupoPrestador"                          
+                             select-description="dsGrupoPrestador"
+                             ng-required="controller.dadosTela.cdGrupoPrestFim != 0 &&
+                                          controller.dadosTela.cdGrupoPrestFim != undefined"
+                             ng-change="controller.onGrupoPrestIniChanged()">
+                    <validator key="min">Insira um valor maior que zero</validator>
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+                <totvs-field totvs-select
+                             class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                             ng-model="controller.dadosTela.cdGrupoPrestFim"
+                             label="Grupo Final" 
+                             canclean                         
+                             select-service="hcg.providerGroupZoomController"
+                             zoom-service="hcg.providerGroupZoomController"
+                             select-id="cdGrupoPrestador" 
+                             select-description="dsGrupoPrestador"
+                             ng-required="controller.dadosTela.cdGrupoPrestIni != 0 &&
+                                          controller.dadosTela.cdGrupoPrestIni != undefined"
+                             ng-change="controller.onGrupoPrestFimChanged()">
+                    <validator key="min">Insira um valor maior que zero</validator>
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-select
+                             class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                             ng-model="controller.dadosTela.cdPrestIni"
+                             label="Prestador Inicial" 
+                             canclean                         
+                             select-service="global.providerZoomController"
+                             zoom-service="global.providerZoomController"
+                             min="0"
+                             select-id="cdPrestador"                          
+                             select-description="nmPrestador"
+                             zoom-init="{filters: controller.providerFixedFilters}"
+                             select-init="{filters: controller.providerFixedFilters}"
+                             ng-required="controller.dadosTela.cdPrestFim != 0 &&
+                                          controller.dadosTela.cdPrestFim != undefined"
+                             ng-change="controller.onPrestIniChanged()">
+                    <validator key="min">Insira um valor maior que zero</validator>
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+                <totvs-field totvs-select
+                             class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                             ng-model="controller.dadosTela.cdPrestFim"
+                             label="Prestador Final" 
+                             canclean               
+                             select-service="global.providerZoomController"
+                             zoom-service="global.providerZoomController"
+                             select-id="cdPrestador"                         
+                             select-description="nmPrestador"
+                             zoom-init="{filters: controller.providerFixedFilters}"
+                             select-init="{filters: controller.providerFixedFilters}"
+                             ng-required="controller.dadosTela.cdPrestIni != 0 &&
+                                          controller.dadosTela.cdPrestIni != undefined"
+                             ng-change="controller.onPrestFimChanged()">
+                    <validator key="min">Insira um valor maior que zero</validator>
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>        
+        </totvs-page-form>
+
+        <totvs-page-content-header>   
+            <totvs-page-quick-select
+                style="font-size:18px;"
+                title="Selecionar Todos"
+                list="controller.dadosTela.registros">          
+            </totvs-page-quick-select>
+        </totvs-page-content-header>
+        
+        <totvs-page-alert ng-if="controller.dadosTela.registros.length <= 0"
+                          type="info"
+                          message="Nenhum registro encontrado">
+        </totvs-page-alert>           
+
+        <totvs-list-item ng-repeat="registro in controller.dadosTela.registros"
+                         selected=registro>                   
+            <totvs-list-item-title
+                title="{{registro.tpRegistro}} - {{registro.dsRegistro}}">
+            </totvs-list-item-title>                
+        </totvs-list-item>
+    </totvs-page-content>
+</totvs-page>
+
+

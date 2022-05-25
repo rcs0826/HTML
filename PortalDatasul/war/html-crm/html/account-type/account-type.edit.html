@@ -1,0 +1,45 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_tip_clien : ('btn-type-client' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <fieldset class="row">
+        
+        <field type="input"
+			   class="col-xs-12 col-md-6"
+               maxlength="40"
+			   ng-required="true"
+			   ng-model="controller.model.nom_tip_clien"
+			   canclean="undefined"
+			   placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+		</field>
+        
+        <totvs-field totvs-checkbox
+					 t-bsswitch
+					 class="col-xs-12 col-md-6"
+					 ng-model="controller.model.log_validac_cnpj_cpf"
+					 label="{{ 'l-cpf-cnpj-required' | i18n: []: 'dts/crm' }}">
+		</totvs-field>
+        
+    </fieldset>
+    
+<!--
+    <fieldset class="row">
+        
+        <totvs-field totvs-checkbox
+                     t-bsswitch
+                     class="col-xs-12 col-md-6"
+                     ng-model="controller.model.log_integrad_erp"
+                     label="{{ 'l-integrates-erp' | i18n: []: 'dts/crm' }}">
+        </totvs-field>
+        
+    </fieldset>
+-->
+    
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

@@ -1,0 +1,106 @@
+<totvs-modal-header>{{ 'l-needs' | i18n }} ({{controller.totalRecords}})</totvs-modal-header>
+<totvs-modal-body>
+    <totvs-page-content>
+        <totvs-page-detail>
+            <totvs-page-detail-info-group>{{controller.itemCode}} - {{controller.itemDescription}}</totvs-page-detail-info-group>
+            <totvs-page-detail-info
+                class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                title="{{ 'l-reference' | i18n }}"
+                style="margin-bottom: 0px;"
+                value="{{controller.reference}}">
+            </totvs-page-detail-info>
+            
+            <totvs-divider style="padding-bottom: 5px;"></totvs-divider>
+            
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                 style="margin-top: 0px;">
+                
+                <!-- PERIODO/DATA -->
+                <div class="btn-group" 
+                     data-toggle="buttons"
+                     style="padding-right: 15px;">
+                    <!-- PERIODO -->
+                    <label class="btn btn-primary active"
+                           ng-click="controller.onChangeDataPeriodo(0)">
+                        <input type="radio"
+                             id="btnPeriod"
+                             checked>{{ 'l-period' | i18n }}
+                    </label>
+                    <!-- DATA -->
+                    <label class="btn btn-primary"
+                           ng-click="controller.onChangeDataPeriodo(1)">
+                        <input type="radio"
+                             id="btnDate">{{ 'l-date' | i18n }}
+                    </label>
+                </div>
+                
+                <!-- TODOS OS CAMPOS -->
+                <label style="margin-top: 12px; padding-right: 15px; padding-left: 15px;">
+                    <span class="hidden-xs">{{ 'l-all-fields' | i18n }}</span>
+                    <input type="checkbox"
+                           ng-model="controller.showAllFields"
+                           ng-change="controller.showAllFieldsFunction()"
+                           bsswitch>
+                    </input>
+                </label>
+                
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-4"
+                     style="margin-top: 5px; float: right; padding-left: 0px; padding-right: 0px;">
+                    <!-- NOVA LINHA -->
+                    <button type="button" 
+                            class="btn btn-primary"
+                            data-ng-click="controller.addNeed();">
+                        <span class="glyphicon glyphicon-plus-sign hidden-lg hidden-md"></span>
+                        <span class="hidden-sm hidden-xs">{{ 'l-new-line' | i18n }}</span>
+                    </button>
+                    
+                    <!-- EXCLUIR -->
+                    <button type="button" 
+                            class="btn btn-default" 
+                            data-ng-click="controller.removeNeed();">
+                        <span class="glyphicon glyphicon-minus-sign hidden-lg hidden-md"></span>
+                        <span class="hidden-sm hidden-xs">{{ 'btn-remove' | i18n }}</span>
+                    </button>
+                </div>
+            </div>
+        </totvs-page-detail>
+        
+        <!-- GRID NECESSIDADES -->
+        <totvs-grid grid-options="controller.gridOptions"
+                    grid-selected-items="controller.selectedItems"
+                    grid-data="controller.gridData"
+                    editable='true'
+                    grid-height="450"
+                    grid-dirty-items="controller.dirtyItens"
+                    grid="controller.grid">
+            <totvs-grid-column field="period" editable="true" width="90">{{ 'l-period' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="date" editable="true" width="125">{{ 'l-date' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="siteCode" editable="true" width="100">{{ 'l-site-short' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="quantity" filter="number : 4" style="text-align: right;" editable="true" width="130">{{ 'l-quantity' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="shortName" editable="true" width="120">{{ 'l-short-name-short' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="customerGroup" filter="number" editable="true" width="120">{{ 'l-customer-group-short' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="customerRequest" editable="true" width="120">{{ 'l-customer-request-short' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="confirmQuantity" filter="number : 4" style="text-align: right;" editable="false" width="130">{{ 'l-confirmed' | i18n }}</totvs-grid-column>
+        </totvs-grid>
+    </totvs-page-content>
+</totvs-modal-body>
+<totvs-modal-footer>
+    
+    <!-- SALVAR -->
+    <button type="button" 
+            class="btn btn-primary" 
+            ng-disabled="controller.saveNeedsDisabled && controller.dirtyItens.length <= 0"
+            data-ng-click="controller.save();">{{ 'btn-save' | i18n }}
+    </button>
+    
+    <!-- FECHAR -->
+    <button type="button" 
+            class="btn btn-default" 
+            data-ng-click="controller.close();">{{ 'btn-close' | i18n }}
+    </button>
+</totvs-modal-footer>
+<style>
+      #centerRow {
+        overflow-y: scroll;
+      }
+</style>

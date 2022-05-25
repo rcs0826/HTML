@@ -1,0 +1,40 @@
+
+<totvs-page>
+  <totvs-page-navbar>
+    <totvs-page-breadcrumb>
+      <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+      <breadcrumb>{{'l-recalculation-stack-kanban' | i18n}}</breadcrumb>
+    </totvs-page-breadcrumb>
+    <totvs-page-header>
+      <totvs-page-header-title>{{'l-recalculation-stack-kanban' | i18n}}</totvs-page-header-title>
+      <totvs-page-header-operation>
+        <div class="col-sm-offset-7 col-md-5 col-sm-6">
+          <establishment-select ng-model="controller.establishment" callback-id="controller.establishmentChanged"></establishment-select>
+        </div>
+      </totvs-page-header-operation>
+    </totvs-page-header>
+  </totvs-page-navbar>
+  <totvs-page-content ng-if="controller.establishment != undefined">
+    <totvs-page-detail>
+      <totvs-page-alert ng-if="!controller.isMappingPublished" type="warning">{{'l-map-not-published' | i18n}}</totvs-page-alert>
+      <totvs-page-alert type="info">
+        <p>{{'l-msg-init-recalculation-one' | i18n}}</p>
+        <p>{{'l-msg-init-recalculation-two' | i18n}}</p>
+        <ol>
+          <li>{{'l-msg-init-recalculation-three' | i18n}}</li>
+          <li>{{'l-msg-init-recalculation-four' | i18n}}</li>
+          <li>{{'l-msg-init-recalculation-five' | i18n}}</li>
+        </ol>
+      </totvs-page-alert>
+      <div class="pull-right"><a ng-disabled="!controller.isMappingPublished" ng-click="controller.exportarItens()" class="btn btn-warning">{{'l-export-items' | i18n}}</a>&nbsp;
+        <label role="button" ng-disabled="!controller.isMappingPublished" ng-click="controller.importItens()" class="btn btn-primary">{{ 'l-import-changed-items' | i18n: []: 'dts/kbn' }}</label><span class="file-text"></span>
+        <input id="file-input" type="file" style="position:fixed;top:-999px;" ngf-select="ngf-select" ngf-change="controller.uploadFiles($files);" ngf-multiple="false" ngf-allow-dir="false"/>
+        <p>
+          <div ng-show="controller.barProgress" class="progress">
+            <div style="width: 100%" class="progress-bar progress-bar-striped active">{{'l-importing' | i18n}}</div>
+          </div>
+        </p>
+      </div>
+    </totvs-page-detail>
+  </totvs-page-content>
+</totvs-page>

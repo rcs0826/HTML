@@ -1,0 +1,79 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/strategy/">{{ 'nav-strategy' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ controller.model.des_estrateg_vda }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action on-back-link="#/dts/crm/strategy/"
+													on-edit="controller.onEdit"
+													on-remove="controller.onRemove"
+													hide-actions="true">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}"
+						  ng-if="(controller.model | isUndefined)">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-show="controller.model | isDefined">
+
+			<div class="col-xs-12 no-gutter">
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-4"
+										title="{{ 'l-date' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ controller.model.dat_inic | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+					<span ng-if="controller.model.dat_fim">
+						- {{ controller.model.dat_fim  | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+					</span>
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-4"
+										title="{{ 'l-register-action' | i18n: []: 'dts/crm' }}?"
+										value-break="false">
+					{{ (controller.model.log_inclui_acao === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</totvs-page-detail-info>
+
+			</div>
+
+			<totvs-tabset class="no-border">
+
+				<tabset>
+
+					<tab heading="{{ 'nav-phase' | i18n: []: 'dts/crm' }} ({{ controller.model.ttFase.length || 0 }})">
+						<ng-include src="'/dts/crm/html/strategy/phase/phase.tab.html'"></ng-include>
+					</tab>
+
+					<tab heading="{{ 'nav-goal' | i18n: []: 'dts/crm' }} ({{ controller.model.ttMeta.length || 0 }})"
+						 ng-if="controller.model.ttFase.length">
+						<ng-include src="'/dts/crm/html/strategy/goal/goal.tab.html'"></ng-include>
+					</tab>
+
+					<tab heading="{{ 'nav-transition' | i18n: []: 'dts/crm' }} ({{ controller.model.ttTransicao.length || 0 }})"
+						 ng-if="controller.model.ttFase.length">
+						<ng-include src="'/dts/crm/html/strategy/transition/transition.tab.html'"></ng-include>
+					</tab>
+
+				</tabset>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

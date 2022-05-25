@@ -1,0 +1,45 @@
+<totvs-modal-header>
+    Copiar Transações de Usuário
+</totvs-modal-header>
+<totvs-modal-body id="modalUserCopy" style="height: 250px; overflow-y: auto;">
+    <fieldset>
+        <totvs-page-detail>            
+
+            <totvs-field  totvs-select name-id="deUsuarioZoom"
+                    ng-model="controller.fromUser.cdUseridTransacao"
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    label="Usuário Origem"
+                    required 
+                    canclean
+                    select-service="hrc.userZoomController"
+                    zoom-service="hrc.userZoomController"
+                    select-id="codUsuario" 
+                    select-description="nomUsuario"> 
+            </totvs-field>    
+
+            <totvs-field  totvs-select name-id="paraUsuarioZoom"
+                    ng-model="controller.toUser.cdUseridTransacao"
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    label="Usuário Destino"
+                    required 
+                    canclean
+                    select-service="hrc.userZoomController"
+                    zoom-service="hrc.userZoomController"
+                    select-id="codUsuario" 
+                    select-description="nomUsuario"> 
+            </totvs-field>                          
+
+            <field  type="checkbox"
+                    label="Remover do usuário destino as transações não existentes no usuário origem"                        
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"                        
+                    data-ng-model="controller.excludeTransactions">
+            </field>
+
+        </totvs-page-detail>
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn" ng-click="controller.cancel()">Fechar</button>
+    <button class="btn btn-primary" ng-click="controller.userCopy()">Copiar</button>
+</totvs-modal-footer>

@@ -1,0 +1,55 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_produt : ('btn-add-product' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="select"
+			   ng-model="controller.model.ttProduto"
+			   canclean="undefined">
+
+			<label>{{ 'l-product' | i18n: []: 'dts/crm' }}</label>
+
+			<zoom zoom-service="crm.crm_produt.zoom"
+				  zoom-init="{ num_id_tab_preco: controller.priceTable.num_id_tab_preco }"></zoom>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-product' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_produt }} ({{ $select.selected.cod_item_erp }})
+				</ui-select-match>
+				<ui-select-choices repeat="product in controller.products track by $index"
+								   refresh="controller.getProducts($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="product.nom_produt + ' (' + product.cod_item_erp + ')' | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<totvs-field
+			   totvs-decimal
+			   class="col-sm-4 col-md-4"
+			   ng-model="controller.model.val_perc_desc_campanha"
+			   placeholder="{{ 'l-discount' | i18n: []: 'dts/crm' }}"
+			   canclean="undefined"
+			   label="{{ 'l-discount' | i18n: []: 'dts/crm' }}"
+			   m-dec="2"
+			   v-max="3"
+		</totvs-field>
+
+		<field type="checkbox"
+			   class="col-sm-2 col-md-2"
+			   ng-model="controller.model.log_tip_desc"
+			   placeholder="{{ 'l-percent' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-percent' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

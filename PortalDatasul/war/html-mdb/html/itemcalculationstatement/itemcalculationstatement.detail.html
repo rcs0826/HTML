@@ -1,0 +1,182 @@
+<totvs-page type="detail">
+
+        <totvs-page-navbar>
+                <totvs-page-breadcrumb>  
+                    <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+                    <breadcrumb link="#/dts/mdb/itemcalculationstatement">{{'l-item-calculation-statement' | i18n}}</breadcrumb>
+                    <breadcrumb>{{ 'l-detail' | i18n }}</breadcrumb>                      
+                </totvs-page-breadcrumb>
+
+                <totvs-page-header>
+                    <totvs-page-header-title title="{{ 'l-detail' | i18n }} {{ 'l-item-calculation-statement' | i18n }}">
+                    </totvs-page-header-title>
+                    <totvs-page-header-operation>
+                        <totvs-page-header-operation-action hide-remove="true" 
+                                                            hide-edit="true"
+                                                            on-back-link="#/dts/mdb/itemcalculationstatement">
+                            <action ng-click="controller.openParameters()" icon="glyphicon glyphicon-cog">{{i18n('l-parameters', [], 'dts/mdb')}}</action>
+                        </totvs-page-header-operation-action>
+                    </totvs-page-header-operation>
+                </totvs-page-header>
+        </totvs-page-navbar>
+
+        <totvs-page-content>
+            <totvs-page-detail>
+                <!-- Primeira linha de informações -->          
+                <b>           
+                    <totvs-page-detail-info class="col-lg-4 col-md-4 col-sm-12 col-xs-12"
+                                            title="{{i18n('l-item', [], 'dts/mdb')}}"
+                                            value="{{controller.item['cabecalho-item']}}">
+                    </totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-lg-1 col-md-1 col-sm-4 col-xs-12"
+                                            title="{{i18n('l-un', [], 'dts/mdb')}}"
+                                            value="{{controller.item['un']}}">
+                    </totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-lg-1 col-md-1 col-sm-4 col-xs-12"
+                                            title="{{i18n('l-type', [], 'dts/mdb')}}"
+                                            value="{{controller.item['desc-compr-fabric']}}">
+                    </totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                            title="{{i18n('l-politics', [], 'dts/mdb')}}"
+                                            value="{{controller.item['desc-politica']}}">
+                    </totvs-page-detail-info>                    
+                    <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-12"
+                                            title="{{i18n('l-initial-balance', [], 'dts/mdb')}}"
+                                            value="{{controller.item['qtde-saldo-ini'] | number:4}}">
+                    </totvs-page-detail-info>  
+                    <totvs-page-detail-info ng-if="controller.item['idi-multi-estab'] === 3"
+                                            class="col-lg-2 col-md-2 col-sm-4 col-xs-12"
+                                            title="{{i18n('l-site', [], 'dts/mdb')}}"
+                                            value="{{controller.item['cod-estabel']}}">
+                    </totvs-page-detail-info>  
+                </b>                  
+                <!-- Segunda linha de informações -->
+
+                <totvs-group-content title="{{i18n('l-more-info', [], 'dts/mdb')}}">  
+                
+
+                    <div class="col-lg-12">                    
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-lot', [], 'dts/mdb')}}"
+                                                value="{{controller.item['lote-economi'] | number:4}}">
+                        </totvs-page-detail-info>                    
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-min-lot-short', [], 'dts/mdb')}}"
+                                                value="{{controller.item['lote-minimo'] | number:4}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-mult-lote-short', [], 'dts/mdb')}}"
+                                                value="{{controller.item['lote-multipl'] | number:4}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-max-lote-short', [], 'dts/mdb')}}"
+                                                value="{{controller.item['qtd-lote-max'] | number:4}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-batch-prog-short', [], 'dts/mdb')}}"
+                                                value="{{controller.item['desc-idi-program-lote']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-lead-time', [], 'dts/mdb')}}"
+                                                value="{{controller.item['ressuprimento']}}">
+                        </totvs-page-detail-info>     
+                    </div>
+                
+                    <!-- Terceira linha de informações -->
+                    <div class="col-lg-12">
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-sec-st-short', [], 'dts/mdb')}}"
+                                                value="{{controller.item['desc-tipo-est-seg']}}">
+                        </totvs-page-detail-info>                    
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-sft-qty', [], 'dts/mdb')}}"
+                                                value="{{controller.item['quant-segur'] | number:4}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-safety-time', [], 'dts/mdb')}}"
+                                                value="{{controller.item['tempo-segur']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-fixed-period', [], 'dts/mdb')}}"
+                                                value="{{controller.item['periodo-fixo']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-fixed-horizon', [], 'dts/mdb')}}"
+                                                value="{{controller.item['horiz-fixo']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-div-order', [], 'dts/mdb')}}"
+                                                value="{{controller.item['desc-div-ordem']}}">
+                        </totvs-page-detail-info>
+                    </div>
+                    <!-- Quarta linha de informações-->
+                    <div class="col-lg-12">
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-refugo', [], 'dts/mdb')}}"
+                                                value="{{controller.item['fator-refugo'] | number:2}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-waste-qty', [], 'dts/mdb')}}"
+                                                value="{{controller.item['quant-perda'] | number:4}}">
+                        </totvs-page-detail-info>                    
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-fraciona', [], 'dts/mdb')}}"
+                                                value="{{controller.item['desc-fraciona']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-round-excess', [], 'dts/mdb')}}"
+                                                value="{{controller.item['desc-log-sobra']}}">
+                        </totvs-page-detail-info>                    
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-fcast-use-short', [], 'dts/mdb')}}"
+                                                value="{{controller.item['desc-log-consid-consu']}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-buffer-shipment', [], 'dts/mdb')}}"
+                                                value="{{controller.item['cod-pulmao'] || '&nbsp' }}">
+                        </totvs-page-detail-info>
+                    </div>
+                
+                    <!--Quinta linha de informações-->        
+                    <div class="col-lg-12">
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-speed-cons', [], 'dts/mdb')}}"
+                                                value="{{controller.item['qtd-pico-consumo'] | number:4}}">
+                        </totvs-page-detail-info>                    
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-max-nominal-est', [], 'dts/mdb')}}"
+                                                value="{{controller.item['qtd-estoq-max'] | number:4}}">
+                        </totvs-page-detail-info>  
+                        <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-4 col-xs-6"
+                                                title="{{i18n('l-kanban', [], 'dts/mdb')}}"
+                                                value="{{controller.item['qtd-kanban'] | number:4}}">
+                        </totvs-page-detail-info>                     
+                    </div>
+                </totvs-group-content>                
+                <totvs-page-alert
+                    ng-if="controller.linhas.length === 0"
+                    type="info"
+                    message="{{ 'msg-record-not-found' | i18n }}">
+                </totvs-page-alert>            
+                <!-- Abas de navegação entre Planilha e Gráfico -->    
+                <ul class="nav nav-tabs">
+                    <li ng-repeat="tab in controller.tabs" ng-class="{active: tab.active}" ng-click="controller.tabClick(tab)"><a title="{{tab.tooltip}}" style="cursor: pointer;">{{tab.title}}</a></li>
+                </ul>                
+                <div style="overflow-x: auto; width: auto;">
+                    <!-- Aba da Planilha -->
+                    <div ng-if="controller.activeTab == controller.tabs[0]">
+                        <div ng-if="controller.mostraPlanilha">
+                            <kendo-tree-list k-options="controller.treelistOptions"></kendo-tree-list>
+                        </div>
+                    </div>
+                    <!-- Aba do Gráfico -->
+                    <div ng-if="controller.activeTab == controller.tabs[1]">
+                        <div id="chart" style="overflow-y: hidden;" ng-style="{'width':controller.chartwidth}"></div>
+                    </div>
+                </div>
+            </totvs-page-detail>
+        </totvs-page-content>
+</totvs-page>

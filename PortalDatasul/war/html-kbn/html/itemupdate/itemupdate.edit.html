@@ -1,0 +1,18 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/font-awesome.css"/>
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<totvs-modal-header>{{'l-item-edit' | i18n}} {{controller.myParams.model | descGeneric:"{sku} - {desc} {ref} ({exp})"}}</totvs-modal-header>
+<totvs-modal-body>
+  <totvs-page-form id="itemUpdateForm" role="form">
+    <field type="input" ng-model="controller.myParams.model.des_item_erp" label="{{'l-description' | i18n}}" placeholder="{{ 'l-description' | i18n}}" maxlength="80" required="required" class="col-xs-12 col-md-12"></field>
+    <field type="input" ng-model="controller.myParams.model.cod_un_med_erp" label="{{'l-un' | i18n}}" placeholder="{{'l-un' | i18n}}" maxlength="5" required="required" class="col-xs-2 col-md-2"></field>
+    <field type="input" ng-model="controller.myParams.model.cod_depos_erp" label="{{'l-warehouse' | i18n}}" placeholder="{{ 'l-warehouse' | i18n}}" maxlength="8" required="required" class="col-xs-3 col-md-3"></field>
+    <field type="input" ng-model="controller.myParams.model.cod_refer" label="{{'l-reference' | i18n}}" placeholder="{{ 'l-reference' | i18n}}" maxlength="8" class="col-xs-3 col-md-3">       </field>
+    <field type="input" ng-model="controller.myParams.model.cod_localiz" label="{{'l-location' | i18n}}" placeholder="{{ 'l-location' | i18n}}" maxlength="20" class="col-xs-4 col-md-4"></field>
+    <field type="checkbox" ng-model="controller.myParams.model.idi_control_kanban" label="{{'l-controlled' | i18n}}" ng-true-value="1" ng-false-value="0" class="col-xs-12 col-md-4">       </field>
+  </totvs-page-form>
+</totvs-modal-body>
+<totvs-modal-footer>
+  <button data-ng-click="controller.cancel();" class="btn btn-default">{{ 'btn-cancel' | i18n }}</button>
+  <button data-ng-click="controller.save(controller.myParams.action, controller.myParams.model);" class="btn btn-primary">{{ 'l-save' | i18n }}</button>
+</totvs-modal-footer>

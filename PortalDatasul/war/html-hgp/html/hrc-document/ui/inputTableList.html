@@ -1,0 +1,81 @@
+<table
+    class="table table-sm table-hover table-striped table-bordered" 
+    style="font-size:12px;table-layout: fixed;border-collapse: collapse;width: 100%;height: 100%;">
+    <thead>
+    <tr>
+        <th width="3%" scope="col"></th>
+        <th width="13%" scope="col">Documento</th>
+        <th width="12%" scope="col">Insumo</th>
+        <th width="16%" scope="col">Beneficiário</th>
+        <th width="16%" scope="col">Prestador</th>
+        <th width="6%" scope="col">Realização</th>
+        <th width="4%" scope="col">Qtd</th>
+        <th width="7%" scope="col">Cobrado</th>
+        <th width="7%" scope="col">Valor</th>
+        <th width="12%" scope="col">Ações</th>
+    </tr>
+    </thead>
+    <tbody>                   
+        <tr class="tag-{{register.provider.inStatus}} list-item list-item padding5" 
+            ng-repeat="register in controller.listOfInputs | filter:{ filterField: controller.searchInputText}">
+            <td width="3%" class="padding5">
+                <totvs-field style=" float: left;margin-left: -9px;margin-top: -6px;"
+                             totvs-checkbox ng-model="register.selected">
+                </totvs-field>
+            </td>
+            <td style="width:13%;overflow: hidden;white-space: nowrap;" class="padding5"
+                title="{{register.document.urlChave}}">
+                <span> 
+                    <a href="#/dts/hgp/hrc-document/detail/{{register.document.urlChave}}" 
+                        id="linkDocumentTitle"> 
+                        {{register.document.urlChave.substring(register.document.urlChave.indexOf("/") + 1)}}
+                    </a>
+                </span>
+            </td>
+            <td style="width:12%;overflow: hidden;white-space: nowrap;" 
+                class="padding5"
+                title="{{register.rotuloMovto}}">
+                {{register.rotuloMovto}}
+            </td>
+            <td style="width:18%;overflow: hidden;white-space: nowrap;" 
+                class="padding5"
+                title="{{register.document.rotuloBenef}}">
+                <a ng-if="register.document.idPessoa != 0"
+                   href="#/menu-html/program-html/hvp.personInformation/#/F/{{register.document.idPessoa}}">
+                    {{register.document.rotuloBenef}}
+                </a>                
+
+                <a ng-if="register.document.idPessoa == 0"
+                   href="#/menu-html/program-html/hvp.personInformation/#/I/{{(StringTools.fill(register.document.idPessoa.cdUnidadeCarteira, '0', 4))}}{{(StringTools.fill(register.document.idPessoa.cdCarteiraUsuario, '0', 13))}}">
+                    {{register.document.rotuloBenef}}
+                </a>
+            </td>
+            <td style="width:18%;overflow: hidden;white-space: nowrap;" 
+                class="padding5"
+                title="{{register.provider.preserv.rotulo}}">
+                {{register.provider.preserv.rotulo}}
+            </td>
+            <td width="6%" class="padding5">
+                {{register.dtRealizacao | date : 'dd/MM/yyyy'}}
+            </td>
+            <td width="4%" class="padding5">
+                {{register.provider.qtMovimento}}
+            </td>
+            <td width="7%" class="padding5">
+                {{register.provider.vlCobrado | currency : 'R$'}}
+            </td>
+            <td width="7%" class="padding5">
+                {{register.provider.vlMovimento | currency : 'R$'}}
+            </td>
+            <td style="min-width:120px;width:12%;overflow: hidden;white-space: nowrap;" class="actions padding5">
+                <a class="btn btn-default btn-xs"
+                    ng-click="controller.openMovementRestrictions(register)">
+                    <span class="glyphicon glyphicon-thumbs-down"></span>&nbsp;&nbsp;Glosas</a>
+                <a class="btn btn-default btn-xs"
+                    ng-click="controller.openMovementDetails(register)">
+                    <span class="glyphicon glyphicon-modal-window"></span>&nbsp;&nbsp;Detalhes
+                </a>
+            </td>
+        </tr>                    
+    </tbody>
+</table>

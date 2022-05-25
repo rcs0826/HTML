@@ -1,0 +1,94 @@
+<totvs-page type="detail" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#{{defaultPageHome}}">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-customer-detail' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		
+		<totvs-page-header>
+     
+            <totvs-page-header-title title="{{ 'l-cliente' | i18n }}: {{controller.customer[0]['nome-emit']}}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action hide-remove='true' hide-edit='true' hide-back='true' limit-primary-action="1">
+					<action link="#/dts/mpd/salesorders/{{controller.customer[0]['cod-emitente']}}?nomAbrev={{controller.customer[0]['nome-abrev']}}" icon="glyphicon-list">{{ 'btn-list-orders' | i18n }}</action>
+					<action ng-if="!controller.newOrderInclusionFlow && controller.btnOpenOrder"
+						link="#/dts/mpd/model/{{controller.customer[0]['cod-emitente']}}" 
+						icon="glyphicon-file">{{ 'btn-new-order' | i18n }}
+					</action>
+
+					<action ng-if="controller.newOrderInclusionFlow && controller.btnOpenOrder"
+						link="#/dts/mpd/order2/new/{{controller.customer[0]['cod-emitente']}}" 
+						icon="glyphicon-file">{{ 'btn-new-order' | i18n }}
+					</action>
+										
+					<action link="#/dts/mpd/quotation/new/{{controller.customer[0]['cod-emitente']}}" icon="glyphicon-usd" ng-if="controller.logPermiteCotac">{{ 'btn-new-quotation' | i18n }}</action>
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>	
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		
+		<totvs-page-detail>
+			<totvs-lodash-template src="/dts/mpd/html/customer/customer-main-fields.html" template-data="controller.customerDetailProfileConfig"/></totvs-lodash-template>  
+
+			<totvs-group-content title="{{ 'more-details' | i18n}}">
+				<totvs-lodash-template src="/dts/mpd/html/customer/customer-detail-fields.html" template-data="controller.customerDetailProfileConfig"/></totvs-lodash-template>  
+			</totvs-group-content>
+			<totvs-tabset>
+				<tabset>
+					<tab heading="{{ 'l-contatos' | i18n }}">
+						<totvs-list-item ng-repeat="contact in controller.customerContacts">
+							<totvs-list-item-content>
+								<totvs-lodash-template src="/dts/mpd/html/customer/customer-contact-fields.html" template-data="controller.customerDetailProfileConfig"/></totvs-lodash-template>  
+							</totvs-list-item-content>
+						</totvs-list-item>
+					</tab>
+
+					<tab heading="{{ 'l-delivery-places' | i18n }}" ng-click="controller.getCustomerDeliveryPlaces()">
+						<totvs-list-item ng-repeat="deliveryPlace in controller.customerDeliveryPlaces">
+							<totvs-list-item-content>
+								<totvs-lodash-template src="/dts/mpd/html/customer/customer-delivery-fields.html" template-data="controller.customerDetailProfileConfig"/></totvs-lodash-template>  
+							</totvs-list-item-content>
+						</totvs-list-item>
+					</tab>
+
+					<tab heading="{{ 'l-sites' | i18n }}" ng-click="controller.getCustomerSites()" >
+						<totvs-list-item ng-repeat="customerSite in controller.customerSites">
+							<totvs-list-item-content>
+								<totvs-lodash-template src="/dts/mpd/html/customer/customer-estab-fields.html" template-data="controller.customerDetailProfileConfig"/></totvs-lodash-template>  
+							</totvs-list-item-content>
+						</totvs-list-item>
+					</tab>
+
+					<tab heading="{{ 'l-informers' | i18n }}" ng-click="controller.getCustomerInformers()">
+						<totvs-list-item ng-repeat="informer in controller.customerInformers">
+							<totvs-list-item-content>
+								<totvs-lodash-template src="/dts/mpd/html/customer/customer-inf-fields.html" template-data="controller.customerDetailProfileConfig"/></totvs-lodash-template>  
+							</totvs-list-item-content>
+						</totvs-list-item>
+					</tab>
+
+					<tab heading="{{ 'l-customer-products' | i18n }}" ng-click="controller.getCustomerItens()">
+						<totvs-list-item ng-repeat="customerItem in controller.customerItens">
+							<totvs-list-item-content>
+								<totvs-lodash-template src="/dts/mpd/html/customer/customer-item-fields.html" template-data="controller.customerDetailProfileConfig"/></totvs-lodash-template>  
+							</totvs-list-item-content>
+						</totvs-list-item>
+					</tab>        
+				</tabset>
+			</totvs-tabset>   
+		</totvs-page-detail>		
+	</totvs-page-content>
+</totvs-page>
+
+
+
+
+
+
+
+
+

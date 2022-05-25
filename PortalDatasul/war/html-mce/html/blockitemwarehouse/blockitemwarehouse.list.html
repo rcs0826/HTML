@@ -1,0 +1,139 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{'l-block-item-warehouse' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        
+        <totvs-page-header>
+
+            <totvs-page-header-title title="{{'l-block-item-warehouse' | i18n}}" 
+                                     total="{{controller.totalRecords}}">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                
+                <totvs-page-header-operation-action>
+                    <action link="#/dts/mce/blockitemwarehouse/edit" 
+                            icon="glyphicon-plus">
+                        {{ 'btn-add' | i18n }}
+                    </action>
+                    <action icon="glyphicon-list" 
+                            ng-disabled= "controller.disableButtons" 
+                            ng-click="controller.delete('SELECTED')">
+                        {{ 'l-delete-selected' | i18n }}
+                    </action>
+                    <action icon="glyphicon-trash" 
+                            ng-disabled= "controller.disableButtons" 
+                            ng-click="controller.delete('ALL')">
+                        {{ 'l-delete-all' | i18n }}
+                    </action> 
+                </totvs-page-header-operation-action>
+                
+                <totvs-page-header-operation-filter advanced-search="controller.openAdvancedSearch">
+						<field type="input"
+							   data-ng-model="controller.itemCode"
+							   ng-model-options="{debounce: 1000}"	
+                               zoom-selected="controller.search()"
+							   required
+							   canclean		
+                               placeholder="item"
+				               zoom
+				               zoom-id="it-codigo"
+				               zoom-description="desc-item"
+				               zoom-service="men.item.zoom"
+							   class="col-md-12 col-sm-12 col-xs-12"
+                               name-id="item"
+                               focus
+                               zoom-valid-search-values="['']">                    								
+						</field>                    
+
+                </totvs-page-header-operation-filter>
+                
+            </totvs-page-header-operation>      
+            
+            
+           <totvs-page-tags>
+                <tag class="tag-1">{{ 'l-blocked-item' | i18n }}</tag>
+                <tag class="tag-2">{{ 'l-blocked-warehouse' | i18n }}</tag>            
+            </totvs-page-tags>
+            
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers" 
+                                    ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+            
+            
+            
+            <div id="divAlert">
+                <br/>
+                <div class="alert alert-danger" role="alert" ng-if="controller.totalRecords == 0">{{ 'l-block-item-warehouse' | i18n }}&nbsp;{{ 'l-not-found' | i18n }}</div>
+            </div>
+            
+        </totvs-page-header>
+        
+    </totvs-page-navbar>
+    
+    <totvs-page-content>
+        
+       <totvs-page-content-header>
+            
+            <totvs-page-quick-select  ng-hide="controller.disableButtons" 
+                                      title="{{ 'l-selected-all' | i18n }}" 
+                                      list="controller.listofBlockItemWarehouse">
+            </totvs-page-quick-select>
+            
+        </totvs-page-content-header>
+        
+        <totvs-list-item class="tag-{{blockedItems.tag}}" 
+                         ng-repeat="blockedItems in controller.listofBlockItemWarehouse"                          
+                         selected="blockedItems">
+                                    
+            <totvs-list-item-content>
+                
+                <totvs-list-item-info title="{{ 'l-warehouse' | i18n }}" 
+                                      value="{{blockedItems['nome-depos']}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info title="{{ 'l-item' | i18n }}" 
+                                      value="{{blockedItems['desc-item']}}">
+                </totvs-list-item-info>
+                
+                <totvs-list-item-info title="{{ 'l-site' | i18n }}" 
+                                      value="{{blockedItems['nome-estab']}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info title="{{ 'l-date-time-block' | i18n }}" 
+                                      value="{{blockedItems['dateTimeview']}}">
+                </totvs-list-item-info>
+                
+            </totvs-list-item-content>
+            
+             <!--<totvs-list-item-content-detail>
+               <totvs-list-item-info title="{{ 'l-site' | i18n }}" 
+                                      value="{{blockedItems['nome-estab']}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info title="{{ 'l-date-time-block' | i18n }}" 
+                                      value="{{blockedItems['dateTimeview']}}">
+                </totvs-list-item-info>
+            </totvs-list-item-content-detail>-->
+            
+
+
+
+        </totvs-list-item>
+
+        <totvs-list-pagination ng-if="controller.listofBlockItemWarehouseCount < controller.totalRecords && controller.listofBlockItemWarehouseCount" ng-click="controller.loadMore()">
+        </totvs-list-pagination>
+
+            
+            
+                <!--GRID
+
+        <totvs-grid grid-options="controller.gridOptions"
+                    auto-resize-column="true"></totvs-grid>
+        
+    </totvs-page-content>-->
+            
+            
+            
+    </totvs-page-content>
+</totvs-page>

@@ -1,0 +1,191 @@
+<totvs-page-child type="list">
+
+	<br>
+
+	<totvs-page-content>
+
+		<div class="field-file">
+
+			<% if ((!data["l-select-files"] || data["l-select-files"].log_visivel === true)) { %>
+			<div class="row">
+
+				<div class="col-xs-9">
+					<h3 style="margin-top: 0px;">
+						{{ 'nav-attachment' | i18n: []: 'dts/crm' }} ({{ attachmentController.listOfAttachmentCount }})
+					</h3>
+				</div>
+
+				<div class="col-xs-3"
+					 ng-if="attachmentController.isEnabled">
+
+					<label class="btn btn-default pull-right"
+						   role="button"
+						   for="file-input">
+						{{ 'l-select-files' | i18n: []: 'dts/crm' }}
+					</label>
+
+					<span class="file-text"></span>
+
+					<input id="file-input"
+						   type="file"
+						   style="position:fixed;top:-999px;"
+						   ngf-select
+						   ngf-change="attachmentController.onSelectFiles($files);"
+						   ngf-multiple="true"
+						   ngf-allow-dir="false"/>
+
+				</div>
+
+			</div>
+
+			<totvs-divider></totvs-divider>
+			<% } %>
+
+			<br>
+
+			<totvs-page-alert
+				ng-if="attachmentController.listOfAttachment.length <= 0"
+				type="info"
+				message="{{ 'msg-not-found-attachment' | i18n: []: 'dts/crm' }}">
+			</totvs-page-alert>
+
+			<div class="row file-row"
+					ng-if="attachmentController.listOfAttachment.length > 0">
+				<strong>
+					<div class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+						&nbsp;
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+						{{ 'l-name' | i18n: []: 'dts/crm' }}
+					</div>
+					<div ng-if="!attachmentController.isAttachmentType" class="col-lg-2 col-md-2 col-sm-2 hidden-xs text-left">
+						&nbsp;
+					</div>
+					<div ng-if="attachmentController.isAttachmentType" class="col-lg-2 col-md-2 col-sm-2 hidden-xs text-left">
+						{{ 'l-attachment-type' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-lg-2 col-md-3 col-sm-3 hidden-xs text-left">
+						{{ 'l-user' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-lg-3 col-md-2 col-sm-2 hidden-xs text-left">
+						{{ 'l-date' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right">
+						&nbsp;
+					</div>
+
+				</strong>
+			</div>
+
+			<div class="row file-row"
+				 ng-animate="'animate-if'"
+				 ng-repeat="attachment in attachmentController.listOfAttachment track by $index">
+
+				<div class="file-progress"
+					 ng-style="{width: attachment.nom_progresso}"
+					 ng-class="{'loading'	: attachment.idi_status <   2,
+								'loaded'	: attachment.idi_status === 2,
+								'canceled'	: attachment.idi_status === 3}">
+				</div>
+
+				<div class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+
+					<img ng-if="attachment.log_existe === true && attachment.idi_status !== 4"
+						 src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAedJREFUOI2lkjFI1HEUxz/f51UUtTRIUAihuDaVUYjYHJZxEfe/ziJo0MtBwsEW0WhpKu8yCofk9FzaGmpoyaLaCpewq7FFi5oE7e69hjixvEroTb/hfb6/933vC/9Z2mrjnbm5Y3hcBnDi/mA2+wrAtgIXS+U01doznDacNvOYL5bLHVsSKM7MnAqjHLKJfC7pzOeSTje9ocalfwoUS+W0gocW3FuuLA4DjI6OmsH2EFX4yw6KpXJa+BymIvA50KHmbanM0trag5ClTXTkk2Sh4QR1OGQTEfriHtch5pdXq9MhnZHrZD5JFhpa2PDzbeBrhI/LlJfruFv0KiJp3tH0vN5vjeAw3YrQtwgfN9kA0OUWPU2ujGBkabVaqDOp+uPu7OwRd5/DVMDtiSyeSsrjdCmiR6akZoyADsir5zdN4K4hxNuBJLmKarvdvQacdeO0m3IeMWzuLSnovtLX92GzgEUr0ktJsVypPJLpJq4ViV5DQ8gOijjRn81WNtpet2Cuj8BhgLGxMQeuTU1N7Vnduesx4a0hdQ/kcou/L309B5Ol0tEaemGmacFkTdpLxA3zaCHV1J3PZN41uPivQSqUyr1YFAztB3B4jenCYCbzvhG8SQB+RnVfe3sr31Mr/RfPffoTWK8fcKvR/kl9nTMAAAAASUVORK5CYII="/>
+
+					<a ng-if="!attachmentController.isBlock">
+						<span ng-if="attachment.log_existe === true && attachment.idi_status === 4"
+							  class="glyphicon glyphicon-file">
+						</span>
+
+						<span ng-if="attachment.log_existe !== true && attachment.idi_status === 3"
+							  class="glyphicon glyphicon-remove-sign">
+						</span>
+					</a>
+
+					<div ng-if="attachmentController.isBlock">
+						<span ng-if="attachment.log_existe === true && attachment.idi_status === 4"
+							  class="glyphicon glyphicon-file">
+						</span>
+
+						<span ng-if="attachment.log_existe !== true && attachment.idi_status === 3"
+							  class="glyphicon glyphicon-remove-sign">
+						</span>
+					</div>
+				</div>
+
+				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+
+					<% if ((!data["l-download"] || data["l-download"].log_visivel === true)) { %>
+						
+						<a target="_blank"
+						href="{{attachment.nom_url}}"
+						ng-if="attachment.log_existe === true && !attachmentController.isBlock">
+						{{ attachment.nom_arq }}
+					</a>
+
+					<span target="_blank"
+					   ng-if="attachment.log_existe === true && attachmentController.isBlock">
+						{{ attachment.nom_arq }}
+					</span>
+
+					<span ng-if="attachment.log_existe !== true">
+						{{ attachment.nom_arq }}
+					</span>
+
+					<% } else { %>
+					<span>{{ attachment.nom_arq }}</span>
+					<% } %>
+				</div>
+
+
+				<div class="col-lg-2 col-md-2 col-sm-2 hidden-xs text-left">
+					{{ attachment.ttTipAnexo && attachmentController.isAttachmentType ? attachment.ttTipAnexo.nom_tip_anexo : "" }}
+				</div>
+
+				<div class="col-lg-2 col-md-3 col-sm-3 hidden-xs text-left">
+					{{ attachment.ttUsuarioCadastro ? attachment.ttUsuarioCadastro.nom_usuar : ""}}
+				</div>
+
+				<div ng-if="!attachment.dtm_cadastro" class="col-lg-3 col-md-2 col-sm-2 hidden-xs text-left">
+					{{ attachment.dat_atualiz | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+				</div>
+
+				<div ng-if="attachment.dtm_cadastro" class="col-lg-3 col-md-2 col-sm-2 hidden-xs text-left">
+						{{ attachment.dtm_cadastro | date : (('l-date-format' | i18n: []: 'dts/crm') + ' HH:mm:ss ') }}
+				</div>
+
+				<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right"
+					 ng-if="attachmentController.isEnabled">
+
+					<% if ((!data["btn-remove"] || data["btn-remove"].log_visivel === true)) { %>
+					<a class="clickable"
+					   ng-if="attachment.idi_status > 1 && !attachmentController.isBlock"
+					   ng-click="attachmentController.remove(attachment);">
+						{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+					</a>
+
+					<span ng-if="attachment.idi_status > 1 && attachmentController.isBlock">
+						{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+					</span>
+					<% } %>
+
+					<% if ((!data["btn-cancel"] || data["btn-cancel"].log_visivel === true)) { %>
+					<a class="clickable"
+					   ng-disabled="true"
+					   ng-if="attachment.idi_status < 2 && !attachmentController.isBlock"
+					   ng-click="attachmentController.cancel(attachment);">
+						{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+					</a>
+
+					<span ng-if="attachment.idi_status < 2 && attachmentController.isBlock">
+						{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+					</span>
+					<% } %>
+				</div>
+			</div>
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

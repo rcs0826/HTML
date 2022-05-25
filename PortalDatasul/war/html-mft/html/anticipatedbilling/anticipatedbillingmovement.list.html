@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{ 'l-movements' | i18n }}({{controller.total}})</h3>
+</div>
+<div class="modal-body">
+    <totvs-page-content>
+        <totvs-page-detail>
+            <div>
+                
+                <totvs-grid grid-data="controller.movements" 
+                          navigatable="true" 
+                             editable="false" 
+                           selectable="multiple,row" 
+                             sortable="true" 
+                          reorderable="true" 
+                            resizable="true"
+                          grid-height="400">
+
+                    <totvs-grid-column field="sequence"        width="45">{{:: 'l-seq' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                    <totvs-grid-column field="invoiceNumber"   width="88">{{:: 'l-invoice-number' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                    <totvs-grid-column field="series"          width="70">{{:: 'l-invoice-series' | i18n : [] : 'dts/mft'}}</totvs-grid-column>       
+                    <totvs-grid-column field="site"            width="70">{{:: 'l-estabel' | i18n : [] : 'dts/mft'}}</totvs-grid-column>              
+                    <totvs-grid-column field="descType"        width="70">{{:: 'l-especie-payment-method' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                    <totvs-grid-column field="customerName"    width="120">{{:: 'l-emitente' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                    <totvs-grid-column field="transactionType" width="70">{{:: 'l-nat-operacao' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                    <totvs-grid-column field="dateMovement"    width="90" filter="date : dd/MM/yyyy" >{{:: 'l-dt-antecip' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                    <totvs-grid-column field="balanceQty"      width="100" filter="number : 4">{{:: 'l-quantity' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                    <totvs-grid-column field="movto"           width="90">{{:: 'l-movement' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+                    <totvs-grid-column field="detailMovto"     width="400">{{:: 'l-movement-detail' | i18n : [] : 'dts/mft'}}</totvs-grid-column>
+
+                </totvs-grid>
+            </div>
+        </totvs-page-detail>
+    </totvs-page-content>    
+</div>
+<div class="modal-footer">
+        <button type="button" class="btn btn-primary">
+                {{ 'l-balance' | i18n }}: <span class="badge badge-dark">{{controller.balanceTotal}}</span>
+        </button>
+    <button class="btn btn-warning" ng-click="controller.close()">{{"btn-close" | i18n}}</button>
+</div>

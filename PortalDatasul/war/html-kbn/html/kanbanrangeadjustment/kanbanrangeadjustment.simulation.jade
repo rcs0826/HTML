@@ -1,0 +1,39 @@
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+totvs-page
+	totvs-page-navbar
+		totvs-page-breadcrumb
+			breadcrumb(link="#/") {{ 'l-home' | i18n }}
+			breadcrumb(link="#/dts/kbn/kanbanrangeadjustment"){{'l-recalculation-stack-kanban' | i18n}}
+			breadcrumb {{'l-simulation-kanban-stack' | i18n}}
+		totvs-page-header
+			totvs-page-header-title(title="{{'l-simulation-kanban-stack' | i18n }}" total="{{controller.qtditems}}")
+			totvs-page-header-operation
+				div.col-md-7.col-sm-7
+				totvs-page-header-operation-filter(placeholder="{{ 'l-code-description' | i18n}}", ng-submit="controller.quickSearch()", ng-model="controller.quickSearchText")
+			totvs-page-disclaimers(disclaimer-list="controller.filtersApplied", ng-click="controller.removeFilter")
+
+	totvs-page-content(ng-if="controller.establishment != undefined")
+		totvs-page-content-header(ng-if="controller.items.length > 0")
+			.row.field-addon-padding
+				.col-md-12
+					.col-md-6
+						button.btn.btn-primary(ng-click="controller.exportaConsulta()") {{ 'l-export-simulation' | i18n }}  
+					.col-md-6
+						button.pull-right.btn.btn-warning(ng-click="controller.updateKanbanRange(controller.items)") {{'l-apply-at-production' | i18n}}
+		totvs-list-item(data-ng-repeat="item in controller.items" ng-if="item.show && (item.idi_control_kanban == 1 || item.log_expedic)")
+			totvs-list-item-header
+				totvs-list-item-title(title='{{item.itempai | descGeneric:"{sku} - {desc} {ref} ({exp})"}}')
+			totvs-list-item-content
+				totvs-list-item-info.col-md-3(title="{{'l-resupply-time' | i18n}}", value="{{item.val_tempo_ressup}}")
+				totvs-list-item-info.col-md-2(title="{{'l-minimum-lot' | i18n}}", value="{{item.qti_lote_minimo}}")
+				totvs-list-item-info.col-md-2(title="{{'l-safety-storage' | i18n}}", value="{{item.qti_estoq_segur}}")
+				totvs-list-item-info.col-md-2(title="{{'l-demand' | i18n}}", value="{{item.qtd_demand}}")
+				totvs-list-item-info.col-md-2(title="{{'l-kanban-size' | i18n}}", value="{{item.qti_tam_kanban + item.itempai.cod_un_med_erp}}")
+
+				totvs-list-item-info.col-md-12(title="{{'l-calculate-kanban-Ranges' | i18n}}", value="{{ item.log_calc_autom | yesOrNo }}")
+
+				totvs-list-item-info.col-md-3(title="{{'l-total-balance-cards' | i18n}}", value="{{item.qti_verde_kanban + item.qti_amarela_kanban + item.qti_vermelha_kanban}}")
+				totvs-list-item-info.col-md-2(title="{{'l-green-range' | i18n}}", value="{{item.qti_verde_kanban}}")
+				totvs-list-item-info.col-md-2(title="{{'l-yellow-range' | i18n}}", value="{{item.qti_amarela_kanban}}")
+				totvs-list-item-info.col-md-2(title="{{'l-red-range' | i18n}}", value="{{item.qti_vermelha_kanban}}")
+				

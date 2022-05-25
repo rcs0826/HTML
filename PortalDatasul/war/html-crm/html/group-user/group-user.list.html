@@ -1,0 +1,122 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb>{{ 'nav-group-user' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'nav-group-user' | i18n: []: 'dts/crm' }}"
+									 total="{{ controller.listCount }}"
+									 settings="controller.userSettings();">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<totvs-page-header-operation-action>
+					<action icon="glyphicon-plus"
+							ng-click="controller.addEdit();">
+						{{ 'btn-new-group-user' | i18n: []: 'dts/crm' }}
+					</action>
+				</totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+													ng-submit="controller.search()"
+													ng-model="controller.quickSearchText">
+													<!--advanced-search="controller.openAdvancedSearch"-->
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+			<totvs-page-disclaimers disclaimer-list="controller.disclaimers"
+									ng-click="controller.removeDisclaimer"
+									ng-if="controller.disclaimers.length > 0">
+			</totvs-page-disclaimers>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}"
+						  ng-if="controller.list.length <= 0">
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addEdit();">
+				<span class="glyphicon glyphicon-plus"></span>
+				&nbsp;&nbsp;{{ 'btn-new-group-user' | i18n: []: 'dts/crm' }}
+			</button>
+		</totvs-page-alert>
+
+		<totvs-list-item id="groupUser{{ item.num_id }}"
+						 ng-repeat="item in controller.list">
+
+			<totvs-list-item-header>
+
+				<totvs-list-item-title>
+					<a href="#/dts/crm/group-user/detail/{{ item.num_id }}">
+						{{ item.num_id }} - {{ item.nom_grp_usuar }}
+					</a>
+				</totvs-list-item-title>
+
+				<totvs-list-item-action limit-primary-action="3">
+
+					<action icon="glyphicon-pencil"
+							ng-click="controller.addEdit(item)">
+						{{ 'btn-edit' | i18n: []: 'dts/crm' }}
+					</action>
+
+					<action icon="glyphicon-trash"
+							ng-click="controller.remove(item)">
+						{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+					</action>
+
+				</totvs-list-item-action>
+
+			</totvs-list-item-header>
+
+			<totvs-list-item-content>
+
+				<div class="row col-xs-12">
+					<totvs-list-item-info
+						class="col-xs-12 col-sm-6 col-md-3"
+						title="{{ 'l-only-responsible-execute-task' | i18n: []: 'dts/crm' }}">
+						{{ (item.log_usuar_respons_tar === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+					</totvs-list-item-info>
+
+					<totvs-list-item-info
+						class="col-xs-12 col-sm-6 col-md-3"
+						title="{{ 'l-restrict-delete-Attachments' | i18n: []: 'dts/crm' }}">
+						{{ (item.log_livre_1 === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+					</totvs-list-item-info>
+
+					<totvs-list-item-info
+						class="col-xs-12 col-sm-6 col-md-3"
+						title="{{ 'l-supervisor-privilege' | i18n: []: 'dts/crm' }}">
+						{{ (item.isSupervisor === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+					</totvs-list-item-info>
+					
+					<totvs-list-item-info
+						class="col-xs-12 col-sm-6 col-md-3"
+						title="{{ 'l-consult-any-ticket-gp' | i18n: []: 'dts/crm' }}">
+						{{ (item.log_permis_especial_con === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+					</totvs-list-item-info>	
+				</div>
+
+			</totvs-list-item-content>
+
+		</totvs-list-item>
+
+		<totvs-list-pagination ng-click="controller.search(true);"
+							   ng-if="controller.list.length < controller.listCount && controller.list.length">
+		</totvs-list-pagination>
+
+	</totvs-page-content>
+
+</totvs-page>

@@ -1,0 +1,29 @@
+<totvs-modal-header>
+    Motivos do Documento
+</totvs-modal-header>
+<totvs-modal-body style="height: 320px; overflow-y: auto;">
+    <fieldset ng-form="controller.modelForm">
+            <totvs-row>                
+                <totvs-grid  grid-data="controller.tmpMotivos" 
+						 editable="false" selectable="false"
+                             grid-height="250" resizable= "true">
+
+					<totvs-grid-column field="lgImprime" width="80px" template="controller.cellRendererCheckBox">
+							Imprime
+                            </totvs-grid-column>                                
+					<totvs-grid-column field="dsMotivo" width="250px">
+                                Motivo
+                            </totvs-grid-column>
+					<totvs-grid-column field="dsArgumentos" width="450px" template="controller.cellRendererTextArea">
+							Argumentos
+                            </totvs-grid-column>                            
+
+                </totvs-grid>    
+            </totvs-row>                                                                    
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn" ng-if="controller.idPermissao == 2" ng-click="controller.save()">Salvar</button>
+    <button class="btn" ng-click="controller.cancel()">Voltar</button>
+</totvs-modal-footer>

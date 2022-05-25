@@ -1,0 +1,187 @@
+<totvs-modal-header>{{ 'l-advanced-search' | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+    <div class="row">
+        <form class="form-horizontal" role="form">
+        	<accordion close-others="controller.closeOther">
+				<accordion-group is-open="controller.advancedSearch.accord.period">
+	        		<accordion-heading>
+	        			{{'l-period' | i18n }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': controller.advancedSearch.accord.period, 'glyphicon-chevron-right': !controller.advancedSearch.accord.period}"></i>
+        			</accordion-heading>
+        			<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+						<totvs-field
+							   totvs-date-range
+							   class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+							   label="{{ 'l-opening' | i18n }}"
+							   ng-model='controller.advancedSearch.dateRange'
+							   canclean
+							   t-mask-date
+							   ng-show=true>
+						</totvs-field>
+					</div>
+	        	</accordion-group>
+	            <accordion-group is-open="controller.advancedSearch.accord.state">
+	            	<accordion-heading>
+	            		{{ 'l-states' | i18n }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': controller.advancedSearch.accord.state, 'glyphicon-chevron-right': !controller.advancedSearch.accord.state}"></i>
+	            	</accordion-heading>
+		            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class='container-state'>		
+						    <div class='col-xs-12 col-md-6 col-sm-6 col-lg-6'>
+			  				    <totvs-field totvs-checkbox
+			                        t-bsswitch 
+			                        ng-disabled="false"
+							        class="col-xs-12 row"
+							        ng-model="controller.advancedSearch.lPending"							        
+							        label="{{ 'l-pending' | i18n }}">
+							    </totvs-field>							    
+						    </div>
+						    <div class='col-xs-12 col-md-6 col-sm-6 col-lg-6'>
+							    <totvs-field totvs-checkbox
+			                        t-bsswitch 
+			                        ng-disabled="false"
+							        class="col-xs-12 row"
+							        ng-model="controller.advancedSearch.lApproved"							        
+							        label="{{ 'l-approved' | i18n }}">
+							    </totvs-field>
+							    
+						    </div>
+						    <div class='col-xs-12 col-md-6 col-sm-6 col-lg-6'>
+							    <totvs-field totvs-checkbox
+			                        t-bsswitch 
+			                        ng-disabled="false"
+							        class="col-xs-12 row"
+							        ng-model="controller.advancedSearch.lOpenOrder"							        
+							        label="{{ 'l-open-order' | i18n }}">
+							    </totvs-field>							   
+						    </div>
+					      	<div class='col-xs-12 col-md-6 col-sm-6 col-lg-6'>
+							    <totvs-field totvs-checkbox
+			                        t-bsswitch 
+			                        ng-disabled="false"
+							        class="col-xs-12 row"
+							        ng-model="controller.advancedSearch.lCanceled"							        
+							        label="{{ 'l-canceled' | i18n }}">					        
+							    </totvs-field>							    
+						    </div>
+					    	<div class='col-xs-12 col-md-6 col-sm-6 col-lg-6'>
+							    <totvs-field totvs-checkbox
+			                        t-bsswitch 
+			                        ng-disabled="false"
+							        class="col-xs-12 row"
+							        ng-model="controller.advancedSearch.lInmate"							        
+							        label="{{ 'l-inmate' | i18n }}">
+							    </totvs-field>							    
+						    </div>
+					    </div>				    	
+					</div>
+				</accordion-group>
+	        	<accordion-group is-open="controller.advancedSearch.accord.filter">
+	        		<accordion-heading>
+	        			{{'l-filter' | i18n }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': controller.advancedSearch.accord.filter, 'glyphicon-chevron-right': !controller.advancedSearch.accord.filter}"></i>
+	        		</accordion-heading>
+		            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		                <field type="input"
+		                       class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                       data-ng-model="controller.advancedSearch['cd-equipto']"
+		                       maxlength="20" autofocus
+		                       label="{{ 'l-equipment' | i18n }}"
+		                       canclean>
+		                </field>
+		                <field type="input"
+		                       class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                       data-ng-model="controller.advancedSearch['cd-tag']"
+		                       maxlength="20"
+		                       label="{{ 'l-tag' | i18n }}"
+		                       canclean>
+		                </field>
+		            </div>
+		            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		                <field type="input"
+		                       class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                       data-ng-model="controller.advancedSearch['cd-manut']"
+		                       maxlength="20"
+		                       label="{{ 'l-maintenance' | i18n }}"
+		                       canclean>
+		                </field>
+		                <field type="input"
+		                       class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                       data-ng-model="controller.advancedSearch['cd-sint-padr']"
+		                       maxlength="20"
+		                       label="{{ 'l-sympthom' | i18n }}"
+		                       canclean>
+		                </field>
+		            </div>
+		            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		                <field type="input"
+		                       class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                       data-ng-model="controller.advancedSearch['cd-planejado']"
+		                       maxlength="20"
+		                       label="{{ 'l-planner' | i18n }}"
+		                       canclean>
+		                </field>
+		                <field type="input"
+		                       class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                       data-ng-model="controller.advancedSearch['cd-equip-res']"
+		                       maxlength="20"
+		                       label="{{ 'l-team' | i18n }}"
+		                       canclean>
+		                </field>
+		            </div>
+		            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+		                <field type="input"
+		                       class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                       data-ng-model="controller.advancedSearch['usuario-alt']"
+		                       maxlength="40"
+		                       label="{{ 'l-user-opening' | i18n }}"
+		                       canclean>
+		                </field>
+		            </div>
+	            </accordion-group>
+
+			</accordion>
+        </form>
+    </div>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'l-cancel' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="controller.search();">{{ 'l-search' | i18n }}</button>
+</totvs-modal-footer>
+<style>
+
+	.no-padding { padding-left: 0;
+				  padding-right: 0;
+	}
+
+	.range-container { margin-top: 5px; }
+
+	.container-state { margin-top: 10px; }
+
+	.range-container div > span {
+		border: none;
+	    border-top: 1px solid #ccc;
+	    border-bottom: 1px solid #ccc;
+	    width: 30px !important;
+	}
+
+	.range-container div field > .field-container {
+		margin-top: 0 !important;
+	}
+
+	.field-label {
+    	font-family: 'Arial';
+   		margin-bottom: 5px;
+  		font-weight: 200;
+  		font-size: 12px;
+		color: gray;
+	}
+
+	.list-state li { list-style-type: none;  }
+	.list-state li a { 
+		margin-right: 5px; 
+		cursor: pointer;
+	}
+	.list-state li a.glyphicon-remove-sign { color: red; }
+	.list-state li a.glyphicon-ok-sign { color: green; }
+
+	.container-state div label { padding-top: 8px; }
+
+</style>

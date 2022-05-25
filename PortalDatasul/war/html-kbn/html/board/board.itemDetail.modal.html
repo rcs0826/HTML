@@ -1,0 +1,33 @@
+
+<totvs-modal-header><span class="initialwrap title link">{{controller.items | descFlow}}</span></totvs-modal-header>
+<totvs-modal-body>
+  <totvs-list-item-header>
+    <div class="col-xs-12">
+      <totvs-list-item-info title="{{'l-warehouse' | i18n}}" value="{{controller.items.codeDeposErp}}" class="col-md-4"></totvs-list-item-info>
+      <totvs-list-item-info title="{{'l-location' | i18n}}" value="{{controller.items.codeLocationErp | htmlText}}" class="col-md-4"></totvs-list-item-info>
+      <totvs-list-item-info title="{{'l-type' | i18n}}" value="{{((controller.items.expedition)?'l-expedition':'l-process') | i18n}}" class="col-md-4"></totvs-list-item-info><br/>
+    </div>
+    <div class="col-xs-12">
+      <totvs-list-item-info title="{{'l-kanban-size' | i18n}}" value="{{controller.items.kanbanSize}}" class="col-md-4"></totvs-list-item-info>
+      <totvs-list-item-info title="{{'l-kanban-cycle-time' | i18n}}" value="{{controller.tempoCiclo}} h" class="col-md-4"></totvs-list-item-info>
+      <totvs-list-item-info title="{{'l-setup-time' | i18n}}" value="{{controller.tempoSetup}} h" class="col-md-4"></totvs-list-item-info>
+    </div>
+    <div class="row"></div><br/>
+    <totvs-tabset>
+      <totvs-tab heading="{{ 'l-consumed-items' | i18n }}">
+        <totvs-list-item ng-repeat="structure in controller.items.inputs | orderBy: 'codeErp'">
+          <totvs-list-item-info value="{{structure | descGeneric:'{sku} - {desc} {ref}'}}" class="col-md-9"></totvs-list-item-info>
+          <totvs-list-item-info title="{{'l-qtd-kanban' | i18n}}" value="{{structure.qtdItem}} {{structure.cod_un_med_erp}}" class="col-md-3 pull-right"> </totvs-list-item-info>
+        </totvs-list-item>
+      </totvs-tab>
+      <totvs-tab heading="{{ 'l-items-tools' | i18n }}" ng-if="controller.items.tools.length &gt; 0">
+        <totvs-list-item ng-repeat="tool in controller.items.tools">
+          <totvs-list-item-info value="{{tool.cod_chave_erp}} - {{tool.des_ferram}}"></totvs-list-item-info>
+        </totvs-list-item>
+      </totvs-tab>
+    </totvs-tabset>
+  </totvs-list-item-header>
+</totvs-modal-body>
+<totvs-modal-footer>
+  <button ng-click="controller.close()" class="btn btn-default">{{ 'l-close' | i18n }}</button>
+</totvs-modal-footer>

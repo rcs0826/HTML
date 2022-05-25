@@ -1,0 +1,94 @@
+<div class col-md-8>
+<totvs-list-item class="tag-{{list.situacaoInt}}" 
+                 ng-repeat="list in controller.listofDistributeCounts"
+                  totvs-custom-element="customlistofDistributeCounts"> 
+    <totvs-list-item-header>             
+        <totvs-list-item-title title="{{'l-sheet' | i18n}}: {{list.nrFicha}} &nbsp/&nbsp {{'l-item' | i18n}}: {{list.itCodigo}} - {{list.descItem}} "
+    link="#/dts/mce/distributecounts/detail?rRowid={{list['r-Rowid']}}">
+        </totvs-list-item-title>   
+       
+    </totvs-list-item-header>     
+         
+    <totvs-list-item-content>
+        <!-- ESTABELECIMENTO -->                
+        <totvs-list-item-info title="{{ 'l-abbreviated-site' | i18n }}" 
+                              value="{{list.codEstabel}} - {{list.nomeEstabel}}"
+                              class="col-md-4 col-sm-6 col-xs-12"                             
+                              value-break ="false">
+        </totvs-list-item-info>
+        <!-- DEPOSITO -->
+        <totvs-list-item-info title="{{ 'l-warehouse' | i18n }}" 
+                              value="{{list.codDepos}} - {{list.nomeDepos}}"
+                              class="col-md-4 col-sm-6 col-xs-12"
+                              value-break ="false">
+        </totvs-list-item-info> 
+        <!-- AGRUPADOR--> 
+        <totvs-list-item-info title="{{ 'l-group-separator' | i18n }}" 
+                              value="{{list.cdnAgrup}} - {{list.descAgrup}}"
+                              class="col-md-4 col-sm-6 col-xs-12"
+                              value-break ="false">
+        </totvs-list-item-info>
+         
+        
+        <!-- CONFERENTE 1 -->
+        <div ng-include="'/dts/mce/html/distributecounts/editable/editableConferente1.html'"></div> 
+        <!-- CONFERENTE 2 -->
+        <div ng-include="'/dts/mce/html/distributecounts/editable/editableConferente2.html'"></div> 
+        <!-- CONFERENTE 3 -->
+        <div ng-include="'/dts/mce/html/distributecounts/editable/editableConferente3.html'"></div> 
+                
+    </totvs-list-item-content>   
+    
+    <totvs-list-item-content-detail>         
+         <!-- CONTAGEM 1 -->         
+        <totvs-list-item-info title= "{{ 'l-count' | i18n }} 1"  
+                              value=" {{list.valApurado1Un}}"
+                              class="col-md-4 col-sm-6 col-xs-12">
+        </totvs-list-item-info>       
+        
+         <!-- CONTAGEM 2 -->         
+        <totvs-list-item-info title= "{{ 'l-count' | i18n }} 2"  
+                             value=" {{list.valApurado2Un}}"
+                              class="col-md-4 col-sm-6 col-xs-12">
+        </totvs-list-item-info>   
+        
+         <!-- CONTAGEM 3 -->         
+        <totvs-list-item-info title= "{{ 'l-count' | i18n }} 3"  
+                              value=" {{list.valApurado3Un}}"
+                              class="col-md-4 col-sm-6 col-xs-12">
+        </totvs-list-item-info>          
+                
+        
+        <!-- SITUACAO -->
+        <totvs-list-item-info title="{{ 'l-status' | i18n }}" 
+                              value="{{list.situacaoInt}} - {{list.situacao}}"
+                              class="col-md-4 col-sm-6 col-xs-12">
+        </totvs-list-item-info>               
+
+        <!-- BLOQUEIO ITEM-->
+        <totvs-list-item-info title= "{{ 'l-blockade-item' | i18n}}"
+                              value="{{list.itemDepBloq}}"
+                              class="col-md-4 col-sm-6 col-xs-12">
+        </totvs-list-item-info>
+
+        <!-- LOTE -->
+        <totvs-list-item-info title= "{{ 'l-lot' | i18n }}"  
+                              value="{{list.lote}}"
+                              class="col-md-4 col-sm-6 col-xs-12">
+        </totvs-list-item-info>
+
+        <!-- LOCALIZACAO -->         
+        <totvs-list-item-info title= "{{ 'l-localization' | i18n }}"  
+                              value="{{list.codLocaliz}} - {{list.descLocaliz}}"
+                              class="col-md-4 col-sm-6 col-xs-12">
+        </totvs-list-item-info>   
+          <!-- BLOQUEIO DEPOSITO-->
+        <totvs-list-item-info  title= "{{ 'l-blockade-warehouse' | i18n}}"
+                              value="{{list.depBloq}}"
+                              class="col-md-4 col-sm-6 col-xs-12">
+        </totvs-list-item-info> 
+    </totvs-list-item-content-detail>
+         
+    
+</totvs-list-item>    
+    </div>

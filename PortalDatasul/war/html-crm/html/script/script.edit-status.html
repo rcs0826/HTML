@@ -1,0 +1,37 @@
+<totvs-modal-header>
+	{{ controller.model.nom_script }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<!--field type="daterange"
+			   class="col-xs-12"
+			   ng-required="true"
+			   ng-model="controller.model.expiration"
+			   start-date="controller.model.dateTimeBase"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-expiration-date' | i18n: []: 'dts/crm' }}</label>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field-->
+
+		<totvs-field
+			totvs-date-range
+			class="col-xs-12"
+			label="{{ 'l-expiration-date' | i18n: []: 'dts/crm' }}"
+			ng-model="controller.model.expiration"
+		    ng-required="true"
+			canclean>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</totvs-field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n }}</button>
+</totvs-modal-footer>

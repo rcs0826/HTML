@@ -1,0 +1,84 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_script : ('l-new-script' | i18n )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-page-detail class="row crm-page-details"
+					   ng-if="!controller.duplicateMode && ((controller.model.log_edit_remove === false) || (controller.model.num_livre_1 && controller.model.num_livre_1 !== 1))">
+		<div class="col-xs-12 no-gutter">
+
+			<totvs-page-detail-info
+				ng-if="!controller.duplicateMode && (controller.model.num_livre_1 && controller.model.num_livre_1 === 3) "
+				class="col-xs-12"
+				title="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+				value="{{controller.model.nom_script}}"
+				value-break="false">
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info
+				ng-if="!controller.duplicateMode && ((controller.model.num_livre_1 || controller.model.num_livre_1 !== 1))"
+				class="col-xs-12 col-sm-12 col-md-4"
+				title="{{ 'l-script-type' | i18n: []: 'dts/crm' }}"
+				value="{{controller.model.idi_tip_script.nom_tip_script}}"
+				value-break="false">
+			</totvs-page-detail-info>
+
+		</div>
+
+		<totvs-divider></totvs-divider>
+
+	</totvs-page-detail>
+
+	<fieldset class="row">
+
+		<field type="input"
+			   autofocus
+			   ng-if="(controller.duplicateMode) || (!controller.model.num_livre_1 || controller.model.num_livre_1 !== 3)"
+			   class="col-xs-12"
+			   ng-model="controller.model.nom_script"
+			   placeholder="{{ 'l-name' | i18n : [] : 'dts/crm' }}"
+			   maxlength="50"
+			   required
+			   canclean>
+			<label>{{ 'l-name' | i18n : [] : 'dts/crm' }}</label>
+		</field>
+
+		<field type="select"
+			   ng-if="(controller.duplicateMode) || ((!controller.model.log_answer) || (!controller.model.num_livre_1 || controller.model.num_livre_1 === 1))"
+			   canclean="undefined"
+			   ng-animate="'animate-if'"
+			   ng-required="true"
+			   ng-model="controller.model.idi_tip_script">
+
+			<label>{{ 'l-script-type' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-script-type' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_tip_script }}
+				</ui-select-match>
+				<ui-select-choices repeat="type in controller.types | filter: $select.search track by $index">
+					<span ng-bind-html="type.nom_tip_script | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="textarea"
+			   class="col-md-12"
+			   ng-model="controller.model.dsl_script"
+			   maxlength="1000"
+			   ng-required="true">
+			<label>{{'l-description' | i18n: []: 'dts/crm'}}</label>
+			<validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 1000</validator>
+		</field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n }}</button>
+</totvs-modal-footer>

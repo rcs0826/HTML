@@ -1,0 +1,48 @@
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+link(rel="stylesheet" href="/dts/kbn/css/font-awesome.css")
+totvs-page(type='list')
+    totvs-page-navbar
+        totvs-page-breadcrumb
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb {{ 'l-item-time-by-range' | i18n }}
+        totvs-page-header
+            totvs-page-header-title(title="{{ 'l-item-time-by-range' | i18n }}" total="{{controller.totalRecords}}")
+            totvs-page-header-operation
+                totvs-page-header-operation-action
+                div.col-md-7.col-sm-7
+                totvs-page-header-operation-filter(placeholder="{{ 'l-code-description' | i18n}}",
+                    ng-submit="controller.quickSearch()",
+                    ng-model="controller.quickSearchText",
+                    advanced-search="controller.callAdvancedSearch")
+            totvs-page-disclaimers(disclaimer-list="controller.filtersApplied", ng-click="controller.removeFilter")
+    totvs-page-content
+        totvs-page-alert(ng-if="!controller.hasEstab()" type="info" message="{{ 'msg-estab-not-selected' | i18n }}")        
+        totvs-page-alert(ng-if="controller.hasEstab() && controller.totalRecords == 0" type="info" message="{{ 'msg-not-found' | i18n }}")
+        
+        totvs-page-content-header(ng-show="controller.totalRecords > 0")
+            div.col-md-3
+                .col-lg-5.col-md-5.col-sm-5.col-xs-2.actions-group
+                    .btn-group.btn-group-sm.actions(role='group')
+                        .btn-group.btn-group-sm.ng-scope(role='group')
+                            a.btn.btn-primary.dropdown-toggle(data-toggle='dropdown', role='button', style="margin-top: 10px;margin-bottom: 10px;")
+                                span.ng-binding {{ 'l-export-data' | i18n }}  
+                                span.glyphicon.glyphicon-triangle-bottom
+                            ul.dropdown-menu(role='menu')
+                                li
+                                    a(data-ng-click='controller.exportaConsulta("xlsx")')
+                                        span.fa.fa-file-excel-o
+                                        |   {{ 'l-excel-xlsx' | i18n }}
+                                li
+                                    a(data-ng-click='controller.exportaConsulta("pdf")')
+                                        span.fa.fa-file-pdf-o
+                                        |   {{ 'l-pdf' | i18n }}
+            totvs-page-quick-filter(filters-list="controller.quickFilters", on-select-filter="controller.quickFilterSelected")
+        totvs-list-item(data-ng-repeat="record in (controller.filteredItems = (controller.listRecords | filter: controller.filterSoftFilters) )")
+            totvs-list-item-header
+                totvs-list-item-title.col-md-9.col-lg-9(title="{{record | descGeneric:'{sku} - {desc} {ref} ({exp})'}}")
+            totvs-list-item-content
+                totvs-list-item-info.col-md-4(title="{{ 'l-green-range' | i18n }}", value="{{record.qtd_horas_verde.toFixed(2);}}h")
+                totvs-list-item-info.col-md-4(title="{{ 'l-yellow-range' | i18n }}", value="{{record.qtd_horas_amarela.toFixed(2);}}h")
+                totvs-list-item-info.col-md-4(title="{{ 'l-red-range' | i18n }}", value="{{record.qtd_horas_vermelha.toFixed(2);}}h")
+        .container(align="center")
+                pagination.pagination-sm(total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages", items-per-page="controller.pageSize", previous-text="{{'l-previous' | i18n}}", next-text="{{'l-next' | i18n}}")

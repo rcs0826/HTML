@@ -1,0 +1,177 @@
+<totvs-page type="base">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/dts/hgp/hcg-cancellationMotive/">Motivos de Cancelamento Genéricos</breadcrumb>
+            <breadcrumb>Manutençao de Motivos de Cancelamento Genéricos</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Motivo de Cancelamento Genérico">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                        {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}
+                    </action>
+                    <action ng-click="controller.save();"
+                            ng-if="controller.action != 'DETAIL'">Salvar</action>
+                    <action ng-click="controller.saveNew();"
+                            ng-if="controller.action != 'DETAIL'">Salvar e Novo</action>
+                    <action class="btn-primary"
+                            ng-click="controller.saveClose();"
+                            ng-if="controller.action != 'DETAIL'">Salvar e Fechar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.cancellationMotiveForm">
+            <fieldset>
+                <totvs-row>
+                    <totvs-field totvs-combo
+                                 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                 label="Entidade"
+                                 ng-required="true"
+                                 t-options="controller.listModulos"
+                                 ng-model="controller.cancellationMotive.inEntidade"
+                                 min="1"
+                                 ng-disabled="controller.action != 'INSERT'">
+                    </totvs-field>
+                </totvs-row>
+                <totvs-row>
+                    <totvs-field totvs-number
+                                 class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                 label="Motivo"
+                                 ng-model="controller.cancellationMotive.cdMotivo"
+                                 ng-required="true"
+                                 min="1"
+                                 ng-disabled="controller.action != 'INSERT'">
+                        <validator key="required">Este campo é obrigatório!</validator>
+                        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                    <totvs-field totvs-input
+                                 class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                                 label="Descrição"
+                                 ng-model="controller.cancellationMotive.dsMotivo"
+                                 ng-required="true"
+                                 ng-disabled="controller.action == 'DETAIL'">
+                        <validator key="required">Este campo e obrigatorio!</validator>
+                    </totvs-field>
+                </totvs-row>
+                <totvs-row>
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                 label="Demitidos/Aposentados"
+                                 ng-model="controller.cancellationMotive.logDemitApos"
+                                 ng-disabled="controller.action == 'DETAIL'"
+                                 ng-if="controller.cancellationMotive.inEntidade == 'MC'">
+                    </totvs-field>
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                 label="Visivel Cliente"
+                                 ng-model="controller.cancellationMotive.logVisivelCliente"
+                                 ng-disabled="controller.action == 'DETAIL'"
+                                 ng-if="controller.cancellationMotive.inEntidade == 'MC'">
+                    </totvs-field>
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                 label="Considera Aprov. Carencias"
+                                 ng-model="controller.cancellationMotive.logConsidAprovCarenc"
+                                 ng-disabled="controller.action == 'DETAIL'"
+                                 ng-if="controller.cancellationMotive.inEntidade == 'MC'">
+                    </totvs-field>
+                </totvs-row>
+                <totvs-row>
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                 label="Alteração Contratual SIB"
+                                 ng-model="controller.cancellationMotive.logAltContratSIB"
+                                 ng-disabled="controller.action == 'DETAIL'"
+                                 ng-if="controller.cancellationMotive.inEntidade == 'MC'">
+                    </totvs-field>
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                 label="Selecionado por Padrão"
+                                 ng-model="controller.cancellationMotive.logRegPadrao"
+                                 ng-disabled="controller.action == 'DETAIL'"
+                                 ng-if="controller.cancellationMotive.inEntidade == 'MC'">
+                    </totvs-field>
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                 label="Processo de Maioridade"
+                                 ng-model="controller.cancellationMotive.logMaioridade"
+                                 ng-disabled="controller.action == 'DETAIL'"
+                                 ng-if="controller.cancellationMotive.inEntidade == 'MC'">
+                    </totvs-field>
+                </totvs-row>
+                <totvs-row>
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                 label="Obriga Auditoria"
+                                 ng-model="controller.cancellationMotive.logObrigAudit"
+                                 ng-change="controller.changeObrigAudit()"
+                                 ng-disabled="controller.action == 'DETAIL'"
+                                 ng-if="controller.cancellationMotive.inEntidade == 'MC'">
+                    </totvs-field>
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                 label="Gerar protocolo Solicitação Exclusão"
+                                 ng-model="controller.cancellationMotive.logGeraProtcExclus"
+                                 ng-disabled="controller.action == 'DETAIL'"
+                                 ng-if="controller.cancellationMotive.inEntidade == 'MC'">
+                    </totvs-field>
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                 label="Devolver Mensalidade"
+                                 ng-model="controller.cancellationMotive.logDevolvMensal"
+                                 ng-disabled="controller.action == 'DETAIL'"
+                                 ng-if="controller.cancellationMotive.inEntidade == 'MC'">
+                    </totvs-field>
+                </totvs-row>
+                <totvs-row>
+                    <totvs-field totvs-combo
+                                 ng-model="controller.cancellationMotive.inPadraoAuditoria"
+                                 label="Situação"
+                                 class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                 ng-disabled="controller.action == 'DETAIL'"
+                                 ng-if="controller.cancellationMotive.inEntidade == 'MC' && controller.cancellationMotive.logObrigAudit"
+                                 t-options="controller.options.padraoAuditoria">
+                    </totvs-field>
+                </totvs-row>
+                <totvs-row>
+                    <totvs-field totvs-combo
+                                 class="col-lg-7 col-md-7 col-sm-7 col-xs-12"
+                                 label="Motivo de Afastamento"
+                                 t-options="controller.listESocialMotAfast"
+                                 ng-model="controller.cancellationMotive.cdMotivoAfastam"
+                                 min="1"
+                                 ng-if="controller.cancellationMotive.inEntidade == 'CG'"
+                                 ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+                </totvs-row>
+                <totvs-row>
+                    <totvs-field totvs-datepicker
+                                 class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                 label="Data de Atualização"
+                                 ng-model="controller.cancellationMotive.dtAtualizacao"
+                                 culture="pt"
+                                 ng-disabled="true">
+                    </totvs-field>
+                    <totvs-field totvs-combo
+                                class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                label="Motivo de Cancelamento para Dependentes"
+                                ng-required="false"
+                                t-options="controller.listCancellationMotive"
+                                ng-model="controller.cancellationMotive.cdMotivoDependente"
+                                ng-if="controller.cancellationMotive.inEntidade == 'MC'">
+                    </totvs-field>
+                </totvs-row>
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>
+
+

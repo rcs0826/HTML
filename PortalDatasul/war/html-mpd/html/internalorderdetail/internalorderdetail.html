@@ -1,0 +1,190 @@
+<style scoped>
+	.btn-settings-custom {
+		padding: 0px 0px !important;
+		font-size: 24px !important;
+		margin-right: -15px !important;
+	}
+	.btn-settings-custom:active:focus:hover {
+		background-color: #ffffff;
+		border-color: #ffffff;
+		color: #23527c !important;
+	}
+	.text-cod-sit {
+		font-size: 18px;
+	}
+</style>
+
+<totvs-page type="detail" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-order-details' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		<totvs-page-header>
+			<totvs-page-header-title>
+				{{ 'l-pedido' | i18n }}: {{ controller.orderId }}
+
+				<span
+					class="label text-cod-sit"
+					ng-class="{
+						'label-success': controller.ttOrderDetails['cod-sit-ped'] == 3,
+						'label-warning': controller.ttOrderDetails['cod-sit-ped'] == 1
+						|| controller.ttOrderDetails['cod-sit-ped'] == 2
+						|| controller.ttOrderDetails['cod-sit-ped'] == 4
+						|| controller.ttOrderDetails['cod-sit-ped'] == 7,
+						'label-danger': controller.ttOrderDetails['cod-sit-ped'] == 5
+						|| controller.ttOrderDetails['cod-sit-ped'] == 6 
+					}"
+				>
+					{{ controller.ttOrderDetails['cod-sit-ped-desc'] }}
+				</span>
+			</totvs-page-header-title>
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action
+					hide-remove='true'
+					hide-edit='true'
+					hide-back='true'
+				>
+					<action ng-click="controller.openHistory()" icon="glyphicon-calendar">
+						{{ 'l-show-history' | i18n }}
+					</action>
+					<action ng-click="controller.openOrder()" icon="glyphicon-file">
+						{{
+							(controller.ttOrderDetails['cod-sit-ped'] == 3
+							? 'l-order-detail'
+							: 'l-edit-order'
+							) | i18n : [] : 'dts/mpd'
+						}}
+					</action>
+					<action ng-click="controller.print()" icon="glyphicon-print">
+						{{ 'l-print' | i18n }}
+					</action>
+					<action ng-click="controller.settings()" class="btn-link btn-settings-custom" icon="glyphicon-cog">
+					</action>
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+	<totvs-page-content>
+		<totvs-page-detail>
+			<div class="row">
+				<div class="col-md-12" ng-show="controller.userMessagesData.length > 0">
+					<div class="panel panel-danger">
+						<div class="panel-heading">{{ 'l-messages' | i18n }}</div>
+						<div class="panel-body">
+							<ul>
+								<li ng-repeat="m in controller.userMessagesData">
+									{{ m }}
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<totvs-page-detail-info-group>
+						{{ 'l-order-information' | i18n }}
+					</totvs-page-detail-info-group>
+
+					<totvs-page-detail-info
+						title="{{ 'l-nr-pedcli' | i18n }}"
+						class="col-xs-3 col-sm-3 col-md-3"
+					>
+						{{ controller.ttOrderDetails['nr-pedcli'] }}
+					</totvs-page-detail-info>
+					<totvs-page-detail-info
+						title="{{ (!controller.ttOrderDetails['cod-id-prosp'] ? 'l-customer' : 'l-lead') | i18n }}"
+						class="col-xs-3 col-sm-3 col-md-3"
+					>
+						<!-- CRM LEAD -->
+						<span
+							ng-if="
+								controller.ttOrderDetails['log-cotacao'] == true
+								&& controller.ttOrderDetails['cod-id-prosp']
+							"
+						>
+							{{ controller.ttOrderDetails['crmAccountName'] }}
+							{{
+								controller.ttOrderDetails['crmAccountShortName'] 
+								? '(' + controller.ttOrderDetails['crmAccountShortName'] + ')' 
+								: ''
+							}}
+						</span>
+						<!-- CRM LEAD -->
+
+						<span ng-if="!controller.ttOrderDetails['cod-id-prosp']">
+							{{ controller.ttOrderDetails['nome-abrev'] }}
+						</span>
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-data-implant' | i18n }}" class="col-xs-3 col-sm-3 col-md-3">
+						{{ controller.ttOrderDetails['dt-implant'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-dt-emissao' | i18n }}" class="col-xs-3 col-sm-3 col-md-3">
+						{{ controller.ttOrderDetails['dt-emissao'] | date : ('l-date-format' | i18n) : 'UTC' }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-condicao-pagamento' | i18n }}" class="col-xs-3 col-sm-3 col-md-3">
+						{{ controller.ttOrderDetails['cod-cond-pag'] }} - 
+						{{ controller.ttOrderDetails['cod-cond-pag-desc'] }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-desconto' | i18n }}" class="col-xs-3 col-sm-3 col-md-3">
+						{{ controller.ttOrderDetails['val-pct-desconto-total']| number:4 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-val-desconto-total' | i18n }}" class="col-xs-3 col-sm-3 col-md-3">
+						{{ controller.ttOrderDetails['val-desconto-total']| number:2 }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info title="{{ 'l-vl-tot-ped' | i18n }}" class="col-xs-3 col-sm-3 col-md-3">
+						{{ controller.ttOrderDetails['vl-tot-ped']| number:2 }}
+					</totvs-page-detail-info>
+
+					<totvs-group-content id="tgcOrderDetail" title="{{ 'l-more-order-groups-details' | i18n }}">
+						<totvs-lodash-template
+							src="/dts/mpd/html/internalorderdetail/order-detail-fields.html"
+							template-data="controller.listGroups"
+						/>
+					</totvs-group-content>
+				</div>
+			</div>
+
+            <totvs-tabset totvs-tabset-hotkey totvs-custom-element="customTabSet">
+				<totvs-tab heading="Itens" active="true">
+					<ng-include src="'/dts/mpd/html/internalorderdetail/order-detail-items-grid.html'" />
+				</totvs-tab>
+				<totvs-tab heading="Pagamento" select="controller.loadSpecialPaymentConditions()">
+					<ng-include src="'/dts/mpd/html/internalorderdetail/order-detail-payments-grid.html'" />
+				</totvs-tab>
+				<totvs-tab heading="Notas" select="controller.loadInvoices()">
+					<ng-include src="'/dts/mpd/html/internalorderdetail/order-detail-invoices-grid.html'" />
+				</totvs-tab>
+				<totvs-tab heading="Embarques" select="controller.loadShipments()">
+					<ng-include src="'/dts/mpd/html/internalorderdetail/order-detail-shipments-grid.html'" />
+				</totvs-tab>
+				<totvs-tab heading="Representantes" select="controller.loadRepresentative()">
+					<ng-include src="'/dts/mpd/html/internalorderdetail/order-detail-representatives-grid.html'" />
+				</totvs-tab>
+				<totvs-tab heading="Antecipações" select="controller.loadPrepayments()">
+					<ng-include src="'/dts/mpd/html/internalorderdetail/order-detail-prepayments-grid.html'" />
+				</totvs-tab>
+				<totvs-tab
+					ng-if="controller.orderparams[0]['valParam'] == 'true'"
+					heading="Formas de Pagamento"
+					select="controller.loadPaymentEcommerce()"
+				>
+					<ng-include src="'/dts/mpd/html/internalorderdetail/order-detail-payments-ecommerce.html'" />
+				</totvs-tab>
+				
+				<totvs-tab
+					ng-if="controller.ttOrderDetails['log-integr-mais-negoc'] == true"
+					heading="Tickets Mais Negócios"
+					select="controller.loadOrderTickets()"
+				>
+					<ng-include src="'/dts/mpd/html/internalorderdetail/order-detail-tickets-grid.html'" />
+				</totvs-tab>
+			</totvs-tabset>
+		</totvs-page-detail>
+	</totvs-page-content>
+</totvs-page>

@@ -1,0 +1,73 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.des_faixa_prfv : ('btn-new-range' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+		<field type="input"
+			   ng-required="true"
+			   ng-model="controller.model.des_faixa_prfv"
+			   canclean="undefined"
+			   placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+			   maxlength="40">
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<totvs-field
+			totvs-decimal
+			ng-model="controller.model.vli_inicial"
+			m-dec="0"
+			label="{{ 'l-initial-range' | i18n: []: 'dts/crm' }}"
+			canclean="0"
+			placeholder="{{ 'l-initial-range' | i18n: []: 'dts/crm' }}"
+			v-max="8"
+			ng-required="true">
+		</totvs-field>
+
+		<totvs-field
+			totvs-decimal
+			ng-model="controller.model.vli_final"
+			m-dec="0"
+			label="{{ 'l-final-range' | i18n: []: 'dts/crm' }}"
+			canclean="0"
+			placeholder="{{ 'l-final-range' | i18n: []: 'dts/crm' }}"
+			v-max="8"
+			ng-required="true">
+		</totvs-field>
+
+		<field type="select"
+			   ng-model="controller.model.ttCor"
+			   canclean="undefined"
+			   ng-required="true">
+
+			<label>{{ 'l-color' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-color' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_cor }}
+				</ui-select-match>
+				<ui-select-choices repeat="color in controller.colors | filter: $select.search track by $index">
+					<span ng-bind-html="color.nom_cor | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+	</fieldset>
+
+
+</totvs-modal-body>
+<totvs-modal-footer>
+	<button class="btn btn-default"
+			ng-click="controller.cancel()">
+		{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-default"
+			ng-click="controller.save(true)"
+			ng-if="controller.editMode === false;">
+		{{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-primary"
+			ng-click="controller.save(false)">
+		{{ 'btn-save' | i18n: []: 'dts/crm' }}
+	</button>
+</totvs-modal-footer>

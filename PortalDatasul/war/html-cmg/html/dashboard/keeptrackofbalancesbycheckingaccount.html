@@ -1,0 +1,210 @@
+<div id="keeptrackofbalancesbycheckingaccount_div"
+    ng-controller="cmg.dashboard.keeptrackofbalancesbycheckingaccount.Controller as dashKeepTrackOfBalancesByCheckingAccountCtrl">
+    <totvs-widget>
+        <cmg-totvs-widget-header list="dashKeepTrackOfBalancesByCheckingAccountCtrl.showList()"
+                                 charts="dashKeepTrackOfBalancesByCheckingAccountCtrl.showCharts()"
+                                 settings="dashKeepTrackOfBalancesByCheckingAccountCtrl.showConfig()"
+								 title="{{'l-balances-by-checking-account' | i18n : [] : 'dts/cmg/' }}">
+			<i class="glyphicon glyphicon-info-sign hidden-xs"
+			   tooltip-placement="bottom"
+			   tooltip-html="dashKeepTrackOfBalancesByCheckingAccountCtrl.tooltipHelp">
+			</i>
+		</cmg-totvs-widget-header>
+        <totvs-widget-body>
+
+            <div>			
+                <div ng-show="dashKeepTrackOfBalancesByCheckingAccountCtrl.listShow">
+		        <br>
+                    <div class="col-md-12">
+                        <totvs-grid 
+                            grid-data="dashKeepTrackOfBalancesByCheckingAccountCtrl.listResult" 
+                            grid-height="400" 
+                            selectable="false" 
+                            auto-resize-content="true" 
+                            sortable="true" 
+                            resizable="true">
+                            <totvs-grid-column 
+                                field="chekingAccount"
+                                title="{{ 'l-code' | i18n: []: 'dts/cmg' }}">
+                                <template>
+                                    <a style="color: black">{{ dataItem.chekingAccount }}</a>
+                                </template>
+                            </totvs-grid-column>
+                            <totvs-grid-column 
+                                field="shortName"
+                                title="{{ 'l-checking-account' | i18n: []: 'dts/cmg' }}">
+                                <template>
+                                    <a style="color: black">{{ dataItem.shortName }}</a>
+                                </template>
+                            </totvs-grid-column>
+                            <totvs-grid-column 
+                                field="companyAmt" 
+                                title="{{ 'l-company-value' | i18n: []: 'dts/cmg' }}">
+                                <template>
+                                    <a ng-if="dataItem.companyAmt < 0" style="color: red">{{ dataItem.shortCurrency }}{{ dataItem.companyAmt | number : 2}} </a>
+                                    <a ng-if="dataItem.companyAmt >= 0" style="color: blue">{{ dataItem.shortCurrency }}{{ dataItem.companyAmt | number : 2}} </a>
+                                </template>
+                            </totvs-grid-column>
+                            <totvs-grid-column 
+                                field="bankAmt"
+                                title="{{'l-bank-value' | i18n: []: 'dts/cmg' }}">
+                                <template>
+                                    <a ng-if="dataItem.bankAmt < 0" style="color: red">{{ dataItem.shortCurrency }}{{ dataItem.bankAmt | number : 2}} </a>
+                                    <a ng-if="dataItem.bankAmt >= 0" style="color: blue">{{ dataItem.shortCurrency }}{{ dataItem.bankAmt | number : 2}} </a>
+                                </template>
+                            </totvs-grid-column>
+                            <totvs-grid-column 
+                                field="companyAmt - bankAmt"
+                                title="{{'l-difference' | i18n: []: 'dts/cmg' }}">
+                                <template>
+                                    <a ng-if="(dataItem.companyAmt - dataItem.bankAmt) < 0" style="color: red">{{ dataItem.shortCurrency }}{{ dataItem.companyAmt - dataItem.bankAmt | number : 2}} </a>
+                                    <a ng-if="(dataItem.companyAmt - dataItem.bankAmt) >= 0" style="color: blue">{{ dataItem.shortCurrency }}{{ dataItem.companyAmt - dataItem.bankAmt | number : 2}} </a>
+                                </template>
+                            </totvs-grid-column>
+                        </totvs-grid>
+                        <!--totvs-list-item>
+                            <totvs-list-item-header>
+                                <strong>
+                                    <totvs-list-item-info
+                                        class="col-md-3 bold"
+                                        value="{{'l-code' | i18n : [] : 'dts/cmg'}} - {{'l-checking-account' | i18n : [] : 'dts/cmg'}}">
+                                    </totvs-list-item-info>
+                                    <totvs-list-item-info
+                                        class="col-md-3 bold"
+                                        value="{{'l-company-value' | i18n : [] : 'dts/cmg'}}">
+                                    </totvs-list-item-info>
+                                    <totvs-list-item-info
+                                        class="col-md-3 bold"
+                                        value="{{'l-bank-value' | i18n : [] : 'dts/cmg'}}">
+                                    </totvs-list-item-info>
+                                    <totvs-list-item-info
+                                        class="col-md-3 bold"
+                                        value="{{'l-difference' | i18n : [] : 'dts/cmg'}}">
+                                    </totvs-list-item-info>
+                                </strong>
+                            </totvs-list-item-header>
+			            </totvs-list-item>
+                        <totvs-list-item ng-repeat="balances in dashKeepTrackOfBalancesByCheckingAccountCtrl.listResult">
+                            <totvs-list-item-content>
+                                <totvs-list-item-info
+                                    class="col-md-3"
+                                    value="{{balances['chekingAccount']}} - {{balances['shortName']}}">
+                                </totvs-list-item-info>
+                                <totvs-list-item-info
+                                    class="col-md-3 clickable btn-link" 
+                                    ng-click="dashKeepTrackOfBalancesByCheckingAccountCtrl.openCMG707();"
+                                    ng-style="{'color': balances['companyAmt'] < 0 ? 'red' : ''}"
+                                    value="{{balances['companyAmt'] | currency}}">
+                                </totvs-list-item-info>
+                                <totvs-list-item-info
+                                    class="col-md-3 clickable btn-link" 
+                                    ng-click="dashKeepTrackOfBalancesByCheckingAccountCtrl.openCMG203();"
+                                    ng-style="{'color': balances['bankAmt'] < 0 ? 'red' : ''}"
+                                    value="{{balances['bankAmt'] | currency}}">
+                                </totvs-list-item-info>
+                                <totvs-list-item-info
+                                    class="col-md-3"
+                                    ng-style="{'color': ( balances['companyAmt'] - balances['bankAmt'] ) < 0 ? 'red' : ''}"
+                                    value="{{ ( balances['companyAmt'] - balances['bankAmt']) | currency}}">
+				                </totvs-list-item-info>
+                            </totvs-list-item-content>
+			            </totvs-list-item-->
+		            </div>	        
+                </div>
+                <div ng-show="dashKeepTrackOfBalancesByCheckingAccountCtrl.chartsShow">
+                    <div class="col-md-12">
+                        <totvs-field totvs-radio
+                            label="{{ 'l-balances' | i18n : [] : 'dts/cmg' }}"
+                            t-options="dashKeepTrackOfBalancesByCheckingAccountCtrl.options"
+                            ng-model="dashKeepTrackOfBalancesByCheckingAccountCtrl.typeChart">
+                        </totvs-field>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="col-md-12">
+                        <cmg-totvs-chart 
+                            ng-show="dashKeepTrackOfBalancesByCheckingAccountCtrl.typeChart == 1"
+                            t-type-chart="column"
+                            t-on-click="dashKeepTrackOfBalancesByCheckingAccountCtrl.onClick"
+                            t-series="dashKeepTrackOfBalancesByCheckingAccountCtrl.seriesCompany"
+                            t-categories="dashKeepTrackOfBalancesByCheckingAccountCtrl.categories"
+                            t-width="dashKeepTrackOfBalancesByCheckingAccountCtrl.tamGrafico">
+                        </cmg-totvs-chart>
+                    </div>
+                    <div class="col-md-12">
+                        <cmg-totvs-chart 
+                            ng-hide="dashKeepTrackOfBalancesByCheckingAccountCtrl.typeChart == 1"
+                            t-type-chart="column"
+                            t-on-click="dashKeepTrackOfBalancesByCheckingAccountCtrl.onClick"
+                            t-series="dashKeepTrackOfBalancesByCheckingAccountCtrl.seriesBank"
+                            t-categories="dashKeepTrackOfBalancesByCheckingAccountCtrl.categories"
+                            t-width="dashKeepTrackOfBalancesByCheckingAccountCtrl.tamGrafico">
+                        </cmg-totvs-chart>
+                    </div>
+                <br />
+                </div>
+                <div ng-hide="dashKeepTrackOfBalancesByCheckingAccountCtrl.listShow == true || dashKeepTrackOfBalancesByCheckingAccountCtrl.chartsShow == true">
+                    <form style="max-height:350px;overflow:auto;">
+                        <totvs-table t-items="dashKeepTrackOfBalancesByCheckingAccountCtrl.listaBancaria"
+                            t-items-as="account"
+                            t-max-height="150"
+                            t-table="dashKeepTrackOfBalancesByCheckingAccountCtrl.selectedBancaria">
+                            <column title="Bancária">
+                                {{account.shortName}}
+                            </column>
+                        </totvs-table>
+                        <br />
+                        <totvs-table t-items="dashKeepTrackOfBalancesByCheckingAccountCtrl.listaCaixa"
+                            t-items-as="account"
+                            t-max-height="150"
+                            t-table="dashKeepTrackOfBalancesByCheckingAccountCtrl.selectedCaixa">
+                            <column title="Caixa">
+                                {{account.shortName}}
+                            </column>
+                        </totvs-table>
+                        <br />
+                        <totvs-table t-items="dashKeepTrackOfBalancesByCheckingAccountCtrl.listaAtivo"
+                            t-items-as="account"
+                            t-max-height="150"
+                            t-table="dashKeepTrackOfBalancesByCheckingAccountCtrl.selectedAtivo">
+                            <column title="Mútuo Ativo">
+                                {{account.shortName}}
+                            </column>
+                        </totvs-table>
+                        <br />
+                        <totvs-table t-items="dashKeepTrackOfBalancesByCheckingAccountCtrl.listaPassivo"
+                            t-items-as="account"
+                            t-max-height="150"
+                            t-table="dashKeepTrackOfBalancesByCheckingAccountCtrl.selectedPassivo">
+                            <column title="Mútuo Passivo">
+                                {{account.shortName}}
+                            </column>
+                        </totvs-table>
+                        <br />
+                        <totvs-table t-items="dashKeepTrackOfBalancesByCheckingAccountCtrl.listaGarantida"
+                            t-items-as="account"
+                            t-max-height="150"
+                            t-table="dashKeepTrackOfBalancesByCheckingAccountCtrl.selectedGarantida">
+                            <column title="Garantida">
+                                {{account.shortName}}
+                            </column>
+                        </totvs-table>
+                    </form>
+                    <br />
+                    <a role="button" class="btn btn-default pull-right" ng-click="dashKeepTrackOfBalancesByCheckingAccountCtrl.applyConfig()">&nbsp; {{ 'btn-apply' | i18n : [] : 'dts/cmg/' }} &nbsp; </a>	                                
+                </div>			
+            </div>
+			
+        </totvs-widget-body>
+
+        <totvs-widget-footer>
+            <totvs-widget-footer-body>
+            </totvs-widget-footer-body>
+            <cmg-totvs-widget-footer-actions class="actions">
+                <action class="button btn-primary" ng-click="dashKeepTrackOfBalancesByCheckingAccountCtrl.openCMG700();">{{ 'l-to-move' | i18n : [] : 'dts/cmg/' }}</action>
+                <action class="button btn-default" ng-click="dashKeepTrackOfBalancesByCheckingAccountCtrl.openCMG706();">{{ 'l-reconcile' | i18n : [] : 'dts/cmg/' }}</action>
+            </cmg-totvs-widget-footer-actions>           
+        </totvs-widget-footer>
+    </totvs-widget>
+</div>       
+        

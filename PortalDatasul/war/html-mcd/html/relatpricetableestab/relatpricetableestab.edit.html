@@ -1,0 +1,101 @@
+<style>
+    .custom {
+        margin-right: 10px !important;
+        margin-left: 10px !important;
+        margin-bottom: 1px !important;
+    }
+
+    .table-content{
+        height: 450px !important;
+    }
+
+</style>
+
+<totvs-page type="detail" totvs-custom-element="customPage">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">Home</breadcrumb>
+            <breadcrumb link="#/dts/mcd/relatpricetableestab">{{'l-relac-estab-tab-preco' | i18n : [] : 'dts/mcd/'}}</breadcrumb>
+            <breadcrumb>{{'l-relac' | i18n : [] : 'dts/mcd/'}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-table-price-from-estab' | i18n : [] : 'dts/mcd/'}} {{controller.estabel}}" total="{{controller.listResult2.length}}"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <span class="col-lg-1 col-md-1 col-ms-1 col-xs-1 pull-right" style="margin-top: 10px; padding-left: 17px; padding-right: 5px;">                    
+                    <a href="#/dts/mcd/relatpricetableestab" class="btn btn-default">{{'Voltar' | i18n : [] : 'dts/mcd/'}}</a>
+                </span>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+
+        <div class="row custom">
+            <div class="col-xs-6">                
+                <form ng-submit="controller.applyTablesFilter(controller.tableTerm);" id="grid1">
+                    <div class="">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="controller.tableTerm" placeholder="">
+                            <span class="input-group-btn">
+                                <button ng-click="controller.removeTableFilter();" class="btn btn-default" type="button">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                                <button ng-click="controller.applyTablesFilter(controller.tableTerm);" class="btn btn-default" type="button">
+                                    <span class="glyphicon glyphicon-filter"></span>
+                                </button>
+                            </span>
+                            <span class="input-group-btn">
+                                <button style="width: 100px;" ng-click="controller.insertTablePrice();" class="btn btn-primary" type="button">
+                                    <span class="glyphicon glyphicon-forward"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+
+                </br>
+                <totvs-table id="grid1" t-table="controller.selectedItems" t-items="controller.listResult" t-items-as="item">
+                    <column title="Tabelas de Preço Disponíveis">
+                        {{item.nr_tabpre}}
+                    </column>
+                    <column title="Descrição">
+                        {{item.descricao}}
+                    </column>
+                </totvs-table>
+            </div>
+
+            <div class="col-xs-6">                
+
+                <form ng-submit="controller.applyRelacFilter(controller.relacTerm);" id="grid2">
+                    <div class="">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button style="width: 100px;" ng-click="controller.deleteTablePrice();" class="btn btn-primary" type="button">
+                                    <span class="glyphicon glyphicon-backward"></span>
+                                </button>
+                            </span>
+                            <input type="text" class="form-control" ng-model="controller.relacTerm" placeholder="">
+                            <span class="input-group-btn">
+                                <button ng-click="controller.removeRelacFilter();" class="btn btn-default" type="button">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                                <button ng-click="controller.applyRelacFilter(controller.relacTerm);" class="btn btn-default" type="button">
+                                    <span class="glyphicon glyphicon-filter"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+
+                </br>
+                <totvs-table id="grid2" t-table="controller.selectedItems2" t-items="controller.listResult2" t-items-as="item">
+                    <column title="Tabelas de Preços Relacionadas">
+                        {{item.nr_tabpre}}
+                    </column>
+                    <column title="Descrição">
+                        {{item.descricao}}
+                    </column>
+                </totvs-table>
+            </div>
+        </div>
+    </totvs-page-content>
+</totvs-page>

@@ -1,0 +1,60 @@
+<totvs-page type="list" totvs-custom-element="customPage">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">Home</breadcrumb>
+            <breadcrumb>{{'l-relac-estab-tab-preco' | i18n : [] : 'dts/mcd/'}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-relac-estab-tab-preco' | i18n : [] : 'dts/mcd/'}}" total="{{controller.listResult.length}}">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action>                    
+                </totvs-page-header-operation-action>
+                <form ng-submit="controller.applySimpleFilter();">
+                    <div class="col-lg-6 col-md-6 col-ms-6 col-xs-12 pull-right" style="margin-top: 10px; padding-left: 0px; padding-right: 5px;">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="controller.searchValue" placeholder="{{:: 'l-pesquisa-rapida-estabelec' | i18n : [] : 'dts/mcd/'}}">
+                            <span class="input-group-btn">
+                                <button ng-click="controller.removeSimpleFilter();" class="btn btn-default" type="button">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                                <button ng-click="controller.applySimpleFilter();" class="btn btn-default" type="button">
+                                    <span class="glyphicon glyphicon-filter"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers" ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-list-item ng-repeat="relatpricetableestab in controller.listResult" totvs-custom-element="customListItem" class="tag-{{relatpricetableestab.tag}}">
+            <totvs-list-item-header>
+
+                <totvs-list-item-title link="#/dts/mcd/relatpricetableestab/edit/{{relatpricetableestab['cod-estabel']}}"
+                    title="{{'l-estabelec' | i18n : [] : 'dts/mcd/'}}: {{relatpricetableestab['cod-estabel']}} | {{ 'l-nome' | i18n : [] : 'dts/mcd/'}}: {{relatpricetableestab['nome']}}">
+                </totvs-list-item-title>
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/mcd/relatpricetableestab/edit/{{relatpricetableestab['cod-estabel']}}"
+                        icon="glyphicon glyphicon-pencil">{{'btn-edit' | i18n : [] : 'dts/mcd/'}}</action>
+                </totvs-list-item-action>
+
+            </totvs-list-item-header>
+            <totvs-list-item-content>
+                <totvs-list-item-info title="{{ 'l-estabelec' | i18n : [] : 'dts/mcd/'}}" value="{{relatpricetableestab['cod-estabel']}}"></totvs-list-item-info>
+                <totvs-list-item-info title="{{ 'l-nome' | i18n : [] : 'dts/mcd/'}}"      value="{{relatpricetableestab['nome']}}"></totvs-list-item-info>
+                <totvs-list-item-info title="{{ 'l-endereco' | i18n : [] : 'dts/mcd/'}}"  value="{{relatpricetableestab['endereco']}}"></totvs-list-item-info>
+                <totvs-list-item-info title="{{ 'l-bairro' | i18n : [] : 'dts/mcd/'}}"    value="{{relatpricetableestab['bairro']}}"></totvs-list-item-info>
+                <totvs-list-item-info title="{{ 'l-cidade' | i18n : [] : 'dts/mcd/'}}"    value="{{relatpricetableestab['cidade']}}"></totvs-list-item-info>
+                <totvs-list-item-info title="{{ 'l-estado' | i18n: [] : 'dts/mcd/'}}"    value="{{relatpricetableestab['estado']}}"></totvs-list-item-info>
+            </totvs-list-item-content>
+        </totvs-list-item>
+        <totvs-list-pagination ng-if="controller.hasNext" ng-click="controller.search(true);">
+        </totvs-list-pagination>
+    </totvs-page-content>
+
+</totvs-page>

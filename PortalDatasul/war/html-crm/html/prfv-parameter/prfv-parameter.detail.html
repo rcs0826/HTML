@@ -1,0 +1,209 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/prfv-parameter/">{{ 'nav-prfv-parameter' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ controller.model.des_prfv }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action on-back-link="#/dts/crm/prfv-parameter/"
+													on-edit="controller.onEdit"
+													on-remove="controller.onRemove"
+													hide-actions="true">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}"
+						  ng-if="(controller.model | isUndefined)">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-show="controller.model | isDefined">
+
+			<div class="col-xs-12 no-gutter">
+				<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ controller.model.des_prfv }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-prfv-band' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ controller.model.ttPRFVFaixa.des_faixa_prfv }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-prfv-evaluate-type' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ controller.model.ttTipoPRFV.nom_tipo }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-public' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{controller.model.ttPublico.nom_public_alvo }}
+				</totvs-page-detail-info>
+			</div>
+
+			<div class="col-xs-12 no-gutter">
+				<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-font' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ controller.model.ttFontePRFV.nom_fonte }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-potential' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ controller.model.ttPotencialidade.nom_potencd }}
+				</totvs-page-detail-info>
+			</div>
+			<div class="col-xs-12 crm-group-accordion">
+
+				<totvs-divider style="margin-top: 0px; margin-bottom: 10px;"></totvs-divider>
+
+				<accordion close-others="false">
+
+					<accordion-group is-open="controller.group.recency.open"
+									 class="crm-panel">
+						<accordion-heading>
+							<div class="row">
+								<div class="col-xs-12">
+									{{ 'l-recency' | i18n: []: 'dts/crm' }}
+									<i class="pull-right glyphicon"
+									   ng-class="{'glyphicon-chevron-down' :  controller.group.recency.open,
+												  'glyphicon-chevron-right': !controller.group.recency.open}">
+									</i>
+								</div>
+							</div>
+						</accordion-heading>
+
+						<div class="col-xs-12 no-gutter">
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-recency-weight' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ controller.model.qti_recenc_poster_a }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-posterior-recency' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ controller.model.dat_recenc_poster_a | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+							</totvs-page-detail-info>
+
+						</div>
+
+					</accordion-group>
+
+					<accordion-group is-open="controller.group.frequency.open"
+									 class="crm-panel">
+						<accordion-heading>
+							<div class="row">
+								<div class="col-xs-12">
+									{{ 'l-frequency' | i18n: []: 'dts/crm' }}
+									<i class="pull-right glyphicon"
+									   ng-class="{'glyphicon-chevron-down' :  controller.group.frequency.open,
+												  'glyphicon-chevron-right': !controller.group.frequency.open}">
+									</i>
+								</div>
+							</div>
+						</accordion-heading>
+
+						<div class="col-xs-12 no-gutter">
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-posterior-frequency' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ controller.model.dat_freq_poster_a | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-frequency' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ controller.model.ttFrequencia.nom_frequencia }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-frequency-weight' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ controller.model.qti_freq_poster_a }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-weeks' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ controller.model.qti_sema }}
+							</totvs-page-detail-info>
+
+						</div>
+
+					</accordion-group>
+					<accordion-group is-open="controller.group.value.open"
+									 class="crm-panel">
+						<accordion-heading>
+							<div class="row">
+								<div class="col-xs-12">
+									{{ 'l-value' | i18n: []: 'dts/crm' }}
+									<i class="pull-right glyphicon"
+									   ng-class="{'glyphicon-chevron-down' :  controller.group.value.open,
+												  'glyphicon-chevron-right': !controller.group.value.open}">
+									</i>
+								</div>
+							</div>
+						</accordion-heading>
+
+						<div class="col-xs-12 no-gutter">
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-value-weight' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ controller.model.qti_val_poster_a }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+													title="{{ 'l-posterior-value' | i18n: []: 'dts/crm' }}"
+													value-break="false">
+								{{ controller.model.dat_val_poster_a | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+							</totvs-page-detail-info>
+
+						</div>
+
+					</accordion-group>
+
+				</accordion>
+
+				<totvs-divider style="margin-top: 10px;"></totvs-divider>
+
+			</div>
+			<totvs-tabset class="no-border">
+
+				<tabset>
+					<tab heading="{{ 'nav-prfv-forms' | i18n: []: 'dts/crm' }} ({{ controller.model.ttForma.length || 0 }})">
+						<ng-include src="'/dts/crm/html/prfv-parameter/form/form.tab.html'"></ng-include>
+					</tab>
+					<tab heading="{{ 'nav-prfv-sources' | i18n: []: 'dts/crm' }} ({{ controller.model.ttFonte.length || 0 }})">
+						<ng-include src="'/dts/crm/html/prfv-parameter/source/source.tab.html'"></ng-include>
+					</tab>
+				</tabset>
+			</totvs-tabset>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

@@ -1,0 +1,97 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb id="breadcrumb">
+                <breadcrumb>Regras de Inclusao e Exclusao de Beneficiários</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="Regras de Inclusao e Exclusao de Beneficiários" 
+                                     total="{{controller.listOfParamIncExcCount}}"
+                                     settings="controller.openConfigWindow()">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="1">
+                    <action class="glyphicon-plus"
+                            link="#/dts/hgp/hvp-paramIncExc/new">
+                        Incluir Regra
+                    </action>
+                    <action class="glyphicon glyphicon-import"
+                            ng-click="controller.import();">
+                        Importar
+                    </action>
+                </totvs-page-header-operation-action>
+                <totvs-page-header-operation-filter placeholder="Codigo ou Descriçao"
+                                                    ng-submit="controller.search()"
+                                                    ng-model="controller.searchInputText"
+                                                    advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-alert ng-if="controller.listOfParamIncExc.length <= 0"
+                    type="info"
+                    message="Nenhum registro encontrado">
+        </totvs-page-alert>
+        <totvs-list-item ng-repeat="paramIncExc in controller.listOfParamIncExc">
+            <totvs-list-item-header>
+                <totvs-list-item-title
+                    title="{{paramIncExc.rotulo}}"
+                    link="#/dts/hgp/hvp-paramIncExc/detail/{{paramIncExc.cddRegra}}">
+                </totvs-list-item-title>
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/hgp/hvp-paramIncExc/edit/{{paramIncExc.cddRegra}}" icon="glyphicon-pencil">Editar</action>
+                    <action ng-click="controller.removeParamIncExc(paramIncExc)" icon="glyphicon-trash">Remover</action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+            <totvs-list-item-content>
+                 <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                 					  title="Modalidade"
+                 					  value="{{paramIncExc.cdnModalid}} - {{paramIncExc.dsModalidade}}">
+                 </totvs-list-item-info>
+                 <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                 					  title="Plano"
+                 					  value="{{paramIncExc.cdnPlano}} - {{paramIncExc.nmPlano}}">
+                 </totvs-list-item-info>
+                 <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                 					  title="Tipo plano"
+                 					  value="{{paramIncExc.cdnTipPlano}} - {{paramIncExc.nmTipoPlano}}">
+                 </totvs-list-item-info>
+                 <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                 					  title="Contratante"
+                 					  value="{{paramIncExc.numInscrContrnte}} - {{paramIncExc.nmContratante}}">
+                 </totvs-list-item-info>
+                 <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                 					  title="Contrato Inicio"
+                 					  value="{{paramIncExc.numTermoAdesaoInic}}">
+                 </totvs-list-item-info>
+                 <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                 					  title="Contrato Final"
+                 					  value="{{paramIncExc.numTermoAdesaoFim}}">
+                 </totvs-list-item-info>
+                 <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                 					  title="Motivo"
+                 					  value="{{paramIncExc.cdMotivoCancelamento}} - {{paramIncExc.dsMotivo}}"
+                                      ng-hide="{{paramIncExc.idiTipRegra == 1}}">
+                 </totvs-list-item-info>
+                 <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                 title="Considera na Transferência - Portal Empresa"
+                                 value="{{paramIncExc.logTransf ? 'Sim' : 'Nao'}}">
+                 </totvs-list-item-info>
+                 <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                 					  title="Ativo"
+                 					  value="{{paramIncExc.logAtivo ? 'Sim' : 'Nao'}}">
+                 </totvs-list-item-info>
+            </totvs-list-item-content>
+        </totvs-list-item>
+        <totvs-list-pagination
+            ng-if="controller.listOfParamIncExc.length < controller.listOfParamIncExcCount && controller.listOfParamIncExc.length"
+            ng-click="controller.search(true);">
+        </totvs-list-pagination>
+    </totvs-page-content>
+</totvs-page>
+
+

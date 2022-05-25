@@ -1,0 +1,318 @@
+<totvs-page type="base">
+    <totvs-page-navbar >
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hrs-abiAnalysis">ABI</breadcrumb>
+                <breadcrumb link="#/dts/hgp/hrs-abiAnalysisAttendance/{{controller.abiAnalysis.cdProtocoloAbi}}">Atendimentos da ABI {{controller.abiAnalysis.nrAbi}}</breadcrumb>
+                <breadcrumb>{{controller.nomeTab}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title
+                title="{{controller.nomeTab}} Nº {{controller.abiAnalysisAttendance.nrAih}}">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel()">Voltar</action>
+                    <action ng-click="controller.save()">Salvar</action>
+                    <action class="btn-primary" ng-click="controller.saveClose()">Salvar e Fechar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.abiForm">
+            <fieldset>
+                <totvs-row>
+                    <totvs-page-detail class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <totvs-page-detail-info
+                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                    title="Data Competência"
+                                    value="{{controller.abiAnalysisAttendance.dsCompetencia}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                    title="Data Apresentação"
+                                    value="{{controller.abiAnalysisAttendance.dtApresentAih | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                    title="Data Importação"
+                                    value="{{controller.abiAnalysis.dtImportacao | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+                    </totvs-page-detail>
+                    <totvs-field totvs-combo
+                                  class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                  label="Situação"
+                                  ng-required="true"
+                                  t-options="controller.listOfSituation"
+                                  ng-disabled="false"
+                                  ng-model="controller.abiAnalysisAttendance.dsSituacao">
+                        <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field>
+                </totvs-row>
+                <totvs-row> 
+                    <totvs-page-detail class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    
+                        <totvs-page-detail-info
+                                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                    title="Data Limite Pagamento"
+                                    value="{{controller.abiAnalysisAttendance.dtPagamento | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                    title="Data Limite Contestação"
+                                    value="{{controller.abiAnalysisAttendance.dtContestacao | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                    title="Caráter de Internação"
+                                    value="{{controller.abiAnalysisAttendance.caraterInternacao}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                    title="Data Internação"
+                                    value="{{controller.abiAnalysisAttendance.dtInternacao | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                    title="Data Saída"
+                                    value="{{controller.abiAnalysisAttendance.dtSaida | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                    title="Dias de Internação"
+                                    value="{{controller.abiAnalysisAttendance.qtDiasInternacao}}">
+                        </totvs-page-detail-info>
+                    </totvs-page-detail>
+                </totvs-row>
+                <totvs-row>
+                    <totvs-page-detail class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <totvs-page-detail-info
+                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                    title="Tunerp/IVR"
+                                    value="{{controller.abiAnalysisAttendance.vlTunep}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                    title="Procedimentos"
+                                    value="{{controller.abiAnalysisAttendance.vlTotalProcedimentos}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                    title="Valor Total Indeferido"
+                                    value="{{controller.abiAnalysisAttendance.vlTunep}}">
+                        </totvs-page-detail-info>
+                    </totvs-page-detail>
+                    <totvs-field totvs-input
+                                 class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                 label="GRU"
+                                 ng-model="controller.abiAnalysisAttendance.cdRecolhimentoGru"
+                                 ng-disabled="false">
+                    </totvs-field>
+                </totvs-row>
+                <totvs-row>
+                    <totvs-page-detail>
+                        <totvs-page-detail-info
+                                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                    title="Prestador/Local"
+                                    value="{{controller.abiAnalysisAttendance.nmUps}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                    title="Natureza"
+                                    value="{{controller.abiAnalysisAttendance.dsNatureza}}">
+                        </totvs-page-detail-info>
+                    </totvs-page-detail>
+                </totvs-row>  
+                <totvs-row>  
+                    <totvs-page-detail>
+                        <totvs-page-detail-info
+                                    class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                                    title="Cidade"
+                                    value="{{controller.abiAnalysisAttendance.enMunicipio}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-1 col-md-1 col-sm-1 col-xs-12"
+                                    title="UF"
+                                    value="{{controller.abiAnalysisAttendance.enUf}}">
+                        </totvs-page-detail-info>
+                    </totvs-page-detail>
+                </totvs-row>
+                <totvs-page-detail>
+                    <totvs-row>
+                        <legend>Dados do Beneficiário</legend>
+                    </totvs-row>
+                    <totvs-row>
+                        <totvs-page-detail-info
+                                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                    title="Beneficiário"
+                                    value="{{controller.abiAnalysisAttendance.nmUsuario}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                    title="Carteira"
+                                    value="{{controller.abiAnalysisAttendance.idBeneficiario}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                    title="Código CCO"
+                                    value="{{controller.abiAnalysisAttendance.cdCco}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                    title="Data Nascimento"
+                                    value="{{controller.abiAnalysisAttendance.dtNascimento | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>  
+                    </totvs-row>
+                    <totvs-row>
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                    title="Telefone 1"
+                                    value="{{controller.abiAnalysisAttendance.enTtelefone}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                    title="Telefone 2"
+                                    value="{{controller.abiAnalysisAttendance.enFax}}">
+                        </totvs-page-detail-info>
+                    </totvs-row>
+                    <totvs-row>
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                    title="Quantidade de Dias do Plano"
+                                    value="{{controller.abiAnalysisAttendance.qtDiasPlano}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                    title="Data Final de Carência Eletiva"
+                                    value="{{controller.abiAnalysisAttendance.dtFimCarenciaEle | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                    title="Data Final de Carência Urgente"
+                                    value="{{controller.abiAnalysisAttendance.dtFimCarenciaUrg | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+                    </totvs-row>
+                    <totvs-row>
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                    title="Dentro do Período"
+                                    value="{{controller.abiAnalysisAttendance.lgDentroPeriodo ? 'Sim' : 'Não'}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                    title="Beneficiário em carência"
+                                    value="{{controller.abiAnalysisAttendance.lgCarencia ? 'Sim' : 'Não'}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                    title="Proced. sem cobertura de plano"
+                                    value="{{controller.abiAnalysisAttendance.lgProcSemCobert ? 'Sim' : 'Não'}}">
+                        </totvs-page-detail-info>
+                    </totvs-row>
+                    <totvs-row>
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                    title="Plano de co-participação"
+                                    value="{{controller.abiAnalysisAttendance.lgPlanoCoPartic ? 'Sim' : 'Não'}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                    title="Cobertura parcial temporária"
+                                    value="{{controller.abiAnalysisAttendance.lgProcCpt ? 'Sim' : 'Não'}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                    title="Fora da região de abrangência"
+                                    value="{{controller.abiAnalysisAttendance.lgForaAbrangencia ? 'Sim' : 'Não'}}">
+                        </totvs-page-detail-info>
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                    title="Beneficiário inadimplente"
+                                    value="{{controller.abiAnalysisAttendance.lgInadimplencia ? 'Sim' : 'Não'}}">
+                        </totvs-page-detail-info>
+                    </totvs-row>
+                </totvs-page-detail>
+                <totvs-row>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <totvs-row>
+                                <legend>Observação</legend>
+                        </totvs-row>
+                        <totvs-row>
+                                <field
+                                        type="textarea"
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                        ng-model="controller.abiAnalysisAttendance.dsObservacao"
+                                        maxlength="2000"
+                                        rows="7"
+                                        ng-disabled="false">
+                                </field>
+                        </totvs-row>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <totvs-row>
+                                <legend>Tempestividade</legend>
+                        </totvs-row>
+                        <totvs-row>
+                                <field
+                                        type="textarea"
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                        ng-model="controller.abiAnalysisAttendance.dsTempestividade"
+                                        maxlength="5000"
+                                        rows="7"
+                                        ng-disabled="false">
+                                </field>
+                        </totvs-row>
+                    </div>
+                </totvs-row>
+                <totvs-row>
+                    <legend>Procedimentos</legend>
+                </totvs-row>
+                <totvs-row>
+                    <totvs-list-item ng-repeat="procedure in controller.abiAnalysisAttendanceProcedures">
+                        <totvs-list-item-header>
+                                <totvs-list-item-title
+                                        title="Procedimento {{procedure.cdProcedure}}: {{procedure.dsProcedure}}">
+                                </totvs-list-item-title>
+                        </totvs-list-item-header>
+                        <totvs-list-item-content>           
+                                <totvs-row>
+                                        <totvs-list-item-info class= "{{controller.listItemInfoClasses6col}}"
+                                                        value= "{{(procedure.dsType === 'P' ? 'Principal'  :
+                                                                  (procedure.dsType === 'S' ? 'Secundário' :
+                                                                  (procedure.dsType === 'E' ? 'Especial'   :
+                                                                  procedure.dsType)))}}"
+                                                        title= "Tipo">
+                                        </totvs-list-item-info>
+                                </totvs-row>
+                                <totvs-row>
+                                        <totvs-list-item-info class= "{{controller.listItemInfoClasses6col}}"
+                                                        value= "{{StringTools.formatNumberToCurrency(procedure.qtProcedure)}}"
+                                                        title= "Qtd">
+                                        </totvs-list-item-info>
+                                        <totvs-list-item-info class="{{controller.listItemInfoClasses6col}}"
+                                                        value= "{{StringTools.formatNumberToCurrency(procedure.vlProcedure)}}"
+                                                        title= "Valor">
+                                        </totvs-list-item-info>
+                                        <totvs-list-item-info class= "{{controller.listItemInfoClasses6col}}"
+                                                        value= "{{StringTools.formatNumberToCurrency(procedure.vlDeferred)}}"
+                                                        title= "Valor Deferido">
+                                        </totvs-list-item-info>
+                                        <totvs-list-item-info class= "{{controller.listItemInfoClasses6col}}"
+                                                        value= "{{StringTools.formatNumberToCurrency(procedure.vlPaid)}}"
+                                                        title= "Valor Pago">
+                                        </totvs-list-item-info>
+                                        <totvs-list-item-info class= "{{controller.listItemInfoClasses6col}}"
+                                                        value= "{{StringTools.formatNumberToCurrency(procedure.vlOperadorEle)}}"
+                                                        title= "Valor Oper. Ele.">
+                                        </totvs-list-item-info>
+                                        <totvs-list-item-info class= "{{controller.listItemInfoClasses6col}}"
+                                                        value= "{{StringTools.formatNumberToCurrency(procedure.vlOperadorUrg)}}"
+                                                        title= "Valor Oper. Urg.">
+                                        </totvs-list-item-info>
+                                </totvs-row>
+                        </totvs-list-item-content>
+                    </totvs-list-item>
+                </totvs-row>
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

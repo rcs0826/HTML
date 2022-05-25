@@ -1,0 +1,108 @@
+<totvs-modal-header>
+    {{ i18n('l-parameters', [], 'dts/mcs') }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <totvs-page-form>
+        <accordion close-others="false">
+            <accordion-group is-open="status.isFirstOpen">
+                <accordion-heading>
+                    <!--legend>{{ i18n('l-selection', [], 'dts/mcs') }}</legend-->
+                    {{ i18n('l-selection', [], 'dts/mcs') }}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.isFirstOpen, 'glyphicon-chevron-right': !status.isFirstOpen}"></i>
+                </accordion-heading>
+                <fieldset class="form-horizontal">
+                    <field
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        type="decimalrange"
+                        ng-model="controller.model.orderRange"
+                        m-dec="0"
+                        v-max="999999999"
+                        label="{{ i18n('l-production-order', [], 'dts/mcp') }}">
+                    </field>
+                    <totvs-field 
+                        totvs-date-range 
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        ng-model="controller.model.emissionDateRange"
+                        label="{{ i18n('l-emission-date', [], 'dts/mcs') }}">
+                    </totvs-field>
+                    <field 
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        type="inputrange"
+                        ng-model="controller.model.lotRange"
+                        start-maxlength="40"
+                        end-maxlength="40"
+                        label="{{ i18n('l-lot', [], 'dts/mcs') }}">
+                    </field>
+                </fieldset>
+            </accordion-group>
+            <accordion-group is-open="status.open">
+                <accordion-heading>
+                    {{ i18n('l-parameters', [], 'dts/mcs') }}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                </accordion-heading>
+                <fieldset class="form-horizontal">
+                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="color:gray;">{{ i18n('l-order-type', [], 'dts/mcs') }}</span>
+                    <totvs-field class="col-xs-6 col-sm-4 col-md-3 col-lg-2" totvs-checkbox ng-model="controller.model.internalOrder" label="{{ i18n('l-internal', [], 'dts/mcs') }}"></totvs-field>
+                    <totvs-field class="col-xs-6 col-sm-4 col-md-3 col-lg-2" totvs-checkbox ng-model="controller.model.externalOrder" label="{{ i18n('l-external', [], 'dts/mcs') }}"></totvs-field>
+                    <totvs-field class="col-xs-6 col-sm-4 col-md-3 col-lg-2" totvs-checkbox ng-model="controller.model.interExterOrder" label="{{ i18n('l-int-external', [], 'dts/mcs') }}"></totvs-field>
+                    <totvs-field class="col-xs-6 col-sm-4 col-md-3 col-lg-2" totvs-checkbox ng-model="controller.model.maintOrder" label="{{ i18n('l-maint', [], 'dts/mcs') }}"></totvs-field>
+                    <totvs-field class="col-xs-6 col-sm-4 col-md-3 col-lg-2" totvs-checkbox ng-model="controller.model.fixedActiveOrder" label="{{ i18n('l-fixed-active', [], 'dts/mcs') }}"></totvs-field>
+                    <totvs-field class="col-xs-6 col-sm-4 col-md-3 col-lg-2" totvs-checkbox ng-model="controller.model.toolingOrder" label="{{ i18n('l-tooling', [], 'dts/mcs') }}"></totvs-field>
+                    <totvs-field class="col-xs-6 col-sm-4 col-md-3 col-lg-2" totvs-checkbox ng-model="controller.model.consertoOrder" label="{{ i18n('l-conserto', [], 'dts/mcs') }}"></totvs-field>
+                    <totvs-field class="col-xs-6 col-sm-4 col-md-3 col-lg-2" totvs-checkbox ng-model="controller.model.reworkOrder" label="{{ i18n('l-rework', [], 'dts/mcs') }}"></totvs-field>
+                    <totvs-field class="col-xs-6 col-sm-4 col-md-3 col-lg-8" totvs-checkbox ng-model="controller.model.reuseOrder" label="{{ i18n('l-reuse', [], 'dts/mcs') }}"></totvs-field>
+                    <totvs-field totvs-radio
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        label="{{ i18n('l-order-status', [], 'dts/mcs') }}"
+                        t-options="controller.options.orderStatus"
+                        ng-model="controller.model.selectedOrderStatus">
+                    </totvs-field>
+                    <totvs-field totvs-radio
+                        ng-change="controller.setManagerialPrice()"
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        label="{{ i18n('l-price-type', [], 'dts/mcs') }}"
+                        t-options="controller.options.priceType"
+                        ng-model="controller.model.selectedPriceType">
+                    </totvs-field>  
+                    <totvs-field totvs-radio
+                        ng-change="controller.setManagerialOperation()"
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        label="{{ i18n('l-tipo-custo-op', [], 'dts/mcs') }}"
+                        t-options="controller.options.operationCost"
+                        ng-model="controller.model.selectedOperationCost">
+                    </totvs-field>
+                    <totvs-field
+                        totvs-datepicker
+                        class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
+                        ng-model='controller.model.structureCutDate'
+                        culture='pt'
+                        label="{{ i18n('l-corte-estr', [], 'dts/mcs') }}"
+                        canclean
+                        ng-change='controller.changeDatepicker()' >
+                    </totvs-field>
+                    <totvs-field
+                        totvs-datepicker
+                        class="col-xs-6 col-sm-6 col-md-6 col-lg-6"
+                        ng-model='controller.model.operationCutDate'
+                        culture='pt'
+                        label="{{ i18n('l-op-cut-off', [], 'dts/mcs') }}"
+                        canclean
+                        ng-change='controller.changeDatepicker()' >
+                    </totvs-field>
+                    <totvs-field
+                        label="{{ i18n('l-currency', [], 'dts/mcs') }}"
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        totvs-combo
+                        canclean
+                        t-options="(controller.model.selectedPriceType != 3 || controller.model.selectedOperationCost != 4) ? controller.model.currencies : controller.model.managerialCurrencies"
+                        ng-model="controller.model.selectedCurrency">
+                    </totvs-field>
+                </fieldset>
+            </accordion-group>
+        <accordion>
+    </totvs-page-form>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ i18n('btn-cancel') }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()">{{ i18n('l-ok') }}</button>
+</totvs-modal-footer>

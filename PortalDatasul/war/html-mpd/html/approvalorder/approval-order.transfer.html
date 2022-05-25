@@ -1,0 +1,32 @@
+<style>
+    .custom-label{font-family: 'Arial';
+                  margin-bottom: 5px;
+                  font-weight: 200;
+                  font-size: 12px;
+                  color: gray;}    
+</style>
+
+
+<totvs-modal-header>{{'l-modal-transf-pend-aprov' | i18n}}</totvs-modal-header>
+<totvs-modal-body>
+    <div class="row">                                        
+        <div class="form-group col-md-12">   
+            <h6 class="custom-label">{{'l-transfer-to' | i18n}}</h6>                                                       
+            <select class="form-control"
+                    ng-model="controller.usuario"
+                    ng-change="controller.usuarioSelecionado(controller.usuario)"
+                    ng-options="usuario as usuario.username for usuario in controller.usuarios">
+                    <option value="">{{'l-select-user-to-transfer' | i18n}}</option>                                                                              
+            </select>                                          
+        </div>        
+        <form class="form-horizontal" role="form">                                                                                                                                                                                                         
+            <field type="textarea" class="col-md-12" ng-model="controller.observacao">
+                   <label>{{'l-observacao-movimentacao' | i18n}}</label>
+            </field>                                                                                                                                                                                              
+        </form>                
+    </div>           
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button type="button" class="btn btn-primary" data-ng-click="controller.sendTask(controller.usuario, controller.observacao);">{{'l-confirmar' | i18n}}</button>
+    <button type="button" class="btn btn-default" data-ng-click="controller.close();">{{'l-close' | i18n}}</button>
+</totvs-modal-footer>

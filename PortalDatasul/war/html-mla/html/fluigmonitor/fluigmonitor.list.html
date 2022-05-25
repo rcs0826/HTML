@@ -1,0 +1,223 @@
+<style type="text/css" scoped="true">
+	.bold{
+		font-weight: bold;
+	}
+
+    .errorType-1:before{
+        background-color: #f15a22;
+        content: "1";
+        color:#fff;
+    }
+    
+    .page-content .list-item.errorType-1 {
+        border-left: 5px solid #f15a22;
+    }
+
+
+	.errorType-2:before{
+        background-color: #f0ad4e;
+        content: "2";
+        color:#fff;
+    }
+	
+    .page-content .list-item.errorType-2 {
+        border-left: 5px solid #f0ad4e;
+    }
+
+    .errorType-3:before{
+        background-color: #6ace39;
+        content: "3";
+        color:#fff;
+    }
+    
+    .page-content .list-item.errorType-3 {
+        border-left: 5px solid #6ace39;
+    }    
+
+    .errorType-4:before{
+        background-color: black;
+        content: "4";
+        color:#fff;
+    }
+    
+    .page-content .list-item.errorType-4 {
+        border-left: 5px solid black;
+    }    
+
+    .list-item.errorType-1:before, 
+    .list-item.errorType-2:before, 
+    .list-item.errorType-3:before, 
+    .list-item.errorType-4:before{
+        content: "";
+    }
+</style>
+<totvs-page type="list" totvs-custom-element="customFluigMonitor_list">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>
+                <span class="hidden-xs">{{ 'l-integration-pendencies-mla-fluig-plural' | i18n }}</span>
+                <span class="hidden-sm hidden-md hidden-lg">{{ 'l-integration-pending-mla-fluig-short' | i18n }}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+
+
+		<totvs-page-header>
+			<totvs-page-header-title title="{{ 'l-integration-pendencies-mla-fluig-plural' | i18n }}" 
+									 total="{{controller.modelListCount}}" id="pageTitle">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+                <totvs-page-header-operation-action>
+                    <action ng-click="controller.integrate(null)" icon="glyphicon-play" class="btn-default" tooltip="{{ 'l-to-integrate' | i18n }}" ng-if="controller.modelListCount > 0">{{ 'l-to-integrate' | i18n }}</action>
+                </totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter placeholder="{{ 'l-pending-approval-pch' | i18n }}"
+													ng-submit="controller.load(false)"
+													ng-model="controller.basicFilter"
+                                                    advanced-search="controller.openAdvancedSearch"
+                                                    clean-search="controller.load(false)">
+				</totvs-page-header-operation-filter>
+			</totvs-page-header-operation>
+
+			<totvs-page-tags>
+				<tag class="errorType-1">{{ "l-send-error" | i18n }}</tag>
+				<tag class="errorType-2">{{ "l-handling-error" | i18n }}</tag>
+                <tag class="errorType-3">{{ "l-cancel-error" | i18n }}</tag>
+                <tag class="errorType-4">{{ "l-unintegrated" | i18n }}</tag>
+			</totvs-page-tags>
+
+			<totvs-page-disclaimers disclaimer-list="controller.disclaimers"
+                        	        ng-click="controller.removeDisclaimer">
+    	    </totvs-page-disclaimers>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-content-header>
+            <totvs-page-quick-select title="{{ 'l-selected-all' | i18n }}"
+                                     list="controller.modelList"
+                                     ng-if="controller.modelListCount > 0">
+            </totvs-page-quick-select>           
+
+             <totvs-page-quick-filter
+                on-select-orderby="controller.orderByChanged"
+                orderby-list="controller.orderby"
+                orderby-selected="controller.selectedOrderBy">
+            </totvs-page-quick-filter>
+
+        </totvs-page-content-header>
+
+		<totvs-list-item
+            class="errorType-{{integrationError['cdn-tip-erro']}}"
+            ng-repeat="integrationError in controller.modelList"
+            totvs-custom-element="customFluigMonitor_listItems"
+            selected="integrationError">
+            <totvs-list-item-header>
+                <totvs-list-item-title class="col-xs-8">
+                    <a href="#/dts/mla/approval/detail/{{integrationError['cdn-tip-docto']}}/{{integrationError['nr-trans']}}" 
+                        title="{{integrationError['cdn-tip-docto']}} - {{integrationError['desc-tip-docto']}}">{{integrationError['cdn-tip-docto']}} - {{integrationError['desc-tip-docto']}}</a>
+                </totvs-list-item-title>
+
+
+               	<totvs-list-item-action limit-primary-action="3" class="col-xs-4">
+                    <action ng-click="controller.integrate(integrationError['nr-trans'])"
+                    		icon="glyphicon-play" 
+                    		class="btn-default"
+                    		tooltip="{{ 'l-to-integrate' | i18n }}">{{ 'l-to-integrate' | i18n }}</action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+
+            <totvs-list-item-content>
+                <totvs-list-item-info
+                    title="{{ 'l-transaction' | i18n}}"
+                    class="col-md-3 col-sm-3"
+                    value="{{integrationError['nr-trans']}}">
+                </totvs-list-item-info>
+
+                <totvs-list-item-info
+                    title="{{ 'l-key' | i18n }}"
+                    ng-class="{'col-md-6 col-sm-6' : ([2,3].indexOf(integrationError['cdn-tip-erro']) > -1), 'col-md-9 col-sm-9' : ([1,4].indexOf(integrationError['cdn-tip-erro']) > -1)}"
+                    class=""
+                    value="{{integrationError['cod-chave-docto']}}">
+                </totvs-list-item-info>
+
+                <!--Só aparece se não for erro de envio e não for uma pendência ainda não integrada com o Fluig-->
+                <totvs-list-item-info
+                    ng-if="integrationError['cdn-tip-erro'] != 1 && integrationError['cdn-tip-erro'] != 4"
+                    title="{{ 'l-workflow-fluig' | i18n }}"
+                    class="col-md-3 col-sm-3"
+                    value="{{integrationError['cdn-workflow-fluig']}}">
+                </totvs-list-item-info>
+
+                <totvs-list-item-info
+                    title="{{ 'l-generation' | i18n }}"
+                    ng-class="{'col-md-3 col-sm-3' : ([2,3].indexOf(integrationError['cdn-tip-erro']) > -1), 'col-md-9 col-sm-9' : ([1,4].indexOf(integrationError['cdn-tip-erro']) > -1)}"
+                    class=""
+                    value="{{integrationError['dt-geracao'] | date :'dd/MM/yyyy'}}">
+
+                </totvs-list-item-info>
+
+                <!-- Só aparece quando for Erro de Movimentação -->
+                <totvs-list-item-info
+                    ng-if="integrationError['cdn-tip-erro'] == 2"
+                    title="{{ 'l-approval' | i18n }}"
+                    class="col-md-3 col-sm-3"
+                    value="{{integrationError['dt-approv'] | date :'dd/MM/yyyy'}}">
+                </totvs-list-item-info>
+
+                <!-- Só aparece quando for Erro de Movimentação -->
+                <totvs-list-item-info
+                    ng-if="integrationError['cdn-tip-erro'] == 2"
+                    title="{{ 'l-rejection' | i18n }}"
+                    class="col-md-3 col-sm-3"
+                    value="{{integrationError['dat-rej'] | date :'dd/MM/yyyy'}}">
+                </totvs-list-item-info>
+                 <!-- Só aparece quando for Erro de Cancelamento -->
+                 <totvs-list-item-info
+                    ng-if="integrationError['cdn-tip-erro'] == 3"
+                    title="{{ 'l-cancellation' | i18n }}"
+                    class="col-md-6 col-sm-6"
+                    value="{{integrationError['dat-cancel'] | date :'dd/MM/yyyy'}}">
+                </totvs-list-item-info>
+
+                 <totvs-list-item-info
+                    title="{{ 'l-approver' | i18n}}"
+                    class="col-md-3 col-sm-3"
+                    value="{{integrationError['cod-usuar']}}">
+                </totvs-list-item-info>
+
+                <totvs-list-item-info
+                    title="{{ 'l-error' | i18n}}"
+                    class="col-md-12 col-sm-12"
+                    value="{{integrationError['des-mensagem']}}">
+                    
+                </totvs-list-item-info>
+            </totvs-list-item-content>
+
+            <totvs-list-item-content-detail>
+                <totvs-list-item-info
+                    title="{{ 'l-reprocessed-by' | i18n }}"
+                    class="col-md-3 col-sm-3"
+                    value="{{integrationError['cod-usuar-reproces']}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info
+                    title="{{ 'l-reprocessing-date' | i18n }}"
+                    class="col-md-4 col-sm-4"
+                    value="{{integrationError['dtm-reproces'] | date :'dd/MM/yyyy HH:mm:ss'}}">
+                </totvs-list-item-info>
+            </totvs-list-item-content-detail>
+        </totvs-list-item>
+
+        <totvs-page-alert ng-if="controller.modelListCount <= 0"
+                          type="info"
+                          message="{{ 'l-no-integration-error' | i18n }}">
+        </totvs-page-alert>
+        
+        <totvs-list-pagination
+            ng-if="controller.modelList.length < controller.modelListCount && controller.modelList.length"
+            ng-click="controller.load(true);">
+        </totvs-list-pagination>
+	</totvs-page-content>
+</totvs-page>

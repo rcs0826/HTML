@@ -1,0 +1,100 @@
+<totvs-page type="detail">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mpo/agenda">{{'l-agenda-technician' | i18n}}</breadcrumb>
+            <breadcrumb>{{ 'l-detail' | i18n }}</breadcrumb>            
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+			<totvs-page-header-title title="{{controller.model.nrOrdem | ordemMask }} - {{controller.model.descOrdem}}"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-actions="true"
+                									hide-remove="true"
+                									hide-edit="true"
+                									hide-back="true" >
+					<action class="btn btn-default-back" link="#/dts/mpo/agenda">{{ 'l-back' | i18n }}</action>
+                  	<action class="btn btn-default"  ng-if="controller.isAponta(controller.cdTecnico, controller.model.situacao)" ng-click="controller.openDetailLaborReport()" icon="glyphicon-time">{{ 'l-reports-mpo' | i18n }}</action>
+                  	<action class="btn btn-primary" ng-if="!controller.isAponta(controller.cdTecnico, controller.model.situacao)" ng-click="controller.openDetailLaborReport()" icon="glyphicon-time">{{ 'l-reports-mpo' | i18n }}</action>
+                  	<action class="btn btn-primary" ng-click="controller.setParamAponta()" ng-if="controller.isAponta(controller.cdTecnico, controller.model.situacao)" icon="glyphicon-pencil">{{ 'l-point' | i18n }}</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+		<totvs-page-detail>
+			<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 no-padding">
+				<totvs-page-detail-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+			                            title="{{ 'l-task' | i18n }}"
+			                            value="{{controller.model.cdTarefa}} - {{controller.model.descTarefa}}">
+			    </totvs-page-detail-info>	
+			    <totvs-page-detail-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+			                            title="{{ 'l-technician' | i18n }}"
+			                            value="{{controller.cdTecnico | tecnicoMask }} - {{controller.model.descTecnico}}">
+			    </totvs-page-detail-info>
+		   	</div>   	
+   			<totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-12 col-xs-8"
+		                            title="{{ 'l-specialty' | i18n }}"
+		                            value="{{controller.model.tpEspecial}} - {{controller.model.descEspecial}}">
+		    </totvs-page-detail-info>	   
+   		    <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-12 col-xs-8"
+		                            title="{{ 'l-cost-center' | i18n }}"
+		                            value="{{controller.model.scCodigo}} - {{controller.model.descCcCodigo}}">
+		    </totvs-page-detail-info>
+		    <div class="col-lg-12 col-xs-12 no-padding">
+	   		    <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+			                            title="{{ 'l-agenda-date' | i18n }}"
+			                            value="{{controller.model.datAgenda | date: 'dd/MM/yyyy' }}">
+			    </totvs-page-detail-info>  
+			    <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-2 col-xs-6"
+			                            title="{{ 'l-initial-hour' | i18n }}"
+			                            value="{{controller.model.hraInicial}}">
+			    </totvs-page-detail-info>  
+	   		    <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-6"
+			                            title="{{ 'l-final-hour' | i18n }}"
+			                            value="{{controller.model.hraFinal}}">
+			    </totvs-page-detail-info>
+		    </div>     
+		    <div class="col-lg-12 col-xs-12 no-padding">
+			    <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-2 col-xs-6"
+			                            title="{{ 'l-agenda-status' | i18n }}"
+			                            value="{{controller.model.situacao}}">
+			    </totvs-page-detail-info>
+	   		    <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-2 col-xs-6"
+			                            title="{{ 'l-order-status' | i18n }}"
+			                            value="{{controller.model.estadoOrd}}">
+			    </totvs-page-detail-info>          
+			    <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-6"
+			                            title="{{ 'l-task-status' | i18n }}"
+			                            value="{{controller.model.estadoTaref}}">
+			    </totvs-page-detail-info>
+		    </div>
+		    <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-2 col-xs-6"
+		                            title="{{ 'l-priority' | i18n }}"
+		                            value="{{controller.model.prioridade}}">
+		    </totvs-page-detail-info> 
+		    <totvs-page-detail-info class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+		                            title="{{ 'l-shift' | i18n }}"
+		                            value="{{controller.model.cdTurno}} - {{controller.model.descTurno}}">
+		    </totvs-page-detail-info>
+		    <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+		                            title="{{ 'l-site' | i18n }}"
+		                            value="{{controller.model.cdEstabel}} - {{controller.model.descEstabel}}">
+		    </totvs-page-detail-info>
+		    <totvs-page-detail-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+		                            title="{{ 'l-narrative-task' | i18n }}"
+		                            value="{{controller.model.narrativaTaref}}">
+		    </totvs-page-detail-info>    
+		</totvs-page-detail>
+    </totvs-page-content>
+</totvs-page>
+<style>
+
+	.totvs-style-guide .page-detail-actions .btn-default-back {
+	    color: #333;
+	    background-color: #fff;
+	    border-color: #ccc;
+    }
+	
+	.page-details .no-padding { padding: 0; }
+
+</style>

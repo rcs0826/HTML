@@ -1,0 +1,149 @@
+<totvs-page-child type="list">
+
+	<br/>
+
+	<totvs-page-content class="crm-tab">
+
+		<div class="row">
+			<div class="col-xs-9">
+				<h3 style="margin-top: 0px;">
+					{{ 'nav-price-table' | i18n: []: 'dts/crm' }} ({{ controller.model.ttTabelaPreco.length || 0 }})
+				</h3>
+			</div>
+
+			<div class="col-xs-3">
+				<button class="btn btn-primary pull-right"
+						ng-click="controller.addEditPriceTable($event);">
+					<span class="glyphicon glyphicon-plus"></span>
+					{{ 'btn-add' | i18n: []: 'dts/crm' }}
+				</button>
+			</div>
+
+		</div>
+
+		<totvs-divider></totvs-divider>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-campaign-price-table' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.model.ttTabelaPreco || controller.model.ttTabelaPreco.length <= 0">
+		</totvs-page-alert>
+
+		<div ng-if="controller.model.ttTabelaPreco.length">
+
+            <div class="crm-group-accordion">
+                <accordion close-others="false">
+
+                    <accordion-group class="crm-panel"
+                                    is-open="priceTable.isOpen"
+                                    ng-repeat="priceTable in controller.model.ttTabelaPreco track by $index">
+
+                        <accordion-heading>
+                            <div class="row">
+                                <div class="col-xs-7 col-sm-8 overflow-ellipsis">
+                                    <span>
+                                        {{ priceTable.nom_tab_preco }} ({{ priceTable.ttTabelaPrecoItem.length || 0 }})
+                                    </span>
+                                </div>
+                                <div class="col-xs-5 col-sm-4 text-right">
+                                    <a class="clickable"
+                                    ng-click="controller.addEditPriceTable($event, priceTable, $index);">
+                                        {{ 'btn-edit' | i18n: []: 'dts/crm' }}
+                                    </a>
+                                    &nbsp;&nbsp;
+                                    <a class="clickable"
+                                    ng-click="controller.removePriceTable($event, priceTable, $index);">
+                                        {{ 'btn-remove' | i18n: []: 'dts/crm' }}
+                                    </a>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <i class="glyphicon"
+                                    ng-class="{'glyphicon-chevron-down' :  priceTable.isOpen,
+                                                'glyphicon-chevron-right': !priceTable.isOpen}">
+                                    </i>
+                                </div>
+                            </div>
+                        </accordion-heading>
+
+                        <div class="row">
+
+                            <totvs-list-item-info class="col-xs-10"
+                                                title="{{ 'l-discount' | i18n: []: 'dts/crm' }}"
+                                                value-break="false">
+                                {{ (priceTable.val_perc_desc_campanha || 0) | number : 2 }}
+                            </totvs-list-item-info>
+
+                            <div class="col-xs-2 text-right">
+                                <button class="btn btn-primary"
+                                        ng-click="controller.addEditPriceTableItem($event, priceTable);">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    <span class="hidden-xs">
+                                        {{ 'btn-add-product' | i18n: []: 'dts/crm' }}
+                                    </span>
+                                </button>
+                            </div>
+
+                            <div class="col-xs-12">
+                                <hr style="margin-top: 5px; border: 0; border-top: 1px solid #eee;"></hr>
+                            </div>
+
+                        </div>
+
+                        <totvs-page-alert type="info"
+                                        message="{{ 'msg-not-found-campaign-price-table-item' | i18n: []: 'dts/crm' }}"
+                                        ng-if="!priceTable.ttTabelaPrecoItem || priceTable.ttTabelaPrecoItem.length <= 0">
+                        </totvs-page-alert>
+
+                        <div class="row crm-tab-item header hidden-xs"
+                            ng-if="priceTable.ttTabelaPrecoItem.length">
+                            <strong>
+                                <div class="col-sm-4">
+                                    {{ 'l-code-erp' | i18n: []: 'dts/crm' }}
+                                </div>
+                                <div class="col-sm-4">
+                                    {{ 'l-name' | i18n: []: 'dts/crm' }}
+                                </div>
+                                <div class="col-sm-2">
+                                    {{ 'l-discount' | i18n: []: 'dts/crm' }}
+                                </div>
+                            </strong>
+                        </div>
+
+                        <div class="row crm-tab-item"
+                            ng-repeat="priceTableItem in priceTable.ttTabelaPrecoItem">
+
+                            <div class="col-xs-9 col-sm-4 overflow-ellipsis">
+                                {{ priceTableItem.cod_item_erp }}
+                            </div>
+                            <div class="col-sm-4 hidden-xs overflow-ellipsis">
+                                {{ priceTableItem.nom_produt }}
+                            </div>
+                            <div class="col-sm-2 hidden-xs">
+                                {{ (priceTableItem.val_perc_desc_campanha || 0) | number: 2 }}
+                                <span ng-if="priceTableItem.log_tip_desc === false">%</span>
+                            </div>
+                            <div class="col-xs-3 col-sm-2 text-right">
+                                <a class="clickable"
+                                ng-click="controller.addEditPriceTableItem($event, priceTable, priceTableItem, $index);">
+                                    <span class="visible-xs-inline glyphicon glyphicon-pencil"></span>
+                                    <span class="hidden-xs">{{ 'btn-edit' | i18n: []: 'dts/crm' }}</span>
+                                </a>
+                                &nbsp;&nbsp;
+                                <a class="clickable"
+                                ng-click="controller.removePriceTableItem($event, priceTable, priceTableItem, $index);">
+                                    <span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+                                    <span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+                                </a>
+                            </div>
+                        </div>
+
+                    </accordion-group>
+
+                </accordion>
+            </div>
+
+		</div>
+
+	</totvs-page-content>
+
+	<br/>
+
+</totvs-page-child>

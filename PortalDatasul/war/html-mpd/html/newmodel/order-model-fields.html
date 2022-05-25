@@ -1,0 +1,649 @@
+<%
+	if (data.showBasic) {
+
+		%>		
+		<totvs-page-detail-info-group>{{ 'l-basic-information' | i18n }}</totvs-page-detail-info-group>
+        <%
+
+        _.forEach(data.fields, function(pedVendaCadastroVisibleFields) {
+
+            if (pedVendaCadastroVisibleFields.fieldName == "nr-pedido") {
+
+				%>										
+				<div class="col-md-6 row">
+					<div class="model-cb">&nbsp;</div>
+					<totvs-page-detail-info title="{{ 'l-nr-pedido-interno' | i18n }}"
+											class="col-xs-6 col-sm-2 col-md-2 model-field">
+						{{controller.order['nr-pedido']}}
+					</totvs-page-detail-info>
+				</div>
+				<%
+            }
+            
+            if (pedVendaCadastroVisibleFields.fieldName == "nr-pedcli") {
+				%>											
+				<div class="col-md-6 row">
+					<div class="model-cb">&nbsp;</div>
+					<totvs-page-detail-info title="{{ 'nr-pedcli' | i18n }}"
+											class="col-xs-6 col-sm-2 col-md-2 model-field">
+						{{controller.order['nr-pedcli']}}
+					</totvs-page-detail-info>
+				</div>
+				<%				
+            }
+            
+            if (pedVendaCadastroVisibleFields.fieldName == "nome-abrev") {
+				%>											
+				<div class="col-md-6 row">
+					<div class="model-cb">&nbsp;</div>
+					<totvs-page-detail-info title="{{ 'l-customer' | i18n }}"
+											class="col-xs-6 col-sm-4 col-md-4 model-field">
+						{{controller.order['nome-abrev']}}
+					</totvs-page-detail-info>
+				</div>
+				<%				
+            }
+            
+            if (pedVendaCadastroVisibleFields.fieldName == "dt-implant") {
+				%>											
+				<div class="col-md-6 row">
+					<div class="model-cb">&nbsp;</div>
+					<totvs-page-detail-info title="{{ 'l-data-implant' | i18n }}"
+											class="col-xs-6 col-sm-4 col-md-4 model-field">
+						{{controller.order['dt-implant'] | date : ('l-date-format' | i18n) : 'UTC'}}
+					</totvs-page-detail-info>
+				</div>
+				<%				
+            }
+            
+            if (pedVendaCadastroVisibleFields.fieldName == "tp-operacao") {
+				%>											
+				<div class="col-md-6 row">
+                    <input data-field-id="tp-operacao"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('tp-operacao', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-tp-oper' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('tp-operacao')">
+                        {{controller.order['tp-operacao']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%				
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "local-carregamento") {
+				%>											
+				<div class="col-md-6 row">
+                    <input data-field-id="local-carregamento"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('local-carregamento', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-local-carregamento' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('local-carregamento')">
+                        {{controller.order['local-carregamento']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%				
+            }
+            
+            if (pedVendaCadastroVisibleFields.fieldName == "nat-operacao") {
+				%>											
+				<div class="col-md-6 row">
+                    <input data-field-id="nat-operacao"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('nat-operacao', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-natur-oper' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('nat-operacao')">
+                        {{controller.order['nat-operacao']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%				
+            }
+            
+            if (pedVendaCadastroVisibleFields.fieldName == "contato") {
+				%>											
+				<div class="col-md-6 row">
+                    <input data-field-id="contato"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('contato', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-contato' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('contato')">
+                        {{controller.order.contato}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%				
+            }
+            
+            if (pedVendaCadastroVisibleFields.fieldName == "cod-desc-merc") {
+				%>											
+				<div class="col-md-6 row">
+                    <input data-field-id="cod-desc-merc"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('cod-desc-merc', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-cod-des-merc' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('cod-desc-merc')">
+                        {{controller.order['desc-cod-desc-merc']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%				
+            }
+            
+            if (pedVendaCadastroVisibleFields.fieldName == "num-id-campanha-crm") {
+				%>											
+				<div class="col-md-6 row">
+                    <input data-field-id="num-id-campanha-crm"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('num-id-campanha-crm', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-campanh-crm' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('num-id-campanha-crm')">
+                        {{controller.order['desc-num-id-campanha-crm']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%				
+            }
+            
+            if (pedVendaCadastroVisibleFields.fieldName == "e-mail") {
+				%>											
+				<div class="col-md-6 row">
+                    <input data-field-id="e-mail"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('e-mail', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-e-mail' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 detail-span model-field clickable"
+                                            ng-click="controller.addFieldtoModel('e-mail')">
+                        {{controller.order['e-mail']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%				
+            }
+            
+            if (pedVendaCadastroVisibleFields.fieldName == "cod-canal-venda") {
+				%>											
+				<div class="col-md-6 row">
+					<input data-field-id="cod-canal-venda"
+						   type="checkbox"
+						   class="model-cb clickable"
+						   ng-click="controller.addFieldtoModel('cod-canal-venda', $event)"/>
+					<totvs-page-detail-info title="{{ 'l-canal-venda' | i18n }}"
+											class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+											ng-click="controller.addFieldtoModel('cod-canal-venda')">
+						{{controller.order['cod-canal-venda']}}
+					</totvs-page-detail-info>
+				</div>
+				<%				
+            }
+            
+            if (pedVendaCadastroVisibleFields.fieldName == "dec-1") {
+				%>											
+				<div class="col-md-6 row">
+                    <input data-field-id="dec-1"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('dec-1', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-codigo-servico' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('dec-1')">
+                        {{controller.order['dec-1']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%				
+			}
+
+        });
+
+    };
+
+    if (data.showDelivery) {
+
+		%>
+		<totvs-page-detail-info-group>{{ 'l-delivery-information' | i18n }}</totvs-page-detail-info-group>
+        <%
+
+        _.forEach(data.fields, function(pedVendaCadastroVisibleFields) {
+
+            if (pedVendaCadastroVisibleFields.fieldName == "bairro") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="bairro"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('bairro', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-bairro' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('bairro')">
+                        {{controller.order.bairro}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "cidade") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="cidade"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('cidade', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-cidade' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('cidade')">
+                        {{controller.order.cidade}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "cod-entrega") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="cod-entrega"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('cod-entrega', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-cod-entrega' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('cod-entrega')">
+                        {{controller.order['cod-entrega']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "endereco_text") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="endereco_text"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('endereco_text', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-endereco_text' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('endereco_text')">
+                        {{controller.order.endereco_text}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "estado") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="estado"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('estado', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-estado' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('estado')">
+                        {{controller.order.estado}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "local-entreg") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="local-entreg"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('local-entreg', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-local-entreg' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('local-entreg')">
+                        {{controller.order['local-entreg']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "pais") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="pais"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('pais', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-pais' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('pais')">
+                        {{controller.order.pais}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "cidade-cif") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="cidade-cif"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('cidade-cif', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-cidade-cif' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('cidade-cif')">
+                        {{controller.order['cidade-cif']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+        });
+        
+    }
+
+    if (data.showInvoicing) {
+
+		%>
+		<totvs-page-detail-info-group>{{ 'l-attend-information' | i18n }}</totvs-page-detail-info-group>
+		<%
+
+		_.forEach(data.fields, function(pedVendaCadastroVisibleFields) {
+
+            if (pedVendaCadastroVisibleFields.fieldName == "cod-cond-pag") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="cod-cond-pag"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('cod-cond-pag', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-cdn-cond-pag' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('cod-cond-pag')">
+                        {{controller.order['cod-cond-pag']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "cod-estabel") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="cod-estabel"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('cod-estabel', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-estabel' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('cod-estabel')">
+                        {{controller.order['cod-estabel']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "cod-portador") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="cod-portador"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('cod-portador', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-cod-portador' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('cod-portador')">
+                        {{controller.order['cod-portador']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "cod-priori") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="cod-priori"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('cod-priori', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-cod-priori' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('cod-priori')">
+                        {{controller.order['cod-priori']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "cod-rota") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="cod-rota"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('cod-rota', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-cod-rota' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('cod-rota')">
+                        {{controller.order['cod-rota']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "dt-entrega") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="dt-entrega"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('dt-entrega', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-dt-entrega' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('dt-entrega')">
+                        {{controller.order['dt-entrega'] | date : ('l-date-format' | i18n) : 'UTC'}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "dt-fimvig") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="dt-fimvig"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('dt-fimvig', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-dt-fimvig' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('dt-fimvig')">
+                        {{controller.order['dt-fimvig'] | date : ('l-date-format' | i18n) : 'UTC'}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "dt-inivig") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="dt-inivig"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('dt-inivig', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-dt-inivig' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('dt-inivig')">
+                        {{controller.order['dt-inivig'] | date : ('l-date-format' | i18n) : 'UTC'}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "dt-lim-fat") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="dt-lim-fat"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('dt-lim-fat', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-dt-lim-fat' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('dt-lim-fat')">
+                        {{controller.order['dt-lim-fat'] | date : ('l-date-format' | i18n) : 'UTC'}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "dt-minfat") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="dt-minfat"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('dt-minfat', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-dt-minfat' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('dt-minfat')">
+                        {{controller.order['dt-minfat'] | date : ('l-date-format' | i18n) : 'UTC'}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "ind-fat-par") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="ind-fat-par"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('ind-fat-par', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-ind-fat-par' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('ind-fat-par')">
+                        <span ng-if="controller.order['ind-fat-par']">{{ 'l-yes' | i18n}}</span>
+                        <span ng-if="!controller.order['ind-fat-par']">{{ 'l-no' | i18n}}</span>
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "nome-tr-red") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="nome-tr-red"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('nome-tr-red', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-transp-redespacho' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('nome-tr-red')">
+                        {{controller.order['nome-tr-red']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "nome-transp") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="nome-transp"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('nome-transp', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-transportador' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('nome-transp')">
+                        {{controller.order['nome-transp']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "placa") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="placa"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('placa', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-placa' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('placa')">
+                        {{controller.order.placa}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+            if (pedVendaCadastroVisibleFields.fieldName == "uf-placa") {
+
+				%>										
+				<div class="col-md-6 row">
+                    <input data-field-id="uf-placa"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('uf-placa', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-uf-placa' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('uf-placa')">
+                        {{controller.order['uf-placa']}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+            }
+
+        });
+
+    }
+
+    if (data.showObs) {
+
+		%>
+		<totvs-page-detail-info-group>{{'l-observacoes' | i18n}}</totvs-page-detail-info-group>
+		<%
+
+		_.forEach(data.fields, function(pedVendaCadastroVisibleFields) {
+
+			if (pedVendaCadastroVisibleFields.fieldName == "observacoes") {
+				%>											
+				<div class="col-md-6 row">
+                    <input data-field-id="observacoes"
+                           type="checkbox"
+                           class="model-cb clickable"
+                           ng-click="controller.addFieldtoModel('observacoes', $event)"/>
+                    <totvs-page-detail-info title="{{ 'l-observacao' | i18n }}"
+                                            class="col-xs-6 col-sm-4 col-md-4 model-field clickable"
+                                            ng-click="controller.addFieldtoModel('observacoes')">
+                        {{controller.order.observacoes}}
+                    </totvs-page-detail-info>
+                    </div>
+				<%
+			}
+		});
+	}
+
+%>

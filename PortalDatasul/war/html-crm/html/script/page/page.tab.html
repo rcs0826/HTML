@@ -1,0 +1,97 @@
+<totvs-page-alert type="info"
+				  message="{{ 'msg-not-found-pages' | i18n: []: 'dts/crm' }}"
+				  ng-if="!controller.model.ttQuestionarioPagina || controller.model.ttQuestionarioPagina.length <= 0">
+	<br/>
+	<button type="button"
+			class="btn btn-primary"
+			ng-if="controller.model.log_edit_remove === true"
+			ng-click="controller.addEditPage();">
+		<span class="glyphicon glyphicon-plus"></span>
+		&nbsp;&nbsp;{{ 'btn-new-page' | i18n: []: 'dts/crm' }}
+	</button>
+</totvs-page-alert>
+
+
+<div ng-if="controller.model.ttQuestionarioPagina.length">
+
+
+	<div class="col-xs-12 col-sm-3"
+		 style="padding-left: 0;">
+
+		<div class="crm-tab">
+
+			<div class="row crm-tab-item hover"
+				 ng-class="{'crm-selected' : page.$selected,
+						   'disable-drag': controller.model.log_edit_remove === false}"
+				 ng-repeat="page in controller.model.ttQuestionarioPagina"
+				 ng-drag="controller.model.log_edit_remove === true && controller.model.num_livre_1 === 1"
+				 ng-drag-data="page"
+				 ng-drop="controller.model.log_edit_remove === true && controller.model.num_livre_1 === 1"
+				 ng-drop-success="controller.onPageDropComplete($index, $data, $event)">
+
+				<div class="col-xs-12 clickable overflow-ellipsis"
+					 ng-click="controller.selectPage(page);">
+
+					<span class="hidden-xs glyphicon glyphicon-resize-vertical"
+						  style="margin-right: 5px;">
+					</span>
+
+					{{ page.nom_pag }}
+				</div>
+			</div>
+		</div>
+
+		<br/>
+
+		<button type="button"
+				class="btn btn-primary col-xs-12"
+				ng-if="controller.model.log_edit_remove === true && controller.model.num_livre_1 === 1"
+				ng-click="controller.addEditPage();">
+			<span class="glyphicon glyphicon-plus"></span>
+			{{ 'btn-new-page' | i18n: []: 'dts/crm' }}
+		</button>
+
+	</div>
+
+	<div class="col-xs-12 col-sm-9"
+		 style="padding-right: 0;">
+
+
+		<div class="row">
+
+			<div class="col-xs-8">
+				<h3 style="margin-top: 0px;">
+					{{ controller.selectedPage.nom_pag }} ({{ controller.selectedPage.ttQuestionarioQuestao.length || 0 }})
+				</h3>
+			</div>
+
+			<div class="col-xs-4">
+				<div class="pull-right">
+
+					<button type="button"
+							ng-if="controller.model.log_edit_remove === true && controller.model.num_livre_1 === 1"
+							class="btn btn-primary"
+							ng-click="controller.addEditPage(controller.selectedPage);">
+						<span class="glyphicon glyphicon-pencil"></span>
+						<span class="hidden-xs">{{ 'btn-edit' | i18n: []: 'dts/crm' }}</span>
+					</button>
+
+					<button type="button"
+							class="btn btn-default"
+							ng-if="controller.model.log_edit_remove === true && controller.model.num_livre_1 === 1"
+							ng-click="controller.removePage(controller.selectedPage);">
+						<span class="glyphicon glyphicon-trash"></span>
+						<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+					</button>
+
+				</div>
+			</div>
+
+		</div>
+
+		<totvs-divider></totvs-divider>
+
+		<ng-include src="'/dts/crm/html/script/page/question/question.tab.html'"></ng-include>
+	</div>
+
+</div>

@@ -1,0 +1,55 @@
+<div class="modal-header">
+	<h3 class="modal-title" ng-if="controller.operation == 'add'">{{:: 'l-add-operations-rule' |  i18n : [] : 'dts/mpd'}}</h3>
+	<h3 class="modal-title" ng-if="controller.operation == 'edit'">{{:: 'l-edit-operations-rule' |  i18n : [] : 'dts/mpd'}}</h3>
+	<h3 class="modal-title" ng-if="controller.operation == 'simulator'">{{:: 'l-simulate-operations-rule' |  i18n : [] : 'dts/mpd'}}</h3>
+	<h3 class="modal-title" ng-if="controller.operation == 'singlecopy'">{{:: 'l-copy-operations-rule' |  i18n : [] : 'dts/mpd'}}</h3>
+</div>
+
+<div class="modal-body">
+	<div class="row">
+		<form class="form-horizontal" role="form" style="height: 400px; max-height: 400px; overflow-y: auto;">
+			<totvs-lodash-template
+				src="/dts/mpd/html/rulesoperations/rulesoperations.fieldsform.add.edit.html"
+				template-data="controller.mainDataRules"/>
+		</form>
+	</div>
+	<div class="row" ng-show="controller.rulesOperationsData.length > 0">
+
+		<div ng-if="controller.mainDataRules.operation == 'simulator'">
+			<totvs-page-detail-info-group>{{ 'l-simulate-result' |  i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+		</div>
+
+		<div ng-if="controller.mainDataRules.operation == 'add'">
+			<totvs-page-detail-info-group>{{ 'l-search-result' |  i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+		</div>
+
+		<br>
+		<div style="margin-left: 15px; margin-right: 15px; margin-top: 15px;">
+			 <totvs-grid
+				 grid-data="controller.rulesOperationsData"
+				 editable="false"
+				 resizable="true"
+				 navigatable="true"
+				 grid-height="200"
+				 grid-options="controller.getGridOptionsSimulate"
+				 grid="controller.gridRulesOperationsAddEdit">
+			 </totvs-grid>
+		</div>
+		<!-- div class="more-results" style="margin-left: 15px; margin-right: 15px;" ng-show="controller.rulesOperationsData.length && controller.rulesOperationsData.length < controller.rulesOperationslistCount" >
+			<button ng-click="controller.simulate(true)"
+					class="btn btn-primary col-xs-12"
+					style="padd">
+				{{'l-more' |  i18n }}
+			</button>
+		</div -->
+	</div>
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" ng-if="controller.operation != 'simulator'" data-ng-click="controller.beforeSave(false);">{{ 'l-save-operations-rule' |  i18n : [] : 'dts/mpd' }}</button>
+	<button type="button" ng-if="controller.operation == 'add'" class="btn btn-default" data-ng-click="controller.beforeSave(true);">{{ 'l-save-and-new-operations-rule' |  i18n : [] : 'dts/mpd' }}</button>
+	<button type="button" ng-if="controller.operation == 'add'" class="btn btn-default" data-ng-click="controller.simulate(false);">{{ 'l-search' |  i18n : [] : 'dts/mpd' }}</button>
+	<button type="button" ng-if="controller.operation == 'simulator'" class="btn btn-primary" data-ng-click="controller.simulate(false);">{{ 'l-simulate' |  i18n : [] : 'dts/mpd' }}</button>
+	<button type="button" ng-if="controller.operation == 'add' || controller.operation == 'simulator'" class="btn btn-default" data-ng-click="controller.clear();">{{ 'btn-clean' |  i18n : [] : 'dts/mpd' }}</button>
+	<button type="button" class="btn btn-danger" data-ng-click="controller.close();">{{ 'btn-cancel' |  i18n : [] : 'dts/mpd' }}</button>
+</div>

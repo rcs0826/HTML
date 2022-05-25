@@ -1,0 +1,139 @@
+<totvs-modal-header>
+    {{ i18n('l-advanced-search', [], 'dts/mcs') }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <totvs-page-form>
+        <totvs-page-alert
+            type="danger"
+            message="Por favor selecione o(s) Ano gerencial/períodos"
+            ng-if="controller.isInvalid">
+        </totvs-page-alert>
+        <accordion close-others="false">
+            <!-- Seleção -->
+            <accordion-group is-open="status.isFirstOpen">
+                <accordion-heading>
+                        {{ i18n('l-selection', [], 'dts/mcs') }}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.isFirstOpen, 'glyphicon-chevron-right': !status.isFirstOpen}"></i>
+                </accordion-heading>
+                <fieldset class="form-horizontal">
+                    <!-- Estabelecimento -->
+                    <field 
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        type="inputrange"
+                        ng-model="controller.model.site"
+                        start-maxlength="5"
+                        end-maxlength="5"
+                        label="{{ 'l-site' | i18n }}">
+                    </field>                    
+                    <!-- Centro de custo -->
+                    <field 
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        type="inputrange"
+                        ng-model="controller.model.costcenterrange"
+                        start-maxlength="20"
+                        end-maxlength="20"
+                        label="{{ i18n('l-cc-codigo', [], 'dts/mcs') }}">
+                    </field>
+                    <!-- Período -->
+                    <totvs-field totvs-date-range                        
+                        depth="year"
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        ng-if="controller.model.valueType != 4"
+                        ng-model="controller.model.period"
+                        label="{{ i18n('l-period', [], 'dts/mcs') }}"
+                        format="MM/yyyy"                        
+                        t-mask-date="99/9999">
+                    </totvs-field>
+                    <!-- Ano e períodos gerenciais -->
+                    <totvs-field totvs-datepicker
+                        depth="decade" 
+                        class="col-xs-4 col-sm-4 col-md-4 col-lg-4"                 
+                        format="yyyy"
+                        ng-required="true"   
+                        t-mask-date="9999"                     
+                        label="{{ i18n('l-managerial-year', [], 'dts/mcs') }}"
+                        ng-model="controller.model.managerialYear"
+                        ng-if="controller.model.valueType == 4">
+                    </totvs-field>
+                    <totvs-field totvs-multi-select  
+                        t-multi-id="id"
+                        class="col-xs-8 col-sm-8 col-md-8 col-lg-8"
+                        label="{{ i18n('l-period', [], 'dts/mcs') }}"
+                        t-data="controller.managerialPeriods"
+                        t-on-change="controller.changePeriod"
+                        ng-model="controller.model.managerialPeriods"
+                        t-multi-description="value"
+                        t-auto-close="true"
+                        ng-required="true"
+                        t-highlight-first="true"
+                        ng-if="controller.model.valueType == 4">                        
+                    </totvs-field>
+                </fieldset>
+
+
+            </accordion-group>
+
+            <accordion-group is-open="status.open" >
+                <accordion-heading>
+                        {{ i18n('l-parameters', [], 'dts/mcs') }}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                </accordion-heading>
+
+                <fieldset class="form-horizontal">
+                    <!-- Variação de/até -->
+                    <field
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        type="decimalrange"
+                        ng-model="controller.model.variation"
+                        m-dec="2"
+                        v-max="999.99"
+                        v-min="-999.99"
+                        label="{{ i18n('l-total-perc-var', [], 'dts/mcs') }}">
+                    </field>
+
+                    <!-- Mostrar sem variação -->
+                    <totvs-field totvs-checkbox 
+                        t-bsswitch
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        label="{{ i18n('l-print-zero-variance', [], 'dts/mcs') }}"
+                        ng-model="controller.model.showItemsWithoutVariation">
+                    </totvs-field>
+
+                </fieldset>
+                <fieldset class="form-horizontal">
+                    <totvs-field totvs-radio
+                                 class="col-xs-12 col-sm-12 col-md-12 col-lg-12"                                 
+                                 label="{{ i18n('l-show-type', [], 'dts/mcs') }}"
+                                 t-options="controller.rsExibeOpt"
+                                 ng-model="controller.model.resultType">
+                    </totvs-field>
+                </fieldset>
+                <fieldset class="form-horizontal">            
+                    <totvs-field totvs-radio
+                                 class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                                 ng-disabled="controller.model.resultType == 3"
+                                 label="{{ i18n('l-value', [], 'dts/mcs') }}"
+                                 t-options="controller.rsTipoValOpt"
+                                 ng-model="controller.model.valueType">
+                    </totvs-field>    
+                </fieldset>
+
+                <fieldset class="form-horizontal">            
+                    <totvs-field label="{{ i18n('l-currency', [], 'dts/mcs') }}"
+                                class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                                totvs-combo
+                                canclean
+                                t-options="controller.model.valueType != 4 ? controller.model.currencies : controller.model.managerialCurrencies"
+                                ng-model="controller.model.currency">
+                     </totvs-field>
+                </fieldset>
+
+            </accordion-group>
+        </accordion>
+
+    </totvs-page-form>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ i18n('l-cancel', [], 'dts/mcs') }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()">{{ i18n('l-apply', [], 'dts/mcs') }}</button>
+</totvs-modal-footer>

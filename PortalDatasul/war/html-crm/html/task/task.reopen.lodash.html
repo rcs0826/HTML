@@ -1,0 +1,135 @@
+<totvs-modal-header>
+	{{ 'btn-reopen' | i18n: []: 'dts/crm' }}: {{ controller.model.num_id }} - {{ controller.model.ttAcao.nom_acao }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-page-detail class="row crm-page-details">
+
+		<div class="col-xs-12 no-gutter">
+
+			<totvs-page-detail-info
+				value-break="false"
+				class="col-xs-12 col-sm-6 col-md-4"
+				title="{{ 'l-campaign' | i18n: []: 'dts/crm' }}"
+				value="{{controller.model.ttCampanha.nom_campanha}}">
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info
+				value-break="false"
+				class="col-xs-12 col-sm-6 col-md-4"
+				title="{{ 'l-objective' | i18n: []: 'dts/crm' }}"
+				value="{{controller.model.ttObjetivo.nom_objet_acao}}">
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info
+				value-break="false"
+				class="col-xs-12 col-sm-6 col-md-4"
+				title="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}"
+				value="{{controller.model.ttResponsavel.nom_usuar}}">
+			</totvs-page-detail-info>
+
+		</div>
+
+		<div class="col-xs-12 no-gutter">
+
+			<totvs-page-detail-info
+				class="col-xs-12 col-sm-6 col-md-8"
+				title="{{ 'l-account' | i18n: []: 'dts/crm' }}">
+
+				<span ng-if="controller.model.ttConta.log_matriz"
+					  class="glyphicon glyphicon-globe">
+				</span>
+
+				<span ng-if="controller.model.ttConta.log_acesso !== true">
+					<span class="glyphicon glyphicon-lock"></span> &nbsp;
+				</span>
+
+				{{ controller.model.ttConta.nom_razao_social }}
+				{{ (controller.model.ttConta.cod_pessoa_erp ? '(' + controller.model.ttConta.cod_pessoa_erp + ')' : '') }}
+
+			</totvs-page-detail-info>
+
+			<% if ((!data["l-contact"] || data["l-contact"].log_visivel === true)) { %>
+			<totvs-page-detail-info
+				class="col-xs-12 col-sm-6 col-md-4"
+				title="{{ 'l-contact' | i18n: []: 'dts/crm' }}">
+				{{ controller.model.ttContato.nom_razao_social }}
+			</totvs-page-detail-info>
+			<% } %>
+
+		</div>
+
+	</totvs-page-detail>
+
+	<totvs-divider></totvs-divider>
+
+	<fieldset class="row">
+
+		<field type="textarea"
+			   class="col-md-12"
+			   maxlength="1500"
+			   ng-model="controller.model.dsl_motivo"
+			   ng-disabled="true">
+			<label>{{ 'l-description' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+	</fieldset>
+
+	<% if ((!data["l-justification"] || data["l-justification"].log_visivel === true)) { %>
+	<totvs-divider></totvs-divider>
+
+	<fieldset class="row">
+
+		<!--TODO: AUMENTAR TAMANHO DO CAMPO PARA 1500 -->
+		<field type="textarea"
+			   class="col-md-12"
+			   maxlength="100"
+			 <% if(!(!data["l-justification"] || data["l-justification"].log_editavel === true)) { %>
+			   ng-disabled="true"
+			   <% } %>
+			   ng-required="true"
+			   ng-model="controller.model.dsl_justif_alter">
+			<label>{{ 'l-justification' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+	</fieldset>
+	<% } %>
+
+	<totvs-divider></totvs-divider>
+
+	<fieldset class="row">
+
+		<field type="daterange"
+			   class="col-md-6"
+			   ng-required="true"
+			   ng-model="controller.model.initialDate"
+			   start-date="controller.model.dateTimeBase"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-date-start' | i18n: []: 'dts/crm' }}</label>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="time"
+			   class="col-xs-6 col-md-3 time-range-from"
+			   ng-required="true"
+			   ng-model="controller.model.initialHour.start">
+			<label>{{ 'l-time' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="time"
+			   class="col-xs-6 col-md-3 time-range-to"
+			   ng-required="true"
+			   ng-model="controller.model.initialHour.end">
+			<label>{{ 'l-to' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

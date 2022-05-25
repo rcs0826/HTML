@@ -1,0 +1,52 @@
+link(rel="stylesheet" href="/dts/kbn/css/font-awesome.css")
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+
+totvs-page(type="list")
+    totvs-page-navbar
+        totvs-page-breadcrumb
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb {{ 'l-cell-programming' | i18n }}
+        totvs-page-header
+            totvs-page-header-title(title="{{ 'l-cell-programming' | i18n }}" total="{{controller.totalRecords}}")
+            totvs-page-header-operation
+                div.col-md-7.col-sm-7
+                totvs-page-header-operation-filter(placeholder="{{ 'l-code-description' | i18n}}", ng-submit="controller.quickSearch()", ng-model="controller.quickSearchText", advanced-search="controller.callAdvancedSearch")
+            totvs-page-disclaimers(disclaimer-list="controller.filtersApplied", ng-click="controller.removeFilter")
+    totvs-page-content
+
+        totvs-page-content-header
+            .row
+                .col-md-6
+                    .col-lg-5.col-md-5.col-sm-5.col-xs-2.actions-group(ng-if="controller.totalRecords > 0")
+                        .btn-group.btn-group-sm.actions(role='group')
+                            .btn-group.btn-group-sm.ng-scope(role='group')
+                                a.btn.btn-primary.dropdown-toggle(data-toggle='dropdown', role='button', style="margin-top: 10px;margin-bottom: 10px;")
+                                    span.ng-binding {{ 'l-export-data' | i18n }}
+                                    span.glyphicon.glyphicon-triangle-bottom
+                                            
+                                ul.dropdown-menu(role='menu')
+                                    li 
+                                        a(data-ng-click='controller.exportaConsulta("xlsx")')
+                                            span.fa.fa-file-excel-o
+                                            |{{ 'l-excel-xlsx' | i18n }}
+                                    li
+                                        a(data-ng-click='controller.exportaConsulta("pdf")')
+                                            span.fa.fa-file-pdf-o
+                                            |{{ 'l-pdf' | i18n }}
+
+        totvs-page-alert(ng-if="!controller.hasEstab()" type="info" message="{{ 'msg-estab-not-selected' | i18n }}")        
+        totvs-page-alert(ng-if="controller.hasEstab() && controller.totalRecords === 0" type="info" message="{{ 'msg-not-found' | i18n }}")
+        totvs-list-item(data-ng-repeat="board in controller.listBoard")
+            totvs-list-item-header
+                div
+                    div(title=' {{board.ttMasterCellDs | descGeneric:"{codeErpCell} {descCell}"}}' link="#/dts/kbn/cellprogramming/{{board.num_id_cel_mestre}}" class="col-xs-10 col-sm-7 col-md-7 col-lg-7 ng-scope ng-isolate-scope")
+                        a(class="title link ng-binding" href="#/dts/kbn/cellprogramming/{{board.num_id_cel_mestre}}")
+                            {{board.ttMasterCellDs | descGeneric:"{codeErpCell} {descCell}"}}
+
+                    div(class="col-lg-5 col-md-5 col-sm-5 col-xs-2 actions-group")
+                        div(class="btn-group btn-group-sm actions pull-right" role="group" aria-label="item-actions")
+                            a(role="button" class="btn btn-default ng-binding" href="#/dts/kbn/cellprogramming/{{board.num_id_cel_mestre}}")
+                                span.glyphicon.glyphicon-th-list
+                                | &nbsp; {{'l-detail'|i18n: []: 'dts/kbn'}}
+        .container(align="center")
+            pagination.pagination-sm(total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages", items-per-page="controller.pageSize", previous-text="{{'l-previous' | i18n}}", next-text="{{'l-next' | i18n}}")

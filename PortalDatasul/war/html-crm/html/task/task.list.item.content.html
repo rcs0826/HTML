@@ -1,0 +1,220 @@
+<totvs-list-item-header>
+
+	<totvs-list-item-title
+		class="legend"
+		ng-class="[task.nom_cor, (task.log_anexo ? 'crm-attachment' : '')]">
+		<a href="#/dts/crm/task/detail/{{task.num_id}}"
+		   ng-if="task.ttConta.log_acesso">
+			{{ task.num_id }}
+			<% if ((!data["l-action"] || data["l-action"].log_visivel === true)) { %>
+			- {{task.ttAcao.nom_acao}}
+			<% } %>
+		</a>
+		<span ng-if="task.ttConta.log_acesso !== true">
+			<span class="glyphicon glyphicon-lock"></span>
+			{{ task.num_id }}
+			<% if ((!data["l-action"] || data["l-action"].log_visivel === true)) { %>
+			- {{task.ttAcao.nom_acao}}
+			<% } %>
+		</span>
+	</totvs-list-item-title>
+
+	<totvs-list-item-action limit-primary-action="3">
+
+		<% if ((!data["btn-execute"] || data["btn-execute"].log_visivel === true)) { %>
+		<action icon="glyphicon-play"
+				ng-if="(task.log_executa === true) && (task.idi_status_tar === 1) && (task.ttConta.log_acesso === true)"
+				ng-click="controllerTaskList.execute(task)">
+			{{ 'btn-execute' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+
+		<% if ((!data["btn-reopen"] || data["btn-reopen"].log_visivel === true)) { %>
+		<action icon="glyphicon-retweet"
+				ng-if="(task.log_executa === true) && (task.idi_status_tar === 2)"
+				ng-click="controllerTaskList.reopen(task)">
+			{{ 'btn-reopen' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+
+		<% if ((!data["btn-edit"] || data["btn-edit"].log_visivel === true)) { %>
+		<action icon="glyphicon-pencil"
+				ng-if="(task.log_executa === true) && (task.idi_status_tar !== 3) && (task.ttConta.log_acesso === true)"
+				ng-click="controllerTaskList.addEdit(task)">
+			{{ 'btn-edit' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+
+		<% if ((!data["btn-new-history"] || data["btn-new-history"].log_visivel === true)) { %>
+		<action icon="glyphicon-flash"
+				ng-if="task.idi_status_tar !== 3"
+				ng-click="controllerTaskList.registerHistory(task)">
+			{{ 'btn-new-history' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+
+		<% if ((!data["btn-new-task"] || data["btn-new-task"].log_visivel === true)) { %>
+		<action icon="glyphicon-pushpin"
+				ng-if="task.idi_status_tar !== 3"
+				ng-click="controllerTaskList.registerTask(task)">
+			{{ 'btn-new-task' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+
+		<% if ((!data["btn-assume"] || data["btn-assume"].log_visivel === true)) { %>
+		<action icon="glyphicon-transfer"
+				ng-if="(task.log_assume === true && task.ttConta.log_acesso === true)"
+				ng-click="controllerTaskList.assume(task)">
+			{{ 'btn-assume' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+
+		<% if ((!data["btn-send-email"] || data["btn-send-email"].log_visivel === true)) { %>
+		<!--action icon="glyphicon-envelope"
+				ng-click="controllerTaskList.sendEmail(task)" >
+			{{ 'btn-send-email' | i18n: []: 'dts/crm' }}
+		</action-->
+		<% } %>
+	</totvs-list-item-action>
+
+</totvs-list-item-header>
+
+<totvs-list-item-content>
+
+	<% if ( (!data["l-end"] || data["l-end"].log_visivel === true)
+		 || (!data["l-start"] || data["l-start"].log_visivel === true)) { %>
+	<totvs-list-item-info
+		value-break="false"
+		class="col-xs-12 col-sm-6 col-md-5"
+		title="{{ 'l-date' | i18n: []: 'dts/crm' }}">
+		<% if ((!data["l-start"] || data["l-start"].log_visivel === true)) { %>
+		{{ task.dat_inic | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+		<% } %>
+		<% if ((!data["l-end"] || data["l-end"].log_visivel === true)) { %>
+		- {{ task.dat_fim | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+		<% } %>
+		{{ 'l-as' | i18n: []: 'dts/crm' }}
+		<% if ((!data["l-start"] || data["l-start"].log_visivel === true)) { %>
+		 {{ task.hra_inic }}
+		<% } %>
+		<% if ((!data["l-end"] || data["l-end"].log_visivel === true)) { %>
+		- {{ task.hra_fim }}
+		<% } %>
+	</totvs-list-item-info>
+	<% } %>
+
+	<% if ((!data["l-related"] || data["l-related"].log_visivel === true)) { %>
+	<totvs-list-item-info
+		class="col-xs-12 col-sm-6 col-md-4"
+		title="{{ (task.idi_rel_a ? task.idi_rel_a : 'l-related') | i18n: []: 'dts/crm' }}"
+		value-break="false">
+		<span class="word-wrap"
+			  ng-if="task.dsl_rel"
+			  ng-bind-html="task.dsl_rel"
+			  tooltip="{{ (task.idi_rel_a ? task.idi_rel_a : 'l-related') | i18n: []: 'dts/crm' }}">
+		</span>
+	</totvs-list-item-info>
+	<% } %>
+
+	<% if ((!data["l-objective"] || data["l-objective"].log_visivel === true)) { %>
+	<totvs-list-item-info
+		class="col-xs-12 col-sm-6 col-md-3"
+		title="{{ 'l-objective' | i18n: []: 'dts/crm' }}"
+		value="{{ task.ttObjetivo.nom_objet_acao }}"
+		value-break="false">
+	</totvs-list-item-info>
+	<% } %>
+
+	<% if ((!data["l-account"] || data["l-account"].log_visivel === true)) { %>
+	<totvs-list-item-info
+		class="col-xs-12 col-sm-6 col-md-5"
+		title="{{ 'l-account' | i18n: []: 'dts/crm' }}"
+		value-break="false">
+
+		<span ng-if="task.ttConta.log_matriz"
+			  class="glyphicon glyphicon-globe">
+		</span>
+
+		<a href="#/dts/crm/account/detail/{{task.ttConta.num_id}}"
+		   ng-if="task.ttConta.log_acesso">
+			{{ task.ttConta.nom_razao_social }}
+			{{ (task.ttConta.cod_pessoa_erp ? '(' + task.ttConta.cod_pessoa_erp + ')' : '') }}
+		</a>
+
+		<span ng-if="task.ttConta.log_acesso !== true">
+			<span class="glyphicon glyphicon-lock"></span>
+			&nbsp; {{ task.ttConta.nom_razao_social }}
+			{{ (task.ttConta.cod_pessoa_erp ? '(' + task.ttConta.cod_pessoa_erp + ')' : '') }}
+		</span>
+
+	</totvs-list-item-info>
+	<% } %>
+
+	<% if ((!data["l-user-responsible"] || data["l-user-responsible"].log_visivel === true)) { %>
+	<totvs-list-item-info
+		class="col-xs-12 col-sm-6 col-md-4"
+		title="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}"
+		value-break="false">
+			<a role="button"
+			   ng-click="controllerTaskList.openUserSummary(task.ttResponsavel)">
+				{{ task.ttResponsavel.nom_usuar }}
+			</a>
+	</totvs-list-item-info>
+	<% } %>
+
+	<% if ((!data["l-group-user"] || data["l-group-user"].log_visivel === true)) { %>
+	<totvs-list-item-info
+		class="col-xs-12 col-sm-6 col-md-3"
+		title="{{ 'l-group-user' | i18n: []: 'dts/crm' }}"
+		value-break="false"
+		ng-if="controllerTaskList.isActiveUserGroup === true">{{ task.ttGrupoUsuario.nom_grp_usuar }}
+	</totvs-list-item-info>
+	<% } %>
+
+</totvs-list-item-content>
+
+<% if ( (!data["l-contact"] || data["l-contact"].log_visivel === true)
+	 || (!data["l-campaign"] || data["l-campaign"].log_visivel === true)
+		|| (!data["l-phone"] || data["l-phone"].log_visivel === true)
+	 || (!data["l-description"] || data["l-description"].log_visivel === true)) { %>
+<totvs-list-item-content-detail ng-click="controllerTaskList.loadItemDetail(task);">
+
+	<% if ((!data["l-campaign"] || data["l-campaign"].log_visivel === true)) { %>
+	<totvs-list-item-info
+		value-break="false"
+		class="col-xs-12 col-sm-6 col-md-5"
+		title="{{ 'l-campaign' | i18n: []: 'dts/crm' }}"
+		value="{{ (task.ttCampanha ? task.ttCampanha.nom_campanha : '') }}">
+	</totvs-list-item-info>
+	<% } %>
+
+	<% if ((!data["l-contact"] || data["l-contact"].log_visivel === true)) { %>
+	<totvs-list-item-info
+		value-break="false"
+		class="col-xs-12 col-sm-6 col-md-4"
+		title="{{ 'l-contact' | i18n: []: 'dts/crm' }}"
+		value="{{ (task.ttContato ? task.ttContato.nom_razao_social : '') }}">
+	</totvs-list-item-info>
+	<% } %>
+
+	<% if ((!data["l-phone"] || data["l-phone"].log_visivel === true)) { %>
+	<totvs-list-item-info
+		ng-if="task.nom_telefone && controllerTaskList.isShowPhoneInTask === true"
+		value-break="false"
+		class="col-xs-12 col-sm-6 col-md-3"
+		title="{{ 'l-phone' | i18n: []: 'dts/crm' }}">
+		{{ task.nom_telefone }}
+	</totvs-list-item-info>
+	<% } %>
+
+	<% if ((!data["l-description"] || data["l-description"].log_visivel === true)) { %>
+	<totvs-list-item-info
+		ng-if="task.ttConta.log_acesso"
+		class="col-xs-12 description"
+		title="{{ 'l-description' | i18n: []: 'dts/crm' }}"
+		value="{{ task.dsl_motivo }}">
+	</totvs-list-item-info>
+	<% } %>
+
+</totvs-list-item-content-detail>
+<% } %>

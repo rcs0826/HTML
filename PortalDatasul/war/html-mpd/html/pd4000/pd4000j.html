@@ -1,0 +1,98 @@
+<div class="row" totvs-custom-element="pd4000j">
+    <div class="col-sm-12">
+        <br>
+<% if (data) { %>
+		<totvs-grid grid-data="orderController.orderItens"
+					grid-height="230"
+					navigatable="true"
+					editable="false"
+					selectable="row">
+			<totvs-grid-column field="nr-sequencia" width="50">{{:: 'Sequência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+			<totvs-grid-column field="it-codigo" width="160">{{:: 'Item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+			<totvs-grid-column field="desc-item" class="text-nowrap" width="350">{{:: 'Descrição' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+			<totvs-grid-column field="cod-refer" width="160">{{:: 'Referência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+			<totvs-grid-column field="qt-pedida" width="90" filter="number : 4" style="text-align: right;">{{:: 'Qtd Pedida' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+			<totvs-grid-column field="cod-un" width="50">{{:: 'UM' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+			<totvs-grid-detail size="table">
+				<totvs-grid grid-data="dataItem.ttOrderDelivery"
+							grid-height="285"
+							navigatable="true">
+					<totvs-grid-column field="nr-entrega" width="50" filter="number : 0">{{:: 'Entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					<totvs-grid-column field="cod-sit-ent" width="90">{{:: 'Situação' | i18n : [] : 'dts/mpd'}}
+						<option id="1">{{:: 'Aberta' | i18n : [] : 'dts/mpd'}}</option>
+						<option id="2">{{:: 'Atendida Parcial' | i18n : [] : 'dts/mpd'}}</option>
+						<option id="3">{{:: 'Atendida Total' | i18n : [] : 'dts/mpd'}}</option>
+						<option id="4">{{:: 'Pendente' | i18n : [] : 'dts/mpd'}}</option>
+						<option id="5">{{:: 'Suspensa' | i18n : [] : 'dts/mpd'}}</option>
+						<option id="6">{{:: 'Cancelada' | i18n : [] : 'dts/mpd'}}</option>
+						<option id="7">{{:: 'Fat. Balcão' | i18n : [] : 'dts/mpd'}}</option>
+					</totvs-grid-column>
+					<totvs-grid-column field="dt-entrega" width="90" filter="date : dd/MM/yyyy">{{:: 'Data Entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					<totvs-grid-column field="hr-entrega" width="80">{{:: 'Hora Entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					<totvs-grid-column field="qt-pedida" width="90" filter="number : 4" style="text-align: right;">{{:: 'Qtd Pedida' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+					<totvs-grid-detail size="table">
+						<div ng-controller="salesorder.pd4000ItemAllocation.Controller as itemAllocationController" ng-init="itemAllocationController.init(dataItem)">
+							<div class="row nolabel" style="margin-right: 0; padding-bottom: 5px;">
+								<field type="input" class="col-xs-2"
+									ng-model="itemAllocationController.pesquisa"
+									placeholder="{{:: 'Pesquisar Depósitos' | i18n : [] : 'dts/mpd'}}"
+									canclean
+									ng-change="itemAllocationController.filtrar()">
+								</field>
+								<div class="checkbox col-xs-4" style="margin-bottom: 0; margin-top: 6px;">
+									<label>
+										<input type="checkbox"
+											ng-model="itemAllocationController.alocado"
+											ng-change="itemAllocationController.filtrar()">{{:: 'Apenas depósitos com alocação' | i18n : [] : 'dts/mpd' }}
+									</label>
+								</div>
+								<a class="btn btn-default" role="button" tabindex="0" ng-click="itemAllocationController.save()" ng-if="!itemAllocationController.orderDisabled">
+									<span class="glyphicon glyphicon-save"></span>
+									<span class="hidden-xs ng-binding">&nbsp;Salvar</span>
+								</a>
+								<a class="btn btn-default" role="button" tabindex="0" ng-click="itemAllocationController.reload()" ng-if="!itemAllocationController.orderDisabled">
+									<span class="glyphicon glyphicon-refresh"></span>
+									<span class="hidden-xs ng-binding">&nbsp;Atualizar</span>
+								</a>
+								<a class="btn btn-default" role="button" tabindex="0" ng-click="itemAllocationController.clean()" ng-if="!itemAllocationController.orderDisabled">
+									<span class="glyphicon glyphicon-trash"></span>
+									<span class="hidden-xs ng-binding">&nbsp;Zerar Qtd Alocada</span>
+								</a>
+							</div>
+
+                            <div class="row" style="margin: 0;">
+                                <totvs-grid grid="itemAllocationController.gridAllocation"
+                                    grid-data="itemAllocationController.ttOrderItemAllocation" 
+                                    grid-height="170" 
+                                    navigatable="true" 
+                                    sortable="true"
+                                    editable="!itemAllocationController.orderDisabled" 
+                                    on-edit="itemAllocationController.gridEdit(event, column)"
+                                    on-save="itemAllocationController.gridSave(event)"
+                                    selectable="row">
+                                    <totvs-grid-column field="cod-estabel" width="90">{{:: 'Estabelecimento' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                    <totvs-grid-column field="cod-depos" width="90">{{:: 'Depósito' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                    <totvs-grid-column field="cod-localiz"  width="90">{{:: 'Localização' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                    <totvs-grid-column field="lote" width="90" >{{:: 'Lote' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                    <totvs-grid-column field="dt-vali-lote" width="130" filter="date : dd/MM/yyyy">{{:: 'Validade Lote' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                    <totvs-grid-column field="currentQty" width="160" totals="sum" filter="number : 4" style="text-align: right;">{{:: 'Qtd Disponível' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                    <totvs-grid-column field="qt-aloc-ped" width="160" totals="sum" editable="true" filter="number : 4" style="text-align: right;">{{:: 'Qtd Alocada' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                </totvs-grid>        
+                            </div>
+                        </div>
+                    </totvs-grid-detail>
+                </totvs-grid>                
+            </totvs-grid-detail>             
+        </totvs-grid>
+<% } else {%>
+    {{:: 'Alocação física manual não disponível, verifique:' | i18n : [] : 'dts/mpd'}}
+    <ul >
+        <li>{{:: 'Parâmetros do pedido com alocação física, on-line e manual.' | i18n : [] : 'dts/mpd'}}</li>
+        <li>{{:: 'Parâmetros do pedido permite alocação física de pedidos com programação de entrega.' | i18n : [] : 'dts/mpd'}}</li>
+        <li>{{:: 'Emitente permite liberação do estoque antes da avaliação de crédito.' | i18n : [] : 'dts/mpd'}}</li>
+        <li>{{:: 'Usuário possui permissão para fazer alocação física no pedido.' | i18n : [] : 'dts/mpd'}}</li>
+    </ul>
+<% } %>
+    </div>
+</div>
+

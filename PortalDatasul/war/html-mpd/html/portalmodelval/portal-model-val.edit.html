@@ -1,0 +1,91 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-initial-page' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalconfigpdp/">{{ 'l-portal-config-clien-rep' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalmodel/{{ controller.idPortalConfigur }}/{{ controller.father }}">
+                {{ 'l-portal-model' | i18n }}
+            </breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalmodelval/{{ controller.idPortalConfigur }}/{{ controller.father }}">
+                {{ 'l-portal-model-val' | i18n }}
+            </breadcrumb>
+            <breadcrumb>{{ controller.title }}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            <totvs-page-header-title title="{{ controller.title }} {{ controller.father }}"></totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new='true'></totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+        <totvs-page-form>
+            <fieldset>
+                <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <form class="form-horizontal" role="form">
+                        <!--<field type="input"
+                               class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                               data-ng-model="controller.model['num-seq-item']"
+                               data-ng-disabled="controller.idDisabled"
+                               ng-blur="controller.changeNumSeqItem(controller.model['num-seq-item'])">
+                            <label>{{ 'l-seq-item' | i18n }}</label>
+                        </field>-->
+                        
+                        <field
+                            ng-if="!controller.idDisabled || controller.model['num-seq-item'] > 0"
+                            class="col-lg-6 col-md-6 col-sm-6 col-xs-12" 
+                            type="number"
+                            canclean
+                            min="0"
+                            max="99999" 
+                            data-ng-model="controller.model['num-seq-item']"
+                            data-ng-disabled="controller.idDisabled"
+                            ng-blur="controller.changeNumSeqItem(controller.model['num-seq-item'])"
+                        >
+                            <label>{{ 'l-seq-item'| i18n }} - {{ 'msg-model-item-sequence' | i18n }}</label>
+
+                            <validator key="min">{{ 'l-min' | i18n }}</validator>
+                            <validator key="max">{{ 'l-max' | i18n }}</validator>
+                            <validator key="number">{{ 'l-number' | i18n }}</validator>
+                        </field>
+                    </form>
+
+                    <field
+                        id="comboFields"
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        type="select"
+                        canclean
+                        ng-required="true"
+                        ng-model="controller.fieldSelected"
+                    >
+                        <label>{{ 'l-cod-campo' | i18n }}</label>
+
+                        <include>
+                            <ui-select-match placeholder="{{ 'l-cod-campo' | i18n }}">{{ $select.selected['c-label'] }}</ui-select-match>
+
+                            <ui-select-choices repeat="fields in controller.listFields | filter: $select.search track by $index">
+                                <span ng-bind-html="fields['c-label'] | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </include>
+
+                        <validator key="required">{{ 'l-required' | i18n }}</validator>
+                    </field>
+
+                    <form class="form-horizontal" role="form">
+                        <field
+                            type="input"
+                            class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                            data-ng-model="controller.model['cod-valor']"
+                            required
+                        >
+                            <label>{{ 'l-cod-valor' | i18n }}</label>
+                        </field>
+                    </form>
+                </div>
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

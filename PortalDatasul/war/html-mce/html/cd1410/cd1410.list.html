@@ -1,0 +1,149 @@
+<link rel="stylesheet" href="/dts/mce/css/mce-requisition.css"/>
+
+<totvs-page type="list">
+
+    <totvs-page-navbar>
+
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/">{{'l-return-mce'| i18n}} {{'l-request'| i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title title="{{'l-request-items'| i18n: []: 'dts/mce' }}" total="{{controller.totalRecords}}"> </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="3" items="controller.listOfRequest" items-as="request">
+                    <action ng-disabled="controller.selectedItems.length === 0"
+                            ng-click="controller.selectedRequisitionReturn()">{{ 'l-return-selected' | i18n }}</action>
+                </totvs-page-header-operation-action>
+
+                <totvs-page-header-operation-filter placeholder="{{ 'l-request-item-item-desc-requester-pch' | i18n: []: 'dts/mce' }}" ng-submit="controller.load(false)" ng-model="controller.basicFilter" advanced-search="controller.openAdvancedSearch" clean-search="controller.load(false)">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers" ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+
+        <totvs-page-form name="formGrid">
+
+            <totvs-grid grid-data="controller.listOfRequest"
+                        grid="controller.myGrid" 
+                        auto-resize-content="true" 
+                        grid-options="controller.gridOptions" 
+                        groupable="true" 
+                        reorderable="true" 
+                        resizable="true" 
+                        sortable="true" 
+                        grid-selected-items="controller.selectedItems" 
+                        grid-height="200" 
+                        auto-resize-content="true" 
+                        navigatable="true">
+
+                <totvs-grid-column field="sequencia" hide-grouped="true" width="100">
+                    {{ ::'l-seq' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+                
+                <totvs-grid-column field="it-codigo" hide-grouped="true">
+                    {{ ::'l-item' | i18n : [] : 'dts/mce' }}
+                </totvs-grid-column>
+
+                <totvs-grid-column field="nr-requisicao" hide-grouped="true" filter="number : 0">
+                    {{ ::'l-request' | i18n : [] :'dts/mce' }}
+                </totvs-grid-column>
+                
+                <totvs-grid-column field="dt-entrega" filter="date : dd/MM/yyyy" hide-grouped="true">
+                    {{ ::'l-delivery-date' | i18n : [] :'dts/mce' }}
+                </totvs-grid-column>
+                
+                <totvs-grid-column field="desc-status" class="text-center" template="controller.templateSituacao" width="100" hide-grouped="true">
+                    {{ ::'l-status' | i18n: []: 'dts/mce' }}
+                </totvs-grid-column>
+
+                <totvs-grid-column field="qt-atendida" class="text-right" filter="number:4" hide-grouped="true">
+                    {{:: 'l-processed-quantity-short' | i18n: []: 'dts/mce' }}
+                </totvs-grid-column>
+
+                <totvs-grid-column field="qt-a-devolver" class="text-right" filter="number:4"  hide-grouped="true">
+                    {{:: 'l-refuse-quantity-short' | i18n: []: 'dts/mce' }}
+                </totvs-grid-column>
+                
+                <totvs-grid-column field=""  title="-" width="100" class="outrasAcoes" hide-grouped="true">
+                    <template>
+                        <div class="btn-group" role="group" aria-label="...">
+                            <button type="button" ng-disabled="dataItem['qt-atendida'] == 0" ng-click="controller.simplifiedRequisitionReturn(dataItem)" class=" btn btn-success btn-sm ">{{ 'l-return' | i18n : [] : 'dts/mce' }}</button>
+
+                            <div class="btn-group " role="group">
+
+                                <button type="button " class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret "></span>
+                                </button>
+                                
+                                <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenu1">
+                                    <li><a href="\\#/dts/mce/cd1410" ng-click="controller.openModalChooseService(dataItem)">{{ 'l-processing' | i18n : [] : 'dts/mce' }}</a></li>
+                                    <li>
+                                        <a href="\\#/dts/mce/cd1410/item/detail?req={{dataItem['nr-requisicao']}}&seq={{dataItem['sequencia']}}&item={{dataItem['it-codigo-link']}}">
+                                        {{ 'l-detail-requisition-item' | i18n : [] : 'dts/mce' }}</a></li>
+                                    <li><a href="\\#/dts/mce/cd1410/detail/{{dataItem['nr-requisicao']}}">{{ 'l-to-detail' | i18n : [] : 'dts/mce' }}&nbsp;{{ 'l-request' | i18n : [] : 'dts/mce' }}  </a></li>
+                                    <!-- FOLLOW-UP -->
+                                    <li ng-click="controller.openModalFollowUp(1, dataItem['nr-requisicao'], dataItem['it-codigo'], dataItem['sequencia'], 0, 0);">
+                                        <a>
+                                            {{ 'l-followup' | i18n : [] : 'dts/mce' }}
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                    </template>
+                </totvs-grid-column>
+
+                <totvs-grid-detail>
+                    <div class="row " style="margin: 0;" ng-init="controller.loadInfoCompItem(dataItem)">
+                        <div class="row " style="margin: 0; ">
+                            <div class="col-xs-12 " style="padding: 5px 0 0;">
+                                <totvs-grid grid-data="dataItem.infCompl" reorderable="true" resizable="true" grid-height="80">
+                                    
+                                    <totvs-grid-column field="desc-item" width="200" class="textTopCell">
+                                        {{ ::'l-description' | i18n : [] : 'dts/mce' }} {{ ::'l-item' | i18n : [] : 'dts/mce' }}
+                                    </totvs-grid-column>
+                                    
+                                    <totvs-grid-column field="dt-requisicao" filter="date : dd/MM/yyyy" hide-grouped="true" width="125" class="textTopCell">
+                                        {{ ::'l-requisition-date' | i18n : [] :'dts/mce' }}
+                                    </totvs-grid-column>
+                                    
+                                    <totvs-grid-column field="nome-abrev" width="130" class="textTopCell">
+                                        {{:: 'l-requester' | i18n: []: 'dts/mce' }}
+                                    </totvs-grid-column>
+
+                                    <totvs-grid-column field="qt-requisitada" filter="number : 4" class="text-right textTopCell" width="150" >
+                                        {{:: 'l-requested-quantity-short' | i18n: []: 'dts/mce' }}
+                                    </totvs-grid-column>
+                                    
+                                    <totvs-grid-column field="narrativa" class="textTopCell">
+                                        {{ ::'l-narrative' | i18n: []: 'dts/mce' }}
+                                    </totvs-grid-column>
+                                    
+                                </totvs-grid>
+                            </div>
+                        </div>
+                    </div>
+                </totvs-grid-detail>
+                <totvs-grid-group field=" it-codigo"></totvs-grid-group>
+            </totvs-grid>
+
+            <totvs-list-pagination ng-if="controller.numResults < controller.totalRecords && controller.numResults " ng-click="controller.load(true) ">
+            </totvs-list-pagination>
+
+        </totvs-page-form>
+
+    </totvs-page-content>
+</totvs-page>

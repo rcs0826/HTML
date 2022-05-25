@@ -1,0 +1,65 @@
+<totvs-page-alert
+	ng-if="!controller.listResult || controller.listResult.length <= 0"
+	type="info"
+	message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+</totvs-page-alert>
+
+<totvs-list-item ng-class="{'portal-list-customer-green-list':customer.ativo, 'portal-list-customer-red-list':!customer.ativo}"
+				 ng-repeat="customer in controller.listResult"
+				 totvs-custom-element="customListItem">
+
+	<totvs-list-item-header>
+
+		<totvs-list-item-title title="{{customer['cod-emitente']}} - {{customer['nome-abrev']}}"
+							   link="#/dts/mpd/customer/{{customer['cod-emitente']}}"></totvs-list-item-title>
+
+		<totvs-list-item-action limit-primary-action="3" class="customer-actions">
+             
+			<!-- Tratamento para Nome Abreviado que contem barras -->
+			<action link="#/dts/mpd/salesorders/{{customer['cod-emitente']}}?nomAbrev={{customer['nome-abrev']}}" 
+					icon="glyphicon-list">{{ 'btn-list-orders' | i18n }}
+			</action>
+            
+	        <%
+	        _.forEach(data.fields, function(carteiraClienteRepresVisibleFields) {
+                 if (carteiraClienteRepresVisibleFields.fieldName == "btn-new-order") {
+            %>
+			<action ng-if="!controller.newOrderInclusionFlow" 
+					link="#/dts/mpd/model/{{customer['cod-emitente']}}" 
+					icon="glyphicon-file">{{ 'btn-new-order' | i18n }}
+			</action>
+			
+			<!--Novo fluxo de pedidos sem interface passar na interface de modelo-->
+			<action ng-if="controller.newOrderInclusionFlow"  
+					icon="glyphicon-file"
+					ng-click="controller.openSalesOrder2(false, customer, null);">
+				{{ 'btn-new-order' | i18n }}
+			</action>
+            <%
+                }
+	        });
+            %> 
+                
+			<!--Novo botao para adicionar uma nova cotacao -->
+			<action class="customer-new-quotation"
+					ng-if="controller.logPermiteCotac"
+					link="#/dts/mpd/quotation/new/{{customer['cod-emitente']}}"
+					icon="glyphicon-usd">
+				{{ 'btn-new-quotation' | i18n }}
+			</action>
+
+		</totvs-list-item-action>
+
+	</totvs-list-item-header>
+
+	<totvs-list-item-content>
+		<totvs-lodash-template src="/dts/mpd/html/customers/customers-list-fields.html"
+							   template-data="controller.customerListProfileConfig"></totvs-lodash-template>
+	</totvs-list-item-content>
+
+</totvs-list-item>
+
+<totvs-list-pagination
+		   ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+		   ng-click="controller.loadMore();">
+</totvs-list-pagination>

@@ -1,0 +1,216 @@
+<style type="text/css" scoped>
+    .page-head .page-tags .tag-1:before, .item-container .tag-1:before {
+        content: "1";
+        background-color: #f15a22;
+    }
+    .page-head .page-tags .tag-2:before, .item-container .tag-2:before {
+        content: "2";
+        background-color: #faa61a;
+    }
+    .page-head .page-tags .tag-3:before, .item-container .tag-3:before {
+        content: "3";
+        background-color: #6A5ACD;
+    }
+    .page-content .list-item.tag-3{
+        border-left-color: #6A5ACD;
+    }
+    .page-head .page-tags .tag-4:before, .item-container .tag-4:before {
+        content: "4";
+        background-color: #6ace39;
+    }
+    .page-head .page-tags .tag-5:before, .item-container .tag-5:before {
+        content: "5";
+        background-color: #d7df23;
+        color: #000;
+    }
+    .page-head .page-tags .tag-6:before, .item-container .tag-6:before {
+        content: "6";
+        background-color: #58595b;
+    }
+    
+</style>
+
+<totvs-page type="list" totvs-custom-element="customRequestQuotation_list">
+    
+    <totvs-page-navbar>
+
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n: []: 'dts/mcc' }}</breadcrumb>
+            <breadcrumb>
+                <span >{{'l-purchase-orders' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title title="{{:: 'l-purchase-orders' | i18n: []: 'dts/mcc' }}">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="3">
+                    <action link="#/dts/mcc/purchaseorder/new" 
+                            class="btn-primary" 
+                            icon="glyphicon-plus">{{ 'l-add' | i18n: []: 'dts/mcc' }}</action>
+                </totvs-page-header-operation-action>
+
+                <totvs-page-header-operation-filter placeholder="{{ 'l-order' | i18n: []: 'dts/mcc' }}"
+                                                    ng-submit="controller.filter()"
+                                                    ng-model="controller.basicFilter"
+                                                    clean-search="controller.cleanFilter()"
+                                                    advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+
+            <totvs-page-tags>
+                <tag class="tag-1">{{ 'l-not-approved-gen' | i18n: []: 'dts/mcc' }}</tag>
+                <tag class="tag-2">{{ 'l-approved-m' | i18n: []: 'dts/mcc' }}</tag>
+                <tag class="tag-3">{{ 'l-partial-received-man' | i18n: []: 'dts/mcc' }}</tag>
+                <tag class="tag-4">{{ 'l-received-total-m' | i18n: []: 'dts/mcc' }}</tag>
+                <tag class="tag-5">{{ 'l-deleted-m' | i18n: []: 'dts/mcc' }}</tag>
+            </totvs-page-tags>
+
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers"
+                                    ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+        </totvs-page-header>
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+        <totvs-page-content-header>
+            
+            <div class="col-md-7 col-sm-8 col-xs-10" style="padding-left: 0px;">
+                <totvs-page-quick-select title="{{:: 'l-selected-all' | i18n }}"
+                                            list="controller.listOfOrders">
+                </totvs-page-quick-select>
+            </div>
+            <totvs-page-quick-filter class="col-md-5 col-sm-4"
+                                     orderby-list="controller.orderbyList"
+                                     orderby-selected="controller.orderBySelected"
+                                     on-select-orderby="controller.selectOrderBy">
+            </totvs-page-quick-filter>
+        </totvs-page-content-header>
+
+        <totvs-list-item
+           id="id"
+           selected="true"
+           ng-repeat="item in controller.listOfOrders"
+           class="tag-{{ item['cod-atendimento'] }}">
+
+           <totvs-list-item-header>
+                <totvs-list-item-title
+                    title="{{:: item['num-pedido']}}"
+                    link="#/dts/mcc/purchaseorder/detail/{{:: item['num-pedido']}}"
+                    class="legend tag-{{ item['cod-atendimento'] }} col-xs-3 col-sm-6">
+                </totvs-list-item-title>
+                <totvs-list-item-action 
+                    limit-primary-action="2" 
+                    class="col-xs-3 col-sm-6 col-md-6 col-lg-6">
+                    
+                    <action  link="#/dts/mcc/purchaseorder/edit/{{:: item['num-pedido']}}" 
+                             icon="glyphicon-pencil"
+                             ng-if="item['cod-atendimento'] < 5 && item['nr-contrato'] == 0">{{ 'btn-edit' | i18n: []: 'dts/mcc' }}</action>
+                    <action  ng-click="controller.onRemove(item)"
+                             icon="glyphicon-trash">{{ 'btn-remove' | i18n: []: 'dts/mcc' }}</action>
+
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+            <totvs-list-item-content>
+
+                <div class="row">
+                    <totvs-list-item-info title="{{:: 'l-emergency' | i18n }}" 
+                                          value="{{ item['emergencial'] ? 'l-yes' : 'l-no' | i18n }}"
+                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    </totvs-list-item-info>
+    
+                    <totvs-list-item-info title="{{:: 'l-vendor' | i18n }}" 
+                                          value="{{:: item['cod-emitente']}} - {{:: item['nome-abrev']}}"
+                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    </totvs-list-item-info>
+
+                    <totvs-list-item-info title="{{:: 'l-site-short' | i18n }}" 
+                                          value="{{:: item['cod-estabel'] }} - {{:: item['nome-estabel']}}"
+                                          class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    </totvs-list-item-info>
+                </div>
+
+                <div class="row">
+                    <totvs-list-item-info title="{{:: 'l-date' | i18n }}" 
+                                          value="{{:: item['data-pedido'] | date: 'dd/MM/yyyy' }}"
+                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    </totvs-list-item-info>
+                    
+                    <totvs-list-item-info title="{{:: 'l-nature' | i18n }}" 
+                                          value="{{:: item['natureza-desc']}}"
+                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    </totvs-list-item-info>
+                    
+                    <totvs-list-item-info title="{{:: 'l-total-value' | i18n }}" 
+                                          value="{{:: item['val-total'] | number: 2 }}"
+                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    </totvs-list-item-info>
+
+                    <totvs-list-item-info title="{{:: 'l-open-value' | i18n }}" 
+                                          value="{{:: item['val-aberto'] | number: 2 }}"
+                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    </totvs-list-item-info>
+                </div>
+
+                <div class="row">
+                    <totvs-list-item-info title="{{:: 'l-contract' | i18n }}" 
+                                          value="{{:: item['nr-contrato'] }}"
+                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    </totvs-list-item-info>
+                    
+                    <totvs-list-item-info title="{{:: 'l-status' | i18n }}" 
+                                          value="{{:: item['situacao-desc']}}"
+                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    </totvs-list-item-info>
+                </div>
+
+            </totvs-list-item-content>
+
+            <totvs-list-item-content-detail>
+                <div class="row">
+                    <totvs-list-item-info title="{{:: 'l-owner' | i18n }}" 
+                                          value="{{:: item['responsavel'] }}"
+                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    </totvs-list-item-info>
+
+                    <totvs-list-item-info title="{{:: 'l-creation-user' | i18n }}" 
+                                          value="{{:: item['cod-usuar-criac'] }}"
+                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    </totvs-list-item-info>
+
+                    <totvs-list-item-info title="{{:: 'l-last-modified-by' | i18n }}" 
+                                          value="{{:: item['cod-usuar-alter']}}"
+                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    </totvs-list-item-info>
+                </div>
+
+                <div class="row">
+                    <totvs-list-item-info title="{{:: 'l-cnpj-cpf' | i18n }}" 
+                                          value="{{:: item['cgc'] | mask:item['formato-cgc']}}"
+                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    </totvs-list-item-info>
+
+                    <totvs-list-item-info title="{{:: 'l-name' | i18n }} {{ 'l-vendor' | i18n }}" 
+                                          value="{{:: item['nome-emit'] }}"
+                                          class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                    </totvs-list-item-info>
+                </div>
+            </totvs-list-item-content-detail>
+
+        </totvs-list-item>
+
+        <totvs-page-alert ng-if="controller.listOfOrders <= 0"
+                          type="info"
+                          message="{{ 'l-order-not-found' | i18n }}">
+        </totvs-page-alert>
+
+        <totvs-list-pagination
+            ng-if="controller.hasNext"
+            ng-click="controller.loadMoreResults()">
+        </totvs-list-pagination>
+    </totvs-page-content>
+
+</totvs-page>

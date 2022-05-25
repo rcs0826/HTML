@@ -1,0 +1,258 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/product/">{{ 'nav-product' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-product' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ controller.model.nom_produt }} {{controller.model.cod_item_erp ? ('(' + controller.model.cod_item_erp  + ')') : ''}}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action on-back-link="#/dts/crm/product/"
+													on-edit="controller.onEdit"
+													on-remove="controller.onRemove"
+													hide-actions="true">
+					<action icon="glyphicon-ok"
+							ng-click="controller.onTechnicalAssistence(!controller.model.log_produt_assist_tec)">
+						{{ (!controller.model.log_produt_assist_tec  ? 'btn-allows-support' : 'btn-not-allow-support') | i18n: []: 'dts/crm' }}
+					</action>
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}"
+						  ng-if="(controller.model | isUndefined)">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-show="controller.model | isDefined">
+
+			<div class="col-xs-12 no-gutter">
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-3 col-md-3"
+					title="{{ 'l-status' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_idi_status_item }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-3 col-md-3"
+					title="{{ 'l-type' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_tip_produt }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-3 col-md-3"
+					title="{{ 'l-unit-of-measurement' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_umd_vda }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-3 col-md-3"
+					title="{{ 'l-stock-group' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_grp_estoq }}
+				</totvs-page-detail-info>
+			</div>
+
+			<div class="col-xs-12 no-gutter">
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-3 col-md-3"
+					title="{{ 'l-material-family' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_familia }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-3 col-md-3"
+					title="{{ 'l-business-family' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_familia_comerc }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-3 col-md-3"
+					title="{{ 'l-tax-classification' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_classif_fisc }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-3 col-md-3"
+					title="{{ 'l-auxiliary-code-1' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.cod_aux_produt }}
+				</totvs-page-detail-info>
+			</div>
+
+			<totvs-tabset class="no-border">
+				<tabset>
+					<tab heading="{{ 'l-complement' | i18n: []: 'dts/crm' }}">
+
+						<br>
+
+						<div class="col-xs-12 no-gutter">
+							<totvs-page-detail-info
+								class="col-xs-12 col-sm-3 col-md-3"
+								title="{{ 'l-product-support' | i18n: []: 'dts/crm' }}">
+								{{ (controller.model.log_produt_assist_tec === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info
+								class="col-xs-12 col-sm-3 col-md-3"
+								title="{{ 'l-billed' | i18n: []: 'dts/crm' }}">
+								{{ (controller.model.log_produt_vda === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info
+								class="col-xs-12 col-sm-3 col-md-3"
+								title="{{ 'l-competitive-produt' | i18n: []: 'dts/crm' }}">
+								{{ (controller.model.log_produt_concor === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info
+								class="col-xs-12 col-sm-3 col-md-3"
+								title="{{ 'l-reference-control' | i18n: []: 'dts/crm' }}">
+								{{ (controller.model.log_referencia === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+							</totvs-page-detail-info>
+						</div>
+
+						<div class="col-xs-12 no-gutter">
+							<totvs-page-detail-info
+								class="col-xs-12 col-sm-6 col-md-3"
+								title="{{ 'l-date-deployment' | i18n: []: 'dts/crm' }}">
+								{{ controller.model.dat_impl | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info
+								class="col-xs-12 col-sm-6 col-md-3"
+								title="{{ 'l-composition' | i18n: []: 'dts/crm' }}">
+								{{ controller.model.nom_idi_compos_produt }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info
+								class="col-xs-12 col-sm-6 col-md-3"
+								title="{{ 'l-currency' | i18n: []: 'dts/crm' }}">
+								{{ controller.model.nom_moed }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info
+								class="col-xs-12 col-sm-6 col-md-3"
+								title="{{ 'l-establishment' | i18n: []: 'dts/crm' }}">
+								{{ controller.model.nom_estab }}
+							</totvs-page-detail-info>
+						</div>
+
+						<div class="col-xs-12 no-gutter">
+							<totvs-page-detail-info
+								class="col-xs-12 col-sm-3 col-md-3"
+								title="{{ 'l-conversion-Factor' | i18n: []: 'dts/crm' }}">
+								{{ controller.model.val_fator_conver_unid_medid | number:2 }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info
+								class="col-xs-12 col-sm-3 col-md-3"
+								title="{{ 'l-cost' | i18n: []: 'dts/crm' }}">
+								{{ controller.model.val_cust | number:2 }}
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info
+								class="col-xs-12 col-sm-6 col-md-3"
+								title="{{ 'l-integrates-erp' | i18n: []: 'dts/crm' }}">
+								{{ (controller.model.log_integrad_erp === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+							</totvs-page-detail-info>
+						</div>
+
+						<div class="col-xs-12 col-md-12">
+                            <totvs-divider></totvs-divider>
+                            
+                            <div class="crm-group-accordion">
+                                <accordion close-others="false">
+
+                                    <accordion-group is-open="controller.isOpenStory" class="crm-panel">
+                                        <accordion-heading>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                {{ 'l-story' | i18n: []: 'dts/crm' }}
+                                                <i class="pull-right glyphicon"
+                                                    ng-class="{'glyphicon-chevron-down' :  controller.isOpenStory,
+                                                    'glyphicon-chevron-right': !controller.isOpenStory}">
+                                                </i>
+                                                </div>
+                                            </div>
+                                        </accordion-heading>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <pre class="description">{{ controller.model.dsl_narrat_text_item }}</pre>
+                                            </div>
+                                        </div>
+                                    </accordion-group>
+
+                                    <accordion-group is-open="controller.isOpenFeature" class="crm-panel">
+                                        <accordion-heading>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                {{ 'l-technical-feature' | i18n: []: 'dts/crm' }}
+                                                <i class="pull-right glyphicon"
+                                                    ng-class="{'glyphicon-chevron-down' :  controller.isOpenFeature,
+                                                    'glyphicon-chevron-right': !controller.isOpenFeature}">
+                                                </i>
+                                                </div>
+                                            </div>
+                                        </accordion-heading>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <pre class="description">{{ controller.model.dsl_caract_tec }}</pre>
+                                            </div>
+                                        </div>
+                                    </accordion-group>
+
+                                    <accordion-group is-open="controller.isOpenSellingArgument" class="crm-panel">
+                                        <accordion-heading>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                {{ 'l-selling-argument' | i18n: []: 'dts/crm' }}
+                                                <i class="pull-right glyphicon"
+                                                    ng-class="{'glyphicon-chevron-down' :  controller.isOpenSellingArgument,
+                                                    'glyphicon-chevron-right': !controller.isOpenSellingArgument}">
+                                                </i>
+                                                </div>
+                                            </div>
+                                        </accordion-heading>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <pre class="description">{{ controller.model.dsl_text_argum_vda }}</pre>
+                                            </div>
+                                        </div>
+                                    </accordion-group>
+
+                                </accordion>
+                            </div>
+						</div>
+					</tab>
+					<!-- reference -->
+					<tab heading="{{ 'nav-reference' | i18n: []: 'dts/crm' }}">
+						<ng-include src="'/dts/crm/html/product/reference/reference.list.html'"></ng-include>
+					</tab>
+					<!-- version -->
+					<tab heading="{{ 'nav-version' | i18n: []: 'dts/crm' }}"
+						 ng-if="controller.model.log_produt_assist_tec == true">
+						<ng-include src="'/dts/crm/html/product/version/version.list.html'"></ng-include>
+					</tab>
+					<!-- component -->
+					<tab heading="{{ 'nav-component' | i18n: []: 'dts/crm' }}"
+						 ng-if="controller.model.idi_compos_produt != 1 && controller.model.idi_compos_produt != 3">
+						<ng-include src="'/dts/crm/html/product/component/component.list.html'"></ng-include>
+					</tab>
+				</tabset>
+			</totvs-tabset>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

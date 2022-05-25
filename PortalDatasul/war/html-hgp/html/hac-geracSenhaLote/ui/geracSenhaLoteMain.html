@@ -1,0 +1,174 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-header>
+            <totvs-page-header-title title="Gerar Lote de Senhas por Seleção">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="4">
+
+                    <action class="btn btn-default" ng-click="controller.irPara('parametros');" style="color: #333;
+                    background-color: #fff;
+                    border-color: #ccc; padding-right: 15px;">
+                        Parâmetros
+                    </action>
+                    <action class="btn btn-default" ng-click="controller.irPara('selecao');" style="padding-right: 15px;">
+                        Seleção
+                    </action>
+                    <action class="btn btn-default" ng-click="controller.irPara('execucao');" style="padding-right: 15px;">
+                        Execução
+                    </action>
+                    <action class="btn btn-primary" ng-click="controller.generate();" style="padding-right: 15px;">
+                        Enviar
+                    </action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.filtersForm">
+            <a name="parametros" id="parametros" style="display: block;
+            position: relative;
+            top: -170px;
+            visibility: hidden;"></a>
+            <legend>
+                Parâmetros
+            </legend>
+            <totvs-row>
+                <totvs-field totvs-combo class="col-lg-4 col-md-4 col-sm-6 col-xs-12" label="Geração para" ng-model="controller.dadosTela.lgPrestadorBenef"
+                    ng-required="true" t-options="controller.options.prestadorBenef" ng-required="true" ng-change="controller.changeGenerationType()"
+                    canclean>
+                    <validator key="required">Este campo deve ser preenchido.</validator>
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field ng-required="true" numbers-only totvs-input class="col-lg-2 col-md-4 col-sm-6 col-xs-12" label="Quantidade de Senhas" ng-disabled="controller.dadosTela.lgPrestadorBenef == 'Beneficiário'" ng-model="controller.dadosTela.qtdSenhas">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+                <totvs-field totvs-datepicker class="col-lg-2 col-md-4 col-sm-6 col-xs-12" label="Data de Validade das Senhas"
+                    ng-model="controller.dadosTela.dtSenhas" format="dd/MM/yyyy" culture="pt">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-input ng-required="true" class="col-lg-6 col-md-8 col-sm-12 col-xs-12" label="Assunto" ng-model="controller.dadosTela.dsAssunto">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <field type="textarea" ng-required="true" class="col-lg-6 col-md-8 col-sm-12 col-xs-12" label="Descrição" ng-model="controller.dadosTela.dsDescricao">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                    </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-combo class="col-lg-3 col-md-4 col-sm-6 col-xs-12" label="Prioridade" ng-model="controller.dadosTela.inPrioridade"
+                    t-options="controller.options.prioridade" ng-required="true" canclean>
+                    <validator key="required">Este campo deve ser preenchido.</validator>
+                </totvs-field>
+                <totvs-field totvs-combo class="col-lg-3 col-md-4 col-sm-6 col-xs-12" label="Grupo de Atendimento" ng-model="controller.dadosTela.inGrupoAtendimento"
+                    ng-change="controller.getMotivoAtendimento()" t-options="controller.options.grupoAtendimento" ng-required="true"
+                    canclean>
+                    <validator key="required">Este campo deve ser preenchido.</validator>
+                </totvs-field>
+            </totvs-row>
+
+            <totvs-row>
+                <totvs-field totvs-combo class="col-lg-3 col-md-4 col-sm-6 col-xs-12" label="Categoria de Atendimento" ng-model="controller.dadosTela.inCategoria"
+                    t-options="controller.options.categoria" ng-required="true" canclean>
+                    <validator key="required">Este campo deve ser preenchido.</validator>
+                </totvs-field>
+                <totvs-field totvs-combo class="col-lg-3 col-md-4 col-sm-6 col-xs-12" label="Motivo de Atendimento" ng-model="controller.dadosTela.inMotivo"
+                    t-options="controller.options.motivoAtendimento" ng-required="true" canclean>
+                    <validator key="required">Este campo deve ser preenchido.</validator>
+                </totvs-field>
+
+
+            </totvs-row>
+
+
+            <totvs-row>
+                <totvs-field totvs-combo class="col-lg-3 col-md-4 col-sm-6 col-xs-12" label="Tipo de Atendimento" ng-model="controller.dadosTela.tpAtendimento"
+                    t-options="controller.options.tipoAtendimento" ng-required="true" canclean>
+                    <validator key="required">Este campo deve ser preenchido.</validator>
+                </totvs-field>
+            </totvs-row>
+            <a name="selecao" id="selecao" style="display: block;
+            position: relative;
+            top: -170px;
+            visibility: hidden;"></a>
+            <legend name="selecao" id="selecao">
+                Seleção
+            </legend>
+            <totvs-row>
+                <totvs-field totvs-input numbers-only placeholder="1" ng-disabled="controller.dadosTela.lgPrestadorBenef == 'Beneficiário'"
+                    maxlength="2" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Tipo de Clínica Inicial" ng-model="controller.dadosTela.tpClinicaIni">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+                <totvs-field totvs-input numbers-only placeholder="99" ng-disabled="controller.dadosTela.lgPrestadorBenef == 'Beneficiário'"
+                    maxlength="2" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Final" ng-model="controller.dadosTela.tpClinicaFim">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+                <totvs-field totvs-input numbers-only placeholder="1" maxlength="8" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Clínica Inicial"
+                    ng-model="controller.dadosTela.clinicaIni">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+                <totvs-field totvs-input numbers-only ng-disabled="controller.dadosTela.lgPrestadorBenef == 'Beneficiário'" placeholder="99999999"
+                    maxlength="8" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Final" ng-model="controller.dadosTela.clinicaFim">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-input numbers-only placeholder="1" maxlength="4" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Unidade Inicial"
+                    ng-model="controller.dadosTela.cdUnidadeIni">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+                <totvs-field totvs-input numbers-only placeholder="9999" ng-disabled="controller.dadosTela.lgPrestadorBenef == 'Beneficiário'"
+                    maxlength="4" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Final" ng-model="controller.dadosTela.cdUnidadeFim">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+                <totvs-field totvs-input numbers-only ng-disabled="controller.dadosTela.lgPrestadorBenef == 'Beneficiário'" placeholder="1"
+                    maxlength="2" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Grupo do Prestador Inicial" ng-model="controller.dadosTela.cdGrupoPrestadorIni">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+                <totvs-field totvs-input numbers-only ng-disabled="controller.dadosTela.lgPrestadorBenef == 'Beneficiário'" placeholder="99"
+                    maxlength="2" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Final" ng-model="controller.dadosTela.cdGrupoPrestadorFim">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-input numbers-only placeholder="1" maxlength="8" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Prestador Inicial"
+                    ng-model="controller.dadosTela.cdPrestadorIni">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+
+                <totvs-field totvs-input numbers-only ng-disabled="controller.dadosTela.lgPrestadorBenef == 'Beneficiário'" placeholder="99999999"
+                    maxlength="8" class="col-lg-2 col-md-3 col-sm-4 col-xs-5" label="Final" ng-model="controller.dadosTela.cdPrestadorFim">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-input placeholder="0000000000000" numbers-only maxlength="13" ng-disabled="controller.dadosTela.lgPrestadorBenef == 'Prestador'"
+                    class="col-lg-2 col-md-3 col-sm-6 col-xs-6" label="Carteira do Beneficiário" ng-model="controller.dadosTela.cdCarteira">
+                </totvs-field>
+            </totvs-row>
+            <a name="execucao" id="execucao" style="display: block;
+            position: relative;
+            visibility: hidden;"></a>
+            <totvs-execution hide-repeat="true" ng-model="controller.execution">
+                <totvs-execution-item type="execution">
+                    <gps-totvs-schedule program-name="geracSenhaLote" ng-model="controller.schedule">
+                    </gps-totvs-schedule>
+                    <totvs-field totvs-select ng-model="controller.dadosTela.servidor" label="Servidor de Execução" t-no-data="Sem dados" placeholder="Selecione.."
+                        select-id="cdServidor" select-description="dsServidor" t-data-source="controller.options.servidores"
+                        canclean>
+                    </totvs-field>
+                </totvs-execution-item>
+            </totvs-execution>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

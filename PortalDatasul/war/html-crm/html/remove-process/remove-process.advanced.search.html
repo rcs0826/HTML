@@ -1,0 +1,337 @@
+<totvs-modal-header>
+	{{ 'l-search-advanced' | i18n: []: 'dts/crm' }}
+</totvs-modal-header>
+<totvs-modal-body>
+	<style scoped>
+		label.field-label-crm {
+			box-sizing:border-box;
+			color:rgb(128, 128, 128);
+			cursor:default;
+			display:inline-block;
+			font-family:Arial;
+			font-size:12px;
+			font-weight:200;
+			height:17px;
+			line-height:17.1429px;
+			margin-bottom:5px;
+			max-width:100%;
+			width:86px;
+		}
+		input.checkboxalign {
+			margin-top: 1px !important;
+		}
+	</style>
+
+	<fieldset class="row">
+
+		<field type="select"
+			ng-model="controller.model.num_id_pessoa"
+			ng-change="controller.onChangeAccount()"
+			ng-if="controller.processName === 'attachment'
+			|| controller.processName === 'account'
+			|| controller.processName === 'history'
+			|| controller.processName === 'ticket'
+			|| controller.processName === 'opportunity'
+			|| controller.processName === 'task'"
+			canclean="undefined">
+			<label>{{ 'l-account' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-selected="controller.onChangeAccount(selected)"
+				zoom-service="crm.crm_pessoa.conta.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-account' | i18n: []: 'dts/crm' }}">
+					<span>
+						<span ng-class="{'glyphicon glyphicon-lock': !$select.selected.log_acesso}"></span>
+						<span ng-class="{'glyphicon glyphicon-globe': $select.selected.log_matriz}"></span>
+						{{ $select.selected.nom_razao_social }} {{ $select.selected.cod_pessoa_erp ? ' (' + $select.selected.cod_pessoa_erp + ')' : '' }}
+					</span>
+				</ui-select-match>
+				<ui-select-choices repeat="account in controller.accounts track by $index"
+					refresh="controller.getAccounts($select.search)"
+					refresh-delay="500">
+					<span ng-if="!account.log_acesso"
+						class="glyphicon glyphicon-lock">
+					</span>
+					<span ng-if="account.log_matriz"
+						class="glyphicon glyphicon-globe">
+					</span>
+					<span ng-bind-html="account.nom_razao_social + (account.cod_pessoa_erp ? ' (' + account.cod_pessoa_erp + ')' : '') | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			ng-model="controller.model.num_id_contat"
+			ng-if="controller.processName === 'account'
+			|| controller.processName === 'history'
+			|| controller.processName === 'ticket'
+			|| controller.processName === 'opportunity'
+			|| controller.processName === 'task'"
+			canclean="undefined">
+			<label>{{ 'l-contact' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_pessoa.contato.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-contact' | i18n: []: 'dts/crm' }}">
+					<span>
+						<span ng-class="{'glyphicon glyphicon-lock': !$select.selected.log_acesso}"></span>
+						&nbsp;{{ $select.selected.nom_razao_social }}
+					</span>
+				</ui-select-match>
+				<ui-select-choices repeat="contact in controller.contacts track by $index | filter: $select.search"
+					refresh="controller.getContacts($select.search)"
+					refresh-delay="500">
+					<span ng-if="!contact.log_acesso" class="glyphicon glyphicon-lock">&nbsp;</span>
+					<span ng-bind-html="contact.nom_razao_social + (contact.cod_pessoa_erp ? ' (' + contact.cod_pessoa_erp + ')' : '') | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			ng-model="controller.model.num_id_usuar_respons"
+			ng-disabled="controller.isUserPortfolio === true"
+			ng-if="controller.processName === 'account'
+			|| controller.processName === 'facilit'
+			|| controller.processName === 'ticket'
+			|| controller.processName === 'opportunity'
+			|| controller.processName === 'task'"
+			canclean="undefined">
+			<label>{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_usuar.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_usuar }}</ui-select-match>
+				<ui-select-choices repeat="user in controller.users track by $index"
+					refresh="controller.getUsers($select.search)"
+					refresh-delay="500">
+					<span ng-bind-html="user.nom_usuar | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			ng-model="controller.model.num_id_usuar"
+			ng-if="controller.processName === 'history'
+			|| controller.processName === 'ticket'
+			|| controller.processName === 'opportunity'
+			|| controller.processName === 'segmentation'
+			|| controller.processName === 'task'
+			|| controller.processName === 'target'"
+			canclean="undefined">
+			<label>{{ 'l-user-open' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_usuar.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-user-open' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_usuar }}</ui-select-match>
+				<ui-select-choices repeat="user in controller.users track by $index"
+					refresh="controller.getUsers($select.search)"
+					refresh-delay="500">
+					<span ng-bind-html="user.nom_usuar | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.num_id_campanha"
+			   ng-change="controller.onChangeCampaign()"
+			   ng-if="controller.processName === 'attachment'
+			   || controller.processName === 'history'
+			   || controller.processName === 'opportunity'
+			   || controller.processName === 'task'"
+			   canclean="undefined">
+			<label>{{ 'l-campaign' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_campanha.zoom"
+				  zoom-selected="controller.onChangeCampaign(selected)"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-campaign' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_campanha }} {{ $select.selected.num_id ? ' (' + $select.selected.num_id + ')' : '' }}
+				</ui-select-match>
+				<ui-select-choices repeat="campaign in controller.campaigns track by $index"
+								   refresh="controller.getCampaigns($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="campaign.nom_campanha | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.num_id_historico"
+			   ng-if="controller.processName === 'attachment'"
+			   canclean="undefined">
+			<label>{{ 'l-history' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_histor_acao.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-history' | i18n: []: 'dts/crm' }}">
+					<span>
+						{{ $select.selected.ttAcao.nom_acao }} {{ $select.selected.num_id ? ' (' + $select.selected.num_id + ')' : '' }}
+					</span>
+				</ui-select-match>
+				<ui-select-choices repeat="history in controller.histories track by $index"
+								   refresh="controller.getHistories($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="history.ttAcao.nom_acao + (history.num_id ? ' (' + history.num_id + ')' : '') | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.num_id_ocor"
+			   ng-if="controller.processName === 'attachment'"
+			   canclean="undefined">
+			<label>{{ 'l-ticket' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_ocor.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-ticket' | i18n: []: 'dts/crm' }}">
+					<span>
+						{{ $select.selected.nom_ocor }} {{ $select.selected.num_id ? ' (' + $select.selected.num_id + ')' : '' }}
+					</span>
+				</ui-select-match>
+				<ui-select-choices repeat="ticket in controller.tickets track by $index"
+								   refresh="controller.getTickets($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="ticket.nom_ocor + (ticket.num_id ? ' (' + ticket.num_id + ')' : '') | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.num_id_oportun_vda"
+			   ng-if="controller.processName === 'attachment'"
+			   canclean="undefined">
+			<label>{{ 'l-opportunity' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_oportun_vda.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-opportunity' | i18n: []: 'dts/crm' }}">
+					<span>
+						{{ $select.selected.des_oportun_vda }} {{ $select.selected.num_id ? ' (' + $select.selected.num_id + ')' : '' }}
+					</span>
+				</ui-select-match>
+				<ui-select-choices repeat="opportunity in controller.opportunities track by $index"
+								   refresh="controller.getOpportunities($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="opportunity.des_oportun_vda + (opportunity.num_id ? ' (' + opportunity.num_id + ')' : '') | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.num_id_tar"
+			   ng-if="controller.processName === 'attachment'"
+			   canclean="undefined">
+			<label>{{ 'l-task' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_tar.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-task' | i18n: []: 'dts/crm' }}">
+					<span>
+						{{ $select.selected.ttAcao.nom_acao }} {{ $select.selected.num_id ? ' (' + $select.selected.num_id + ')' : '' }}
+					</span>
+				</ui-select-match>
+				<ui-select-choices repeat="task in controller.tasks track by $index"
+								   refresh="controller.getTasks($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="task.ttAcao.nom_acao + (task.num_id ? ' (' + task.num_id + ')' : '') | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.num_id_acao"
+			   ng-if="controller.processName === 'history'
+			   || controller.processName === 'task'"
+			   canclean="undefined">
+			<label>{{ 'l-action' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-action' | i18n: []: 'dts/crm' }}">{{$select.selected.nom_acao}}</ui-select-match>
+				<ui-select-choices repeat="action in controller.actions | filter: $select.search track by $index">
+					<span ng-bind-html="action.nom_acao | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.num_id_usr_fechto"
+			   ng-if="controller.processName === 'ticket'"
+			   canclean="undefined">
+			<label>{{ 'l-user-close' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_usuar.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-user-close' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_usuar }}</ui-select-match>
+				<ui-select-choices repeat="user in controller.users track by $index"
+								   refresh="controller.getUsers($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="user.nom_usuar | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="input"
+			   ng-if="controller.processName === 'account'"
+			   canclean="undefined"
+			   maxlength="25"
+			   numbers-only
+			   ng-model="controller.model.cod_pessoa_erp"
+			   placeholder="{{ 'l-code-erp' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-code-erp' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="daterange"
+			   ng-if="controller.processName === 'account'"
+			   ng-model="controller.model.dat_cadastro"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-date-create' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="daterange"
+			   ng-if="controller.processName === 'history'"
+			   ng-model="controller.model.dat_inic"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-date-start' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="select"
+			   ng-if="controller.processName === 'opportunity'"
+			   ng-model="controller.model.num_id_estrateg_vda"
+			   canclean="undefined">
+			<label>{{ 'l-sales-strategy' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-sales-strategy' | i18n: []: 'dts/crm' }}">{{ $select.selected.des_estrateg_vda }}</ui-select-match>
+				<ui-select-choices repeat="strategy in controller.strategies | filter: $select.search track by $index">
+					<span ng-bind-html="strategy.des_estrateg_vda | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-if="controller.processName === 'target'"
+			   ng-model="controller.model.num_id_segmtcao"
+			   canclean="undefined">
+			<label>{{ 'l-segmentation' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-segmentation' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_segmtcao_public }}</ui-select-match>
+				<ui-select-choices repeat="segmentation in controller.segmentations | filter: $select.search track by $index">
+					<span ng-bind-html="segmentation.nom_segmtcao_public | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+	</fieldset>
+
+	<totvs-divider style="margin-top:5px"></totvs-divider>
+
+	<fieldset class="row" ng-if="controller.processName === 'account'">
+			<totvs-field class="col-xs-12"
+				 totvs-multi-select
+				 label="{{ 'l-type-account' | i18n: []: 'dts/crm' }}"
+				 t-highlight-first="true"
+				 t-filter="contains"
+				 ng-model="controller.model.idi_tip_cta"
+				 t-multi-id="num_id"
+				 t-multi-description="nom_tipo"
+				 t-data="controller.accountTypes">
+			</totvs-field>
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply()">{{ 'btn-apply' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

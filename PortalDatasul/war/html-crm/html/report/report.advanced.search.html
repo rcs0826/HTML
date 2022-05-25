@@ -1,0 +1,58 @@
+<totvs-modal-header>
+	{{ 'l-search-advanced' | i18n: []: 'dts/crm' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="input"
+			   maxlength="50"
+			   canclean="undefined"
+			   ng-model="controller.model.nom_relat"
+			   placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="input"
+			   maxlength="50"
+			   canclean="undefined"
+			   ng-model="controller.model.nom_arq_relat"
+			   placeholder="{{ 'l-file' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-file' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.idi_modul_crm"
+			   canclean="undefined">
+			<label>{{ 'l-module' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-module' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_modul_crm }}</ui-select-match>
+				<ui-select-choices repeat="module in controller.modules | filter: $select.search track by $index">
+					<span ng-bind-html="module.nom_modul_crm | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-model="controller.model.num_id_usuar"
+			   canclean="undefined">
+			<label>{{ 'l-user' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-user' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_usuar }}</ui-select-match>
+				<ui-select-choices repeat="user in controller.users track by $index"
+								   refresh="controller.getUsers($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="user.nom_usuar | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply()">{{ 'btn-apply' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

@@ -1,0 +1,56 @@
+<totvs-page type="list">
+	<totvs-page-navbar>	
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-hour-type' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>			
+		<totvs-page-header>
+			<totvs-page-header-title title="{{ 'l-hour-type' | i18n }}" 
+									 total="{{controller.totalRecords}}">
+			</totvs-page-header-title>
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action>
+                    <action link="#/dts/mmi/time/new"  icon="glyphicon-plus">{{ 'l-add' | i18n }}</action>
+                </totvs-page-header-operation-action>
+				<totvs-page-header-operation-filter placeholder="{{ 'l-code-description' | i18n }}"
+													ng-submit="controller.loadData(false)"
+													ng-model="controller.quickSearchText">
+				</totvs-page-header-operation-filter>								
+			</totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+	<totvs-page-content>
+		<totvs-page-alert
+			ng-if="controller.listResult.length <= 0"
+			type="info"
+			message="{{ 'msg-search-not-found' | i18n }}">
+		</totvs-page-alert>
+        <totvs-list-item id="time{{time['cod-tip-hora']}}"
+						 ng-repeat="time in controller.listResult">
+			<totvs-list-item-header>
+                <totvs-list-item-title
+					title="{{time['cod-tip-hora']}} - {{time['des-tip-hora']}}"
+					link="#/dts/mmi/time/detail/{{ time['cod-tip-hora'] }}">
+                </totvs-list-item-title>
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/mmi/time/edit/{{time['cod-tip-hora']}}" icon="glyphicon-pencil">{{ 'l-edit' | i18n }}</action>
+                    <action ng-click="controller.delete(time)"  icon="glyphicon-trash">{{ 'l-remove' | i18n }}</action>
+               	</totvs-list-item-action>
+			</totvs-list-item-header>			
+		    <totvs-list-item-info
+		    	class="col-lg-4 col-md-4 col-sm-4 col-xs-12" 
+		    	title="{{ 'l-capacity' | i18n }}"
+		    	value="{{ time._['desIdiTipHora'] }}">
+		    </totvs-list-item-info>			
+		    <totvs-list-item-info
+		    	class="col-lg-4 col-md-4 col-sm-4 col-xs-12" 
+		    	title="{{ 'l-value-type' | i18n }}"
+		    	value="{{ time._['desIdiTipVal'] }}">
+		    </totvs-list-item-info>
+        </totvs-list-item>
+		<totvs-list-pagination
+            ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+            ng-click="controller.loadData(true);">
+        </totvs-list-pagination>
+    </totvs-page-content>	
+</totvs-page>

@@ -1,0 +1,118 @@
+<link rel="stylesheet" href="/dts/mmi/html/sprint/sprint-planning.css">
+<totvs-modal-header>
+        {{'l-release-operation' | i18n}} - {{ omsLiberadasOpCtrl.titulo}}
+    </totvs-modal-header>
+    
+    <totvs-modal-body>
+        <div class="col-lg-12 no-padding">
+            <totvs-field
+                class="col-lg-3 no-padding-esquerda"
+                totvs-datepicker
+                ng-model="omsLiberadasOpCtrl.paramTela.dataInicioOp"
+                culture="pt"
+                label="{{'l-start-release-date' | i18n}}"
+                placeholder="{{ 'l-choose-date' | i18n}}"
+                t-mask-date
+                ng-change="omsLiberadasOpCtrl.changeDatepicker()"
+                id="dataInicioOp"
+                ng-required="true">
+            </totvs-field>
+
+            <totvs-field
+                class="col-lg-3"
+                totvs-time
+                ng-model="omsLiberadasOpCtrl.paramTela.horaInicioOp"
+                label="{{ 'l-hour' | i18n }}"
+                ng-required="true">
+            </totvs-field>
+
+            <totvs-field
+                class="col-lg-3"
+                totvs-datepicker
+                ng-model="omsLiberadasOpCtrl.paramTela.dataTerminoOp"
+                culture="pt"
+                label="{{'l-end-release-date' | i18n}}"
+                placeholder="{{ 'l-choose-date' | i18n }}"
+                t-mask-date
+                ng-required="true">
+            </totvs-field>
+
+            <totvs-field
+                class="col-lg-3 no-padding-direita"
+                totvs-time
+                ng-model="omsLiberadasOpCtrl.paramTela.horaTerminoOp"
+                ng-blur="omsLiberadasOpCtrl.changeHour()"
+                label="{{ 'l-hour' | i18n }}"
+                ng-required="true">
+            </totvs-field>
+        </div>    
+            <div class="row ng-scope">
+            <totvs-page-child>
+                <totvs-page-content>
+                    <div class="col-xs-12 no-padding" >
+                        <field
+                            class="col-lg-12"
+                            type="textarea"
+                            ng-model="omsLiberadasOpCtrl.paramTela['des-obs']"
+                            maxlength="2000"
+                            rows="5"
+                            style="padding-bottom: 5px;"
+                            ng-required="true">
+                            <label class="field-label">{{'l-inform-wake-up' | i18n}}</label>
+                        </field>
+                    </div>
+                </totvs-page-content>
+            </totvs-page-child>
+        </div>
+        <totvs-row>
+            <div class="col-lg-4 no-padding">
+              <totvs-field class="col-lg-1 no-padding-direita"  
+                          totvs-checkbox 
+                          ng-model="omsLiberadasOpCtrl.seleciona"
+                          ng-click="omsLiberadasOpCtrl.selecionaTodos()" 
+                          >
+              </totvs-field>
+              <label class="col-lg-6" style="margin-top: 6px; font-weight: normal; color: gray; font-size:14px;">{{'l-select-all' | i18n}}</label>
+            </div>    
+        </totvs-row>
+
+        <totvs-page-content class="alinha-totvs-grid">
+            <totvs-grid
+                    grid="omsLiberadasOpCtrl.myGrid"
+                    grid-data="omsLiberadasOpCtrl.listaOrdens"
+                    grid-height="350" 
+                    scrollable="true"
+                    resizable="true"
+                    add-select-column="separate"
+                    selectable="multiple, row"
+                    auto-resize-column="false"
+                    sortable="true">
+                <totvs-grid-column width="70" field="detail" style="text-align: center">{{ 'l-detail' | i18n }}  
+                    <template>
+                        <a class="glyphicon glyphicon-list-alt btn-default" 
+                        style="cursor: pointer"
+                        data-toggle="tooltip"
+                        title="{{ 'l-detail-release' | i18n}}"
+                        ng-click="omsLiberadasOpCtrl.detalheLiberacao(dataItem)"
+                        ng-if="dataItem.observacaoOp"></a>
+                    </template>
+                </totvs-grid-column>
+                <totvs-grid-column field="cdEquipto"       width="110" style="text-align: left">{{ 'l-equipment' | i18n }}</totvs-grid-column>
+                <totvs-grid-column field="modeloEquipto"   width="110" style="text-align: left">{{ 'l-model-cf' | i18n }}</totvs-grid-column>
+                <totvs-grid-column field="nrOrdProdu"      width="110" style="text-align: right">{{ 'l-ord' | i18n }}</totvs-grid-column>
+                <totvs-grid-column field="descricao"       width="250">{{'l-description' | i18n}}</totvs-grid-column>
+                <totvs-grid-column field="dtManut"         filter="date : dd/MM/yyyy" width="150">{{ 'l-entrance-date' | i18n }}</totvs-grid-column>                
+                <totvs-grid-column field="dataInicioOp"    filter="date : dd/MM/yyyy" width="150">{{'l-start-release-date' | i18n}}</totvs-grid-column>
+                <totvs-grid-column field="horaInicioOp"    filter="timeMask" width="60">{{ 'l-hour' | i18n }}</totvs-grid-column>
+                <totvs-grid-column field="dataTerminoOp"   filter="date : dd/MM/yyyy" width="150">{{'l-end-release-date' | i18n}}</totvs-grid-column>
+                <totvs-grid-column field="horaTerminoOp"   filter="timeMask" width="60">{{ 'l-hour' | i18n }}</totvs-grid-column>
+            </totvs-grid>
+        </totvs-page-content>
+
+    </totvs-modal-body>
+    <totvs-modal-footer>
+        <button type="button" class="btn btn-default" ng-click="omsLiberadasOpCtrl.fechar()">{{ 'l-close' | i18n }}</button>
+        <button type="button" class="btn btn-warning" ng-click="omsLiberadasOpCtrl.retiraLiberacoes()">{{ 'l-remove-releases' | i18n }}</button>
+        <button type="button" class="btn btn-primary" ng-click="omsLiberadasOpCtrl.atualizaLiberacoes()">{{ 'l-updates-releases' | i18n }}</button>
+    </totvs-modal-footer>
+    

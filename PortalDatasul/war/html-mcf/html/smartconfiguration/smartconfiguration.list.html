@@ -1,0 +1,163 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+	
+		<totvs-page-breadcrumb class="hidden-xs">
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-productconfigured' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+			
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'l-productconfigured' | i18n }}"
+									 total="{{controller.totalRecords}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+			
+				<totvs-page-header-operation-action>
+					<action ng-click="controller.openConfiguration()" class="glyphicon-plus">{{ 'l-configure' | i18n }}</action>
+					<action link="#/dts/mcf/pendingproduct/">{{ 'l-pendingproduct' | i18n }}</action>
+                </totvs-page-header-operation-action>
+				<totvs-page-header-operation-filter placeholder="{{ 'l-item-or-configuration' | i18n }}"
+													ng-submit="controller.search()"
+													ng-model="controller.quickSearchText"
+													advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+								
+			</totvs-page-header-operation>
+			
+			 <totvs-page-tags>
+				<tag class="tag-1">{{ 'l-open2' | i18n }}</tag>
+				<tag class="tag-2">{{ 'l-suspended2' | i18n }}</tag>
+				<tag class="tag-3">{{ 'l-approved-structure' | i18n }}</tag>
+				<tag class="tag-4">{{ 'l-approved-routing' | i18n }}</tag>
+				<tag class="tag-5">{{ 'l-approved-process' | i18n }}</tag>
+			</totvs-page-tags>
+			
+			<totvs-page-disclaimers
+					disclaimer-list="controller.disclaimers"
+					ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+
+		</totvs-page-header>
+						
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+        <totvs-page-alert
+			ng-if="controller.ttCotEstMastHTML.length <= 0"
+			type="info"
+			message="{{ 'msg-search-not-found' | i18n }}">			
+		</totvs-page-alert>
+        <totvs-list-item id="cotEstMast{{cotEstMast.itemCotacao}}{{cotEstMast.numCFG}}"
+						 ng-repeat="cotEstMast in controller.ttCotEstMastHTML"
+						 class="tag-{{cotEstMast.indAprov}}" >
+						 
+			<totvs-list-item-header class="col-md-12">
+                <totvs-list-item-title
+					title="{{ 'l-item' | i18n }} : {{cotEstMast.itemCotacao}} - {{cotEstMast.descItem}}"
+					link="#/dts/mcf/smartconfiguration/detail/{{controller.getUrlEncode(cotEstMast.itemCotacao)}}/{{cotEstMast.numCFG}}"
+					class="col-lg-10 col-xs-12">
+				</totvs-list-item-title>
+				<totvs-list-item-action 
+					limit-primary-action="0"
+					class="col-lg-2 col-xs-12">
+                    <action ng-if="cotEstMast.indAprov == 1 || cotEstMast.indAprov == 4" ng-click="controller.openReconfiguration(cotEstMast.itemCotacao,cotEstMast.numCFG, 'ReConfiguration')" >{{ 'l-reconfigure' | i18n }}</action>
+                    <action ng-if="cotEstMast.indAprov == 3 || cotEstMast.indAprov == 5" ng-click="controller.openStructure(cotEstMast.itemCotacao,cotEstMast.numCFG)">{{ 'l-open-structure' | i18n }}</action>
+                    <action ng-if="cotEstMast.indAprov == 4 || cotEstMast.indAprov == 5" ng-click="controller.openRouting(cotEstMast.itemCotacao,cotEstMast.numCFG)">{{ 'l-open-routing' | i18n }}</action>
+                    <action ng-if="cotEstMast.indAprov == 1 || cotEstMast.indAprov == 4" ng-click="controller.approveStructure(cotEstMast.itemCotacao,cotEstMast.numCFG)">{{ 'l-approve-structure' | i18n }}</action>
+                    <action ng-if="cotEstMast.indAprov == 1 || cotEstMast.indAprov == 3" ng-click="controller.approveRouting(cotEstMast.itemCotacao,cotEstMast.numCFG)">{{ 'l-approve-routing' | i18n }}</action>
+                    <action ng-if="cotEstMast.indAprov == 1" ng-click="controller.toSuspendReative(cotEstMast.itemCotacao,cotEstMast.numCFG)">{{ 'l-suspend' | i18n }}</action>
+                    <action ng-if="cotEstMast.indAprov == 2" ng-click="controller.toSuspendReative(cotEstMast.itemCotacao,cotEstMast.numCFG)">{{ 'l-reactivate' | i18n }}</action>
+                    <action ng-click="controller.exportToOrder(cotEstMast.itemCotacao,cotEstMast.numCFG)" icon="glyphicon glyphicon-export">{{ 'l-export-to-order' | i18n }}</action>
+                    <action ng-click="controller.deleteConfiguration(cotEstMast.itemCotacao,cotEstMast.numCFG)" icon="glyphicon glyphicon-remove">{{ 'l-delete' | i18n }}</action>
+                    <action ng-click="controller.atualizaVariaveisCusto(cotEstMast.itemCotacao,cotEstMast.numCFG)" icon="glyphicon glyphicon-export">{{ 'l-cost-variable' | i18n }}</action>
+               	</totvs-list-item-action>               											
+			</totvs-list-item-header>
+
+			<div class="hidden-xs">
+				<totvs-list-item-info
+					class="col-lg-4 col-md-4 col-sm-6"
+					title="{{ 'l-config' | i18n }}"
+					value="{{cotEstMast.numCFG}} - {{cotEstMast.descricao}}">
+				</totvs-list-item-info>
+				<totvs-list-item-info
+					class="col-lg-2 col-md-2 col-sm-6"
+					title="{{ 'l-status' | i18n }}"
+					value="{{cotEstMast.cIndAprov}}">                                    
+				</totvs-list-item-info>
+				<totvs-list-item-info
+					class="col-lg-3 col-md-3 col-sm-6"
+					title="{{ 'l-creation-date' | i18n }}"
+					value="{{cotEstMast.datCriacao | date:'dd/MM/yyyy' }}">
+				</totvs-list-item-info>
+				<totvs-list-item-info
+					class="col-lg-3 col-md-3 col-sm-6"
+					title="{{ 'l-user-criacao-from' | i18n }}"
+					value="{{cotEstMast.userCriacao}}">
+				</totvs-list-item-info>
+			</div>
+
+			<!-- COMENTARIO: Incluido tratativa para utilizar "expandir" quando for mobile/tablet -->
+			<totvs-list-item-content-detail class="hidden-lg hidden-md hidden-sm">
+				<totvs-list-item-info
+					class="col-xs-12"
+					title="{{ 'l-config' | i18n }}"
+					value="{{cotEstMast.numCFG}} - {{cotEstMast.descricao}}">
+				</totvs-list-item-info>
+				<totvs-list-item-info
+					class="col-xs-12"
+					title="{{ 'l-status' | i18n }}"
+					value="{{cotEstMast.cIndAprov}}">                                    
+				</totvs-list-item-info>
+				<totvs-list-item-info
+					class="col-xs-12"
+					title="{{ 'l-creation-date' | i18n }}"
+					value="{{cotEstMast.datCriacao | date:'dd/MM/yyyy' }}">
+				</totvs-list-item-info>
+				<totvs-list-item-info
+					class="col-xs-12"
+					title="{{ 'l-user-criacao-from' | i18n }}"
+					value="{{cotEstMast.userCriacao}}">
+				</totvs-list-item-info>
+			</totvs-list-item-content-detail>
+
+        </totvs-list-item>
+    </totvs-page-content>	
+</totvs-page>
+<style>
+	.page-head .page-tags .tag-1:before {
+		background-color: #58595b;		
+	}
+	.page-content .list-item.tag-1 {
+    	border-left: 5px solid #58595b;
+	}
+	.page-head .page-tags .tag-2:before {
+		background-color: #FF0000;
+	}
+	.page-content .list-item.tag-2 {
+    	border-left: 5px solid #FF0000;
+	}
+	.page-head .page-tags .tag-3:before {
+		background-color: #337ab7;
+	}
+	.page-content .list-item.tag-3 {
+    	border-left: 5px solid #337ab7;
+	}
+	.page-head .page-tags .tag-4:before {
+		background-color: #FFFF00;
+		color: #000;
+	}
+	.page-content .list-item.tag-4 {
+    	border-left: 5px solid #FFFF00;
+    	color: #000;
+	}
+	.page-head .page-tags .tag-5:before {
+		background-color: #33CC33;
+	}
+	.page-content .list-item.tag-5 {
+    	border-left: 5px solid #33CC33;
+	}
+	.lg-font .item-field { font-size: 26px !important; }
+</style>

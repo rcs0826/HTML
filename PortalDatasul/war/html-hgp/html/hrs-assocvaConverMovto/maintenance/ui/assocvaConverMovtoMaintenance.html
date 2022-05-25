@@ -1,0 +1,100 @@
+<totvs-page type="base">
+        <totvs-page-navbar>
+                <totvs-page-breadcrumb>
+                        <breadcrumb link="#/dts/hgp/hrs-assocvaConverMovto/">Associativa de Procedimento SUS x GPS</breadcrumb>
+                        <breadcrumb>Associativa de Procedimento SUS x GPS</breadcrumb>
+                </totvs-page-breadcrumb>
+                <totvs-page-header>
+                        <totvs-page-header-title title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Associativa de Procedimento SUS x GPS">
+                        </totvs-page-header-title>
+                        <totvs-page-header-operation>
+                                <totvs-page-header-operation-action limit-primary-action="5">
+                                        <action ng-click="controller.onCancel();">
+                                                {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                                        <action ng-click="controller.save();" 
+                                                ng-if="controller.action != 'DETAIL'">Salvar</action>
+                                        <action ng-click="controller.onSaveNew();" 
+                                                ng-if="controller.action != 'DETAIL'">Salvar e Novo</action>
+                                </totvs-page-header-operation-action>
+                        </totvs-page-header-operation>
+                </totvs-page-header>
+        </totvs-page-navbar>
+        <totvs-page-content>
+                <totvs-page-form>
+                        <fieldset>
+                                <field class="col-lg-2 col-md-2 col-sm-12 col-xs-12"
+                                       data-ng-model="controller.assocvaConverMovto.cddMovtoExt"
+                                       label="Código do Movimento SUS"
+                                       maxlength="10"
+                                       numbers-only
+                                       ng-disabled="controller.action == 'DETAIL' || controller.action == 'EDIT'"
+                                       required
+                                       type="input">
+                                </field>
+                                <field class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                       data-ng-model="controller.assocvaConverMovto.datLimite"
+                                       label="Data Limite"
+                                       ng-disabled="controller.action == 'DETAIL' || controller.action == 'EDIT'"
+                                       required
+                                       type="date">
+                                </field>
+                                <field class="col-lg-7 col-md-7 col-sm-12 col-xs-12"
+                                       label="fake"
+                                       style="visibility: hidden"
+                                       type="input">
+                                </field>
+                                <field class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                       data-ng-model="controller.assocvaConverMovto.codIndicador"
+                                       label="Tipo de Movimento"
+                                       ng-change="controller.onInputMovementTypeChange()"
+                                       ng-disabled="controller.action == 'DETAIL'"
+                                       required
+                                       type="combo">
+                                       <totvs-options>
+                                               <totvs-option value="1">Procedimento</totvs-option>
+                                               <totvs-option value="2">Insumo</totvs-option>
+                                       </totvs-options>
+                                </field>
+                                <field class="col-lg-7 col-md-7 col-sm-12 col-xs-12"
+                                       label="fake"
+                                       style="visibility: hidden"
+                                       type="input">
+                                </field>
+                                <field class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                       data-ng-model="controller.assocvaConverMovto.cdTipoInsumo"
+                                       label="Tipo de Insumo"
+                                       ng-change="controller.onInputTypeChange()"
+                                       ng-disabled="controller.action == 'DETAIL'"
+                                       ng-options="o.cdTipoInsumo as o.rotulo for o in controller.inputTypes"
+                                       ng-show="controller.assocvaConverMovto.codIndicador == '2'"
+                                       required
+                                       type="combo">
+                                </field>
+                                <totvs-field canclean
+                                             class="col-lg-6 col-md-6 col-sm-6 col-xs-10"
+                                             label="Movimento GPS"
+                                             name-id="movementZoom"
+                                             ng-model="controller.movementReturnObject"
+                                             ng-change="controller.onMovementSelect()"
+                                             ng-disabled="controller.action == 'DETAIL'"
+                                             required
+                                             return-object
+                                             select-id="formattedCodeWithType"
+                                             select-init="{filters: controller.movementFixedFilters}"
+                                             select-description="dsMovimento"
+                                             select-match='[{"field": "formattedCodeWithType", "separator": " - "}, {"field": "dsMovimento"}]'
+                                             select-service="hrc.movementZoomController"
+                                             totvs-select id="movementZoom"
+                                             zoom-service="hrc.movementZoomController"
+                                             zoom-init="{filters: controller.movementFixedFilters}">
+                                </totvs-field>
+                                <field type="checkbox"
+                                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                        label="Movimento de Anestesista"
+                                        data-ng-model="controller.assocvaConverMovto.lgMovimentoAnestesista"
+                                        ng-show="controller.assocvaConverMovto.codIndicador == '1'"
+                                        ng-disabled="controller.action == 'DETAIL'">
+                                </field>
+                </totvs-page-form>
+        </totvs-page-content>
+</totvs-page>

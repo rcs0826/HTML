@@ -1,0 +1,157 @@
+<totvs-modal-header>
+	{{ 'l-pending-detail' | i18n }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<div class="row">
+		<totvs-page-content style="border:0px">
+			<totvs-page-detail ng-repeat="dp in controller.detailPending">
+				<totvs-page-detail-info title="{{ 'l-company' | i18n}}" class="col-xs col-sm-6">
+					{{dp['ep-codigo']}} - {{dp['desc-ep']}}
+				</totvs-page-detail-info>
+				<totvs-page-detail-info title="{{ 'l-transaction' | i18n}}" class="col-xs col-sm-6">
+					{{dp['nr-trans']}}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info title="{{ 'l-site' | i18n}}" class="col-xs col-sm-6">
+					{{dp['cod-estabel']}} - {{dp['desc-estabel']}}
+				</totvs-page-detail-info>
+				<totvs-page-detail-info title="{{ 'l-generation' | i18n}}" class="col-xs col-sm-6">
+					<span ng-show="dp['dt-geracao']">
+						{{dp['dt-geracao'] | date :'dd/MM/yyyy'}} - {{dp['hr-geracao']}}
+					</span>
+					<span ng-show="!dp['dt-geracao']">&nbsp;</span>
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info title="{{ 'l-document' | i18n}}" class="col-xs col-sm-6">
+					{{dp['cod-tip-doc']}} - {{dp['desc-doc']}}
+				</totvs-page-detail-info>
+				<totvs-page-detail-info title="{{ 'l-approval' | i18n}}" class="col-xs col-sm-6">
+					<span ng-show="dp['dt-aprova']">
+						{{dp['dt-aprova'] | date :'dd/MM/yyyy'}} - {{dp['hr-aprova']}}
+					</span>
+					<span ng-show="!dp['dt-aprova']">&nbsp;</span>
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info title="{{ 'l-reason' | i18n}}" class="col-xs col-sm-6">
+					{{dp['motivo-doc']}}
+				</totvs-page-detail-info>
+				<totvs-page-detail-info title="{{ 'l-rejection' | i18n}}" class="col-xs col-sm-6">
+					<span ng-show="dp['dt-rejeita']">
+						{{dp['dt-rejeita'] | date :'dd/MM/yyyy'}} - {{dp['hr-rejeita']}}
+					</span>
+					<span ng-show="!dp['dt-rejeita']">&nbsp;</span>
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info title="{{ 'l-history' | i18n}}" class="col-xs col-sm-6">
+					{{dp['motivo-hist']}}
+				</totvs-page-detail-info>
+				<totvs-page-detail-info title="{{ 'l-reapproval' | i18n}}" class="col-xs col-sm-6">
+					<span ng-show="dp['dt-reaprova']">
+						{{dp['dt-reaprova'] | date :'dd/MM/yyyy'}} - {{dp['hr-reaprova']}}
+					</span>
+					<span ng-show="!dp['dt-reaprova']">&nbsp;</span>
+				</totvs-page-detail-info>
+
+
+				<totvs-page-detail-info title="{{ 'l-user-trans-short' | i18n}}" class="col-xs col-sm-6">
+					{{dp['cod-usuar-trans']}}
+					<span ng-show="dp['cod-usuar-trans'] != ''">
+						- {{dp['nome-usuar-trans']}}
+					</span>
+				</totvs-page-detail-info>
+				<totvs-page-detail-info title="{{ 'l-value' | i18n}}" class="col-xs col-sm-6">
+					{{dp['valor-doc'] | currency:""}}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info title="{{ 'l-user-doc' | i18n}}" class="col-xs col-sm-6">
+					{{dp['cod-usuar-doc']}}
+					<span ng-show="dp['cod-usuar-doc'] != ''">
+						- {{dp['nome-usuar-doc']}}
+					</span>
+				</totvs-page-detail-info>
+				<totvs-page-detail-info title="{{ 'l-stocking-trans-short' | i18n}}" class="col-xs col-sm-6">
+					{{dp['cod-lotacao-trans']}}
+					<span ng-show="dp['cod-lotacao-trans'] != ''">
+						- {{dp['desc-lotacao-trans']}}
+					</span>
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info title="{{ 'l-approver' | i18n}}" class="col-xs col-sm-6">
+					{{dp['cod-usuar']}}
+					<span ng-show="dp['cod-usuar'] != ''">
+						- {{dp['nome-usuar']}}
+					</span>
+				</totvs-page-detail-info>
+				<totvs-page-detail-info title="{{ 'l-stocking-doc-short' | i18n}}" class="col-xs col-sm-6">
+					{{dp['cod-lotacao-doc']}}
+					<span ng-show="dp['cod-lotacao-doc'] != ''">
+						- {{dp['desc-lotacao-doc']}}
+					</span>
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info title="{{ 'l-alternative' | i18n}}" class="col-xs col-sm-6">
+					{{dp['cod-usuar-altern']}}
+					<span ng-show="dp['cod-usuar-altern'] != ''">
+						- {{dp['nome-usuar-altern']}}
+					</span>
+				</totvs-page-detail-info>
+				<totvs-page-detail-info title="{{ 'l-currency' | i18n}}" class="col-xs col-sm-6">
+					{{dp['mo-codigo']}} - {{dp['desc-moeda']}}
+				</totvs-page-detail-info>
+				<totvs-page-detail-info title="{{ 'l-rejection' | i18n}}" class="col-xs col-sm-6">
+					<span ng-show="dp['cod-rejeicao'] > 0">
+						{{dp['cod-rejeicao']}} - {{dp['desc-rejeicao']}}
+					</span>
+					<span ng-show="dp['cod-rejeicao'] <= 0">&nbsp;</span>
+				</totvs-page-detail-info>
+				<totvs-page-detail-info title="{{ 'l-automatic' | i18n}}" class="col-xs col-sm-6">
+					<span ng-show="dp['aprov-auto'] == true">{{ 'l-yes' | i18n }}</span>
+					<span ng-show="dp['aprov-auto'] != true">{{ 'l-no' | i18n }}</span>
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info title="{{ 'l-approval-type-short' | i18n}}" class="col-xs col-sm-6">
+					{{dp['desc-tip-aprov']}}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info title="{{ 'l-status' | i18n}}" class="col-xs col-sm-6">
+					{{dp['desc-situacao']}}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info title="{{ 'l-workflow-fluig' | i18n}}" class="col-xs col-sm-6">
+					{{dp['cdn-workflow-fluig']}}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info title="{{ 'l-approval-narrative' | i18n}}" class="col-xs-12" 
+					ng-if="dp['narrativa-apr'] != ''">
+					{{dp['narrativa-apr']}}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info title="{{ 'l-rejection-narrative' | i18n}}" class="col-xs col-sm-6"
+					ng-if="dp['narrativa-rej'] != ''">
+					{{dp['narrativa-rej']}}
+				</totvs-page-detail-info>
+
+				<div class="col-xs-12">
+					<table class="table table-bordered table-striped">
+						<tr>
+							<th colspan="2" class="text-center">{{ 'l-document-key' | i18n }}</th>
+						</tr>
+						<tr>
+							<th>{{ 'l-description' | i18n }}</th>
+							<th>{{ 'l-value' | i18n }}</th>
+						</tr>
+						<tr ng-repeat="chave in controller.chave">
+							<td>{{chave['desc-campo']}}</td>
+							<td>{{chave['valor']}}</td>
+						</tr>
+					</table>
+				</div>
+			</totvs-page-detail>
+		</totvs-page-content>
+	</div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-close' | i18n }}</button>
+</totvs-modal-footer>

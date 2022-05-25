@@ -1,0 +1,50 @@
+<div ng-controller="crm.dashboard.ticket-summary.controller as controller">
+	<totvs-widget>
+		<crm-totvs-widget-header refresh="controller.refresh()"
+							 settings="controller.showConfig()"
+							 title="{{ 'l-ticket-summary' | i18n : [] : 'dts/crm/' }}">
+		</crm-totvs-widget-header>
+
+		<totvs-widget-body>
+
+			<div style="height: 300px;max-height:300px;">
+
+				<div style="height:100%">
+
+					<crm-totvs-chart ng-if="controller.data && controller.data.length > 0"
+									 t-series="[{}]"
+									 t-on-click="controller.onClick"
+									 t-options="controller.options">
+					</crm-totvs-chart>
+
+					<p ng-if="!controller.data || controller.data.length <= 0"
+						class="text-center" style="vertical-align: middle">
+						{{ 'l-no-data' | i18n : [] : 'dts/crm'}}
+					</p>
+
+				</div>
+
+			</div>
+
+		</totvs-widget-body>
+
+		<totvs-widget-footer>
+			<crm-totvs-widget-footer-actions>
+                <action ng-click="controller.openDetail()">{{ 'l-detail' | i18n : [] : 'dts/crm/'}}</action>
+                
+                <% if ((!data["btn-new-ticket"] || data["btn-new-ticket"].log_visivel === true)) { %>
+				<action ng-click="controller.openTicket()">{{ 'btn-new-ticket' | i18n : [] : 'dts/crm/'}}</action>
+                <% } %>
+            </crm-totvs-widget-footer-actions>
+			<div>
+				<i class="glyphicon glyphicon-user hidden-xs pull-right"
+				   style="padding:2px 6px;"
+				   ng-if="controller.accountSelected.num_id"
+				   tooltip-placement="bottom"
+				   tooltip-html="controller.tooltip">
+				</i>
+			</div>
+		</totvs-widget-footer>
+
+	</totvs-widget>
+</div>

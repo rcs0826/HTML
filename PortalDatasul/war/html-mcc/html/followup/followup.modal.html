@@ -1,0 +1,87 @@
+<totvs-modal-header>
+    {{ 'l-followup' | i18n: []: 'dts/mcc' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <button class="btn btn-primary" role="button" type="button" ng-click="controller.addComment();">{{ 'l-add-commentary' | i18n: []: 'dts/mcc' }}</button>
+            <div class="row" ng-if="controller.showBox">                
+                <field type="textarea"
+                        class="col-md-12"     
+                        focus                   
+                        ng-model="controller.model.comment">
+                    <label>{{ 'l-commentary' | i18n: []: 'dts/mcc' }}</label>
+                </field>   
+                <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:5px;">
+                    <button class="btn btn-default" role="button" type="button" ng-click="controller.cancelComment();">{{ 'l-cancel' | i18n: []: 'dts/mcc' }}</button>
+                    <button class="btn btn-primary" role="button" type="button" ng-click="controller.saveComment();" ng-disabled="controller.model.comment == '' || controller.model.comment == null || controller.model.comment == undefined">{{ 'btn-save' | i18n: []: 'dts/mcc' }}</button>                
+                </div>
+            </div>
+            <div class="row" style="margin-top:15px;">
+                <div class="alert alert-info" role="alert" ng-if="controller.listOfFollowUp.length <= 0 && controller.loaded">{{ 'l-theres-nothing' | i18n: []: 'dts/mcc' }}</div>
+                <totvs-list-item ng-repeat="followUp in controller.listOfFollowUp">
+                    <totvs-list-item-content>
+
+                        <totvs-list-item-info
+                            title="{{ 'l-origin' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-3 col-sm-6"
+                            value="{{followUp.origem}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info
+                            title="{{ 'l-number' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-3 col-sm-6"
+                            value="{{followUp.numero | number}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info
+                            title="{{ 'l-owner' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-3 col-sm-12"
+                            value="{{followUp.responsavel}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info
+                            title="{{ 'l-date' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-3 col-sm-6"
+                            value="{{followUp.data | date :'dd/MM/yyyy'}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info
+                            title="{{ 'l-hour' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-3 col-sm-6"
+                            value="{{followUp.hora}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info
+                            title="{{ 'l-vendor' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-3 col-sm-6"
+                            value="{{followUp.fornecedor}}">
+                        </totvs-list-item-info>
+
+                        <totvs-list-item-info
+                            title="{{ 'l-item' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-3 col-sm-6"
+                            value="{{followUp.item}}">
+                        </totvs-list-item-info>
+
+                    </totvs-list-item-content>
+
+                    <totvs-list-item-content-detail>
+
+                        <totvs-list-item-info
+                            title="{{ 'l-commentary' | i18n: []: 'dts/mcc' }}"
+                            class="col-md-12 col-sm-12 text-justify"
+                            value="{{followUp.comentario}}">
+                        </totvs-list-item-info>
+
+                    </totvs-list-item-content-detail>
+                </totvs-list-item>
+           </div>           
+        </div>     
+    </div> 
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-close' | i18n: []: 'dts/mcc' }}</button>    
+</totvs-modal-footer>

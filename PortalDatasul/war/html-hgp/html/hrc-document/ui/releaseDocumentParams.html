@@ -1,0 +1,82 @@
+<totvs-modal-header>
+    Parâmetros da Liberação de {{controller.source == 'GRU' ? 'Fatura' : 'Documentos'}}
+</totvs-modal-header>
+<totvs-modal-body id="modalReleaseDocumentParams" style="overflow-y: auto;">
+    <fieldset>
+        <totvs-page-detail>
+            
+            <div ng-if="controller.source == 'TISS'">
+                <totvs-page-detail-info 
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    title="Documento"
+                    value="{{controller.dsDocument}}"
+                    ng-if="controller.document != undefined">
+                </totvs-page-detail-info>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h5 style="font-weight:bold;"> Internação </h5>
+                    <totvs-divider style="margin-top: -20px"></totvs-divider>
+                </div>  
+
+                <field type="checkbox"
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    label="Não Liberar Internações sem Diárias"
+                    data-ng-model="controller.lgConsisteDiariasInternacao">
+                </field>
+                <field type="checkbox"
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    label="Não Liberar Internações com Documentos à Vincular"
+                    data-ng-model="controller.lgConsisteDoctosPendVincul">
+                </field>
+                <field type="checkbox"
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    label="Gerar CSV de acompanhamento"
+                    data-ng-model="controller.lgGerarCSV">
+                </field>                
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    ng-if="(controller.document != undefined 
+                        && controller.document.urlFatura != '')">
+                    <h5 style="font-weight:bold;"> Fatura </h5>
+                    <totvs-divider style="margin-top: -20px"></totvs-divider>
+                </div> 
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height"
+                    ng-if="controller.msgDesc != ''
+                        && controller.lgLiberacaoFatura == true" 
+                        id="msgAlert">
+                    <div class="alert alert-warning" role="alert"
+                        style="padding-top: 5px; padding-bottom: 5px; margin-bottom: 0px;">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                        {{controller.msgDesc}}
+                    </div>
+                </div>
+            </div>
+
+            <field type="checkbox"
+                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                label="Verificar Diferença de Valores(Total da Fatura x Total dos Movimentos)"
+                data-ng-model="controller.lgConsideraPercDifValores"
+                ng-change="controller.onChangeConsideraDifValores()"
+                ng-if="controller.lgLiberacaoFatura == true">
+            </field>
+ 
+            <field type="decimal"
+                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                label="Não liberar faturas com diferença de valor superior a {{controller.vlPercDifValores | currency : '' : 2}}%"
+                data-ng-model="controller.vlPercDifValores"                
+                data-v-max="999.99"
+                a-dec=","
+                ng-model-options="{ debounce: 0 }"
+                ng-disabled="controller.lgConsideraPercDifValores != true"
+                ng-if="controller.lgLiberacaoFatura == true">
+            </field>
+
+        </totvs-page-detail>
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn" ng-click="controller.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-click="controller.releaseDocuments()">Liberar</button>
+</totvs-modal-footer>

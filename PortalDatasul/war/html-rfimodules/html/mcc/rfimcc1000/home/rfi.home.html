@@ -1,0 +1,53 @@
+<totvs-page type="detail">
+	<style type="text/css" scoped="true">
+		.alert {
+			margin-top: 10px;
+		}
+	</style>
+
+	<totvs-page-navbar>
+		<totvs-page-header>
+			<totvs-page-header-title  title="{{ 'l-quotations' | i18n:[] : i18nContext}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action 
+					hide-edit="true"
+					hide-remove="true"
+					hide-back="true">
+					<action ng-click="controller.onAnswer();">{{:: 'l-respond' | i18n:[] : i18nContext }}</action>
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+			
+			<totvs-page-alert 
+					type="info"
+					class="col-xs-12"
+					message="{{:: 'l-received-quotations-requests-msg' | i18n:[] : i18nContext }}">
+				</totvs-page-alert>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-detail>
+		    <totvs-page-detail-info-group>{{:: 'l-customer' | i18n:[] : i18nContext  }}</totvs-page-detail-info-group>
+			<totvs-page-detail-info
+                class="col-xs-12"
+                title="{{:: 'l-name' | i18n:[] : i18nContext  }}"
+                value="{{controller.company.nome}}">
+            </totvs-page-detail-info>
+
+			<totvs-page-detail-info-group>{{:: 'l-vendor' | i18n:[] : i18nContext  }}</totvs-page-detail-info-group>
+			<totvs-page-detail-info
+                class="col-xs-12"
+                title="{{:: 'l-cnpj' | i18n:[] : i18nContext  }}"
+                value="{{controller.vendor.document}}">
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info
+                class="col-xs-12"
+                title="{{:: 'l-name' | i18n:[] : i18nContext  }}"
+                value="{{controller.vendor.vendorName}}">
+            </totvs-page-detail-info>
+		</totvs-page-detail>
+	</totvs-page-content>
+</totvs-page>

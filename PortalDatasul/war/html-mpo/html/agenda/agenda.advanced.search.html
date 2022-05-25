@@ -1,0 +1,277 @@
+<totvs-modal-header>{{ 'l-advanced-search' | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+    <div class="row">
+    	<form class="form-horizontal" role="form" >     
+			<accordion close-others="controller.closeOther">
+				<accordion-group is-open="controller.advancedSearch.accord.periodSituation">
+					<accordion-heading>
+						{{'l-period' | i18n }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': controller.advancedSearch.accord.periodSituation, 'glyphicon-chevron-right': !controller.advancedSearch.accord.periodSituation}"></i>
+					</accordion-heading>  
+			        <totvs-field
+					    totvs-date-range
+					    class="col-md-8"
+					    label="{{ 'l-period' | i18n }}"
+					    ng-model='controller.advancedSearch.dateRange'>
+					</totvs-field>
+			        <totvs-field totvs-checkbox class="col-md-6" 
+                           t-bsswitch 
+                           ng-disabled="false"
+		            	   data-ng-model="controller.advancedSearch.lEmDia"
+		            	   label="{{ 'l-in-day' | i18n }}" >
+		        	</totvs-field>
+		        	<totvs-field totvs-checkbox class="col-md-6" 
+                           t-bsswitch 
+                           ng-disabled="false"
+		            	   data-ng-model="controller.advancedSearch.lAtrasado"
+		            	   label="{{ 'l-late' | i18n }}" >
+		        	</totvs-field>
+		        	<totvs-field totvs-checkbox class="col-md-6" 
+                           t-bsswitch 
+                           ng-disabled="false"
+		            	   data-ng-model="controller.advancedSearch.lFinalizado"
+		            	   label="{{ 'l-finished' | i18n }}" >
+		        	</totvs-field>
+      	        	<totvs-field totvs-checkbox class="col-md-6"
+                           t-bsswitch 
+                           ng-disabled="false"
+		            	   data-ng-model="controller.advancedSearch.lConflito"
+		            	   label="{{ 'l-only-conflict' | i18n }}" >
+		        	</totvs-field>
+	        	</accordion-group>
+	        	<accordion-group is-open="controller.advancedSearch.accord.situation" >
+	        		<accordion-heading>
+						{{'l-statistics' | i18n }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': controller.advancedSearch.accord.situation, 'glyphicon-chevron-right': !controller.advancedSearch.accord.situation}"></i>
+					</accordion-heading>  
+		            <totvs-field totvs-checkbox class="col-md-6" 
+                           t-bsswitch 
+                           ng-disabled="false"
+		            	   data-ng-model="controller.advancedSearch.lCorretiva"
+		            	   label="{{ 'l-corrective' | i18n }}" >
+		            </totvs-field>
+		            <totvs-field totvs-checkbox class="col-md-6" 
+                           t-bsswitch 
+                           ng-disabled="false"
+		            	   data-ng-model="controller.advancedSearch.lPreventiva"
+		            	   label="{{ 'l-preventive' | i18n }}" >
+		            </totvs-field>
+		            <totvs-field totvs-checkbox class="col-md-6" 
+                           t-bsswitch 
+                           ng-disabled="false"
+		            	   data-ng-model="controller.advancedSearch.lPreditiva"
+		            	   label="{{ 'l-predictive' | i18n }}" >
+		            </totvs-field>
+		            <totvs-field totvs-checkbox class="col-md-6" 
+                           t-bsswitch 
+                           ng-disabled="false"
+		            	   data-ng-model="controller.advancedSearch.lOutros"
+		            	   label="{{ 'l-others' | i18n }}" >
+		            </totvs-field>		        
+				</accordion-group>
+				<accordion-group is-open="controller.advancedSearch.accord.selection" >
+					<accordion-heading>
+						{{'l-selection' | i18n }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': controller.advancedSearch.accord.selection, 'glyphicon-chevron-right': !controller.advancedSearch.accord.selection}"></i>
+					</accordion-heading>  
+					<div class="col-xs-12 col-md-6 col-lg-6 range-container">
+		            	<label class="field-label" >{{ 'l-maintenance-order' | i18n }}</label>
+		            	<div class="input-group col-xs-12">
+			             	<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding" 
+			            	   ng-model="controller.advancedSearch.initialOrdem"
+			            	   ng-change="controller.changeInitialOrdem()"
+			            	   maxlength="11">		            	   
+			        		</field>
+			        		<span class="input-group-addon ng-binding">a</span>
+			        		<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding"   
+			            	   ng-model="controller.advancedSearch.finalOrdem"
+			            	   ng-change="controller.changeFinalOrdem()"
+			            	   maxlength="11">
+			        		</field>  
+		        		</div>
+	        		</div>
+	        		<div class="col-xs-12 col-md-6 col-lg-6 range-container">
+		            	<label class="field-label" >{{ 'l-equipment' | i18n }}</label>
+		            	<div class="input-group col-xs-12">
+			             	<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding" 
+			            	   ng-model="controller.advancedSearch.initialEquipto"
+			            	   maxlength="16">		            	   
+			        		</field>
+			        		<span class="input-group-addon ng-binding">a</span>
+			        		<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding"   
+			            	   ng-model="controller.advancedSearch.finalEquipto"
+			            	   maxlength="16">
+			        		</field>  
+		        		</div>
+	        		</div>
+	        		<div class="col-xs-12 col-md-6 col-lg-6 range-container">
+		            	<label class="field-label" >{{ 'l-specialty' | i18n }}</label>
+		            	<div class="input-group col-xs-12">
+			             	<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding" 
+			            	   ng-model="controller.advancedSearch.initialEspec"
+			            	   maxlength="8">		            	   
+			        		</field>
+			        		<span class="input-group-addon ng-binding">a</span>
+			        		<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding"   
+			            	   ng-model="controller.advancedSearch.finalEspec"
+			            	   maxlength="8">
+			        		</field>  
+		        		</div>
+	        		</div>	        		
+	        		<div class="col-xs-12 col-md-6 col-lg-6 range-container">
+		            	<label class="field-label" >{{ 'l-tag' | i18n }}</label>
+		            	<div class="input-group col-xs-12">
+			             	<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding" 
+			            	   ng-model="controller.advancedSearch.initialTag"
+			            	   maxlength="16">		            	   
+			        		</field>
+			        		<span class="input-group-addon ng-binding">a</span>
+			        		<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding"   
+			            	   ng-model="controller.advancedSearch.finalTag"
+			            	   maxlength="16">
+			        		</field>  
+		        		</div>
+	        		</div>
+        			<div class="col-xs-12 col-md-6 col-lg-6 range-container">
+		            	<label class="field-label" >{{ 'l-maintenance' | i18n }}</label>
+		            	<div class="input-group col-xs-12">
+			             	<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding" 
+			            	   ng-model="controller.advancedSearch.initialManut"
+			            	   maxlength="8">		            	   
+			        		</field>
+			        		<span class="input-group-addon ng-binding">a</span>
+			        		<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding"   
+			            	   ng-model="controller.advancedSearch.finalManut"
+			            	   maxlength="8">
+			        		</field>  
+		        		</div>
+	        		</div>
+	        		<div class="col-xs-12 col-md-6 col-lg-6 range-container">
+		            	<label class="field-label" >{{ 'l-maintenance-type' | i18n }}</label>
+		            	<div class="input-group col-xs-12">
+			             	<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding" 
+			            	   ng-model="controller.advancedSearch.initialTipoManut"
+			            	   ng-change="controller.changeInitialTipoManut()"
+			            	   maxlength="6">		            	   
+			        		</field>
+			        		<span class="input-group-addon ng-binding">a</span>
+			        		<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding"   
+			            	   ng-model="controller.advancedSearch.finalTipoManut"
+			            	   ng-change="controller.changeFinalTipoManut()"
+			            	   maxlength="6">
+			        		</field>  
+		        		</div>
+	        		</div>
+	        		<div class="col-xs-12 col-md-6 col-lg-6 range-container">
+		            	<label class="field-label" >{{ 'l-planner' | i18n }}</label>
+		            	<div class="input-group col-xs-12">
+			             	<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding" 
+			            	   ng-model="controller.advancedSearch.initialPlanejador"
+			            	   maxlength="12">		            	   
+			        		</field>
+			        		<span class="input-group-addon ng-binding">a</span>
+			        		<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding"   
+			            	   ng-model="controller.advancedSearch.finalPlanejador"
+			            	   maxlength="12">
+			        		</field>  
+		        		</div>
+	        		</div>
+	        		<div class="col-xs-12 col-md-6 col-lg-6 range-container">
+		            	<label class="field-label" >{{ 'l-team' | i18n }}</label>
+		            	<div class="input-group col-xs-12">
+			             	<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding" 
+			            	   ng-model="controller.advancedSearch.initialEquipe"
+			            	   maxlength="8">		            	   
+			        		</field>
+			        		<span class="input-group-addon ng-binding">a</span>
+			        		<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding"   
+			            	   ng-model="controller.advancedSearch.finalEquipe"
+			            	   maxlength="8">
+			        		</field>  
+		        		</div>
+	        		</div>
+	        		<div class="col-xs-12 col-md-6 col-lg-6 range-container">
+		            	<label class="field-label" >{{ 'l-site' | i18n }}</label>
+		            	<div class="input-group col-xs-12">
+			             	<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding" 
+			            	   ng-model="controller.advancedSearch.initialEstabelec"
+			            	   maxlength="5">		            	   
+			        		</field>
+			        		<span class="input-group-addon ng-binding">a</span>
+			        		<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding"   
+			            	   ng-model="controller.advancedSearch.finalEstabelec"
+			            	   maxlength="5">
+			        		</field>  
+		        		</div>
+	        		</div>
+	        		<div class="col-xs-12 col-md-6 col-lg-6 range-container">
+		            	<label class="field-label" >{{ 'l-business-unit' | i18n }}</label>
+		            	<div class="input-group col-xs-12">
+			             	<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding" 
+			            	   ng-model="controller.advancedSearch.initialUnidNegoc"
+			            	   maxlength="3">		            	   
+			        		</field>
+			        		<span class="input-group-addon ng-binding">a</span>
+			        		<field type="input" class="col-lg-12 col-md-12 col-xs-12 no-padding"   
+			            	   ng-model="controller.advancedSearch.finalUnidNegoc"
+			            	   maxlength="3">
+			        		</field>  
+		        		</div>
+	        		</div>
+				</accordion-group>
+			</accordion>             
+        </form>
+    </div>
+</totvs-modal-body>
+<totvs-modal-footer>
+	<button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'l-cancel' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="controller.search();">{{ 'l-search' | i18n }}</button>    
+</totvs-modal-footer>
+
+<style>
+
+
+	.no-padding-left,
+	.no-padding { padding-left: 0; }
+		
+	.no-padding-right,
+	.no-padding { padding-right: 0; }
+	
+	.range-container { margin-top: 5px; }
+	
+	.range-container div > span {
+		border: none;
+	    border-top: 1px solid #ccc;
+	    border-bottom: 1px solid #ccc;
+	    width: 30px !important;
+	}
+	
+	.range-container div field > .field-container {
+		margin-top: 0 !important;
+	}
+	
+	.field-label {
+		margin-bottom: 5px;
+	   	font-weight: 200;
+	   	font-size: 12px;
+	   	color: gray;
+	}
+	
+	.faixa-addon {
+	    width: auto;
+    	min-width: 16px;
+    	padding: 4px 5px;
+	    font-weight: 400;
+    	line-height: 1.428571429;
+    	text-align: center;
+   		text-shadow: 0 1px 0 #fff;
+    	vertical-align: middle;
+    	background-color: #eee;
+    	border: solid #ccc;
+    	border-width: 1px 0;
+    	margin-left: -5px;
+    	margin-right: -5px;
+    	max-width: 40px;
+    	min-width: 40px;
+    	margin-top: 28px;
+    	height: 34px;
+	}
+	
+</style>

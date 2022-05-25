@@ -1,0 +1,119 @@
+<style>
+    totvs-field .retirarPadding {
+        padding: 0px!important;
+    }
+</style>
+
+
+
+<totvs-modal-header>
+    {{ 'l-bal-item-inventory' | i18n: []: 'dts/mce' }} {{controller.dataItem['it-codigo']}}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+    <totvs-page-form>
+        <fieldset>
+            <!-- QUANTIDADE A ATENDER -->
+            <totvs-field totvs-input 
+                         label="{{ 'l-quantity-to-process-short' | i18n: []: 'dts/mce' }}" 
+                         ng-model="controller.dataItem['qt-a-atender']" 
+                         class="retirarPadding col-md-3" 
+                         ng-disabled="true">
+            </totvs-field>
+            <!-- DATA ATENDIMENTO -->
+            <totvs-field totvs-datepicker 
+                         depth="month " 
+                         format="dd/MM/yyyy"
+                         ng-model="controller.dataItem['dt-atend']" 
+                         culture='pt' 
+                         canclean 
+                         class="col-md-3" 
+                         label="{{'l-processing-date' | i18n : [] : 'dts/mce' }}"
+                         ng-disabled= "!controller.enableComponents">
+            </totvs-field>
+            <!-- AGRUPAR LOTES WMS -->
+            <totvs-field totvs-checkbox 
+                         ng-click="controller.changeWMS()" 
+                         label="{{ ::'l-group-lots-wms' | i18n : [] : 'dts/mce' }}" 
+                         ng-model="controller.groupLotsWMS" 
+                         class="col-md-2"
+                         ng-disabled= "!controller.enableComponents">
+            </totvs-field>
+
+            <!-- FECHAR ITEM DA REQUISIÇÃO -->
+            <totvs-field totvs-checkbox
+                         label="{{ ::'l-close-request-item-question' | i18n : [] : 'dts/mce' }}" 
+                         ng-model="controller.close" 
+                         class="col-md-4"
+                         ng-disabled= "!controller.enableComponents">
+            </totvs-field>
+
+             
+        </fieldset>
+    </totvs-page-form>
+
+    </br>
+     <totvs-page-alert  
+         ng-if="!controller.enableComponents"
+         type="info"
+         message= "{{'l-balance-not-found-user-msg' | i18n : [] : 'dts/mce' }}">
+     </totvs-page-alert>
+  
+              
+    <div style="padding-left: 20px; padding-right: 20px; padding-top: 0px;"  ng-if="controller.enableComponents">
+
+        <totvs-grid grid-data="controller.ttSummaryInventoryBalance " 
+                    editable="true " 
+                    grid-dirty-items="controller.dirtyTTSummaryInventoryBalance" 
+                    grid="controller.myGrid" 
+                    auto-resize-content="true" 
+                    grid-options="controller.gridOptions" 
+                    reorderable="true " 
+                    resizable="true " 
+                    sortable="true" 
+                    grid-height="300" 
+                    auto-resize-content="true" 
+                    navigatable="true" 
+                    selectable="multiple, row"
+                    ng-hide="controller.enableComponents">
+
+            <totvs-grid-column field="cod-depos" width="50">
+                {{ ::'l-warehouse-micro' | i18n : [] : 'dts/mce' }}
+            </totvs-grid-column>
+
+            <totvs-grid-column field="cod-localiz" class="text-nowrap">
+                {{ ::'l-localization' | i18n : [] : 'dts/mce' }}
+            </totvs-grid-column>
+            <totvs-grid-column field="lote" class="text-nowrap">
+                {{ ::'l-lot' | i18n : [] : 'dts/mce' }}
+            </totvs-grid-column>
+            <totvs-grid-column field="dt-vali-lote" filter="date:dd/MM/yyyy">
+                {{ ::'l-validity' | i18n : [] : 'dts/mce' }}
+            </totvs-grid-column>
+            <totvs-grid-column field="cod-refer" class="text-nowrap">
+                {{ ::'l-reference' | i18n : [] : 'dts/mce' }}
+            </totvs-grid-column>
+
+            <totvs-grid-column field="qtidade-atu" filter="number:4">
+                {{ ::'l-available-balance' | i18n : [] : 'dts/mce' }}
+            </totvs-grid-column>
+
+            <totvs-grid-column field="qt-a-atender" filter="number:4" editable="true">
+                {{ ::'l-quantity-to-process-short' | i18n : [] : 'dts/mce' }}
+            </totvs-grid-column>
+            <totvs-grid-column field="logprocesswms">
+                {{ ::'l-proc-wms' | i18n : [] : 'dts/mce' }}
+            </totvs-grid-column>
+
+        </totvs-grid>
+    </div>
+
+    <totvs-divider></totvs-divider>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()" ng-disabled="!controller.enableComponents">{{ 'btn-apply' | i18n }}</button>
+</totvs-modal-footer>

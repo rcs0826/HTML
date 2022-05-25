@@ -1,0 +1,102 @@
+<totvs-page type="detail">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{'l-initial-page' | i18n}}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalconfigpdp">{{'l-portal-config-clien-rep' | i18n}}</breadcrumb>
+            <breadcrumb>{{'l-detail' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title >{{'l-sequencia' | i18n}} : {{controller.model['idi-seq']}}</totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action on-back-link="#/dts/mpd/portalconfigpdp"
+                                                    on-edit-link="#/dts/mpd/portalconfigpdp/edit/{{controller.model['idi-seq']}}/0"
+                                                    on-remove="controller.onRemove">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-detail>
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12" >
+                <totvs-page-detail-info ng-if="controller.model['cdn-clien'] > 0"
+                                        class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                        title="{{'l-cdn-clien' | i18n }}"
+                                        value="{{controller.model['cdn-clien']}}">
+                </totvs-page-detail-info>
+                <totvs-page-detail-info ng-if="controller.model['cdn-grp-clien']"    
+                                        class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                        title="{{'l-cdn-grp-clien' | i18n }}"
+                                        value="{{controller.model['cdn-grp-clien']}}">                
+                </totvs-page-detail-info>
+                <totvs-page-detail-info ng-if="controller.model['cdn-repres']"
+                                        class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                        title="{{'l-cdn-repres' | i18n}}"
+                                        value="{{controller.model['cdn-repres']}}">                
+                </totvs-page-detail-info>
+                <totvs-page-detail-info ng-if="controller.model['idi-clien-repres']"
+                                        class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                        title="{{'l-tipo-configuracao' | i18n}}"
+                                        value="{{(controller.model['idi-clien-repres'] === 1 ? ('l-todos-clientes' | i18n) : controller.model['idi-clien-repres'] === 2 ? ('l-todos-repres' | i18n) : '' )}}">
+                    {{controller.model['idi-clien-repres']}}
+                </totvs-page-detail-info>
+            </div>
+            
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h5>{{'l-configuracao-perfil' | i18n}}</h5>
+                <hr>
+
+                <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                        title="{{ 'l-enable-quotations' | i18n }}"
+                                        ng-if="controller.model['idi-clien-repres'] === 2">
+                    {{ controller.model['log-habilita-cotac'] | booleanI18N }}
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                        title="{{'l-itens-cliente' | i18n}}">
+                    {{controller.model['log-livre-1'] | booleanI18N}}
+                </totvs-page-detail-info>
+
+                <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                        title="{{'l-liberacao-pedido-completa-automaticamente' | i18n}}">                                        
+                    {{controller.model['log-livre-3'] | booleanI18N}}
+                </totvs-page-detail-info> 
+                
+                <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                        title="{{'l-permite-alterar-preco' | i18n}}">
+                    {{controller.model['log-livre-4'] | booleanI18N}}
+                </totvs-page-detail-info>      
+                
+                <totvs-page-detail-info ng-if="controller.model['num-livre-4'] == 1" class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                        title="{{'l-new-type-add-order' | i18n}}">
+                    {{'l-yes' | i18n}}
+                </totvs-page-detail-info>   
+                <totvs-page-detail-info ng-if="controller.model['num-livre-4'] != 1"
+                                        class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                        title="{{'l-new-type-add-order' | i18n}}">
+                    {{'l-no' | i18n}}
+                </totvs-page-detail-info>
+				
+				<totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                        title="{{'l-canal-vendas-repres' | i18n}}">
+                    {{controller.model['log-canal-vendas-repres'] | booleanI18N}}
+                </totvs-page-detail-info>
+
+
+            </div>
+            
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h5>{{'l-configuracao-geral' | i18n}}</h5>
+                <hr>
+                <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                    title="{{'l-cond-clien-repres' | i18n}}">
+                    {{controller.model['log-cond-clien-repres'] | booleanI18N}}
+                </totvs-page-detail-info>
+                
+                <totvs-page-detail-info class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                    title="{{'l-item-clien-repres' | i18n}}">
+                    {{controller.model['log-item-clien-repres'] | booleanI18N}}
+                </totvs-page-detail-info>
+            </div>
+        </totvs-page-detail>
+    </totvs-page-content>
+</totvs-page>

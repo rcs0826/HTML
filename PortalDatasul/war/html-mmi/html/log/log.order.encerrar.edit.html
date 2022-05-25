@@ -1,0 +1,204 @@
+
+
+<totvs-modal-header >{{ 'l-holdover' | i18n}}: {{controller.model.programa}}</totvs-modal-header>
+<totvs-modal-body>		
+    <totvs-page-content style="border:0px">
+        <totvs-page-detail>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <totvs-page-detail-info class="col-md-3"
+                                        title="{{ 'l-requisition' | i18n }}"
+                                        value="{{:: controller.model.nrOrdProdu | orderNumberMask}}">
+                </totvs-page-detail-info>
+            </div>   
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <totvs-field
+                    totvs-input
+                    ng-disabled="true"
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-model="controller.model.codEqpto"
+                    zoom-id="cd-equipto"
+                    zoom-description="descricao"
+                    zoom-service="mmi.equipto.zoom"
+                    label="{{ 'l-equipment' | i18n }}"
+                    id="cd-equipto"
+                    canclean>             
+                </totvs-field>
+                <totvs-field
+                    totvs-datepicker
+                    ng-disabled="controller.model.consulta"
+                    t-mask-date
+                    label="{{ 'l-end-date' | i18n }}"
+                    culture='pt'
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-model="controller.model.data"
+                    canclean
+                    ng-show=true>
+                </totvs-field>		                
+                <field 
+                    type="textarea"
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"                        
+                    ng-model="controller.model.narrativa"
+                    maxlength="2000"
+                    ng-disabled="controller.model.consulta"
+                    style="padding-bottom: 10px"
+                    rows="4">
+                    <label class="field-label">{{ 'l-narrative' | i18n }}</label>
+                </field>                    
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <totvs-list-item-info ng-if="controller.model.dataParada" class="col-lg-2 col-md-2 col-sm-2 col-xs-2" title="{{ 'l-stop-date' | i18n }}"
+                    value="{{controller.model.dataParada | date:'dd/MM/yyyy'}}">
+                </totvs-list-item-info>
+
+                <totvs-list-item-info ng-if="controller.model.horaParada" class="col-lg-2 col-md-2 col-sm-2 col-xs-2" title="{{ 'l-initial-hour' | i18n }}"
+                    value="{{controller.model.horaParada}}">
+                </totvs-list-item-info>
+
+                <totvs-list-item-info ng-if="controller.model.dataRetorno" class="col-lg-2 col-md-2 col-sm-2 col-xs-2" title="{{ 'l-return-date' | i18n }}"
+                    value="{{controller.model.dataRetorno | date:'dd/MM/yyyy'}}">
+                </totvs-list-item-info>
+
+                <totvs-list-item-info  ng-if="controller.model.horaRetorno"class="col-lg-2 col-md-2 col-sm-2 col-xs-2" title="{{ 'l-final-hour' | i18n }}"
+                    value="{{controller.model.horaRetorno}}">
+                </totvs-list-item-info>
+
+                <totvs-list-item-info  style="padding-right: 30px;" ng-if="controller.model.tempoParada" class="col-lg-2 col-md-2 col-sm-2 col-xs-2" title="{{ 'l-stoppage' | i18n }}"
+                    value="{{controller.model.tempoParada | number}}">
+                </totvs-list-item-info>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<totvs-field totvs-radio
+                             label="{{ 'l-appointment-type' | i18n }}"
+							 t-options="controller.tipoApontamento"
+							 ng-model="controller.model.tpApont"
+							 ng-disabled="true"
+                             ng-if="controller.model.habilitaCampoUtilizacao">
+				</totvs-field>
+			</div>
+
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<totvs-field totvs-decimal
+							 class="col-md-5"
+							 ng-model="controller.model.contador"
+							 m-dec="4"
+                             ng-disabled="controller.model.consulta"
+							 v-max="12"
+							 label="{{ 'l-counter' | i18n }}"
+                             ng-if="controller.model.habilitaCampoUtilizacao">
+				</totvs-field>				
+				<totvs-field totvs-decimal
+							 class="col-md-5"
+							 ng-model="controller.model.ultValorContador"
+							 ng-disabled="true"
+                             ng-if="controller.model.habilitaCampoUtilizacao"
+							 m-dec="4"
+							 v-max="12"
+							 label="{{ 'l-counter-acum' | i18n }}">
+				</totvs-field>				
+			</div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom: 10px; padding-top:10px">
+                <totvs-field totvs-checkbox t-bsswitch ng-disabled="controller.model.consulta"
+                    data-ng-model="controller.model.encerraOmComAceitePendente" class="col-xs-3"
+                    label="{{ 'l-close-pending-accept' | i18n }}">
+                </totvs-field>
+
+                <totvs-field totvs-checkbox t-bsswitch ng-disabled="controller.model.consulta"
+                    data-ng-model="controller.model.encerraOmComOcPendente" class="col-xs-3"
+                    label="{{ 'l-close-pending-purchase' | i18n }}"> 
+                </totvs-field>
+
+                <totvs-field totvs-checkbox t-bsswitch ng-disabled="controller.model.consulta"
+                    data-ng-model="controller.model.encerraOmComReqPendente" class="col-xs-3"
+                    label="{{ 'l-close-pending-requests' | i18n }}"> 
+                </totvs-field>
+
+                <totvs-field totvs-checkbox t-bsswitch ng-disabled="controller.model.consulta"
+                    data-ng-model="controller.model.encerraOmComTarefaPendente" class="col-xs-3"
+                    label="{{ 'l-close-pending-task' | i18n }}"> 
+                </totvs-field>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <totvs-field
+                    totvs-select
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-model="controller.model.cdSintPadr"
+                    select-id="cd-sint-padr"
+                    select-description="descricao"
+                    ng-disabled="controller.model.consulta"
+                    select-service="mmi.sintoma.zoom"
+                    zoom-service="mmi.sintoma.zoom"
+                    label="{{ 'l-sympthom' | i18n }}"
+                    canclean>
+                </totvs-field>
+                <totvs-field
+                    totvs-select
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-model="controller.model.causa"
+                    select-id="cd-causa-padr"
+                    select-description="descricao"
+                    select-service="mmi.causa.zoom"
+                    zoom-service="mmi.causa.zoom"
+                    ng-disabled="controller.model.consulta"
+                    label="{{ 'l-cause' | i18n }}"
+                    canclean>
+                </totvs-field>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <totvs-field
+                    totvs-select
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-model="controller.model.intervPadr"
+                    select-id="cd-interv-padr"
+                    ng-disabled="controller.model.consulta"
+                    select-description="descricao"
+                    select-service="mmi.intervencao.zoom"
+                    zoom-service="mmi.intervencao.zoom"
+                    label="{{ 'l-intervention' | i18n }}"
+                    canclean>
+                </totvs-field>
+            </div>
+                        
+            <div class="paddingGrid col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top: 10px;">
+                <totvs-grid grid-data="controller.model.ttLogErroLin" 
+                            grid-height="200" 
+                            navigatable="true" 
+                            editable="false" 
+                            auto-resize-content="true"
+                            selectable="row"
+                            scrollable="true"
+                            resizable="true"
+                            ng-if="controller.habilitaGrid"
+                            ng-disabled="controller.model.consulta">
+                    <totvs-grid-column field="num-erro" width="30"style="text-align: right"> {{ 'l-error-code' | i18n }} </totvs-grid-column>                    
+                    <totvs-grid-column field="des-erro" width="100"> {{ 'l-description' | i18n }}</totvs-grid-column>
+                    <totvs-grid-column field="des-help-erro" width="100">{{ 'l-help' | i18n }}</totvs-grid-column>
+                </totvs-grid>
+            </div>
+                       
+        </totvs-page-detail>        
+    </totvs-page-content>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="controller.fechar()">{{ 'l-cancel' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="controller.reprocessar()">{{ 'l-reprocess' | i18n }}</button>
+</totvs-modal-footer>
+
+<style>
+    .brokeLine {
+        white-space: pre-line;
+    }
+    .page-details {
+        padding: 0;
+    }
+
+    .paddingGrid {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+</style>

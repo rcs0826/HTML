@@ -1,0 +1,80 @@
+<totvs-modal-header>
+    {{ i18n('l-advanced-search', [], 'dts/mcs') }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <totvs-page-form>
+        <accordion close-others="false">
+            <!-- Seleção -->
+            <accordion-group is-open="status.isFirstOpen">
+                <accordion-heading>
+                        {{ i18n('l-selection', [], 'dts/mcs') }}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.isFirstOpen, 'glyphicon-chevron-right': !status.isFirstOpen}"></i>
+                </accordion-heading>
+                <fieldset class="form-horizontal">
+                    <!-- Item -->
+                    <field 
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        type="inputrange"
+                        ng-model="controller.model.itemCodRange"
+                        start-maxlength="16"
+                        end-maxlength="16"
+                        label="{{ i18n('l-item', [], 'dts/mcs') }}">
+                    </field>
+
+                    <!-- Grupo de Estoque -->
+                    <field 
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        type="decimalrange"
+                        ng-model="controller.model.geCodRange"
+                        m-dec="0"
+                        v-max="99"
+                        label="{{ i18n('l-stock-group', [], 'dts/mcs') }}">
+                    </field>
+
+                    <!-- Família -->
+                    <field 
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        type="inputrange"
+                        ng-model="controller.model.fmCodRange"
+                        start-maxlength="8"
+                        end-maxlength="8"
+                        label="{{ i18n('l-family', [], 'dts/mcs') }}">
+                    </field>
+                </fieldset>
+            </accordion-group>
+
+            <!-- Parâmetros -->
+            <accordion-group is-open="status.open" >
+                <accordion-heading>
+                        {{ i18n('l-parameters', [], 'dts/mcs') }}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                </accordion-heading>
+
+                <fieldset class="form-horizontal">
+                    <!-- Variação de/até -->
+                    <field
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        type="decimalrange"
+                        ng-model="controller.model.variation"
+                        m-dec="2"
+                        v-max="999.99"
+                        v-min="-999.99"
+                        label="{{ i18n('l-total-perc-var', [], 'dts/mcs') }}">
+                    </field>
+
+                    <!-- Mostrar itens sem variação -->
+                    <totvs-field totvs-checkbox 
+                        t-bsswitch
+                        class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                        label="{{ i18n('l-print-zero-variance', [], 'dts/mcs') }}"
+                        ng-model="controller.model.showItemsWithoutVariation">
+                    </totvs-field>
+                </fieldset>
+            </accordion-group>
+        </accordion>
+    </totvs-page-form>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ i18n('l-cancel', [], 'dts/mcs') }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()">{{ i18n('l-apply', [], 'dts/mcs') }}</button>
+</totvs-modal-footer>

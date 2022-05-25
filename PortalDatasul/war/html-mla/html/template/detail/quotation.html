@@ -1,0 +1,232 @@
+<style>
+.aprov {
+   font-weight: bold;
+}
+
+.bgaprov {
+    background-color: #eee;
+}
+</style>
+<script>
+if (window.innerWidth < 768){  // Seta o filtro de acordo com tela. Se for mobile será exibido somente aprovada.
+	var filtro = "filtro.todas = false; filtro.aprovada = true;";	
+}else{
+	var filtro = "filtro.todas = true; filtro.aprovada = false;";
+}
+
+$(".setaFiltro").attr("ng-init", filtro); // Seta o atribudo ng-init do angular-js de acordo com o tamanho de tela;
+</script>
+<!--  Filtro - Somente Aprovada ou Todas     -->
+<div class="pull-right">
+	<h6 class="setaFiltro">
+		<a class="clickable" 
+			ng-click="filtro.todas = false; filtro.aprovada = true; numShow=1; largura='65%'" 
+			ng-class="{aprov: filtro.aprovada}">{{:: 'l-approved' | i18n}}</a>
+		<!-- Seta valor do filtro de acoro com o selecionado, no caso, somente aprovada. -->
+		<a> &nbsp; | &nbsp; </a>
+		<a class="clickable"
+			 ng-click="filtro.aprovada = false; filtro.todas = true; numShow = controller.ttMapaComparativo[numOrdem].length; largura = (65/numShow)+'%'" 
+			 ng-class="{aprov: filtro.todas}">{{:: 'l-all' | i18n}}</a>	
+		<!-- Seta valor do filtro de acoro com o selecionado, no caso, todas. -->
+	</h6>
+</div>
+<br>
+
+<table class="table table-bordered" 
+	ng-init="numShow = controller.ttMapaComparativo[numOrdem].length; largura = (65/numShow)+'%'">
+	<tr>
+		<th scope="row" colspan="2" style="width: 35%; max-width: 35%">{{:: 'l-last-quotes-and-purchase' | i18n}}</th>
+		<!-- Exibe a linha de acordo com o filtro selecionado:  Se for selecionado somente aprovada adiciona a condições oc.aprova = yes e oc.ult-compra != yes
+			 Senão for somente aprovada ( || ) será todas -->
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">
+			<span ng-show="!oc['ult-compra-log']" class="aprov">{{::oc['nome-abrev']}}</span>		
+			<span ng-show="oc['ult-compra-log']" class="aprov">{{:: 'l-last-purchase' | i18n}}</span>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row" colspan="2" >{{:: 'l-quotation-date' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">	
+			<span>{{::oc['data-cotacao']}}</span>						
+		</td>
+	</tr>
+	<tr>
+		<th rowspan="5" style="vertical-align: middle !important;">{{:: 'l-vendor' | i18n}}</th>
+		<th scope="row" >{{:: 'l-code' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">
+			<span>{{::oc['cod-emitente']}}</span>		
+		</td>
+	</tr>
+	<tr>
+		<th scope="row" >{{:: 'l-company-name' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">
+			<span>{{::oc['nome-emit']}}</span>		
+		</td>
+	</tr>	
+	<tr>
+		<th scope="row" >{{:: 'l-localization' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">	
+			<span>{{::oc['cidade-estado']}}</span>	
+		</td>
+	</tr>
+	<tr>
+		<th scope="row" >{{:: 'l-contact' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">	
+			<span>{{::oc['nome-contato']}}</span>	
+		</td>
+	</tr>
+	<tr>
+		<th scope="row" >{{:: 'l-phone' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">	
+			<span>{{::oc['fone-contato']}}</span>	
+		</td>
+	</tr>
+	<tr>
+		<th rowspan="10" style="vertical-align: middle !important;">{{:: 'l-item' | i18n}}</th>
+		<th scope="row" >{{:: 'l-quantity' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">
+			<span>{{::oc['qt-solic']}}</span>	
+		</td>
+	</tr>
+	<tr>
+		<th scope="row" >{{:: 'l-unit-price' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">	
+			<span>{{::oc['pre-unit-for']}}</span>	
+		</td>
+	</tr>
+	<tr>
+		<th scope="row" >{{:: 'l-um' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">	
+			<span>{{::oc['un']}} - {{::oc['desc-un']}}</span>	
+		</td>
+	</tr>
+	<tr>
+		<th scope="row" >{{:: 'l-total-price-without-ipi' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">	
+			<span>{{::oc['preco-total']}}</span>	
+		</td>
+	</tr>
+	<tr>
+		<th scope="row" >{{:: 'l-ipi-value' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">
+			<span>{{::oc['aliquota-ipi']}} - {{::oc['valor-ipi']}}</span>	
+		</td>
+	</tr>
+	<tr>
+		<th scope="row" >{{:: 'l-total-price-with-ipi' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">	
+			<span>{{::oc['preco-total-ipi']}}</span>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row" >{{:: 'l-discount-perc-short-val-disc' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">	
+			<span>{{::oc['perc-descto']}} - {{::oc['valor-descto']}}</span>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row" >{{:: 'l-perc-tax-nr-days-tax' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">	
+			<span>{{::oc['valor-taxa']}} - {{::oc['nr-dias-taxa']}}</span>
+		</td>
+	</tr>				
+	<tr>
+		<th scope="row" >{{:: 'l-calculated-total-price' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">
+			<span>{{::oc['preco-total-calc']}}</span>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row" >{{:: 'l-average-price' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">
+			<span>{{::oc['preco-medio']}}</span>
+		</td>
+	</tr>
+	<tr>
+		<th rowspan="2" style="vertical-align: middle !important;">{{:: 'l-time-in-days' | i18n}}</th>
+		<th scope="row" >{{:: 'l-deliverer-time' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">
+			<span>{{::oc['prazo-entreg']}}</span>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row" >{{:: 'l-payment-term' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">	
+			<span>{{::oc['cod-cond-pag']}} - {{::oc['desc-cond-pagto']}}</span>
+		</td>
+	</tr>				
+	<tr>
+		<th scope="row" class="text-center" colspan="2">{{:: 'l-narrative' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">
+			<span>{{::oc['narrativa']}}</span>
+		</td>
+	</tr>	
+	<tr>
+		<th scope="row" class="text-center" colspan="2">{{:: 'l-approval-text' | i18n}}</th>
+		<td ng-repeat="oc in ::controller.ttMapaComparativo[numOrdem]" 
+			ng-show="((filtro.aprovada == true && oc['aprovada-log'] && !oc['ult-compra-log']) || (filtro.todas == true))"
+			ng-class="{bgaprov: oc['aprovada-log'] && !oc['ult-compra-log']}"
+			style="width: {{largura}}">
+			<span>{{::oc['c-aprovada']}}</span>
+		</td>
+	</tr>
+</table>

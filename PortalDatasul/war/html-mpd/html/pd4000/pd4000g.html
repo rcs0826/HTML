@@ -1,0 +1,433 @@
+<div style="border:0; padding: 15px;" ng-controller="salesorder.pd4000ExportInfo.Controller as exportInfoController" totvs-custom-element="pd4000g">
+    <div class="row">
+        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+            <button class="btn btn-default" role="button" ng-click="exportInfoController.save()" ng-disabled="exportInfoController.orderDisabled">
+                <span class="glyphicon glyphicon-save"></span>
+                <span class="hidden-xs ng-binding">&nbsp;&nbsp;{{:: 'btn-save' | i18n : [] : 'dts/mpd' }}</span>
+            </button>
+            <button class="btn btn-default" role="button" ng-click="exportInfoController.discardChanges()") ng-disabled="exportInfoController.orderDisabled">
+                <span class="glyphicon glyphicon-refresh"></span>
+                <span class="hidden-xs ng-binding">&nbsp;&nbsp;{{:: 'Descartar Alterações' | i18n : [] : 'dts/mpd' }}</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <totvs-tabset>
+            <totvs-tab active heading="{{:: 'Geral' | i18n : [] : 'dts/mpd' }} 1">
+                <totvs-page-form>
+                    <totvs-field totvs-select
+                        class="col-md-6"
+                        ng-model="exportInfoController.model['cod-idioma']"
+                        label="{{:: 'Idioma' | i18n : [] : 'dts/mpd' }}"
+                        select-id="cod_idioma"
+                        select-description="des_idioma"
+                        select-match='[{"field":"des_idioma"}]'
+                        select-service="mpd.idioma.zoom"
+                        zoom-service="mpd.idioma.zoom"
+                        select-init="{gotomethod: ''}"
+                        ng-disabled="exportInfoController.orderDisabled"
+                        canclean>
+                    </totvs-field>
+
+                    <totvs-field totvs-select
+                        class="col-md-6"
+                        ng-model="exportInfoController.model['cod-incoterm']"
+                        label="{{:: 'Incoterm' | i18n : [] : 'dts/mpd'}}"
+                        select-id="cod-incoterm"
+                        select-match='[{"field":"cod-incoterm", "separator": " - "},{"field":"descricao"}]'
+                        select-service="mpd.inco-cx.zoom"
+                        zoom-service="mpd.inco-cx.zoom"
+                        ng-disabled="exportInfoController.orderDisabled"
+                        canclean>
+                    </totvs-field>
+
+                    <totvs-field totvs-select
+                        class="col-md-6"
+                        ng-model="exportInfoController.model['cod-decl-padrao']"
+                        label="{{:: 'Cód Declaração' | i18n : [] : 'dts/mpd'}}"
+                        select-id="de-codigo"
+                        select-match='[{"field":"de-codigo", "separator": " - "}, {"field":"descricao"}]'
+                        select-service="mpd.decl-padrao.zoom"
+                        zoom-service="mpd.decl-padrao.zoom"
+                        ng-disabled="exportInfoController.orderDisabled"
+                        canclean>
+                    </totvs-field>
+
+                    <totvs-field totvs-datepicker
+                            ng-disabled="true"
+                            class="col-md-6"
+                            ng-model="exportInfoController.model['dt-emis-proforma']"
+                            ng-disabled="exportInfoController.orderDisabled"
+                            label="{{:: 'Dt Emissão Proforma' | i18n : [] : 'dts/mpd' }}">                        
+                    </totvs-field>
+                    <totvs-field totvs-datepicker
+                           class="col-md-6"
+                           ng-model="exportInfoController.model['dt-val-prof']"
+                           ng-disabled="exportInfoController.orderDisabled"
+                           label="{{:: 'Dt Val Proforma' | i18n : [] : 'dts/mpd' }}">                        
+                    </totvs-field>
+                    <field type="decimal"
+                           class="col-md-6"
+                            m-dec="5"
+                            v-max="999999999.99999"
+                           ng-model="exportInfoController.model['volume']" ng-model-options="{ updateOn: 'blur' }"
+                           ng-disabled="exportInfoController.orderDisabled">
+                        <label>{{:: 'Volume Total(M3)' | i18n : [] : 'dts/mpd'}}</label>
+                    </field>
+
+                    <totvs-field totvs-select
+                        class="col-md-6"
+                        ng-model="exportInfoController.model['cdn-emit-final']"
+                        label="{{:: 'Cliente Final' | i18n : [] : 'dts/mpd'}}"
+                        select-id="cod-emitente"
+                        select-match='[{"field":"cod-emitente", "separator": " - "},{"field":"nome-abrev", "separator": " - "}, {"field":"nome-emit"}]'
+                        select-service="mpd.emitente.zoom"
+                        zoom-service="mpd.emitente.zoom"
+                        select-init="{filter: {'identific': '1|3'}, gotomethod: 'gotocodemitente'}"
+                        zoom-init="{filter: {'identific': '1|3'}, setDefaultValue: false}"
+                        ng-disabled="exportInfoController.orderDisabled"
+                        canclean>
+                    </totvs-field>
+
+                    <div class="clearfix"></div>
+
+                    <totvs-field totvs-select
+                        class="col-md-6"
+                        ng-model="exportInfoController.model['cod-pais-final']"
+                        label="{{:: 'País Final' | i18n : [] : 'dts/mpd'}}"
+                        select-id="nome-pais"
+                        select-match='[{"field":"nome-pais"}]'
+                        select-init="{gotomethod: ''}"
+                        select-service="mpd.pais.zoom"
+                        zoom-service="mpd.pais.zoom"
+                        ng-disabled="exportInfoController.orderDisabled"
+                        canclean>
+                    </totvs-field>
+
+                    <totvs-field totvs-select
+                        class="col-md-6"
+                        name-id="seq-contato"
+                        ng-model="exportInfoController.model['seq-contato']"
+                        label="{{:: 'Seq Contato' | i18n : [] : 'dts/mpd'}}"
+                        select-id="sequencia"
+                        select-match='[{"field":"sequencia", "separator": " - "},{"field":"nome"}]'
+                        select-service="mpd.cont-emit.zoom"
+                        select-init="{
+                            codEmit: exportInfoController.model['cod-emitente'],
+                            filter: {'cod-emitente': exportInfoController.model['cod-emitente']}
+                        }"
+                        zoom-init="{filter: {'cod-emitente': exportInfoController.model['cod-emitente']}}"
+                        zoom-service="mpd.cont-emit.zoom"
+                        ng-disabled="exportInfoController.orderDisabled"
+                        canclean>
+                    </totvs-field>
+                </totvs-page-form>
+            </totvs-tab>
+            <totvs-tab active heading="{{:: 'Geral' | i18n : [] : 'dts/mpd'}} 2">
+                <field
+                    class="col-md-6"
+                    type="select"
+                    ng-model="exportInfoController.model['cod-via-transp']"
+                    ng-disabled="exportInfoController.orderDisabled"
+                    label="{{:: 'Via Transporte' | i18n : [] : 'dts/mpd'}}">
+                    <include>
+                        <ui-select-match>{{$select.selected.value}}</ui-select-match>
+                        <ui-select-choices repeat="item.key as item in exportInfoController.viaTransporteOptions | filter: $select.search">
+                            <span data-ng-bind-html="item.value | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+
+                <field
+                    class="col-md-6"
+                    type="select"
+                    ng-model="exportInfoController.model['idi-tip-frete-export']"
+                    label="{{:: 'Tp Frete Export' | i18n : [] : 'dts/mpd'}}"
+                    ng-disabled="exportInfoController.orderDisabled">
+                    <include>
+                        <ui-select-match>{{$select.selected.value}}</ui-select-match>
+                        <ui-select-choices repeat="item.key as item in exportInfoController.tpFreteExportOptions | filter: $select.search">
+                            <span data-ng-bind-html="item.value | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+
+                <totvs-field totvs-select
+                    class="col-md-6"
+                    ng-model="exportInfoController.model['cod-consign']"
+                    label="{{:: 'Código Consignatário' | i18n : [] : 'dts/mpd'}}"
+                    select-id="cod-emitente"
+                    select-match='[{"field":"cod-emitente", "separator": " - "},{"field":"nome-abrev"}]'
+                    select-service="mpd.emitente.zoom"
+                    select-init="{filter: {'identific': '1|3'}, gotomethod: 'gotocodemitente'}"
+                    zoom-init="{filter: {'identific': '1|3'}, setDefaultValue: false }"
+                    zoom-service="mpd.emitente.zoom"                    
+                    ng-disabled="exportInfoController.orderDisabled"
+                    canclean>
+                </totvs-field>
+
+                <totvs-field totvs-select
+                    class="col-md-6"
+                    ng-model="exportInfoController.model['cod-notif']"
+                    label="{{:: 'Cód Notificado' | i18n : [] : 'dts/mpd'}}"
+                    select-id="cod-emitente"
+                    select-match='[{"field":"cod-emitente", "separator": " - "},{"field":"nome-abrev"}]'
+                    select-service="mpd.emitente.zoom"
+                    select-init="{gotomethod: 'gotocodemitente'}"
+                    zoom-service="mpd.emitente.zoom"
+                    zoom-init="{ setDefaultValue: false }"
+                    ng-disabled="exportInfoController.orderDisabled"
+                    canclean>
+                </totvs-field>
+
+                <totvs-field totvs-select
+                    class="col-md-6"
+                    ng-model="exportInfoController.model['cod-notif2']"
+                    label="{{:: 'Notificado' | i18n : [] : 'dts/mpd'}}"
+                    select-id="cod-emitente"
+                    select-match='[{"field":"cod-emitente", "separator": " - "},{"field":"nome-abrev"}]'
+                    select-service="mpd.emitente.zoom"
+                    select-init="{gotomethod: 'gotocodemitente'}"
+                    zoom-init="{ setDefaultValue: false }"
+                    zoom-service="mpd.emitente.zoom"
+                    ng-disabled="exportInfoController.orderDisabled"
+                    canclean>
+                </totvs-field>
+
+                <totvs-field totvs-select
+                    class="col-md-6"
+                    ng-model="exportInfoController.model['cod-transp-int']"
+                    label="{{:: 'Transp Int' | i18n : [] : 'dts/mpd'}}"
+                    select-id="cod-emitente"
+                    select-match='[{"field":"cod-emitente", "separator": " - "},{"field":"nome-abrev"}]'
+                    select-init="{gotomethod: 'gotocodemitente'}"
+                    select-service="mpd.emitente.zoom"
+                    zoom-init="{ setDefaultValue: false }"
+                    zoom-service="mpd.emitente.zoom"
+                    ng-disabled="exportInfoController.orderDisabled"
+                    canclean>
+                </totvs-field>
+
+                <field type="input"
+                       class="col-md-6"
+                       ng-model="exportInfoController.model['veic-transp']"
+                       ng-disabled="exportInfoController.orderDisabled">
+                    <label>{{:: 'Id Veíc Transp' | i18n : [] : 'dts/mpd'}}</label>
+                </field>
+            </totvs-tab>
+
+            <totvs-tab heading="{{:: 'Pontos de Controle' | i18n : [] : 'dts/mpd'}}">
+                <totvs-page-form>
+                    <totvs-field totvs-select
+                        class="col-md-6"
+                        ng-model="exportInfoController.model['cod-itiner']"
+                        ng-change="exportInfoController.onChangeItinerary();"
+                        label="{{:: 'Cód Itiner' | i18n : [] : 'dts/mpd'}}"
+                        select-id="cod-itiner"
+                        select-match='[{"field":"cod-itiner", "separator": " - "},{"field":"descricao"}]'
+                        select-service="mpd.itinerario.zoom"
+                        zoom-service="mpd.itinerario.zoom"
+                        ng-disabled="exportInfoController.orderDisabled"
+                        canclean>
+                    </totvs-field>
+
+                    <div class="clearfix"></div>
+
+                    <totvs-field totvs-select
+                        ng-disabled="true"
+                        class="col-md-6"
+                        ng-model="exportInfoController.model['pto-despacho']"
+                        label="{{:: 'Despacho' | i18n : [] : 'dts/mpd'}}"
+                        select-id="cod-pto-contr"
+                        select-match='[{"field":"cod-pto-contr", "separator": " - "},{"field":"descricao"}]'
+                        select-service="mpd.pto-contr.zoom"
+                        zoom-service="mpd.pto-contr.zoom"
+                        ng-disabled="exportInfoController.orderDisabled"
+                        canclean>
+                    </totvs-field>
+                    <totvs-field totvs-select
+                        ng-disabled="true"
+                        class="col-md-6"
+                        ng-model="exportInfoController.model['pto-embarque']"
+                        label="{{:: 'Embarque' | i18n : [] : 'dts/mpd'}}"
+                        select-id="cod-pto-contr"
+                        select-match='[{"field":"cod-pto-contr", "separator": " - "},{"field":"descricao"}]'
+                        select-service="mpd.pto-contr.zoom"
+                        zoom-service="mpd.pto-contr.zoom"
+                        ng-disabled="exportInfoController.orderDisabled"
+                        canclean>
+                    </totvs-field>
+                    <totvs-field totvs-select
+                        ng-disabled="true"
+                        class="col-md-6"
+                        ng-model="exportInfoController.model['pto-desembarque']"
+                        label="{{:: 'Desembarque' | i18n : [] : 'dts/mpd'}}"
+                        select-id="cod-pto-contr"
+                        select-match='[{"field":"cod-pto-contr", "separator": " - "},{"field":"descricao"}]'
+                        select-service="mpd.pto-contr.zoom"
+                        zoom-service="mpd.pto-contr.zoom"
+                        ng-disabled="exportInfoController.orderDisabled"
+                        canclean>
+                    </totvs-field>
+                    <totvs-field totvs-select
+                        ng-disabled="true"
+                        class="col-md-6"
+                        ng-model="exportInfoController.model['pto-chegada']"
+                        label="{{:: 'Chegada' | i18n : [] : 'dts/mpd'}}"
+                        select-id="cod-pto-contr"
+                        select-match='[{"field":"cod-pto-contr", "separator": " - "},{"field":"descricao"}]'
+                        select-service="mpd.pto-contr.zoom"
+                        zoom-service="mpd.pto-contr.zoom"
+                        ng-disabled="exportInfoController.orderDisabled"
+                        canclean>
+                    </totvs-field>
+
+                    <div class="clearfix"></div>
+
+                    <totvs-page-detail-info-group>
+                        {{:: 'Pontos de Transbordo' | i18n: []: 'dts/mpd' }}
+                    </totvs-page-detail-info-group>
+
+                    <totvs-field totvs-select
+                        class="col-md-6"
+                        ng-model="exportInfoController.model['cdn-pto-transb'][0]"
+                        label="{{:: 'Transbordo' | i18n : [] : 'dts/mpd'}} 1"
+                        select-id="cod-pto-contr"
+                        select-match='[{"field":"cod-pto-contr", "separator": " - "},{"field":"descricao"}]'
+                        select-service="mpd.pto-contr.zoom"
+            			zoom-service="mpd.pto-contr.zoom"
+                        ng-disabled="exportInfoController.orderDisabled"
+                        canclean>
+                    </totvs-field>
+                    <totvs-field totvs-select
+                        class="col-md-6"
+                        ng-model="exportInfoController.model['cdn-pto-transb'][1]"
+                        label="{{:: 'Transbordo' | i18n : [] : 'dts/mpd'}} 2"
+                        select-id="cod-pto-contr"
+                        select-match='[{"field":"cod-pto-contr", "separator": " - "},{"field":"descricao"}]'
+                        select-service="mpd.pto-contr.zoom"
+            			zoom-service="mpd.pto-contr.zoom"
+                        ng-disabled="exportInfoController.orderDisabled"
+                        canclean>
+                    </totvs-field>
+                    <totvs-field totvs-select
+                        class="col-md-6"
+                        ng-model="exportInfoController.model['cdn-pto-transb'][2]"
+                        label="{{:: 'Transbordo' | i18n : [] : 'dts/mpd'}} 3"
+                        select-id="cod-pto-contr"
+                        select-match='[{"field":"cod-pto-contr", "separator": " - "},{"field":"descricao"}]'
+                        select-service="mpd.pto-contr.zoom"
+            			zoom-service="mpd.pto-contr.zoom"
+                        ng-disabled="exportInfoController.orderDisabled"
+                        canclean>
+                    </totvs-field>
+                    <totvs-field totvs-select
+                        class="col-md-6"
+                        ng-model="exportInfoController.model['cdn-pto-transb'][3]"
+                        label="{{:: 'Transbordo' | i18n : [] : 'dts/mpd'}} 4"
+                        select-id="cod-pto-contr"
+                        select-match='[{"field":"cod-pto-contr", "separator": " - "},{"field":"descricao"}]'
+                        select-service="mpd.pto-contr.zoom"
+            			zoom-service="mpd.pto-contr.zoom"
+                        ng-disabled="exportInfoController.orderDisabled"
+                        canclean>
+                    </totvs-field>
+                </totvs-page-form>
+            </totvs-tab>
+            <totvs-tab heading="{{:: 'Marcas' | i18n : [] : 'dts/mpd'}}">
+                <totvs-page-form>
+                    <field type="input"
+                           class="col-md-6"
+                           ng-model="exportInfoController.model['marca-1']"
+                           ng-disabled="exportInfoController.orderDisabled">
+                        <label>{{:: 'Marca' | i18n : [] : 'dts/mpd'}} 1</label>
+                    </field>
+                    <field type="input"
+                           class="col-md-6"
+                           ng-model="exportInfoController.model['marca-2']"
+                           ng-disabled="exportInfoController.orderDisabled">
+                        <label>{{:: 'Marca' | i18n : [] : 'dts/mpd'}} 2</label>
+                    </field>
+                    <div class="clearfix"></div>
+                    <field type="input"
+                           class="col-md-6"
+                           ng-model="exportInfoController.model['marca-3']"
+                           ng-disabled="exportInfoController.orderDisabled">
+                        <label>{{:: 'Marca' | i18n : [] : 'dts/mpd'}} 3</label>
+                    </field>
+                    <field type="input"
+                           class="col-md-6"
+                           ng-model="exportInfoController.model['marca-4']"
+                           ng-disabled="exportInfoController.orderDisabled">
+                        <label>{{:: 'Marca' | i18n : [] : 'dts/mpd'}} 4</label>
+                    </field>
+                    <div class="clearfix"></div>
+                    <field type="input"
+                           class="col-md-6"
+                           ng-model="exportInfoController.model['marca-5']"
+                           ng-disabled="exportInfoController.orderDisabled">
+                        <label>{{:: 'Marca' | i18n : [] : 'dts/mpd'}} 5</label>
+                    </field>
+                </totvs-page-form>
+            </totvs-tab>
+            <totvs-tab heading="{{:: 'Despesas' | i18n : [] : 'dts/mpd'}}">
+                <div style="border:0; padding: 15px;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-default" ng-click="exportInfoController.addExpense()" ng-disabled="exportInfoController.orderDisabled">
+                                <span class="glyphicon glyphicon-plus"></span>
+                                <span class="hidden-xs ng-binding">&nbsp;&nbsp;{{:: 'Adicionar' | i18n : [] : 'dts/mpd' }}</span>
+                            </button>
+
+                            <button class="btn btn-default" ng-click="exportInfoController.editExpense()"
+                            ng-disabled="exportInfoController.gridExpensesSelectedItems.length != 1 || exportInfoController.orderDisabled">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs ng-binding">{{:: 'Editar' | i18n : [] : 'dts/mpd' }}</span>
+                            </button>
+
+                            <button class="btn btn-default" ng-click="exportInfoController.removeExpense()"
+                            ng-disabled="exportInfoController.gridExpensesSelectedItems.length <= 0 || exportInfoController.orderDisabled">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                <span class="hidden-xs ng-binding">{{:: 'Remover' | i18n : [] : 'dts/mpd' }}</span>
+                            </button>
+
+                            <button class="btn btn-default" ng-click="exportInfoController.getDefaultExpenses()" ng-disabled="exportInfoController.orderDisabled">
+                                <span class="hidden-xs ng-binding">{{:: 'Gerar Despesas' | i18n : [] : 'dts/mpd' }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <totvs-grid grid-data="exportInfoController.gridExpenses"
+                                grid-height="300"
+                                auto-resize-content="true"
+                                navigatable="true"
+                                resizable="true"
+                                sortable="true"
+                                groupable="false"
+                                reorderable="true"
+                                selectable="multiple,row"
+                                editable="true"
+                                grid-selected-item="exportInfoController.gridExpensesSelectedItem"
+                                grid-selected-items="exportInfoController.gridExpensesSelectedItems">
+                        <totvs-grid-column field="desc-emitente-desp" width="250">{{:: 'Forn Desp' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="cdn-despes" width="50">{{:: 'Desp' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="desc-despes" width="200">{{:: 'Des Desp' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="cod-pto-contr" width="120">{{:: 'Pto Contr' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="desc-pto-contr" width="120">{{:: 'Desc Pto Contr' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="log-forma-preco" width="110" filter="booleanI18N">{{:: 'Forma Preço' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="mo-codigo" width="80">{{:: 'Moeda' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="desc-moeda" width="100">{{:: 'Desc Moeda' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="val-despes" width="120">{{:: 'Val Despesa' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="log-despesa-inclusa" width="130" filter="booleanI18N">{{:: 'Desp Inclusa' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="log-destaca-despesa" width="110" filter="booleanI18N">{{:: 'Destaca Desp' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="log-val-tot-faturam" width="130" filter="booleanI18N">{{:: 'Val Tot Fat Parcial' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    </totvs-grid>
+                </div>
+            </totvs-tab>
+        </totvs-tabset>
+    </div>
+</div>
+

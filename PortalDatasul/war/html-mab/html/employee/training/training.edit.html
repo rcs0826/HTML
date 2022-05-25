@@ -1,0 +1,93 @@
+<totvs-modal-header>
+	{{ 'l-trainings' | i18n }} ({{trainingEditCtrl.totalRecords}})
+</totvs-modal-header >
+
+<totvs-modal-body>
+    <div class="col-xs-12" 
+		 style="padding-bottom: 10px; padding-left: 0px; padding-right: 0px;">
+		 <div class="filters">
+		 	<div class="search-field ng-scope">
+		 		<form class="ng-pristine ng-valid ng-submitted">
+		 			<div class="input-group">
+		 				<input type="text"
+		 					   autofocus 
+		 					   class="form-control ng-pristine ng-valid ng-scope ng-touched" 
+		 					   ng-model="trainingEditCtrl.search" 
+		 					   placeholder="{{ 'l-search' | i18n }}"/>
+	 					<span class="input-group-btn">
+	 						<button class="btn btn-default ng-scope" type="button" ng-click="trainingEditCtrl.search = ''">
+	 					   		<span class="glyphicon glyphicon-remove"></span>
+	 					   	</button>
+	 					    <button class="btn btn-default" type="submit" ng-click="trainingEditCtrl.pesquisar()">
+	 					   		<span class="glyphicon glyphicon-filter" aria-hidden="true"></span>
+	 					   	</button>
+	 					</span>		 					
+		 			</div>
+		 		</form>
+			</div>
+		</div>
+	</div>
+	<br/>
+	<div class="row">
+		<totvs-page-alert
+			ng-if="trainingEditCtrl.treinamentos.length <= 0"
+			ng-animate="'animate-if'"
+			type="info"
+			message="{{ 'msg-not-found' | i18n }}"
+			style="margin-top:25px;margin-bottom:0px">
+		</totvs-page-alert>
+
+		<div class="table-content"
+			 ng-if="trainingEditCtrl.treinamentos.length > 0"
+			 ng-animate="'animate-if'">
+
+			<div class="table-responsive" style="height:500px; overflow:auto">
+
+				<table class="table table-condensed">
+					<colgroup><col span="2" style="position: absolute"></colgroup>
+					<thead>
+						<tr>
+                            <th class="col-xs-1">&nbsp;</th>
+                            <th class="col-xs-2">{{ 'l-training' | i18n }}</th>
+							<th class="col-xs-5">{{ 'l-description' | i18n }}</th>
+							<th class="col-xs-5">{{ 'l-validity' | i18n }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="training in trainingEditCtrl.treinamentos">
+							<td class="clickable"
+								ng-click="training.selecionada = !training.selecionada;">
+								<input type="checkbox"
+									ng-value="{{$index}}"
+									ng-model="training.selecionada"
+									bsswitch>
+							</td>
+							<td>{{ training['cdn-curso'] }}</td>
+							<td>{{ training['descricao'] }}</td>
+							<td style="
+								padding-bottom: 9px;
+								padding-top: 3px">
+								<totvs-field totvs-datepicker
+											 class="col-lg-7 col-md-7 col-sm-12 col-xs-12"
+											 ng-model="training['dt-validade']"
+											 t-mask-date="99/99/9999"
+											 output-format="time"
+											 ng-disabled="!training.selecionada">
+								</totvs-field>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<totvs-list-pagination
+					ng-click="trainingEditCtrl.buscaTreinamentos(true)"
+					ng-if="trainingEditCtrl.treinamentos.length < trainingEditCtrl.totalRecords && trainingEditCtrl.treinamentos.length">
+		        </totvs-list-pagination>
+			</div>
+		</div>
+	</div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="trainingEditCtrl.cancel()">{{ 'l-close' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="trainingEditCtrl.save()">{{ 'l-save' | i18n }}</button>
+</totvs-modal-footer>

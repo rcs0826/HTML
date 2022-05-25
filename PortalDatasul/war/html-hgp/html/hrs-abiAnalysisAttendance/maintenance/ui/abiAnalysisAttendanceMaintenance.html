@@ -1,0 +1,316 @@
+<style> 
+    .list-item.tag-1 {
+        border-left: 5px solid #FF0000 !important;
+    }
+
+    .tag-1:before {
+        background-color: #FF0000 !important;
+    }
+
+    .list-item.tag-2 {
+        border-left: 5px solid #6ace39  !important; 
+    }
+
+    .tag-2:before {
+        background-color: #6ace39 !important;
+    }
+</style>
+
+
+<totvs-page type="base">     
+    <totvs-page-navbar>
+        
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hrs-ressusAbiImportation">Central de Movimentação RESSUS</breadcrumb>                
+                <breadcrumb link="#/dts/hgp/hrs-abiAnalysisAttendance/{{controller.tmpRessusAbiPrestdor.cddRessusAbiDados}}/{{controller.codAbi}}/{{controller.codProcesso.replace('/','.')}}">ABI: {{controller.codAbi}}</breadcrumb>
+                <breadcrumb>Manutenção de Atendimento {{controller.abiAnalysisAttendance.codTipAtendim}}:{{controller.abiAnalysisAttendance.cddAtendim}}
+                </breadcrumb>                
+        </totvs-page-breadcrumb>        
+         
+        <totvs-page-header>
+            <totvs-page-header-title
+                title="{{controller.abiAnalysisAttendance.codTipAtendim}}: {{controller.abiAnalysisAttendance.cddAtendim}}">
+            </totvs-page-header-title> 
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel()">Voltar</action>
+                    <action ng-if="controller.abiAnalysisAttendance.idPermissao == 2" ng-click="controller.save()">Salvar</action>
+                    <action ng-if="controller.abiAnalysisAttendance.idPermissao == 2" class="btn-primary" ng-click="controller.saveClose()">Salvar e Fechar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    
+    </totvs-page-navbar>
+    
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.abiForm">            
+            <fieldset>               
+              <totvs-page-detail>
+                <legend>Informações do Atendimento</legend>
+
+                    <totvs-row>
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Competência"
+                                    value="{{controller.abiAnalysisAttendance.codComptcia.substring(0,2)}}/{{controller.abiAnalysisAttendance.codComptcia.substring(2)}}">
+                        </totvs-page-detail-info>    
+
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Caráter de Atendimento"
+                                    value="{{controller.abiAnalysisAttendance.idiCaraterAtendim == '1' ? 'Eletivo' : 'Urgência/Emergência'}}">
+                        </totvs-page-detail-info> 
+
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Inicio do Atendimento"
+                                    value="{{controller.abiAnalysisAttendance.datInicAtendim | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info> 
+
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Fim do Atendimento"
+                                    value="{{controller.abiAnalysisAttendance.datFimAtendim | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info> 
+
+                    </totvs-row>
+
+                    <totvs-row>
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Valor Cobrado"
+                                    value="{{controller.abiAnalysisAttendance.valTotal  | currency : 'R$'}}">
+                        </totvs-page-detail-info> 
+
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Documento no Revisão de Contas"
+                                    ng-if="abiAnalysisAttendance.documentKey !== ''">
+                                    <a href="#/dts/hgp/hrc-document/detail/{{controller.abiAnalysisAttendance.documentKey}}">
+                                        {{controller.abiAnalysisAttendance.documentKey}}
+                                    </a>
+                        </totvs-page-detail-info> 
+                    </totvs-row> 
+
+                <legend>Dados do Prestador</legend>
+                    <totvs-row>
+                        <totvs-page-detail-info
+                                class="col-lg-1 col-md-1 col-sm-12 col-xs-12"
+                                title="CNES"
+                                value="{{controller.tmpRessusAbiPrestdor.codCnes}}">
+                        </totvs-page-detail-info> 
+
+                        <totvs-page-detail-info
+                                class="col-lg-5 col-md-5 col-sm-12 col-xs-12"
+                                title="Nome"
+                                value="{{controller.tmpRessusAbiPrestdor.nomPrestdor}}">
+                        </totvs-page-detail-info> 
+
+                        <totvs-page-detail-info
+                                class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                                title="Natureza"
+                                value="{{controller.tmpRessusAbiPrestdor.codNatur}}">
+                        </totvs-page-detail-info>
+
+                    </totvs-row>
+
+                    <totvs-row>
+                        <totvs-page-detail-info
+                                class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                                title="Endereço"
+                                value="{{controller.tmpRessusAbiPrestdor.desEndereco}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                                class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                title="Cidade"
+                                value="{{controller.tmpRessusAbiPrestdor.nomCidade}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                                class="col-lg-1 col-md-1 col-sm-12 col-xs-12"
+                                title="UF"
+                                value="{{controller.tmpRessusAbiPrestdor.codUf}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                                class="col-lg-1 col-md-1 col-sm-12 col-xs-12"
+                                title="CEP"
+                                value="{{controller.tmpRessusAbiPrestdor.codCep}}">
+                        </totvs-page-detail-info>     
+
+                    </totvs-row>   
+
+                <legend>Dados do Beneficiário</legend>
+                    <totvs-row>
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Beneficiário">
+
+                                <a ng-if="controller.tmpRessusAbiBenef.idPessoa != 0" 
+                                    href="#/menu-html/program-html/hvp.personInformation/#/F/{{controller.tmpRessusAbiBenef.idPessoa}}">
+                                    {{controller.tmpRessusAbiBenef.rotuloBeneficiario}}
+                                </a>
+
+                                <a ng-if="controller.tmpRessusAbiBenef.idPessoa == 0"
+                                    href="#/menu-html/program-html/hvp.personInformation/#/I/{{controller.tmpRessusAbiBenef.codBenefAbi}}">
+                                    {{controller.tmpRessusAbiBenef.rotuloBeneficiario}}
+                                </a>
+
+
+                        </totvs-page-detail-info> 
+
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="CPF"
+                                    value="{{controller.tmpRessusAbiBenef.rotuloCpf | cpf}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="CCO"
+                                    value="{{controller.tmpRessusAbiBenef.desCco}}">
+                        </totvs-page-detail-info> 
+
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Data de Nascimento"
+                                    value="{{controller.tmpRessusAbiBenef.datNasc | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+                    </totvs-row> 
+
+                    <totvs-row>
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Data de Inclusão"
+                                    value="{{controller.tmpRessusAbiBenef.datInclusao | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+
+                        <div ng-if="controller.tmpRessusAbiBenef.datExclusao != null">
+                            <totvs-page-detail-info 
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Data de Exclusão"
+                                    value="{{controller.tmpRessusAbiBenef.datExclusao | date : 'dd/MM/yyyy'}}">
+                            </totvs-page-detail-info> 
+
+                            <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Motivo da Exclusão"
+                                    value="{{controller.tmpRessusAbiBenef.desMotivoEx }}">
+                            </totvs-page-detail-info>
+                        </div>
+                    </totvs-row>
+
+                    <totvs-row>
+                         <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Nome do Contratante"
+                                    value="{{controller.tmpRessusAbiBenef.rotuloContratante}}">
+                        </totvs-page-detail-info> 
+
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Plano"
+                                    value="{{controller.tmpRessusAbiBenef.rotuloPlano}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Tipo de Plano"
+                                    value="{{controller.tmpRessusAbiBenef.rotuloTipoPlano}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Registro Plano ANS"
+                                    value="{{controller.tmpRessusAbiBenef.rotuloRegistroAns}}">
+                        </totvs-page-detail-info>
+                        
+                    </totvs-row> 
+                    <totvs-row> 
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Forma de Pagamento"
+                                    value="{{controller.tmpRessusAbiBenef.rotuloFormaPagamento}}">
+                        </totvs-page-detail-info> 
+
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Participação"
+                                    value="{{controller.tmpRessusAbiBenef.rotuloParticipacao}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                                    class="col-lg-3 col-md-3 col-sm-12 col-xs-12"
+                                    title="Abrangência Plano"
+                                    value="{{controller.tmpRessusAbiBenef.dsAbrangenciaPlano}}">
+                        </totvs-page-detail-info>
+                    </totvs-row>
+
+                <legend>Movimentos</legend>
+                    <totvs-page style="margin-top: 0px !important; margin-bottom: 0px !important; 
+                                       padding-top: 0px !important; padding-bottom: 0px !important;"
+                                ng-if="controller.listOfPrimaryMovements.length > 0">
+
+                        <legend style="margin-top: 0px !important; margin-bottom: 0px !important; 
+                                       padding-top: 0px !important; padding-bottom: 0px !important;
+                                       padding-left: 0px !important;">
+                                Principal
+                        </legend>
+                        
+                        <totvs-page-child type="list" style="margin-bottom: 3px"
+                                          ng-repeat="movtoSUS in controller.listOfPrimaryMovements">
+
+                            <div ng-include="'/dts/hgp/html/hrs-abiAnalysisAttendance/maintenance/ui/abiAnalysisAttendanceMaintenanceMovements.html'">
+                            </div>
+                        </totvs-page-child>
+                    </totvs-page>
+
+                    <div style=" padding-top: 10px !important"
+                        ng-if="controller.listOfPrimaryMovements.length > 0">
+
+                    </div>
+
+                    <totvs-page style="margin-top: 0px !important; margin-bottom: 0px !important; 
+                                       padding-top: 0px !important; padding-bottom: 0px !important;" 
+                                ng-if="controller.listOfSpecialMovements.length > 0">
+
+                        <legend style="margin-top: 0px !important; margin-bottom: 0px !important; 
+                                       padding-top: 0px !important; padding-bottom: 0px !important;
+                                       padding-left: 0px !important;">
+                                Especial
+                        </legend>
+
+                        <totvs-page-child type="list" style="margin-bottom: 3px"
+                                          ng-repeat="movtoSUS in controller.listOfSpecialMovements">
+                            <div ng-include="'/dts/hgp/html/hrs-abiAnalysisAttendance/maintenance/ui/abiAnalysisAttendanceMaintenanceMovements.html'"/>
+                        </totvs-page-child>
+                    </totvs-page>
+
+
+                    <div style=" padding-top: 10px !important"
+                        ng-if="controller.listOfPrimaryMovements.length > 0 || controller.listOfSpecialMovements.length > 0">
+
+                    </div>
+
+                    <totvs-page style="margin-top: 0px !important; margin-bottom: 0px !important; 
+                                       padding-top: 0px !important; padding-bottom: 0px !important;" 
+                                ng-if="controller.listOfSecondaryMovements.length > 0">
+
+                        <legend style="margin-top: 0px !important; margin-bottom: 0px !important; 
+                                       padding-top: 0px !important; padding-bottom: 0px !important;
+                                       padding-left: 0px !important;">
+                                Secundário
+                        </legend>
+
+                        <totvs-page-child type="list" style="margin-bottom: 3px"
+                                          ng-repeat="movtoSUS in controller.listOfSecondaryMovements">
+                            <div ng-include="'/dts/hgp/html/hrs-abiAnalysisAttendance/maintenance/ui/abiAnalysisAttendanceMaintenanceMovements.html'"/>
+                        </totvs-page-child>
+                    </totvs-page>
+                    
+              </totvs-page-detail> 
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>    
+</totvs-page>

@@ -1,0 +1,158 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<link rel="stylesheet" href="/dts/kbn/css/font-awesome.css"/>
+<totvs-page>
+  <totvs-page-navbar>
+    <totvs-page-breadcrumb>
+      <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+      <breadcrumb link="#/dts/kbn/board">{{ 'l-list-board' | i18n }}</breadcrumb>
+      <breadcrumb>{{controller.cell.cod_chave_erp}}</breadcrumb>
+    </totvs-page-breadcrumb>
+    <totvs-page-header>
+      <totvs-page-header-title title="{{controller.cell.des_cel}}" class="col-xs-12 col-sm-8"></totvs-page-header-title>
+      <div class="check-nivel pull-right">
+        <input type="checkbox" id="andon" ng-change="changeState(controller.cell.andon)" ng-model="controller.cell.andon" value="1" class="ng-untouched ng-valid ng-dirty ng-valid-parse"/>
+        <label for="andon" title="{{'l-andon' | i18n}}" class="is-pointer"></label>
+      </div>
+      <div title="{{'l-refresh-by-ten-minute' | i18n}}" style="margin-right: 7px; background: #eee;" ng-click="controller.abreModal()" id="refreshButton" class="check-nivel pull-right is-pointer"><span style="margin-left: 7px; margin-top: 7px;" class="fa fa-clock-o fa-2x"></span></div>
+      <div title="{{'l-refresh-board' | i18n}}" style="margin-right: 7px; background: #eee;" ng-click="controller.init()" class="check-nivel pull-right is-pointer"><span style="margin-left: 7px; margin-top: 7px;" class="fa fa-refresh fa-2x"></span></div>
+      <div class="row"></div>
+    </totvs-page-header>
+  </totvs-page-navbar>
+  <totvs-page-content>
+    <totvs-page-detail>
+      <div class="row">
+        <accordion class="quadro col-xs-12">
+          <accordion-group is-open="true">
+            <accordion-heading>
+              <div class="fa fa-desktop"></div><span style="font-size: 16px;font-family: inherit;font-weight: 500;line-height: 1.1;" class="btn">{{'l-board' | i18n}}</span><span title="{{'l-produce-items-manuals' | i18n}}" ng-click="controller.openManualItems($event)" ng-if="controller.hasManualItems" class="btn btn-default pull-right fa fa-gears"></span><span title="{{'l-ranks-by-code' | i18n}}" ng-click="controller.changeOrder($event)" ng-if="controller.settings.order == 'priority'" class="btn btn-default pull-right fa fa-sort-alpha-asc"></span><span title="{{'l-ranks-by-pareto' | i18n}}" ng-click="controller.changeOrder($event)" ng-if="controller.settings.order == 'name'" class="btn btn-default pull-right fa fa-sort-amount-desc"></span><span title="{{'l-hide-manual-items' | i18n}}" ng-click="controller.changeFilter($event, 'man')" ng-if="controller.hasManualItems &amp;&amp; controller.showManualIcon(controller.settings.selectManualItens)" style="font-family: inherit;" class="btn btn-default pull-right fa fa"><strong>M</strong></span><span title="{{'l-show-manual-items' | i18n}}" ng-click="controller.changeFilter($event, 'man')" ng-if="controller.hasManualItems &amp;&amp; !controller.showManualIcon(controller.settings.selectManualItens)" style="font-family: inherit;" class="btn btn-default pull-right fa fa">M</span><span title="{{'l-hide-automatic-items' | i18n}}" ng-click="controller.changeFilter($event, 'auto')" ng-if="controller.hasManualItems &amp;&amp; controller.showAutomaticIcon(controller.settings.selectManualItens)" style="font-family: inherit;" class="btn btn-default pull-right fa fa"><strong>A</strong></span><span title="{{'l-show-automatic-items' | i18n}}" ng-click="controller.changeFilter($event, 'auto')" ng-if="controller.hasManualItems &amp;&amp; !controller.showAutomaticIcon(controller.settings.selectManualItens)" style="font-family: inherit;" class="btn btn-default pull-right fa fa">A</span>
+            </accordion-heading>
+            <div class="row">
+              <div ng-if="!settings.show" set-width="set-width" id="quadro" class="horizontal-scroll">
+                <kanban-stack ng-repeat="item in controller.listKanban | filter: { itemManual : controller.settings.selectManualItens} | stackOrder : controller.settings.order : controller.quantifyPriority" item="item" item-click="controller.openItemDetail" send-item-to-queue="controller.sendCardToQueue">                       div.board-settings(ng-if="settings.show")</kanban-stack>
+              </div>
+            </div>
+            <div ng-if="settings.show" class="board-settings">
+              <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                  <h3>{{'l-settings' | i18n}}</h3>
+                  <h4>{{'l-ordinations' | i18n}}</h4>
+                  <div class="row btn-group col-xs-12">
+                    <label ng-model="settings.order" btn-radio="'priority'" class="btn btn-default col-xs-6 col-md-3">{{'l-pareto' | i18n}}</label>
+                    <label ng-model="settings.order" btn-radio="'name'" class="btn btn-default col-xs-6 col-md-3">{{'l-name' | i18n}}</label>
+                  </div>
+                  <h4>{{'l-presentation' | i18n}}</h4>
+                  <div class="row btn-group col-xs-12">
+                    <label ng-model="settings.manualItems" btn-checkbox="btn-checkbox" class="btn btn-default col-xs-6 col-md-3">{{'l-items-manuals' | i18n}}</label>
+                    <label ng-model="settings.automaticItems" btn-checkbox="btn-checkbox" class="btn btn-default col-xs-6 col-md-3">{{'l-automatic-items' | i18n}}</label>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                  <h3>{{'l-actions' | i18n}}</h3>
+                  <h4>{{'l-production' | i18n}}</h4>
+                  <div class="row col-xs-12">
+                    <button class="btn btn-primary col-xs-12 col-md-6">{{'l-produce-items-manuals' | i18n}}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </accordion-group>
+        </accordion>
+      </div>
+      <div class="row">
+        <accordion class="col-xs-12">
+          <accordion-group is-open="true">
+            <accordion-heading>
+              <div class="fa fa-arrow-circle-left">&nbsp;</div><span style="font-size: 16px;font-family: inherit;font-weight: 500;line-height: 1.1;" class="btn">{{'l-programming-board' | i18n}}</span><span title="{{'l-unlock-cards' | i18n}}" ng-click="controller.UnlockCards($event)" ng-if="controller.shouldShowUnlockCardIcon()" class="btn btn-default pull-right fa fa-unlock"></span><span title="{{'l-block-cads-on-queue' | i18n}}" ng-click="controller.openQueueLock($event)" ng-if="controller.shouldShowLockCardIcon()" class="btn btn-default pull-right fa fa-lock"></span><span title="{{'l-delete-extra-cards' | i18n}}" ng-click="controller.deleteExtraCards($event)" ng-if="controller.onlyExtraCardsSelected()" class="btn btn-default pull-right fa fa-trash"></span>
+            </accordion-heading>
+            <div class="row"> 
+              <div class="col-xs-12 col-sm-2">
+                <div style="margin: auto;">
+                  <div style="width:100%" class="faixa-cartao">
+                    <div class="text-center">
+                      <field type="select" ng-model="controller.selected" label="{{'l-cell-workcenters' | i18n}}" required="required" class="col-md-12">
+                        <include>
+                          <ui-select-match>{{$select.selected.cod_chave_erp}}</ui-select-match>
+                          <ui-select-choices repeat="state in controller.worksCenter track by $index"><span data-ng-bind-html="state.cod_chave_erp | highlight: $select.search"></span></ui-select-choices>
+                        </include>
+                      </field>
+                    </div>
+                    <div class="text-center"><span class="fa fa-cog-4x"></span>
+                      <button ng-click="controller.produceOnCel();" style="margin-top: 10px" class="btn btn-primary">{{'l-to-produce' | i18n}}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-10">
+                <div class="horizontal-scroll">
+                  <div class="faixa-cartao faixa-fixa">
+                    <div class="text-center"><span>{{'l-fixed-range' | i18n}}</span></div>
+                    <div>
+                      <div data-ng-repeat="card in controller.listRangeFixed | orderBy: 'idi_ord_etiq'" class="cartao faixa-kanban-filled {{controller.colorCard(card.color)}}">
+                        <div class="cartao-label">
+                          <input type="checkbox" data-ng-model="card.checked"/><span>
+                            &nbsp;
+                            {{card.ttCartoesDs.ttItemDetDs.ttItemFilaDs | descGeneric:"{sku} ({exp.short})"}}</span>
+                        </div>
+                        <div ng-click="controller.checkCard(card)" ng-dblclick="controller.checkEveryCard(controller.listRangeAction.concat(controller.listRangeFixed), card)" class="cartao-conteudo is-pointer"><b>{{card.ttCartoesDs.ttItemDetDs.ttItemFilaDs | descGeneric:"{ref}"}}</b><span class="rounded-text hidden"><span class="fa fa-lock"></span></span><br/><br/><span class="rounded-text"><span>{{card.productionTime | prettyTime }}</span></span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="faixa-cartao"><span>&nbsp;</span>
+                    <div>
+                      <div data-ng-repeat="card in controller.listRangeBloqued | orderBy: 'idi_ord_etiq'" class="cartao faixa-kanban-filled {{controller.colorCard(card.color)}}">
+                        <div class="cartao-label">
+                          <input type="checkbox" data-ng-model="card.checked"/><span>
+                            &nbsp;
+                            {{card.ttCartoesDs.ttItemDetDs.ttItemFilaDs | descGeneric:"{sku} ({exp.short})"}}</span>
+                        </div>
+                        <div ng-click="controller.checkCard(card)" ng-dblclick="controller.checkEveryCard(controller.listRangeBloqued, card)" class="cartao-conteudo is-pointer"><b>{{card.ttCartoesDs.ttItemDetDs.ttItemFilaDs | descGeneric:"{ref}"}}</b><br/><span class="rounded-text"><span class="fa fa-lock"></span></span><br/><span class="rounded-text"><span>{{card.productionTime | prettyTime }}</span></span></div>
+                      </div>
+                      <div data-ng-repeat="card in controller.listRangeAction | orderBy: 'idi_ord_etiq' | filter: controller.horizonSizeComparator" class="cartao faixa-kanban-filled {{controller.colorCard(card.color)}}">
+                        <div class="cartao-label">
+                          <input type="checkbox" data-ng-model="card.checked"/><span>
+                            &nbsp;
+                            {{card.ttCartoesDs.ttItemDetDs.ttItemFilaDs | descGeneric:"{sku} ({exp.short})"}}</span>
+                        </div>
+                        <div ng-click="controller.checkCard(card)" ng-dblclick="controller.checkEveryCard(controller.listRangeAction.concat(controller.listRangeFixed), card)" class="cartao-conteudo is-pointer"><b>{{card.ttCartoesDs.ttItemDetDs.ttItemFilaDs | descGeneric:"{ref}"}}</b><span class="rounded-text hidden"><span class="fa fa-lock"></span></span><br/><br/><span class="rounded-text"><span>{{card.productionTime | prettyTime }}</span></span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12"><span style="text-decoration: underline; color: #787878" class="pull-right">
+                  {{controller.qtdCartoesSelecionados()}}
+                  &nbsp;<span ng-if="controller.qtdCartoesSelecionados() == 1">{{ "l-selected-card" | i18n }}</span><span ng-if="controller.qtdCartoesSelecionados() != 1">{{ "l-selected-cards" | i18n }}</span></span></div>
+            </div>
+          </accordion-group>
+        </accordion>
+      </div>
+      <div class="row">
+        <accordion class="col-xs-12">
+          <accordion-group is-open="true">
+            <accordion-heading>
+              <div class="fa fa-gears">&nbsp;</div><span style="font-size: 16px;font-family: inherit;font-weight: 500;line-height: 1.1;" class="btn">{{'l-production-board' | i18n}}</span>
+            </accordion-heading>
+            <div class="centro-trabalho">
+              <ul ng-model="controller.worksCenter" class="lista-centro-trabalho horizontal-scroll">
+                <li data-ng-repeat="work in controller.worksCenter" data-ng-click="controller.getWorkCenterModal(work)" class="is-pointer">
+                  <h4>{{work.cod_chave_erp}}</h4><i class="fa fa-cogs fa-5x"></i><span class="fraction-number"><sup ng-if="work.qtd_cartoes">{{work.qtd_cartoes}}</sup><sup ng-if="!work.qtd_cartoes">&nbsp; 0</sup></span>
+                </li>
+              </ul>
+            </div>
+            <div class="row btn-group-bottom">
+              <div class="col-xs-4 col-sm-6">
+                <button data-ng-click="controller.getTransportSku()" ng-disabled="controller.carryingSize==0" class="btn btn-primary btn-lg btn-max-width width-fill"><strong>{{controller.carryingSize}} &nbsp;</strong><span ng-if="controller.carryingSize == 1">{{"l-card-transport"| i18n}}</span><span ng-if="controller.carryingSize == 0 || controller.carryingSize &gt; 1">{{"l-cards-transport"| i18n}}</span>&nbsp;<i class="fa fa-truck fa-flip-horizontal"></i></button>
+              </div>
+              <div class="col-xs-4 col-sm-6">
+                <button data-ng-click="controller.getLockedSku()" ng-disabled="controller.blockedSize==0" class="btn btn-default btn-lg btn-max-width width-fill"><strong>{{controller.blockedSize}} &nbsp;</strong><span ng-if="controller.blockedSize == 1">{{"l-card-locked"| i18n}}</span><span ng-if="controller.blockedSize == 0 || controller.blockedSize &gt; 1">{{"l-cards-lock"| i18n}}</span>&nbsp;<i class="fa fa-lock"></i></button>
+              </div>
+            </div>
+          </accordion-group>
+        </accordion>
+      </div>
+    </totvs-page-detail>
+  </totvs-page-content>
+</totvs-page>

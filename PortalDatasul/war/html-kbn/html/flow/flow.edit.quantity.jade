@@ -1,0 +1,39 @@
+link(rel="stylesheet" href="/dts/kbn/css/field-addon.css")
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+
+totvs-modal-header
+    {{ 'l-edit-quantity' | i18n }}
+totvs-modal-body
+    .row
+        .col-xs-12.col-sm-12.col-md-12
+            .item-field
+                label {{'l-parent-item' | i18n}}:
+                span {{controller.relacItem.itemParentTitle}}
+        .col-xs-12.col-sm-12.col-md-12
+            .item-field
+                label {{'l-un' | i18n}}:
+                span {{controller.relacItem.undMedPai}}
+        field.col-xs-12.col-sm-12.col-md-3(
+            type="number",
+            ng-model="controller.relacItem.qtdPai",
+            maxlength="10",
+            label="{{ 'l-qtd-father' | i18n}}",
+            required)
+        totvs-divider
+        .col-xs-12.col-sm-12.col-md-12
+            .item-field
+                label {{'l-item-son' | i18n}}:
+                span {{controller.relacItem.itemSonTitle}}
+        .col-xs-12.col-sm-12.col-md-12
+            .item-field
+                label {{'l-un' | i18n}}:
+                span {{controller.relacItem.undMedFilho}}
+        field.col-xs-12.col-sm-12.col-md-3(
+            type="number",
+            ng-model="controller.relacItem.qtdFilho",
+            maxlength="10",
+            label="{{ 'l-qtd-son' | i18n}}",
+            required)
+totvs-modal-footer
+    button.btn.btn-default(ng-click="controller.cancel();") {{ 'l-cancel' | i18n }}
+    button.btn.btn-primary(ng-click="controller.save();") {{ 'l-save' | i18n }}

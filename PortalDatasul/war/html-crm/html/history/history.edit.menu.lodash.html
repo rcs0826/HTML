@@ -1,0 +1,52 @@
+<totvs-page type="edit">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/history/">{{ 'nav-history' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'btn-new-history' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'btn-new-history' | i18n: []: 'dts/crm' }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action hide-edit="true"
+													hide-remove="true"
+													hide-save-new="true"
+													on-save="controller.save"
+													on-cancel="controller.cancel">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+
+        <totvs-lodash-template src="/dts/crm/html/history/history.edit.content.html" 
+                               template-data="controller.accessRestriction"/>
+
+
+		<% if ((!data["panel-expense"] || data["panel-expense"].log_visivel === true)) { %>
+		<div ng-if="(controller.model.ttCampanha && controller.model.ttAcao) && (!controller.model.num_id || controller.model.num_id < 1)">
+            <div class="crm-group-accordion">
+                <accordion close-others="false">
+                    <accordion-group is-open="controller.group.expenses.open"
+                                    class="crm-panel"
+                                    id="panel-expense">
+                        <div ng-include="'/dts/crm/html/history/history.edit.content.expense.html'"></div>
+                    </accordion-group>
+                    <br/>
+                </accordion>
+            </div>
+		</div>
+		<% } %>
+		
+	</totvs-page-content>
+
+</totvs-page>

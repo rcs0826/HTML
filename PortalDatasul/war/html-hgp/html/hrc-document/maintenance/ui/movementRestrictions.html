@@ -1,0 +1,252 @@
+<style> 
+    .line-break{
+        white-space: normal !important;
+        word-wrap: break-word !important;
+    };
+</style>
+
+<div class="modal-header">
+    <h3 class="modal-title">Glosas ({{controller.procInsu.rotuloMovimento}})</h3>
+</div>
+<div class="modal-body">  
+    <totvs-page-form>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height" 
+             style="height: 370px; overflow-y: auto;">             
+            <totvs-page-content>
+                <totvs-table
+                    items="controller.restrictionsList"
+                    items-as="restriction"
+                    t-selectable="OFF"
+                    t-resizable="true">
+
+                    <column title=""
+                            width="30">
+                        <input type="checkbox" 
+                               ng-disabled="restriction.lgGlosaManual == false
+                                         || restriction.controller.action == 'DETAIL'"
+                               data-ng-model="restriction.selected">
+                    </column>
+
+                    <column title="Princ." width="50">
+                        <input type="radio" name="glosaPrincipal" 
+                               ng-disabled="restriction.controller.action !== 'EDIT'"
+                               ng-checked="{{restriction.lgGlosaPrincipal}}" 
+                               ng-click="restriction.controller.onChangeRestriction(restriction)" >
+                    </column>
+                    <column title="Glosa"
+                            width="200"
+							class="line-break">
+                        {{restriction.rotuloCodGlo}}
+                    </column>
+                    <column title="Classe Erro"
+                            width="200"
+							class="line-break">
+                        {{restriction.rotuloClasseErro}}
+                    </column>
+                    <column title="Qt. Glosada"
+                            width="90">
+                        {{restriction.qtMovimentosGlosados}}
+                    </column>
+                    <column title="Motivo Glosa"
+                            width="400"
+							class="line-break">
+                        {{restriction.dsMotivoGlosa}}
+                    </column>
+                    <column title="Quantit.Técnico" width="110">                            
+                        {{restriction.rotuloRegraQuanttivoTecn}}
+                    </column>
+                    <column title="Justificativa Reconsulta"
+                            width="300"
+                            class="line-break">
+                        {{restriction.desJustificativaReconsulta}}
+                    </column>
+
+                </totvs-table>
+            </totvs-page-content>
+
+            <h5 ng-if="controller.restrictionsList.length == 0"> Não existem glosas para serem mostradas</h5>
+
+            <h6 ng-if="controller.divisionMovementRestrictionsList.length > 0" 
+                style="font-style: italic;margin-bottom: 0px;">
+                Glosas do movimento de divisão de honorários
+            </h6>
+            <totvs-page-content ng-if="controller.divisionMovementRestrictionsList.length > 0">
+                <totvs-table
+                    items="controller.divisionMovementRestrictionsList"
+                    items-as="restriction"
+                    t-selectable="OFF"
+                    t-resizable="true">
+
+                    <column title=""
+                            width="30">
+                        <input type="checkbox" 
+                                ng-disabled="restriction.lgGlosaManual == false
+                                            || restriction.controller.action == 'DETAIL'"
+                                data-ng-model="restriction.selected">
+                    </column>
+
+                    <column title="Princ." width="50">
+                        <input type="radio" name="glosaPrincipal" 
+                                ng-disabled="restriction.controller.action !== 'EDIT'"
+                                ng-checked="{{restriction.lgGlosaPrincipal}}" 
+                                ng-click="restriction.controller.onChangeRestriction(restriction)" >
+                    </column>
+                    <column title="Glosa"
+                            width="200"
+							class="line-break">
+                        {{restriction.rotuloCodGlo}}
+                    </column>
+                    <column title="Classe Erro"
+                            width="200"
+							class="line-break">
+                        {{restriction.rotuloClasseErro}}
+                    </column>
+                    <column title="Qt. Glosada"
+                            width="90">
+                        {{restriction.qtMovimentosGlosados}}
+                    </column>
+                    <column title="Motivo Glosa"
+                            width="400"
+							class="line-break">
+                        {{restriction.dsMotivoGlosa}}
+                    </column>
+                    <column title="Quantit.Técnico" width="110">
+                        {{restriction.rotuloRegraQuanttivoTecn}}
+                    </column>
+                    <column title="Justificativa Reconsulta"
+                            width="300"
+                            class="line-break">
+                        {{restriction.desJustificativaReconsulta}}
+                    </column>
+
+                </totvs-table>
+            </totvs-page-content>            
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height">
+            <a role="button" class="btn btn-favorite" style="float: right"
+                ng-click="controller.addManualRestriction()"
+                ng-if="controller.action !== 'DETAIL'">
+                + Adicionar Glosa Manual
+            </a>
+             <a role="button" class="btn btn-favorite" style="float: right"
+                ng-click="controller.removeManualRestriction()"
+                ng-if="controller.action !== 'DETAIL'
+                    && controller.qtdeGlosaManual > 0">
+                Desfazer Glosa Manual
+            </a>
+        </div>
+
+        <div class="restrictionDiv" style="border: 2px solid #424c4e;; width: 50%; height: auto; position: 
+                                          absolute; margin-left: 120px; margin-top: 15px; visibility: visible; 
+                                          display: block; background-color: white; z-index: 3;">
+            <totvs-modal-header>
+                Glosa Manual
+            </totvs-modal-header>
+
+            <totvs-modal-body>
+                <div class="divBody" style="width: 100%; height: 270px;">
+                    <totvs-field totvs-select
+                           canclean required
+                           ng-model="controller.manualRestriction"
+                           class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                           label="Glosa"
+                           select-service="hrc.restrictionZoomController"
+                           zoom-service="hrc.restrictionZoomController"
+                           select-init="{filters: controller.filters}"
+                           zoom-init="{filters: controller.filters}"
+                           select-id="cdCodGlo" 
+                           select-description="dsCodGlo"
+                           ng-change="controller.onSelectRestriction()"
+						               return-object>
+                    </totvs-field>
+
+					          <totvs-page-detail class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+					          	<totvs-page-detail-info 
+					          		class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+					          		title="Classe de Erro"
+					          		value="{{controller.restriction.rotuloClasseErro}}">
+					          	</totvs-page-detail-info>
+					          </totvs-page-detail>
+
+                    <field type="decimal"
+                           label="Qtde Glosada"
+                           data-ng-model="controller.manualRestriction.qtGlosar"
+                           data-v-max="9999"
+                           m-dec="0"
+                           ng-if="controller.restriction.lgGlosaFracionamento == true
+                               && controller.procInsu.tpMovimento == 'PROC'"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    </field>
+
+                    <field type="decimal"
+                           label="Qtde Glosada"
+                           data-ng-model="controller.manualRestriction.qtGlosar"
+                           data-v-max="999.999" 
+                           m-dec="4"
+                           ng-if="controller.restriction.lgGlosaFracionamento == true
+                               && controller.procInsu.tpMovimento == 'INSU'"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    </field>
+
+                    <field type="textarea" style="width:100%;" 
+                           ng-model="controller.manualRestriction.dsMotivoGlosa">
+                        <label>Motivo</label>
+                    </field> 
+                </div>
+            </totvs-modal-body>
+            
+            <totvs-modal-footer>
+                <button class="btn col-sm-height" ng-click="controller.closeManualRestriction()">Cancelar</button>
+                <button class="btn col-sm-height" ng-click="controller.setManualRestriction()">Aplicar</button>
+            </totvs-modal-footer>
+        </div>
+
+        <totvs-divider></totvs-divider>
+
+        <field type="checkbox"
+               class="col-lg-2 col-md-2 col-sm-2 col-xs-2"
+               label="Validação Posterior"
+               data-ng-model="controller.lgValidacaoPosterior"
+               ng-if="(controller.restrictionsList.length > 0
+                     || controller.divisionMovementRestrictionsList.length > 0)
+                     && controller.action != 'DETAIL'">
+        </field>
+
+        <field type="combo"
+               class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+               ng-model="controller.cdTipoCob"
+               ng-options="v.data as v.label for v in controller.billingValidationValues"
+               ng-disabled="(controller.restrictionsList.length == 0
+                          && controller.divisionMovementRestrictionsList.length == 0) 
+                         || controller.action == 'DETAIL'"
+               ng-if="controller.lgValidacaoPosterior != true"
+               required>
+            <label>Validação para Cobrança</label>
+        </field>
+
+        <field type="combo"
+               class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+               ng-model="controller.cdTipoPagamento"
+               ng-options="v.data as v.label for v in controller.paymentValidationValues"
+               ng-disabled="(controller.restrictionsList.length == 0
+                          && controller.divisionMovementRestrictionsList.length == 0)
+                         || controller.action == 'DETAIL'"
+               ng-if="controller.lgValidacaoPosterior != true"
+               required>
+            <label>Validação para Pagamento</label>
+        </field>
+
+    </totvs-page-form>
+</div>
+<div class="modal-footer">
+    <button class="btn" ng-click="controller.cancel()">{{controller.action !== 'DETAIL' ? 'Cancelar' : 'Fechar'}}</button>
+    <button class="btn btn-primary" 
+            ng-click="controller.save()" 
+            ng-disabled="!(controller.removedRestrictions.length > 0)
+                      && !(controller.restrictionsList.length > 0)
+                      && !(controller.divisionMovementRestrictionsList.length > 0)
+                      ||   controller.action == 'DETAIL'">
+            Salvar
+    </button>
+</div>

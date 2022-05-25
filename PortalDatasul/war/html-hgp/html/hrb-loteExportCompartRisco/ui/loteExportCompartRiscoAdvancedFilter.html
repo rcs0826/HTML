@@ -1,0 +1,58 @@
+<totvs-modal-header>
+        Busca Avançada
+    </totvs-modal-header>
+    <totvs-modal-body style="height: 180px; overflow-y: auto;">
+        <fieldset>
+                <totvs-field totvs-select 
+                        ng-model="afController.model.cdUnidadeDestino"
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Unidade Destino" canclean
+                        select-service="hcg.unitZoomController"
+                        zoom-service="hcg.unitZoomController"
+                        select-id="cdUnimed" 
+                        select-description="nmUnimed">
+                </totvs-field>
+                <field
+                        class="col-lg-2 col-md-2 col-sm-4 col-xs-12"
+                        type="input"
+                        numbers-only
+                        ng-model="afController.model.nrLoteExp"
+                        placeholder="1"
+                        maxlength="8"                
+                        label="Numero do Lote">
+                </field>   
+                <field type="input"
+                        label="fake" style="visibility: hidden"
+                        class="col-lg-4 col-md-4 col-sm-4 hidden-xs">
+                </field> 
+                <totvs-field totvs-datepicker
+                        class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                        label="Data de Exportação Inicial"
+                        format="dd/MM/yyyy"
+                        ng-model="afController.model.dtExportacaoLoteInic"
+                        culture="pt"
+                        canclean
+                        ng-show="true"
+                        ng-blur="afController.changeRange('dtExportacaoLoteInic','dtExportacaoLoteFim')">
+                </totvs-field>
+                <totvs-field totvs-datepicker
+                        class="col-lg-3 col-md-3 col-sm-4 col-xs-12"
+                        label="Data de Exportação Final"
+                        format="dd/MM/yyyy"
+                        ng-model="afController.model.dtExportacaoLoteFim"
+                        culture="pt"
+                        canclean
+                        ng-show="true"
+                        ng-blur="afController.changeRange('dtExportacaoLoteInic','dtExportacaoLoteFim')">
+                </totvs-field>      
+            
+        </fieldset>
+    </totvs-modal-body>
+    
+    <totvs-modal-footer>
+        <button class="btn" ng-click="afController.cleanFields()">Limpar Campos</button>
+        <button class="btn" ng-click="afController.cancel()">Cancelar</button>
+        <button class="btn btn-primary" ng-click="afController.search()">Buscar</button>
+    </totvs-modal-footer>
+    
+    

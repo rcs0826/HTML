@@ -1,0 +1,29 @@
+<totvs-modal-header>
+	{{ 'nav-wizard' | i18n: []: 'dts/crm' }}: {{controller.wizardTitle}}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-page-detail class="row crm-page-details">
+
+		<div class="col-xs-12 no-gutter"
+			 ng-repeat="model in controller.configur track by $index">
+
+			<div ng-if="controller.wizardTo === 'activeUserGroupTask'"
+				 ng-include="'/dts/crm/html/wizard/wizard.task.user.group.html'"></div>
+
+		</div>
+
+	</totvs-page-detail>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-default" ng-click="controller.previous()"
+			ng-if="controller.page > 1">{{ 'btn-previous' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.next()"
+			ng-if="controller.lastPage > controller.page">{{ 'btn-next' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()"
+			ng-if="controller.lastPage <= controller.page">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

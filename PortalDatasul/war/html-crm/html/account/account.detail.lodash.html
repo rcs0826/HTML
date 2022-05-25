@@ -1,0 +1,1061 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/account/">{{'nav-account' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title
+				ng-class="[(controller.model.log_matriz ? 'crm-matriz' : '')]"
+				class="col-xs-12 col-sm-10 col-md-10"
+				title="{{ controller.model.nom_razao_social }}
+					   {{ (controller.model.cod_pessoa_erp ? '(' + controller.model.cod_pessoa_erp + ')' : '') }}
+					   {{ (controller.model.cod_pessoa_gpl ? '{' + controller.model.cod_pessoa_gpl + '}' : '') }}"
+			>
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action hide-back="{{controller.isSourceMpd}}"
+													on-back-link="#/dts/crm/account/"
+													<% if ((!data["btn-edit"] || data["btn-edit"].log_visivel === true)) { %>
+													on-edit="controller.onEdit"
+													hide-edit="{{ (controller.model.log_acesso !== true)}}"
+													<% } else { %>
+													hide-edit="true"
+													<% } %>
+													hide-remove="true">
+					<% if ((!data["btn-print-relationship"] || data["btn-print-relationship"].log_visivel === true)) { %>
+					<action icon="glyphicon-print"
+							ng-click="controller.printContactRelationship(controller.model.num_id)"
+							ng-if="controller.model.log_acesso && (controller.model.idi_tip_cta >= 6 || controller.model.idi_tip_cta === 3)">
+						{{ 'btn-print-relationship' | i18n: []: 'dts/crm' }}
+					</action>
+					<% } %>
+					<% if ((!data["btn-detail-erp"] || data["btn-detail-erp"].log_visivel === true)) { %>
+					<action icon="glyphicon-list-alt"
+							href="{{controller.isPortalAccessContext() ? '#/dts/mpd/customer/' + controller.model.cod_pessoa_erp : '#/dts/mpd/internalcustomerdetail/' + controller.model.cod_pessoa_erp}}"
+							target="_self"
+							ng-if="(controller.model.cod_pessoa_erp) && (controller.isIntegratedWithEMS === true) && (controller.isIntegratedWithERP === true)">
+						{{ 'btn-detail-erp' | i18n: []: 'dts/crm' }}
+					</action>
+					<% } %>
+					<% if ((!data["btn-convert"] || data["btn-convert"].log_visivel === true)) { %>
+					<action icon="glyphicon-ok"
+							ng-click="controller.onEdit(true)"
+							ng-if="(controller.model.idi_tip_cta === 1 && controller.model.log_acesso === true)">
+						{{ 'btn-convert' | i18n: []: 'dts/crm' }}
+					</action>
+					<% } %>
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert
+			ng-if="(controller.model | isUndefined)"
+			type="info"
+			message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}">
+		</totvs-page-alert>
+
+		<totvs-page-alert
+			ng-if="controller.model.log_acesso === false"
+			type="info"
+			message="{{ 'msg-access-denied' | i18n: []: 'dts/crm' }}">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-if="(controller.model | isDefined) && controller.model.log_acesso !== false">
+
+			<% if ((!data["l-type-account"] || data["l-type-account"].log_visivel === true)
+				|| (!data["l-type-client"] || data["l-type-client"].log_visivel === true)
+				|| (!data["l-cpf"] || data["l-cpf"].log_visivel === true)
+				|| (!data["l-cnpj"] || data["l-cnpj"].log_visivel === true)) { %>
+			<div class="col-xs-12 no-gutter">
+
+				<% if ((!data["l-status"] || data["l-status"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-status' | i18n }}">
+					{{ controller.model.nom_status }}
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-type-account"] || data["l-type-account"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-type-account' | i18n: []: 'dts/crm' }} / {{ 'l-nature' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_tip_cta }} - {{ controller.model.nom_tip_pessoa }}
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-type-client"] || data["l-type-client"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-type-client' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.ttTipoCliente.nom_tip_clien }}
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-cpf"] || data["l-cpf"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					ng-if="controller.model.nom_cpf.length > 0 && controller.model.idi_tip_pessoa === 1"
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-cpf' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_cpf | mask : '999.999.999-99' }}
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-cnpj"] || data["l-cnpj"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					ng-if="controller.model.nom_cnpj.length > 0 && controller.model.idi_tip_pessoa > 1"
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-cnpj' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_cnpj | mask : '99.999.999/9999-99' }}
+				</totvs-page-detail-info>
+				<% } %>
+
+
+			</div>
+			<% } %>
+
+			<% if ((!data["l-nick-name"] || data["l-nick-name"].log_visivel === true)
+				|| (!data["l-informal-name"] || data["l-informal-name"].log_visivel === true)
+				|| (!data["l-group-client"] || data["l-group-client"].log_visivel === true)
+				|| (!data["l-user-responsible"] || data["l-user-responsible"].log_visivel === true)) { %>
+			<div class="col-xs-12 no-gutter">
+
+				<% if ((!data["l-nick-name"] || data["l-nick-name"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-nick-name' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_abrev }}
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-informal-name"] || data["l-informal-name"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-informal-name' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_infml }}
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-group-client"] || data["l-group-client"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-group-client' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.ttGrupoCliente.nom_grp_clien }}
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-user-responsible"] || data["l-user-responsible"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}">
+					<a role="button"
+					   ng-if="controller.model.ttResponsavel"
+					   ng-click="controller.openUserSummary()">
+						{{ controller.model.ttResponsavel.nom_usuar }}
+					</a>
+				</totvs-page-detail-info>
+				<% } %>
+
+			</div>
+			<% } %>
+
+			<% if ((!data["l-rfv"] || data["l-rfv"].log_visivel === true)
+				|| (!data["l-email"] || data["l-email"].log_visivel === true)
+				|| (!data["l-email-2"] || data["l-email-2"].log_visivel === true)
+				|| (!data["l-seller"] || data["l-seller"].log_visivel === true)
+				|| (!data["l-category"] || data["l-category"].log_visivel === true)) { %>
+			<div class="col-xs-12 no-gutter">
+
+				<% if ((!data["l-category"] || data["l-category"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					ng-if="controller.model.idi_tip_cta !== 1 && controller.model.idi_tip_cta !== 3"
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-category' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.nom_categ_clien }}
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-rfv"] || data["l-rfv"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-rfv' | i18n: []: 'dts/crm' }}">
+					<a role="button"
+					   ng-if="controller.model.log_acesso === true && controller.model.val_recenc_freq_val"
+					   ng-click="controller.openPrfvSummary(controller.model)">
+					   {{ controller.model.val_recenc_freq_val }}
+					</a>
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-email"] || data["l-email"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-email' | i18n: []: 'dts/crm' }}"
+					ng-if="controller.model.nom_email_1 && controller.model.nom_email_1 !== ''">
+					<a href="mailto:{{controller.model.nom_email_1}}">
+						{{ controller.model.nom_email_1 }}
+					</a>
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-email-2"] || data["l-email-2"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-email-2' | i18n: []: 'dts/crm' }}"
+					ng-if="controller.model.nom_email_2 && controller.model.nom_email_2 !== ''">
+					<a href="mailto:{{controller.model.nom_email_2}}">
+						{{ controller.model.nom_email_2 }}
+					</a>
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-seller"] || data["l-seller"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-seller' | i18n: []: 'dts/crm' }}">
+					{{ controller.model.ttRepresentante.nom_repres }}
+					<span ng-if="controller.model.ttRepresentante.log_integrad_erp"> (ERP)</span>
+				</totvs-page-detail-info>
+				<% } %>
+			</div>
+			<% } %>
+
+			<div class="col-xs-12 no-gutter">
+				<% if ((!data["l-last-purchase-date"] || data["l-last-purchase-date"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-last-purchase-date' | i18n: []: 'dts/crm' }}">
+					{{ (controller.model.ttPessoaComp && controller.model.ttPessoaComp.dat_ult_compra) ? controller.model.ttPessoaComp.dat_ult_compra : '' | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-last-purchase-value"] || data["l-last-purchase-value"].log_visivel === true)) { %>
+				<totvs-page-detail-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-last-purchase-value' | i18n: []: 'dts/crm' }}">
+					{{ (controller.model.ttPessoaComp && controller.model.ttPessoaComp.val_ult_compra) ? controller.model.ttPessoaComp.val_ult_compra : '' | number : 2}}
+				</totvs-page-detail-info>
+				<% } %>
+
+				<% if ((!data["l-financial-situation"] || data["l-financial-situation"].log_visivel === true)) { %>
+				<totvs-page-detail-info ng-if="controller.model.cod_pessoa_erp && controller.model.cod_pessoa_erp.length > 0"
+										class="col-xs-12 col-sm-6 col-md-3"
+										title="{{ 'l-financial-situation' | i18n: []: 'dts/crm' }}">
+					<span ng-if="controller.financialStatusLastExecution">
+						<i class="glyphicon glyphicon-info-sign"
+						   tooltip-placement="top"
+						   tooltip-html="controller.financialStatusLastExecution"></i>
+						<span ng-if="controller.model.log_inadimpte === true" class="label label-warning">{{ 'l-overdue' | i18n: []: 'dts/crm' }}</span>
+						<span ng-if="!controller.model.log_inadimpte" >
+							{{ 'l-defaulter' | i18n: []: 'dts/crm' }}
+						</span>
+					</span>
+					<span ng-if="!controller.financialStatusLastExecution">
+						{{ 'l-not-calculated' | i18n: []: 'dts/crm' }}
+					</span>
+				</totvs-page-detail-info>
+				<% } %>
+			</div>
+
+			<% if ((!data["nav-phones"] || data["nav-phones"].log_visivel === true)
+				|| (!data["nav-addresses"] || data["nav-addresses"].log_visivel === true)
+				|| (!data["nav-custom-field"] || data["nav-custom-field"].log_visivel === true)) { %>
+			<div class="col-xs-12 crm-group-accordion">
+
+				<totvs-divider style="margin-top: 0px; margin-bottom: 10px;"></totvs-divider>
+
+                <div class="crm-group-accordion">
+                    <accordion close-others="false">
+
+                        <% if ((!data["nav-custom-field"] || data["nav-custom-field"].log_visivel === true)) { %>
+                        <div ng-controller="crm.attribute.tab.control as attributeController">
+
+                            <accordion-group is-open="controller.group.attribute.open"
+                                            class="crm-panel"
+                                            ng-if="(attributeController.listOfAttribute.length > 0 && controller.model.idi_tip_cta !== 3)">
+                                <accordion-heading>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            {{ 'nav-custom-field' | i18n: []: 'dts/crm' }} ({{ attributeController.listOfAttributeCount }})
+                                            <i class="pull-right glyphicon"
+                                            ng-class="{'glyphicon-chevron-down' :  controller.group.attribute.open,
+                                                        'glyphicon-chevron-right': !controller.group.attribute.open}">
+                                            </i>
+                                        </div>
+                                    </div>
+                                </accordion-heading>
+
+                                <div class="row" ng-include="'/dts/crm/html/attribute/attribute.tab.html'"></div>
+
+                            </accordion-group>
+
+                        </div>
+                        <% } %>
+
+                        <% if ((!data["nav-phones"] || data["nav-phones"].log_visivel === true)) { %>
+                        <div ng-controller="crm.account-phone.tab.control as phoneController">
+
+                            <accordion-group is-open="controller.group.phone.open"
+                                            class="crm-panel">
+
+                                    <accordion-heading>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                {{ 'l-phones' | i18n: []: 'dts/crm' }} ({{ phoneController.listOfPhoneCount }})
+                                                <i class="pull-right glyphicon"
+                                                ng-class="{'glyphicon-chevron-down' :  controller.group.phone.open,
+                                                            'glyphicon-chevron-right': !controller.group.phone.open}">
+                                                </i>
+                                            </div>
+                                        </div>
+                                    </accordion-heading>
+
+                                <div class="row" ng-include="'/dts/crm/html/account/phone/phone.tab.html'"></div>
+
+                            </accordion-group>
+
+                        </div>
+                        <% } %>
+
+                        <% if ((!data["nav-addresses"] || data["nav-addresses"].log_visivel === true)) { %>
+                        <div ng-controller="crm.account-address.tab.control as addressController">
+
+                            <accordion-group is-open="controller.group.address.open"
+                                            class="crm-panel">
+
+                                <accordion-heading>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            {{ 'l-addresses' | i18n: []: 'dts/crm' }} ({{ addressController.listOfAddressCount }})
+                                            <i class="pull-right glyphicon"
+                                            ng-class="{'glyphicon-chevron-down' :  controller.group.addresses.open,
+                                                        'glyphicon-chevron-right': !controller.group.addresses.open}">
+                                            </i>
+                                        </div>
+                                    </div>
+                                </accordion-heading>
+
+                                <div class="row" ng-include="'/dts/crm/html/account/address/address.tab.html'"></div>
+
+                            </accordion-group>
+
+                        </div>
+                        <% } %>
+
+                    </accordion>
+                </div>
+
+				<totvs-divider style="margin-top: 10px;"></totvs-divider>
+
+			</div>
+			<% } %>
+
+			<% if ((!data["nav-complement"] || data["nav-complement"].log_visivel === true)
+				|| (!data["nav-history"] || data["nav-history"].log_visivel === true)
+				|| (!data["nav-task"] || data["nav-task"].log_visivel === true)
+				|| (!data["nav-ticket"] || data["nav-ticket"].log_visivel === true)
+				|| (!data["nav-opportunity"] || data["nav-opportunity"].log_visivel === true)
+				|| (!data["nav-attachment"] || data["nav-attachment"].log_visivel === true)
+				|| (!data["nav-contact"] || data["nav-contact"].log_visivel === true)
+				|| (!data["nav-potential"] || data["nav-potential"].log_visivel === true)
+				|| (!data["nav-style"] || data["nav-style"].log_visivel === true)
+				|| (!data["nav-observation"] || data["nav-observation"].log_visivel === true)) { %>
+			<totvs-tabset>
+
+				<% if ((!data["nav-complement"] || data["nav-complement"].log_visivel === true)) { %>
+				<totvs-tab heading="{{ 'l-complement' | i18n: []: 'dts/crm' }}">
+
+					<br>
+
+					<% if ((!data["l-date-birth"] || data["l-date-birth"].log_visivel === true)
+						|| (!data["l-date-foundation"] || data["l-date-foundation"].log_visivel === true)
+						|| (!data["l-user-create"] || data["l-user-create"].log_visivel === true)
+						|| (!data["l-parent-company"] || data["l-parent-company"].log_visivel === true)
+						|| (!data["l-access-level"] || data["l-access-level"].log_visivel === true)) { %>
+					<div class="col-xs-12 no-gutter">
+
+						<% if ((!data["l-date-birth"] || data["l-date-birth"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							ng-if="controller.model.idi_tip_pessoa === 1"
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-date-birth' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.dat_nascimento | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-date-foundation"] || data["l-date-foundation"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							ng-if="controller.model.idi_tip_pessoa !== 1"
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-date-foundation' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.dat_nascimento | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-user-create"] || data["l-user-create"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-user-open' | i18n: []: 'dts/crm' }}">
+							<a role="button"
+							   ng-if="controller.model.ttUsuarioCadastro"
+							   ng-click="controller.openUserSummary(controller.model.ttUsuarioCadastro)">
+								{{ controller.model.ttUsuarioCadastro.nom_usuar }}
+							</a>
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-parent-company"] || data["l-parent-company"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-parent-company' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.nom_empres_matriz }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-access-level"] || data["l-access-level"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-access-level' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.nom_niv_aces }}
+						</totvs-page-detail-info>
+						<% } %>
+
+					</div>
+					<% } %>
+
+					<% if ((!data["l-carrier"] || data["l-carrier"].log_visivel === true)
+						|| (!data["l-date-create"] || data["l-date-create"].log_visivel === true)
+						|| (!data["l-date-update"] || data["l-date-update"].log_visivel === true)
+						|| (!data["l-channel-sales"] || data["l-channel-sales"].log_visivel === true)) { %>
+					<div class="col-xs-12 no-gutter">
+
+						<% if ((!data["l-carrier"] || data["l-carrier"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-carrier' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.ttTransportadora.nom_transpdor }}
+							<span ng-if="controller.model.ttTransportadora.log_integrad_erp"> (ERP)</span>
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-date-create"] || data["l-date-create"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-date-create' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.dat_cadastro | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-date-update"] || data["l-date-update"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-date-update' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.dat_atualiz | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-channel-sales"] || data["l-channel-sales"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-channel-sales' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.nom_canal_vda }}
+						</totvs-page-detail-info>
+						<% } %>
+
+					</div>
+					<% } %>
+
+					<% if ((!data["l-font"] || data["l-font"].log_visivel === true)
+						|| (!data["l-home-page"] || data["l-home-page"].log_visivel === true)
+						|| (!data["l-best-time"] || data["l-best-time"].log_visivel === true)
+						|| (!data["l-integrates-outlook"] || data["l-integrates-outlook"].log_visivel === true)) { %>
+					<div class="col-xs-12 no-gutter">
+
+						<% if ((!data["l-font"] || data["l-font"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-font' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.ttFonte.nom_fonte }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-home-page"] || data["l-home-page"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-home-page' | i18n: []: 'dts/crm' }}">
+							<a href="http://{{ controller.model.nom_home_page }}" target="_blank">
+							   {{ controller.model.nom_home_page }}
+							</a>
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-best-time"] || data["l-best-time"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-best-time' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.ttHorario.nom_horar_atendim }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-integrates-outlook"] || data["l-integrates-outlook"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-integrates-outlook' | i18n: []: 'dts/crm' }}">
+							{{ (controller.model.log_integrad_outlook === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+						</totvs-page-detail-info>
+						<% } %>
+
+					</div>
+					<% } %>
+
+					<% if ((!data["l-activity-line"] || data["l-activity-line"].log_visivel === true)
+						|| (!data["l-rating"] || data["l-rating"].log_visivel === true)
+						|| (!data["l-price-table"] || data["l-price-table"].log_visivel === true)
+						|| (!data["l-type-freight"] || data["l-type-freight"].log_visivel === true)) { %>
+					<div class="col-xs-12 no-gutter">
+
+						<% if ((!data["l-activity-line"] || data["l-activity-line"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-activity-line' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.ttRamoAtividade.nom_ramo_ativid }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-rating"] || data["l-rating"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-rating' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.ttClassificacao.nom_clas_clien }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-price-table"] || data["l-price-table"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-price-table' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.ttTabelaPreco.nom_tab_preco }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-type-freight"] || data["l-type-freight"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-type-freight' | i18n: []: 'dts/crm' }}">
+							{{ (controller.model.idi_cif_fob === 1 ? 'l-cif' : 'l-fob') | i18n: []: 'dts/crm' }}
+						</totvs-page-detail-info>
+						<% } %>
+
+					</div>
+					<% } %>
+
+					<% if ((!data["l-locked-sale"] || data["l-locked-sale"].log_visivel === true)
+						|| (!data["l-credit-checks"] || data["l-credit-checks"].log_visivel === true)
+						|| (!data["l-allows-billing"] || data["l-allows-billing"].log_visivel === true)
+						|| (!data["l-previous-type-account"] || data["l-previous-type-account"].log_visivel === true)) { %>
+					<div class="col-xs-12 no-gutter">
+
+						<% if ((!data["l-previous-type-account"] || data["l-previous-type-account"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							ng-if="controller.model.nom_tip_cta_ant"
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-previous-type-account' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.nom_tip_cta_ant }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-locked-sale"] || data["l-locked-sale"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-locked-sale' | i18n: []: 'dts/crm' }}">
+							{{ (controller.model.log_bloqdo_vda === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-credit-checks"] || data["l-credit-checks"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-credit-checks' | i18n: []: 'dts/crm' }}">
+							{{ (controller.model.creditChecks === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-allows-billing"] || data["l-allows-billing"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-allows-billing' | i18n: []: 'dts/crm' }}">
+							{{ (controller.model.log_permite_fatur_sem_cnpj === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+						</totvs-page-detail-info>
+						<% } %>
+
+					</div>
+					<% } %>
+
+					<% if ((!data["l-sex"] || data["l-sex"].log_visivel === true)
+						|| (!data["l-civil-status"] || data["l-civil-status"].log_visivel === true)
+						|| (!data["l-decision-level"] || data["l-decision-level"].log_visivel === true)) { %>
+					<div class="col-xs-12 no-gutter"
+						 ng-if="controller.model.idi_tip_pessoa === 1">
+
+						<% if ((!data["l-sex"] || data["l-sex"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-sex' | i18n: []: 'dts/crm' }}">
+							<span ng-if="controller.model.idi_sexo === 1">{{ 'l-male'   | i18n: []: 'dts/crm' }}</span>
+							<span ng-if="controller.model.idi_sexo === 2">{{ 'l-female' | i18n: []: 'dts/crm' }}</span>
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-civil-status"] || data["l-civil-status"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-civil-status' | i18n: []: 'dts/crm' }}"
+							ng-if="controller.model.idi_tip_pessoa === 1">
+							{{ controller.model.ttEstadoCivil.nom_estado_civil }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-decision-level"] || data["l-decision-level"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-decision-level' | i18n: []: 'dts/crm' }}"
+							ng-if="controller.model.idi_tip_cta !== 1">
+							{{ controller.model.ttEstadoCivil.nom_niv_decis }}
+						</totvs-page-detail-info>
+						<% } %>
+
+					</div>
+					<% } %>
+
+					<% if ((!data["l-company"] || data["l-company"].log_visivel === true)
+						|| (!data["l-department"] || data["l-department"].log_visivel === true)
+						|| (!data["l-occupation"] || data["l-occupation"].log_visivel === true)
+						|| (!data["l-profession"] || data["l-profession"].log_visivel === true)) { %>
+					<div class="col-xs-12 no-gutter"
+						 ng-if="controller.model.idi_tip_pessoa === 1 && controller.model.idi_tip_cta !== 1">
+
+						<% if ((!data["l-company"] || data["l-company"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-company' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.nom_empres_func }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-department"] || data["l-department"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-department' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.ttDepartamento.nom_departamento }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-occupation"] || data["l-occupation"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-occupation' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.ttOcupacao.nom_ocupac }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-profession"] || data["l-profession"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-profession' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.ttProfissao.nom_profissao }}
+						</totvs-page-detail-info>
+						<% } %>
+
+					</div>
+					<% } %>
+
+					<% if ((!data["l-rg"] || data["l-rg"].log_visivel === true)
+						|| (!data["l-emitting-organ"] || data["l-emitting-organ"].log_visivel === true)
+						|| (!data["l-date-emission"] || data["l-date-emission"].log_visivel === true)) { %>
+					<div class="col-xs-12 no-gutter"
+						 ng-if="controller.model.idi_tip_pessoa === 1">
+
+						<% if ((!data["l-rg"] || data["l-rg"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-rg' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.nom_reg_geral }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-emitting-organ"] || data["l-emitting-organ"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-emitting-organ' | i18n: []: 'dts/crm' }}"
+							ng-if="controller.model.idi_tip_pessoa === 1">
+							{{ controller.model.nom_orgao_emissor_identde }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-date-emission"] || data["l-date-emission"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-date-emission' | i18n: []: 'dts/crm' }}"
+							ng-if="controller.model.idi_tip_pessoa === 1">
+							{{ controller.model.dat_emis_docto_identde | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+						</totvs-page-detail-info>
+						<% } %>
+
+					</div>
+					<% } %>
+
+					<% if ((!data["l-resale"] || data["l-resale"].log_visivel === true)
+						|| (!data["l-municipal-registration"] || data["l-municipal-registration"].log_visivel === true)
+						|| (!data["l-competing-brand"] || data["l-competing-brand"].log_visivel === true)
+						|| (!data["l-foreign"] || data["l-foreign"].log_visivel === true)) { %>
+					<div class="col-xs-12 no-gutter"
+						 ng-if="controller.model.idi_tip_pessoa !== 1">
+
+						<% if ((!data["l-resale"] || data["l-resale"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-resale' | i18n: []: 'dts/crm' }}">
+							{{ (controller.model.log_reven === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-municipal-registration"] || data["l-municipal-registration"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-municipal-registration' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.nom_inscr_munic }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-competing-brand"] || data["l-competing-brand"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							ng-if="controller.model.idi_tip_pessoa !== 1"
+							title="{{ 'l-competing-brand' | i18n: []: 'dts/crm' }}">
+							{{ (controller.model.log_concorrente === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-foreign"] || data["l-foreign"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							ng-if="controller.model.idi_tip_pessoa !== 1"
+							title="{{ 'l-foreign' | i18n: []: 'dts/crm' }}">
+							{{ (controller.model.log_estrang === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+						</totvs-page-detail-info>
+						<% } %>
+
+					</div>
+					<% } %>
+
+					<% if ((!data["l-trading"] || data["l-trading"].log_visivel === true)
+						|| (!data["l-exempt-icms"] || data["l-exempt-icms"].log_visivel === true)
+						|| (!data["l-exempt-ipi"] || data["l-exempt-ipi"].log_visivel === true)) { %>
+					<div class="col-xs-12 no-gutter"
+						 ng-if="controller.model.idi_tip_pessoa === 2 && controller.model.idi_tip_cta !== 1">
+
+						<% if ((!data["l-trading"] || data["l-trading"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							ng-if="controller.model.idi_tip_pessoa !== 1"
+							title="{{ 'l-trading' | i18n: []: 'dts/crm' }}">
+							{{ (controller.model.log_trading === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-exempt-icms"] || data["l-exempt-icms"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-exempt-icms' | i18n: []: 'dts/crm' }}">
+							{{ (controller.model.log_isento_icms === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-exempt-ipi"] || data["l-exempt-ipi"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-exempt-ipi' | i18n: []: 'dts/crm' }}">
+							{{ (controller.model.log_isento_ipi === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+						</totvs-page-detail-info>
+						<% } %>
+
+					</div>
+					<% } %>
+
+					<% if ((!data["l-payment-condition"] || data["l-payment-condition"].log_visivel === true)
+						|| (!data["l-bearer"] || data["l-bearer"].log_visivel === true)
+						|| (!data["l-region"] || data["l-region"].log_visivel === true)) { %>
+					<div class="col-xs-12 no-gutter">
+
+						<% if ((!data["l-payment-condition"] || data["l-payment-condition"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							ng-if="controller.model.idi_tip_pessoa === 2"
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-payment-condition' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.ttCondicaoPagamento.nom_cond_pagto }}
+							<span ng-if="controller.model.ttCondicaoPagamento.log_integrad_erp"> (ERP)</span>
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-bearer"] || data["l-bearer"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							ng-if="controller.model.idi_tip_pessoa === 2"
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-bearer' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.ttPortador.nom_portador }}
+							<span ng-if="controller.model.ttPortador.log_integrad_erp"> (ERP)</span>
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-region"] || data["l-region"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							ng-if="controller.model.idi_tip_pessoa !== 1"
+							title="{{ 'l-region' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.ttRegiao.nom_regiao_atendim }}
+							<span ng-if="controller.model.ttRegiao.log_integrad_erp"> (ERP)</span>
+						</totvs-page-detail-info>
+						<% } %>
+
+					</div>
+					<% } %>
+
+					<% if ((!data["l-treatment"] || data["l-treatment"].log_visivel === true)
+						|| (!data["l-number-dependents"] || data["l-number-dependents"].log_visivel === true)
+						|| (!data["l-educational-level"] || data["l-educational-level"].log_visivel === true)
+						|| (!data["l-mother-name"] || data["l-mother-name"].log_visivel === true)) { %>
+					<div class="col-xs-12 no-gutter"
+						 ng-if="controller.model.idi_tip_pessoa === 1">
+
+						<% if ((!data["l-treatment"] || data["l-treatment"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-treatment' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.ttTratamento.nom_tratam_pessoa }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-educational-level"] || data["l-educational-level"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-educational-level' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.ttGrauInstrucao.nom_instruc }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-mother-name"] || data["l-mother-name"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-mother-name' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.nom_mae_pessoa_fisic }}
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-number-dependents"] || data["l-number-dependents"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							ng-if="controller.model.idi_tip_pessoa === 1"
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-number-dependents' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.qti_depend }}
+						</totvs-page-detail-info>
+						<% } %>
+
+					</div>
+					<% } %>
+
+					<% if ((!data["l-cfop-state"] || data["l-cfop-state"].log_visivel === true)
+						|| (!data["l-cfop-interstate"] || data["l-cfop-interstate"].log_visivel === true)
+						|| (!data["l-type-provider"] || data["l-type-provider"].log_visivel === true)
+						|| (!data["l-state-registration"] || data["l-state-registration"].log_visivel === true)) { %>
+					<div class="col-xs-12 no-gutter">
+
+						<% if ((!data["l-type-provider"] || data["l-type-provider"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							ng-if="(controller.isIntegratedWithGP === true && controller.model.idi_tip_pessoa !== 1)"
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-type-provider' | i18n: []: 'dts/crm' }}">
+							<span ng-if="controller.model.idi_tip_prestdor === 1">{{ 'l-doctor'   | i18n: []: 'dts/crm' }}</span>
+							<span ng-if="controller.model.idi_tip_prestdor === 2">{{ 'l-cooperative' | i18n: []: 'dts/crm' }}</span>
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-cfop-state"] || data["l-cfop-state"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							ng-if="controller.model.idi_tip_cta !== 3"
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-cfop-state' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.ttcfopEstad.nom_natur_operac }}
+							<span ng-if="controller.model.ttcfopEstad.log_integrad_erp"> (ERP)</span>
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-cfop-interstate"] || data["l-cfop-interstate"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							ng-if="controller.model.idi_tip_cta !== 3"
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-cfop-interstate' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.ttcfopInterest.nom_natur_operac }}
+							<span ng-if="controller.model.ttcfopInterest.log_integrad_erp"> (ERP)</span>
+						</totvs-page-detail-info>
+						<% } %>
+
+						<% if ((!data["l-state-registration"] || data["l-state-registration"].log_visivel === true)) { %>
+						<totvs-page-detail-info
+							ng-if="controller.model.idi_tip_pessoa !== 1"
+							class="col-xs-12 col-sm-6 col-md-3"
+							title="{{ 'l-state-registration' | i18n: []: 'dts/crm' }}">
+							{{ controller.model.nom_inscr_estad }}
+						</totvs-page-detail-info>
+						<% } %>
+
+					</div>
+					<% } %>
+
+				</totvs-tab>
+				<% } %>
+
+				<% if ((!data["nav-history"] || data["nav-history"].log_visivel === true)) { %>
+				<totvs-tab heading="{{ 'nav-history' | i18n: []: 'dts/crm' }} ({{ controllerHistroyList.listOfHistoryCount }})"
+					 ng-controller="crm.history.list.control as controllerHistroyList"
+					 ng-init="controllerHistroyList.isChild = true;"
+					 ng-hide="controller.model.idi_tip_cta === 3">
+					<div ng-include="'/dts/crm/html/history/history.list.tab.html'"
+						 ng-if="controller.model.idi_tip_cta !== 3"/>
+				</totvs-tab>
+				<% } %>
+
+				<% if ((!data["nav-task"] || data["nav-task"].log_visivel === true)) { %>
+				<totvs-tab heading="{{ 'nav-task' | i18n: []: 'dts/crm' }} ({{ controllerTaskList.listOfTaskCount }})"
+					 ng-controller="crm.task.list.control as controllerTaskList"
+					 ng-init="controllerTaskList.isChild = true;"
+					 ng-hide="controller.model.idi_tip_cta === 3">
+					<div ng-include="'/dts/crm/html/task/task.list.tab.html'"
+						 ng-if="controller.model.idi_tip_cta !== 3">
+					</div>
+				</totvs-tab>
+				<% } %>
+
+				<!-- Oculta a tab qndo contato ou qndo integrado gp, precisa adaptar a tab para atender ocorrenci gp-->
+				<% if ((!data["nav-ticket"] || data["nav-ticket"].log_visivel === true)) { %>
+				<totvs-tab heading="{{ 'nav-ticket' | i18n: []: 'dts/crm' }} ({{ controllerTicketList.listOfTicketCount }})"
+					 ng-controller="crm.ticket.list.control as controllerTicketList"
+					 ng-hide="controller.model.idi_tip_cta === 3 || controller.isIntegratedWithGP == true"
+					 ng-init="controllerTicketList.isChild = true;">
+					<div ng-include="'/dts/crm/html/ticket/ticket.list.tab.html'"
+						 ng-if="controller.model.idi_tip_cta !== 3">
+					</div>
+				</totvs-tab>
+				<% } %>
+
+				<% if ((!data["nav-opportunity"] || data["nav-opportunity"].log_visivel === true)) { %>
+				<totvs-tab heading="{{ 'nav-opportunity' | i18n: []: 'dts/crm' }} ({{ controllerOpportunityList.listOfOpportunityCount }})"
+					 ng-controller="crm.opportunity.list.control as controllerOpportunityList"
+					 ng-hide="controller.model.idi_tip_cta === 3"
+					 ng-init="controllerOpportunityList.isChild = true;">
+					<div ng-include="'/dts/crm/html/opportunity/opportunity.list.tab.html'"></div>
+				</totvs-tab>
+				<% } %>
+
+				<% if ((!data["nav-attachment"] || data["nav-attachment"].log_visivel === true)
+					|| (!data["nav-contact"] || data["nav-contact"].log_visivel === true)
+					|| (!data["nav-potential"] || data["nav-potential"].log_visivel === true)
+					|| (!data["nav-style"] || data["nav-style"].log_visivel === true)
+					|| (!data["nav-observation"] || data["nav-observation"].log_visivel === true)) { %>
+				<totvs-tab-dropdown heading="{{ 'l-others' | i18n: []: 'dts/crm' }}">
+
+					<% if ((!data["nav-attachment"] || data["nav-attachment"].log_visivel === true)) { %>
+					<totvs-tab-dropdown-item heading="{{ 'nav-attachment' | i18n: []: 'dts/crm' }} ({{ attachmentController.listOfAttachmentCount }})"
+						 ng-controller="crm.attachment.tab.control as attachmentController">
+						<div ng-include="'/dts/crm/html/attachment/attachment.tab.html'"></div>
+					</totvs-tab-dropdown-item>
+					<% } %>
+
+					<% if ((!data["nav-contact"] || data["nav-contact"].log_visivel === true)) { %>
+					<totvs-tab-dropdown-item heading="{{ 'nav-contact' | i18n: []: 'dts/crm' }} ({{ contactController.listOfContactCount }})"
+						 ng-controller="crm.account-contact.tab.control as contactController">
+						<div ng-include="'/dts/crm/html/account/contact/contact.tab.html'"></div>
+					</totvs-tab-dropdown-item>
+					<% } %>
+
+					<% if ((!data["nav-potential"] || data["nav-potential"].log_visivel === true)) { %>
+					<totvs-tab-dropdown-item heading="{{ 'nav-potential' | i18n: []: 'dts/crm' }} ({{ potentialController.listOfPotentialCount }})"
+						 ng-controller="crm.account-potential.tab.control as potentialController">
+						<div ng-include="'/dts/crm/html/account/potential/potential.tab.html'"></div>
+					</totvs-tab-dropdown-item>
+					<% } %>
+
+					<% if ((!data["nav-style"] || data["nav-style"].log_visivel === true)) { %>
+					<totvs-tab-dropdown-item heading="{{ 'nav-style' | i18n: []: 'dts/crm' }} ({{ styleController.listOfStyleCount }})"
+						 ng-controller="crm.account-style.tab.control as styleController">
+						<div ng-include="'/dts/crm/html/account/style/style.tab.html'"></div>
+					</totvs-tab-dropdown-item>
+					<% } %>
+
+					<% if ((!data["nav-observation"] || data["nav-observation"].log_visivel === true)) { %>
+					<totvs-tab-dropdown-item heading="{{ 'nav-observation' | i18n: []: 'dts/crm' }} ({{ observationController.listOfObservationCount }})"
+						 ng-controller="crm.account-observation.tab.control as observationController">
+						<div ng-include="'/dts/crm/html/account/observation/observation.tab.html'"></div>
+					</totvs-tab-dropdown-item>
+					<% } %>
+
+					<% if ((!data["nav-document"] || data["nav-document"].log_visivel === true)) { %>
+					<totvs-tab-dropdown-item heading="{{ 'nav-document' | i18n: []: 'dts/crm' }} ({{ documentController.listOfDocumentCount }})"
+						 ng-controller="crm.account-document.tab.control as documentController">
+						<div ng-include="'/dts/crm/html/account/document/document.tab.html'"></div>
+					</totvs-tab-dropdown-item>
+					<% } %>
+
+					<% if ((!data["nav-script"] || data["nav-script"].log_visivel === true)) { %>
+					<totvs-tab-dropdown-item heading="{{ 'nav-script' | i18n: []: 'dts/crm' }} ({{ controllerAnwserTab.listOfAnwserCount }})"
+						 ng-controller="crm.script-anwser.list.control as controllerAnwserTab">
+
+						<totvs-lodash-template
+								src="/dts/crm/html/script/anwser/anwser.tab.lodash.html"
+								template-data="controller.accessRestriction"/>
+
+					</totvs-tab-dropdown-item>
+					<% } %>
+
+					<% if ((!data["nav-salesorder"] || data["nav-salesorder"].log_visivel === true)) { %>
+					<totvs-tab-dropdown-item ng-if="controller.showSalesOrder === true" heading="{{ 'nav-salesorder' | i18n: []: 'dts/crm' }} ({{ controllerSalesOrderList.ordersCount }})"
+						 ng-controller="crm.account-salesorder.tab.control as controllerSalesOrderList">
+						<div ng-include="'/dts/crm/html/account/salesorder/salesorder.tab.html'"></div>
+					</totvs-tab-dropdown-item>
+					<% } %>
+
+					<% if ((!data["nav-accountbill"] || data["nav-accountbill"].log_visivel === true)) { %>
+						<totvs-tab-dropdown-item ng-if="(controller.model.nom_abrev.length > 0 && controller.model.cod_pessoa_erp.length > 0)
+														&& (controller.isIntegratedWithEMS === true || controller.isIntegratedWithGP === true)
+														&& (controller.model.idi_tip_cta !== 1 && controller.model.idi_tip_cta !== 3 && controller.model.idi_tip_cta !== 4 && controller.model.idi_tip_cta !== 7)"
+								heading="{{ 'nav-bill' | i18n: []: 'dts/crm' }} ({{ controllerBillList.billsCount }})"
+								ng-controller="crm.account-bill.tab.control as controllerBillList">
+
+							<totvs-lodash-template src="/dts/crm/html/account/bill/bill.tab.html"
+												   template-data="controller.accessRestriction"></totvs-lodash-template>
+
+						</totvs-tab-dropdown-item>
+					<% } %>
+
+				</totvs-tab-dropdown>
+				<% } %>
+
+			</totvs-tabset>
+			<% } %>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

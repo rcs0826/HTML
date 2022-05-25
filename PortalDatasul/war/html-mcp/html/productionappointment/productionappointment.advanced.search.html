@@ -1,0 +1,273 @@
+<totvs-modal-header>{{ 'l-advanced-search' | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+	<div class="row">
+		<form class="form-horizontal" role="form">
+			<accordion close-others="controller.closeOther">
+
+				<accordion-group is-open="status.isFirstOpen">
+					<accordion-heading>
+						{{'l-selection' | i18n }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.isFirstOpen, 'glyphicon-chevron-right': !status.isFirstOpen}"></i>
+					</accordion-heading>
+					<field type="input" class="col-md-6" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="9" ng-model="controller.advancedSearch.prodOrderCodeIni">
+						<label>{{ 'l-production-order' | i18n }} {{ 'l-range-start' | i18n }}</label>
+					</field>
+					<field type="input" class="col-md-6" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="9" ng-model="controller.advancedSearch.prodOrderCodeFin">
+						<label>{{ 'l-production-order' | i18n }} {{ 'l-range-final' | i18n }}</label>
+					</field>
+
+					<!--div class="col-xs-12" style="padding-left: 0px">
+						<field type="input" ng-model="controller.advancedSearch.siteCode" label="{{ 'l-site' | i18n }}" zoom zoom-service="mcp.split-operac.zoom"
+						 zoom-id="num-split-operac" zoom-description="nome" />
+					</div-->
+					
+					<div class="col-xs-12" style="padding-left: 0px">
+						<field type="input" ng-model="controller.advancedSearch.siteCode" label="{{ 'l-site' | i18n }}" zoom zoom-service="mcp.estabelecSE.zoom"
+						 zoom-id="cod-estabel" zoom-description="nome" />
+					</div>
+					
+
+					<field type="input" class="col-md-6" maxlength="16" ng-model="controller.advancedSearch.itemCodeIni">
+						<label>{{ 'l-item' | i18n }} {{ 'l-range-start' | i18n }}</label>
+					</field>
+					<field type="input" class="col-md-6" maxlength="16" ng-model="controller.advancedSearch.itemCodeFin">
+						<label>{{ 'l-item' | i18n }} {{ 'l-range-final' | i18n }}</label>
+					</field>
+
+					<div class="col-xs-12 col-md-6 col-lg-6 range-container">
+						<label class="field-label">{{ 'l-production-date' | i18n }}</label>
+						<div class="input-group col-xs-12">
+
+							<field type="date" class="col-lg-12 col-md-12 col-xs-12 no-padding" depth='year' format='MMMM yyyy' ng-model='controller.advancedSearch.iniDate'>
+							</field>
+
+							<span class="input-group-addon ng-binding">{{ 'l-to' | i18n }}</span>
+							<field type="date" class="col-lg-12 col-md-12 col-xs-12 no-padding" depth='year' format='MMMM yyyy' ng-model='controller.advancedSearch.endDate'>
+							</field>
+						</div>
+					</div>
+
+					<div class="col-xs-12 col-md-6 col-lg-6 range-container">
+						<label class="field-label">{{ 'l-emission-date' | i18n }}</label>
+						<div class="input-group col-xs-12">
+
+							<field type="date" class="col-lg-12 col-md-12 col-xs-12 no-padding" depth='year' format='MMMM yyyy' ng-model='controller.advancedSearch.emissionDateIni'>
+							</field>
+
+							<span class="input-group-addon ng-binding">{{ 'l-to' | i18n }}</span>
+
+							<field type="date" class="col-lg-12 col-md-12 col-xs-12 no-padding" depth='year' format='MMMM yyyy' ng-model='controller.advancedSearch.emissionDateFin'>
+							</field>
+
+						</div>
+					</div>
+
+					<field type="input" class="col-md-6" maxlength="12" ng-model="controller.advancedSearch.plannerUserIni">
+						<label>{{ 'l-planner' | i18n }} {{ 'l-range-start' | i18n }}</label>
+					</field>
+					<field type="input" class="col-md-6" maxlength="12" ng-model="controller.advancedSearch.plannerUserFin">
+						<label>{{ 'l-planner' | i18n }} {{ 'l-range-final' | i18n }}</label>
+					</field>
+
+
+					<field type="input" class="col-md-6" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="5" ng-model="controller.advancedSearch.nrProdLineIni">
+						<label>{{ 'l-production-line' | i18n }} {{ 'l-range-start' | i18n }}</label>
+					</field>
+					<field type="input" class="col-md-6" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="5" ng-model="controller.advancedSearch.nrProdLineFin">
+						<label>{{ 'l-production-line' | i18n }} {{ 'l-range-final' | i18n }}</label>
+					</field>
+
+					<field type="input" class="col-md-6" maxlength="16" ng-model="controller.advancedSearch.machineCodeIni">
+						<label>{{ 'l-workcenter' | i18n }} {{ 'l-range-start' | i18n }}</label>
+					</field>
+					<field type="input" class="col-md-6" maxlength="16" ng-model="controller.advancedSearch.machineCodeFin">
+						<label>{{ 'l-workcenter' | i18n }} {{ 'l-range-final' | i18n }}</label>
+					</field>
+
+					<field
+						type="combo"
+						ng-model="controller.advancedSearch.ordenation"
+						label="{{ 'l-ordenation' | i18n }}">
+						<totvs-options>
+							<totvs-option value="1">{{ 'l-initial-date' | i18n }}</totvs-option>
+							<totvs-option value="2">{{ 'l-production-order' | i18n }}</totvs-option>
+							<totvs-option value="3">{{ 'l-item' | i18n }}</totvs-option>
+						</totvs-options>
+					</field>
+					<field
+						type="combo"
+						ng-model="controller.advancedSearch.iListType"
+						label="{{ 'l-iListType' | i18n }}">
+						<totvs-options>
+							<totvs-option value="1">{{ 'l-production' | i18n }}</totvs-option>
+							<totvs-option value="2">{{ 'l-shop-floor' | i18n }}</totvs-option>
+						</totvs-options>
+					</field>
+				</accordion-group>
+				
+				<accordion-group is-open="status.open">
+					<accordion-heading>
+						{{'l-status' | i18n }}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					</accordion-heading>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<totvs-field totvs-checkbox
+							t-bsswitch
+							ng-disabled="false"
+							class="col-xs-12 row"
+							label="{{ 'l-not-started' | i18n }}" 
+							ng-model="controller.advancedSearch.statusNotStart">
+						</totvs-field>
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<totvs-field totvs-checkbox
+							t-bsswitch
+							ng-disabled="false"
+							class="col-xs-12 row"
+							label="{{ 'l-status-released' | i18n }}" 
+							ng-model="controller.advancedSearch.statusReleased">
+						</totvs-field>
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<totvs-field totvs-checkbox
+							t-bsswitch
+							ng-disabled="false"
+							class="col-xs-12 row"
+							label="{{ 'l-status-reserved' | i18n }}" 
+							ng-model="controller.advancedSearch.statusReserved">
+						</totvs-field>
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<totvs-field totvs-checkbox
+							t-bsswitch
+							ng-disabled="false"
+							class="col-xs-12 row"
+							label="{{ 'l-separated' | i18n }}" 
+							ng-model="controller.advancedSearch.statusKitted">
+						</totvs-field>
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<totvs-field totvs-checkbox
+							t-bsswitch
+							ng-disabled="false"
+							class="col-xs-12 row"
+							label="{{ 'l-status-issued' | i18n }}" 
+							ng-model="controller.advancedSearch.statusIssued">
+						</totvs-field>
+					</div>
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+						<totvs-field totvs-checkbox
+							t-bsswitch
+							ng-disabled="false"
+							class="col-xs-12 row"
+							label="{{ 'l-status-started' | i18n }}" 
+							ng-model="controller.advancedSearch.statusStarted">
+						</totvs-field>
+					</div>
+				</accordion-group>
+
+				<accordion-group is-open="status.open2">
+					<accordion-heading>
+						{{'l-order' | i18n }}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open2, 'glyphicon-chevron-right': !status.open2}"></i>
+					</accordion-heading>
+
+					<field type="input" class="col-md-6" maxlength="12" ng-model="controller.advancedSearch.customerCodeIni">
+						<label>{{ 'l-customer' | i18n }} {{ 'l-range-start' | i18n }}</label>
+					</field>
+					<field type="input" class="col-md-6" maxlength="12" ng-model="controller.advancedSearch.customerCodeFin">
+						<label>{{ 'l-customer' | i18n }} {{ 'l-range-final' | i18n }}</label>
+					</field>
+
+					<field type="input" class="col-md-6" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="2" ng-model="controller.advancedSearch.customerGroupIni">
+						<label>{{ 'l-customer-group' | i18n }} {{ 'l-range-start' | i18n }}</label>
+					</field>
+					<field type="input" class="col-md-6" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="2" ng-model="controller.advancedSearch.customerGroupFin">
+						<label>{{ 'l-customer-group' | i18n }} {{ 'l-range-final' | i18n }}</label>
+					</field>
+
+					<field type="input" class="col-md-6" maxlength="12" ng-model="controller.advancedSearch.customerOrderIni">
+						<label>{{ 'l-order' | i18n }} {{ 'l-range-start' | i18n }}</label>
+					</field>
+					<field type="input" class="col-md-6" maxlength="12" ng-model="controller.advancedSearch.customerOrderFin">
+						<label>{{ 'l-order' | i18n }} {{ 'l-range-final' | i18n }}</label>
+					</field>
+
+					<field type="input" class="col-md-6" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="5" ng-model="controller.advancedSearch.customerSequenceIni">
+						<label>{{ 'l-seq' | i18n }} {{ 'l-range-start' | i18n }}</label>
+					</field>
+					<field type="input" class="col-md-6" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="5" ng-model="controller.advancedSearch.customerSequenceFin">
+						<label>{{ 'l-seq' | i18n }} {{ 'l-range-final' | i18n }}</label>
+					</field>
+
+					<field type="input" class="col-md-6" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="5" ng-model="controller.advancedSearch.customerDeliveryIni">
+						<label>{{ 'l-delivery' | i18n }} {{ 'l-range-start' | i18n }}</label>
+					</field>
+					<field type="input" class="col-md-6" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="5" ng-model="controller.advancedSearch.customerDeliveryFin">
+						<label>{{ 'l-delivery' | i18n }} {{ 'l-range-final' | i18n }}</label>
+					</field>
+				</accordion-group>
+
+			</accordion>
+		</form>
+	</div>
+</totvs-modal-body>
+<totvs-modal-footer>
+	<button type="button" class="btn btn-default" data-ng-click="controller.restoreDefaults();">{{ 'l-restore-defaults' | i18n }}</button>
+	<button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'l-cancel' | i18n }}</button>
+	<button type="button" class="btn btn-primary" data-ng-click="controller.search();">{{ 'l-search' | i18n }}</button>
+</totvs-modal-footer>
+
+
+
+
+<style>
+	.no-padding-left,
+	.no-padding {
+		padding-left: 0;
+	}
+
+	.no-padding-right,
+	.no-padding {
+		padding-right: 0;
+	}
+
+	.range-container {
+		margin-top: 5px;
+	}
+
+	.range-container div>span {
+		border: none;
+		border-top: 1px solid #ccc;
+		border-bottom: 1px solid #ccc;
+		width: 30px !important;
+	}
+
+	.range-container div field>.field-container {
+		margin-top: 0 !important;
+	}
+
+	.field-label {
+		margin-bottom: 5px;
+		font-weight: 200;
+		font-size: 12px;
+		color: gray;
+	}
+
+	.faixa-addon {
+		width: auto;
+		min-width: 16px;
+		padding: 4px 5px;
+		font-weight: 400;
+		line-height: 1.428571429;
+		text-align: center;
+		text-shadow: 0 1px 0 #fff;
+		vertical-align: middle;
+		background-color: #eee;
+		border: solid #ccc;
+		border-width: 1px 0;
+		margin-left: -5px;
+		margin-right: -5px;
+		max-width: 40px;
+		min-width: 40px;
+		margin-top: 28px;
+		height: 34px;
+	}
+</style>

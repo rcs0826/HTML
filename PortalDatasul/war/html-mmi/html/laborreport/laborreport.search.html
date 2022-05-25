@@ -1,0 +1,112 @@
+<totvs-modal-header>
+    {{ 'l-search-appointment' | i18n }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+            
+    <totvs-page-content style="border:0px">
+        <totvs-page-detail>   
+         
+            <div class="btn-group form-group col-lg-12 col-md-12 col-sm-12 col-xs-12" data-toggle="buttons" style="padding-right: 30px; padding-left: 30px;">
+                <div>
+                    <label class="field-label label-data-apont">{{ 'l-appointment-date' | i18n }}</label>
+                </div>  
+                <label ng-if="consultaCtrl.model.periodo === 0" class="btn btn-default active btnRadio col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                       ng-click="consultaCtrl.periodoConsulta(0)">
+                    <input type="radio" name="btnRadio">{{1}} {{ 'l-day'| i18n }}
+                </label>
+                <label ng-if="consultaCtrl.model.periodo !== 0" class="btn btn-default btnRadio col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                       ng-click="consultaCtrl.periodoConsulta(0)">
+                    <input type="radio" name="btnRadio">{{1}} {{ 'l-day'| i18n }}
+                </label>
+
+                <label ng-if="consultaCtrl.model.periodo === 7" class="btn btn-default active btnRadio col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                       ng-click="consultaCtrl.periodoConsulta(7)">
+                        <input type="radio" name="btnRadio">{{7}} {{ 'l-days'| i18n }}
+                </label>
+                <label ng-if="consultaCtrl.model.periodo !== 7" class="btn btn-default btnRadio col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                       ng-click="consultaCtrl.periodoConsulta(7)">
+                        <input type="radio" name="btnRadio">{{7}} {{ 'l-days'| i18n }}
+                </label>
+
+                <label ng-if="consultaCtrl.model.periodo === 15" class="btn btn-default active btnRadio col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                       ng-click="consultaCtrl.periodoConsulta(15)">
+                        <input type="radio" name="btnRadio">{{15}} {{ 'l-days'| i18n }}
+                </label>
+                <label ng-if="consultaCtrl.model.periodo !== 15" class="btn btn-default btnRadio col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                       ng-click="consultaCtrl.periodoConsulta(15)">
+                        <input type="radio" name="btnRadio">{{15}} {{ 'l-days'| i18n }}
+                </label>
+                <label ng-if="consultaCtrl.model.periodo === 30" class="btn btn-default active btnRadio col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                       ng-click="consultaCtrl.periodoConsulta(30)">
+                        <input type="radio" name="btnRadio">{{30}} {{ 'l-days'| i18n }}
+                </label>
+                <label ng-if="consultaCtrl.model.periodo !== 30" class="btn btn-default btnRadio col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                       ng-click="consultaCtrl.periodoConsulta(30)">
+                        <input type="radio" name="btnRadio">{{30}} {{ 'l-days'| i18n }}
+                </label>
+                <label ng-if="consultaCtrl.model.periodo === 90" class="btn btn-default active btnRadio col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                       ng-click="consultaCtrl.periodoConsulta(90)">
+                        <input type="radio" name="btnRadio">{{90}} {{ 'l-days'| i18n }}
+                </label>
+                <label ng-if="consultaCtrl.model.periodo !== 90" class="btn btn-default btnRadio col-lg-2 col-md-2 col-sm-2 col-xs-2"
+                       ng-click="consultaCtrl.periodoConsulta(90)">
+                        <input type="radio" name="btnRadio">{{90}} {{ 'l-days'| i18n }}
+                </label>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">	           
+                <field type="input"
+                       class="col-xs-12"
+                       ng-model="consultaCtrl.model['nr-ord-produ']"
+                       name="nr-ord-produ"
+                       zoom
+                       numbers-only
+                       zoom-id="nr-ord-produ"
+                       zoom-description="des-man-corr"
+                       zoom-service="mmi.ord-manut.zoom"
+                       label="{{ 'l-maintenance-order' | i18n }}"
+                       focus
+                       canclean="undefined">
+                </field>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<field  type="select"
+						ng-model="consultaCtrl.model.userTechnician"
+						label="{{ 'l-technician' | i18n }}"
+                        class="field-label col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        canclean="undefined">
+					<include>
+						<ui-select-match placeholder="{{ 'l-select-technician' | i18n }}">{{consultaCtrl.model.userTechnician.cdTecnico}} {{consultaCtrl.hifen}} {{consultaCtrl.model.userTechnician.nomeCompl}}</ui-select-match>
+						<ui-select-choices repeat="tech in consultaCtrl.listOfTechnician track by $index"
+										   refresh="consultaCtrl.filterTechnician($select.search)"
+										   refresh-delay="500">
+							<span data-ng-bind-html="tech.cdTecnico | highlight: $select.search"></span> - <span data-ng-bind-html="tech.nomeCompl | highlight: $select.search"></span>
+						</ui-select-choices>
+					</include>
+				</field>
+            </div>
+            
+        </totvs-page-detail>
+    </totvs-page-content>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button type="button" class="btn btn-default" data-ng-click="consultaCtrl.close()">{{ 'l-cancel' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="consultaCtrl.confirmaConsulta()">{{ 'l-confirm' | i18n }}</button>        
+</totvs-modal-footer>
+
+<style>
+    .label-data-apont{
+        font-weight:100;
+        font-size:12px
+    }
+</style>
+
+<style>
+    .form-group{
+        margin-bottom: 0px;
+    }
+</style>
+

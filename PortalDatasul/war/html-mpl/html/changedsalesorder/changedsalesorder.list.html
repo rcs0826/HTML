@@ -1,0 +1,153 @@
+<totvs-page type="list">
+
+    <totvs-page-navbar>
+    
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{i18n('l-home', [], 'dts/mpl')}}</breadcrumb>
+            <breadcrumb>{{i18n('l-changed-sales-orders', [], 'dts/mpl')}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        
+        <totvs-page-header>
+            <totvs-page-header-title>
+                <div>
+                    <!-- Pedidos de Venda Alterados -->
+                    <span>{{i18n('l-changed-sales-orders', [], 'dts/mpl')}} ({{controller.gridDataOriginal.length}})</span>
+                </div>
+            </totvs-page-header-title>
+            
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                 style="padding-top: 10px; padding-left: 0px;">
+                 
+                <fieldset class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                    <!-- PLANO DE PRODUÇÃO -->
+                    <totvs-field totvs-combo
+                                 label="{{i18n('l-production-plan', [], 'dts/mpl')}}"
+                                 t-options="controller.listSelectedProductionPlan"
+                                 ng-model="controller.productionPlanCode"
+                                 ng-change="controller.selectProductionPlan()"
+                                 class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                                 style="padding-left: 0px;"
+                                 canclean>
+                    </totvs-field>
+                </fieldset>
+                
+                <div class="custom-filters-field col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <!-- TIPO DO PLANO -->
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4"
+                         style="padding-right: 0; text-align: right;">
+                        <strong>{{i18n('l-type-plan', [], 'dts/mpl')}}:</strong>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-8"
+                         style="padding-right: 0;">
+                        <span>{{controller.productionPlanSelectedObject.planType}}</span>
+                    </div>
+                    <!-- MULTI ESTABELECIMENTO -->
+                    <div class="col-lg-3 col-md-6 col-sm-3 col-xs-4"
+                         style="padding-right: 0; text-align: right;">
+                        <strong>{{i18n('l-multi-site', [], 'dts/mpl')}}:</strong>
+                    </div>
+                    <div class="col-lg-2 col-md-1 col-sm-1 col-xs-8"
+                         style="padding-right: 0;">
+                        <span>
+                            {{controller.traduzLog(controller.productionPlanSelectedObject.isMultiSites)}}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="custom-filters-field col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <!-- PERIODO INICIAL -->
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4"
+                         style="padding-right: 0; text-align: right;">
+                        <strong>{{i18n('l-initial-period', [], 'dts/mpl')}}:</strong>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8"
+                         style="padding-right: 0;">
+                        <span> {{controller.formatPeriod(controller.productionPlanSelectedObject.initialPeriod,controller.productionPlanSelectedObject.initialPeriodYear)}}   {{controller.formatDateRange(controller.iniPerDtIni,controller.iniPerDtFin)}}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="custom-filters-field col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <!-- PERIODO FINAL -->
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4"
+                         style="padding-right: 0; text-align: right;">
+                        <strong>{{i18n('l-end-period', [], 'dts/mpl')}}:</strong>
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8"
+                         style="padding-right: 0;">
+                        <span>{{controller.formatPeriod(controller.productionPlanSelectedObject.finalPeriod,controller.productionPlanSelectedObject.finalPeriodYear)}}   {{controller.formatDateRange(controller.fimPerDtIni,controller.fimPerDtFin)}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <totvs-page-header-operation>
+                <div class="col-xs-7 col-md-7 col-lg-7">
+                       <div class="operations ng-scope ng-isolate-scope">
+                        <!-- GERAR CSV -->
+                        <a class="btn btn-default clickable"
+                           role="button"
+                           style="display: table-cell;"
+                           ng-click="controller.exportCsv()"
+                           ng-disabled="controller.gridData.length == 0">
+                            <span class="glyphicon glyphicon-export"></span>
+                            {{i18n('l-gerar-csv', [], 'dts/mpl')}}
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- PESQUISA -->
+                <totvs-page-header-operation-filter placeholder="{{i18n('l-search-item', [], 'dts/mpl')}}"
+                                                    ng-submit="controller.quickSearch()"
+                                                    ng-model="controller.quickSearchModel"
+                                                    advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers"
+                                    ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+        </totvs-page-header>
+        
+    </totvs-page-navbar>
+    
+    <totvs-page-content>
+
+        <totvs-page-alert
+            ng-if="controller.gridData.length <= 0"
+            type="info"
+            message="{{i18n('msg-search-not-found', [], 'dts/mpl')}}">
+        </totvs-page-alert>
+
+        <totvs-page-detail ng-if="controller.gridData.length != 0">
+
+            <totvs-grid grid="controller.gridApi"
+                        grid-data="controller.gridData" 
+                        grid-selected-item="controller.selectedItem"
+                        width="1600"
+                        grid-height="560"
+                        navigatable="true"
+                        selectable="row"
+                        scrollable="true"
+                        resizable="true"
+                        sortable="true"
+                        auto-resize-column="false">
+
+                <totvs-grid-column field="custumerNameCode" width="120" title="{{i18n('l-customer', [], 'dts/mpl')}}"></totvs-grid-column>
+                <totvs-grid-column field="orderNumber" width="100" filter="number" title="{{i18n('l-order', [], 'dts/mpl')}}"></totvs-grid-column>
+                <totvs-grid-column field="itemCode" width="120" title="{{i18n('l-item', [], 'dts/mpl')}}"></totvs-grid-column>
+                <totvs-grid-column field="referenceCode" width="100" title="{{i18n('l-reference', [], 'dts/mpl')}}"></totvs-grid-column>
+                <totvs-grid-column field="typeObtaining" width="80" title="{{i18n('l-type', [], 'dts/mpl')}}"></totvs-grid-column>
+                <totvs-grid-column field="requisitionNumber" width="100" filter="number" title="{{i18n('l-requisition', [], 'dts/mpl')}}"></totvs-grid-column>
+                <totvs-grid-column field="sequenceOrder" width="80" title="{{i18n('l-sequence', [], 'dts/mpl')}}"></totvs-grid-column>
+                <totvs-grid-column field="requisitionQuantityActual" width="120" filter="number: 4" style="text-align: right;" title="{{i18n('l-current-qt', [], 'dts/mpl')}}"></totvs-grid-column>
+                <totvs-grid-column field="requisitionQuantityOriginal" width="120" filter="number: 4" style="text-align: right;" title="{{i18n('l-orig-req-qt', [], 'dts/mpl')}}"></totvs-grid-column>
+                <totvs-grid-column field="variationQuantity" width="120" filter="number: 4" style="text-align: right;" title="{{i18n('l-variation', [], 'dts/mpl')}}"></totvs-grid-column>
+
+            </totvs-grid>
+
+        </totvs-page-detail>
+ 
+    </totvs-page-content>
+        
+</totvs-page>

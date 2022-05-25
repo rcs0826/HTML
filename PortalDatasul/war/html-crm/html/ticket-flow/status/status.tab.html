@@ -1,0 +1,159 @@
+<style scoped="true">
+	.status-suspended {
+		background-color: #f3f3f3;
+	}
+</style>
+<totvs-page-child type="list">
+
+	<br/>
+
+	<totvs-page-content class="crm-tab">
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-ticket-flow-status' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.model.ttFluxoStatus || controller.model.ttFluxoStatus.length <= 0">
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addEditFlowStatus();">
+				<span class="glyphicon glyphicon-plus"></span>
+				&nbsp;&nbsp;{{ 'btn-add' | i18n: []: 'dts/crm' }}
+			</button>
+		</totvs-page-alert>
+
+		<div ng-if="controller.model.ttFluxoStatus.length">
+
+			<div class="col-xs-12 col-sm-4 col-md-3"
+				 style="padding-left: 0;">
+
+				<div class="crm-tab">
+
+					<div class="row crm-tab-item hover"
+						 ng-class="{ 'crm-selected' : status.$selected, 'status-suspended': status.log_suspenso === true }"
+						 ng-repeat="status in controller.model.ttFluxoStatus"
+						 ng-drag="true"
+						 ng-drag-data="status"
+						 ng-drop="true"
+						 ng-drop-success="controller.onTicketFlowStatusDropComplete($index, $data, $event)">
+
+						<div class="col-xs-12 clickable overflow-ellipsis"
+							 ng-click="controller.selectFlowStatus(status);">
+							<span class="hidden-xs glyphicon glyphicon-resize-vertical"
+								  style="margin-right: 5px;">
+							</span>
+							{{ status.nom_status_ocor }}
+						</div>
+
+					</div>
+
+				</div>
+
+				<br/>
+
+				<button type="button"
+						class="btn btn-primary col-xs-12"
+						ng-click="controller.addEditFlowStatus();">
+					<span class="glyphicon glyphicon-plus"></span>
+					{{ 'btn-add' | i18n: []: 'dts/crm' }}
+				</button>
+			</div>
+
+			<div class="col-xs-12 col-sm-8 col-md-9"
+				 style="padding-right: 0;">
+
+				<div class="row">
+
+					<div class="col-xs-8">
+						<h3 style="margin-top: 0px;">
+							{{ controller.selectedFlowStatus.nom_status_ocor }}
+						</h3>
+					</div>
+
+					<div class="col-xs-4">
+						<div class="pull-right">
+
+							<button type="button"
+									class="btn btn-primary"
+									ng-click="controller.addEditFlowStatus(controller.selectedFlowStatus);">
+								<span class="glyphicon glyphicon-pencil"></span>
+								<span class="hidden-xs">{{ 'btn-edit' | i18n: []: 'dts/crm' }}</span>
+							</button>
+
+							<button type="button"
+									class="btn btn-default"
+									ng-click="controller.removeStatus(controller.selectedFlowStatus);">
+								<span class="glyphicon glyphicon-trash"></span>
+								<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+							</button>
+
+						</div>
+					</div>
+
+					<totvs-tabset>
+
+						<tabset>
+
+							<tab heading="{{ 'nav-status-resource' | i18n: []: 'dts/crm' }} ({{ controllerStatusResourceTab.listOfStatusResource.length || 0 }})"
+								 ng-controller="crm.ticket-flow-status-resource.tab.control as controllerStatusResourceTab"
+								 ng-init="controllerStatusResourceTab.init(controller.selectedFlowStatus)">
+								<div ng-include="'/dts/crm/html/ticket-flow/status/resource/resource.tab.html'"></div>
+							</tab>
+
+							<tab heading="{{ 'nav-status-restriction' | i18n: []: 'dts/crm' }} ({{ controllerRestrictionStatusTab.listOfStatusRestriction.length || 0 }})"
+								 ng-controller="crm.ticket-flow-status-restriction.tab.control as controllerRestrictionStatusTab"
+								 ng-init="controllerRestrictionStatusTab.init(controller.selectedFlowStatus, controller.model.ttFluxoStatus)">
+								<div ng-include="'/dts/crm/html/ticket-flow/status/restriction/restriction.tab.html'"></div>
+							</tab>
+                            
+                            <tab heading="{{ 'nav-rules' | i18n: []: 'dts/crm' }} ({{ controllerRulesStatusTab.model.ttRegras.length || 0 }})"
+                                 ng-controller="crm.ticket-flow-status-rules.tab.control as controllerRulesStatusTab"
+                                 ng-init="controllerRulesStatusTab.init(controller.selectedFlowStatus, controller.model.ttFluxoStatus)">
+								<div ng-include="'/dts/crm/html/ticket-flow/status/rules/rules.tab.html'"></div>
+							</tab>
+
+							<tab heading="{{ 'l-complement' | i18n: []: 'dts/crm' }}">
+
+								<br/>
+
+								<totvs-page-detail-info class="col-xs-12 col-sm-3"
+														title="{{ 'l-change-permissions' | i18n: []: 'dts/crm' }}"
+														value-break="false">
+									{{  controller.selectedFlowStatus.ttChangePermission.name | i18n: []: 'dts/crm' }}
+								</totvs-page-detail-info>
+
+								<totvs-page-detail-info class="col-xs-6 col-sm-3"
+														title="{{ 'l-close-ticket' | i18n: []: 'dts/crm' }}">
+									{{ (controller.selectedFlowStatus.log_encerra_ocor === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+								</totvs-page-detail-info>
+
+								<totvs-page-detail-info class="col-xs-6 col-sm-3"
+														title="{{ 'l-reopening-status' | i18n: []: 'dts/crm' }}">
+									 {{  (controller.selectedFlowStatus.log_status_reaber === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+								</totvs-page-detail-info>
+
+								<totvs-page-detail-info class="col-xs-12 col-sm-3"
+														title="{{ 'l-all-rules-required' | i18n: []: 'dts/crm' }}"
+														value-break="false">
+									{{  (controller.selectedFlowStatus.log_todas_regra_status === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+								</totvs-page-detail-info>
+
+								<totvs-page-detail-info class="col-xs-12 col-sm-3"
+														title="{{ 'l-suspended' | i18n: []: 'dts/crm' }}"
+														value-break="false">
+									{{  (controller.selectedFlowStatus.log_suspenso === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+								</totvs-page-detail-info>
+
+							</tab>
+
+						</tabset>
+
+					</totvs-tabset>
+
+				</div>
+
+			</div>
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

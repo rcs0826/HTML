@@ -1,0 +1,42 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{ 'Entregas' | i18n : [] : 'dts/mpd'}} </h3>
+</div>
+<div class="modal-body">
+
+	<div class="row">
+		<div class="col-sm-12" style="padding-left: 0px;">
+			<totvs-page-detail-info title="{{ 'Sequência' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-4 col-md-3">
+				{{modalItemDeliveryController.ttOrderItem['nr-sequencia']}}
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info title="{{ 'Item' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-4 col-md-3">
+				{{modalItemDeliveryController.ttOrderItem['it-codigo']}}
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info ng-if="modalItemDeliveryController.ttOrderItem['cod-refer'] != ' '" title="{{ 'Referência' | i18n : [] : 'dts/mpd'}}" class="col-xs-12 col-sm-4 col-md-3">
+				{{modalItemDeliveryController.ttOrderItem['cod-refer']}}
+			</totvs-page-detail-info>
+		</div>
+	</div>
+	</br>
+	<div class="row">
+		<div class="col-sm-12">
+			<totvs-grid grid-data="modalItemDeliveryController.ttSimpleDelivery"
+						grid="modalItemDeliveryController.itemDeliveryGrid"
+						auto-resize-content="false"
+						selectable="row">
+				<totvs-grid-column field="nr-entrega" width="50">{{ 'Nr Entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<totvs-grid-column field="dt-entrega" width="50" filter="date">{{ 'Dt Entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<totvs-grid-column field="hr-entrega" width="50">{{ 'Hora Entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<totvs-grid-column field="qt-pedida" width="50" filter="number:4" style="text-align: right;">{{ 'Qtde Pedida' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+				<totvs-grid-column field="cod-sit-ent-desc" width="50">{{ 'Descrição Situação' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+			</totvs-grid>
+		</div>
+	</div>
+
+
+</div>
+<div class="modal-footer">
+	<button class="btn btn-warning" ng-click="modalItemDeliveryController.close()">{{"btn-close"| i18n}}</button>
+</div>
+

@@ -1,0 +1,120 @@
+<totvs-page type="list">
+
+    <totvs-page-navbar>
+        
+        <totvs-page-breadcrumb id="breadcrumb">
+                <breadcrumb>Manutenção de Prestadores</breadcrumb>
+
+                <breadcrumb></breadcrumb>
+        </totvs-page-breadcrumb>
+        
+        <totvs-page-header>
+
+            <totvs-page-header-title title="Manutenção de Prestadores" 
+                                     total="{{controller.listOfproviderCount}}"
+                                     settings="controller.openConfigWindow()">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+
+                <totvs-page-header-operation-action on-new="controller.onNew"
+                                                    limit-primary-action="1">
+                    <action class="glyphicon-plus"
+                            link="#/dts/hgp/global-provider/new">
+                            Incluir
+                    </action>
+
+                </totvs-page-header-operation-action>
+
+                <totvs-page-header-operation-filter placeholder="Pesquisar Prestador"                     
+                                                    ng-submit="controller.search()"
+                                                    ng-model="controller.searchInputText"
+                                                    advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+
+            </totvs-page-header-operation>
+
+            <totvs-page-disclaimers
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+            
+        </totvs-page-header>
+    </totvs-page-navbar>
+    
+    <totvs-page-content>
+
+        <totvs-page-alert ng-if="controller.listOfprovider.length <= 0"
+                          type="info"
+                          message="Nenhum registro encontrado">
+        </totvs-page-alert>
+
+        <totvs-list-item
+            ng-repeat="provider in controller.listOfprovider">
+
+            <totvs-list-item-header>
+
+                <!--  Concatenar a chave do registro aqui -->
+        <!--    <totvs-list-item-title                    
+                    title="{{provider.rotuloCondicaoSaude}}"                    
+                    link="#/dts/hgp/global-provider/detail/{{provider.urlChave}}">                    
+                </totvs-list-item-title>
+        -->        
+                <totvs-list-item-title>
+                    <span 
+                    > <a href="#/dts/hgp/global-provider/detail/{{provider.urlChave}}"> 
+                        <b>Unidade</b> {{provider.rotuloUnidade}} 
+                        | <b>Prestador</b> {{provider.rotuloPrestador}} 
+                    </a>
+                    </span>
+                </totvs-list-item-title>
+
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/hgp/global-provider/edit/{{provider.urlChave}}" 
+                            icon="glyphicon-pencil">Editar
+                    </action>
+                    
+                    <action ng-click="controller.removeProvider(provider)" 
+                            icon="glyphicon-trash">Remover</action>
+                </totvs-list-item-action>
+
+            </totvs-list-item-header>
+
+            <totvs-list-item-content>
+  
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Nome abreviado"
+                                      value="{{(provider.nomeAbrev == '' ? '-' : provider.nomeAbrev)}}">      
+                </totvs-list-item-info> 
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Cooperado"
+                                      value="{{(provider.lgCooperado == true ? 'Sim' : 'Não')}}">      
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="CPF/CNPJ"
+                                      value="{{(provider.rotuloCpfCnpj == '' ? '-' : provider.rotuloCpfCnpj)}}">      
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Grupo do Prestador"
+                                      value="{{(provider.rotuloGrupoPrestador == '' ? '-' : provider.rotuloGrupoPrestador)}}">      
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Fornecedor"
+                                      value="{{(provider.rotuloContratante == '' ? '-' : provider.rotuloContratante)}}">   
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Reembolso"
+                                      value="{{(provider.lgReembolso == true ? 'Sim' : 'Não')}}">
+                </totvs-list-item-info>                                   
+                
+            </totvs-list-item-content>
+
+        </totvs-list-item>
+
+        <totvs-list-pagination
+            ng-if="controller.listOfprovider.length < controller.listOfproviderCount && controller.listOfprovider.length"
+            ng-click="controller.search(true);">
+        </totvs-list-pagination>
+
+    </totvs-page-content>
+</totvs-page>

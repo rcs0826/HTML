@@ -1,0 +1,20 @@
+link(rel="stylesheet" href="/dts/kbn/css/font-awesome.css")
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+totvs-modal-header
+    {{'l-cell-edit' | i18n}} {{controller.myParams.model | descGeneric:"{codeErpCell} {descCell}"}}
+totvs-modal-body
+    totvs-page-form(id="cellUpdateForm",role="form")
+        field.col-xs-12.col-md-12(
+            type="input",
+            ng-model="controller.myParams.model.des_cel",
+            label="{{'l-description' | i18n}}",
+            placeholder="{{ 'l-description' | i18n}}",
+            maxlength="80",
+            required
+        )
+
+totvs-modal-footer
+    button.btn.btn-default(data-ng-click="controller.cancel();")
+        {{ 'btn-cancel' | i18n }}
+    button.btn.btn-primary(data-ng-click="controller.save(controller.myParams.action, controller.myParams.model);")
+        {{ 'l-save' | i18n }}

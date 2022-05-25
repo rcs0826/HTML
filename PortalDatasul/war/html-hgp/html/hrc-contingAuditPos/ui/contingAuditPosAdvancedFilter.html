@@ -1,0 +1,675 @@
+<totvs-modal-header>
+    Seleção de Movimentos
+</totvs-modal-header>
+<totvs-modal-body id="modalAuditPosAdvancedFilter" style="height: 660px; overflow-y: auto;">
+    <fieldset>
+
+        <!-- Campos referentes periodo -->
+        <totvs-row>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 periodo">
+                <label >Ano de Referência</label><br/>
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+
+                    <input  type="text"
+                            maxlength="4"
+                            class="form-control"
+                            id="cdnAnoRefIni"
+                            data-ng-model="afController.model.cdnAnoRefIni"
+                            ng-max="afController.model.cdnAnoRefFim"
+                            ng-blur="afController.changeRange('cdnAnoRefIni','cdnAnoRefFim')" 
+                            placeholder="0000" /> 
+                    
+                    <span   class="input-group-addon"> Até </span>
+                    <input  type="text" 
+                            maxlength="4"
+                            name="cdnAnoRefFim"
+                            class="form-control" 
+                            ng-max="afController.model.cdnAnoRefIni"
+                            id="cdnAnoRefFim"
+                            data-ng-model="afController.model.cdnAnoRefFim"
+                            placeholder="9999" />
+                </div>
+            </div>
+        
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 periodo">
+                <label >Número do Período</label><br/>
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+
+                    <input  type="text"
+                            numbers-only
+                            maxlength="3"
+                            class="form-control"
+                            id="cdnPeriodoIni"
+                            data-ng-model="afController.model.cdnPeriodoIni"
+                            ng-blur="afController.changeRange('cdnPeriodoIni','cdnPeriodoFim')" 
+                            placeholder="000" /> 
+                    
+                    <span   class="input-group-addon"> Até </span>
+
+                    <input  type="text" 
+                            numbers-only
+                            maxlength="3"
+                            class="form-control" 
+                            id="cdnPeriodoFim"
+                            data-ng-model="afController.model.cdnPeriodoFim"
+                            placeholder="999" />
+                </div>                
+            </div>        
+        </totvs-row>
+
+        <!-- Campos referentes fatura --> 
+        <totvs-row>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 fatura">
+                <label >Ano da Fatura</label><br/>
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+
+                    <input  type="text"
+                            numbers-only
+                            maxlength="4"
+                            class="form-control"
+                            id="cdnAnoFatIni"
+                            data-ng-model="afController.model.cdnAnoFatIni"
+                            ng-blur="afController.changeRange('cdnAnoFatIni','cdnAnoFatFim')" 
+                            placeholder="0000" /> 
+                    
+                    <span   class="input-group-addon"> Até </span>
+
+                    <input  type="text" 
+                            numbers-only
+                            maxlength="4"
+                            class="form-control" 
+                            id="cdnAnoFatFim"
+                            data-ng-model="afController.model.cdnAnoFatFim"
+                            placeholder="9999" />
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 fatura">
+                <label >Série da Fatura</label><br/>
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+
+                    <input  type="text"
+                            class="form-control"
+                            id="cdnSerieFatIni"
+                            data-ng-model="afController.model.cdnSerieFatIni"
+                            ng-blur="afController.changeRange('cdnSerieFatIni','cdnSerieFatFim')" 
+                            maxlength="3" /> 
+                    
+                    <span   class="input-group-addon"> Até </span>
+
+                    <input  type="text" 
+                            class="form-control" 
+                            id="cdnSerieFatFim"
+                            data-ng-model="afController.model.cdnSerieFatFim"
+                            maxlength="3" placeholder="ZZZ" />
+                </div>
+            </div>
+        </totvs-row>
+
+        <totvs-row>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 fatura">
+                <label >Número da Fatura</label><br/>
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+
+                    <input  type="text"
+                            class="form-control"
+                            id="cdnFaturaIni"
+                            data-ng-model="afController.model.cdnFaturaIni"
+                            ng-blur="afController.changeRange('cdnFaturaIni','cdnFaturaFim')" 
+                            maxlength="16" /> 
+                    
+                    <span   class="input-group-addon"> Até </span>
+                    <input  type="text" 
+                            class="form-control" 
+                            id="cdnFaturaFim"
+                            data-ng-model="afController.model.cdnFaturaFim"
+                            maxlength="16" placeholder="9999999999999999"/>
+                </div>
+            </div>
+        </totvs-row>
+
+        <!-- Campos referentes Lote -->
+        <totvs-row>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 lote">
+                <label >Número do Lote</label><br/>
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+
+                    <input  type="text"
+                            numbers-only
+                            maxlength="8"
+                            class="form-control"
+                            id="cdnLoteIni"
+                            data-ng-model="afController.model.cdnLoteIni"
+                            ng-blur="afController.changeRange('cdnLoteIni','cdnLoteFim')" 
+                            placeholder="00000000" /> 
+                    
+                    <span   class="input-group-addon"> Até </span>
+                    <input  type="text" 
+                            numbers-only
+                            maxlength="8"
+                            class="form-control" 
+                            id="cdnLoteFim"
+                            data-ng-model="afController.model.cdnLoteFim"
+                            placeholder="99999999" />
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 lote">
+                <label >Sequência Lote</label><br/>
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+
+                    <input  type="text"
+                            numbers-only
+                            maxlength="3"
+                            class="form-control"
+                            id="cdnSeqLoteIni"
+                            data-ng-model="afController.model.cdnSeqLoteIni"
+                            ng-blur="afController.changeRange('cdnSeqLoteIni','cdnSeqLoteFim')" 
+                            placeholder="000" /> 
+                    
+                    <span   class="input-group-addon"> Até </span>
+                    <input  type="text" 
+                            numbers-only
+                            maxlength="3"
+                            class="form-control" 
+                            id="cdnSeqLoteFim"
+                            data-ng-model="afController.model.cdnSeqLoteFim"
+                            placeholder="999" />
+                </div>
+            </div>
+        </totvs-row>
+
+        <totvs-divider></totvs-divider>
+
+        <totvs-row>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <label >Transação do Documento</label><br/>
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+
+                    <input  type="text"
+                            numbers-only
+                            maxlength="4"
+                            class="form-control"
+                            id="cdnTransacaoIni"
+                            data-ng-model="afController.model.cdnTransacaoIni"
+                            ng-blur="afController.changeRange('cdnTransacaoIni','cdnTransacaoFim')" 
+                            placeholder="0000">
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-default ng-scope"
+                                ng-model="afController.model.selectedCdnTransacaoIni" 
+                                ng-change="afController.model.cdnTransacaoIni=afController.model.selectedCdnTransacaoIni.cdTransacao;"
+                                zoom
+                                zoom-service="hrc.transactionZoomController"
+                                zoom-selected"cdnTransacaoIni">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button> 
+                    </span>
+                    
+                    <span   class="input-group-addon"> Até </span>
+
+                    <input  type="text" 
+                            numbers-only
+                            maxlength="4"
+                            class="form-control" 
+                            id="cdnTransacaoFim"
+                            data-ng-model="afController.model.cdnTransacaoFim"
+                            placeholder="9999" />
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-default ng-scope"
+                                ng-model="afController.model.selectedcdnTransacaoFim" 
+                                ng-change="afController.model.cdnTransacaoFim=afController.model.selectedcdnTransacaoFim.cdTransacao;"
+                                zoom
+                                zoom-service="hrc.transactionZoomController"
+                                zoom-selected"cdnTransacaoFim">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button> 
+                    </span>
+                </div> 
+            </div>
+        
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <label >Série do Documento</label><br/>
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+
+                    <input  type="text"
+                            class="form-control"
+                            id="cdnSerieDocIni"
+                            data-ng-model="afController.model.cdnSerieDocIni"
+                            ng-blur="afController.changeRange('cdnSerieDocIni','cdnSerieDocFim')" 
+                            maxlength="4" /> 
+                    
+                    <span   class="input-group-addon"> Até </span>
+
+                    <input  type="text" 
+                            class="form-control" 
+                            id="cdnSerieDocFim"
+                            data-ng-model="afController.model.cdnSerieDocFim"
+                            placeholder="ZZZZ" maxlength="4"/>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <label >Número do Documento</label><br/>
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+
+                    <input  type="text"
+                            numbers-only
+                            maxlength="8"
+                            class="form-control"
+                            id="cdnDocIni"
+                            data-ng-model="afController.model.cdnDocIni"
+                            ng-blur="afController.changeRange('cdnDocIni','cdnDocFim')" 
+                            placeholder="00000000"/> 
+                    
+                    <span   class="input-group-addon"> Até </span>
+
+                    <input  type="text" 
+                            numbers-only
+                            maxlength="8"
+                            class="form-control" 
+                            id="cdnDocFim"
+                            data-ng-model="afController.model.cdnDocFim"
+                            placeholder="99999999" />
+                </div>
+            </div>
+        </totvs-row>
+
+        <totvs-divider></totvs-divider>
+
+        <totvs-row>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <label >Unidade Prestador {{afController.model.inTipSelecao == "lote" ? 'Importação' : 'Pagamento'}}</label><br/>
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+                    
+                    <input  type="text"
+                            numbers-only
+                            maxlength="4"
+                            class="form-control"
+                            id="cdnUnidPrestIni"
+                            data-ng-model="afController.model.cdnUnidPrestIni"
+                            ng-blur="afController.changeRange('cdnUnidPrestIni','cdnUnidPrestFim')" 
+                            placeholder="0000"/> 
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-default ng-scope"
+                                ng-model="afController.model.selectedCdnUnidPrestIni" 
+                                ng-change="afController.model.cdnUnidPrestIni=afController.model.selectedCdnUnidPrestIni.cdUnimed;"
+                                zoom
+                                zoom-service="hcg.unitZoomController"
+                                zoom-selected"cdnUnidPrestIni">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button> 
+                    </span>        
+                    
+                    <span   class="input-group-addon"> Até </span>
+
+                    <input  type="text" 
+                            numbers-only
+                            maxlength="4"
+                            class="form-control" 
+                            id="cdnUnidPrestFim"
+                            data-ng-model="afController.model.cdnUnidPrestFim"
+                            placeholder="9999" />
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-default ng-scope"
+                                ng-model="afController.model.selectedCdnUnidPrestFim" 
+                                ng-change="afController.model.cdnUnidPrestFim=afController.model.selectedCdnUnidPrestFim.cdUnimed;"
+                                zoom
+                                zoom-service="hcg.unitZoomController"
+                                zoom-selected"cdnUnidPrestFim">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button> 
+                    </span> 
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <label >Prestador {{afController.model.inTipSelecao == "lote" ? 'Importação' : 'Pagamento'}}</label><br/>
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+
+                    <input  type="text"
+                            numbers-only
+                            maxlength="8"
+                            class="form-control"
+                            id="cdnPrestadorIni"
+                            data-ng-model="afController.model.cdnPrestadorIni"
+                            ng-blur="afController.changeRange('cdnPrestadorIni','cdnPrestadorFim')" 
+                            placeholder="00000000"/> 
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-default ng-scope"
+                                ng-model="afController.model.selectedCdnPrestadorIni" 
+                                ng-change="afController.setCodPrestador(afController.model.selectedCdnPrestadorIni.cdUnidCdPrestador,'cdnPrestadorIni')"
+                                zoom
+                                zoom-service="global.providerZoomController"
+                                zoom-selected"cdnPrestadorIni">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button> 
+                    </span>                                               
+                    
+                    <span   class="input-group-addon"> Até </span>
+
+                    <input  type="text" 
+                            numbers-only
+                            maxlength="8"
+                            class="form-control" 
+                            id="cdnPrestadorFim"
+                            data-ng-model="afController.model.cdnPrestadorFim"
+                            placeholder="99999999" />
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-default ng-scope"
+                                ng-model="afController.model.selectedCdnPrestadorFim" 
+                                ng-change="afController.setCodPrestador(afController.model.selectedCdnPrestadorFim.cdUnidCdPrestador,'cdnPrestadorFim')"
+                                zoom
+                                zoom-service="global.providerZoomController"
+                                zoom-selected"cdnPrestadorFim">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button> 
+                    </span>         
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <label >Prestador Principal</label><br/>
+
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+
+                    <input  type="text"
+                            numbers-only
+                            maxlength="8"
+                            class="form-control"
+                            id="cdnPrestadorPrincipalIni"
+                            data-ng-model="afController.model.cdnPrestadorPrincipalIni"
+                            ng-blur="afController.changeRange('cdnPrestadorPrincipalIni','cdnPrestadorPrincipalFim')" 
+                            placeholder="00000000"/> 
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-default ng-scope"
+                                ng-model="afController.model.selectedcdnPrestadorPrincipalIni" 
+                                ng-change="afController.setCodPrestadorPrincipal(afController.model.selectedCdnPrestadorPrincipalIni.cdUnidCdPrestador,'cdnPrestadorPrincipalIni')"
+                                zoom
+                                zoom-service="global.providerZoomController"
+                                zoom-selected"cdnPrestadorPrincipalIni">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button> 
+                    </span>                                               
+                        
+                    <span   class="input-group-addon"> Até </span>
+
+                    <input  type="text" 
+                            numbers-only
+                            maxlength="8"
+                            class="form-control" 
+                            id="cdnPrestadorPrincipalFim"
+                            data-ng-model="afController.model.cdnPrestadorPrincipalFim"
+                            placeholder="99999999" />
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-default ng-scope"
+                                ng-model="afController.model.selectedCdnPrestadorPrincipalFim" 
+                                ng-change="afController.setCodPrestadorPrincipal(afController.model.selectedCdnPrestadorPrincipalFim.cdUnidCdPrestador,'cdnPrestadorPrincipalFim')"
+                                zoom
+                                zoom-service="global.providerZoomController"
+                                zoom-selected"cdnPrestadorPrincipalFim">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button> 
+                    </span>         
+                </div>
+            </div>
+
+        </totvs-row>
+
+        <totvs-divider></totvs-divider>
+
+        <totvs-row>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-model="afController.model.regra">
+                <label >Número da Regra</label><br/>
+
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+
+                    <input  type="text"
+                            numbers-only
+                            maxlength="20"
+                            class="form-control"
+                            id="cdnRegraIni"
+                            ng-disabled="afController.model.inTipoProcesso == 'envio'"
+                            data-ng-model="afController.model.cdnRegraIni"
+                            ng-blur="afController.changeRange('cdnRegraIni','cdnRegraFim')" 
+                            placeholder="00000000000000000000"/> 
+                    
+                    <span   class="input-group-addon"> Até </span>
+
+                    <input  type="text" 
+                            numbers-only
+                            maxlength="20"
+                            class="form-control" 
+                            id="cdnRegraFim"
+                            ng-disabled="afController.model.inTipoProcesso == 'envio'"
+                            data-ng-model="afController.model.cdnRegraFim"
+                            placeholder="99999999999999999999" />
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <label >Unidade da Carteira</label><br/>
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+
+                    <input  type="text"
+                            numbers-only
+                            maxlength="4"
+                            class="form-control"
+                            id="cdnUnidCarteiraIni"
+                            data-ng-model="afController.model.cdnUnidCarteiraIni"
+                            ng-blur="afController.changeRange('cdnUnidCarteiraIni','cdnUnidCarteiraFim')" 
+                            placeholder="0000"/> 
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-default ng-scope"
+                                ng-model="afController.model.selectedCdnUnidCarteiraIni" 
+                                ng-change="afController.model.cdnUnidCarteiraIni=afController.model.selectedCdnUnidCarteiraIni.cdUnimed;"
+                                zoom
+                                zoom-service="hcg.unitZoomController"
+                                zoom-selected"cdnUnidCarteiraIni">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button> 
+                    </span>        
+                    
+                    <span   class="input-group-addon"> Até </span>
+
+                    <input  type="text" 
+                            numbers-only
+                            maxlength="4"
+                            class="form-control" 
+                            id="cdnUnidCarteiraFim"
+                            data-ng-model="afController.model.cdnUnidCarteiraFim"
+                            placeholder="9999" />
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-default ng-scope"
+                                ng-model="afController.model.selectedCdnUnidCarteiraFim" 
+                                ng-change="afController.model.cdnUnidCarteiraFim=afController.model.selectedCdnUnidCarteiraFim.cdUnimed;"
+                                zoom
+                                zoom-service="hcg.unitZoomController"
+                                zoom-selected"cdnUnidCarteiraFim">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button> 
+                    </span>   
+                </div>
+            </div>
+        </totvs-row>
+
+		<style>
+            .filtroData {
+                    padding: 0;
+            }
+            .filtroData div {
+                    margin-top: 0;
+            }
+            .filtroData .input-group-btn {
+                    display: none;
+            }
+        </style>	
+
+        <totvs-divider></totvs-divider>
+
+        <totvs-row>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <label >Ano da Guia</label><br/>
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+
+                    <input  type="text"
+                            maxlength="4"
+                            class="form-control"
+                            id="cdnAnoIni"
+                            data-ng-model="afController.model.cdnAnoIni"
+                            ng-max="afController.model.cdnAnoFim"
+                            ng-blur="afController.changeRange('cdnAnoIni','cdnAnoFim')" 
+                            placeholder="0000" /> 
+                    
+                    <span   class="input-group-addon"> Até </span>
+
+                    <input  type="text" 
+                            maxlength="4"
+                            name="cdnAnoFim"
+                            class="form-control" 
+                            ng-max="afController.model.cdnAnoFim"
+                            id="cdnAnoFim"
+                            data-ng-model="afController.model.cdnAnoFim"
+                            placeholder="9999" />
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <label >Número da Guia</label><br/>
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>
+
+                    <input  type="text"
+                            numbers-only
+                            maxlength="8"
+                            class="form-control"
+                            id="nrGuiaIni"
+                            data-ng-model="afController.model.nrGuiaIni"
+                            ng-blur="afController.changeRange('nrGuiaIni','nrGuiaFim')" 
+                            placeholder="00000000"/> 
+                    
+                    <span   class="input-group-addon"> Até </span>
+                    <input  type="text" 
+                            numbers-only
+                            maxlength="8"
+                            class="form-control" 
+                            id="nrGuiaFim"
+                            data-ng-model="afController.model.nrGuiaFim"
+                            placeholder="99999999" />
+                </div>
+            </div>        
+        </totvs-row>
+
+        <totvs-divider></totvs-divider>
+
+        <totvs-row>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <label >Data de Digitação</label><br/>
+                <div class="input-group">
+                    <span   class="input-group-addon"> De </span>                                        
+                    <totvs-field totvs-datepicker  
+                            class="filtroData"
+                            t-mask-date="99/99/9999"
+                            format="dd/MM/yyyy"
+                            ng-model="afController.model.datDigitacaoIni"
+                            culture="pt"
+                            canclean
+                            ng-show="true"
+	                        ng-blur="afController.changeRange('datDigitacaoIni','datDigitacaoFim')"
+                            placeholder = '31/12/9999'>
+                    </totvs-field>
+
+                    <span class="input-group-addon" > Até </span>
+
+                    <totvs-field totvs-datepicker  
+                            class="filtroData"
+                            t-mask-date="99/99/9999"
+                            format="dd/MM/yyyy"
+                            ng-model="afController.model.datDigitacaoFim"
+                            culture="pt"
+                            canclean
+                            ng-show="true"
+                            placeholder = '31/12/9999'>
+                    </totvs-field>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <label >Data de Realização</label><br/>
+                <div class="input-group">
+                    <span class="input-group-addon"> De </span>                                        
+
+                    <totvs-field totvs-datepicker  
+                            class="filtroData"
+                            t-mask-date="99/99/9999"
+                            format="dd/MM/yyyy"
+                            ng-model="afController.model.datRealizacaoIni"
+                            culture="pt"
+                            canclean
+                            ng-show="true"
+                            ng-blur="afController.changeRange('datRealizacaoIni','datRealizacaoFim')"
+                            placeholder = '31/12/9999'>
+                    </totvs-field>
+
+                    <span   class="input-group-addon" > Até </span>
+
+                    <totvs-field totvs-datepicker  
+                            class="filtroData"
+                            t-mask-date="99/99/9999"
+                            format="dd/MM/yyyy"
+                            ng-model="afController.model.datRealizacaoFim"
+                            culture="pt"
+                            canclean
+                            ng-show="true"
+                            placeholder = '31/12/9999'>
+                    </totvs-field>
+                </div>
+            </div>
+        </totvs-row>
+
+        <totvs-row>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label for="optradio" style="padding-bottom:6px">Tipo Processo</label><br />
+                <label class="radio-inline" data-toggle="tooltip" data-placement="top" title="Tipo do Processo Contingencia">
+                    <input name="radioProcesso" type="radio" value="contingencia" ng-checked="true" ng-model="afController.model.inTipoProcesso">Contingência
+                </label>
+                <label class="radio-inline" data-toggle="tooltip" data-placement="top" title="Tipo do Processo Envio">
+                    <input name="radioProcesso" type="radio" value="envio"  ng-model="afController.model.inTipoProcesso" >Envio
+                </label>
+            </div>                
+        </totvs-row>
+
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn" ng-click="afController.cleanFieldsFilter()">Limpar Campos</button>
+    <button class="btn" ng-click="afController.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-click="afController.search()">Buscar</button>
+</totvs-modal-footer>
+

@@ -1,0 +1,111 @@
+<totvs-page type="execution">
+
+    <totvs-page-navbar>
+
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n: []: 'dts/cmg'}}</breadcrumb>
+            <breadcrumb link="#/dts/cmg/importbankstatement">{{'l-import-bank-statement' | i18n:[] : 'dts/cmg'}}</breadcrumb>
+            <breadcrumb>{{'l-execute' | i18n:[] : 'dts/cmg'}}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            
+            <totvs-page-header-title title="{{'l-execute' | i18n:[] : 'dts/cmg'}}">
+            </totvs-page-header-title>
+            
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action></totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+
+        <totvs-execution hide-repeat="true" required-filename="true">
+
+            <totvs-execution-item title="{{'l-selection' | i18n:[] : 'dts/cmg'}}">
+                
+                <!-- UNIDADE FECHAMENTO DE CAIXA -->
+                <field type="select"
+                       ng-model="controller.params.listCashClosingUnit"
+                       canclean
+                       ng-required="controller.ttImpBankStmntInitParams.isReqCashClosUnit">
+                    <label>{{'l-cash-closing-unit' | i18n: []: 'dts/cmg'}}</label>
+                    <zoom zoom-service="cmg.unid-fechto-cx.zoom"
+                          zoom-multiple></zoom>
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-cash-closing-unit' | i18n: []: 'dts/cmg'}}">
+                            {{$select.selected.objSelected ? $select.selected.toString() : 
+                              ($select.selected.cod_unid_fechto_cx + ' - ' +
+                               $select.selected.des_unid_fechto_cx)}}
+                        </ui-select-match>
+                        <ui-select-choices repeat="cashClosingUnit in
+                                                   controller.serviceCashClosingUnit.selectResultList 
+                                                   track by $index"
+                                           refresh="controller.serviceCashClosingUnit.getSelectResultList(
+                                                    $select.search, undefined)"
+                                           refresh-delay="500">
+                            <span ng-bind-html="cashClosingUnit.cod_unid_fechto_cx + ' - ' + 
+                                                cashClosingUnit.des_unid_fechto_cx | highlight: $select.search">
+                            </span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+                
+                <!-- REGRAS -->
+                <field type="select"
+                       ng-model="controller.params.listRuleBankStmnt"
+                       canclean
+                       required>
+                    <label>{{'l-rule-bank-statement' | i18n: []: 'dts/cmg'}}</label>
+                    <zoom zoom-service="cmg.regra-extrat-bcio.zoom"
+                          zoom-init="controller.listRuleBankStmntInit"
+                          zoom-multiple></zoom>
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-rule-bank-statement' | i18n: []: 'dts/cmg'}}">
+                            {{$select.selected.objSelected ? $select.selected.toString() : 
+                              ($select.selected.num_id_regra_extrat + ' - ' +
+                               $select.selected.des_regra_extrat)}}
+                        </ui-select-match>
+                        <ui-select-choices repeat="ruleBankStmnt in
+                                                   controller.serviceRuleBankStmnt.selectResultList 
+                                                   track by $index"
+                                           refresh="controller.serviceRuleBankStmnt.getSelectResultList(
+                                                    $select.search, undefined)"
+                                           refresh-delay="500">
+                            <span ng-bind-html="ruleBankStmnt.num_id_regra_extrat + ' - ' + 
+                                                ruleBankStmnt.des_regra_extrat | highlight: $select.search">
+                            </span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+            </totvs-execution-item>
+            
+            <totvs-execution-item title="{{'l-parameters' | i18n:[] : 'dts/cmg'}}">
+                
+                <field type="checkbox"
+                       ng-model="controller.params.isValidDuplDate">
+                    <label>{{'l-validate-duplicate-date' | i18n: []: 'dts/cmg'}}</label>
+                </field>
+                
+                <field type="checkbox"
+                       ng-model="controller.params.isValidDuplRef">
+                    <label>{{'l-validate-duplicate-reference' | i18n: []: 'dts/cmg'}}</label>
+                </field>
+                
+                <field type="checkbox"
+                       ng-model="controller.params.isValidFinalBalSysExt">
+                    <label>{{'l-validate-final-balance-system-x-extract' | i18n: []: 'dts/cmg'}}</label>
+                </field>
+                
+            </totvs-execution-item>
+
+            <totvs-execution-item type="execution">
+                
+                <totvs-datasul-execution-rpw></totvs-datasul-execution-rpw>
+
+            </totvs-execution-item>
+        </totvs-execution>
+    </totvs-page-content>
+</totvs-page>

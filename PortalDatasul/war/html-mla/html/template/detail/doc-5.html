@@ -1,0 +1,60 @@
+<totvs-page-detail-info title="{{ 'l-site' | i18n}}" class="col-xs col-sm-12 col-md-12">
+    {{controller.request['tt-cotacao'][0]['cod-estabel']}} - {{controller.request['tt-cotacao'][0]['desc-cod-estabel']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-requester' | i18n}}" class="col-xs col-sm-8 col-md-8">
+    {{controller.request['tt-cotacao'][0]['requisitante']}} - {{controller.request['tt-cotacao'][0]['nome-solic']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-phone' | i18n}}" class="col-xs col-sm-4 col-md-4">
+    {{controller.request['tt-cotacao'][0]['fone-solic']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-buyer' | i18n}}" class="col-xs col-sm-8 col-md-8">
+    {{controller.request['tt-cotacao'][0]['cod-comprado']}} - {{controller.request['tt-cotacao'][0]['nome-comprador']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-phone' | i18n}}" class="col-xs col-sm-4 col-md-4">
+    {{controller.request['tt-cotacao'][0]['fone-comprador']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-item' | i18n}}" class="col-xs col-sm-12 col-md-12">
+    {{controller.request['tt-cotacao'][0]['it-codigo']}} - {{controller.request['tt-cotacao'][0]['desc-it-codigo']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-um' | i18n}}" class="col-xs col-sm-12 col-md-12">
+    {{controller.request['tt-cotacao'][0]['un']}} - {{controller.request['tt-cotacao'][0]['desc-un']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-currency' | i18n}}" class="col-xs col-sm-12 col-md-12">
+    {{controller.request['tt-cotacao'][0]['mo-codigo']}} - {{controller.request['tt-cotacao'][0]['desc-mo-codigo']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-requisition' | i18n}}" class="col-xs col-sm-4 col-md-4">
+    {{controller.request['tt-cotacao'][0]['numero-ordem']}}
+</totvs-page-detail-info>
+<div class="col-xs col-sm-4 col-md-4" style="padding: 0">
+    <totvs-page-detail-info ng-if="controller.request['tt-cotacao'][0]['nr-processo'] > 0" title="{{ 'l-purchase-package' | i18n}}" class="col-xs col-sm-12 col-md-12">
+        {{controller.request['tt-cotacao'][0]['nr-processo']}} - {{controller.request['tt-cotacao'][0]['desc-nr-processo']}}
+    </totvs-page-detail-info>
+</div>
+<totvs-page-detail-info title="{{ 'l-quantity' | i18n}}" class="col-xs col-sm-4 col-md-4">
+    {{controller.request['tt-cotacao'][0]['qt-solic']}}
+</totvs-page-detail-info>
+
+
+
+<totvs-page-detail-info title="{{ 'l-quotation-seq' | i18n}}" class="col-xs col-sm-12 col-md-12">
+    {{controller.request['tt-cotacao'][0]['seq-cotac']}}
+</totvs-page-detail-info>
+
+<totvs-page-detail-info title="{{ 'l-narrative-item' | i18n}}" class="col-xs col-sm-12 col-md-12 text-justify">
+    {{controller.request['tt-cotacao'][0]['narrativa-ord-solic']}}
+</totvs-page-detail-info>
+
+
+<div class="col-xs col-sm-12 col-md-12" style="border: none; overflow-x: auto;">
+	<div ng-repeat="ord in controller.request['tt-cotacao']" ng-init="numOrdem = ord['numero-ordem']">
+		<div ng-include="'/dts/mla/html/template/detail/quotation.html'" id="quotation"></div>
+	</div>
+</div>

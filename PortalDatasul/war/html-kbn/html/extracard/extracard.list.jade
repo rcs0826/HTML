@@ -1,0 +1,31 @@
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+totvs-page(type='list')
+    totvs-page-navbar
+        totvs-page-breadcrumb
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb {{ 'l-issue-extra-card' | i18n}}
+        totvs-page-header
+            totvs-page-header-title(title="{{ 'l-issue-extra-card' | i18n }}" total="{{controller.totalRecords}}")
+            totvs-page-header-operation
+                div.col-md-7.col-sm-7
+                totvs-page-header-operation-filter(placeholder="{{ 'l-code-description' | i18n}}", 
+                                                   ng-submit="controller.quickSearch()", 
+                                                   ng-model="controller.quickSearchText",
+                                                   advanced-search="controller.callAdvancedSearch")
+            totvs-page-disclaimers(disclaimer-list="controller.filtersApplied" ng-click="controller.removeFilter")
+    totvs-page-content
+        totvs-page-alert(ng-if="!controller.hasEstab()" type="info" message="{{ 'msg-estab-not-selected' | i18n }}")
+        totvs-page-alert(ng-if="controller.hasEstab() && controller.totalRecords === 0 " type="info" message="{{ 'msg-not-found' | i18n }}")
+        totvs-list-item(ng-repeat="itemDet in controller.itemDetailList"
+                                        class="{{controller.colorTag(itemDet.ttIntervFaixaExtraDs.idi_cor_faixa)}}")
+            totvs-list-item-header
+              totvs-list-item-title.col-md-12.col-lg-12(title="{{itemDet.ttItemExtraDs | descGeneric:'{sku} - {desc} {ref} ({exp})'}}",link="#/dts/kbn/extracard/{{itemDet.num_id_item_det}}")
+                  a.pull-right.btn.btn-primary(role='button', 
+                                               href='#/dts/kbn/extracard/{{itemDet.num_id_item_det}}')
+                    {{'l-issue-extra-card'|i18n: []: 'dts/kbn'}}
+            totvs-list-item-content
+              totvs-list-item-info.col-md-3(title="{{ 'l-warehouse' | i18n }}" value="{{itemDet.cod_depos_erp}}")
+              totvs-list-item-info.col-md-3(title="{{ 'l-location' | i18n }}" value="{{itemDet.cod_localiz}}")
+              totvs-list-item-info.col-md-3(title="{{'l-controlled' | i18n}}", value="{{itemDet.ttItemExtraDs.idi_control_kanban | yesOrNo}}")
+        .container(align="center")
+            pagination.pagination-sm(total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages", items-per-page="controller.pageSize", previous-text="{{'l-previous' | i18n}}", next-text="{{'l-next' | i18n}}")

@@ -1,0 +1,201 @@
+<totvs-page type="list" totvs-custom-element="customPage">
+    <totvs-page-nav-bar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{'l-initial-page' | i18n}}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalconfigpdp/">{{'l-portal-config-clien-rep' | i18n}}</breadcrumb>
+            <breadcrumb>{{'l-portal-reg' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-portal-reg' | i18n}}"
+                                     total="{{controller.totalRecords}}">
+            </totvs-page-header-title>
+            
+            <totvs-page-header-operation>
+                
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 operations">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-plus">
+                            </span>&nbsp;{{ 'btn-add' | i18n }}
+                            <span class="caret"></span>
+                        </button>
+                            
+       
+                        <ul class="dropdown-menu" role="menu">
+                            <li>                               
+                                <a href="#/dts/mpd/portalreg/{{controller.idPortalConfigur}}/{{controller.idiTipConfig}}/item/new">{{'l-cod-item' | i18n}}</a>                               
+                            </li>
+                            <li>
+                                <a href="#/dts/mpd/portalreg/{{controller.idPortalConfigur}}/{{controller.idiTipConfig}}/condPagto/new">{{'l-cdn-cond-pag' | i18n}}</a>                                
+                            </li>
+                            <li>                                
+                                <a href="#/dts/mpd/portalreg/{{controller.idPortalConfigur}}/{{controller.idiTipConfig}}/tbPreco/new" ng-hide="controller.addTbPreco">{{'l-price-table' | i18n}}</a>
+                            </li>
+                            <li>                                
+                                <a href="#/dts/mpd/portalreg/{{controller.idPortalConfigur}}/{{controller.idiTipConfig}}/tpOperacao/new" ng-hide="controller.addTpOperacao">{{'l-tp-oper' | i18n}}</a>
+                            </li>
+							<li>                                
+                                <a href="#/dts/mpd/portalreg/{{controller.idPortalConfigur}}/{{controller.idiTipConfig}}/canalVenda/new" ng-hide="controller.addCanalVenda">{{'l-canal-venda' | i18n}}</a>
+                            </li>
+                        </ul>                        
+                    </div>
+                    <button type="button" class="btn btn-default" ng-click="controller.edit()">
+                        <span class="glyphicon glyphicon-pencil">
+                        </span>&nbsp;{{ 'btn-edit' | i18n }}
+                    </button>
+                    <button type="button" class="btn btn-default" ng-click="controller.delete()">
+                        <span class="glyphicon glyphicon-remove">
+                        </span>&nbsp;{{ 'btn-remove' | i18n }}                    
+                    </button>
+                    <button type="button" class="btn btn-default" ng-click="controller.openCopyModal()">
+                        <span class="glyphicon glyphicon-copy">
+                        </span>&nbsp;{{ 'l-copy-reg' | i18n }}
+                    </button>
+                </div>
+                
+                <totvs-page-header-operation-filter placeholder="{{ 'l-search' | i18n }}"
+                                                        ng-submit="controller.loadData()"
+                                                        ng-model="controller.quickSearchText"
+                                                        advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+            
+            <totvs-page-tags>
+				<tag class="tag-1 btn btn-link" 
+                     ng-click="controller.loadData(null,'item')">{{'l-cod-item' | i18n}}</tag>
+				<tag class="tag-2 btn btn-link" 
+                     ng-click="controller.loadData(null,'condPagto')">{{'l-cdn-cond-pag' | i18n}}</tag>
+				<tag class="tag-3 btn btn-link" 
+                     ng-click="controller.loadData(null,'tbPreco')"
+                     ng-hide="controller.addTbPreco">{{'l-tab-preco' | i18n}}</tag>
+                <tag class="tag-4 btn btn-link" 
+                     ng-click="controller.loadData(null,'tpOperacao')"
+                     ng-hide="controller.addTpOperacao">{{'l-tp-oper' | i18n}}</tag>
+				<tag class="tag-5 btn btn-link" 
+                     ng-click="controller.loadData(null,'canalVenda')"
+                     ng-hide="controller.addCanalVenda">{{'l-canal-venda' | i18n}}</tag>
+			</totvs-page-tags>            
+            
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers"
+                                    ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+        </totvs-page-header>
+    </totvs-page-nav-bar>
+    <totvs-page-content>
+        <div id="reg-list" style="height:100%; padding-left: 15px; padding-right: 15px;">
+            
+            <!--Tabela com todos os registros-->
+            <totvs-table items="controller.listResult" items-as="portalReg" dblclick="controller.detail(portalReg)" ng-if="controller.tagTabela == ''">
+                
+                <column id="reg-seq" style="width: 50px !important" title="{{'l-sequencia' | i18n}}">
+                    {{portalReg['idi-seq-reg']}}
+                </column>
+                <column title="{{'l-cod-tabela' | i18n}}">
+                    {{portalReg['_']['desc-tabela']}}
+                </column>
+                <column id="reg-item" title="{{'l-cod-item' | i18n}}">
+                    <p tooltip="{{portalReg['cod-item']}}" tooltip-placement="bottom">{{portalReg['cod-item']}} </p>
+                </column>
+                <column title="{{'l-cod-refer' | i18n}}">
+                    {{portalReg['cod-refer']}}
+                </column>
+                <column title="{{'l-cdn-cond-pag' | i18n}}">
+                    <p tooltip="{{portalReg['cdn-cond-pag']}}" tooltip-placement="bottom">{{portalReg['cdn-cond-pag']}} </p>
+                </column>
+                <column title="{{'l-price-table' | i18n}}">
+                    <p tooltip="{{portalReg['cod-tab-preco']}}" tooltip-placement="bottom">{{portalReg['cod-tab-preco']}} </p>
+                </column>
+                <column title="{{'l-tp-oper' | i18n}}">
+                    <p tooltip="{{portalReg['cdn-tip-ped']}}" tooltip-placement="bottom">{{portalReg['cdn-tip-ped']}} </p>
+                </column>
+				<column title="{{'l-canal-venda' | i18n}}">
+                    <p tooltip="{{portalReg['cdn-canal-vendas']}}" tooltip-placement="bottom">{{portalReg['cdn-canal-vendas']}} </p>
+                </column>
+                <column title="{{'l-dat-ini-val-item' | i18n}}">
+                    <p tooltip="{{'l-dat-ini-val-item' | i18n}}" tooltip-placement="top">{{portalReg['dat-livre-3'] | date : ('l-date-format' | i18n) : 'UTC'}} </p>
+                </column>
+                <column title="{{'l-dat-fim-val-item' | i18n}}">
+                    <p tooltip="{{'l-dat-fim-val-item' | i18n}}" tooltip-placement="top">{{portalReg['dat-livre-4']  | date : ('l-date-format' | i18n) : 'UTC'}}</p>
+                </column>
+            </totvs-table>
+            
+            <!--Tabela mostra só os itens-->
+            <totvs-table id="reg-list" items="controller.listResult" items-as="portalReg" dblclick="controller.detail(portalReg)" ng-if="controller.tagTabela == 'item'">
+                
+                <column id="reg-seq" title="{{'l-sequencia' | i18n}}">
+                    {{portalReg['idi-seq-reg']}}
+                </column>
+                <column title="{{'l-cod-tabela' | i18n}}">
+                    {{portalReg['_']['desc-tabela']}}
+                </column>
+                <column id="reg-item" title="{{'l-cod-item' | i18n}}">
+                    <p tooltip="{{portalReg['cod-item']}}" tooltip-placement="bottom">{{portalReg['cod-item']}} </p>
+                </column>
+                <column title="{{'l-cod-refer' | i18n}}">
+                    {{portalReg['cod-refer']}}
+                </column>                
+                <column title="{{'l-dat-ini-val-item' | i18n}}">
+                    <p tooltip="{{'l-dat-ini-val-item' | i18n}}" tooltip-placement="top">{{portalReg['dat-livre-3'] | date : ('l-date-format' | i18n) : 'UTC'}} </p>
+                </column>
+                <column title="{{'l-dat-fim-val-item' | i18n}}">
+                    <p tooltip="{{'l-dat-fim-val-item' | i18n}}" tooltip-placement="top">{{portalReg['dat-livre-4']  | date : ('l-date-format' | i18n) : 'UTC'}}</p>
+                </column>
+            </totvs-table>
+            
+            <!--Tabela mostra só as condições de pagamento-->
+            <totvs-table items="controller.listResult" items-as="portalReg" dblclick="controller.detail(portalReg)" ng-if="controller.tagTabela == 'condPagto'">
+                <column title="{{'l-sequencia' | i18n}}">
+                    {{portalReg['idi-seq-reg']}}
+                </column>
+                <column title="{{'l-cod-tabela' | i18n}}">
+                    {{portalReg['_']['desc-tabela']}}
+                </column>
+                <column title="{{'l-cdn-cond-pag' | i18n}}">
+                    <p tooltip="{{portalReg['cdn-cond-pag']}}" tooltip-placement="bottom">{{portalReg['cdn-cond-pag']}} </p>
+                </column>                
+            </totvs-table>
+            
+            <!--Tabela mostra só as tabelas de preço-->
+            <totvs-table items="controller.listResult" items-as="portalReg" dblclick="controller.detail(portalReg)" ng-if="controller.tagTabela == 'tbPreco'">                
+                <column title="{{'l-sequencia' | i18n}}">
+                    {{portalReg['idi-seq-reg']}}
+                </column>
+                <column title="{{'l-cod-tabela' | i18n}}">
+                    {{portalReg['_']['desc-tabela']}}
+                </column>
+                <column title="{{'l-price-table' | i18n}}">
+                    <p tooltip="{{portalReg['cod-tab-preco']}}" tooltip-placement="bottom">{{portalReg['cod-tab-preco']}} </p>
+                </column>             
+            </totvs-table>
+
+            <!--Tabela mostra só o tipo de operacao -->
+            <totvs-table items="controller.listResult" items-as="portalReg" dblclick="controller.detail(portalReg)" ng-if="controller.tagTabela == 'tpOperacao'">                
+				<column title="{{'l-sequencia' | i18n}}">
+                    {{portalReg['idi-seq-reg']}}
+                </column>
+				<column title="{{'l-cod-tabela' | i18n}}">
+                    {{portalReg['_']['desc-tabela']}}
+                </column>
+                <column title="{{'l-tp-oper' | i18n}}">
+                    <p tooltip="{{portalReg['cdn-tip-ped']}}" tooltip-placement="bottom">{{portalReg['cdn-tip-ped']}} </p>
+                </column>                
+            </totvs-table>
+			<!--Tabela mostra só o canal de venda -->
+			<totvs-table items="controller.listResult" items-as="portalReg" dblclick="controller.detail(portalReg)" ng-if="controller.tagTabela == 'canalVenda'">                
+                <column title="{{'l-sequencia' | i18n}}">
+                    {{portalReg['idi-seq-reg']}}
+                </column>
+                <column title="{{'l-cod-tabela' | i18n}}">
+                    {{portalReg['_']['desc-tabela']}}
+                </column>
+                <column title="{{'l-canal-venda' | i18n}}">
+                    <p tooltip="{{portalReg['cdn-canal-vendas']}}" tooltip-placement="bottom">{{portalReg['cdn-canal-vendas']}} </p>
+                </column>             
+            </totvs-table>
+        </div>        
+        <div ng-animate="'animate-if'"
+             ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length">
+            <totvs-list-pagination ng-click="controller.loadData(true);"></totvs-list-pagination>
+        </div>
+    </totvs-page-content>
+</totvs-page>

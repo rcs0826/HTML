@@ -1,0 +1,66 @@
+<div class="row crm-tab-item">
+
+	<div style="min-height: 240px; max-height: 240px;">
+
+		<totvs-page-detail class="crm-page-details" style="padding-left: 0px;">
+
+			<div class="col-xs-12">
+				<h4 class="overflow-ellipsis">
+					<a href="#/dts/crm/account/detail/{{controller.selectedAccount.num_id}}">
+					{{ controller.selectedAccount.nom_razao_social }}
+					{{ controller.selectedAccount.cod_pessoa_erp ? '(' + controller.selectedAccount.cod_pessoa_erp + ')' : '' }}
+					{{ controller.selectedAccount.cod_pessoa_gpl ? '{' + controller.selectedAccount.cod_pessoa_gpl + '}' : '' }}
+					</a>
+				</h4>
+			</div>
+
+			<totvs-page-detail-info
+				class="col-xs-6"
+				title="{{ 'l-type-account' | i18n: []: 'dts/crm' }}">
+				{{ controller.selectedAccount.nom_tip_cta}}
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info
+				class="col-xs-6"
+				title="{{ 'l-status' | i18n: []: 'dts/crm' }}">
+				{{ controller.selectedAccount.nom_status }}
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info
+				class="col-xs-6"
+				title="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}">
+				{{ controller.selectedAccount.nom_usuar || '' }}
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info
+				class="col-xs-6"
+				title="{{ 'l-nick-name' | i18n: []: 'dts/crm' }}">
+				{{ controller.selectedAccount.nom_abrev || ''}}
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info
+				ng-if="controller.selectedAccount.idi_tip_pessoa === 1"
+				class="col-xs-6"
+				title="{{ 'l-cpf' | i18n: []: 'dts/crm' }}">
+				{{ controller.selectedAccount.nom_cpf | mask : '999.999.999-99' }}
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info
+				ng-if="controller.selectedAccount.idi_tip_pessoa != 1"
+				class="col-xs-6"
+				title="{{ 'l-cnpj' | i18n: []: 'dts/crm' }}">
+				{{ controller.selectedAccount.nom_cnpj | mask : '99.999.999/9999-99' }}
+			</totvs-page-detail-info>
+		</totvs-page-detail>
+
+	</div>
+
+	<div class="col-xs-12"
+		 style="padding: 0px; text-align: left; margin-right: 5px;">
+		<button class="btn btn-xs btn-primary pull-right"
+				ng-click="controller.onSelect();">
+			{{ 'btn-deselect' | i18n: []: 'dts/crm' }}
+		</button>
+	</div>
+
+</div>

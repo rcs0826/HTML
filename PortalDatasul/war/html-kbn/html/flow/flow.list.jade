@@ -1,0 +1,61 @@
+totvs-page(type='list')
+	totvs-page-navbar
+		totvs-page-breadcrumb
+			breadcrumb(link="#/") {{ 'l-home' | i18n }}
+			breadcrumb(link="#/dts/kbn/mapping") {{ 'l-mapping' | i18n }}
+			breadcrumb {{ 'l-nav-flows' | i18n }}
+		totvs-page-header
+			totvs-page-header-title(title="{{ 'l-mapping' | i18n }} {{controller.mapping[0].des_mapeamento}} ({{ controller.totalRecords }})")
+			totvs-page-header-operation
+				totvs-page-header-operation-action(limit-primary-action="2")
+					action(
+						icon="glyphicon-plus",
+						ng-click="controller.newFlow()"
+						ng-show="controller.mapping[0].idi_status != 3 && controller.mapping[0].idi_status != 4"
+					) {{ 't-new-flow' | i18n }}
+					action(
+						icon="glyphicon-plus",
+						ng-click="controller.newBatchFlow()"
+						ng-show="controller.mapping[0].idi_status != 3 && controller.mapping[0].idi_status != 4"
+					) {{ 'l-new-batch' | i18n }}
+					action.btn-warning(
+						icon="glyphicon-edit",
+						link="#/dts/kbn/mapping/flow/edit/{{controller.mapping[0].num_id_mapeamento}}",
+						ng-show="controller.mapping[0].idi_status != 3 && controller.mapping[0].idi_status != 4 && controller.itens != 0"
+					) {{ 'l-batch-edit' | i18n }}
+				totvs-page-header-operation-filter(placeholder="{{ 'l-code-description' | i18n}}",
+													ng-submit="controller.quickSearch()", 
+													ng-model="controller.quickSearchText",
+													advanced-search="controller.openAdvancedSearch")
+			totvs-page-disclaimers(disclaimer-list="controller.filtersApplied", ng-click="controller.removeFilter")
+	totvs-page-content
+		totvs-page-content-header
+			totvs-page-quick-filter(ng-if="controller.totalRecords", filters-list="controller.preSavedFilters", on-select-filter="controller.selectQuickFilter")
+		totvs-page-alert(ng-if="results === 0" type="info" message="{{ 'msg-not-found' | i18n }}")
+		totvs-list-item(data-ng-repeat="flow in controller.listFlows")
+			totvs-list-item-header
+				totvs-list-item-title(title="{{flow | descFlow}}",link="#/dts/kbn/mapping/flow/view/{{flow.num_id_item_det}}")
+				.col-lg-5.col-md-5.col-sm-5.col-xs-2.actions-group
+					.btn-group.btn-group-sm.actions.pull-right(role='group')
+						a.btn.btn-default.hidden-xs.ng-binding(role='button', href='#/dts/kbn/mapping/flow/view/{{flow.num_id_item_det}}')
+							span.glyphicon.glyphicon-eye-open
+							|   {{ 'l-view' | i18n }}
+						a.btn.btn-default.hidden-xs.ng-binding(role='button', 
+																ng-show='controller.mapping[0].idi_status != 3 && controller.mapping[0].idi_status != 4', 
+																data-ng-click='controller.remove(flow)')
+							span.glyphicon.glyphicon-remove
+							|   {{ 'l-to-exclude' | i18n }}
+						a.btn.btn-default.hidden-xs.ng-binding(role='button', 
+																ng-show='controller.mapping[0].idi_status == 3 && flow.log_ativo ', 
+																data-ng-click='controller.deactivateFlow(flow)')
+							span.glyphicon.glyphicon-ban-circle
+							|   {{ 'l-deactivate' | i18n }}
+			totvs-list-item-content
+				totvs-list-item-info.col-md-2(title="{{'l-warehouse' | i18n}}", value="{{flow.cod_depos_erp}}")
+				totvs-list-item-info.col-md-2(title="{{'l-location' | i18n}}", value="{{flow.cod_localiz | htmlText}}")
+				totvs-list-item-info.col-md-2(title="{{'l-type' | i18n}}", value="{{((flow.ttItemFlowDs.log_expedic)?'l-expedition':'l-process') | i18n}}")
+				totvs-list-item-info.col-md-2(title="{{'l-cutoff-date' | i18n}}", value="{{controller.mapping[0].dat_corte | date: 'dd/MM/yyyy' : 'UTC'}}")
+				totvs-list-item-info.col-md-1(title="{{'l-active' | i18n}}", value="{{flow.log_ativo | yesOrNo}}")
+				totvs-list-item-info.col-md-2(title="{{'l-controlled' | i18n}}", value="{{flow.ttItemFlowDs.idi_control_kanban | yesOrNo}}")
+		.container(align="center")
+			pagination.pagination-sm(total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages", items-per-page="controller.pageSize", previous-text="{{'l-previous' | i18n}}", next-text="{{'l-next' | i18n}}")

@@ -1,0 +1,40 @@
+<totvs-modal-header>{{ 'l-search' | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+    <div class="row">
+    	<form class="form-horizontal" role="form" >
+			<accordion>
+				<accordion-group is-open="controller.isOpen">
+					<accordion-heading>
+						{{'l-selection' | i18n }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': controller.isOpen, 'glyphicon-chevron-right': true}"></i>
+					</accordion-heading>
+					<!-- CÓDIGO ITEM -->
+		           	<field type="inputrange" class="col-md-12"
+		            	   ng-model="controller.advancedSearch.itemCode"
+		            	   start-maxlength="16"
+		            	   end-maxlength="16">
+		                <label>{{ 'l-item' | i18n }}</label>
+		        	</field>
+		        	<!-- CÓDIGO ESTABELECIMENTO -->
+                    <field type="inputrange" class="col-md-12"
+		            	   ng-model="controller.advancedSearch.siteCode"
+                           ng-if="controller.advancedSearch.isMultiSites"
+		            	   start-maxlength="5"
+		            	   end-maxlength="5">
+		                <label>{{ 'l-site' | i18n }}</label>
+		        	</field>
+		        	<!-- GRUPO CLIENTE -->
+                    <field type="inputrange" class="col-md-12" 
+		            	   ng-model="controller.advancedSearch.customerGroup"
+		            	   start-maxlength="4"
+		            	   end-maxlength="4">
+		                <label>{{ 'l-customer-group' | i18n }}</label>
+		        	</field>
+				</accordion-group>
+			</accordion>
+        </form>
+    </div>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'btn-cancel' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="controller.search();">{{ 'l-search' | i18n }}</button>
+</totvs-modal-footer>

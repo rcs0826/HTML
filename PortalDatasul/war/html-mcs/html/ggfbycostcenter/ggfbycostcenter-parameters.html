@@ -1,0 +1,51 @@
+<totvs-modal-header>
+    {{ i18n('l-parameters', [], 'dts/mcs') }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <totvs-page-form>
+        <fieldset class="form-horizontal">
+            <!-- Tipo Resultado: Taxa Horária, Total GGF ou Horas Reportadas -->
+            <totvs-field totvs-radio
+                            class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                            ng-change="controller.desmarca()"
+                            label="{{ i18n('l-show-type', [], 'dts/mcs') }}"
+                            t-options="controller.rsExibeOpt"
+                            ng-model="controller.model.resultType">
+            </totvs-field>
+
+            <!-- Tipo Valor: Total, Previsto ou Previsto 2 -->
+            <totvs-field totvs-radio
+                            class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                            ng-disabled="controller.model.resultType == 3"
+                            label="{{ i18n('l-value', [], 'dts/mcs') }}"
+                            t-options="controller.rsTipoValOpt"
+                            ng-model="controller.model.valueType">
+            </totvs-field>
+
+            <!-- Detalhar por espécie -->
+            <totvs-field totvs-checkbox 
+                t-bsswitch
+                class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                ng-disabled="controller.model.resultType == 3"
+                label="{{ i18n('l-species-to-detail', [], 'dts/mcs') }}"
+                ng-model="controller.model.showDetailToClass">
+            </totvs-field>
+
+            <!-- Moeda -->
+            <totvs-field
+                label="{{ i18n('l-currency', [], 'dts/mcs') }}"
+                class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                totvs-combo
+                canclean
+                t-options="controller.model.valueType != 4 ? controller.model.currencies : controller.model.managerialCurrencies"
+                ng-model="controller.model.currency">
+            </totvs-field>
+        </fieldset>
+    </totvs-page-form>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ i18n('btn-cancel') }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()">{{ i18n('btn-apply') }}</button>
+</totvs-modal-footer>

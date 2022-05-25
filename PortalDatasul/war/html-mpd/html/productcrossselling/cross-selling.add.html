@@ -1,0 +1,64 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">Home</breadcrumb>
+            <breadcrumb link="#/dts/mpd/productcrossselling">{{'l-product-cross-selling' | i18n}}</breadcrumb>
+            <breadcrumb>{{'l-novo-registro' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-novo-registro' | i18n}}"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new="true" ></totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>     
+        <totvs-page-form>
+            <fieldset>                
+                <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <field type="select2"
+                           class = "col-lg-8 col-md-8 col-sm-8 col-xs-8"
+                           data-ng-model="controller.model['cod-produto']"                       
+                           select-conector="{{'l-cod-item' | i18n}}"
+                           select-id="it-codigo"
+                           select-description="desc-item"
+                           select-service="men.item.zoom"
+                           select-init = "{noCount: true}" 
+                           ng-disabled="false"
+                           canclean>
+                            <zoom zoom-service="men.item.zoom"></zoom>
+                            <label>{{'l-cod-item' | i18n }}</label>
+                    </field>                    
+                </div>
+                <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <form class="form-horizontal" role="form">
+                        <!-- ITEM-->
+                        <field type="select2"
+                               class = "col-lg-8 col-md-8 col-sm-8 col-xs-8"
+                               data-ng-model="controller.model['cod-cross-selling']"                       
+                               select-conector="{{'l-product-cross-selling' | i18n}}"
+                               select-id="it-codigo"
+                               select-description="desc-item"
+                               select-service="men.item.zoom"
+                               select-init = "{noCount: true}" 
+                               ng-disabled="false"
+                               canclean>
+                                <zoom zoom-service="men.item.zoom"></zoom>
+                                <label>{{'l-product-cross-selling' | i18n }}</label>
+                        </field> 
+                    </form>
+                </div> 
+                <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                    <form class="form-horizontal" role="form">
+                        <field type="textarea"
+                               ng-model="controller.model['dsl-obs']"
+                               ng-change="controller.getMaxValueDslObs()"
+                               class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+			    <label>{{'l-descricao' | i18n}}</label>
+			</field> 
+                    </form>
+                </div>                  
+            </fieldset>      
+        </totvs-page-form>       
+    </totvs-page-content>
+</totvs-page>

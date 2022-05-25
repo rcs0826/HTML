@@ -1,0 +1,337 @@
+<totvs-page type="base"> 
+    <totvs-page-navbar >
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hvp-paramIncExc/">Regras de Inclusao e Exclusao de Beneficiarios</breadcrumb>
+                <breadcrumb>Manutençao de Regras de Inclusao e Exclusao de Beneficiarios</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+  
+           <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Regras de Inclusao e Exclusao de Beneficiários">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                    <action ng-click="controller.save();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar</action>
+                    <action ng-click="controller.saveNew();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Novo</action>
+                    <action class="btn-primary"
+                            ng-click="controller.saveClose();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Fechar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.incExcForm">
+        
+            <fieldset>
+                 <totvs-row>
+                    <totvs-field totvs-radio
+                                 class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                                 t-options= "[{value: 1, label: 'Inclusao'},
+                                              {value: 2, label: 'Exclusao'}]"
+                                 ng-model="controller.paramIncExc.idiTipRegra"
+                                 ng-change="controller.idiTipRegraChange()"
+                                 ng-disabled="controller.action != 'INSERT'">
+                    <validator key="required">Este campo e obrigatorio!</validator>
+                    </totvs-field>
+                    <totvs-field totvs-checkbox
+                    class="col-lg-1 col-md-1 col-sm-1 col-xs-12"
+                    label="Ativa"
+                    ng-model="controller.paramIncExc.logAtivo"
+                    ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+
+                   
+                    <totvs-field totvs-checkbox
+                                  class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                  label="Obriga Auditoria"
+                                  ng-model="controller.paramIncExc.lgObgAudit"
+                                  ng-disabled="controller.action == 'DETAIL'"
+                                  ng-if="controller.paramIncExc.idiTipRegra == 2">
+                    </totvs-field>
+                </totvs-row>
+                 <totvs-row>
+                    <totvs-field totvs-input
+                                 class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                                 label="Descriçao Regra"
+                                 ng-model="controller.paramIncExc.desRegra"
+                                 ng-required="true"
+                                 ng-disabled="controller.action == 'DETAIL'">
+                    <validator key="required">Este campo e obrigatorio!</validator>
+                    </totvs-field>
+                    <totvs-field totvs-checkbox
+                    class="col-lg-7 col-md-7 col-sm-7 col-xs-12"
+                    label="Considera na Transferência Portal Empresa"
+                    ng-model="controller.paramIncExc.logTransf"
+                    ng-disabled="controller.action == 'DETAIL'">
+      </totvs-field>
+                    
+                 </totvs-row>
+                 <totvs-row>
+                    <totvs-field totvs-select
+                                class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                                ng-model="controller.paramIncExc.cdnModalid"
+                                label="Modalidade" canclean
+                                ng-required="controller.paramIncExc.lgTodasModalidades == false"
+                                select-service="hpr.modalityZoomController"
+                                zoom-service="hpr.modalityZoomController"
+                                select-id="cdModalidade" 
+                                select-description="dsModalidade"
+                                ng-change="controller.onModalidChanged()"
+                                ng-disabled="controller.action == 'DETAIL' ||
+                                             controller.paramIncExc.lgTodasModalidades == true">
+                    <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                 label="Todas Modalidades"
+                                 ng-change="controller.lgTodasModalidadesChanged()"
+                                 ng-model="controller.paramIncExc.lgTodasModalidades"
+                                 ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+                 </totvs-row>
+                 <totvs-row>
+                    <totvs-field totvs-select
+                                class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                                ng-model="controller.paramIncExc.cdnPlano"
+                                label="Plano" canclean
+                                ng-required="controller.paramIncExc.lgTodosPlanos == false &&
+                                             controller.paramIncExc.cdnModalid != 0 && 
+                                             controller.paramIncExc.cdnModalid != undefined"
+                                select-service="hpr.planZoomController"
+                                zoom-service="hpr.planZoomController"
+                                select-id="cdPlano" 
+                                min="0"
+                                select-description="nmPlano"
+                                select-init ="{filters: controller.planFixedFilters}"
+                                zoom-init = "{filters: controller.planFixedFilters}"
+                                ng-change="controller.onPlanChanged()"
+                                ng-disabled="controller.action == 'DETAIL' || 
+                                             controller.paramIncExc.lgTodosPlanos == true ||
+                                             controller.paramIncExc.cdnModalid == 0 || 
+                                             controller.paramIncExc.cdnModalid == undefined">
+                    <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                 label="Todos Planos"
+                                 ng-change="controller.lgTodosPlanosChanged()"
+                                 ng-model="controller.paramIncExc.lgTodosPlanos"
+                                 ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+                 </totvs-row>
+                 <totvs-row>
+                    <totvs-field totvs-select
+                                 class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                                 ng-model="controller.paramIncExc.cdnTipPlano"
+                                 label="Tipo plano" canclean
+                                 ng-required="controller.paramIncExc.lgTodosTiposPlanos == false &&
+                                             controller.paramIncExc.cdnModalid != 0 && 
+                                             controller.paramIncExc.cdnModalid != undefined &&
+                                             controller.paramIncExc.cdnPlano != 0 && 
+                                             controller.paramIncExc.cdnPlano != undefined"
+                                 select-service="hpr.planTypeZoomController"
+                                 zoom-service="hpr.planTypeZoomController"
+                                 select-id="cdTipoPlano" 
+                                 min="0"
+                                 select-description="nmTipoPlano"
+                                 select-init ="{filters: controller.planTypeFixedFilters}"
+                                 zoom-init = "{filters: controller.planTypeFixedFilters}"
+                                 ng-disabled="controller.action == 'DETAIL' || 
+                                              controller.paramIncExc.lgTodosTiposPlanos == true ||
+                                              controller.paramIncExc.cdnPlano == 0 || 
+                                              controller.paramIncExc.cdnPlano == undefined">
+                    <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                 label="Todos Tipos de Plano"
+                                 ng-change="controller.lgTodosTiposPlanosChanged()"
+                                 ng-model="controller.paramIncExc.lgTodosTiposPlanos"                                  
+                                 ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+                 </totvs-row>
+                 <totvs-row>
+                    <totvs-field totvs-select
+                                 class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                                 ng-model="controller.paramIncExc.numInscrContrnte"
+                                 label="Contratante" canclean
+                                 ng-required="controller.paramIncExc.lgTodosContratantes == false"
+                                 select-service="hvp.contractingPartyZoomController"
+                                 zoom-service="hvp.contractingPartyZoomController"
+                                 select-id="nrInscContratante" 
+                                 select-description="nmContratante"
+                                 ng-disabled="controller.action == 'DETAIL' || 
+                                              controller.paramIncExc.lgTodosContratantes == true">
+                    </totvs-field>
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                 label="Todos Contratantes"
+                                 ng-change="controller.lgTodosContratantesChanged()"
+                                 ng-model="controller.paramIncExc.lgTodosContratantes"
+                                 ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+                 </totvs-row>
+                 <totvs-row>
+                    <totvs-field totvs-select 
+                                 class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                                 id="rejectionReasonZoom"
+                                 name-id="rejectionReasonZoom"
+                                 ng-model="controller.paramIncExc.cdMotivoCancelamento"
+                                 label="Motivo de Cancelamento" canclean
+                                 ng-required="controller.paramIncExc.lgTodosMotivos == false &&
+                                              controller.paramIncExc.idiTipRegra == 2"
+                                 select-service="hcg.rejectionReasonZoomController"
+                                 zoom-service="hcg.rejectionReasonZoomController"
+                                 select-id="cdMotivo" 
+                                 select-init ="{filters: controller.rejectionReasonFixedFilters}"
+                                 zoom-init="{filters: controller.rejectionReasonFixedFilters}"
+                                 select-description="dsMotivo"
+                                 ng-disabled="controller.action == 'DETAIL' || 
+                                              controller.paramIncExc.lgTodosMotivos == true ||
+                                              controller.paramIncExc.idiTipRegra != 2"
+                                 ng-if="controller.paramIncExc.idiTipRegra == 2">
+                    </totvs-field>
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                 label="Todos Motivos"
+                                 ng-change="controller.lgTodosMotivosChanged()"
+                                 ng-model="controller.paramIncExc.lgTodosMotivos"                                  
+                                 ng-disabled="controller.action == 'DETAIL' ||
+                                              controller.paramIncExc.idiTipRegra == 1"
+                                 ng-if="controller.paramIncExc.idiTipRegra == 2">
+                    </totvs-field>
+                 </totvs-row>
+                 <totvs-row>
+                    <totvs-field totvs-number
+                                  class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                  label="Contrato Inicial"
+                                  ng-required="true"
+                                  ng-model="controller.paramIncExc.numTermoAdesaoInic"
+                                  min="1"
+                                  max="999999"
+                                  ng-disabled="controller.action == 'DETAIL'">
+                    <validator key="min">Insira um valor maior que zero</validator>
+                    <validator key="max">Insira um valor menor que 999999</validator>
+                    </totvs-field>
+                    <totvs-field totvs-number
+                                  class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                  label="Contrato Final"
+                                  ng-required="true"
+                                  ng-model="controller.paramIncExc.numTermoAdesaoFim"
+                                  min="1"
+                                  max="999999"
+                                  ng-disabled="controller.action == 'DETAIL'">
+                    <validator key="min">Insira um valor maior que zero</validator>
+                    <validator key="max">Insira um valor menor que 999999</validator>
+                    </totvs-field>
+                 </totvs-row>
+                 <totvs-row>
+                    <totvs-field totvs-combo
+                                  class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                  label="Parâmetro Data"
+                                  ng-required="true"
+                                  ng-change="controller.cboParamDataChange()"
+                                  t-options= "controller.idiParamDatOpcoes"
+                                  ng-model="controller.paramIncExc.idiParamDat"
+                                  min="1"
+                                  ng-disabled="controller.action == 'DETAIL'">
+                    <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                    <totvs-field totvs-checkbox
+                                  class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                  label="Excluir mesmo se houver Faturamento/Repasse"
+                                  ng-model="controller.paramIncExc.lgPermExclFat"
+                                  ng-disabled="controller.action == 'DETAIL'"
+                                  ng-if="controller.paramIncExc.idiParamDat == 6">
+                    </totvs-field>
+                    <totvs-field totvs-number
+                                  class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                  label="Qtd. meses antes do fat."
+                                  tooltip="Permitir exclusão ate quantos meses anteriores ao último faturamento"
+                                  ng-model="controller.paramIncExc.qtiMesesExc"
+                                  min="1"
+                                  ng-required="controller.paramIncExc.idiParamDat == 6"
+                                  ng-disabled="controller.action == 'DETAIL'"
+                                  ng-if="controller.paramIncExc.idiParamDat == 6 && 
+                                         controller.paramIncExc.lgPermExclFat == true">
+                    <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                    <totvs-field totvs-checkbox
+                                  class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                  label="Permitir retroagir até a data da solicitação"
+                                  ng-model="controller.paramIncExc.lgPermDtSolic"
+                                  ng-disabled="controller.action == 'DETAIL'"
+                                  ng-if="controller.paramIncExc.idiParamDat == 7">
+                    </totvs-field>
+                 </totvs-row>
+                 <totvs-row>
+                     <!--Atençao: Existem 5 campos com bind na mesma propriedade 
+                         porque o frame nao permite trocar o label do campo.
+                         Para operacionalizar, o que e feito e deixar visível apenas
+                         o campo que possui o label correto.-->
+                    <totvs-field totvs-number
+                                  class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                  label="Dia de Corte"
+                                  ng-model="controller.paramIncExc.numDiaRegra"
+                                  min="1"
+                                  ng-required="controller.paramIncExc.idiParamDat == 1"
+                                  ng-if="controller.paramIncExc.idiParamDat == 1"
+                                  ng-disabled="controller.action == 'DETAIL'">
+                    <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                    <totvs-field totvs-number
+                                  class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                  label="Dias úteis para Cálculo"
+                                  ng-model="controller.paramIncExc.numDiaRegra"
+                                  min="0"
+                                  ng-required="controller.paramIncExc.idiParamDat == 2"
+                                  ng-if="controller.paramIncExc.idiParamDat == 2"
+                                  ng-disabled="controller.action == 'DETAIL'">
+                    <validator key="min">Insira um valor zero ou positivo</validator>
+                    </totvs-field>
+                    <totvs-field totvs-number
+                                  class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                  label="Dia de Corte"
+                                  ng-model="controller.paramIncExc.numDiaRegra"
+                                  min="1"
+                                  max="31"
+                                  ng-required="controller.paramIncExc.idiParamDat == 4"
+                                  ng-if="controller.paramIncExc.idiParamDat == 4"
+                                  ng-disabled="controller.action == 'DETAIL'">
+                    <validator key="min">Insira um valor maior que zero</validator>
+                    <validator key="max">Insira um valor menor que 31</validator>
+                    </totvs-field>
+                    <totvs-field totvs-number
+                                  class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                  label="Dia de Corte para Mês Anterior"
+                                  ng-model="controller.paramIncExc.numDiaRegra"
+                                  min="1"
+                                  ng-required="controller.paramIncExc.idiParamDat == 5"
+                                  ng-if="controller.paramIncExc.idiParamDat == 5"
+                                  ng-disabled="controller.action == 'DETAIL'">
+                    <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                    <totvs-field totvs-checkbox
+                                  class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                  label="Aplica Regra de Corte nos Modulos Opcionais"
+                                  ng-model="controller.paramIncExc.lgRegraCorteModlAdic"
+                                  ng-if="controller.paramIncExc.idiParamDat == 1 ||
+                                         controller.paramIncExc.idiParamDat == 4"
+                                  ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+                 </totvs-row>
+            </fieldset>
+        </totvs-page-form>        
+    </totvs-page-content>   
+</totvs-page>
+
+

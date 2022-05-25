@@ -1,0 +1,617 @@
+@import 'breakpoints.less';
+
+/*compress: true, out: app.min.css
+-----------------------------------------------------------------------------
+ VARIAVEIS DO LESS
+-----------------------------------------------------------------------------*/
+@base-font: 'Arial';
+@topbar-height: 40px;
+@topbar-color-prod: #144154;
+@topbar-color-test: #3c0034;
+@topbar-color-demo: #074100;
+@menu-bgcolor: #e0e5ea;
+@menu-block-bgcolor: #f9fafb;
+@menu-logo-height: 160px;
+@menu-item-height: 30px;
+@text-muted-color: #777;
+/*-----------------------------------------------------------------------------
+ Font Icons
+-----------------------------------------------------------------------------*/
+@font-face {
+  font-family: 'TOTVS Icons';
+  src: url('../fonts/totvs-icons.eot?bez197');
+  src: url('../fonts/totvs-icons.eot?bez197#iefix') format('embedded-opentype'),
+    url('../fonts/totvs-icons.ttf?bez197') format('truetype'), url('../fonts/totvs-icons.woff?bez197') format('woff'),
+    url('../fonts/totvs-icons.svg?bez197#totvs-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'totvs-hr-icons';
+  src: url('../fonts/totvs-hr-icons.eot?iuv2gn');
+  src: url('../fonts/totvs-hr-icons.eot?iuv2gn#iefix') format('embedded-opentype'),
+    url('../fonts/totvs-hr-icons.ttf?iuv2gn') format('truetype'),
+    url('../fonts/totvs-hr-icons.woff?iuv2gn') format('woff'),
+    url('../fonts/totvs-hr-icons.svg?iuv2gn#totvs-hr-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^='icon-'],
+[class*=' icon-'] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'totvs-hr-icons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^='ico-'],
+[class*=' ico-'] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'TOTVS Icons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.po-page-content {
+  overflow-x: hidden;
+}
+
+/*-----------------------------------------------------------------------------
+ CLASSES AUXILIARES
+-----------------------------------------------------------------------------*/
+.total-height {
+  height: 100%;
+}
+
+.disable-select {
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE 10+ */
+  -o-user-select: none; /* Opera */
+  user-select: none;
+}
+
+.clickable {
+  cursor: pointer;
+  .disable-select;
+}
+
+.no-text-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/*-----------------------------------------------------------------------------
+ ESTILOS DO DESKTOP
+-----------------------------------------------------------------------------*/
+#menu-logo {
+  height: @menu-logo-height;
+  margin-bottom: 10px;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  padding: 0 !important; /* Retira o espaçamento definido no menu-block. */
+  img {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+#menu-applications {
+  height: calc(~'100% - ' 120px);
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+/*-----------------------------------------------------------------------------
+ ESTILO DO HELP MODAL
+-----------------------------------------------------------------------------*/
+
+.nav .open > a,
+.nav .open > a:hover,
+.nav .open > a:focus {
+  background-color: #34799b;
+  color: #ffffff;
+}
+
+.dropdown-menu .divider {
+  margin: 0px 0px 10px;
+}
+
+.loading {
+  width: 100%;
+  height: 40px;
+}
+
+/*-----------------------------------------------------------------------------
+ DIRETIVA TOTVS-GRID
+-----------------------------------------------------------------------------*/
+.k-grid {
+  font-size: 13px;
+}
+
+.k-grid-header,
+.k-grid-header .k-header,
+.k-grid-header .k-link,
+.k-grid-header .k-header .k-link {
+  background: #6e7d82 none 0 0 no-repeat !important;
+  color: #fff;
+  font-weight: normal;
+}
+
+/*-----------------------------------------------------------------------------
+ TRATAMENTO MENU MOBILE
+-----------------------------------------------------------------------------*/
+@media (max-width: @breakpoint-sm-max) {
+  .total-height {
+    margin-bottom: 60px;
+  }
+}
+
+span.glyphicon-bell {
+  font-size: 1.3em;
+}
+
+.text-muted {
+  color: #777;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.menu-item-text {
+  vertical-align: middle;
+  display: table-cell;
+  padding-left: 8px;
+  line-height: 1;
+}
+
+.margin-full-items-menu {
+  margin-top: 5px;
+  margin-left: 1.5%;
+  margin-right: 1.5%;
+}
+
+.margin-items-menu {
+  margin-top: 5px;
+}
+
+/* IPHONE X */
+@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+  .total-height {
+    margin-bottom: 94px;
+  }
+}
+
+/*-----------------------------------------------------------------------------
+ ICONES
+-----------------------------------------------------------------------------*/
+.icon-color-totvs {
+  color: #0c9abe;
+}
+
+.ico-bell:before {
+  content: '\e91e';
+}
+
+.ico-box:before {
+  content: '\e926';
+}
+
+.ico-settings:before {
+  content: '\e9d8';
+}
+
+.ico-home:before {
+  content: '\e97f';
+}
+
+.ico-clock:before {
+  content: '\e96e';
+}
+
+.ico-clocking-register:before {
+  content: '\e93d';
+}
+
+.icon-medical-briefcase:before {
+  content: '\eb04';
+}
+
+.ico-wallet:before {
+  content: '\ea21';
+}
+
+.ico-benefits:before {
+  content: '\ea26';
+}
+
+.ico-sun:before {
+  content: '\e9eb';
+}
+
+.ico-arrow-left:before {
+  content: '\e913';
+}
+
+.icon-sun-checked:before {
+  content: '\eb09';
+}
+
+.ico-minus:before {
+  content: '\e9a1';
+}
+
+.ico-plus:before {
+  content: '\e9c5';
+}
+
+.ico-user-plus:before {
+  content: '\ea0a';
+}
+
+.icon-wallet:before {
+  content: '\eb08';
+}
+
+.ico-allowance:before {
+  content: '\e95d';
+}
+
+.ico-bar-chart:before {
+  content: '\e91a';
+}
+
+.ico-download:before {
+  content: '\e958';
+}
+
+.ico-map-pin:before {
+  content: '\e995';
+}
+
+.ico-how-to-reg:before {
+  content: '\ea24';
+}
+
+.ico-team:before {
+  content: '\e9f1';
+}
+
+.ico-share-2:before {
+  content: '\e9da';
+}
+
+.ico-money:before {
+  content: '\e9a4';
+}
+
+.ico-arrow-left:before {
+  content: '\e913';
+}
+
+.ico-arrow-right:before {
+  content: '\e914';
+}
+
+.ico-dollar-sign:before {
+  content: '\ea22';
+}
+
+.ico-organogram:before {
+  content: '\ea23';
+}
+
+.icon-birthday-cake:before {
+  content: '\eb00';
+}
+
+.icon-wallet:before {
+  content: '\eb08';
+}
+
+.icon-calendar:before {
+  content: '\e929';
+}
+
+.icon-calendar-ok:before {
+  content: '\e92a';
+}
+
+.icon-sun:before {
+  content: '\e9eb';
+}
+
+.icon-exchange:before {
+  content: '\eb03';
+}
+
+.ico-demission:before {
+  content: '\ea08';
+}
+
+.ico-overtime:before {
+  content: '\ea25';
+}
+
+.ico-substitution:before {
+  content: '\ea28';
+}
+
+.ico-timesheet-2:before {
+  content: '\ea27';
+}
+
+.ico-on-call:before {
+  content: '\ea2a';
+}
+
+.icon-arrow {
+  border: solid @color-base;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 5px;
+  &.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }
+  &.left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+  }
+  &.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+  }
+  &.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+  }
+}
+
+.map-not-visible {
+  padding-top: 15px;
+  padding-bottom: 20px;
+  font-weight: bold;
+  float: none;
+  font-size: 14px;
+  overflow: hidden;
+  color: #333333;
+  height: ~'calc(100vh - 153px)';
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+/*-----------------------------------------------------------------------------
+ ANIMAÇÕES
+-----------------------------------------------------------------------------*/
+.fadein-animation {
+  animation: fadein 2s;
+  -moz-animation: fadein 2s;
+  /* Firefox */
+  -webkit-animation: fadein 2s;
+  /* Safari and Chrome */
+  -o-animation: fadein 2s;
+  /* Opera */
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadein {
+  /* Firefox */
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadein {
+  /* Safari and Chrome */
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes fadein {
+  /* Opera */
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (min--moz-device-pixel-ratio: 2),
+  only screen and (-o-min-device-pixel-ratio: 2/1),
+  only screen and (-webkit-min-device-pixel-ratio: 3),
+  only screen and (min--moz-device-pixel-ratio: 3),
+  only screen and (-o-min-device-pixel-ratio: 3/1) {
+  .map-not-visible {
+    height: 168px;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .map-not-visible {
+    height: 100vh;
+  }
+}
+
+/*-----------------------------------------------------------------------------
+ Ajustes para exibição em IOS 11 ou superior
+-----------------------------------------------------------------------------*/
+body {
+  padding-top: constant(safe-area-inset-top); /* for iOS 11.2 */
+  padding-top: env(safe-area-inset-top); /* for iOS 11.1 */
+}
+
+.toast-top-right {
+  top: constant(safe-area-inset-top); /* for iOS 11.2 */
+  top: env(safe-area-inset-top); /* for iOS 11.1 */
+}
+
+.tabs-wrapper-with-arrows {
+  position: relative;
+
+  po-tabs .po-tabs-container {
+    width: calc(100% - 50px);
+    margin: 0 25px;
+
+    .po-tab-button-mobile {
+      width: 45vw;
+      max-width: 45vw;
+    }
+  }
+
+  .arrow {
+    position: absolute;
+    top: 8px;
+
+    font-size: 16pt;
+    color: #29b6c5;
+
+    &.arrow-left {
+      left: 0px;
+    }
+
+    &.arrow-right {
+      right: 0px;
+    }
+  }
+
+  &.hide-arrows {
+    po-tabs .po-tabs-container {
+      width: 100%;
+      margin: 0;
+    }
+
+    .arrow {
+      display: none;
+    }
+  }
+}
+
+.mat-content {
+  padding: 10px 0;
+}
+
+.light-font {
+  font-family: 'NunitoSans-ExtraLight', 'sans-serif';
+}
+
+.dialog {
+  po-select .po-select-content,
+  po-combo .po-combo-container,
+  po-datepicker .po-datepicker-popup-calendar {
+    @media (min-width: 1281px) {
+      top: unset !important;
+      left: unset !important;
+    }
+
+    @media (min-width: 1025px) and (max-width: 1280px) {
+      top: unset !important;
+      left: unset !important;
+    }
+  }
+}
+
+.read-more-link {
+  float: left;
+  margin-top: 0.5rem;
+
+  @media screen and (min-width: 480px) {
+    float: right;
+    margin-left: 21px;
+    margin-top: 0px;
+  }
+
+  color: #0c9abe;
+  font-family: 'NunitoSans-Bold';
+  cursor: pointer;
+
+  .less {
+    display: none;
+  }
+
+  .more {
+    display: unset;
+  }
+
+  &.read-more-expanded {
+    margin-top: 0.5rem;
+
+    @media screen and (min-width: 480px) {
+      width: 100%;
+      text-align: right;
+    }
+
+    .less {
+      display: unset;
+    }
+
+    .more {
+      display: none;
+    }
+  }
+}
+
+.read-more-collapsed {
+  position: relative;
+}
+
+.read-more-collapsed::before {
+  content: '';
+  width: 160px;
+  height: 24px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0), white);
+  z-index: 2;
+  pointer-events: none;
+}
+
+@media screen and (min-width: 480px) {
+  .read-more-collapsed::before {
+    height: 100%;
+    bottom: unset;
+    top: 0;
+    width: 80px;
+  }
+}

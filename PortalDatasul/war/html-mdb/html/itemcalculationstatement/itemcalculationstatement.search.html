@@ -1,0 +1,155 @@
+<totvs-modal-header>Pesquisa Avan&ccedil;ada</totvs-modal-header>
+<totvs-modal-body>
+    <div class="row">
+        <form class="form-horizontal" role="form">
+            <accordion close-others="controller.closeOther">
+                <accordion-group is-open="status.isFirstOpen">
+                    <accordion-heading>
+                    {{'l-selection' | i18n }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.isFirstOpen, 'glyphicon-chevron-right': !status.isFirstOpen}"></i>
+                    </accordion-heading>      	                            
+                    <field
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        type="inputrange"
+                        ng-model="controller.model.itemCodRange"
+                        start-placeholder="{{'l-start' | i18n}}"
+                        start-maxlength="16"
+                        end-maxlength="16"
+                        label="{{'l-item' | i18n}}">
+                    </field>
+                    <field
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        type="inputrange"
+                        ng-model="controller.model.refCodRange"
+                        start-placeholder="{{'l-start' | i18n}}"
+                        start-maxlength="8"
+                        end-maxlength="8"
+                        label="{{'l-reference' | i18n}}">
+                    </field>
+                    <field
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        type="inputrange"
+                        ng-model="controller.model.fmCodRange"
+                        start-placeholder="{{'l-start' | i18n}}"
+                        start-maxlength="8"
+                        end-maxlength="8"
+                        label="{{'l-family' | i18n}}">
+                    </field>    
+                    <field
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        type="decimalrange"                    
+                        ng-model="controller.model.geCodRange"
+                        m-dec="0"
+                        start-placeholder="{{'l-start' | i18n}}"
+                        start-maxlength="2"
+                        end-maxlength="2"
+                        label="{{'l-stock-group' | i18n}}"
+                        v-max="99">
+                    </field>       
+                    <field
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        type="inputrange"
+                        ng-model="controller.model.cdPlanejRange"
+                        start-placeholder="{{'l-start' | i18n}}"
+                        start-maxlength="12"
+                        end-maxlength="12"
+                        label="{{'l-planner' | i18n}}">
+                    </field>       
+                    <field
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        type="inputrange"
+                        ng-model="controller.model.codComprRange"
+                        start-placeholder="{{'l-start' | i18n}}"
+                        start-maxlength="12"
+                        end-maxlength="12"
+                        label="{{'l-buyer' | i18n}}">
+                    </field>
+                </accordion-group>  
+
+                <accordion-group is-open="status.open" >
+                    <accordion-heading>
+                        {{'l-parameters' | i18n }}<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                    </accordion-heading>                    
+                    <fieldset>      
+                        <totvs-field totvs-checkbox  
+                            class="col-md-3 col-sm-6 col-xs-12"                              
+                            ng-model="controller.model.logcomprado"
+                            label="{{ 'l-bought' | i18n }}" 
+                            t-bsswitch>                                
+                        </totvs-field>
+                        
+                        <totvs-field totvs-checkbox
+                            class="col-md-3 col-sm-6 col-xs-12"
+                            t-bsswitch 
+                            ng-model="controller.model.perfixo"
+                            label="{{ 'l-fixed-period' | i18n }}">
+                        </totvs-field>
+                        <totvs-field totvs-checkbox
+                            class="col-md-3 col-sm-6 col-xs-12"
+                            t-bsswitch 
+                            ng-model="controller.model.loteeconomi"
+                            label="{{ 'l-eoq' | i18n }}">
+                        </totvs-field>
+                        <totvs-field totvs-checkbox
+                            class="col-md-3 col-sm-6 col-xs-12"
+                            t-bsswitch 
+                            ng-model="controller.model.ordem"
+                            label="{{ 'l-requisition' | i18n }}">
+                        </totvs-field>
+
+
+                        <totvs-field totvs-checkbox
+                            class="col-md-3 col-sm-6 col-xs-12"
+                            t-bsswitch 
+                            ng-model="controller.model.logfabricado"
+                            label="{{ 'l-manufactured-singular' | i18n }}">
+                        </totvs-field>                     
+                        <totvs-field totvs-checkbox
+                            class="col-md-3 col-sm-6 col-xs-12"
+                            t-bsswitch 
+                            ng-model="controller.model.nivelsuperior"
+                            label="{{ 'l-higher-level' | i18n }}">
+                        </totvs-field>
+                        <totvs-field totvs-checkbox
+                            class=" col-md-3 col-sm-6 col-xs-12"
+                            t-bsswitch 
+                            ng-model="controller.model.configurado"
+                            label="{{ 'l-configured' | i18n }}">
+                        </totvs-field>
+                        <totvs-field totvs-checkbox
+                            class="col-md-3 col-sm-6 col-xs-12"
+                            t-bsswitch 
+                            ng-model="controller.model.realconsumo"
+                            label="{{ 'l-usage-real' | i18n }}">
+                        </totvs-field>  
+
+                        <totvs-field totvs-checkbox
+                            class="col-md-3 col-sm-6 col-xs-12"
+                            t-bsswitch
+                            ng-model="controller.model.logperda"                                                                
+                            label="{{ 'l-reject-avail' | i18n }}">
+                        </totvs-field>
+                        <totvs-field totvs-checkbox
+                            class="col-md-3  col-sm-6 col-xs-12"
+                            t-bsswitch 
+                            ng-model="controller.model.logestseg"                                
+                            label="{{ 'l-over-safety-stock' | i18n }}">
+                        </totvs-field>
+                        <totvs-field
+                            totvs-decimal
+                            class="col-md-3  col-sm-6 col-xs-12"
+                            ng-maxlength="6"                                
+                            ng-model="controller.model.percestseg"
+                            v-max="3"
+                            m-dec="2"
+                            label="{{ 'l-in-perc' | i18n }}"
+                            ng-disabled="!controller.model.logestseg">
+                        </totvs-field>                        
+                </accordion-group>                  
+            </accordion>
+        </form>
+    </div>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button type="button" class="btn btn-primary" data-ng-click="controller.search();">{{ 'l-search' | i18n }}</button>
+    <button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'l-cancel' | i18n }}</button>
+</totvs-modal-footer>

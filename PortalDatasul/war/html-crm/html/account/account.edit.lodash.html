@@ -1,0 +1,831 @@
+<totvs-modal-header>
+
+	<span ng-if="!(controller.model.num_id > 0)">
+		{{ (controller.isAccount ? 'btn-new-account' : 'btn-new-lead') | i18n: []: 'dts/crm' }}
+	</span>
+
+	<span ng-if="controller.model.num_id > 0">
+		{{ controller.model.nom_razao_social }}
+		{{ controller.model.cod_pessoa_erp ? '(' + controller.model.cod_pessoa_erp + ')' : '' }}
+		{{ controller.model.cod_pessoa_gpl ? '{' + controller.model.cod_pessoa_gpl + '}' : '' }}
+	</span>
+
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-lodash-template src="/dts/crm/html/account/account.edit.content.html"
+						   template-data="controller.accessRestriction"></totvs-lodash-template>
+
+	<% if ((!data["l-complement"] || data["l-complement"].log_visivel === true)
+		|| (!data["panel-address"] || data["panel-address"].log_visivel === true)
+		|| (!data["panel-phone"] || data["panel-phone"].log_visivel === true)
+		|| (!data["panel-observation"] || data["panel-observation"].log_visivel === true)
+		|| (!data["panel-contact"] || data["panel-contact"].log_visivel === true)) { %>
+	<div class="row">
+
+        <br/>
+        
+        <div class="crm-group-accordion">
+            <accordion close-others="false">
+
+                <accordion-group is-open="controller.group.custom.open"
+                                ng-if="controller.customFields.length > 0"
+                                class="crm-panel">
+                    <accordion-heading>
+                        <div class="row">
+                            <div class="col-xs-12">
+                            {{ 'l-custom-fields' | i18n: []: 'dts/crm' }}
+                            <i class="pull-right glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  controller.group.custom.open,
+                                'glyphicon-chevron-right': !controller.group.custom.open}">
+                            </i>
+                            </div>
+                        </div>
+                    </accordion-heading>
+                    <div ng-include="'/dts/crm/html/attribute/attribute-fields.content.html'"></div>
+                </accordion-group>
+
+                <% if ((!data["l-complement"] || data["l-complement"].log_visivel === true)) { %>
+                <accordion-group is-open="controller.group.complement.open"
+                                ng-click="controller.onOpenComplementPanel()"
+                                class="crm-panel">
+
+                    <accordion-heading>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <strong ng-if="controller.model.ttTipoCliente.log_require_erp_field === true">
+                                    {{ 'l-complement' | i18n: []:  'dts/crm' }}
+                                    <span style="color: red;"> *</span>
+                                </strong>
+                                <span ng-if="controller.model.ttTipoCliente.log_require_erp_field !== true">
+                                    {{ 'l-complement' | i18n: []:  'dts/crm' }}
+                                </span>
+                                <i class="pull-right glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  controller.group.complement.open,
+                                            'glyphicon-chevron-right': !controller.group.complement.open}">
+                                </i>
+                            </div>
+                        </div>
+                    </accordion-heading>
+
+                    <fieldset class="row">
+
+                        <% if ((!data["l-sex"] || data["l-sex"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.model.ttSexo"
+                            ng-animate="'animate-if'"
+                            ng-if="controller.model.ttTipoPessoa.num_id === 1"
+                            <% if (!(!data["l-sex"] || data["l-sex"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-sex' | i18n: []: 'dts/crm' }}</label>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-sex' | i18n: []: 'dts/crm' }}">
+                                    {{ $select.selected.nom_sex }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="sex in controller.sexs | filter: $select.search track by $index">
+                                    <span ng-bind-html="sex.nom_sex | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-state-registration"] || data["l-state-registration"].log_visivel === true)) { %>
+                        <field type="input"
+                            ng-model="controller.model.nom_inscr_estad"
+                            ng-animate="'animate-if'"
+                            ng-if="controller.model.ttTipoPessoa.num_id !== 1"
+                            <% if ((!data["l-state-registration"] || data["l-state-registration"].log_editavel === true)) { %>
+                            ng-disabled="controller.isIntegratedWithGP === true"
+                            <% } else { %>
+                            ng-disabled="true"
+                            <% } %>
+                            placeholder="{{ 'l-state-registration' | i18n: []: 'dts/crm' }}"
+                            maxlength="19"
+                            canclean="undefined">
+
+                            <label>{{ 'l-state-registration' | i18n: []: 'dts/crm' }}</label>
+
+                            <validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 19</validator>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-municipal-registration"] || data["l-municipal-registration"].log_visivel === true)) { %>
+                        <field type="input"
+                            ng-model="controller.model.nom_inscr_munic"
+                            ng-animate="'animate-if'"
+                            ng-if="controller.model.ttTipoPessoa.num_id !== 1"
+                            <% if ((!data["l-municipal-registration"] || data["l-municipal-registration"].log_editavel === true)) { %>
+                            ng-disabled="controller.isIntegratedWithGP === true"
+                            <% } else { %>
+                            ng-disabled="true"
+                            <% } %>
+                            placeholder="{{ 'l-municipal-registration' | i18n: []: 'dts/crm' }}"
+                            maxlength="19"
+                            canclean="undefined">
+
+                            <label>{{ 'l-municipal-registration' | i18n: []: 'dts/crm' }}</label>
+
+                            <validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 19</validator>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-seller"] || data["l-seller"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.model.ttRepresentante"
+                            ng-disabled="controller.isDisableRepresentative === true"
+                            ng-required="controller.model.ttTipoCliente.log_require_erp_field"
+                            <% if (!(!data["l-seller"] || data["l-seller"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-seller' | i18n: []: 'dts/crm' }}</label>
+
+                            <zoom zoom-service="crm.crm_repres.zoom"></zoom>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-seller' | i18n: []: 'dts/crm' }}">
+                                    {{$select.selected.nom_repres}} {{ $select.selected.log_integrad_erp ? ' (ERP)' : '' }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="rep in controller.representatives track by $index"
+                                                refresh="controller.getRepresentatives($select.search)"
+                                                refresh-delay="500">
+                                    <span ng-bind-html="rep.nom_repres + (rep.log_integrad_erp ? ' (ERP)' : '') | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-carrier"] || data["l-carrier"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.model.ttTransportadora"
+                            ng-required="controller.model.ttTipoCliente.log_require_erp_field"
+                            <% if (!(!data["l-carrier"] || data["l-carrier"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-carrier' | i18n: []: 'dts/crm' }}</label>
+
+                            <zoom zoom-service="crm.crm_transpdor.zoom"></zoom>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-carrier' | i18n: []: 'dts/crm'  }}">
+                                    {{$select.selected.nom_transpdor}} {{ $select.selected.log_integrad_erp ? ' (ERP)' : '' }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="carrier in controller.carriers track by $index"
+                                                refresh="controller.getCarriers($select.search)"
+                                                refresh-delay="500">
+                                    <span ng-bind-html="carrier.nom_transpdor + (carrier.log_integrad_erp ? ' (ERP)' : '') | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-bearer"] || data["l-bearer"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-required="controller.model.ttTipoCliente.log_require_erp_field"
+                            ng-model="controller.model.ttPortador"
+                            <% if (!(!data["l-bearer"] || data["l-bearer"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-bearer' | i18n: []: 'dts/crm' }}</label>
+
+                            <zoom zoom-service="crm.crm_erp_portad.zoom"></zoom>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-bearer' | i18n: []: 'dts/crm'  }}">
+                                    {{$select.selected.nom_portador}} {{ $select.selected.log_integrad_erp ? ' (ERP)' : '' }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="bearer in controller.bearers track by $index"
+                                                refresh="controller.getBearers($select.search)"
+                                                refresh-delay="500">
+                                    <span ng-bind-html="bearer.nom_portador + (bearer.log_integrad_erp ? ' (ERP)' : '') | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-payment-condition"] || data["l-payment-condition"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.model.ttCondicaoPagamento"
+                            ng-required="controller.model.ttTipoCliente.log_require_erp_field"
+                            <% if (!(!data["l-payment-condition"] || data["l-payment-condition"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-payment-condition' | i18n: []: 'dts/crm' }}</label>
+
+                            <zoom zoom-service="crm.crm_erp_cond_pagto.zoom"></zoom>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-payment-condition' | i18n: []: 'dts/crm'  }}">
+                                    {{$select.selected.nom_cond_pagto}} {{ $select.selected.log_integrad_erp ? ' (ERP)' : '' }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="pc in controller.paymentConditions track by $index"
+                                                refresh="controller.getPaymentConditions($select.search)"
+                                                refresh-delay="500">
+                                    <span ng-bind-html="pc.nom_cond_pagto + (pc.log_integrad_erp ? ' (ERP)' : '') | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-cfop-state"] || data["l-cfop-state"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.model.ttcfopEstad"
+                            <% if (!(!data["l-cfop-state"] || data["l-cfop-state"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-cfop-state' | i18n: []: 'dts/crm' }}</label>
+
+                            <zoom zoom-service="crm.crm_erp_natur_operac.zoom"></zoom>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-cfop-state' | i18n: []: 'dts/crm'  }}">
+                                    {{$select.selected.nom_natur_operac}} {{ $select.selected.log_integrad_erp ? ' (ERP)' : '' }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="cfop in controller.stateCfops track by $index"
+                                                refresh="controller.getCfops($select.search, 'state')"
+                                                refresh-delay="500">
+                                    <span ng-bind-html="cfop.nom_natur_operac + (cfop.log_integrad_erp ? ' (ERP)' : '') | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-cfop-interstate"] || data["l-cfop-interstate"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.model.ttcfopInterest"
+                            <% if (!(!data["l-cfop-interstate"] || data["l-cfop-interstate"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-cfop-interstate' | i18n: []: 'dts/crm' }}</label>
+
+                            <zoom zoom-service="crm.crm_erp_natur_operac.zoom"></zoom>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-cfop-interstate' | i18n: []: 'dts/crm'  }}">
+                                    {{$select.selected.nom_natur_operac}} {{ $select.selected.log_integrad_erp ? ' (ERP)' : '' }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="cfop in controller.interstateCfops track by $index"
+                                                refresh="controller.getCfops($select.search, 'interstate')"
+                                                refresh-delay="500">
+                                    <span ng-bind-html="cfop.nom_natur_operac + (cfop.log_integrad_erp ? ' (ERP)' : '') | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-email-2"] || data["l-email-2"].log_visivel === true)) { %>
+                        <field type="input"
+                            ng-model="controller.model.nom_email_2"
+                            placeholder="{{ 'l-email-2' | i18n: []: 'dts/crm' }}"
+                            maxlength="100"
+                            <% if (!(!data["l-email-2"] || data["l-email-2"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-email-2' | i18n: []: 'dts/crm' }}</label>
+
+                            <validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 100</validator>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-best-time"] || data["l-best-time"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.model.ttHorario"
+                            ng-animate="'animate-if'"
+                            ng-if="controller.isAccount === true"
+                            <% if (!(!data["l-best-time"] || data["l-best-time"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-best-time' | i18n: []: 'dts/crm' }}</label>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-best-time' | i18n: []: 'dts/crm' }}">
+                                    {{ $select.selected.nom_horar_atendim }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="time in controller.times | filter: $select.search track by $index">
+                                    <span ng-bind-html="time.nom_horar_atendim | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-region"] || data["l-region"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.model.ttRegiao"
+                            ng-if="controller.model.ttTipoPessoa.num_id !== 1"
+                            <% if (!(!data["l-region"] || data["l-region"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+                            <label>{{ 'l-region' | i18n: []: 'dts/crm' }}</label>
+                            <zoom zoom-service="crm.crm_regiao.zoom"></zoom>
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-region' | i18n: []: 'dts/crm' }}">
+                                    {{ $select.selected.nom_regiao_atendim }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="region in controller.regions track by $index"
+                                                refresh="controller.getRegions($select.search)"
+                                                refresh-delay="500">
+                                    <span ng-bind-html="region.nom_regiao_atendim | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-activity-line"] || data["l-activity-line"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.model.ttRamoAtividade"
+                            <% if (!(!data["l-activity-line"] || data["l-activity-line"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+                            <label>{{ 'l-activity-line' | i18n: []: 'dts/crm' }}</label>
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-activity-line' | i18n: []: 'dts/crm' }}">
+                                    {{ $select.selected.nom_ramo_ativid }} {{ $select.selected.log_integrad_erp ? ' (ERP)' : '' }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="activity in controller.activities track by $index"
+                                                refresh="controller.getActivities($select.search)"
+                                                refresh-delay="500">
+                                    <span ng-bind-html="activity.nom_ramo_ativid  + (activity.log_integrad_erp === true ? '(ERP)' : '' ) | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-civil-status"] || data["l-civil-status"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.model.ttEstadoCivil"
+                            ng-animate="'animate-if'"
+                            ng-if="controller.model.ttTipoPessoa.num_id === 1"
+                            <% if (!(!data["l-civil-status"] || data["l-civil-status"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-civil-status' | i18n: []: 'dts/crm' }}</label>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-civil-status' | i18n: []: 'dts/crm' }}">
+                                    {{ $select.selected.nom_estado_civil }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="maritalStatus in controller.maritalStatus | filter: { nom_estado_civil: $select.search } :strict track by $index">
+                                    <span ng-bind-html="maritalStatus.nom_estado_civil | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-educational-level"] || data["l-educational-level"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.model.ttGrauInstrucao"
+                            ng-animate="'animate-if'"
+                            ng-if="controller.model.ttTipoPessoa.num_id === 1"
+                            <% if (!(!data["l-educational-level"] || data["l-educational-level"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-educational-level' | i18n: []: 'dts/crm' }}</label>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-educational-level' | i18n: []: 'dts/crm' }}">
+                                    {{ $select.selected.nom_instruc }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="educationalLevel in controller.educationalLevels | filter: $select.search track by $index">
+                                    <span ng-bind-html="educationalLevel.nom_instruc | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-treatment"] || data["l-treatment"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.model.ttTratamento"
+                            ng-animate="'animate-if'"
+                            ng-if="controller.model.ttTipoPessoa.num_id === 1"
+                            <% if (!(!data["l-treatment"] || data["l-treatment"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-treatment' | i18n: []: 'dts/crm' }}</label>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-treatment' | i18n: []: 'dts/crm' }}">
+                                    {{ $select.selected.nom_tratam_pessoa }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="treatment in controller.treatments | filter: $select.search track by $index">
+                                    <span ng-bind-html="treatment.nom_tratam_pessoa | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-rg"] || data["l-rg"].log_visivel === true)) { %>
+                        <field type="input"
+                            numbers-only
+                            ng-model="controller.model.nom_reg_geral"
+                            placeholder="{{ 'l-rg' | i18n: []: 'dts/crm' }}"
+                            maxlength="18"
+                            ng-animate="'animate-if'"
+                            ng-if="controller.model.ttTipoPessoa.num_id === 1"
+                            <% if (!(!data["l-rg"] || data["l-rg"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-rg' | i18n: []: 'dts/crm' }}</label>
+
+                            <validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 18</validator>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-emitting-organ"] || data["l-emitting-organ"].log_visivel === true)) { %>
+                        <field type="input"
+                            ng-model="controller.model.nom_orgao_emissor_identde"
+                            placeholder="{{ 'l-emitting-organ' | i18n: []: 'dts/crm' }}"
+                            maxlength="6"
+                            ng-animate="'animate-if'"
+                            ng-if="controller.model.ttTipoPessoa.num_id === 1"
+                            <% if (!(!data["l-emitting-organ"] || data["l-emitting-organ"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-emitting-organ' | i18n: []: 'dts/crm' }}</label>
+
+                            <validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 3</validator>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-number-dependents"] || data["l-number-dependents"].log_visivel === true)) { %>
+                        <field type="input"
+                            numbers-only
+                            ng-model="controller.model.qti_depend"
+                            maxlength="4"
+                            placeholder="{{ 'l-number-dependents' | i18n: []: 'dts/crm' }}"
+                            ng-animate="'animate-if'"
+                            ng-if="controller.model.ttTipoPessoa.num_id === 1"
+                            <% if (!(!data["l-number-dependents"] || data["l-number-dependents"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+                            <label>{{ 'l-number-dependents' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-mother-name"] || data["l-mother-name"].log_visivel === true)) { %>
+                        <field type="input"
+                            ng-model="controller.model.nom_mae_pessoa_fisic"
+                            placeholder="{{ 'l-mother-name' | i18n: []: 'dts/crm' }}"
+                            maxlength="40"
+                            ng-animate="'animate-if'"
+                            ng-if="controller.model.ttTipoPessoa.num_id === 1"
+                            <% if (!(!data["l-mother-name"] || data["l-mother-name"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-mother-name' | i18n: []: 'dts/crm' }}</label>
+
+                            <validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 40</validator>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-rating"] || data["l-rating"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.model.ttClassificacao"
+                            canclean="undefined"
+                            ng-if="controller.model.idi_tip_cta !== 1 && controller.model.idi_tip_cta !== 3"
+                            <% if (!(!data["l-rating"] || data["l-rating"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                                canclean="undefined">
+
+                            <label>{{ 'l-classification' | i18n: []: 'dts/crm' }}</label>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-classification' | i18n: []: 'dts/crm' }}">
+                                    {{ $select.selected.nom_clas_clien }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="class in controller.ratings | filter: $select.search track by $index">
+                                    <span ng-bind-html="class.nom_clas_clien | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                    </fieldset>
+
+                    <totvs-divider></totvs-divider>
+
+                    <% if ( (!data["l-foreign"] || data["l-foreign"].log_visivel === true)
+                        || (!data["l-competing-brand"] || data["l-competing-brand"].log_visivel === true)
+                        || (!data["l-trading"] || data["l-trading"].log_visivel === true)
+                        || (!data["l-integrates-outlook"] || data["l-integrates-outlook"].log_visivel === true)
+                        || (!data["l-resale"] || data["l-resale"].log_visivel === true)) {
+
+                    %>
+                    <fieldset class="row">
+
+                        <% if ((!data["l-foreign"] || data["l-foreign"].log_visivel === true)) { %>
+                        <field type="checkbox"
+                            class="col-xs-6 col-sm-3"
+                            ng-animate="'animate-if'"
+                            ng-if="controller.model.ttTipoPessoa.num_id !== 1"
+                            <% if (!(!data["l-foreign"] || data["l-foreign"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            ng-model="controller.model.log_estrang"
+                            label="{{ 'l-foreign' | i18n: []: 'dts/crm' }}">
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-trading"] || data["l-trading"].log_visivel === true)) { %>
+                        <field type="checkbox"
+                            class="col-xs-6 col-sm-3"
+                            ng-animate="'animate-if'"
+                            ng-if="controller.model.ttTipoPessoa.num_id !== 1"
+                            <% if (!(!data["l-trading"] || data["l-trading"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            ng-model="controller.model.log_trading"
+                            label="{{ 'l-trading' | i18n: []: 'dts/crm' }}">
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-competing-brand"] || data["l-competing-brand"].log_visivel === true)) { %>
+                        <field type="checkbox"
+                            class="col-xs-6 col-sm-3"
+                            ng-animate="'animate-if'"
+                            ng-if="controller.model.ttTipoPessoa.num_id !== 1"
+                            <% if (!(!data["l-competing-brand"] || data["l-competing-brand"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            ng-model="controller.model.log_concorrente"
+                            label="{{ 'l-competing-brand' | i18n: []: 'dts/crm' }}">
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-resale"] || data["l-resale"].log_visivel === true)) { %>
+                            <field type="checkbox"
+                                class="col-xs-6 col-sm-3"
+                                ng-animate="'animate-if'"
+                                ng-if="controller.model.ttTipoPessoa.num_id !== 1"
+                                <% if (!(!data["l-resale"] || data["l-resale"].log_editavel === true)) { %>
+                                ng-disabled="true"
+                                <% } %>
+                                ng-model="controller.model.log_reven"
+                                label="{{ 'l-resale' | i18n: []: 'dts/crm' }}">
+                            </field>
+                            <% } %>
+
+                    </fieldset>
+                    <% } %>
+
+                </accordion-group>
+                <% } %>
+
+                <% if ((!data["panel-address"] || data["panel-address"].log_visivel === true)) { %>
+                <accordion-group is-open="controller.group.addresses.open"
+                                class="crm-panel"
+                                id="panel-address">
+
+                    <totvs-lodash-template src="/dts/crm/html/account/account.edit.content.address.html"
+                                        template-data="controller.accessRestrictionAddress"></totvs-lodash-template>
+
+                </accordion-group>
+                <% } %>
+
+                <% if ((!data["panel-phone"] || data["panel-phone"].log_visivel === true)) { %>
+                <accordion-group is-open="controller.group.phones.open"
+                                ng-click="controller.onOpenPhonePanel()"
+                                class="crm-panel">
+
+                    <div ng-include="'/dts/crm/html/account/account.edit.content.phone.html'"></div>
+
+                </accordion-group>
+                <% } %>
+
+
+                <% if ((!data["panel-observation"] || data["panel-observation"].log_visivel === true)) { %>
+                <accordion-group
+                                is-open="controller.group.obs.open"
+                                ng-if="controller.editMode === false"
+                                class="crm-panel">
+
+                    <div ng-include="'/dts/crm/html/account/account.edit.content.observation.html'"></div>
+
+                </accordion-group>
+                <% } %>
+
+                <% if ((!data["panel-contact"] || data["panel-contact"].log_visivel === true)) { %>
+                <accordion-group is-open="controller.group.contact.open"
+                                ng-hide="controller.editMode === true || controller.model.ttTipoPessoa.num_id === 1"
+                                ng-click="controller.onOpenContactPanel()"
+                                class="crm-panel">
+
+                    <accordion-heading>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                {{ 'l-contact' | i18n: []: 'dts/crm' }}
+                                <i class="pull-right glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  controller.group.contact.open,
+                                            'glyphicon-chevron-right': !controller.group.contact.open}">
+                                </i>
+                            </div>
+                        </div>
+                    </accordion-heading>
+
+                    <fieldset class="row">
+
+                        <% if ((!data["l-panel-contact-name"] || data["l-panel-contact-name"].log_visivel === true)) { %>
+                        <field type="input"
+                            ng-model="controller.contact.nom_razao_social"
+                            placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+                            maxlength="80"
+                            <% if (!(!data["l-panel-contact-name"] || data["l-panel-contact-name"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+
+                            <validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 80</validator>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-panel-contact-email"] || data["l-panel-contact-email"].log_visivel === true)) { %>
+                        <field type="input"
+                            ng-model="controller.contact.nom_email_1"
+                            maxlength="100"
+                            placeholder="{{ 'l-email' | i18n: []: 'dts/crm' }}"
+                            <% if (!(!data["l-panel-contact-email"] || data["l-panel-contact-email"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-email' | i18n: []: 'dts/crm' }}</label>
+
+                            <validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 100</validator>
+                        </field>
+                        <% } %>
+
+                    </fieldset>
+
+                    <totvs-divider></totvs-divider>
+
+                    <fieldset class="row">
+
+                        <% if ((!data["l-panel-contact-bond"] || data["l-panel-contact-bond"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.contact.ttVinculo"
+                            <% if (!(!data["l-panel-contact-bond"] || data["l-panel-contact-bond"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-bond' | i18n: []: 'dts/crm' }}</label>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-bond' | i18n: []: 'dts/crm' }}">
+                                    {{ $select.selected.nom_tip_vinc }}
+                                    {{ $select.selected.log_suspenso ? ( ' (' + ('l-suspended' | i18n: []: 'dts/crm' ) + ')' ) : ''}}
+                                </ui-select-match>
+                                <ui-select-choices repeat="vinc in controller.bondTypes | filter: $select.search track by $index">
+                                    <span ng-bind-html="vinc.nom_tip_vinc + (vinc.log_suspenso ? ( ' (' + ('l-suspended' | i18n: []: 'dts/crm' ) + ')' ) : ('') ) | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-panel-contact-department"] || data["l-panel-contact-department"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.contact.ttDepartamento"
+                            <% if (!(!data["l-panel-contact-department"] || data["l-panel-contact-department"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-department' | i18n: []: 'dts/crm' }}</label>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-department' | i18n: []: 'dts/crm' }}">
+                                    {{ $select.selected.nom_departamento }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="depto in controller.departments | filter: $select.search track by $index">
+                                    <span ng-bind-html="depto.nom_departamento | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-panel-contact-decision-level"] || data["l-panel-contact-decision-level"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.contact.ttNivelDecisao"
+                            <% if (!(!data["l-panel-contact-decision-level"] || data["l-panel-contact-decision-level"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-decision-level' | i18n: []: 'dts/crm' }}</label>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-decision-level' | i18n: []: 'dts/crm' }}">
+                                    {{ $select.selected.nom_niv_decis }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="lvl in controller.decisionLevels | filter: $select.search track by $index">
+                                    <span ng-bind-html="lvl.nom_niv_decis | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-panel-contact-integrates-outlook"] || data["l-panel-contact-integrates-outlook"].log_visivel === true)) { %>
+                            <field type="checkbox"
+                                ng-model="controller.contact.log_integrad_outlook"
+                                <% if (!(!data["l-panel-contact-integrates-outlook"] || data["l-panel-contact-integrates-outlook"].log_editavel === true)) { %>
+                                ng-disabled="true"
+                                <% } %>>
+
+                                <label>{{ 'l-integrates-outlook' | i18n: []: 'dts/crm' }}</label>
+
+                            </field>
+                        <% } %>
+
+                    </fieldset>
+
+                    <totvs-divider></totvs-divider>
+
+                    <fieldset class="row">
+
+                        <% if ((!data["l-panel-contact-phone-type"] || data["l-panel-contact-phone-type"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.contact.phone.ttTipo"
+                            <% if (!(!data["l-panel-contact-phone-type"] || data["l-panel-contact-phone-type"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-type-phone' | i18n: []: 'dts/crm' }}</label>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-type-phone' | i18n: []: 'dts/crm' }}">
+                                    {{ $select.selected.nom_tip_telef }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="type in controller.phoneTypes | filter: $select.search track by $index">
+                                    <span ng-bind-html="type.nom_tip_telef | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-panel-contact-phone"] || data["l-panel-contact-phone"].log_visivel === true)) { %>
+                        <field type="input"
+                            ng-model="controller.contact.phone.nom_telefone"
+                            placeholder="{{ 'l-phone' | i18n: []: 'dts/crm' }}"
+                            maxlength="60"
+                            <% if (!(!data["l-panel-contact-phone"] || data["l-panel-contact-phone"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+                            <label>{{ 'l-phone' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+                        <% } %>
+                    </fieldset>
+
+                </accordion-group>
+                <% } %>
+
+            </accordion>
+        </div>
+
+	</div>
+	<% } %>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

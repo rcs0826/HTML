@@ -1,0 +1,49 @@
+<totvs-modal-header>
+	{{(!controller.isQuotation ? 'l-cancel-sales-order' : 'l-cancel-quotation') | i18n: []: 'dts/crm'}} : {{ controller.salesOrder.orderNumber }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="select"
+			   class="col-xs-6 col-md-7"
+			   ng-model="controller.model.reason"
+			   ng-required="true"
+			   canclean="undefined">
+			<label>{{ 'l-sales-order-reason' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.mpd_motivo.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-sales-order-reason' | i18n: []: 'dts/crm' }}">
+					{{$select.selected.descricao}} ({{$select.selected['cod-motivo']}})
+				</ui-select-match>
+				<ui-select-choices repeat="reason in controller.reasons track by $index"
+								   refresh="controller.getReasons($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="reason.descricao + ' (' + reason['cod-motivo'] + ')' | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<totvs-field totvs-datepicker
+					 class="col-xs-6 col-md-5"
+					 ng-model="controller.model.dtCancel"
+					 ng-if="controller.isQuotation !== true"
+					 ng-hide="controller.allOpenQuotationAndOrderForOpportunity === true"
+					 ng-required="true"
+					 class="col-md-4"
+					 label="{{'l-date-cancel' | i18n : [] : 'dts/crm' }}">
+		</totvs-field>
+
+		<field type="textarea" ng-model="controller.model.dslCancel" class="col-xs-12">
+			<label>{{ 'l-observation' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.close()">{{ 'btn-close' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-confirm' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

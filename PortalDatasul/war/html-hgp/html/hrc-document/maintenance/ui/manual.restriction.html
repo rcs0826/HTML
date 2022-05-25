@@ -1,0 +1,97 @@
+<div class="modal-header">
+    <h3 class="modal-title">Glosa Manual</h3>
+</div>
+<div class="modal-body">  
+    <totvs-page-form>
+        
+        <totvs-page-detail class="col-lg-12 col-md-12 col-sm-12 col-xs-12" 
+                           style="padding-top: 0px; padding-bottom: 0px;" 
+                           ng-if="controller.documentKey !== null">
+            <totvs-page-detail-info 
+                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                title="Documento"
+                value="{{controller.documentKey}}">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Procedimentos"
+                value="{{controller.movementsNumbers.procedures}}"
+                ng-if="controller.movementsNumbers !== undefined">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Insumos"
+                value="{{controller.movementsNumbers.inputs}}"
+                ng-if="controller.movementsNumbers !== undefined">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Pacotes"
+                value="{{controller.movementsNumbers.packages}}"
+                ng-if="controller.movementsNumbers !== undefined">
+            </totvs-page-detail-info>
+        </totvs-page-detail>
+
+        <div id="restrictionDiv" >
+            <totvs-field totvs-select 
+                   canclean required
+                   ng-model="controller.manualRestriction"
+                   ng-change="controller.onSelectRestriction()"
+                   class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                   label="Glosa"
+                   select-service="hrc.restrictionZoomController"
+                   zoom-service="hrc.restrictionZoomController"
+                   select-init="{filters: controller.filters}"
+                   zoom-init="{filters: controller.filters}"
+                   select-id="cdCodGlo" 
+                   select-description="dsCodGlo"
+                   return-object>
+            </totvs-field>
+            
+            <totvs-page-detail class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <totvs-page-detail-info 
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    title="Classe de Erro"
+                    value="{{controller.selectedRestriction.rotuloClasseErro}}">
+                </totvs-page-detail-info>
+            </totvs-page-detail>
+        </div>
+        <br/>
+
+        <field type="textarea" style="width:100%;" 
+               ng-model="controller.manualRestriction.dsMotivoGlosa">
+            <label>Motivo</label>
+        </field> 
+
+        <br/>
+
+        <field type="checkbox"
+               class="col-lg-2 col-md-2 col-sm-2 col-xs-2"
+               label="Validação Posterior"
+               data-ng-model="controller.lgValidacaoPosterior">
+        </field>
+
+        <field type="combo"
+               class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+               ng-model="controller.cdTipoCob"
+               ng-options="v.data as v.label for v in controller.billingValidationValues"
+               ng-if="controller.lgValidacaoPosterior != true"
+               required>
+            <label>Validação para Cobrança</label>
+        </field>
+
+        <field type="combo"
+               class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+               ng-model="controller.cdTipoPagamento"
+               ng-options="v.data as v.label for v in controller.paymentValidationValues"
+               ng-if="controller.lgValidacaoPosterior != true"
+               required>
+            <label>Validação para Pagamento</label>
+        </field>
+
+    </totvs-page-form>
+</div>
+<div class="modal-footer">
+    <button class="btn" ng-click="controller.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-click="controller.save()">Salvar</button>
+</div>

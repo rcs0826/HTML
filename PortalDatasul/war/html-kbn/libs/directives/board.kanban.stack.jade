@@ -1,0 +1,23 @@
+.pilha-kanban
+    .faixa-kanban.col-xs-12.faixa-kanban-label
+        div.text-center.content.width-fill
+            a(href="#" data-ng-click="itemClick($event, item)") {{item.sku}} {{ item.reference }} ({{ item.expedition ? "F" : "P"}}) &nbsp;
+            a(href="#" ng-click="sendItemToQueue($event, item)" ng-if="item.showSendItemToQueue", data-toggle="tooltip", title="{{'l-send-to-queue' | i18n}}", data-placement="bottom").fa.fa-arrow-circle-left
+    .faixa-kanban.col-xs-12
+        .faixa-kanban-fill.bg-vermelho.width-fill(ng-style="{ height: (item | kanbanPercent:'red')}")
+        div.text-center.content.width-fill
+            sup {{ item | countKanban:'red' }}
+            span /
+            sub {{ item.totalRedZone }}
+    .faixa-kanban.col-xs-12
+        .faixa-kanban-fill.bg-amarelo.width-fill(ng-style="{ height: (item | kanbanPercent:'yellow')}")
+        div.text-center.content.width-fill
+            sup {{ item | countKanban:'yellow' }}
+            span /
+            sub {{ item.totalYellowZone }}
+    .faixa-kanban.col-xs-12
+        .faixa-kanban-fill.bg-verde.width-fill(ng-style="{ height: (item | kanbanPercent:'green')}")
+        div.text-center.content.width-fill
+            sup {{ item | countKanban:'green' }}
+            span /
+            sub {{ item.totalGreenZone }}

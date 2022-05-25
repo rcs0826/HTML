@@ -1,0 +1,74 @@
+<totvs-page type="list" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+            <totvs-page-breadcrumb>
+                    <breadcrumb link="#{{defaultPageHome}}">{{ 'l-home' | i18n }}</breadcrumb>
+                    <breadcrumb>{{ 'l-last-shipments' | i18n }}</breadcrumb>
+            </totvs-page-breadcrumb>
+
+            <totvs-page-header>     
+                <totvs-page-header-title title="{{currentuser['user-entity']}} ({{controller.totalRecords}} {{ 'l-shipments' | i18n }})"></totvs-page-header-title>
+
+                <totvs-page-header-operation>	
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12"></div>
+                    <totvs-page-header-operation-filter placeholder="{{ 'l-fast-search-shipment' | i18n }}"
+                        ng-submit="controller.search();"
+                        ng-model="controller.quickSearchText"
+                        advanced-search="controller.openAdvancedSearch">
+                    </totvs-page-header-operation-filter>
+                </totvs-page-header-operation>
+		<totvs-page-disclaimers disclaimer-list="controller.filterBy" ng-click="controller.removeSelectedFilter"></totvs-page-disclaimers>
+
+                <totvs-page-tags>
+                        <tag class="tag-1 btn btn-link" ng-click="controller.setQuickFilter('1');">{{ 'l-emb-alocado' | i18n }}</tag>
+                        <tag class="tag-2 btn btn-link" ng-click="controller.setQuickFilter('2');">{{ 'l-emb-calculado' | i18n }}</tag>
+                        <tag class="tag-3 btn btn-link" ng-click="controller.setQuickFilter('3');">{{ 'l-confirmed' | i18n }}</tag>
+                </totvs-page-tags>		
+            </totvs-page-header>	
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		{{shipment['cod-sit-pre']}}
+		<totvs-list-item ng-repeat="shipment in controller.listResult"
+				 totvs-custom-element="customListItem"
+                                 class="tag-{{shipment['cod-sit-pre']}}">
+                    <totvs-list-item-header>
+                        <totvs-list-item-title>{{ 'l-shipment' | i18n }}: {{shipment['cdd-embarq']}}</totvs-list-item-title>                        
+                    </totvs-list-item-header>
+                    <totvs-list-item-content>
+                            <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-4" title="{{ 'l-dt-shipment'   | i18n }}">{{shipment['dt-embarque'] | date : ('l-date-format' | i18n) : 'UTC': 'shortDate'}}</totvs-list-item-info>
+                            <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-4" title="{{ 'l-cod-estabel'   | i18n }}">{{shipment['cod-estabel']}} - {{shipment['desc-estabel']}}</totvs-list-item-info>
+                            <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-4" title="{{ 'l-cargo-type'    | i18n }}">{{shipment['cod-tipo']}} - {{shipment['desc-tipo']}}</totvs-list-item-info>
+                            <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-4" title="{{ 'l-canal-venda'   | i18n }}">{{shipment['cod-canal-venda']}} - {{shipment['desc-canal-venda']}}</totvs-list-item-info>
+                            <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-4" title="{{ 'l-transportador' | i18n }}">{{shipment['nome-transp']}} - {{shipment['desc-transp']}}</totvs-list-item-info>
+                            <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-4" title="{{ 'l-driver'        | i18n }}">{{shipment['motorista']}}</totvs-list-item-info>
+                            <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-4" title="{{ 'l-placa'         | i18n }}">{{shipment['placa']}}</totvs-list-item-info>
+                            <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-4" title="{{ 'l-uf-placa'      | i18n }}">{{shipment['uf-placa']}}</totvs-list-item-info>
+                            <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-4" title="{{ 'l-rota'          | i18n }}">{{shipment['cod-rota']}} - {{shipment['desc-rota']}}</totvs-list-item-info>
+                            <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-4" title="{{ 'l-whs-external'  | i18n }}">{{shipment['cod-dep-ext']}} - {{shipment['desc-dep-ext']}}</totvs-list-item-info>
+                            <totvs-list-item-info class="col-xs-6 col-sm-6 col-md-4" title="{{ 'l-natur-oper'    | i18n }}">{{shipment['nat-operacao']}} - {{shipment['desc-nat-operacao']}}</totvs-list-item-info>                            
+                    </totvs-list-item-content>
+                    <totvs-list-item-content-detail open="controller.getShipmentItens(shipment)">
+                            <totvs-list-item ng-repeat="item in shipment.shipmentItens">
+                                    <totvs-list-item-content>								
+                                            <totvs-list-item-info title="{{ 'nr-pedcli'            | i18n}}" class="col-xs-6 col-sm-6 col-md-4">{{item['nr-pedcli']}}</totvs-list-item-info>
+                                            <totvs-list-item-info title="{{ 'l-customer'           | i18n}}" class="col-xs-6 col-sm-6 col-md-4">{{item['nome-abrev'] }}  {{item.unfatur}}</totvs-list-item-info>
+                                            <totvs-list-item-info title="{{ 'l-seq-item'           | i18n}}" class="col-xs-6 col-sm-6 col-md-4">{{item['nr-sequencia']}}</totvs-list-item-info>
+                                            <totvs-list-item-info title="{{ 'l-it-codigo'          | i18n}}" class="col-xs-6 col-sm-6 col-md-4">{{item['it-codigo']}} - {{item['desc-item']}}</totvs-list-item-info>
+                                            <totvs-list-item-info title="{{ 'l-cod-refer'          | i18n}}" class="col-xs-6 col-sm-6 col-md-4">{{item['cod-refer']}}</totvs-list-item-info>
+                                            <totvs-list-item-info title="{{ 'l-un'                 | i18n}}" class="col-xs-6 col-sm-6 col-md-4">{{item['un']}}</totvs-list-item-info>
+                                            <totvs-list-item-info title="{{ 'l-requested-quantity' | i18n}}" class="col-xs-6 col-sm-6 col-md-4">{{item['qt-pedida'] | number:4}}</totvs-list-item-info>
+                                            <totvs-list-item-info title="{{ 'l-qt-aloc'            | i18n}}" class="col-xs-6 col-sm-6 col-md-4">{{item['qt-alocada'] | number:4}}</totvs-list-item-info>
+                                            <totvs-list-item-info title="{{ 'l-dt-entrega'         | i18n}}" class="col-xs-6 col-sm-6 col-md-4">{{item['dt-entrega'] | date : ('l-date-format' | i18n) : 'UTC': 'shortDate'}}</totvs-list-item-info>
+                                            <totvs-list-item-info ng-if="currentuser['user-hiearchy']" title="{{ 'l-repres' | i18n}}" class="col-xs-6 col-sm-6 col-md-4">{{item['cod-nome-repres']}}</totvs-list-item-info>
+                                    </totvs-list-item-content>
+                            </totvs-list-item>
+                    </totvs-list-item-content-detail>
+		</totvs-list-item>
+	</totvs-page-content>
+	<totvs-list-pagination ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+							   ng-click="controller.loadData(true)">
+	</totvs-list-pagination>	
+</totvs-page>
+
+
+

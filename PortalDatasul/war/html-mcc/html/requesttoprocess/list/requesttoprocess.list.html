@@ -1,0 +1,233 @@
+<style type="text/css" scoped="true">
+	.bold{
+		font-weight: bold;
+	}
+	.priority-1:before{
+		background-color: #0ABF2E;
+		content: "1";
+		color:#fff;
+	}
+	.list-item.priority-1:before{
+		content: "";
+	}
+	.page-content .list-item.priority-1 {
+		border-left: 5px solid #0ABF2E;
+	}
+
+	.priority-2:before{
+		background-color: #00CEF7;
+		content: "2";
+		color:#fff;
+	}
+	.list-item.priority-2:before{
+		content: "";
+	}	
+	.page-content .list-item.priority-2 {
+		border-left: 5px solid #00CEF7;
+	}
+
+	.priority-3:before{
+		background-color: #F59D22;
+		content: "3";
+		color:#fff;
+	}
+	.list-item.priority-3:before{
+		content: "";
+	}	
+	.page-content .list-item.priority-3 {
+		border-left: 5px solid #F59D22;
+	}
+
+	.priority-4:before{
+		background-color: #E83420;
+		content: "4";
+		color:#fff;
+	}
+	.list-item.priority-4:before{
+		content: "";
+	}	
+	.page-content .list-item.priority-4 {
+		border-left: 5px solid #E83420;
+	}
+
+	.inline-edit:after {
+		font-size: 11px;
+	}
+</style>
+<totvs-page type="list" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{'l-home' | i18n}}</breadcrumb>
+			<breadcrumb>{{'l-answering-requests' | i18n}}</breadcrumb>
+		</totvs-page-breadcrumb>
+		<totvs-page-header>
+			<totvs-page-header-title 
+				title="{{'l-answering-requests' | i18n}}"
+				settings="controller.settings()">
+			</totvs-page-header-title>
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action>
+					<action ng-click="controller.process(null)" icon="glyphicon-play">{{ 'l-attend' | i18n }}</action>
+				</totvs-page-header-operation-action>
+				<totvs-page-header-operation-filter 
+					placeholder="{{ 'l-request' | i18n }}, {{ 'l-item-code' | i18n }}, {{ 'l-item-description' | i18n }}"
+					ng-submit="controller.loadData()"
+					ng-model="controller.basicFilter"
+                    advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+			</totvs-page-header-operation>
+
+			<totvs-page-tags>
+				<tag class="priority-1">{{ "l-low" | i18n }}</tag>
+				<tag class="priority-2">{{ "l-medium" | i18n }}</tag>
+				<tag class="priority-3">{{ "l-high" | i18n }}</tag>
+				<tag class="priority-4">{{ "l-very-high" | i18n }}</tag>
+			</totvs-page-tags>
+
+			<totvs-page-disclaimers
+				disclaimer-list="controller.disclaimers"
+				ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-content-header>
+			<totvs-page-quick-select 
+				title="{{ 'l-selected-all' | i18n }}"
+				list="controller.modelList">
+			</totvs-page-quick-select>           
+
+			<totvs-page-quick-filter
+				on-select-orderby="controller.orderByChanged"
+				orderby-list="controller.orderby"
+				orderby-selected="controller.selectedOrderBy">
+			</totvs-page-quick-filter>
+		</totvs-page-content-header>
+
+		<totvs-list-item 
+			ng-repeat="requestItem in controller.modelList" 
+			ng-if="controller.sight == 1"
+			ng-class="controller.getPriorityClass(requestItem['prioridade-aprov'])"  
+			totvs-custom-element="customRequest_listRequestItemSight"
+			selected="requestItem">
+
+            <totvs-list-item-header>
+                <totvs-list-item-title
+                    title="{{ 'l-solicitation' | i18n: []: 'dts/mcc' }} {{requestItem['nr-requisicao']}} - {{requestItem['sequencia'] | number}} - {{requestItem['it-codigo']}}"
+                    link="#/dts/mcc/request/item/detail?req={{requestItem['nr-requisicao']}}&seq={{requestItem['sequencia']}}&item={{requestItem['it-codigo-link']}}"
+                    class="legend hidden-xs"
+					ng-class="controller.getPriorityClass(requestItem['prioridade-aprov'])"  >
+                </totvs-list-item-title>
+                <totvs-list-item-title
+                    title="{{requestItem['nr-requisicao']}} - {{requestItem['sequencia'] | number}} - {{requestItem['it-codigo']}}"
+                    link="#/dts/mcc/request/item/detail?req={{requestItem['nr-requisicao']}}&seq={{requestItem['sequencia']}}&item={{requestItem['it-codigo-link']}}"
+                    class="legend hidden-sm hidden-md hidden-lg"
+					ng-class="controller.getPriorityClass(requestItem['prioridade-aprov'])"  >
+                </totvs-list-item-title>
+                
+
+                <totvs-list-item-action 
+                	limit-primary-action="2"                 	
+                	class="col-xs-5">
+					<action ng-click="controller.process(requestItem)" icon="glyphicon-play">{{ 'l-attend' | i18n: []: 'dts/mcc' }}</action>
+					<action ng-click="controller.followUp(requestItem)" icon="">{{ 'l-followup' | i18n: []: 'dts/mcc' }}</action>
+					<action link="#/dts/mcc/request/item/detail?req={{requestItem['nr-requisicao']}}&seq={{requestItem['sequencia']}}&item={{requestItem['it-codigo-link']}}" icon="">{{ 'l-detail-item' | i18n: []: 'dts/mcc' }}</action>
+					<action link="#/dts/mcc/request/detail/{{requestItem['nr-requisicao']}}" icon="">{{ 'l-detail-request' | i18n: []: 'dts/mcc' }}</action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+
+            <totvs-list-item-content>
+	            <totvs-list-item-info
+	                title="{{ 'l-item-description' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-8 col-sm-8"
+	                value="{{requestItem['desc-item']}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-site-short' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-4 col-sm-4"
+	                value="{{requestItem['cod-estabel']}}">
+	            </totvs-list-item-info>
+
+				<totvs-list-item-info
+					title="{{ 'l-status' | i18n: []: 'dts/mcc' }}"
+					class="col-md-4 col-sm-4">
+					<totvs-editable 
+						value="{{requestItem['situacao-desc']}}"
+						on-complete="controller.changeStatus(editable.newValue, requestItem)">
+						<field
+							type="combo"
+							class="col-md-12"
+							ng-model="requestItem['situacao'].toString()"
+							label="{{ 'l-status' | i18n: []: 'dts/mcc' }}"
+							>
+							<totvs-options>
+								<totvs-option value="1">{{ 'l-open' | i18n}}</totvs-option>
+								<totvs-option value="3">{{ 'l-incomplete' | i18n}}</totvs-option>
+							</totvs-options>
+						</field>
+					</totvs-editable>
+				</totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-urgent' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-4 col-sm-3">
+	                <span ng-if="requestItem['urgente'] == true">{{ 'l-yes' | i18n: []: 'dts/mcc' }}</span>
+	                <span ng-if="requestItem['urgente'] != true">{{ 'l-no' | i18n: []: 'dts/mcc' }}</span>
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	            	title="{{ 'l-delivery-date' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-4 col-sm-3"
+	                value="{{requestItem['dt-entrega'] | date :'dd/MM/yyyy'}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-quantity' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-4 col-sm-3"
+	                value="{{requestItem['qt-requisitada'] | number : 4}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-um' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-4 col-sm-3"
+	                value="{{requestItem['un']}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-requester' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-4 col-sm-3"
+	                value="{{requestItem['nome-abrev']}}">
+	            </totvs-list-item-info>
+			</totvs-list-item-content>
+
+        	<totvs-list-item-content-detail>
+        		<totvs-list-item-info
+	                title="{{ 'l-supplementary-desc-request-item' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-12 col-sm-12 text-justify"
+	                value="{{requestItem['it-requisicao-narrativa']}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-request-text' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-12 col-sm-12 text-justify"
+	                value="{{requestItem['requisicao-narrativa']}}">
+	            </totvs-list-item-info>
+
+	            <totvs-list-item-info
+	                title="{{ 'l-item-text' | i18n: []: 'dts/mcc' }}"
+	                class="col-md-12 col-sm-12 text-justify"
+	                value="{{requestItem['narrativa-item']}}">
+	            </totvs-list-item-info>
+
+            </totvs-list-item-content-detail>
+        </totvs-list-item>
+
+
+		<totvs-list-pagination
+            ng-if="controller.hasNext"
+            ng-click="controller.loadData(true);">
+        </totvs-list-pagination>        
+	</totvs-page-content>
+</totvs-page>

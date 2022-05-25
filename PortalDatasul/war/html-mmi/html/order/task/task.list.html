@@ -1,0 +1,81 @@
+<br/>
+<div class="row"
+     ng-if="taskCtrl.disableAdd">
+	<div class="col-xs-12">
+		<button class="btn btn-primary"
+				ng-click="taskCtrl.taskAdd()"
+				ng-if="taskCtrl.showButton">
+			<span class="glyphicon glyphicon-plus"></span>
+			{{ 'l-add' | i18n }}
+		</button>				
+	</div>
+</div>
+
+<totvs-divider style="margin-top: 10px; margin-bottom: 10px;"
+               ng-if="taskCtrl.disableAdd && taskCtrl.showButton">
+</totvs-divider>
+
+<totvs-page-content>
+
+	<totvs-page-alert
+		ng-if="taskCtrl.listOfTasks <= 0"
+		type="info"
+		message="{{'msg-task-not-found' | i18n}}">
+	</totvs-page-alert>
+
+	<totvs-list-item id="task{{task['cd-tarefa']}}"
+					 ng-repeat="task in taskCtrl.listOfTasks track by $index">
+
+		<totvs-list-item-header>
+            <totvs-list-item-title
+            	title="{{task['cd-tarefa']}} - {{task.descricao}}"
+        		ng-click="taskCtrl.openTaskDetail(task)">
+            </totvs-list-item-title>
+
+            <totvs-list-item-action limit-primary-action="3" ng-if="task['estado-taref'] == 4 && taskCtrl.showButton">	
+					<action ng-click="taskCtrl.openLaborReport(task)" icon="glyphicon-wrench" ng-disabled="true">{{ 'l-point' | i18n }}</action>                		                	
+					<action ng-click="taskCtrl.taskEdit(task)" icon="glyphicon-pencil" ng-disabled="!taskCtrl.disableAdd">{{ 'l-edit' | i18n }}</action>
+					<action ng-click="taskCtrl.removeTask(task)" icon="glyphicon-trash" ng-disabled="!taskCtrl.disableAdd">{{ 'l-remove' | i18n }}</action>				
+            </totvs-list-item-action>
+            <totvs-list-item-action limit-primary-action="2" ng-if="task['estado-taref'] < 4 && taskCtrl.showButton">
+				<action ng-click="taskCtrl.openLaborReport(task)" icon="glyphicon-wrench">{{ 'l-point' | i18n }}</action>                		                	
+				<action ng-click="taskCtrl.taskEdit(task)" icon="glyphicon-pencil">{{ 'l-edit' | i18n }}</action>
+				<action ng-click="taskCtrl.removeTask(task)" icon="glyphicon-trash">{{ 'l-remove' | i18n }}</action>				
+				<action ng-click="taskCtrl.updateTaskStatus(task)" icon="glyphicon-pause" ng-if="task['estado-taref'] < 3">{{ 'l-suspend' | i18n }}</action>
+				<action ng-click="taskCtrl.updateTaskStatus(task)" icon="glyphicon-play" ng-if="task['estado-taref'] == 3">{{ 'l-reactivate' | i18n }}</action>
+				<action ng-click="taskCtrl.aceiteTarefa(task)" ng-if="task['aceite'] === true">{{ 'l-accept' | i18n }}</action>
+			</totvs-list-item-action>
+
+            <totvs-list-item-info
+            	class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                <span class="label tag-{{task['estado-taref']}}">{{task['_']['des-estado'].toUpperCase()}}</span>
+            </totvs-list-item-info>
+
+            <totvs-list-item-info
+            	class="col-lg-3 col-md-4 col-sm-6 col-xs-12"
+                title="{{ 'l-total-time' | i18n }}"
+                value="{{task['tempo'] | number:4}}">
+            </totvs-list-item-info>
+            
+            <totvs-list-item-info
+            	class="col-lg-3 col-md-4 col-sm-6 col-xs-12"			                    
+                      title="{{ 'l-mandatory-task' | i18n }}"
+                      value="{{task['_']['tar-obrigatoria']}}">	            
+            </totvs-list-item-info>
+
+        </totvs-list-item-header>
+	</totvs-list-item>
+	<div class="more-results ng-scope" ng-if="taskCtrl.listOfTasks && taskCtrl.listOfTasks.length > 1" ng-href="#" >
+  		<a ng-disabled="true" class="btn btn-primary col-xs-12 ng-binding">{{ 'l-total-of' | i18n }} {{ taskCtrl.listOfTasks.length }} {{ 'l-results-found' | i18n }}.</a>
+  	</div>
+  	<div class="more-results ng-scope" ng-if="taskCtrl.listOfTasks && taskCtrl.listOfTasks.length == 1" ng-href="#" >
+  		<a ng-disabled="true" class="btn btn-primary col-xs-12 ng-binding">{{ 'l-total-of' | i18n }} {{ taskCtrl.listOfTasks.length }} {{ 'l-result-found' | i18n }}.</a>
+  	</div>
+</totvs-page-content>
+<style>
+	.page-content .item-container {
+		padding: 0 10px !important;
+	}
+
+	.item-actions a { cursor: pointer; }
+</style>

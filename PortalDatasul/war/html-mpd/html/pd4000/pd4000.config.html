@@ -1,0 +1,48 @@
+<totvs-page type="list">
+	<totvs-page-navbar>
+	<totvs-page-breadcrumb>
+		<breadcrumb link="#/">{{:: 'Início' | i18n : [] : 'dts/mpd' }}</breadcrumb>
+		<breadcrumb>{{:: 'Configuração do Pedido de Venda' | i18n : [] : 'dts/mpd' }}</breadcrumb>
+	</totvs-page-breadcrumb>
+	<totvs-page-header>
+			<totvs-page-header-title total="{{configController.configCount}}" title="{{:: 'Configuração do Pedido de Venda' | i18n : [] : 'dts/mpd' }}"></totvs-page-header-title>
+			<totvs-page-header-operation>
+				<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+					<div class="operations">
+						<button class="btn btn-primary" zoom zoom-service="mpd.usuario.Zoom" ng-model="configController.user"
+							zoom-selected="configController.addUser(selected)">{{:: 'Adicionar Usuário' | i18n : [] : 'dts/mpd' }}</button>
+						<button class="btn btn-default" zoom zoom-service="mpd.grp-usuar.zoom" ng-model="configController.group"
+							zoom-selected="configController.addGroup(selected)"> {{:: 'Adicionar Grupo' | i18n : [] : 'dts/mpd' }}</button>
+						<button class="btn btn-default" ng-click="configController.addAll()"> {{:: 'Adicionar Todos' | i18n : [] : 'dts/mpd' }}</button>
+					</div>
+				</div>
+				<totvs-page-header-operation-filter placeholder="{{:: 'Pesquisar Configurações' | i18n : [] : 'dts/mpd' }}"
+													ng-submit="configController.search();"
+													ng-model="configController.quickSearchText">
+				</totvs-page-header-operation-filter>
+			</totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+	<totvs-page-content>
+		<totvs-list-item ng-repeat="config in configController.configs | filter:configController.quickFilter">
+			<totvs-list-item-header>
+				<totvs-list-item-title>{{config['idi-seq']}}</totvs-list-item-title>
+				<totvs-list-item-action>
+					<action link="#/dts/mpd/pd4000/config/{{config['idi-seq']}}/fields" icon="glyphicon-list">{{:: 'Definir Campos' | i18n : [] : 'dts/mpd' }}</action>
+					<action link="#/dts/mpd/pd4000/config/{{config['idi-seq']}}/models" icon="glyphicon-flash">{{:: 'Definir Modelos' | i18n : [] : 'dts/mpd' }}</action>
+					<action ng-click="configController.delete(config)" icon="glyphicon-remove">{{:: 'Remover' | i18n : [] : 'dts/mpd' }}</action>
+				</totvs-list-item-action>
+			</totvs-list-item-header>
+			<totvs-list-item-content>
+				<totvs-list-item-info ng-if="config['configType'] == 1" title="{{:: 'Todos' | i18n : [] : 'dts/mpd' }}" class="col-xs-3">{{:: 'Configuração para todos usuários' | i18n : [] : 'dts/mpd' }} </totvs-list-item-info>
+				<totvs-list-item-info ng-if="config['configType'] == 2" title="{{:: 'Grupo' | i18n : [] : 'dts/mpd' }}" class="col-xs-3">{{config['groupUser']}} - {{config['groupUserName']}}</totvs-list-item-info>
+				<totvs-list-item-info ng-if="config['configType'] == 3" title="{{:: 'Usuário' | i18n : [] : 'dts/mpd' }}" class="col-xs-3">{{config['groupUser']}} - {{config['groupUserName']}}</totvs-list-item-info>
+			</totvs-list-item-content>
+		</totvs-list-item>
+	</totvs-page-content>
+	<totvs-list-pagination
+		ng-if="configController.configs.length < configController.configCount && configController.configs.length"
+		ng-click="configController.loadMore()">
+	</totvs-list-pagination>
+</totvs-page>
+

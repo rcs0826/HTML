@@ -1,0 +1,100 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/script/">{{ 'nav-script' | i18n : [] : 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'nav-script-analyzer' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'nav-script-analyzer' | i18n : [] : 'dts/crm' }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<fieldset style="margin: 5px;">
+
+					<field type="select"
+						   class="col-xs-5"
+						   canclean="undefined"
+						   ng-required="true"
+						   ng-model="controller.filterScript"
+						   ng-change="controller.onChangeScript()">
+
+						<zoom zoom-selected="controller.onChangeScript(selected, oldValue)"
+							  zoom-service="crm.crm_script.zoom"
+							  zoom-init="[{'property': 'custom.status', 'value': 2},{'property': 'custom.status', 'value': 3}]"></zoom>
+
+						<label>{{ 'l-script' | i18n : [] : 'dts/crm' }}</label>
+
+						<include>
+							<ui-select-match placeholder="{{ 'l-script' | i18n: []: 'dts/crm' }}">
+								<span>{{ $select.selected.nom_script }} ({{ $select.selected.nom_tip_script }})</span>
+							</ui-select-match>
+							<ui-select-choices repeat="script in controller.scripts track by $index"
+											   refresh="controller.getScripts($select.search)"
+											   refresh-delay="500">
+								<span ng-bind-html="script.nom_script + ' (' + script.nom_tip_script + ')' | highlight: $select.search"></span>
+							</ui-select-choices>
+						</include>
+						<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+					</field>
+
+					<field
+						type="daterange"
+						ng-if="controller.filterRangeControl"
+						class="col-xs-5"
+						label="{{ 'l-awnser-date' | i18n: []: 'dts/crm' }}"
+						ng-model="controller.filterRange"
+						start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+						end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}"
+						canclean="undefined">
+					</field>
+
+					<div class="col-xs-2"
+						 style="margin-top: 28px;">
+
+						<button class="btn btn-primary" ng-click="controller.apply()">
+							{{ 'btn-apply' | i18n : [] : 'dts/crm'}}
+						</button>
+						&nbsp;
+						<button class="btn btn-default"
+								ng-disabled="controller.model === undefined"
+								ng-click="controller.exportData(controller.model, controller.filterRange);">
+							{{ 'btn-export' | i18n : [] : 'dts/crm'}}
+						</button>
+					</div>
+
+				</fieldset>
+
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-detail>
+
+			<div class="col-xs-12">
+
+				<ng-include ng-show="controller.model | isDefined"
+							src="'/dts/crm/html/script/analyzer/page/page.tab.html'">
+				</ng-include>
+
+				<totvs-page-alert type="info"
+								  message="{{ controller.message | i18n: []: 'dts/crm' }}"
+								  ng-if="(controller.model | isUndefined)">
+				</totvs-page-alert>
+
+
+			</div>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

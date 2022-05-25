@@ -1,0 +1,50 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<totvs-page>
+  <totvs-page-navbar>
+    <totvs-page-breadcrumb>
+      <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+      <breadcrumb link="#/dts/kbn/kanbanrangeadjustment">{{'l-recalculation-stack-kanban' | i18n}}</breadcrumb>
+      <breadcrumb>{{'l-simulation-kanban-stack' | i18n}}</breadcrumb>
+    </totvs-page-breadcrumb>
+    <totvs-page-header>
+      <totvs-page-header-title title="{{'l-simulation-kanban-stack' | i18n }}" total="{{controller.qtditems}}"></totvs-page-header-title>
+      <totvs-page-header-operation>
+        <div class="col-md-7 col-sm-7"></div>
+        <totvs-page-header-operation-filter placeholder="{{ 'l-code-description' | i18n}}" ng-submit="controller.quickSearch()" ng-model="controller.quickSearchText"></totvs-page-header-operation-filter>
+      </totvs-page-header-operation>
+      <totvs-page-disclaimers disclaimer-list="controller.filtersApplied" ng-click="controller.removeFilter"></totvs-page-disclaimers>
+    </totvs-page-header>
+  </totvs-page-navbar>
+  <totvs-page-content ng-if="controller.establishment != undefined">
+    <totvs-page-content-header ng-if="controller.items.length &gt; 0">
+      <div class="row field-addon-padding">
+        <div class="col-md-12">
+          <div class="col-md-6">
+            <button ng-click="controller.exportaConsulta()" class="btn btn-primary">{{ 'l-export-simulation' | i18n }}  </button>
+          </div>
+          <div class="col-md-6">
+            <button ng-click="controller.updateKanbanRange(controller.items)" class="pull-right btn btn-warning">{{'l-apply-at-production' | i18n}}</button>
+          </div>
+        </div>
+      </div>
+    </totvs-page-content-header>
+    <totvs-list-item data-ng-repeat="item in controller.items" ng-if="item.show &amp;&amp; (item.idi_control_kanban == 1 || item.log_expedic)">
+      <totvs-list-item-header>
+        <totvs-list-item-title title="{{item.itempai | descGeneric:&quot;{sku} - {desc} {ref} ({exp})&quot;}}"></totvs-list-item-title>
+      </totvs-list-item-header>
+      <totvs-list-item-content>
+        <totvs-list-item-info title="{{'l-resupply-time' | i18n}}" value="{{item.val_tempo_ressup}}" class="col-md-3"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-minimum-lot' | i18n}}" value="{{item.qti_lote_minimo}}" class="col-md-2"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-safety-storage' | i18n}}" value="{{item.qti_estoq_segur}}" class="col-md-2"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-demand' | i18n}}" value="{{item.qtd_demand}}" class="col-md-2"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-kanban-size' | i18n}}" value="{{item.qti_tam_kanban + item.itempai.cod_un_med_erp}}" class="col-md-2"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-calculate-kanban-Ranges' | i18n}}" value="{{ item.log_calc_autom | yesOrNo }}" class="col-md-12"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-total-balance-cards' | i18n}}" value="{{item.qti_verde_kanban + item.qti_amarela_kanban + item.qti_vermelha_kanban}}" class="col-md-3"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-green-range' | i18n}}" value="{{item.qti_verde_kanban}}" class="col-md-2"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-yellow-range' | i18n}}" value="{{item.qti_amarela_kanban}}" class="col-md-2"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-red-range' | i18n}}" value="{{item.qti_vermelha_kanban}}" class="col-md-2"></totvs-list-item-info>
+      </totvs-list-item-content>
+    </totvs-list-item>
+  </totvs-page-content>
+</totvs-page>

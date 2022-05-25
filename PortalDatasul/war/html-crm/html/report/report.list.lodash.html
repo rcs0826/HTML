@@ -1,0 +1,149 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb>{{'nav-report' | i18n: []: 'dts/crm'}}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title
+				title="{{'nav-report' | i18n: []: 'dts/crm'}}"
+				total="{{controller.listOfReportCount}}"
+				settings="controller.userSettings();">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<% if ((!data["btn-new-report"] || data["btn-new-report"].log_visivel === true)) { %>
+				<totvs-page-header-operation-action>
+					<action icon="glyphicon-plus"
+							ng-click="controller.addEdit();">
+						{{ 'btn-new-report' | i18n: []: 'dts/crm' }}
+					</action>
+				</totvs-page-header-operation-action>
+				<% } %>
+
+				<totvs-page-header-operation-filter
+					<% if ((!data["l-quick-search"] || data["l-quick-search"].log_visivel === true)) { %>
+					placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+					ng-submit="controller.search()"
+					ng-model="controller.quickSearchText"
+					<% } %>
+					<% if ((!data["btn-advanced-search"] || data["btn-advanced-search"].log_visivel === true)) { %>
+					advanced-search="controller.openAdvancedSearch"
+					<% } %>
+					>
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+			<totvs-page-disclaimers
+				ng-if="controller.disclaimers.length > 0"
+				disclaimer-list="controller.disclaimers"
+				ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert
+			ng-if="controller.listOfReport.length <= 0"
+			type="info"
+			message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+			<% if ((!data["btn-new-report"] || data["btn-new-report"].log_visivel === true)) { %>
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addEdit();">
+				<span class="glyphicon glyphicon-plus"></span>
+				&nbsp;&nbsp;{{ 'btn-new-report' | i18n: []: 'dts/crm' }}
+			</button>
+			<% } %>
+		</totvs-page-alert>
+
+		<totvs-list-item
+			 id="report-{{report.num_id}}"
+			 ng-repeat="report in controller.listOfReport">
+
+			<totvs-list-item-header>
+
+				<totvs-list-item-title>
+					<a href="#/dts/crm/report/detail/{{report.num_id}}">
+						{{ report.nom_relat }}
+					</a>
+				</totvs-list-item-title>
+
+				<% if ((!data["btn-edit"] || data["btn-edit"].log_visivel === true)
+						|| (!data["btn-remove"] || data["btn-remove"].log_visivel === true)) { %>
+				<totvs-list-item-action limit-primary-action="2">
+
+					<% if ((!data["btn-edit"] || data["btn-edit"].log_visivel === true)) { %>
+					<action icon="glyphicon-pencil"
+							ng-click="controller.addEdit(report)">
+						{{ 'btn-edit' | i18n: []: 'dts/crm' }}
+					</action>
+					<% } %>
+
+					<% if ((!data["btn-remove"] || data["btn-remove"].log_visivel === true)) { %>
+					<action icon="glyphicon-trash"
+							ng-click="controller.remove(report)">
+						{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+					</action>
+					<% } %>
+
+				</totvs-list-item-action>
+				<% } %>
+
+			</totvs-list-item-header>
+
+			<% if ((!data["l-module"] || data["l-module"].log_visivel === true)
+					|| (!data["l-file"] || data["l-file"].log_visivel === true)
+					|| (!data["l-hierarchy"] || data["l-hierarchy"].log_visivel === true)) { %>
+			<totvs-list-item-content>
+
+				<% if ((!data["l-module"] || data["l-module"].log_visivel === true)) { %>
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-4"
+					title="{{ 'l-module' | i18n: []: 'dts/crm' }}"
+					value-break="false">
+					{{ report.ttCRMModule.nom_modul_crm }}
+				</totvs-list-item-info>
+				<% } %>
+
+				<% if ((!data["l-file"] || data["l-file"].log_visivel === true)) { %>
+				<totvs-list-item-info
+					class="col-xs-8 col-sm-6"
+					title="{{ 'l-file' | i18n: []: 'dts/crm' }}"
+					value="{{ report.nom_arq_relat }}"
+					value-break="false">
+				</totvs-list-item-info>
+				<% } %>
+
+				<% if ((!data["l-hierarchy"] || data["l-hierarchy"].log_visivel === true)) { %>
+				<totvs-list-item-info
+					class="col-xs-4 col-sm-2"
+					title="{{ 'l-hierarchy' | i18n: []: 'dts/crm' }}"
+					value-break="false">
+					{{ (report.log_hier_time === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</totvs-list-item-info>
+				<% } %>
+
+			</totvs-list-item-content>
+
+		</totvs-list-item>
+		<% } %>
+
+		<totvs-list-pagination
+			ng-if="controller.listOfReport.length < controller.listOfReportCount && controller.listOfReport.length"
+			ng-click="controller.search(true);">
+		</totvs-list-pagination>
+
+	</totvs-page-content>
+
+</totvs-page>

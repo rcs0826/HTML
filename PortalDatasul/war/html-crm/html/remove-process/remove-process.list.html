@@ -1,0 +1,100 @@
+<totvs-page type="list">
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb>{{'nav-remove-process' | i18n: []: 'dts/crm'}}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title
+				title="{{'nav-remove-process' | i18n: []: 'dts/crm'}}
+					   {{ controllerRemoveProcess.comboSelected ? '(' + (controllerRemoveProcess.comboSelected.description | i18n: []: 'dts/crm') + ')' : '' }}"
+				total="">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<totvs-page-header-operation-action limit-primary-action="2">
+					<action icon="glyphicon-remove" ng-click="controllerRemoveProcess.remove();">
+						{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+					</action>
+				</totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter advanced-search="controllerRemoveProcess.openAdvancedSearch">
+					<field type="select"
+						ng-model="controllerRemoveProcess.comboSelected"
+						canclean="undefined"
+						ng-change="controllerRemoveProcess.changeCombo()"
+						style="width: 310px;"
+						class="col-xs-12">
+						<include>
+							<ui-select-match placeholder="{{ 'l-select-process' | i18n: []: 'dts/crm' }}">
+								{{($select.selected.description | i18n: []: 'dts/crm')}}
+							</ui-select-match>
+							<ui-select-choices repeat="option in controllerRemoveProcess.listValues | filter: $select.search track by $index">
+								<span ng-bind-html="(option.description | i18n: []: 'dts/crm') | highlight: $select.search"></span>
+							</ui-select-choices>
+						</include>
+					</field>
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+			<totvs-page-disclaimers
+				ng-if="controllerRemoveProcess.disclaimers.length > 0"
+				disclaimer-list="controllerRemoveProcess.disclaimers"
+				ng-click="controllerRemoveProcess.removeDisclaimer">
+			</totvs-page-disclaimers>
+
+			<div ng-if="controllerRemoveProcess.comboSelected.name === 'ticket'"
+				 ng-include="'/dts/crm/html/ticket/ticket.legend.html'"></div>
+			<div ng-if="controllerRemoveProcess.comboSelected.name === 'task'"
+				 ng-include="'/dts/crm/html/task/task.legend.html'"></div>
+			<div ng-if="controllerRemoveProcess.comboSelected.name === 'account'"
+				 ng-include="'/dts/crm/html/account/account.legend.html'"></div>
+			<div ng-if="controllerRemoveProcess.comboSelected.name === 'opportunity'"
+				 ng-include="'/dts/crm/html/opportunity/opportunity.legend.html'"></div>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content style="border-top: 1px dotted #e4e4e4;"
+						ng-if="!controllerRemoveProcess.comboSelected || !controllerRemoveProcess.comboSelected.name">
+		<totvs-page-alert
+			ng-if="controllerRemoveProcess.listOfHistories.length <= 0"
+			type="info"
+			message="{{ 'l-select-process' | i18n: []: 'dts/crm' }}.">
+		</totvs-page-alert>
+	</totvs-page-content>
+
+	<div ng-if="controllerRemoveProcess.comboSelected.name === 'account'"
+		ng-include="'/dts/crm/html/remove-process/remove-process.account.list.content.html'">
+	</div>
+	<div ng-if="controllerRemoveProcess.comboSelected.name === 'attachment'"
+		ng-include="'/dts/crm/html/remove-process/remove-process.attachment.list.content.html'">
+	</div>
+	<div ng-if="controllerRemoveProcess.comboSelected.name === 'campaign'"
+		ng-include="'/dts/crm/html/remove-process/remove-process.campaign.list.content.html'">
+	</div>
+	<div ng-if="controllerRemoveProcess.comboSelected.name === 'history'"
+		ng-include="'/dts/crm/html/remove-process/remove-process.history.list.content.html'">
+	</div>
+	<div ng-if="controllerRemoveProcess.comboSelected.name === 'ticket'"
+		ng-include="'/dts/crm/html/remove-process/remove-process.ticket.list.content.html'">
+	</div>
+	<div ng-if="controllerRemoveProcess.comboSelected.name === 'opportunity'"
+		ng-include="'/dts/crm/html/remove-process/remove-process.opportunity.list.content.html'">
+	</div>
+	<div ng-if="controllerRemoveProcess.comboSelected.name === 'segmentation'"
+		ng-include="'/dts/crm/html/remove-process/remove-process.segmentation.list.content.html'">
+	</div>
+	<div ng-if="controllerRemoveProcess.comboSelected.name === 'task'"
+		ng-include="'/dts/crm/html/remove-process/remove-process.task.list.content.html'">
+	</div>
+	<div ng-if="controllerRemoveProcess.comboSelected.name === 'target'"
+		ng-include="'/dts/crm/html/remove-process/remove-process.target.list.content.html'">
+	</div>
+</totvs-page>

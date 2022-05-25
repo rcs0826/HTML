@@ -1,0 +1,488 @@
+<totvs-page type="detail">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{'l-fleet-budget' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-fleet-budget' | i18n}}"></totvs-page-header-title>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-detail>
+            <div style="height: 620px">
+                <totvs-tabset class="col-md-12">
+                    <totvs-tab heading="{{ 'l-filters' | i18n }}">
+                        <div class="row col-md-12">
+                        <div class="col-md-8">
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.planoIni"
+                                            ng-blur="orcamentoCtrl.sugereFinal(10)" 
+                                            label="{{'l-maintenance-plan' | i18n }}">
+                                </totvs-field>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="margin-top: 35px; text-align: center;">
+                                    {{'l-to' | i18n}}
+                                </div>
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.planoFim"
+                                            label="{{'l-maintenance-plan' | i18n }}">
+                                </totvs-field>
+                            </div>
+                            <div class="col-md-8">
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.eventoIni"
+                                            ng-blur="orcamentoCtrl.sugereFinal(11)" 
+                                            label="{{'l-event' | i18n}}">
+                                </totvs-field>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="margin-top: 35px; text-align: center;">
+                                    {{'l-to' | i18n}}
+                                </div>
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.eventoFim"
+                                            label="{{'l-event' | i18n}}">
+                                </totvs-field>
+                            </div>
+                            <div class="col-md-8">
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.subSistemaIni"
+                                            ng-blur="orcamentoCtrl.sugereFinal(12)" 
+                                            label="{{'l-subsystem'| i18n}}">
+                                </totvs-field>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="margin-top: 35px; text-align: center;">
+                                    {{'l-to' | i18n}}
+                                </div>
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.subSistemaFim"
+                                            label="{{'l-subsystem'| i18n}}">
+                                </totvs-field>
+                            </div>
+                            <div class="col-md-8">
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.oficinaIni"
+                                            ng-blur="orcamentoCtrl.sugereFinal(3)" 
+                                            label="{{ 'l-workshop' | i18n }}">
+                                </totvs-field>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="margin-top: 35px; text-align: center;">
+                                    {{'l-to' | i18n}}
+                                </div>
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.oficinaFim"
+                                            label="{{ 'l-workshop' | i18n }}">
+                                </totvs-field>
+                            </div>
+                            <div class="col-md-8">
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.setorIni"
+                                            ng-blur="orcamentoCtrl.sugereFinal(4)" 
+                                            label="{{'l-sector' | i18n }}">
+                                </totvs-field>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="margin-top: 35px; text-align: center;">
+                                    {{'l-to' | i18n}}
+                                </div>
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.setorFim"
+                                            label="{{'l-sector' | i18n }}">
+                                </totvs-field>
+                            </div>
+                        </div>
+                    </totvs-tab>
+                    <totvs-tab heading="{{'l-equipment' | i18n}}">
+                        <div class="row col-md-12">
+                            <div class="col-md-8">
+                                <totvs-field 
+                                            totvs-input 
+                                            id="empresa" 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.empresaIni"
+                                            ng-blur="orcamentoCtrl.sugereFinal(1)" 
+                                            label="{{'l-company' | i18n}}">
+                                </totvs-field>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="margin-top: 35px; text-align: center;">
+                                    {{'l-to' | i18n}}
+                                </div>
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.empresaFim"
+                                            label="{{'l-company' | i18n}}">
+                                </totvs-field>
+                            </div>
+                            <div class="col-md-8">
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.estabelecIni"
+                                            ng-blur="orcamentoCtrl.sugereFinal(2)" 
+                                            label="{{ 'l-site' | i18n }}">
+                                </totvs-field>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="margin-top: 35px; text-align: center;">
+                                    {{'l-to' | i18n}}
+                                </div>
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.estabelecFim"
+                                            label="{{ 'l-site' | i18n }}">
+                                </totvs-field>
+                            </div>
+                            <div class="col-md-8">
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.equipamentoIni"
+                                            ng-blur="orcamentoCtrl.sugereFinal(7)" 
+                                            label="{{'l-equipment' | i18n }}">
+                                </totvs-field>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="margin-top: 35px; text-align: center;">
+                                    {{'l-to' | i18n}}
+                                </div>
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.equipamentoFim"
+                                            label="{{'l-equipment' | i18n }}">
+                                </totvs-field>
+                            </div>
+                            <div class="col-md-8">
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.grupoIni"
+                                            ng-blur="orcamentoCtrl.sugereFinal(8)" 
+                                            label="{{'l-equipment-group' | i18n }}">
+                                </totvs-field>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="margin-top: 35px; text-align: center;">
+                                    {{'l-to' | i18n}}
+                                </div>
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5"
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.grupoFim"
+                                            label="{{'l-equipment-group' | i18n }}">
+                                </totvs-field>
+                            </div>
+                            <div class="col-md-8">
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.modeloIni"
+                                            ng-blur="orcamentoCtrl.sugereFinal(9)" 
+                                            label="{{'l-model-cf' | i18n }}">
+                                </totvs-field>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="margin-top: 35px; text-align: center;">
+                                    {{'l-to' | i18n}}
+                                </div>
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.modeloFim"
+                                            label="{{'l-model-cf' | i18n }}">
+                                </totvs-field>
+                            </div>
+                            <div class="col-md-8">
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.tagIni"
+                                            ng-blur="orcamentoCtrl.sugereFinal(5)" 
+                                            label="{{ 'l-tag' | i18n }}">
+                                </totvs-field>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="margin-top: 35px; text-align: center;">
+                                    {{'l-to' | i18n}}
+                                </div>
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.tagFim"
+                                            label="{{ 'l-tag' | i18n }}">
+                                </totvs-field>
+                            </div>
+                            <div class="col-md-8">
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.ccCustoIni"
+                                            ng-blur="orcamentoCtrl.sugereFinal(6)" 
+                                            label="{{'l-cc-codigo' | i18n}}">
+                                </totvs-field>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2" style="margin-top: 35px; text-align: center;">
+                                    {{'l-to' | i18n}}
+                                </div>
+                                <totvs-field 
+                                            totvs-input 
+                                            class="col-md-5" 
+                                            ng-model="orcamentoCtrl.model.ttParamOrcamento.ccCustoFim"
+                                            label="{{'l-cc-codigo' | i18n}}">
+                                </totvs-field>
+                            </div>
+                        </div>
+                    </totvs-tab>
+                    <totvs-tab heading="{{'l-parameters' | i18n}}">
+                        <div class="row col-md-12">
+                            <accordion class="col-lg-12" close-others="orcamentoCtrl.closeOther" style="margin-top: 5px">
+                            <accordion-group is-open="orcamentoCtrl.model.accord.impressao">
+                                    <accordion-heading>
+                                        {{'l-print-view' | i18n}}
+                                        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': orcamentoCtrl.model.accord.impressao, 'glyphicon-chevron-right': !orcamentoCtrl.model.accord.impressao}">
+                                        </i>
+                                    </accordion-heading>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding no-padding">
+                                        <totvs-field 
+                                                    totvs-checkbox 
+                                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding"
+                                                    ng-model="orcamentoCtrl.model.ttParamOrcamento.materialDiario" 
+                                                    label="{{'l-daily-stuff' | i18n}}"
+                                                    t-bsswitch>
+                                        </totvs-field>
+                                        <totvs-field 
+                                                    totvs-checkbox 
+                                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding"
+                                                    ng-model="orcamentoCtrl.model.ttParamOrcamento.materialSemanal" 
+                                                    label="{{'l-weekly-stuff' | i18n}}"
+                                                    t-bsswitch>
+                                        </totvs-field>
+                                        <totvs-field 
+                                                    totvs-checkbox 
+                                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding"
+                                                    ng-model="orcamentoCtrl.model.ttParamOrcamento.materialMensal" 
+                                                    label="{{'l-monthly-material' | i18n}}"
+                                                    t-bsswitch>
+                                        </totvs-field>
+                                        <totvs-field 
+                                                    totvs-checkbox 
+                                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding"
+                                                    ng-model="orcamentoCtrl.model.ttParamOrcamento.especialidadeDiaria" 
+                                                    label="{{'l-daily-specialty' | i18n}}"
+                                                    t-bsswitch>
+                                        </totvs-field>
+                                        <totvs-field 
+                                                    totvs-checkbox 
+                                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding"
+                                                    ng-model="orcamentoCtrl.model.ttParamOrcamento.especialidadeSemanal" 
+                                                    label="{{'l-weekly-specialty' | i18n}}"
+                                                    t-bsswitch>
+                                        </totvs-field>
+                                        <totvs-field 
+                                                    totvs-checkbox 
+                                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding"
+                                                    ng-model="orcamentoCtrl.model.ttParamOrcamento.especialidadeMensal" 
+                                                    label="{{'l-monthly-specialty' | i18n}}"
+                                                    t-bsswitch>
+                                        </totvs-field>                                                                            
+                                        <totvs-field 
+                                                    totvs-checkbox 
+                                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding"
+                                                    ng-model="orcamentoCtrl.model.ttParamOrcamento.simulacaoPlanos" 
+                                                    label="{{'l-plans-simulation' | i18n}}"
+                                                    t-bsswitch>
+                                        </totvs-field>
+                                    </div>
+                                </accordion-group>
+                                <accordion-group is-open="orcamentoCtrl.model.accord.geral">
+                                    <accordion-heading>
+                                        {{'l-general' | i18n}}
+                                        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': orcamentoCtrl.model.accord.geral, 'glyphicon-chevron-right': !orcamentoCtrl.model.accord.geral}">
+                                        </i>
+                                    </accordion-heading>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding no-padding">
+                                        <totvs-field 
+                                                    class="col-lg-4" 
+                                                    totvs-datepicker 
+                                                    label="{{'l-date-cut-simulation' | i18n}}"
+                                                    t-mask-date 
+                                                    ng-model="orcamentoCtrl.model.ttParamOrcamento.dtCorte" 
+                                                    culture="pt"
+                                                    required>
+                                        </totvs-field>
+                                        <totvs-field 
+                                                    class="col-lg-4" 
+                                                    totvs-date-range 
+                                                    ng-model="orcamentoCtrl.model.ttParamOrcamento.dtPercurso"
+                                                    culture="pt" 
+                                                    t-mask-date 
+                                                    label="{{'l-equipment-course' | i18n}}">
+                                        </totvs-field>
+                                        <totvs-field 
+                                                    class="col-lg-3" 
+                                                    totvs-combo 
+                                                    label="{{'l-currency' | i18n}}"
+                                                    ng-model="orcamentoCtrl.model.ttParamOrcamento.moeda" 
+                                                    t-options="orcamentoCtrl.moeda">
+                                        </totvs-field>
+                                    </div>
+                                </accordion-group>
+                                <accordion-group is-open="orcamentoCtrl.model.accord.custeio">
+                                    <accordion-heading>
+                                        {{'l-costing' | i18n}}
+                                        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': orcamentoCtrl.model.accord.custeio, 'glyphicon-chevron-right': !orcamentoCtrl.model.accord.custeio}">
+                                        </i>
+                                    </accordion-heading>
+                                    <accordion-group is-open="true">
+                                        <accordion-heading>
+                                            {{'l-materials'| i18n}}
+                                        </accordion-heading>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding no-padding">
+                                            <totvs-field 
+                                                        class="col-lg-3" 
+                                                        totvs-combo 
+                                                        label="{{'l-price-type' | i18n}}"
+                                                        ng-model="orcamentoCtrl.model.ttParamOrcamento.tipoPreco" 
+                                                        t-options="orcamentoCtrl.preco">
+                                            </totvs-field>
+                                        </div>
+                                    </accordion-group>
+                                    <accordion-group is-open="true">
+                                        <accordion-heading>
+                                            {{'l-mob-label' | i18n}}
+                                        </accordion-heading>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding no-padding">
+                                            <totvs-field 
+                                                        totvs-input 
+                                                        class="col-lg-6" 
+                                                        ng-model="orcamentoCtrl.model.ttParamOrcamento.estabelec"
+                                                        zoom-id="cod-estabel" 
+                                                        zoom-description="nome" 
+                                                        zoom-service="mpd.estabelecSE.zoom"
+                                                        label="{{'l-site' | i18n }}" 
+                                                        canclean 
+                                                        required>
+                                            </totvs-field>
+                                            <totvs-field 
+                                                        class="col-lg-3" 
+                                                        totvs-datepicker 
+                                                        label="{{'l-reference-date' | i18n}}"
+                                                        t-mask-date 
+                                                        ng-model="orcamentoCtrl.model.ttParamOrcamento.maoDeObra"
+                                                        culture="pt">
+                                            </totvs-field>
+                                        </div>
+                                    </accordion-group>
+                                </accordion-group>
+                                <accordion-group is-open="orcamentoCtrl.model.accord.equipamento">
+                                    <accordion-heading>
+                                        {{'l-equipment' | i18n }}
+                                        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': orcamentoCtrl.model.accord.equipamento, 'glyphicon-chevron-right': !orcamentoCtrl.model.accord.equipamento}">
+                                        </i>
+                                    </accordion-heading>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding no-padding">
+                                        <totvs-field 
+                                                    totvs-checkbox 
+                                                    class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding"
+                                                    ng-model="orcamentoCtrl.model.ttParamOrcamento.motorizado" 
+                                                    label="{{'l-motorized' | i18n}}"
+                                                    t-bsswitch>
+                                        </totvs-field>
+                                        <totvs-field 
+                                                    totvs-checkbox 
+                                                    class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding"
+                                                    ng-model="orcamentoCtrl.model.ttParamOrcamento.naoMotorizado" 
+                                                    label="{{'l-not-motorized' | i18n}}"
+                                                    t-bsswitch>
+                                        </totvs-field>
+                                        <totvs-field 
+                                                    totvs-checkbox 
+                                                    class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding"
+                                                    ng-model="orcamentoCtrl.model.ttParamOrcamento.proprio" 
+                                                    label="{{'l-own' | i18n}}"
+                                                    t-bsswitch>
+                                        </totvs-field>
+                                        <totvs-field 
+                                                    totvs-checkbox 
+                                                    class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding"
+                                                    ng-model="orcamentoCtrl.model.ttParamOrcamento.terceiro" 
+                                                    label="{{'l-third' | i18n}}"
+                                                    t-bsswitch>
+                                        </totvs-field>
+                                    </div>
+                                </accordion-group>
+                                <accordion-group is-open="orcamentoCtrl.model.accord.tipoEvento">
+                                    <accordion-heading>
+                                        {{'l-event-type' | i18n}}
+                                        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': orcamentoCtrl.model.accord.tipoEvento, 'glyphicon-chevron-right': !orcamentoCtrl.model.accord.tipoEvento}">
+                                        </i>
+                                    </accordion-heading>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding no-padding">
+                                        <totvs-field 
+                                                    totvs-checkbox 
+                                                    class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding"
+                                                    ng-model="orcamentoCtrl.model.ttParamOrcamento.planoComponente" 
+                                                    label="{{'l-component-planes' | i18n}}"
+                                                    t-bsswitch>
+                                        </totvs-field>
+                                        <totvs-field 
+                                                    totvs-checkbox 
+                                                    class="col-lg-2 col-md-2 col-sm-2 col-xs-2 no-padding"
+                                                    ng-model="orcamentoCtrl.model.ttParamOrcamento.manutencaoMecanica" 
+                                                    label="{{'l-mechanical-maintenance' | i18n}}"
+                                                    t-bsswitch>
+                                        </totvs-field>
+                                    </div>
+                                </accordion-group>
+                                
+                            </accordion>
+                        </div>
+                    </totvs-tab>
+                    <totvs-tab heading="{{'l-execution' | i18n }}">
+                        <div class="row col-md-12">
+                            <totvs-field 
+                                        totvs-datepicker
+                                        class="col-md-3" 
+                                        ng-model="orcamentoCtrl.model.ttParamOrcamento.dataRpw" 
+                                        label="{{ 'l-execution-date' | i18n }}"
+                                        t-mask-date>
+                            </totvs-field>
+                            <totvs-field 
+                                        totvs-time
+                                        class="col-md-3" 
+                                        ng-model="orcamentoCtrl.model.ttParamOrcamento.horaRpw" 
+                                        label="{{ 'l-execution-hour' | i18n }}">
+                            </totvs-field>
+                        </div>
+                        <div class="row col-md-12">
+                            <totvs-field 
+                                        totvs-select label="{{ 'l-execution-server' | i18n }}"
+                                        ng-model="orcamentoCtrl.model.ttParamOrcamento.rpwServer"
+                                        class="col-md-6"
+                                        select-id="cod_servid_exec"
+                                        select-description="des_servid_exec"
+                                        select-service="fnd.servid-exec.zoom"
+                                        zoom-service="fnd.servid-exec.zoom"
+                                        return-object="select-id"
+                                        canclean>
+                                </totvs-field>  
+                        </div>
+                        <div class="col-md-3">
+                            <button
+                                style="width: 112px;height: 34px; margin-top: 11px; border: none; border-radius: 4px;"
+                                class="btn-primary"
+                                ng-click="orcamentoCtrl.executaRpw()"
+                                tooltip="Executar">{{'l-to-execute' | i18n}}
+                            </button>
+                        </div>
+                    </totvs-tab>
+                </totvs-tabset>
+            </div>
+        </totvs-page-detail>
+    </totvs-page-content>
+</totvs-page>

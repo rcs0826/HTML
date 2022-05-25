@@ -1,0 +1,603 @@
+<!-- pagina principal -->
+<totvs-page type="list" totvs-custom-element="customPage" page-hotkeys="controller.hotKeysPage">
+	<totvs-page-navbar ng-show="controller.fullSize === false">
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-portal-orders-manager' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+			<totvs-page-header-title class="col-lg-7 col-md-7 col-sm-7 col-xs-12" style="margin-right: 0px; padding-top: 15px; padding-left: 0px !important;"
+			 title="{{ 'l-portal-orders-manager' | i18n }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>	
+					<totvs-page-header-operation-filter placeholder="{{ 'l-fast-search' | i18n }}" ng-submit="controller.search();" ng-model="controller.quickSearchText"
+					advanced-search="controller.openAdvancedSearch">
+					</totvs-page-header-operation-filter>
+			</totvs-page-header-operation>
+			
+			<div class="row">
+				<totvs-page-disclaimers class="col-md-9" disclaimer-list="controller.filterBy" ng-click="controller.removeSelectedFilter"></totvs-page-disclaimers>
+
+				<button ng-if="controller.filterBy.length > 1" class="hidden-xs btn btn-link pull-right" style="margin-right: 5px;" ng-click="controller.removeFilters()">
+					<span class="glyphicon glyphicon-remove"></span> &nbsp; {{ 'l-filters-delete' | i18n }}
+				</button>
+			</div>
+
+			<totvs-page-tags ng-show="controller.tabSelected === 1">
+					<tag class="btn btn-link list-manager-order-yellow-tag col-lg-2 col-md-3 col-sm-3 col-xs-3 order-tag" ng-click="controller.setQuickFilter(5);">{{ 'l-ready-for-approval' | i18n }}</tag>
+					<tag class="btn btn-link list-manager-order-dark-tag col-lg-2 col-md-3 col-sm-3 col-xs-3 order-tag" ng-click="controller.setQuickFilter(6);" ng-show="controller.isWorkflowActive">{{ 'l-pending-for-approval' | i18n }}</tag>
+					<tag class="btn btn-link list-manager-order-green-tag col-lg-1 col-md-2 col-sm-2 col-xs-2 order-tag-2" ng-click="controller.setQuickFilter(4);">{{ 'l-status-order-2' | i18n }}</tag>
+					<tag class="btn btn-link list-manager-order-blue-tag col-lg-2 col-md-3 col-sm-3 col-xs-3 order-tag-1" ng-click="controller.setQuickFilter(3);">{{ 'l-write-x-days' | i18n }} {{controller.dayswithoutmov}} {{'l-days' | i18n}} </tag>
+					<tag class="btn btn-link list-manager-order-red-tag col-lg-1 col-md-2 col-sm-2 col-xs-2 order-tag" ng-click="controller.setQuickFilter(2);">{{ 'l-canceled-in-portal' | i18n }}</tag>
+					<tag class="btn btn-link list-manager-order-orange-tag col-lg-1 col-md-2 col-sm-2 col-xs-2 order-tag"
+						ng-if="controller.isCRMActive == true"
+						ng-click="controller.setQuickFilter(8);">{{ 'l-status-order-manager-11' | i18n }}</tag>
+			</totvs-page-tags>
+
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-detail>
+
+			<totvs-tabset justified="true" style="margin-right: 5px; margin-left: -5px;">
+
+				<totvs-tab ng-click="controller.setTabSelected(1)" active="controller.selectedtab1" heading="{{ 'l-order-approval' | i18n }}">
+					<br>
+
+					<div ng-show="controller.listResult.length > 0">
+
+						<div class="row" ng-show="controller.showWithGrid == false">
+							<div class="col-md-12">
+
+								<div class="btn-group pull-right hidden-sm hidden-xs" style="margin-right: 5px">
+									<label class="btn btn-default" ng-class="{active: controller.showWithGrid == false}" ng-click="controller.setShowWithGrid()"
+									title="{{ 'l-show-list' | i18n }}">
+										<span class="glyphicon glyphicon-align-justify"></span>
+									</label>
+									<label class="btn btn-default" ng-class="{active: controller.showWithGrid == true}" ng-click="controller.setShowWithGrid()"
+									title="{{ 'l-show-grid' | i18n }}">
+										<span class="glyphicon glyphicon-th"></span>
+									</label>
+								</div>
+
+								<a class="btn btn-default pull-right hidden-xs" style="margin-right: 5px" title="{{'l-full-min' | i18n}}" role="button" ng-click="controller.changeSize()">
+									<span ng-class="controller.fullSize ? 'glyphicon glyphicon-resize-small' : 'glyphicon glyphicon-resize-full'"></span>
+								</a>
+
+							</div>
+						</div>
+
+						<br>
+
+						<div ng-show="controller.showWithGrid == false">
+
+							<totvs-list-item ng-class="{'list-manager-order-yellow': orderManager['cod_sit_ped'] == '1',
+														'list-manager-order-dark':   orderManager['cod_sit_ped'] == '2',
+														'list-manager-order-green':  orderManager['cod_sit_ped'] == '3',
+														'list-manager-order-blue':   orderManager['cod_sit_ped'] == '4',
+														'list-manager-order-red':    orderManager['cod_sit_ped'] == '5',
+														'list-manager-order-orange':    orderManager['log_cotacao'] == true}" ng-repeat="orderManager in controller.listResult"
+							totvs-custom-element="customListItem">
+								<totvs-list-item-header>
+									<totvs-list-item-title title="{{orderManager['nr_pedido']}}" link="#/dts/mpd/internalorderdetail/{{orderManager['nr_pedido']}}"></totvs-list-item-title>
+									<mpd-list-item-action class="actions-mobile" style="--options: {{ 'l-approve' | i18n }}" ng-show="orderManager.cod_sit_ped == '1' || orderManager.cod_sit_ped == '2'" limit-primary-action="1">
+										<action ng-click="controller.openModalSavaAndSendTask(orderManager)" icon="glyphicon-ok">{{ 'l-aprovacao' | i18n }}</action>
+										<action link="#/dts/mpd/internalorderhistory/{{orderManager['nr_pedido']}}" icon="glyphicon-calendar">{{ 'btn-historic' | i18n }}</action>
+										<action ng-click="controller.removeOrder(orderManager)" icon="glyphicon-remove">{{ 'l-order-delete' | i18n }}</action>
+									</mpd-list-item-action>
+
+									<mpd-list-item-action class="actions-mobile" style="--options: 'teste'" ng-show="orderManager.cod_sit_ped != '1' && orderManager.cod_sit_ped != '2'" limit-primary-action="1">
+										<action link="#/dts/mpd/internalorderhistory/{{orderManager['nr_pedido']}}" icon="glyphicon-calendar">{{ 'btn-historic' | i18n }}</action>
+										<action ng-click="controller.removeOrder(orderManager)" icon="glyphicon-remove">{{ 'l-order-delete' | i18n }}</action>
+									</mpd-list-item-action>
+
+								</totvs-list-item-header>
+								<totvs-list-item-content>
+									<totvs-list-item-info class="col-xs-12 col-lg-4" title="{{'nr-pedcli' | i18n}}">
+										{{orderManager.nr_pedcli}}
+									</totvs-list-item-info>
+									<totvs-list-item-info class="col-xs-12 col-lg-4"
+														title="{{'l-nome-abrev' | i18n}}"
+														ng-if="!orderManager.cod_id_prosp || orderManager.log_cotacao != true">
+										{{orderManager.nome_abrev}}
+									</totvs-list-item-info>
+									<totvs-list-item-info class="col-xs-12 col-lg-4"
+														title="{{'l-lead' | i18n}}"
+														ng-if="orderManager.cod_id_prosp && orderManager.log_cotacao == true">
+											{{ orderManager.crmAccountName + (orderManager.crmAccountShortName ? ' (' + orderManager.crmAccountShortName + ')' : '') }}
+									</totvs-list-item-info>
+									<totvs-list-item-info class="col-xs-12 col-lg-4" title="{{'l-no-ab-reppri' | i18n}}">
+										{{orderManager.no_ab_reppri}}
+									</totvs-list-item-info>
+									<totvs-list-item-info class="col-xs-12 col-lg-4" title="{{'l-vl-aberto' | i18n}}">
+										{{orderManager.vl_liq_abe | currency:''}}
+									</totvs-list-item-info>
+									<totvs-list-item-info class="col-xs-12 col-lg-4" title="{{'l-data-implant' | i18n}}">
+										{{orderManager.dt_emissao | date : ('l-date-format' | i18n) : 'UTC'}}
+									</totvs-list-item-info>
+									<totvs-list-item-info class="hidden-xs col-xs-12 col-lg-4" title="{{'l-write-days' | i18n}}">
+										{{orderManager.tot_dias_digitac}}
+									</totvs-list-item-info>
+									<totvs-list-item-info ng-if="portalmanagerparamworkflowactive" class="col-xs-12 col-lg-4" title="{{'l-user-sponsor' | i18n}}">
+										{{orderManager.user_respons}}
+									</totvs-list-item-info>
+									<totvs-list-item-info class="col-xs-12 col-lg-4" title="{{'l-status' | i18n}}">
+										{{orderManager.desc_sit_ped}}
+									</totvs-list-item-info>
+									<totvs-list-item-info class="col-xs-12 col-lg-4" title="{{'l-origem' | i18n}}">
+										{{orderManager.desc_origem}}
+									</totvs-list-item-info>
+								</totvs-list-item-content>
+								
+								<totvs-list-item-content-detail ng-click="orderManager.openedDetail = !orderManager.openedDetail" ng-if="orderManager.qtd_interac_rep != '0'" ng-class="!orderManager.openedDetail ? 'comments' : ''" class="teste" style="--openedDetail: {{orderManager.openedDetail}}; --qtdComment:'&nbsp; {{'l-has-observation' | i18n}} ({{orderManager.qtd_interac_rep}})'; --qtdCommentMobile:'&nbsp;  {{'l-observation' | i18n}}  ({{orderManager.qtd_interac_rep}})'" open="controller.getOrderItens(orderManager)">
+									<div ng-repeat="comment in orderManager.commentRepres" class="observation">
+										<div class="alert alert-info cl" role="alert">
+										<p class="hidden-xs">
+											{{comment.dat_histor  | date : ('l-date-format' | i18n) : 'UTC'}} {{comment.hra_histor}} - {{comment.des_cod_classif}} ({{comment.cod_usuar}})
+										</p>
+										<p class="visible-xs">
+											{{comment.dat_histor  | date : ('l-date-format' | i18n) : 'UTC'}} {{comment.hra_histor}}
+										</p>
+										<b>{{comment.des_histor}}</b>
+										</div>
+									</div>
+									<totvs-list-item ng-repeat="item in orderManager.orderItens" class="item-margin">
+										<totvs-list-item-content>
+											<totvs-list-item-info title="{{'l-seq'|i18n}}" class="col-xs col-sm-3 col-md-4">{{item['nr-sequencia']}}</totvs-list-item-info>
+											<totvs-list-item-info title="{{'l-quantity'|i18n}}" class="col-xs col-sm-5 col-md-4">{{item['qt-un-fat']| number:4}} {{item.codUn}}</totvs-list-item-info>
+											<totvs-list-item-info title="{{'l-item-value'|i18n}}" class="col-xs col-sm-4 col-md-4">{{item['vl-tot-it'] | currency:''}}</totvs-list-item-info>
+											<totvs-list-item-info title="{{'l-cod-item'|i18n}}" class="col-xs col-sm-12 col-md-12">{{item['it-codigo']}} - {{item.itemDesc}}</totvs-list-item-info>
+											<totvs-list-item-info ng-if="item['cod-refer']" title="{{'l-cod-refer'|i18n}}" class="col-xs col-sm-12 col-md-4">{{item['cod-refer']}} - {{item['desc-cod-refer']}}</totvs-list-item-info>
+											<totvs-list-item-info ng-if="item['estab-atend-item']" title="{{'l-estabel-atend'|i18n}}" class="col-xs col-sm-12 col-md-8">{{item['estab-atend-item']}} - {{item['desc-estab-atend-item']}}</totvs-list-item-info>
+										</totvs-list-item-content>
+									</totvs-list-item>
+								</totvs-list-item-content-detail>
+
+								<totvs-list-item-content-detail  ng-if="orderManager.qtd_interac_rep == '0'" open="controller.getOrderItens(orderManager)">
+									<totvs-list-item ng-repeat="item in orderManager.orderItens" class="item-margin">
+										<totvs-list-item-content>
+											<totvs-list-item-info title="{{'l-seq'|i18n}}" class="col-xs col-sm-3 col-md-4">{{item['nr-sequencia']}}</totvs-list-item-info>
+											<totvs-list-item-info title="{{'l-quantity'|i18n}}" class="col-xs col-sm-5 col-md-4">{{item['qt-un-fat']| number:4}} {{item.codUn}}</totvs-list-item-info>
+											<totvs-list-item-info title="{{'l-item-value'|i18n}}" class="col-xs col-sm-4 col-md-4">{{item['vl-tot-it'] | currency:''}}</totvs-list-item-info>
+											<totvs-list-item-info title="{{'l-cod-item'|i18n}}" class="col-xs col-sm-12 col-md-12">{{item['it-codigo']}} - {{item.itemDesc}}</totvs-list-item-info>
+											<totvs-list-item-info ng-if="item['cod-refer']" title="{{'l-cod-refer'|i18n}}" class="col-xs col-sm-12 col-md-4">{{item['cod-refer']}} - {{item['desc-cod-refer']}}</totvs-list-item-info>
+											<totvs-list-item-info ng-if="item['estab-atend-item']" title="{{'l-estabel-atend'|i18n}}" class="col-xs col-sm-12 col-md-8">{{item['estab-atend-item']}} - {{item['desc-estab-atend-item']}}</totvs-list-item-info>
+										</totvs-list-item-content>
+									</totvs-list-item>
+								</totvs-list-item-content-detail>
+								
+							</totvs-list-item>
+						</div>
+
+						<div ng-show="controller.showWithGrid == true">
+
+							<div class="row">
+								<div class="col-md-12">
+									<button ng-disabled="controller.disableButton()" class="btn btn-primary" ng-click="controller.openModalSavaAndSendTask(controller.selectedOrderToApprove)"
+									icon="glyphicon-ok">
+										<span class="glyphicon glyphicon-ok"></span> &nbsp; {{ 'l-action-task-select' | i18n }} </button>
+									<button class="btn btn-default" ng-click="controller.openOrderHistory(controller.selectedOrderToApprove)">
+										<span class="glyphicon glyphicon-calendar"></span> &nbsp; {{ 'btn-historic' | i18n }} 
+										<span ng-show="controller.showBadge()" class="badge badge-light">{{controller.qtdCommentsRepres}}</span> </button>
+									<button class="btn btn-default" ng-click="controller.removeOrder(controller.selectedOrderToApprove)" icon="glyphicon-minus">
+										<span class="glyphicon glyphicon-remove"></span> &nbsp; {{ 'l-order-delete' | i18n }} </button>
+
+									<div class="btn-group pull-right hidden-sm hidden-xs" style="margin-right: 5px">
+										<label class="btn btn-default" ng-class="{active: controller.showWithGrid == false}" ng-click="controller.setShowWithGrid()"
+										title="{{ 'l-show-list' | i18n }}">
+											<span class="glyphicon glyphicon-align-justify"></span>
+										</label>
+										<label class="btn btn-default" ng-class="{active: controller.showWithGrid == true}" ng-click="controller.setShowWithGrid()"
+										title="{{ 'l-show-grid' | i18n }}">
+											<span class="glyphicon glyphicon-th"></span>
+										</label>
+									</div>
+
+									<a class="btn btn-default pull-right hidden-xs" style="margin-right: 5px" title="{{'l-full-min' | i18n}}" role="button" ng-click="controller.changeSize()">
+										<span ng-class="controller.fullSize ? 'glyphicon glyphicon-resize-small' : 'glyphicon glyphicon-resize-full'"></span>
+									</a>
+
+									<div class="pull-right" style="padding-right: 15px; padding-left: 15px; padding-top: 10px;">
+										<i class="glyphicon glyphicon-question-sign" tooltip-placement="left" tooltip-html-unsafe="{{'l-help-portal-orders-manager' | i18n}}"></i>
+									</div>
+								</div>
+							</div>
+
+							<br>
+
+							<totvs-grid grid-data="controller.listResult" grid="controller.portalOrderToApprove" grid-selected-items="controller.selectedOrderToApprove"
+							navigatable="true" editable="false" selectable="multiple,row" reorderable="true" resizable="true" grid-height="400">
+
+								<totvs-grid-column field="nr_pedido" width="140">
+									<template>
+										<a href="\\#/dts/mpd/internalorderdetail/{{dataItem.nr_pedido}}">{{dataItem.nr_pedido}}</a>
+									</template>
+									{{:: 'l-nr-pedido' | i18n : [] : 'dts/mpd'}}
+								</totvs-grid-column>
+
+								<totvs-grid-column field="nr_pedcli" width="140">
+									{{:: 'nr-pedcli' | i18n : [] : 'dts/mpd'}}
+								</totvs-grid-column>
+
+								<totvs-grid-column field="nome_abrev" width="150">
+									{{:: 'l-customer' | i18n : [] : 'dts/mpd'}}
+									<template>
+										<span ng-if="!dataItem.cod_id_prosp || dataItem.log_cotacao != true">
+										{{dataItem.nome_abrev}}
+										</span>
+										<span ng-if="dataItem.cod_id_prosp && dataItem.log_cotacao == true">
+										{{'Lead: ' + dataItem.crmAccountName + (dataItem.crmAccountShortName ? ' (' + dataItem.crmAccountShortName + ')' : '')}}
+										</span>
+									</template>
+								</totvs-grid-column>
+
+								<totvs-grid-column field="no_ab_reppri" width="150">
+									{{:: 'l-no-ab-reppri' | i18n : [] : 'dts/mpd'}}
+								</totvs-grid-column>
+
+								<totvs-grid-column field="vl_liq_abe" width="150" filter="number : 5" style="text-align: right;">
+									{{:: 'l-vl-aberto' | i18n : [] : 'dts/mpd'}}
+								</totvs-grid-column>
+
+								<totvs-grid-column field="dt_emissao" width="80" filter="date : dd/MM/yyyy">
+									{{:: 'l-data-implant' | i18n : [] : 'dts/mpd'}}
+								</totvs-grid-column>
+
+								<totvs-grid-column field="tot_dias_digitac" width="80">
+									{{:: 'l-write-days' | i18n : [] : 'dts/mpd'}}
+								</totvs-grid-column>
+
+								<totvs-grid-column ng-if="portalmanagerparamworkflowactive" field="user_respons" width="160">
+									{{:: 'l-user-sponsor' | i18n : [] : 'dts/mpd'}}
+								</totvs-grid-column>
+
+								<totvs-grid-column field="desc_sit_ped" width="200">
+									{{:: 'l-status' | i18n : [] : 'dts/mpd'}}
+								</totvs-grid-column>
+
+								<totvs-grid-column field="desc_origem" width="200">
+									{{:: 'l-origem' | i18n : [] : 'dts/mpd'}}
+								</totvs-grid-column>
+
+								<totvs-grid-detail size="table">
+									<div class="row" style="margin: 0;" ng-init="controller.getOrderItens(dataItem)">
+										<totvs-grid grid-data="dataItem.orderItens" grid-height="250" navigatable="true" selectable="row" reorderable="false" resizable="true">
+
+											<totvs-grid-column field="nr-sequencia" width="40">
+												{{:: 'l-seq' | i18n : [] : 'dts/mpd'}}
+											</totvs-grid-column>
+
+											<totvs-grid-column field="it-codigo" width="100">
+												{{:: 'l-cod-item' | i18n : [] : 'dts/mpd'}}
+											</totvs-grid-column>
+
+											<totvs-grid-column field="itemDesc" width="240">
+												{{:: 'l-descricao' | i18n : [] : 'dts/mpd'}}
+											</totvs-grid-column>
+
+											<totvs-grid-column field="cod-refer" width="100">
+												{{:: 'l-cod-refer' | i18n : [] : 'dts/mpd'}}
+											</totvs-grid-column>
+
+											<totvs-grid-column field="desc-cod-refer" width="160">
+												{{:: 'l-desc-ref' | i18n : [] : 'dts/mpd'}}
+											</totvs-grid-column>
+
+											<totvs-grid-column field="qt-un-fat" width="160" filter="number : 4" style="text-align: right;">
+												{{:: 'l-quantity' | i18n : [] : 'dts/mpd'}}
+											</totvs-grid-column>
+
+											<totvs-grid-column field="vl-tot-it" width="160" filter="number : 5" style="text-align: right;">
+												{{:: 'l-item-value' | i18n : [] : 'dts/mpd'}}
+											</totvs-grid-column>
+
+											<totvs-grid-column field="estab-atend-item" width="80">
+												{{:: 'l-estabel-atend' | i18n : [] : 'dts/mpd'}}
+											</totvs-grid-column>
+
+											<totvs-grid-column field="desc-estab-atend-item" width="160">
+												{{:: 'l-site-attendance-desc' | i18n : [] : 'dts/mpd'}}
+											</totvs-grid-column>
+
+										</totvs-grid>
+									</div>
+								</totvs-grid-detail>
+							</totvs-grid>
+						</div>
+
+						<div class="more-results" style="height: 35px">
+							<button ng-show="controller.totalRecords > 0" ng-click="controller.loadMore()"
+							class="btn btn-primary col-xs-12" style="padd">
+								{{'l-more' | i18n}}
+							</button>
+						</div>
+					</div>
+					<div ng-show="controller.listResult.length == 0">
+
+					</div>
+
+				</totvs-tab>
+
+				<totvs-tab ng-show="!portalmanagerparamworkflowactive" active="controller.selectedtab2" ng-click="controller.setTabSelected(2)"
+				 heading="{{ 'l-order-canceled-approval' | i18n }}">
+					<br>
+
+					<div ng-show="controller.showWithGrid == false">
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="btn-group pull-right hidden-sm hidden-xs" style="margin-right: 5px">
+									<label class="btn btn-default" ng-class="{active: controller.showWithGrid == false}" ng-click="controller.setShowWithGrid()"
+									 title="{{ 'l-show-list' | i18n }}">
+										<span class="glyphicon glyphicon-align-justify"></span>
+									</label>
+									<label class="btn btn-default" ng-class="{active: controller.showWithGrid == true}" ng-click="controller.setShowWithGrid()"
+									 title="{{ 'l-show-grid' | i18n }}">
+										<span class="glyphicon glyphicon-th"></span>
+									</label>
+								</div>
+
+								<a class="btn btn-default pull-right hidden-xs" style="margin-right: 5px" title="{{'l-full-min' | i18n}}" role="button" ng-click="controller.changeSize()">
+									<span ng-class="controller.fullSize ? 'glyphicon glyphicon-resize-small' : 'glyphicon glyphicon-resize-full'"></span>
+								</a>
+
+							</div>
+						</div>
+
+						<br>
+
+						<div ng-if="!controller.showWithGrid">
+
+							<totvs-list-item class="list-manager-order-red" ng-repeat="orderManager in controller.listResult" totvs-custom-element="customListOrderManager">
+								<totvs-list-item-header>
+									<totvs-list-item-title title="{{orderManager['nr_pedido']}}" link="#/dts/mpd/internalorderdetail/{{orderManager['nr_pedido']}}"></totvs-list-item-title>
+									<mpd-list-item-action limit-primary-action="1">
+										<action ng-click="controller.approveOrderCancelation(orderManager, true)" icon="glyphicon-ok">{{ 'l-approve-cancelation-order' | i18n }}</action>
+										<action ng-click="controller.approveOrderCancelation(orderManager, false)" icon="glyphicon-minus">{{ 'l-reprove-cancelation-order' | i18n }}</action>
+										<action link="#/dts/mpd/internalorderhistory/{{orderManager['nr_pedido']}}" icon="glyphicon-minus">{{ 'btn-historic' | i18n }}</action>
+										<action ng-click="controller.removeOrder(orderManager)" icon="glyphicon-minus">{{ 'l-order-delete' | i18n }}</action>
+									</mpd-list-item-action>
+
+								</totvs-list-item-header>
+								<totvs-list-item-content>
+									<totvs-list-item-info class="col-xs-12 col-lg-4" title="{{'nr-pedcli' | i18n}}">
+										{{orderManager.nr_pedcli}}
+									</totvs-list-item-info>
+									<totvs-list-item-info class="col-xs-12 col-lg-4"
+														  title="{{'l-nome-abrev' | i18n}}"
+														  ng-if="!orderManager.cod_id_prosp || orderManager.log_cotacao != true">
+										{{orderManager.nome_abrev}}
+									</totvs-list-item-info>
+									<totvs-list-item-info class="col-xs-12 col-lg-4"
+														  title="{{'l-lead' | i18n}}"
+														  ng-if="orderManager.cod_id_prosp && orderManager.log_cotacao == true">
+										{{ orderManager.crmAccountName + (orderManager.crmAccountShortName ? ' (' + orderManager.crmAccountShortName + ')' : '') }}
+									</totvs-list-item-info>
+									<totvs-list-item-info class="col-xs-12 col-lg-4" title="{{'l-no-ab-reppri' | i18n}}">
+										{{orderManager.no_ab_reppri}}
+									</totvs-list-item-info>
+									<totvs-list-item-info class="col-xs-12 col-lg-4" title="{{'l-vl-aberto' | i18n}}">
+										{{orderManager.vl_liq_abe | currency:''}}
+									</totvs-list-item-info>
+									<totvs-list-item-info class="col-xs-12 col-lg-4" title="{{'l-data-implant' | i18n}}">
+										{{orderManager.dt_emissao | date : ('l-date-format' | i18n) : 'UTC'}}
+									</totvs-list-item-info>
+									<totvs-list-item-info class="col-xs-12 col-lg-12" title="{{'l-motive-cancel' | i18n}}">
+										{{orderManager.desc_sit_ped}}
+									</totvs-list-item-info>
+								</totvs-list-item-content>
+								<totvs-list-item-content-detail open="controller.getOrderItens(orderManager)">
+									<totvs-list-item ng-repeat="item in orderManager.orderItens">
+										<totvs-list-item-content>
+											<totvs-list-item-info title="{{'l-seq'|i18n}}" class="col-xs col-sm-3 col-md-4">{{item['nr-sequencia']}}</totvs-list-item-info>
+											<totvs-list-item-info title="{{'l-quantity'|i18n}}" class="col-xs col-sm-5 col-md-4">{{item['qt-un-fat']| number:4}} {{item.codUn}}</totvs-list-item-info>
+											<totvs-list-item-info title="{{'l-item-value'|i18n}}" class="col-xs col-sm-4 col-md-4">{{item['vl-tot-it'] | currency:''}}</totvs-list-item-info>
+											<totvs-list-item-info title="{{'l-cod-item'|i18n}}" class="col-xs col-sm-12 col-md-12">{{item['it-codigo']}} - {{item.itemDesc}}</totvs-list-item-info>
+											<totvs-list-item-info ng-if="item['cod-refer']" title="{{'l-cod-refer'|i18n}}" class="col-xs col-sm-12 col-md-4">{{item['cod-refer']}} - {{item['desc-cod-refer']}}</totvs-list-item-info>
+											<totvs-list-item-info ng-if="item['estab-atend-item']" title="{{'l-estabel-atend'|i18n}}" class="col-xs col-sm-12 col-md-8">{{item['estab-atend-item']}} - {{item['desc-estab-atend-item']}}</totvs-list-item-info>
+										</totvs-list-item-content>
+									</totvs-list-item>
+								</totvs-list-item-content-detail>
+							</totvs-list-item>
+						</div>
+					</div>
+
+					<div ng-show="controller.showWithGrid == true">
+
+						<div class="row">
+							<div class="col-md-12">
+								<button class="btn btn-primary" ng-click="controller.approveOrderCancelation(searchController.selectedOrderToApprove, true)">
+									<span class="glyphicon glyphicon-ok"></span> &nbsp; {{ 'l-approve-cancelation-order' | i18n }}
+								</button>
+
+								<button class="btn btn-default" ng-click="controller.approveOrderCancelation(searchController.selectedOrderToApprove, false)">
+									<span class="glyphicon glyphicon-remove"></span> &nbsp; {{ 'l-reprove-cancelation-order' | i18n }}
+								</button>
+
+								<button class="btn btn-default" ng-click="controller.openOrderHistory(searchController.selectedOrderToApprove)">
+									<span class="glyphicon glyphicon-calendar"></span> &nbsp; {{ 'btn-historic' | i18n }}									
+								</button>
+
+								<button class="btn btn-default" ng-click="controller.removeOrder(searchController.selectedOrderToApprove)">
+									<span class="glyphicon glyphicon-remove"></span> &nbsp; {{ 'l-order-delete' | i18n }}
+								</button>
+
+								<div class="btn-group pull-right hidden-sm hidden-xs" style="margin-right: 5px">
+									<label class="btn btn-default" ng-class="{active: controller.showWithGrid == false}" ng-click="controller.setShowWithGrid()"
+									 title="{{ 'l-show-list' | i18n }}">
+										<span class="glyphicon glyphicon-align-justify"></span>
+									</label>
+									<label class="btn btn-default" ng-class="{active: controller.showWithGrid == true}" ng-click="controller.setShowWithGrid()"
+									 title="{{ 'l-show-grid' | i18n }}">
+										<span class="glyphicon glyphicon-th"></span>
+									</label>
+								</div>
+
+								<a class="btn btn-default pull-right hidden-xs" style="margin-right: 5px" title="{{'l-full-min' | i18n}}" role="button" ng-click="controller.changeSize()">
+									<span ng-class="controller.fullSize ? 'glyphicon glyphicon-resize-small' : 'glyphicon glyphicon-resize-full'"></span>
+								</a>
+
+							</div>
+						</div>
+
+						<br>
+
+						<totvs-grid grid-data="controller.listResult" grid="controller.portalOrderToCancelationApprove" navigatable="true" editable="false"
+						 selectable="multiple,row" reorderable="true" resizable="true" grid-height="400" grid-selected-items="searchController.selectedOrderToApprove">
+
+							<totvs-grid-column field="nr_pedido" width="140">
+								<template>
+									<a href="\\#/dts/mpd/internalorderdetail/{{dataItem.nr_pedido}}">{{dataItem.nr_pedido}}</a>
+								</template>
+								{{:: 'l-nr-pedido' | i18n : [] : 'dts/mpd'}}
+							</totvs-grid-column>
+
+							<totvs-grid-column field="nr_pedcli" width="140">
+								{{:: 'nr-pedcli' | i18n : [] : 'dts/mpd'}}
+							</totvs-grid-column>
+
+							<totvs-grid-column field="nome_abrev" width="150">
+								{{:: 'l-customer' | i18n : [] : 'dts/mpd'}}
+								<template>
+									<span ng-if="!dataItem.cod_id_prosp || dataItem.log_cotacao != true">
+									{{dataItem.nome_abrev}}
+									</span>
+									<span ng-if="dataItem.cod_id_prosp && dataItem.log_cotacao == true">
+									{{'Lead: ' + dataItem.crmAccountName + (dataItem.crmAccountShortName ? ' (' + dataItem.crmAccountShortName + ')' : '')}}
+									</span>
+								</template>
+							</totvs-grid-column>
+
+							<totvs-grid-column field="no_ab_reppri" width="150">
+								{{:: 'l-no-ab-reppri' | i18n : [] : 'dts/mpd'}}
+							</totvs-grid-column>
+
+							<totvs-grid-column field="vl_liq_abe" width="150" filter="number : 5" style="text-align: right;">
+								{{:: 'l-vl-aberto' | i18n : [] : 'dts/mpd'}}
+							</totvs-grid-column>
+
+							<totvs-grid-column field="dt_emissao" width="80" filter="date : dd/MM/yyyy">
+								{{:: 'l-data-implant' | i18n : [] : 'dts/mpd'}}
+							</totvs-grid-column>
+
+							<totvs-grid-column field="desc_sit_ped" width="200">
+								{{:: 'l-motive-cancel' | i18n : [] : 'dts/mpd'}}
+							</totvs-grid-column>
+
+							<totvs-grid-detail size="table">
+								<div class="row" style="margin: 0;" ng-init="controller.getOrderItens(dataItem)">
+									<totvs-grid grid-data="dataItem.orderItens" grid-height="250" navigatable="true" selectable="row" reorderable="false" resizable="true">
+
+										<totvs-grid-column field="nr-sequencia" width="40">
+											{{:: 'l-seq' | i18n : [] : 'dts/mpd'}}
+										</totvs-grid-column>
+
+										<totvs-grid-column field="it-codigo" width="100">
+											{{:: 'l-cod-item' | i18n : [] : 'dts/mpd'}}
+										</totvs-grid-column>
+
+										<totvs-grid-column field="itemDesc" width="240">
+											{{:: 'l-descricao' | i18n : [] : 'dts/mpd'}}
+										</totvs-grid-column>
+
+										<totvs-grid-column field="cod-refer" width="100">
+											{{:: 'l-cod-refer' | i18n : [] : 'dts/mpd'}}
+										</totvs-grid-column>
+
+										<totvs-grid-column field="desc-cod-refer" width="160">
+											{{:: 'l-desc-ref' | i18n : [] : 'dts/mpd'}}
+										</totvs-grid-column>
+
+										<totvs-grid-column field="qt-un-fat" width="160" filter="number : 4" style="text-align: right;">
+											{{:: 'l-quantity' | i18n : [] : 'dts/mpd'}}
+										</totvs-grid-column>
+
+										<totvs-grid-column field="vl-tot-it" width="160" filter="number : 5" style="text-align: right;">
+											{{:: 'l-item-value' | i18n : [] : 'dts/mpd'}}
+										</totvs-grid-column>
+
+										<totvs-grid-column field="estab-atend-item" width="80">
+											{{:: 'l-estabel-atend' | i18n : [] : 'dts/mpd'}}
+										</totvs-grid-column>
+
+										<totvs-grid-column field="desc-estab-atend-item" width="160">
+											{{:: 'l-site-attendance-desc' | i18n : [] : 'dts/mpd'}}
+										</totvs-grid-column>
+
+									</totvs-grid>
+								</div>
+							</totvs-grid-detail>
+						</totvs-grid>
+
+					</div>
+
+					<div class="more-results" style="height: 35px">
+						<button ng-show="controller.totalRecords > 0" ng-click="controller.loadMore()"
+						 class="btn btn-primary col-xs-12">
+							{{'l-more' | i18n}}
+						</button>
+					</div>
+
+				</totvs-tab>
+
+				<totvs-tab class="hidden-xs" ng-click="controller.setTabSelected(3)" active="controller.selectedtab3" heading="{{ 'l-order-sanitize' | i18n }}">
+					<totvs-page-form>
+						<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12" style="padding-left: 15px; padding-bottom: 10px; padding-top: 10px;">
+							<label style="font-weight: 200; font-family: 'Arial'; margin-bottom: 5px; font-size: 12px; color: #999;">{{'l-delete-canceled-order'| i18n}}</label>
+							<br>
+							<input type="checkbox" bsswitch ng-model="controller.orderSanitize.params.eliminaPedCancel"/>
+							<br>
+						</div>
+
+						<div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12" style="padding-left: 15px; padding-bottom: 10px;">
+							<label style="font-weight: 200; font-family: 'Arial'; margin-bottom: 5px; font-size: 12px; color: #999;">{{'l-delete-order-without-liberation-in-x-days'| i18n}}</label>
+							<br>
+							<input type="checkbox" bsswitch ng-model="controller.orderSanitize.params.eliminaPedNaoLib"/>
+							<br>
+						</div>
+
+						<div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12" style="padding-left: 0px;">
+							<field type="radio" ng-model="controller.orderSanitize.params.dtEmissao" label="{{'l-days-without-change'| i18n}}">
+								<totvs-options>
+									<totvs-option value="1">{{'l-data-implant' | i18n}}</totvs-option>
+									<totvs-option value="2">{{'l-last-change-order-portal' | i18n}} </totvs-option>
+								</totvs-options>
+							</field>
+						</div>
+
+						<div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12" style="padding-left: 0px;">
+							<field type="date" data-ng-model="controller.orderSanitize.params.dtInicial">
+								<label>{{ 'l-dat-inicial' | i18n }}</label>
+							</field>
+						</div>
+
+						<div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12" style="padding-left: 0px;">
+							<field type="number" canclean min="0" max="365" ng-model="controller.orderSanitize.params.diasSemLib" label="{{'l-days-without-liberation'| i18n}}">
+								<validator key="required">{{ 'l-required' | i18n }}</validator>
+								<validator key="min">{{ 'l-min' | i18n }}</validator>
+								<validator key="max">{{ 'l-max' | i18n }}</validator>
+								<validator key="number">{{ 'l-number' | i18n }}</validator>
+							</field>
+						</div>
+
+						<div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12" style="padding-left: 0px;">
+							<field type="select2" canclean ng-model="controller.orderSanitize.params.nomeAbrev" select-conector="{{ 'l-customer' | i18n : [] : 'dts/mpd/'}}"
+							 select-id="nome-abrev" select-description="nome-emit" select-service="mpd.emitente.zoom" class="col-md-6">
+								<zoom zoom-service="mpd.emitente.zoom"></zoom>
+								<label>{{ 'l-customer' | i18n : [] : 'dts/mpd/'}}</label>
+							</field>
+						</div>
+
+						<div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12" style="padding-left: 15px">
+							<hr>
+							<button ng-click="controller.portalOrdersSanitize()" class="btn btn-danger">Excluir Pedidos</button>
+						</div>
+					</totvs-page-form>
+				</totvs-tab>
+			</totvs-tabset>
+		</totvs-page-detail>
+
+	</totvs-page-content>
+</totvs-page>

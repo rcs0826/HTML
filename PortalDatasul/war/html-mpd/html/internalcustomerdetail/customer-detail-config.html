@@ -1,0 +1,77 @@
+<style>
+    ol.dd-list > li.dd-item{
+        cursor:move;
+    }
+
+    .tooltip-inner {
+        max-width: 100% !important;
+        text-align: left !important;
+        opacity: 1.0 !important;
+        filter: alpha(opacity=100) !important;
+    }
+
+</style>
+
+<div class="modal-header">
+    <h3 class="modal-title">{{ 'Configurações' | i18n : [] : 'dts/mpd'}} </h3>
+</div>
+<div class="modal-body">
+
+    <div ng-animate="'animate-if'">
+        <fieldset>
+            <div class="row">
+                <br>
+                <div class="col-xs-12 col-sm-5 col-xs-5" style="font-family: 'Arial'; margin-bottom: 5px; font-weight: 200; font-size: 12px; color: gray;">
+                    {{ 'Grupos de Informações' | i18n }}
+                    <i class="glyphicon glyphicon-question-sign"
+                       tooltip-placement="right"
+                       tooltip-html="modalCustomerDetailConfigController.help"></i>
+                </div>
+
+            </div>
+            <div ng-nestable ng-model="modalCustomerDetailConfigController.listGroups">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-5 name">
+                        {{$item['groupName']}}
+                    </div>
+
+                    <div class="btn-group btn-group-xs pull-right" style="padding-right:20px" ng-mousedown="modalCustomerDetailConfigController.onMousedown($event)">
+
+                        <label ng-if="$item['avalaible'] == true" class="btn btn-default"
+                               ng-class="{
+                                       active: $item['visible'] == true, 'select-visible' : $item['visible'] == true}"
+                               ng-click="$item['visible'] = true">{{'l-display'| i18n}}</label>
+                        <label ng-if="$item['avalaible'] == true" class="btn btn-default"
+                               ng-class="{
+                                       active: $item['visible'] == false, 'select-visible' : $item['visible'] == false}"
+                               ng-click="$item['visible'] = false" >{{'l-esconder'| i18n}}</label>
+
+                        <span ng-if="$item['avalaible'] == false" class="label label-danger">{{'INDISPONÍVEL'| i18n}}</span>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="row">
+        <div class='col-md-6'>
+            <fieldset>
+                <field style="padding-left: 0px;" type="checkbox" ng-model="modalCustomerDetailConfigController.startOpenDetailsOrder">
+                    <label>{{ 'Exibir grupos ao iniciar' | i18n }}</label>
+                </field>
+            </fieldset>
+        </div>
+        <div class='col-md-6'>
+            <fieldset>
+                <field style="padding-left: 0px;" type="checkbox" ng-model="modalCustomerDetailConfigController.startExpandedGroupsDetail">
+                    <label>{{ 'Iniciar grupos expandidos' | i18n }}</label>
+                </field>
+            </fieldset>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="modalCustomerDetailConfigController.save()"> {{"btn-save"| i18n}}</button>
+    <button class="btn btn-warning" ng-click="modalCustomerDetailConfigController.close()">{{"btn-close"| i18n}}</button>
+</div>

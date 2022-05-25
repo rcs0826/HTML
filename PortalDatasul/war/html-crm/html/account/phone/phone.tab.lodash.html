@@ -1,0 +1,119 @@
+<totvs-page-child type="list">
+
+	<totvs-page-content class="crm-tab">
+
+		<% if ((!data["btn-add"] || data["btn-add"].log_visivel === true)) { %>
+		<div class="row">
+
+			<div class="col-xs-12"
+				 ng-animate="'animate-if'"
+				 ng-if="phoneController.isEnabled && !phoneController.isEdit">
+				<button class="btn btn-primary"
+						ng-click="phoneController.openForm(true);">
+					<span class="glyphicon glyphicon-plus"></span>
+					{{ 'btn-add' | i18n: []: 'dts/crm' }}
+				</button>
+			</div>
+
+		</div>
+
+		<div class="row"
+			 ng-animate="'animate-if'"
+			 ng-if="phoneController.isEnabled && phoneController.isEdit">
+
+			<field type="select"
+				   class="col-sm-4 col-md-4"
+				   ng-model="phoneController.model.ttTipo"
+				   canclean="undefined"
+				   ng-required="true">
+				<label>{{ 'l-type' | i18n: []: 'dts/crm' }}</label>
+				<include>
+					<ui-select-match placeholder="{{ 'l-type' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_tip_telef }}</ui-select-match>
+					<ui-select-choices repeat="type in phoneController.types | filter: $select.search track by $index">
+						<span ng-bind-html="type.nom_tip_telef | highlight: $select.search"></span>
+					</ui-select-choices>
+				</include>
+				<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+			</field>
+
+			<field type="input"
+				   class="col-sm-4 col-md-4"
+				   ng-model="phoneController.model.nom_telefone"
+				   maxlength="15"
+				   canclean="undefined"
+				   ng-required="true">
+				<label>{{ 'l-phone' | i18n: []: 'dts/crm' }}</label>
+				<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+			</field>
+
+			<div class="col-sm-4 col-md-4 crm-field-extra-button clear-width pull-right">
+
+				<button class="btn btn-default pull-right"
+						ng-click="phoneController.openForm(false);">
+					{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+				</button>
+
+				<button class="btn btn-primary pull-right"
+						style="margin-right: 10px"
+						ng-click="phoneController.save();">
+					{{ 'btn-save' | i18n: []: 'dts/crm' }}
+				</button>
+
+			</div>
+
+		</div>
+		<% } %>
+
+		<totvs-divider style="margin-top: 10px; margin-bottom: 10px;"></totvs-divider>
+
+		<totvs-page-alert
+			ng-if="phoneController.listOfPhone.length <= 0"
+			type="info"
+			message="{{ 'msg-not-found-phone' | i18n: []: 'dts/crm' }}">
+		</totvs-page-alert>
+
+		<div class="row crm-tab-item"
+			 ng-animate="'animate-if'"
+			 ng-repeat="phone in phoneController.listOfPhone track by $index">
+
+			<div class="col-sm-1 col-xs-2">
+				<span class="glyphicon {{ phone.nom_icone }}"></span>
+			</div>
+
+			<div class="col-sm-4 col-xs-10">
+				{{ phone.nom_tip_telef }}
+			</div>
+
+			<div class="col-sm-4 col-xs-12">
+				{{ phone.nom_telefone }}
+			</div>
+
+			<% if ((!data["btn-edit"] || data["btn-edit"].log_visivel === true)
+				|| (!data["btn-remove"] || data["btn-remove"].log_visivel === true)) { %>
+			<div class="col-sm-3 col-xs-12 text-right"
+				 ng-if="phoneController.isEnabled">
+
+				<% if ((!data["btn-edit"] || data["btn-edit"].log_visivel === true)) { %>
+				<a class="clickable"
+				   ng-click="phoneController.addEdit(phone);">
+					{{ 'btn-edit' | i18n: []: 'dts/crm' }}
+				</a>
+				<% } %>
+
+				<% if ((!data["btn-remove"] || data["btn-remove"].log_visivel === true)) { %>
+				&nbsp;&nbsp;
+
+				<a class="clickable"
+				   ng-click="phoneController.remove(phone);">
+					{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+				</a>
+				<% } %>
+
+			</div>
+			<% } %>
+
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

@@ -1,0 +1,35 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{:: 'Imprimir Pedido' | i18n : [] : 'dts/mpd' }}</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <totvs-page-detail-info-group>{{:: 'Imprimir Narrativa do Item' | i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+        <field type="checkbox" ng-model="printController.printFullDescription" class="col-sm-12">
+            <label>{{:: 'Imprimir Narrativa do Item' | i18n : [] : 'dts/mpd'}}</label>
+        </field>
+        <totvs-page-detail-info-group>{{:: 'Imprimir Detalhes do Pedido' | i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+        <field type="checkbox" ng-model="printController.detailDeliveries" class="col-sm-12">
+            <label>{{:: 'Imprimir Entregas' | i18n : [] : 'dts/mpd'}}</label>
+        </field>
+        <field type="checkbox" ng-model="printController.detailItemComposition" class="col-sm-12"> 
+            <label>{{:: 'Imprimir Itens Compostos com filhos' | i18n : [] : 'dts/mpd'}}</label>
+        </field>
+        <totvs-page-detail-info-group>{{:: 'Unidade de Medida' | i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+        <field type="combo" ng-model="printController.measureUnit">
+            <totvs-options>
+                <option value="0">{{:: 'Unidade de medida do Item' | i18n : [] : 'dts/mpd' }}</option>
+                <option value="1">{{:: 'Unidade de medida do faturamento' | i18n : [] : 'dts/mpd' }}</option>
+            </totvs-options>
+            <label>{{:: 'Unidade de Medida' | i18n : [] : 'dts/mpd'}}</label>
+        </field>
+        <totvs-page-detail-info-group>{{:: 'Calcular Pedido' | i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+        <field type="checkbox" ng-model="printController.recalculateOrder" class="col-sm-12" ng-disabled="!printController.orderstatus.cancalculate">
+            <label>{{:: 'Recalcular Pedido antes de imprimir' | i18n : [] : 'dts/mpd'}}</label>
+        </field>
+    </div>    
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="printController.confirm()">{{:: 'Imprimir' | i18n : [] : 'dts/mpd' }}</button>    
+    <button class="btn btn-default" ng-click="printController.close()">{{:: 'Fechar' | i18n : [] : 'dts/mpd' }}</button>
+</div>
+

@@ -1,0 +1,48 @@
+<totvs-page-child type="list" >
+    <totvs-page-content>
+        <totvs-page-detail style="padding-left:15px; padding-top:0; padding-bottom:0">
+            <div class="row">
+                <div class="col-md-5" style="padding-top: 20px; padding-right:20px;">
+                    <button class="btn btn-default btn-sm" 
+                            ng-model="controller.selectedSites"
+                            ng-change="controller.changeSelectedSites(controller.selectedSites);"
+                            zoom
+                            zoom-multiple
+                            ng-disabled="controller.isAllSites"
+                            zoom-service="mpd.estabelecSE.zoom">
+                        <span class="glyphicon glyphicon-th-list"></span>
+                        {{ 'l-select-sites' | i18n : [] : 'dts/mce' }} 
+                    </button>
+                </div>
+            
+                <div class="col-md-4">
+                    <totvs-field totvs-checkbox 
+                                 ng-model="controller.isAllSites" 
+                                 label="{{ 'l-all-question' | i18n : [] : 'dts/mce'}}"
+                                 t-bsswitch>
+                    </totvs-field>
+                </div>               
+                <div class="col-md-1 pull-right" style="padding-top: 25px;" >
+                    <a role="button" ng-disabled="controller.listOfConfigurationSites.length == 0 && !controller.isAllSites" 
+                                     class="btn btn-primary btn-sm pull-right" 
+                                     ng-click="controller.applyConfig()">
+                        {{ 'btn-apply' | i18n : [] : 'dts/mce/'}}
+                    </a>
+                </div>      
+            </div>
+            <hr>  
+            <div class="row">
+                <div style="padding-right: 15px; padding-left:15px;"> 
+                    <totvs-grid grid-data="controller.listOfConfigurationSites" 
+                                grid-options="controller.gridOptions"
+                                resizable="true"
+                                sortable="true"
+                                editable="true"
+                                grid-height = "220"
+								selectable="false">
+                    </totvs-grid>
+                </div>
+            </div> 
+        </totvs-page-detail>
+    </totvs-page-content>
+</totvs-page-child>

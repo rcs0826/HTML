@@ -1,0 +1,96 @@
+<br/>
+<div ng-if="!materialsCtrl.disableAdd && materialsCtrl.showButton">
+	<button ng-click="materialsCtrl.materialsAdd()"
+			class="btn btn-primary">
+		<span class="glyphicon glyphicon-plus"></span>
+		{{ 'l-add' | i18n }}
+	</button>
+
+	<button ng-click="materialsCtrl.verificaSaldo()"
+	        ng-if="materialsCtrl.disableBalance == true"
+		    class="btn btn-default">
+		   <span class="glyphicon glyphicon-shopping-cart"></span>
+		   {{ 'l-balance-valid' | i18n }}
+	</button>
+	
+    <totvs-divider style="margin-top: 10px; margin-bottom: 10px;">
+	</totvs-divider>
+</div>
+
+<totvs-page-content>
+	
+	<totvs-grid 
+			grid="materialsCtrl.myGrid"
+			grid-data="listOfMaterials" 
+			grid-height="300"
+			grid-selected-item="materialsCtrl.selectedItem" 
+	        navigatable="true" 
+	        selectable="row"
+			scrollable="true"
+			editable="true"
+			resizable="true"
+			auto-resize-column="false">
+
+		<totvs-grid-column width="32" field="log-1">
+			<template>
+				<a class="glyphicon glyphicon-remove btn-errors" 
+				   data-toggle="tooltip"
+				   title="{{ 'l-balance-unavailable' | i18n }}" 
+				   ng-if="dataItem['log-1'] == true && materialsCtrl.showButton" style="cursor: default"></a>
+				<a class="glyphicon glyphicon-ok btn-ok"
+				   data-toggle="tooltip"
+				   title="{{ 'l-available-balance' | i18n }}" 
+				   ng-if="dataItem['log-1'] == false && materialsCtrl.showButton" style="cursor: default"></a>
+			</template>
+	    </totvs-grid-column>	
+        <totvs-grid-column 
+        	width="32" 
+        	field="edit"
+			style="text-align: center">
+	        <template>
+				<a ng-click="materialsCtrl.materialsEdit(dataItem)" 
+				   ng-if="!materialsCtrl.disableAdd && materialsCtrl.showButton"
+				   class="glyphicon glyphicon-pencil btn-default" 
+				   style="cursor: pointer" 
+				   data-toggle="tooltip" 
+				   title="{{ 'l-edit' | i18n }}"></a>
+				<a class="glyphicon glyphicon-pencil btn-default" style="cursor: not-allowed"
+				   ng-if="materialsCtrl.disableAdd && materialsCtrl.showButton" 
+				   disabled> </a>
+	        </template>
+       	</totvs-grid-column>
+		   <totvs-grid-column width="32" field="remover" style="text-align: center">
+	        <template>
+				<a ng-click="materialsCtrl.remove(dataItem)"
+				   ng-if="!materialsCtrl.disableAdd && materialsCtrl.showButton" 
+				   class="glyphicon glyphicon-trash btn-default" 
+				   style="cursor: pointer" 
+				   data-toggle="tooltip" 
+				   title="{{ 'l-remove' | i18n }}"></a>
+				<a class="glyphicon glyphicon-trash btn-default" style="cursor: not-allowed"
+				   ng-if="materialsCtrl.disableAdd && materialsCtrl.showButton"
+				   disabled></a>
+	        </template>
+       	</totvs-grid-column>    
+		<totvs-grid-column style="text-align: right;" header-template="materialsCtrl.templateHeaderMaterials('l-task', 'op-codigo')" field="op-codigo" width="60">{{ 'l-task' | i18n }}</totvs-grid-column>                    
+		<totvs-grid-column header-template="materialsCtrl.templateHeaderMaterials('l-item', 'it-codigo')" field="it-codigo" width="130">{{ 'l-item' | i18n }}</totvs-grid-column>
+		<totvs-grid-column field="cod-depos" width="95">{{ 'l-warehouse' | i18n }}</totvs-grid-column>
+		<totvs-grid-column field="cod-localiz" width="95">{{ 'l-localization' | i18n }}</totvs-grid-column>
+		<totvs-grid-column style="text-align: right;" field="quant-orig" width="95">{{ 'l-quantity' | i18n }}</totvs-grid-column>
+		<totvs-grid-column style="text-align: right;" field="quant-requis" width="95">{{ 'l-req-qty' | i18n }}</totvs-grid-column>
+		<totvs-grid-column style="text-align: right;" field="quant-atend" width="95">{{ 'l-att-qty' | i18n }}</totvs-grid-column>
+		<totvs-grid-column style="text-align: right;" field="quant-aloc" width="95">{{ 'l-alloc-qty' | i18n }}</totvs-grid-column>
+		<totvs-grid-column field="un" width="50">{{ 'l-un' | i18n }}</totvs-grid-column>
+		<totvs-grid-column field="cd-lubr" width="95">{{ 'l-lubr-type' | i18n }}</totvs-grid-column>
+		<totvs-grid-column field="dtReservaStr" width="95">{{ 'l-date' | i18n }}</totvs-grid-column>
+		<totvs-grid-column field="des-item" width="500">{{ 'l-description' | i18n }}</totvs-grid-column>
+	</totvs-grid>
+</totvs-page-content>
+
+<style>
+		.btn-ok { color: green !important; }
+	
+		.btn-errors { color: red !important; }
+		
+</style>
+	

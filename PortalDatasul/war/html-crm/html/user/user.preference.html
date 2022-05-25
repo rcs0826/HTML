@@ -1,0 +1,126 @@
+<totvs-modal-header>
+	{{ :: 'nav-user-preference' | i18n: []: 'dts/crm' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+    <div class="crm-group-accordion">
+        <accordion close-others="false"
+                ng-if="controller.isLoaded">
+
+            <accordion-group class="crm-panel row"
+                            is-open="controller.general.isOpen">
+
+                <accordion-heading>
+                    <div class="row">
+                        <div class="col-xs-10 overflow-ellipsis">
+                            {{ :: 'l-general' | i18n: []: 'dts/crm' }}
+                        </div>
+                        <div class="col-xs-2 text-right">
+                            <i class="pull-right glyphicon"
+                            ng-class="{'glyphicon-chevron-down' :  controller.general.isOpen,
+                                        'glyphicon-chevron-right': !controller.general.isOpen}">
+                            </i>
+                        </div>
+                    </div>
+                </accordion-heading>
+
+                <div class="crm-tab">
+
+                    <div class="col-xs-12 crm-tab-item">
+
+                        <div class="col-xs-12 col-sm-10 overflow-ellipsis crm-no-gutter">
+                            {{ controller.general.strictSearch.label }}
+                        </div>
+
+                        <div class="col-xs-12 col-sm-2 text-right">
+                            <input type="checkbox"
+                                ng-model="controller.general.strictSearch.value"
+                                ng-change="controller.onChangeStrictSearch();"
+                                bsswitch>
+                        </div>
+
+                        <totvs-divider></totvs-divider>
+
+                        <div class="col-xs-12 crm-no-gutter">
+                            <small class="description-format">
+                                {{ controller.general.strictSearch.description }}
+                            </small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </accordion-group>
+
+            <accordion-group class="crm-panel row"
+                            ng-if="controller.context === 'account.list'"
+                            is-open="controller.account.isOpen">
+
+                <accordion-heading>
+                    <div class="row">
+                        <div class="col-xs-10 overflow-ellipsis">
+                            {{ :: 'l-account' | i18n: []: 'dts/crm' }}
+                        </div>
+                        <div class="col-xs-2 text-right">
+                            <i class="pull-right glyphicon"
+                            ng-class="{'glyphicon-chevron-down' :  controller.account.isOpen,
+                                        'glyphicon-chevron-right': !controller.account.isOpen}">
+                            </i>
+                        </div>
+                    </div>
+                </accordion-heading>
+
+                <div class="crm-tab">
+
+                    <div class="col-xs-12 crm-tab-item">
+
+                        <div class="col-xs-12 col-sm-10 overflow-ellipsis crm-no-gutter">
+                            {{ controller.account.filter.label }}
+                        </div>
+
+                        <div class="row">
+                            <field type="select"
+                                class="col-xs-12 col-sm-12"
+                                ng-model="controller.account.filter.value"
+                                ng-change="controller.onChangeDefaultFilter();">
+
+                                <include>
+                                    <ui-select-match placeholder="{{ 'l-filter' | i18n: []: 'dts/crm' }}">
+                                        {{ $select.selected.name }}
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="opt in controller.account.filter.options | filter: $select.search track by $index">
+                                        <span ng-bind-html="opt.name | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </include>
+                            </field>
+                        </div>
+
+                        <totvs-divider></totvs-divider>
+
+                        <div class="col-xs-12 crm-no-gutter">
+                            <small class="description-format">
+                                {{ controller.account.filter.description }}
+                            </small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </accordion-group>
+
+        </accordion>
+    </div>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+
+	<button class="btn btn-primary"
+				ng-click="controller.close()">
+			{{ :: 'btn-close' | i18n: []: 'dts/crm' }}
+	</button>
+
+</totvs-modal-footer>

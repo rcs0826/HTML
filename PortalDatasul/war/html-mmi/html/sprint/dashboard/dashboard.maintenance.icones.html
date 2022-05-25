@@ -1,0 +1,60 @@
+<div>
+    <!-- Esconder Arvore-->
+    <a class="btn" ng-show="dashboardCtrl.arvoreAtivos" tooltip="{{ 'l-hide-assets-tree' | i18n }}"
+      tooltip-placement="right" ng-click="dashboardCtrl.esconderArvoreAtivos()">
+      <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+    </a>
+    
+    <!-- Exibir Arvore -->
+    <a class="btn" ng-show="!dashboardCtrl.arvoreAtivos" tooltip="{{ 'l-show-assets-tree' | i18n }}"
+       tooltip-placement="right" ng-click="dashboardCtrl.exibirArvoreAtivos()" 
+       ng-disabled="dashboardCtrl.impedimentos || dashboardCtrl.graficos || dashboardCtrl.especialidades">
+      <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>
+    </a>
+    
+    <!-- Cards -->
+    <a class="btn"
+        ng-click="dashboardCtrl.exibirPagina(false, false, true, false, false, false)"
+        tooltip="{{ 'l-show-card-mode' | i18n }}"
+        tooltip-placement="right"
+        ng-style="dashboardCtrl.cardsSelecionado()">
+      <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+    </a>
+
+    <!-- Acompanhamentos -->
+    <a class="btn" 
+        ng-click="dashboardCtrl.exibirPagina(false, true, false, false, false, false)"
+        ng-style="dashboardCtrl.acompanhamentoSelecionado()"
+        tooltip="{{ 'l-show-calendar' | i18n }}"
+        tooltip-placement="right"
+        ng-disabled="dashboardCtrl.arvoreModel.ttOrdem.length == 0">
+      <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+    </a>
+
+    <!-- Impedimentos -->
+    <a class="btn" 
+        ng-click="dashboardCtrl.exibirPagina(false, false, false, false, true, false)"
+        tooltip="{{ 'l-show-impediments' | i18n }}"
+        tooltip-placement="right"
+        ng-style="dashboardCtrl.impedimentosSelecionado()">
+      <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+    </a>
+
+    <!-- Especialidades -->
+    <a class="btn" 
+        ng-click="dashboardCtrl.exibirPagina(false, false, false, false, false, true)"
+        ng-style="dashboardCtrl.especialidadesSelecionado()"
+        tooltip="{{ 'l-follow-up' | i18n }} {{ 'l-specialtys' | i18n }}"
+        tooltip-placement="right">
+       <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+     </a>
+
+    <!-- Graficos -->
+    <a class="btn" 
+       ng-click="dashboardCtrl.exibirPagina(true, false, false, false, false, false)"
+       ng-style="dashboardCtrl.graficosSelecionado()"
+       tooltip="{{ 'l-programming-indicators' | i18n }}"
+       tooltip-placement="right">
+      <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+    </a>
+</div>

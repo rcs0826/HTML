@@ -1,0 +1,49 @@
+<style>
+.item-content {
+    padding-top: 5px;
+}
+.page-details {
+    padding:0px 20px;
+}
+</style>
+
+<totvs-modal-header>
+    Detalhes da Execução RPW
+</totvs-modal-header>
+<totvs-modal-body style="height:350px;">
+    <legend>Inconsistências</legend>
+    <totvs-page-detail 
+        style="overflow-y:scroll; height: 225px;
+            margin-bottom:10px; margin-top:5px">
+        <totvs-list-item 
+            style="margin-bottom:5px"
+            class="tag-1"
+            ng-repeat="error in controller.errors track by $index">
+            <totvs-list-item-content>
+                <totvs-list-item-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                      value="{{error.dsErro}}">
+                </totvs-list-item-info>
+            </totvs-list-item-content>
+        </totvs-list-item>
+    </totvs-page-detail>
+
+    <hr style="margin-top:10px; margin-bottom:10px;">
+
+</totvs-modal-body>
+<totvs-modal-footer>
+
+	<totvs-button class="btn" 
+				t-click="controller.recoverDataRpw()" 
+				t-icon="glyphicon glyphicon-repeat" 
+				t-label="Restaurar Alterações" 
+				ng-if="controller.documentMaintenanceController.action == 'EDIT' && controller.docBloquado">
+	</totvs-button>
+	<totvs-button class="btn" 
+				t-click="controller.releaseDocumentRpw()" 
+				t-icon="glyphicon glyphicon-trash" 
+				t-label="Descartar Alterações" 
+				ng-if="controller.documentMaintenanceController.action == 'EDIT' && controller.docBloquado">
+	</totvs-button>		
+		  
+	<button class="btn btn-primary" ng-if="!controller.docBloquado || controller.documentMaintenanceController.action != 'EDIT'" ng-click="controller.close()">Fechar</button>		
+</totvs-modal-footer>

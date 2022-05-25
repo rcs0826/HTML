@@ -1,0 +1,61 @@
+<totvs-modal-header>
+    Configurações
+</totvs-modal-header>
+<totvs-modal-body style="overflow-y: auto; padding-left: 0px; padding-right: 0px;">
+    
+    <form ng-submit="controller.saveConfiguration()">
+        <fieldset>
+            <field type="decimal" required
+                   min="0" max="99"
+                   data-v-max="99"
+                   m-dec="0"
+                   class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                   data-ng-model="controller.config.qtdRegistrosBusca"
+                   label="Quantidade de registros por busca">
+            </field>
+
+            <field type="decimal" required
+                   min="0" max="99"
+                   data-v-max="99"
+                   m-dec="0"
+                   class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                   data-ng-model="controller.config.minDoctosExecBatch"
+                   label="Quantidade mínima de documentos para exec. de processos em batch">
+            </field>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 field field-container">
+              <div class="field-container">
+                <label class="field-label">Filtros</label>
+                <br>
+                <div ng-repeat="filters in controller.config.disclaimers">
+                    <span style="margin-left: 15px;">{{filters.title}}</span>
+                    <br>
+                </div>
+                <div ng-if="controller.config.disclaimers == undefined
+                         || controller.config.disclaimers.length == 0">
+                    <span>Não existem filtros selecionados</span>
+                    <br>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 10px;">
+                <button type="button" class="btn" ng-click="controller.setCurrentFilterAsDefault()">Definir filtro atual como padrão</button>
+            </div>
+
+            <field type="checkbox"
+                   class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                   data-ng-model="controller.config.lgBuscarAoAbrirTela"
+                   label="Realizar busca ao abrir a tela"
+                   ng-disabled="controller.config.disclaimers == undefined
+                             || controller.config.disclaimers.length == 0">
+            </field>
+        </fieldset> 
+        
+        <input type="submit" class="submitButton" style="display: none"/>
+    </form>    
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button type="button" class="btn" ng-click="controller.cancel()">Fechar</button>
+    <input type="button" value="Salvar" class="btn btn-primary" ng-click="controller.onSaveClick()"/>
+</totvs-modal-footer>

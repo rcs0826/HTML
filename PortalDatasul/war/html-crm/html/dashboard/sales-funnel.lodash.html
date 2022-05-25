@@ -1,0 +1,58 @@
+<div ng-controller="crm.dashboard.sales-funnel.controller as controller">
+	<totvs-widget>
+		<crm-totvs-widget-header refresh="controller.refresh()"
+							 settings="controller.showConfig()"
+							 title="{{(controller.isFunnelMode ? 'l-opportunity-funnel' : 'l-opportunity_funnel_estimated_realized') | i18n : [] : 'dts/crm/' }}">
+			<i class="glyphicon glyphicon-info-sign hidden-xs" tooltip-placement="bottom"
+			   tooltip-html="controller.tooltipHelp" ng-if="controller.funnelType === 1"></i>
+			<i class="glyphicon glyphicon-alert hidden-xs" tooltip-placement="bottom"
+			   tooltip-html="controller.tooltipAlert" ng-if="controller.tooltipAlert !== undefined"></i>
+		</crm-totvs-widget-header>
+
+		<totvs-widget-body>
+
+			<div style="max-height:300px;">
+				<div ng-if="controller.isFunnelMode === true" style="height:100%">
+					<crm-totvs-chart
+						t-type-chart="funnel"
+						t-options="controller.optionsFunnel"
+						t-on-click="controller.onClickData"
+						t-series="controller.series">
+					</crm-totvs-chart>
+				</div>
+
+				<div ng-if="controller.isFunnelMode === false" style="height:100%">
+					<crm-totvs-chart
+						t-type-chart="column"
+						t-options="controller.optionsColumn"
+						t-on-click="controller.onClickData"
+						t-series="controller.seriesColumn"
+						t-categories="controller.categories">
+					</crm-totvs-chart>
+				</div>
+			</div>
+
+		</totvs-widget-body>
+
+		<totvs-widget-footer>
+			<crm-totvs-widget-footer-actions>
+				<action ng-click="controller.onClickDetail()">{{ 'l-detail' | i18n : [] : 'dts/crm/'}}</action>
+				<action ng-click="controller.onClickChangeChart()">{{ controller.isFunnelMode === true ? ('l-estimated_realized' | i18n : [] : 'dts/crm/') : ('l-opportunity-funnel' | i18n : [] : 'dts/crm/')}}</action>
+
+				<% if ((!data["btn-new-opportunity"] || data["btn-new-opportunity"].log_visivel === true)) { %>
+				<action ng-click="controller.openOpportunity()">{{ 'btn-new-opportunity' | i18n : [] : 'dts/crm/'}}</action>
+				<% } %>
+
+			</crm-totvs-widget-footer-actions>
+			<div>
+				<i class="glyphicon glyphicon-user hidden-xs pull-right"
+				   style="padding:2px 6px;"
+				   ng-if="controller.accountSelected"
+				   tooltip-placement="bottom"
+				   tooltip-html="controller.tooltip">
+				</i>
+			</div>
+		</totvs-widget-footer>
+
+	</totvs-widget>
+</div>

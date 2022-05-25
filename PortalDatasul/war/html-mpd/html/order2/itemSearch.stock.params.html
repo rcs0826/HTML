@@ -1,0 +1,66 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{:: 'l-inventory-query-parameters' | i18n : [] : 'dts/mpd' }}</h3>
+</div>
+<div class="modal-body">
+    
+    <div class="row">
+        <totvs-page-detail-info-group>{{:: 'l-param' | i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+
+        <totvs-field totvs-select
+                label="{{:: 'l-cod-estabel' | i18n : [] : 'dts/mpd'}}"
+                class="col-sm-12"
+                ng-model="stockParamsController.ttItemEstoqueParam['cod-estabel-par']"
+                select-id="cod-estabel"
+                select-description="nome"
+                select-service="mpd.estabelecSE.select"
+                zoom-service="mpd.estabelecSE.zoom">
+        </totvs-field>
+
+        <totvs-field 
+             totvs-datepicker
+              ng-model="stockParamsController.ttItemEstoqueParam['dt-corte-par']"
+              label="{{:: 'l-cut-off-date' | i18n : [] : 'dts/mpd' }}">
+        </totvs-field>
+
+        <field type="combo" ng-model="stockParamsController.ttItemEstoqueParam['i-cb-deposito']" class="col-sm-12">
+            <totvs-options>
+                <option value="1">{{:: 'l-interno' | i18n : [] : 'dts/mpd' }}</option>
+                <option value="2">{{:: 'l-externo' | i18n : [] : 'dts/mpd' }}</option>
+                <option value="3">{{:: 'l-all-items' | i18n : [] : 'dts/mpd' }}</option>
+            </totvs-options>
+            <label>{{:: 'l-type-warehouse' | i18n : [] : 'dts/mpd'}}</label>
+        </field>
+
+        <div class="col-sm-12 field">
+            <div class="field-container ">
+                <label class="field-label">l-warehouses</label>
+                <div class="field-input">
+                    <button class="btn btn-default"
+                            zoom 
+                            zoom-service="mce.deposito.zoom"
+                            ng-model="stockParamsController.ttItemEstoqueDeposito"
+                            zoom-multiple>{{:: 'l-select-warehouses' | i18n : [] : 'dts/mpd' }}</button>
+                    {{  stockParamsController.selectedDepositos()  }}
+                    <button class="btn btn-default" ng-click="stockParamsController.ttItemEstoqueDeposito = undefined">{{:: 'l-clear-selection' | i18n : [] : 'dts/mpd' }}</button>
+                </div>
+            </div>
+        </div>
+                        
+        <div class="checkbox col-sm-12"><label><input type="checkbox" ng-model="stockParamsController.ttItemEstoqueParam['dep-cq-par']"> {{:: 'Warehouses' | i18n : [] : 'dts/mpd' }}</label></div>
+        <div class="checkbox col-sm-12"><label><input type="checkbox" ng-model="stockParamsController.ttItemEstoqueParam['cons-qt-aba']"> {{:: 'l-write-off-request' | i18n : [] : 'dts/mpd' }}</label></div>
+        <totvs-page-detail-info-group>{{:: 'l-order-status' | i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+        <div class="checkbox col-sm-12"><label><input type="checkbox" ng-model="stockParamsController.ttItemEstoqueParam['abertos-par']"> {{:: 'l-considers-open-orders' | i18n : [] : 'dts/mpd' }}</label></div>
+        <div class="checkbox col-sm-12"><label><input type="checkbox" ng-model="stockParamsController.ttItemEstoqueParam['at-parcial-par']"> {{:: 'l-consider-partially' | i18n : [] : 'dts/mpd' }}</label></div>
+        <totvs-page-detail-info-group>{{:: 'l-order-parameters' | i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+        <div class="checkbox col-sm-12"><label><input type="checkbox" ng-model="stockParamsController.ttItemEstoqueParam['ped-n-av-par']"> {{:: 'l-ped-not-avail' | i18n : [] : 'dts/mpd' }}</label></div>
+        <div class="checkbox col-sm-12"><label><input type="checkbox" ng-model="stockParamsController.ttItemEstoqueParam['ped-aval-par']"> {{:: 'l-ped-avail' | i18n : [] : 'dts/mpd' }}</label></div>
+        <div class="checkbox col-sm-12"><label><input type="checkbox" ng-model="stockParamsController.ttItemEstoqueParam['ped-apro-par']"> {{:: 'l-ped-aprov' | i18n : [] : 'dts/mpd' }}</label></div>
+        <div class="checkbox col-sm-12"><label><input type="checkbox" ng-model="stockParamsController.ttItemEstoqueParam['ped-repr-par']"> {{:: 'l-ped-reprov' | i18n : [] : 'dts/mpd' }}</label></div>
+        <div class="checkbox col-sm-12"><label><input type="checkbox" ng-model="stockParamsController.ttItemEstoqueParam['ped-wf-desconto']"> {{:: 'l-orders-approved-discount-wf' | i18n : [] : 'dts/mpd' }}</label></div>
+    </div>
+    
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="stockParamsController.confirm()">{{:: 'l-save' | i18n : [] : 'dts/mpd' }}</button>    
+    <button class="btn btn-warning" ng-click="stockParamsController.close()">{{:: 'l-close' | i18n : [] : 'dts/mpd' }}</button>
+</div>

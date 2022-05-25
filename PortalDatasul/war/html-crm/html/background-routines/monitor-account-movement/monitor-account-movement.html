@@ -1,0 +1,44 @@
+<totvs-page-child type="list">
+
+	<totvs-page-content class="crm-tab">
+
+		<div ng-include="'/dts/crm/html/background-routines/summary-schedule/summary-schedule.html'"
+			 ng-controller="monitor-account-movement.control as controller"/>
+
+		<fieldset>
+
+			<field type="select"
+				ng-model="controllerMonitorAccMov.model.parameter"
+				canclean="undefined" class="col-xs-12 col-md-6" >
+				<label>{{ 'l-account-monitor-parameter' | i18n: []: 'dts/crm' }}</label>
+				<include>
+					<ui-select-match placeholder="{{ 'l-account-monitor-parameter' | i18n: []: 'dts/crm' }}">
+						{{ $select.selected.name }}
+					</ui-select-match>
+					<ui-select-choices repeat="item in controllerMonitorAccMov.monitorParameters | filter: $select.search track by $index">
+						<span ng-bind-html="item.name | highlight: $select.search"></span>
+					</ui-select-choices>
+				</include>
+			</field>
+
+		</fieldset>
+
+		<totvs-divider style="margin-top: 5px; margin-bottom: 5px;"></totvs-divider>
+
+		<div class="row">
+
+			<div class="col-xs-12"
+				 ng-animate="'animate-if'">
+
+				<button class="btn btn-primary pull-right"
+						ng-click="controllerMonitorAccMov.execute();">
+					{{ 'btn-execute' | i18n: []: 'dts/crm' }}
+				</button>
+
+			</div>
+
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

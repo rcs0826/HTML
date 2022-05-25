@@ -1,0 +1,278 @@
+<div class="modal-header">
+			<h3 class="modal-title" ng-if="controller.isQuickFilter">{{:: 'l-filter-config' | i18n}}</h3>
+			<h3 class="modal-title" ng-if="!controller.isQuickFilter">{{:: 'l-search-advanced' | i18n}}</h3>
+</div>
+
+<div class="modal-body">
+
+	<div class="row">
+		<form class="form-horizontal" role="form">
+
+			<div ng-if="controller.isQuickFilter">
+				<field type="input"
+					ng-model="controller.customFilter.title"
+					class="col-md-10"
+					data-ng-disabled="controller.isFilterEdit"
+					required
+					ng-required="true"
+					canclean>
+					<label>{{:: 'l-filter-name' | i18n: []: 'dts/mpd' }}</label>
+					<validator key="required">{{ 'l-required' | i18n }}</validator>
+				</field>
+
+				<div class="col-md-2 field" style="margin-top: 5px;">
+					<label class="field-label">{{:: 'l-default-filter' | i18n: []: 'dts/mpd' }}</label>
+					<br/>
+					<input type="checkbox"
+						bsswitch="small"
+						ng-model="controller.isDefaultFilter">
+				</div>
+
+				<totvs-page-detail-info-group>{{:: 'l-parametros' | i18n: []: 'dts/mpd'}}</totvs-page-detail-info-group>
+			</div>
+
+
+			<!-- Número do Pedido do Cliente Inicial-->
+			<field ng-maxlength="30"
+				type="input"
+				ng-model="controller.model.iCustomerOrder"
+				canclean>
+				<label>{{:: 'l-nr-pedcli-start' | i18n }}</label>
+			</field>
+
+			<!-- Número do Pedido do Cliente Final-->
+			<field ng-maxlength="60"
+				type="input"
+				ng-model="controller.model.fCustomerOrder"
+				canclean>
+				<label>{{:: 'l-nr-pedcli-end' | i18n }}</label>
+			</field>
+
+			<div class="clearfix"></div>
+
+			<!-- Número do Pedido Interno Inicial-->
+			<field ng-maxlength="30"
+				type="input"
+				ng-model="controller.model.iOrder"
+				canclean>
+				<label>{{:: 'l-nr-pedvenda-start' | i18n }}</label>
+			</field>
+
+			<!-- Número do Pedido Interno Final-->
+			<field ng-maxlength="60"
+				type="input"
+				ng-model="controller.model.fOrder"
+				canclean>
+				<label>{{:: 'l-nr-pedvenda-end' | i18n }}</label>
+			</field>
+
+			<div class="clearfix"></div>
+
+			<!-- Nome Abreviado do Cliente Inicial-->
+			<field ng-maxlength="30"
+				type="input"
+				ng-model="controller.model.iShortName" canclean>
+				<label>{{:: 'l-nome-abrev-start' | i18n }}</label>
+			</field>
+
+			<!-- Nome Abreviado do Cliente Final-->
+			<field ng-maxlength="60"
+				type="input"
+				ng-model="controller.model.fShortName"
+				canclean>
+				<label>{{:: 'l-nome-abrev-end' | i18n }}</label>
+			</field>
+
+			<div class="clearfix"></div>
+
+			<!-- Estabelecimento inicial -->
+			<field
+				type="input"
+				ng-model="controller.model.iSite"
+				canclean>
+				<label>{{:: 'l-cod-estabel' | i18n }}</label>
+			</field>
+
+			<!-- Estabelecimento final-->
+			<field
+				type="input"
+				ng-model="controller.model.fSite"
+				canclean>
+				<label>{{:: 'l-to' | i18n }}</label>
+			</field>
+
+			<div class="clearfix"></div>
+
+			<!-- Data de emissão inicial -->
+			<field type="date"
+				ng-model="controller.model.iIssueDate"
+				canclean>
+				<label>{{:: 'l-dt-emiss-start' | i18n }}</label>
+			</field>
+
+			<!-- Data de emissão final-->
+			<field type="date"
+				ng-model="controller.model.fIssueDate"
+				canclean>
+				<label>{{:: 'l-dt-emiss-end' | i18n }}</label>
+			</field>
+
+			<!-- Data de implantação inicial -->
+			<field type="date"
+				ng-model="controller.model.iAddedDate"
+				canclean>
+				<label>{{:: 'l-data-implant' | i18n }}</label>
+			</field>
+
+			<!-- Data de implantação final-->
+			<field type="date"
+				ng-model="controller.model.fAddedDate"
+				canclean>
+				<label>{{:: 'l-to' | i18n }}</label>
+			</field>
+			
+			<!-- Data de Entrega inicial -->
+			<field type="date"
+				ng-model="controller.model.iDeliveryDate"
+				canclean>
+				<label>{{:: 'l-dt-entrega' | i18n }}</label>
+			</field>
+
+			<!-- Data de Entrega final-->
+			<field type="date"
+				ng-model="controller.model.fDeliveryDate"
+				canclean>
+				<label>{{:: 'l-to' | i18n }}</label>
+			</field>
+
+			<div class="clearfix"></div>
+
+			<!-- Usuário implantação inicial -->
+			<field
+				type="input"
+				ng-model="controller.model.iAdditionUser"
+				canclean>
+				<label>{{ 'l-user-order-adder' | i18n }}</label>
+			</field>
+
+			<!-- Usuário implantação final -->
+			<field
+				type="input"
+				ng-model="controller.model.fAdditionUser"
+				canclean>
+				<label>{{ 'l-to' | i18n }}</label>
+			</field>
+
+			<div class="clearfix"></div>
+
+			<!-- Ordem de compra inicial -->
+			<field maxlength="15"
+				type="input"
+				ng-model="controller.model.iPurchaseOrder" canclean>
+				<label>{{:: 'l-nr-ordem-start' | i18n }}</label>
+			</field>
+
+			<!-- Ordem de compra Final-->
+			<field maxlength="15"
+				type="input"
+				ng-model="controller.model.fPurchaseOrder"
+				canclean>
+				<label>{{:: 'l-nr-ordem-end' | i18n }}</label>
+			</field>
+
+			<!-- Nome Abrev Representante inicial -->
+			<field maxlength="12"
+				type="input"
+				ng-model="controller.model.iAbrevRepresentant" canclean>
+				<label>{{:: 'l-abrev-representant-start' | i18n }}</label>
+			</field>
+
+			<!-- Nome Abrev Representante Final-->
+			<field maxlength="12"
+				type="input"
+				ng-model="controller.model.fAbrevRepresentant"
+				canclean>
+				<label>{{:: 'l-abrev-representant-end' | i18n }}</label>
+			</field>
+
+			<!-- Representante inicial -->
+			<field maxlength="80"
+				type="input"
+				ng-model="controller.model.iRepresentant" canclean>
+				<label>{{:: 'l-representant-start' | i18n }}</label>
+			</field>
+
+			<!-- Representante Final-->
+			<field maxlength="80"
+				type="input"
+				ng-model="controller.model.fRepresentant"
+				canclean>
+				<label>{{:: 'l-representant-end' | i18n }}</label>
+			</field>
+
+			<div class="clearfix"></div>
+
+			<field
+				ng-if="controller.isCRMActive === true"
+				type="radio"
+				ng-model="controller.model['tag.status']"
+				class="col-md-12"
+				label="{{ 'l-status' | i18n: []: 'dts/mpd' }}">
+				<totvs-options>
+					<totvs-option value="0">{{:: 'l-all' | i18n: []: 'dts/mpd' }}</totvs-option>
+					<totvs-option value="1">{{:: 'l-status-order-9' | i18n: []: 'dts/mpd' }}</totvs-option>
+					<totvs-option value="2">{{:: 'l-status-order-4' | i18n: []: 'dts/mpd' }}</totvs-option>
+					<totvs-option value="3">{{:: 'l-status-order-5' | i18n: []: 'dts/mpd' }}</totvs-option>
+					<totvs-option value="4">{{:: 'l-status-order-6' | i18n: []: 'dts/mpd' }}</totvs-option>
+					<totvs-option value="5">{{:: 'l-status-order-7' | i18n: []: 'dts/mpd' }}</totvs-option>
+					<totvs-option value="6">{{:: 'l-status-order-8' | i18n: []: 'dts/mpd' }}</totvs-option>
+					<totvs-option value="7">{{:: 'l-status-order-10' | i18n: []: 'dts/mpd' }}</totvs-option>
+					<totvs-option value="8">{{:: 'l-status-cotation-lead' | i18n: []: 'dts/mpd' }}</totvs-option>
+				</totvs-options>
+			</field> <!-- ng-if nao funcionou no totvs-option -->
+			<field
+				ng-if="!controller.isCRMActive"
+				type="radio"
+				ng-model="controller.model['tag.status']"
+				class="col-md-12"
+				label="{{ 'l-status' | i18n: []: 'dts/mpd' }}">
+				<totvs-options>
+					<totvs-option value="0">{{:: 'l-all' | i18n: []: 'dts/mpd' }}</totvs-option>
+					<totvs-option value="1">{{:: 'l-status-order-9' | i18n: []: 'dts/mpd' }}</totvs-option>
+					<totvs-option value="2">{{:: 'l-status-order-4' | i18n: []: 'dts/mpd' }}</totvs-option>
+					<totvs-option value="3">{{:: 'l-status-order-5' | i18n: []: 'dts/mpd' }}</totvs-option>
+					<totvs-option value="4">{{:: 'l-status-order-6' | i18n: []: 'dts/mpd' }}</totvs-option>
+					<totvs-option value="5">{{:: 'l-status-order-7' | i18n: []: 'dts/mpd' }}</totvs-option>
+					<totvs-option value="6">{{:: 'l-status-order-8' | i18n: []: 'dts/mpd' }}</totvs-option>
+					<totvs-option value="7">{{:: 'l-status-order-10' | i18n: []: 'dts/mpd' }}</totvs-option>
+				</totvs-options>
+			</field>
+
+			<div class="clearfix"></div>		
+
+			<!-- Somente pedidos do portal -->
+			<div class="col-sm-3 col-xs-6 field">
+				<br/>
+				<label class="field-label">{{:: 'l-only-portal' | i18n: []: 'dts/mpd' }}</label>
+				<br />
+				<input type="checkbox"
+					bsswitch="small"
+					ng-model="controller.model.onlyPortal"
+					class="col-sm-3">
+			</div>
+
+			<div class="clearfix"></div>
+
+
+		</form>
+	</div>
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" data-ng-click="controller.search();" data-ng-if="!controller.isQuickFilter">{{ 'btn-search' | i18n }}</button>
+		<button type="button" class="btn btn-primary" data-ng-click="controller.save();" data-ng-if="controller.isQuickFilter">{{ 'btn-save' | i18n }}</button>
+		<button type="button" class="btn btn-primary" data-ng-click="controller.save(true);" data-ng-if="controller.isQuickFilter">{{ 'btn-apply-save' | i18n }}</button>
+	<button ng-if="controller.isQuickFilter" type="button" class="btn btn-default" data-ng-click="controller.loadFilters();">{{ 'btn-load-filters' | i18n }}</button>
+		<button type="button" class="btn btn-default" data-ng-click="controller.clear();">{{ 'btn-clean' | i18n }}</button>
+	<button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'btn-cancel' | i18n }}</button>
+</div>

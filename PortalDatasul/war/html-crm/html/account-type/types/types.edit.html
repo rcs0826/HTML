@@ -1,0 +1,47 @@
+<totvs-modal-header>
+	{{ (controller.editMode ? controller.model.nom_tip_cta : ('btn-type-account' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+<totvs-modal-body>
+    <fieldset>
+        <field type="select"
+               canclean="undefined"
+               ng-required="true"
+               ng-model="controller.model.idi_tip_cta">
+
+            <label>{{ 'l-type-account' | i18n: []: 'dts/crm' }}</label>
+
+            <include>
+                <ui-select-match placeholder="{{ 'l-type-account' | i18n: []: 'dts/crm' }}">
+                    {{ $select.selected.nom_tipo }}
+                </ui-select-match>
+                <ui-select-choices repeat="type in controller.accountTypes | filter: $select.search track by $index">
+                    <span ng-bind-html="type.nom_tipo | highlight: $select.search"></span>
+                </ui-select-choices>
+            </include>
+        </field>
+        
+        <totvs-field totvs-checkbox
+					 ng-model="controller.model.log_livre_1"
+					 label="{{ 'l-not-integrates' | i18n: [] : 'dts/crm'}}"
+					 t-bsswitch>
+		</totvs-field>    
+        
+    </fieldset>
+    
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" 
+            ng-click="controller.cancel()">
+        {{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+    </button>
+    <button class="btn btn-default" 
+            ng-click="controller.save(true)" 
+            ng-if="controller.editMode === false;">
+        {{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+    </button>
+	<button class="btn btn-primary" 
+            ng-click="controller.save(false)">
+        {{ 'btn-save' | i18n: []: 'dts/crm' }}
+    </button>
+</totvs-modal-footer>

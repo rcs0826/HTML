@@ -1,0 +1,26 @@
+<accordion-heading>
+    <div class="row">
+        <div class="col-xs-12">
+            {{ 'nav-observation' | i18n: []: 'dts/crm' }}
+            <i class="pull-right glyphicon"
+               ng-class="{'glyphicon-chevron-down' :  controller.group.obs.open,
+                          'glyphicon-chevron-right': !controller.group.obs.open}">
+            </i>
+        </div>
+    </div>
+</accordion-heading>
+
+<fieldset class="row">
+
+	<field type="textarea"
+		   class="col-md-12"
+		   ng-model="controller.model.dsl_texto"
+		   maxlength="1000">
+
+		<label ng-hide="controller.isEdit === true">{{'l-observation' | i18n: []: 'dts/crm'}}</label>
+		<label ng-hide="controller.isEdit === false">{{'l-type-observation-integration' | i18n: []: 'dts/crm'}}</label>
+
+		<validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 1000</validator>
+	</field>
+
+</fieldset>

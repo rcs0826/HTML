@@ -1,0 +1,122 @@
+<totvs-modal-header>
+	{{ 'btn-new-rule' | i18n: []: 'dts/crm'  }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+
+		<field type="select"
+			   class="col-xs-12"
+			   ng-change="controller.onChangeAttributeType(controller.model.ttAttributeType)"
+			   ng-required="true"
+			   ng-model="controller.model.ttAttributeType"
+			   canclean="undefined">
+			<label>{{ 'l-attribute' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-attribute' | i18n: []: 'dts/crm' }}">{{$select.selected.name}}</ui-select-match>
+				<ui-select-choices repeat="item in controller.attributeTypes | filter: $select.search track by $index">
+					<span ng-bind-html="item.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   class="col-xs-12"
+			   ng-if="controller.model.ttAttributeType && controller.model.ttAttributeType.id == 1"
+			   ng-required="true"
+			   ng-model="controller.model.ttValue"
+			   canclean>
+			<label>{{ 'l-value' | i18n }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-subject' | i18n }}">{{ $select.selected.name }}</ui-select-match>
+				<ui-select-choices repeat="item in controller.subjects | filter: $select.search track by $index">
+					<span ng-bind-html="item.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   class="col-xs-12"
+			   ng-if="controller.model.ttAttributeType && controller.model.ttAttributeType.id == 2"
+			   ng-required="true"
+			   ng-model="controller.model.ttValue"
+			   canclean="undefined">
+			<label>{{ 'l-value' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-priority' | i18n: []: 'dts/crm' }}">{{$select.selected.name}}</ui-select-match>
+				<ui-select-choices repeat="item in controller.priorities | filter: $select.search track by $index">
+					<span ng-bind-html="item.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   class="col-xs-12"
+			   ng-if="controller.model.ttAttributeType && controller.model.ttAttributeType.id == 3"
+			   ng-required="true"
+			   ng-model="controller.model.ttValue"
+			   canclean="undefined">
+			<label>{{ 'l-value' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-origin' | i18n: []: 'dts/crm' }}">{{$select.selected.name}}</ui-select-match>
+				<ui-select-choices repeat="item in controller.origins | filter: $select.search track by $index">
+					<span ng-bind-html="item.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   class="col-xs-12"
+			   ng-if="controller.model.ttAttributeType && controller.model.ttAttributeType.id == 4"
+			   ng-required="true"
+			   ng-model="controller.model.ttValue"
+			   canclean="undefined">
+			<label>{{ 'l-value' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-flow' | i18n: []: 'dts/crm' }}">{{$select.selected.name}}</ui-select-match>
+				<ui-select-choices repeat="item in controller.flows | filter: $select.search track by $index">
+					<span ng-bind-html="item.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   class="col-xs-12"
+			   ng-if="controller.model.ttAttributeType && controller.model.ttAttributeType.id == 5"
+			   ng-required="true"
+			   ng-model="controller.model.ttValue"
+			   canclean="undefined">
+			<label>{{ 'l-value' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-status' | i18n: []: 'dts/crm' }}">{{$select.selected.name}}</ui-select-match>
+				<ui-select-choices repeat="item in controller.status | filter: $select.search track by $index">
+					<span ng-bind-html="item.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   class="col-xs-12"
+			   ng-if="controller.model.ttAttributeType && controller.model.ttAttributeType.id == 6"
+			   ng-required="true"
+			   ng-model="controller.model.ttValue"
+			   canclean="undefined">
+			<label>{{ 'l-value' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-rating' | i18n: []: 'dts/crm' }}">{{$select.selected.name}}</ui-select-match>
+				<ui-select-choices repeat="item in controller.ratings | filter: $select.search track by $index">
+					<span ng-bind-html="item.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

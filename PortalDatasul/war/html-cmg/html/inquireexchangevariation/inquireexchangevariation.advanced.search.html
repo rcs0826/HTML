@@ -1,0 +1,128 @@
+<totvs-modal-header>
+	{{ 'l-advanced-search' | i18n: []: 'dts/cmg'}}
+</totvs-modal-header>	
+
+<totvs-modal-body>
+    
+    <totvs-page-form>
+        <fieldset>
+            
+            <!-- FINALIDADE ECONOMICA -->
+            <field type="select"
+                   ng-model="controller.model.economicPurpose"
+                   canclean
+                   required>
+                <label>{{'l-economic-purpose' | i18n: []: 'dts/utb'}}</label>
+                <zoom zoom-service="utb.finalid-econ.zoom"></zoom>
+                <include>
+                    <ui-select-match placeholder="{{'l-economic-purpose' | i18n: []: 'dts/utb'}}">
+                        {{ $select.selected.cod_finalid_econ + ' - ' + $select.selected.des_finalid_econ }}
+                    </ui-select-match>
+                    <ui-select-choices repeat="economicPurpose in
+                                               controller.serviceEconPurpose.selectResultList 
+                                               track by $index"
+                                       refresh="controller.serviceEconPurpose.getSelectResultList(
+                                                $select.search, undefined)"
+                                       refresh-delay="500">
+                        <span ng-bind-html="economicPurpose.cod_finalid_econ + ' - ' + 
+                                            economicPurpose.des_finalid_econ | highlight: $select.search">
+                        </span>
+                    </ui-select-choices>
+                </include>
+            </field>
+
+            <!-- EMPRESA -->
+            <field type="select"
+                   ng-model="controller.model.listCompany"
+                   canclean
+                   required>
+                <label>{{'l-company' | i18n: []: 'dts/utb'}}</label>
+                <zoom zoom-service="utb.empresa.zoom"
+                      zoom-multiple></zoom>
+                <include>
+                    <ui-select-match placeholder="{{'l-company' | i18n: []: 'dts/utb'}}">
+                        {{$select.selected.objSelected ? $select.selected.toString() : 
+                         ($select.selected.cod_empresa + ' - ' +
+                          $select.selected.nom_abrev)}}
+                    </ui-select-match>
+                    <ui-select-choices repeat="company in
+                                               controller.serviceCompany.selectResultList 
+                                               track by $index"
+                                       refresh="controller.serviceCompany.getSelectResultList(
+                                                $select.search, undefined)"
+                                       refresh-delay="500">
+                        <span ng-bind-html="company.cod_empresa + ' - ' + 
+                                            company.nom_abrev | highlight: $select.search">
+                        </span>
+                    </ui-select-choices>
+                </include>
+            </field>
+
+            <!-- UNIDADE DE FECHAMENTO DE CAIXA -->
+            <field type="select"
+                   ng-model="controller.model.listCashClosingUnit"
+                   ng-required="controller.ttInqExchVarInitParams.isReqCashClosUnit"
+                   canclean>
+                <label>{{'l-cash-closing-unit' | i18n:[] : 'dts/cmg'}}</label>
+                <zoom zoom-service="cmg.unid-fechto-cx.zoom"
+                      zoom-multiple></zoom>
+                <include>
+                    <ui-select-match placeholder="{{ 'l-cash-closing-unit' | i18n:[] : 'dts/cmg'}}">
+                        {{$select.selected.objSelected ? $select.selected.toString() : 
+                         ($select.selected.cod_unid_fechto_cx + ' - ' +
+                          $select.selected.des_unid_fechto_cx)}}
+                    </ui-select-match>
+                    <ui-select-choices repeat="cashClosingUnit in
+                                               controller.serviceCashClosingUnit.selectResultList 
+                                               track by $index"
+                                       refresh="controller.serviceCashClosingUnit.getSelectResultList(
+                                                $select.search, undefined)"
+                                       refresh-delay="500">
+                        <span ng-bind-html="cashClosingUnit.cod_unid_fechto_cx + ' - ' + 
+                                            cashClosingUnit.des_unid_fechto_cx | highlight: $select.search">
+                        </span>
+                    </ui-select-choices>
+                </include>
+            </field>
+
+            <!-- CENÁRIO CONTÁBIL -->
+            <field type="select"
+                   ng-model="controller.model.glScenario"
+                   canclean
+                   required>
+                <label>{{'l-gl-scenario' | i18n: []: 'dts/utb'}}</label>
+                <zoom zoom-service="utb.cenar-ctbl.zoom"></zoom>
+                <include>
+                    <ui-select-match placeholder="{{'l-gl-scenario' | i18n: []: 'dts/utb'}}">
+                        {{$select.selected.objSelected ? $select.selected.toString() : 
+                         ($select.selected.cod_cenar_ctbl + ' - ' +
+                          $select.selected.des_cenar_ctbl)}}
+                    </ui-select-match>
+                    <ui-select-choices repeat="glScenario in
+                                               controller.serviceGLScenario.selectResultList 
+                                               track by $index"
+                                       refresh="controller.serviceGLScenario.getSelectResultList(
+                                                $select.search, undefined)"
+                                       refresh-delay="500">
+                        <span ng-bind-html="glScenario.cod_cenar_ctbl + ' - ' + 
+                                            glScenario.des_cenar_ctbl | highlight: $select.search">
+                        </span>
+                    </ui-select-choices>
+                </include>
+            </field>
+
+            <!-- DATA -->
+            <field type="daterange"
+                   data-ng-model="controller.model.dateMoveCheckingAcct"
+                   required>
+                <label>{{ 'l-transaction-date' | i18n: []: 'dts/cmg'}}</label>
+            </field>
+            
+        </fieldset>
+    </totvs-page-form>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n: []: 'dts/cmg'}}</button>	
+	<button class="btn btn-primary" ng-click="controller.apply()">{{ 'l-apply' | i18n: []: 'dts/cmg'}}</button>
+</totvs-modal-footer>

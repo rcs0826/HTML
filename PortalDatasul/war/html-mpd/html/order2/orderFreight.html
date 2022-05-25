@@ -1,0 +1,58 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{:: 'l-simulacao-frete' | i18n : [] : 'dts/mpd' }}</h3>
+</div>
+<div class="modal-body">
+    
+    <div class="row" style="padding-bottom:10 px">
+
+        <field type="input" ng-model="modalFreightController.vehicleType" class="col-xs col-sm-6 col-md-4">
+			<label>{{:: 'l-vehicle-type' | i18n : [] : 'dts/mpd' }}</label>
+		</field>
+        
+        <field type="input" ng-model="modalFreightController.freightClass" class="col-xs col-sm-6 col-md-4">
+			<label>{{:: 'l-classification-shipping' | i18n : [] : 'dts/mpd' }}</label>
+		</field>
+        
+        <field type="input" ng-model="modalFreightController.operationType" class="col-xs col-sm-6 col-md-4">
+			<label>{{:: 'l-operation-type' | i18n : [] : 'dts/mpd' }}</label>
+        </field>
+        <!--<field ng-model="modalFreightController.considNegoc" class="col-xs -12 col-sm-12 col-md-4" style="margin-bottom: 5px;" type="checkbox">
+			<label>{{:: 'l-consider-negotiations' | i18n : [] : 'dts/mpd' }}</label>
+        </field>-->
+        <field ng-model="modalFreightController.mantemSimul" class="col-xs -12 col-sm-12 col-md-4" style="margin-bottom: 5px;" type="checkbox">
+			<label>{{:: 'l-maintains-previous-simul' | i18n : [] : 'dts/mpd' }}</label>
+        </field>
+        <div class="col-md-2 col-sm-6 col-xs-12 pull-right" style="padding-left: 15px; padding-right: 15px;">
+            <button class="btn btn-primary btn-block" ng-click="modalFreightController.getSimulationResult()" style="margin-top: 15px;">
+                {{:: 'l-simulate-operagions-rule' | i18n : [] : 'dts/mpd' }}
+            </button>
+        </div>
+    </div>
+    <div class="row" style="padding-left: 15px; padding-right: 15px;">
+        <totvs-grid grid-data="modalFreightController.listResult"
+                    grid-height="500"
+                    auto-resize-content="true"
+                    navigatable="true"
+                    resizable="true"
+                    sortable="true"
+                    groupable="false"
+                    reorderable="true"
+                    selectable="row"
+                    grid-selected-item="modalFreightController.gridSelectedSimulation"
+                    add-select-column >
+            <totvs-grid-column field="codTransp" width="100">{{:: 'l-carrier-code' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            <totvs-grid-column field="nomeTransp" width="300">{{:: 'l-carrier-name' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            <totvs-grid-column field="codRota" width="100">{{:: 'l-route-code' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            <totvs-grid-column field="nomeRota" width="300">{{:: 'l-descricao' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            <totvs-grid-column field="tipoCapac" width="150">{{:: 'l-type-capacity' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            <totvs-grid-column field="vlFrete" filter="number : 5" width="200">{{:: 'l-val-frete' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            <totvs-grid-column field="vlFreteImp" filter="number : 5" width="200">{{:: 'l-freight-value-tax' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            <totvs-grid-column field="dtEntrega" width="150">{{:: 'l-deadline' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            <totvs-grid-column field="hraEntrega" width="150">{{:: 'l-delivery-time' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+        </totvs-grid>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="modalFreightController.confirm()">{{:: 'l-confirmar' | i18n : [] : 'dts/mpd' }}</button>
+    <button class="btn btn-warning" ng-click="modalFreightController.close()">{{:: 'l-close' | i18n : [] : 'dts/mpd' }}</button>
+</div>

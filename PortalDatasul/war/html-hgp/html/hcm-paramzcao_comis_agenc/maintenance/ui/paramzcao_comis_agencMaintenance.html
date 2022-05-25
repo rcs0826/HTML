@@ -1,0 +1,559 @@
+<totvs-page type="base">
+
+    <totvs-page-navbar >
+
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hcm-paramzcao_comis_agenc/">Regras de Comissão/Agenciamento</breadcrumb>
+				<breadcrumb>Manutenção de Regras de Comissão/Agenciamento</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+			<totvs-page-header-title
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Regras de Comissão/Agenciamento">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                    <action ng-click="controller.save();"
+                            ng-if="controller.action != 'DETAIL'">Salvar</action>
+                    <action ng-click="controller.saveNew();"
+                            ng-if="controller.action != 'DETAIL'">Salvar e Novo</action>
+                    <action class="btn-primary"
+                            ng-click="controller.saveClose();"
+                            ng-if="controller.action != 'DETAIL'">Salvar e Fechar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+
+        <totvs-page-form t-name="controller.paramzcao_comis_agencForm">
+            <fieldset>
+				<totvs-row>
+					<totvs-field totvs-number
+							class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+							label="Regra"
+							ng-model="controller.paramzcao_comis_agenc.idRegra"
+							min="1"
+							ng-if="controller.action != 'INSERT'"
+							ng-disabled="true">
+					</totvs-field>
+					<totvs-field totvs-input
+								class="col-lg-4 col-md-6 col-sm-6 col-xs-12"
+								label="Descrição"
+								ng-model="controller.paramzcao_comis_agenc.desParamzcaoAgenc"
+								ng-required="true"
+								ng-disabled="controller.action == 'DETAIL'">
+					<validator key="required">Este campo e obrigatorio!</validator>
+					</totvs-field>
+				</totvs-row>
+				<totvs-row>
+					<totvs-field totvs-combo
+						class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+						label="Comissão ou Agenciamento"
+						t-options= "controller.listComissAgenc"
+						ng-model="controller.paramzcao_comis_agenc.dsComissaoAgenciamento"						
+						ng-change="controller.isSelectComisAgenc()"
+						min="1">
+						<validator key="min">Este campo é obrigatório!</validator>
+						<validator key="required">Este campo é obrigatório!</validator>
+					</totvs-field>
+				</totvs-row>
+
+				<totvs-page-detail>
+					<totvs-row>
+						<legend>Funções</legend>
+						<totvs-group-content title="Exibir">
+
+							<totvs-row>
+								<field type="input"
+									label="fake" style="visibility: hidden"
+									class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+								</field>
+								<div class="col-lg-8 col-md-10 col-sm-10 col-xs-12">
+									<totvs-page-content>
+										<totvs-table
+											t-on-change="controller.onChangeTable(event)"
+											t-items="controller.tmpFuncao"
+											t-items-as="item"
+											style="height: 200px; display:block; ">
+
+											<column title="Código" width="30" >
+												{{item.cdFuncao}}
+											</column>
+
+											<column title="Descrição" width="200">
+												{{item.dsFuncao}}
+											</column>
+
+										</totvs-table>
+									</totvs-page-content>
+								</div>
+							</totvs-row>
+						</totvs-group-content>
+					</totvs-row>
+
+				</totvs-page-detail>
+
+				<totvs-page-detail>
+					<totvs-row>
+						<legend>Tipos de Proposta</legend>
+						<totvs-group-content title="Exibir">
+							<totvs-row>
+								<field type="input"
+									label="fake" style="visibility: hidden"
+									class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+								</field>
+								<div class="col-lg-8 col-md-10 col-sm-10 col-xs-12">
+									<totvs-page-content>
+										<totvs-table
+											t-on-change="controller.onChangeTable(event)"
+											t-items="controller.tmpTipoProposta"
+											t-items-as="item"
+											style="height: 200px; display:block; ">
+
+											<column title="Código" width="30" >
+												{{item.cdTipoProposta}}
+											</column>
+
+											<column title="Descrição" width="200">
+												{{item.dsTipoProposta}}
+											</column>
+
+										</totvs-table>
+									</totvs-page-content>
+								</div>
+							</totvs-row>
+						</totvs-group-content>
+					</totvs-row>
+				</totvs-page-detail>
+
+				<totvs-page-detail>
+					<totvs-row>
+						<legend>Convênios</legend>
+						<totvs-group-content title="Exibir">
+							<totvs-row>
+								<field type="input"
+									label="fake" style="visibility: hidden"
+									class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+								</field>
+								<div class="col-lg-8 col-md-10 col-sm-10 col-xs-12">
+									<totvs-page-content>
+										<totvs-table
+											t-on-change="controller.onChangeTable(event)"
+											t-items="controller.tmpConvenio"
+											t-items-as="item"
+											style="height: 200px; display:block; ">
+
+											<column title="Código" width="30" >
+												{{item.cdConvenio}}
+											</column>
+
+											<column title="Descrição" width="200">
+												{{item.dsConvenio}}
+											</column>
+
+										</totvs-table>
+									</totvs-page-content>
+								</div>
+							</totvs-row>
+						</totvs-group-content>
+					</totvs-row>
+				</totvs-page-detail>
+
+				<totvs-page-detail>
+					<totvs-row>
+						<legend>Beneficiários Faturados Considerados</legend>
+						<totvs-group-content title="Exibir">
+							<totvs-row>
+								<field type="input"
+									label="fake" style="visibility: hidden"
+									class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+								</field>
+								<totvs-field totvs-combo
+											class="col-lg-2 col-md-3 col-sm-6 col-xs-12"
+											label="Considera para contagem"
+											ng-required="true"
+											t-options= "controller.listConsidParamzcaoAgenc"
+											ng-model="controller.paramzcao_comis_agenc.considParamzcaoAgenc"
+											min="1" max="999"
+											ng-disabled="controller.action == 'DETAIL'">
+									<validator key="min">Este campo é obrigatório!</validator>
+									<validator key="required">Este campo é obrigatório!</validator>
+								</totvs-field>
+								<totvs-field totvs-combo
+											class="col-lg-2 col-md-3 col-sm-6 col-xs-12"
+											label="Considera para pagar"
+											ng-required="true"
+											t-options= "controller.listConsidParamzcaoBenefPagto"
+											ng-model="controller.paramzcao_comis_agenc.idiConsidParamzcaoBenefPagto"
+											min="1" max="999"
+											ng-disabled="controller.action == 'DETAIL'">
+									<validator key="min">Este campo é obrigatório!</validator>
+									<validator key="required">Este campo é obrigatório!</validator>
+								</totvs-field>
+								<totvs-field totvs-number
+											class="col-lg-2 col-md-3 col-sm-4 col-xs-12"
+											label="Dias"
+											ng-required="true"
+											ng-model="controller.paramzcao_comis_agenc.numLivre1"
+											min="0" max="9999">
+									<validator key="min">Insira um valor igual ou maior que zero</validator>
+									<validator key="required">Este campo é obrigatório!</validator>
+								</totvs-field>
+							</totvs-row>							
+							<totvs-row style="padding-top: 30px;">
+								<field type="input"
+									label="fake" style="visibility: hidden"
+									class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+								</field>
+								<div class="col-lg-8 col-md-10 col-sm-10 col-xs-12">
+									<totvs-page-content>
+										<totvs-table
+											t-on-change="controller.onChangeTable(event)"
+											t-items="controller.tmpModalidade"
+											t-items-as="item"
+											style="height: 200px; display:block; ">
+
+											<column title="Código" width="30" >
+												{{item.cdModalidade}}
+											</column>
+
+											<column title="Modalidade" width="200">
+												{{item.dsModalidade}}
+											</column>
+
+										</totvs-table>
+									</totvs-page-content>
+								</div>
+							</totvs-row>
+						</totvs-group-content>
+					</totvs-row>
+				</totvs-page-detail>
+
+				<totvs-page-detail>
+					<totvs-row>
+						<legend>Eventos Faturamento</legend>
+						<totvs-group-content title="Exibir">
+							<totvs-row>
+								<field type="input"
+									label="fake" style="visibility: hidden"
+									class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+								</field>
+								<div class="col-lg-8 col-md-10 col-sm-10 col-xs-12">
+									<totvs-page-content>
+										<totvs-table
+											t-items="controller.tmpEvento"
+											t-items-as="item"
+											t-selectable="single"
+											t-on-change="controller.onChangeEvents()"
+											style="height: 255px; display:block; "
+											>
+
+											<column title="Código" width="50" >
+												{{item.cdEvento}}
+											</column>
+
+											<column title="% Comissão" width="125">
+												{{item.percentComis}}
+											</column>
+											<column title="R$ Comissão" width="125">
+												{{item.valComis}}
+											</column>
+											<column title="% Agenciamento" width="125">
+												{{item.percentAgenc}}
+											</column>
+											<column title="R$ Agenciamento" width="125">
+												{{item.valAgenc}}
+											</column>
+
+										</totvs-table>
+									</totvs-page-content>
+								</div>
+								<field type="input"
+									label="fake" style="visibility: hidden"
+									class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+								</field>
+
+								<totvs-page-content ng-if="controller.editingEvent && controller.action != 'DETAIL'">
+									<totvs-row>
+									</totvs-row>
+									<totvs-row ng-if="controller.paramzcao_comis_agenc.dsComissaoAgenciamento != 'Agenciamento'">
+										<legend>Comissão</legend>
+										<field type="input"
+											label="fake" style="visibility: hidden"
+											class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+										</field>
+										<field type="checkbox"
+											class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+											label="Valor percentual"
+											data-ng-model="controller.lgEventoUtilizaPctComis"
+											ng-disabled="controller.action === 'DETAIL'">
+										</field>
+										<totvs-field totvs-input
+											class="col-lg-2 col-md-2 col-sm-2 col-xs-12"                                            
+											label="Valor"
+											id="vlComis"
+											ng-model="controller.vlEventoComis"										    
+								            ng-disabled="controller.action == 'DETAIL'">					                        
+										</totvs-field>
+
+									</totvs-row>
+									<totvs-row ng-if="controller.paramzcao_comis_agenc.dsComissaoAgenciamento != 'Comissao'" >
+										<legend>Agenciamento</legend>
+										<field type="input"
+											label="fake" style="visibility: hidden"
+											class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+										</field>
+
+										<field type="checkbox"
+											class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+											label="Valor percentual"
+											data-ng-model="controller.lgEventoUtilizaPctAgenc"
+											ng-disabled="controller.action === 'DETAIL'">
+										</field>
+										<totvs-field totvs-input
+											class="col-lg-2 col-md-2 col-sm-2 col-xs-2"
+											label="Valor"
+											id="vlAgenc"										
+											ng-model="controller.vlEventoAgenc">											
+										</totvs-field>
+									</totvs-row>
+									<totvs-row>
+										<field type="input"
+											label="fake" style="visibility: hidden"
+											class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+										</field>
+										<action ng-click="controller.saveEvent();" class="btn btn-default clickable">Salvar Evento</action>
+									</totvs-row>
+								</totvs-page-content>
+							</totvs-row>
+						</totvs-group-content>
+					</totvs-row>
+				</totvs-page-detail>
+
+				<totvs-page-detail>
+					<legend>Detalhes</legend>
+
+					<totvs-row>
+						<totvs-field totvs-number
+							class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+							min="1" max="99"
+							ng-required="true"
+							label="Modalidade inicial"
+							ng-model="controller.paramzcao_comis_agenc.cdModalidadeIni"
+							ng-disabled="controller.action == 'DETAIL'">
+							<validator key="min">Insira um valor maior que zero</validator>
+							<validator key="required">Este campo é obrigatório!</validator>
+						</totvs-field>
+						<field type="input"
+							label="fake" style="visibility: hidden"
+							class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+						</field>
+						<totvs-field totvs-number
+							class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+							min="1" max="99"
+							ng-required="true"
+							label="Modalidade final"
+							ng-model="controller.paramzcao_comis_agenc.cdModalidadeFim"
+							ng-disabled="controller.action == 'DETAIL'">
+							<validator key="min">Insira um valor maior que zero</validator>
+							<validator key="required">Este campo é obrigatório!</validator>
+						</totvs-field>
+					</totvs-row>
+
+					<totvs-row>
+						<totvs-field totvs-number
+							class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+							min="1" max="99"
+							ng-required="true"
+							label="Plano inicial"
+							ng-model="controller.paramzcao_comis_agenc.cdPlanoIni"
+							ng-disabled="controller.action == 'DETAIL'">
+							<validator key="min">Insira um valor maior que zero</validator>
+							<validator key="required">Este campo é obrigatório!</validator>
+						</totvs-field>
+						<field type="input"
+							label="fake" style="visibility: hidden"
+							class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+						</field>
+						<totvs-field totvs-number
+							class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+							min="1" max="99"
+							ng-required="true"
+							label="Plano final"
+							ng-model="controller.paramzcao_comis_agenc.cdPlanoFim"
+							ng-disabled="controller.action == 'DETAIL'">
+							<validator key="min">Insira um valor maior que zero</validator>
+							<validator key="required">Este campo é obrigatório!</validator>
+						</totvs-field>
+					</totvs-row>
+
+					<totvs-row>
+						<totvs-field totvs-number
+							class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+							min="1" max="99"
+							ng-required="true"
+							label="Tipo de plano inicial"
+							ng-model="controller.paramzcao_comis_agenc.cdTipoPlanoIni"
+							ng-disabled="controller.action == 'DETAIL'">
+							<validator key="min">Insira um valor maior que zero</validator>
+							<validator key="required">Este campo é obrigatório!</validator>
+						</totvs-field>
+						<field type="input"
+							label="fake" style="visibility: hidden"
+							class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+						</field>
+						<totvs-field totvs-number
+							class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+							min="1" max="99"
+							ng-required="true"
+							label="Tipo de plano final"
+							ng-model="controller.paramzcao_comis_agenc.cdTipoPlanoFim"
+							ng-disabled="controller.action == 'DETAIL'">
+							<validator key="min">Insira um valor maior que zero</validator>
+							<validator key="required">Este campo é obrigatório!</validator>
+						</totvs-field>
+					</totvs-row>
+
+					<totvs-row>
+						<totvs-field totvs-combo
+									class="col-lg-2 col-md-4 col-sm-5 col-xs-12"
+									label="Contagem por"
+									ng-required="true"
+									t-options= "controller.listContagComisAgenc"
+									ng-model="controller.paramzcao_comis_agenc.contagComisAgenc"
+									min="1" max="99"
+									ng-disabled="controller.action == 'DETAIL'">
+							<validator key="min">Este campo é obrigatório!</validator>
+							<validator key="required">Este campo é obrigatório!</validator>
+						</totvs-field>
+						<field type="input"
+							label="fake" style="visibility: hidden"
+							class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+						</field>
+						<totvs-field totvs-combo
+									class="col-lg-2 col-md-4 col-sm-5 col-xs-12"
+									label="Condição de pagamento"
+									ng-required="true"
+									t-options= "controller.listCdnCondPagto"
+									ng-model="controller.paramzcao_comis_agenc.cdnCondPagto"
+									min="1" max="99"
+									ng-disabled="controller.action == 'DETAIL'">
+							<validator key="min">Este campo é obrigatório!</validator>
+							<validator key="required">Este campo é obrigatório!</validator>
+						</totvs-field>
+					</totvs-row>
+
+					<totvs-row>
+						<totvs-field totvs-number
+							class="col-lg-2 col-md-4 col-sm-5 col-xs-12"
+							min="1" max="999999"
+							ng-required="true"
+							label="Quantidade de beneficiários inicial"
+							ng-model="controller.paramzcao_comis_agenc.idiQuantBeneficInic"
+							ng-disabled="controller.action == 'DETAIL'">
+							<validator key="min">Insira um valor maior que zero</validator>
+							<validator key="required">Este campo é obrigatório!</validator>
+						</totvs-field>
+						<field type="input"
+							label="fake" style="visibility: hidden"
+							class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+						</field>                        
+						<totvs-field totvs-number
+							class="col-lg-2 col-md-4 col-sm-5 col-xs-12"
+							min="1" max="999999"
+							ng-required="true"
+							label="Quantidade de beneficiários final"
+							ng-model="controller.paramzcao_comis_agenc.qtBeneficiarios"
+							ng-disabled="controller.action == 'DETAIL'">
+							<validator key="min">Insira um valor maior que zero</validator>
+							<validator key="required">Este campo é obrigatório!</validator>
+						</totvs-field>
+					</totvs-row>
+
+					<totvs-row>
+						<totvs-field totvs-datepicker
+								class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+								format="MM/yyyy"
+								culture="pt"
+								label="Período inicial"
+								depth="year"
+								ng-model="controller.paramzcao_comis_agenc.dtInicial"
+								required
+								ng-disabled ="controller.action === 'DETAIL'">
+						</totvs-field>
+						<field type="input"
+							label="fake" style="visibility: hidden"
+							class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+						</field>
+						<totvs-field totvs-datepicker
+								class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+								format="MM/yyyy"
+								culture="pt"
+								label="Período final"
+								depth="year"
+								ng-model="controller.paramzcao_comis_agenc.dtFinal"
+								required
+								ng-disabled ="controller.action === 'DETAIL'">
+						</totvs-field>
+					</totvs-row>
+
+					<totvs-row>
+						<totvs-field totvs-combo
+									class="col-lg-2 col-md-4 col-sm-5 col-xs-12"
+									label="Vigencia por"
+									ng-required="true"
+									t-options= "controller.listinVigPropMod"
+									ng-model="controller.paramzcao_comis_agenc.inVigPropMod"
+									min="" max="99"
+									ng-disabled="controller.action == 'DETAIL'">
+							<validator key="min">Este campo é obrigatório!</validator>
+							<validator key="required">Este campo é obrigatório!</validator>
+						</totvs-field>
+						<field type="input"
+							label="fake" style="visibility: hidden"
+							class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+						</field>                        
+						<totvs-field totvs-input
+									class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+									label="Usuário da última atualização"
+									ng-model="controller.paramzcao_comis_agenc.codUsuarUltAtualiz"
+                                    ng-if="controller.action != 'INSERT'"
+									ng-disabled="true">
+						</totvs-field>
+					</totvs-row>
+					<totvs-row ng-if="controller.action != 'INSERT'">
+						<totvs-field totvs-datepicker
+								class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+								format="dd/MM/yyyy"
+								culture="pt"
+								label="Data da última atualização"
+								ng-model="controller.paramzcao_comis_agenc.datUltAtualiz"
+								ng-disabled ="true">
+						</totvs-field>
+						<field type="input"
+							label="fake" style="visibility: hidden"
+							class="col-lg-1 col-md-1 col-sm-1 hidden-xs">
+						</field>
+						<field type="time"
+								class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+								data-ng-model="controller.paramzcao_comis_agenc.hraUltAtualiz"
+								label="Hora da Última Atualização"
+								ng-disabled="true">
+						</field>
+					</totvs-row>                        
+				</totvs-page-detail>
+
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>
+
+

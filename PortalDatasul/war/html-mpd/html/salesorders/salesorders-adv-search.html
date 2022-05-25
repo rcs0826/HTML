@@ -1,0 +1,109 @@
+<div class="modal-header">
+            <h3 class="modal-title">{{'l-search-advanced' | i18n}}</h3>
+</div>
+
+<div class="modal-body">
+
+	<div class="row">
+		<form class="form-horizontal" role="form">
+
+			<!-- Número do Pedido do Cliente Inicial-->
+			<field ng-maxlength="30" type="input" ng-model="controller.advancedSearch.model.nrPedCliIni">
+				<label>{{ 'l-nr-pedcli-start' | i18n }}</label>
+			</field>
+			<!-- Número do Pedido do Cliente Final-->
+			<field ng-maxlength="60" type="input" ng-model="controller.advancedSearch.model.nrPedCliFim">
+				<label>{{ 'l-nr-pedcli-end' | i18n }}</label>
+			</field>
+
+			<!-- Número do Pedido Interno Inicial-->
+			<field ng-maxlength="12" type="input" numbers-only ng-model="controller.advancedSearch.model.nrPedVendaIni">
+				<label>{{ 'l-nr-pedvenda-start' | i18n }}</label>
+			</field>
+			<!-- Número do Pedido Interno Final-->
+			<field ng-maxlength="12" type="input" numbers-only ng-model="controller.advancedSearch.model.nrPedVendaFim">
+				<label>{{ 'l-nr-pedvenda-end' | i18n }}</label>
+			</field>
+
+			<!-- Nome Abreviado do Cliente Inicial-->
+			<field ng-if="controller.advancedSearch.model.isRepresentative" ng-maxlength="30" type="input" ng-model="controller.advancedSearch.model.nomAbrevIni">
+				<label>{{ 'l-nome-abrev-start' | i18n }}</label>
+			</field>
+			<!-- Nome Abreviado do Cliente Final-->
+			<field ng-if="controller.advancedSearch.model.isRepresentative" ng-maxlength="60" type="input" ng-model="controller.advancedSearch.model.nomAbrevFim">
+				<label>{{ 'l-nome-abrev-end' | i18n }}</label>
+			</field>
+			
+			<!-- Codigo do Cliente Inicial-->
+			<field ng-if="controller.advancedSearch.model.isRepresentative" ng-maxlength="30" type="input" numbers-only ng-model="controller.advancedSearch.model.codCliIni">
+				<label>{{ 'l-cod-emitente-ini' | i18n }}</label>
+			</field>
+			<!-- Codigo do Cliente Final-->
+			<field ng-if="controller.advancedSearch.model.isRepresentative" ng-maxlength="60" type="input" numbers-only ng-model="controller.advancedSearch.model.codCliFim">
+				<label>{{ 'l-cod-emitente-fim' | i18n }}</label>
+			</field>  
+
+			<field type="date" ng-model="controller.advancedSearch.model.dtEmissIni">
+				<label>{{ 'l-dt-emiss-start' | i18n }}</label>
+			</field>
+
+			<field type="date" ng-model="controller.advancedSearch.model.dtEmissFim">
+				<label>{{ 'l-dt-emiss-end' | i18n }}</label>
+			</field>		
+
+			<!-- Ordem de compra do cliente inicial -->
+			<field maxlength="15" type="input" ng-model="controller.advancedSearch.model.purchaseOrderIni">
+				<label>{{ 'l-nr-ordem-start' | i18n }}</label>
+			</field>
+			<!-- Ordem de compra do cliente final -->
+			<field maxlength="15" type="input" ng-model="controller.advancedSearch.model.purchaseOrderFim">
+				<label>{{ 'l-nr-ordem-end' | i18n }}</label>
+			</field>
+
+			<div ng-if="currentuser['user-hiearchy']" class="col-xs-12 col-md-12" style="margin-top: 15px">                    
+				<button class="btn btn-default" ng-model="controller.selectedRepresentatives" ng-change="controller.onZoomSelectRepresentatives();"
+				zoom zoom-multiple zoom-init="currentuser['listSubord']" zoom-service="mpd.repres.zoom">
+					<span class="glyphicon glyphicon-plus"></span>
+					{{ 'l-bt-repres' | i18n: []: 'dts/mpd/' }}
+				</button>
+			</div>
+			<div class="col-xs-12 col-md-12">
+				<totvs-page-disclaimers disclaimer-list="controller.disclaimers" ng-click="controller.removeDisclaimer">
+				</totvs-page-disclaimers>
+			</div>
+            <field type="checkbox" class="col-md-3" ng-model="controller.advancedSearch.model.statusPortalOrder1">
+                <label>{{ 'l-status-order-1' | i18n }}</label>
+            </field>
+            <field type="checkbox" class="col-md-3" ng-model="controller.advancedSearch.model.statusPortalOrder2">
+                <label>{{ 'l-status-order-2' | i18n }}</label>
+            </field>
+            <field type="checkbox" class="col-md-3" ng-model="controller.advancedSearch.model.statusPortalOrder3">
+                <label>{{ 'l-status-order-3' | i18n }}</label>
+            </field>
+            <field type="checkbox" class="col-md-3" ng-model="controller.advancedSearch.model.statusPortalOrder4">
+                <label>{{ 'l-status-order-4' | i18n }}</label>
+            </field>
+            <field type="checkbox" class="col-md-3" ng-model="controller.advancedSearch.model.statusPortalOrder5">
+                <label>{{ 'l-status-order-5' | i18n }}</label>
+            </field>
+            <field type="checkbox" class="col-md-3" ng-model="controller.advancedSearch.model.statusPortalOrder6">
+                <label>{{ 'l-status-order-6' | i18n }}</label>
+            </field>
+            <field type="checkbox" class="col-md-3" ng-model="controller.advancedSearch.model.statusPortalOrder7">
+                <label>{{ 'l-status-order-7' | i18n }}</label>
+            </field>
+            <field type="checkbox" class="col-md-3" ng-model="controller.advancedSearch.model.statusPortalOrder8">
+                <label>{{ 'l-status-order-8' | i18n }}</label>
+            </field>            
+		</form>
+	</div>
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" data-ng-click="controller.search();">{{ 'btn-search' | i18n }}</button>
+	<button type="button" class="btn btn-default" data-ng-click="controller.clear();">{{ 'btn-clean' | i18n }}</button>
+	<button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'btn-cancel' | i18n }}</button>
+</div>
+		
+		
+		

@@ -1,0 +1,152 @@
+<totvs-modal-header>
+    {{ controllerDetail.title }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    
+    <totvs-grid
+        ng-if="controllerDetail.enableGridMat"
+        grid-data="controllerDetail.gridData"
+        resizable="true"
+        grid-options="controllerDetail.gridOptions"
+        sortable="{ allowUnsort: true, mode: 'single'}"
+        grid="controllerDetail.gridMat"
+        grid-height="500">
+        <totvs-grid-detail size="table">
+            <totvs-grid 
+                grid-data="dataItem.ttDetalheReporteMat"                                
+                grid-height="undefined">
+
+                <totvs-grid-column field="tipoTrans" width="70" style="text-align: center;" template="controllerDetail.templateTipoMovimento">
+                    {{ 'l-type' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="nrOrdProd" width="170" filter="number:0">
+                    {{ 'l-production-order' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="dtTrans" width="100" style="text-align: center;" filter="date:dd/MM/yyyy'">
+                    {{ 'l-transaction-date' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="especie" width="70">
+                    {{ 'l-species' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="quantidade" width="100" class="text-right" filter="number:4">
+                    {{ 'l-quantity' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="nrReporte" width="100">
+                    {{ 'l-report' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="" width="80" style="text-align: center;" template="controllerDetail.detail">&nbsp;</totvs-grid-column>
+            </totvs-grid>
+        </totvs-grid-detail>
+    </totvs-grid>
+
+    <totvs-grid
+        ng-if="controllerDetail.enableGridGgf"
+        grid-data="controllerDetail.gridData"
+        resizable="true"
+        grid-options="controllerDetail.gridOptions"
+        sortable="{ allowUnsort: true, mode: 'single'}"
+        grid="controllerDetail.gridGgf"
+        grid-height="500">        
+        <totvs-grid-detail size="table">
+            <totvs-grid 
+            grid-data="dataItem.ttDetalheReporteGGF" 
+            grid-height="undefined">
+                <totvs-grid-column field="tipoTrans" width="70" style="text-align: center;" template="controllerDetail.templateTipoReporte">
+                    {{ 'l-type' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="nrOrdProdu" width="170" filter="number:0">
+                    {{ 'l-production-order' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="dtReporte" width="100" style="text-align: center;" filter="date:dd/MM/yyyy'">
+                    {{ 'l-transaction-date' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="opSeq" width="70" filter="number:0">
+                    {{ 'l-seq-op' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="tempoReal" width="100" class="text-right" filter="number:4">
+                    {{ 'l-horas-rep' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="nrReporte" width="100">
+                    {{ 'l-report' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+
+            </totvs-grid>
+        </totvs-grid-detail>
+    </totvs-grid>
+    
+    <totvs-grid
+        ng-if="controllerDetail.enableGridMob"
+        grid-data="controllerDetail.gridData"
+        resizable="true"
+        grid-options="controllerDetail.gridOptions"
+        sortable="{ allowUnsort: true, mode: 'single'}"
+        grid="controllerDetail.gridMob"
+        grid-height="500">        
+        <totvs-grid-detail size="table">
+            <totvs-grid 
+            grid-data="dataItem.ttDetalheReporteMOB" 
+            grid-height="undefined">
+                <totvs-grid-column field="tipoTrans" width="70" style="text-align: center;" template="controllerDetail.templateTipoReporte">
+                    {{ 'l-type' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="nrOrdProdu" width="170" filter="number:0">
+                    {{ 'l-production-order' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="dtReporte" width="100" style="text-align: center;" filter="date:dd/MM/yyyy'">
+                    {{ 'l-transaction-date' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="opSeq" width="70" filter="number:0">
+                    {{ 'l-seq-op' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="tempoReal" width="100" class="text-right" filter="number:4">
+                    {{ 'l-horas-rep' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="nrReporte" width="100">
+                    {{ 'l-report' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+
+            </totvs-grid>
+        </totvs-grid-detail>
+    </totvs-grid>
+
+    <totvs-grid
+        ng-if="controllerDetail.enableGridOrdem"
+        grid-data="controllerDetail.gridData"
+        resizable="true"
+        grid-options="controllerDetail.gridOptions"
+        sortable="{ allowUnsort: true, mode: 'single'}"
+        grid="controllerDetail.gridOrdem"
+        auto-resize-content="false"
+        grid-height="500">
+        <totvs-grid-detail size="table">
+            <totvs-grid 
+                grid-data="dataItem.ttDetalheReporte"
+                grid-height="undefined">
+                <totvs-grid-column field="tipoTrans" width="70" style="text-align: center;" template="controllerDetail.templateTipoMovimento">
+                    {{ 'l-type' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="dtTrans" width="100" style="text-align: center;" filter="date:dd/MM/yyyy'">
+                    {{ 'l-transaction-date' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="especie" width="70">
+                    {{ 'l-species' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="quantidade" width="100" class="text-right" filter="number:4">
+                    {{ 'l-quantity' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="nrReporte" width="100">
+                    {{ 'l-report' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="lote" width="100">
+                    {{ 'l-lot-serial' | i18n : [] : 'dts/mcs' }}
+                </totvs-grid-column>
+                <totvs-grid-column field="" width="80" style="text-align: center;" template="controllerDetail.detail">&nbsp;</totvs-grid-column>
+            </totvs-grid>
+        </totvs-grid-detail>
+    </totvs-grid>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-primary" ng-click="controllerDetail.close()">{{i18n('l-close', [], 'dts/mcs')}}</button>
+</totvs-modal-footer>

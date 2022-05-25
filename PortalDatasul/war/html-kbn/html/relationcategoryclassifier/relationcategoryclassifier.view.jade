@@ -1,0 +1,48 @@
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+
+totvs-page(type="list")
+    totvs-page-navbar
+        totvs-page-breadcrumb
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb(link="#/dts/kbn/relationcategoryclassifier") {{'l-relation-category-classifier' | i18n}}
+            breadcrumb {{'l-relac-item-clasdor' | i18n}}
+        totvs-page-header
+            totvs-page-header-title(title="{{ controller.title | i18n }}" total=" {{controller.validateSizeRecords(controller.listItem || [])}}")
+            totvs-page-header-operation
+                .col-sm-offset-7
+                    establishment-select(ng-model="controller.establishment", callback="controller.establishmentChanged")
+                div.col-md-7.col-sm-7(style="padding: 10px;")
+                    a.btn.btn-primary(ng-click="controller.openLinkItemClassifierModal();")
+                        span.glyphicon.glyphicon-link
+                        span &nbsp; {{ 'l-link' | i18n }}
+                    span &nbsp;
+                    a.btn.btn-default(ng-href="/dts/datasul-rest/resources/api/fch/fchkb/fchkbmapping/downloadItemsEstab?cod_estab_erp={{controller.establishment}}" target="_blank")
+                        span.glyphicon.glyphicon-export
+                        span &nbsp; {{'l-export-flow' | i18n}}
+                    div(ng-show="controller.barProgress" style='display: inline-block; vertical-align:middle;')
+                        div.progress-bar.progress-bar-striped.active(style='width: 110px; height: 34px; border-radius:4px; padding:6px 12px; font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; font-size:14px; ')
+                            {{'l-importing' | i18n}}
+
+                    label.btn.btn-warning(role="button", for="file-input", ng-show="!controller.barProgress")
+
+                        span.glyphicon.glyphicon-import
+                        | &nbsp; {{'l-import-flow' | i18n}}
+                        span.file-text
+                        input(id="file-input" type="file" style="position:fixed;top:-999px;" ngf-select ngf-change="controller.uploadFiles($files);" ngf-multiple="false" ngf-allow-dir="false")
+                    
+                totvs-page-header-operation-filter(placeholder="{{ 'l-code-description' | i18n}}", ng-submit="controller.fillDataQuickSearch(controller.quickSearchTextTemp)", ng-model="controller.quickSearchTextTemp")
+
+                totvs-page-disclaimers(disclaimer-list="controller.filtersApplied", ng-click="controller.removeFilter")
+    totvs-page-content
+        totvs-page-content-header(ng-if="controller.validateSizeRecords(controller.listItem) > 0")
+            .row.field-addon-padding
+                .col-md-12
+                    .col-md-6
+                        button.btn.btn-primary(ng-click="controller.selectAllItems()") {{  'l-select-all' | i18n }}  
+                    .col-md-6
+                        button.pull-right.btn.btn-warning(ng-click="controller.deleteItem()" ng-disable="!controller.listItem.selected") {{'l-to-exclude' | i18n}}
+        totvs-page-alert(ng-if="controller.validateSizeRecords(controller.listItem) === 0" type="info" message="{{ 'msg-not-found' | i18n }}")
+        totvs-list-item(data-ng-repeat="item in controller.listItem | filter: controller.quickSearchFilter")
+            totvs-list-item-header(style="padding-left: 17px;")
+                input(type="checkbox" ng-model="item.selected")
+                span.title.link &nbsp; {{item | descGeneric:"{sku} - {desc} {ref} ({exp})"}} 

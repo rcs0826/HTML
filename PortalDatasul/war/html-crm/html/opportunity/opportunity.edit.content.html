@@ -1,0 +1,323 @@
+<totvs-page-detail class="row crm-page-details"
+				   ng-if="controller.editMode === true">
+
+	<div class="col-xs-12 no-gutter">
+
+		<totvs-page-detail-info
+			class="col-xs-12 col-md-6"
+			title="{{ 'l-account' | i18n: []: 'dts/crm' }}"
+			value="{{controller.model.ttConta.nom_razao_social}}">
+		</totvs-page-detail-info>
+
+		<totvs-page-detail-info
+			class="col-xs-12 col-md-6"
+			title="{{ 'l-sales-strategy' | i18n: []: 'dts/crm' }}"
+			value="{{controller.model.ttEstrategia.des_estrateg_vda}}">
+		</totvs-page-detail-info>
+
+	</div>
+
+</totvs-page-detail>
+
+<fieldset class="row">
+
+	<field type="input"
+		   class="col-md-12"
+		   ng-model="controller.model.des_oportun_vda"
+		   ng-required="true"
+		   ng-animate="'animate-if'"
+		   placeholder="{{ 'l-description' | i18n: []: 'dts/crm' }}"
+		   maxlength="40"
+		   canclean="undefined">
+
+		<label>{{ 'l-description' | i18n: []: 'dts/crm' }}</label>
+
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		<validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 40</validator>
+	</field>
+
+	<field 
+		type="select"
+		ng-if="controller.editMode !== true"
+		ng-model="controller.model.ttConta"
+		ng-disabled="!controller.canOverrideAccount"
+		ng-change="controller.onChangeAccount();"
+		ng-animate="'animate-if'"
+		ng-required="true"
+		canclean="undefined"
+	>
+
+		<zoom
+			zoom-service="crm.crm_pessoa.conta.zoom"
+			zoom-selected="controller.onChangeAccount(selected)"
+		>
+		</zoom>
+
+		<label>{{ 'l-account' | i18n: []: 'dts/crm' }}</label>
+
+		<include>
+			<ui-select-match placeholder="{{ 'l-account' | i18n: []: 'dts/crm' }}">
+				<span>
+					<span
+						ng-class="{'glyphicon glyphicon-lock': !$select.selected.log_acesso}"
+						class="col-xs-1 col-md-1"
+					>
+					</span>
+					<span
+						ng-class="{'glyphicon glyphicon-globe': $select.selected.log_matriz}"
+						class="col-xs-1 col-md-1"
+						style="padding: 0 !important; margin: 1px 0 0 -30px !important;"
+					>
+					</span>
+					<span
+						style="padding-left: 0 !important; margin-left: -10px; max-width: 233px !important;"
+						class="col-xs-6 col-md-6"
+					>
+						{{ $select.selected.nom_razao_social }} 
+						{{
+							$select.selected.cod_pessoa_erp 
+								? ' (' + $select.selected.cod_pessoa_erp + ')' 
+								: '' 
+						}}
+					</span>
+				</span>
+			</ui-select-match>
+
+			<ui-select-choices
+				repeat="account in controller.accounts track by $index"
+				refresh="controller.getAccounts($select.search)"
+				refresh-delay="500"
+			>
+				<span ng-if="!account.log_acesso" class="glyphicon glyphicon-lock"></span>
+				<span ng-if="account.log_matriz" class="glyphicon glyphicon-globe"></span>
+				<span
+					ng-bind-html="account.nom_razao_social + (account.cod_pessoa_erp 
+						? ' (' + account.cod_pessoa_erp + ')' 
+						: '') | highlight: $select.search"
+				>
+				</span>
+			</ui-select-choices>
+		</include>
+
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+	</field>
+
+	<% if (((!data["btn-new-contact"] || data["btn-new-contact"].log_visivel === true)) ||
+		((!data["l-contact"] || data["l-contact"].log_visivel === true))) { %>
+
+		<span ng-if="controller.editMode !== true">
+
+			<% if ((!data["l-contact"] || data["l-contact"].log_visivel === true)) { %>
+				<field
+					type="select"
+					canclean="undefined"
+					ng-model="controller.model.ttContato"
+					<% if ((!data["btn-new-contact"] || data["btn-new-contact"].log_visivel === true)) { %>
+						class="col-xs-10 col-md-5"
+					<% } %>
+					<% if (!(!data["l-contact"] || data["l-contact"].log_editavel === true)) { %>
+						ng-disabled="true">
+					<% } else { %>
+						ng-disabled="!controller.canOverrideAccountContact || !controller.model.ttConta">
+					<% } %>
+				>
+
+					<label>{{ 'l-contact' | i18n: []: 'dts/crm' }}</label>
+
+					<include>
+						<ui-select-match placeholder="{{ 'l-contact' | i18n: []: 'dts/crm' }}">
+							<span>
+								<span ng-class="{'glyphicon glyphicon-lock': !$select.selected.log_acesso}"></span>
+								&nbsp;{{ $select.selected.nom_razao_social }} 
+								{{
+									$select.selected.cod_pessoa_erp 
+										? ' (' + $select.selected.cod_pessoa_erp + ')' 
+										: ''
+								}}
+							</span>
+						</ui-select-match>
+
+						<ui-select-choices
+							repeat="contact in controller.listOfAccountContacts track by $index"
+							refresh="controller.getAccountContacts($select.search)"
+							refresh-delay="500"
+						>
+							<span ng-if="!contact.log_acesso" class="glyphicon glyphicon-lock">&nbsp;</span>
+							<span
+								style="padding-left: 0 !important; max-width: 233px !important;"
+								class="col-xs-6 col-md-6"
+								ng-bind-html="contact.nom_razao_social + (contact.cod_pessoa_erp 
+									? ' (' + contact.cod_pessoa_erp + ')' 
+									: '') | highlight: $select.search"
+							>
+							</span>
+						</ui-select-choices>
+					</include>
+				</field>
+
+				<% if ((!data["btn-new-contact"] || data["btn-new-contact"].log_visivel === true)) { %>
+					<div class="col-xs-2 col-md-1 crm-field-extra-button pull-right">
+						<button
+							class="btn btn-default"
+							ng-click="controller.newAccountContact();"
+							ng-disabled="!controller.model.ttConta"
+							style="width: 40px; margin: 2px 0 0 4px"
+						>
+							<span class="glyphicon glyphicon-plus"></span>
+						</button>
+					</div>
+				<% } %>
+
+			<% } %>
+		</span>
+	<% } %>
+
+	<field type="select"
+		   ng-if="controller.editMode !== true"
+		   ng-required="true"
+		   ng-model="controller.model.ttEstrategia"
+		   ng-disabled="(controller.editMode == true)"
+		   ng-change="controller.onChangeStrategy(controller.model.ttEstrategia);"
+		   canclean="undefined">
+		<label>{{ 'l-sales-strategy' | i18n: []: 'dts/crm' }}</label>
+		<include>
+			<ui-select-match placeholder="{{ 'l-sales-strategy' | i18n: []: 'dts/crm' }}">{{ $select.selected.des_estrateg_vda }}</ui-select-match>
+			<ui-select-choices repeat="strategy in controller.strategies track by $index"
+							   refresh="controller.getStrategies($select.search)"
+							   refresh-delay="500">
+				<span ng-bind-html="strategy.des_estrateg_vda | highlight: $select.search"></span>
+			</ui-select-choices>
+		</include>
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+	</field>
+
+	<field type="select"
+		   ng-required="true"
+		   ng-model="controller.model.ttFaseDesenvolvimento"
+		   ng-disabled="!controller.model.ttEstrategia"
+		   ng-change="controller.onChangePhase(controller.model.ttFaseDesenvolvimento);"
+		   canclean="undefined">
+		<label>{{ 'l-phase' | i18n: []: 'dts/crm' }}</label>
+		<include>
+			<ui-select-match placeholder="{{ 'l-phase' | i18n: []: 'dts/crm' }}">{{ $select.selected.des_fase }}</ui-select-match>
+			<ui-select-choices repeat="phase in controller.phases | filter: $select.search track by $index">
+				<span ng-bind-html="phase.des_fase | highlight: $select.search"></span>
+			</ui-select-choices>
+		</include>
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+	</field>
+
+	<% if ((!data["l-probability-of-sale"] || data["l-probability-of-sale"].log_visivel === true)) { %>
+	<field type="select"
+		   ng-model="controller.model.ttProbabilidade"
+		 <% if (!(!data["l-probability-of-sale"] || data["l-probability-of-sale"].log_editavel === true)) { %>
+		   ng-disabled="true"
+		   <% } %>
+		   canclean="undefined">
+		<label>{{ 'l-probability-of-sale' | i18n: []: 'dts/crm' }}</label>
+		<include>
+			<ui-select-match placeholder="{{ 'l-probability-of-sale' | i18n: []: 'dts/crm' }}">{{ $select.selected.des_probab_fechto }}</ui-select-match>
+			<ui-select-choices repeat="probability in controller.probabilities | filter: $select.search track by $index">
+				<span ng-bind-html="probability.des_probab_fechto | highlight: $select.search"></span>
+			</ui-select-choices>
+		</include>
+	</field>
+	<% } %>
+
+	<field type="select"
+		   ng-required="true"
+		   ng-model="controller.model.ttResponsavel"
+		   ng-disabled="(controller.model.ttConta.log_acesso !== true)"
+		   canclean="undefined">
+		<label>{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}</label>
+		<zoom zoom-service="crm.crm_usuar.zoom"></zoom>
+		<include>
+			<ui-select-match placeholder="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_usuar }}</ui-select-match>
+			<ui-select-choices repeat="user in controller.users track by $index"
+							   refresh="controller.getUsers($select.search)"
+							   refresh-delay="500">
+				<span ng-bind-html="user.nom_usuar | highlight: $select.search"></span>
+			</ui-select-choices>
+		</include>
+		<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+	</field>
+
+	<% if ((!data["l-currency"] || data["l-currency"].log_visivel === true)) { %>
+	<field type="select"
+		   ng-model="controller.model.ttMoeda"
+		 <% if (!(!data["l-currency"] || data["l-currency"].log_editavel === true)) { %>
+		   ng-disabled="true"
+		   <% } %>
+		   canclean="undefined">
+		<label>{{ 'l-currency' | i18n: []: 'dts/crm' }}</label>
+		<include>
+			<ui-select-match placeholder="{{ 'l-currency' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_moeda }}</ui-select-match>
+			<ui-select-choices repeat="currency in controller.currencies | filter: $select.search track by $index">
+				<span ng-bind-html="currency.nom_moeda | highlight: $select.search"></span>
+			</ui-select-choices>
+		</include>
+	</field>
+	<% } %>
+
+	<% if ((!data["l-opportunity-value"] || data["l-opportunity-value"].log_visivel === true)) { %>
+	<totvs-field
+		totvs-decimal
+		ng-model="controller.model.val_oportun_vda"
+		m-dec="2"
+		placeholder="{{ 'l-opportunity-value' | i18n: []: 'dts/crm' }}"
+		label="{{ 'l-opportunity-value' | i18n: []: 'dts/crm' }}"
+		canclean="0"
+		<% if (!(!data["l-opportunity-value"] || data["l-opportunity-value"].log_editavel === true)) { %>
+		ng-disabled="true"
+		<% } %>>
+	</totvs-field>
+	<% } %>
+
+	<% if ((!data["l-observation"] || data["l-observation"].log_visivel === true)) { %>
+	<fieldset class="col-xs-12 no-gutter">
+
+		<field type="textarea"
+			   class="col-md-12"
+			   maxlength="1500"
+			 <% if (!(!data["l-observation"] || data["l-observation"].log_editavel === true)) { %>
+			   ng-disabled="true"
+			   <% } %>
+			   ng-model="controller.model.dsl_oportun_vda">
+			<label>{{ 'l-observation' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+	</fieldset>
+	<% } %>
+
+	<% if ((!data["nav-attachment"] || data["nav-attachment"].log_visivel === true)) { %>
+	<fieldset class="col-xs-12" ng-if="controller.isEnableAttachment == true">
+
+		<div class="field no-gutter">
+			<div class="field-container col-xs-12">
+				<label class="field-label">{{ 'nav-attachment' | i18n: []: 'dts/crm' }}</label>
+				<div class="field-input">
+					<div class="input-group">
+						<label class="btn btn-default"
+							   role="button"
+							   for="file-input">
+								{{ 'l-select-files' | i18n: []: 'dts/crm' }}
+						</label>
+
+						<span ng-if="controller.model.files.length ===  1">1 {{ 'l-selected-files' | i18n: []: 'dts/crm' }}</span>
+						<span ng-if="controller.model.files.length > 1">{{ controller.model.files.length }} {{ 'l-selected-files-plural' | i18n: []: 'dts/crm' }}</span>
+
+						<input id="file-input"
+							   type="file"
+							   style="position:fixed;top:-999px;"
+							   ngf-select
+							   ngf-change="controller.onSelectFiles($files);"
+							   ngf-multiple="true"
+							   ngf-allow-dir="false"/>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</fieldset>
+	<% } %>
+</fieldset>

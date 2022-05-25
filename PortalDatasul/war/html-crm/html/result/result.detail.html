@@ -1,0 +1,121 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/result/">{{ 'nav-result' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header ng-if="(controller.model | isDefined)">
+
+			<totvs-page-header-title title="{{ controller.model.nom_restdo }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action on-back-link="#/dts/crm/result/"
+													on-edit="controller.onEdit"
+													on-remove="controller.onRemove"
+													hide-actions="true">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}"
+						  ng-if="(controller.model | isUndefined)">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-show="controller.model | isDefined">
+
+			<div class="col-xs-12 no-gutter"
+				 ng-if="controller.model.dsl_proced">
+
+				<totvs-page-detail-info class="col-xs-12"
+										title="{{ 'l-procedure' | i18n: []: 'dts/crm' }}">
+					<pre class="description">{{ controller.model.dsl_proced }}</pre>
+				</totvs-page-detail-info>
+
+			</div>
+
+			<totvs-tabset>
+
+				<tabset>
+
+					<tab heading="{{ 'nav-detail' | i18n: []: 'dts/crm' }} ({{ controller.model.ttDetalhamento.length || 0 }})">
+
+						<totvs-page-child type="list">
+
+							<br>
+
+							<totvs-page-content class="crm-tab">
+
+								<div class="row">
+									<div class="col-xs-9">
+										<h3 style="margin-top: 0px;">
+											{{ 'nav-detail' | i18n: []: 'dts/crm' }} ({{ controller.model.ttDetalhamento.length || 0 }})
+										</h3>
+									</div>
+
+									<div class="col-xs-3">
+										<button class="btn btn-primary pull-right"
+												ng-model="controller.selectedDetails"
+												ng-change="controller.onZoomSelectDetails();"
+												zoom
+												zoom-multiple
+												zoom-service="crm.crm_detmnto.zoom">
+											<span class="glyphicon glyphicon-plus"></span>
+											{{ 'btn-add' | i18n: []: 'dts/crm' }}
+										</button>
+									</div>
+
+								</div>
+
+								<totvs-divider></totvs-divider>
+
+								<totvs-page-alert type="info"
+												  message="{{ 'msg-not-found-detail' | i18n: []: 'dts/crm' }}"
+												  ng-if="!controller.model.ttDetalhamento || controller.model.ttDetalhamento.length <= 0">
+								</totvs-page-alert>
+
+								<div ng-if="controller.model.ttDetalhamento.length">
+
+									<div ng-repeat="detail in controller.model.ttDetalhamento">
+
+										<div class="row crm-tab-item">
+
+											<div class="col-xs-10 col-sm-11">
+												{{ detail.nom_detmnto_restdo }}
+											</div>
+
+											<div class="col-xs-2 col-sm-1 text-right">
+												<a class="clickable"
+												   ng-click="controller.removeDetail(detail, $index);">
+													{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+												</a>
+											</div>
+
+										</div>
+
+									</div>
+
+								</div>
+
+							</totvs-page-content>
+
+						</totvs-page-child>
+
+					</tab>
+
+				</tabset>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

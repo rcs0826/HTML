@@ -1,0 +1,291 @@
+<totvs-page type="list" style="height: 100%;">
+    <totvs-page-navbar>
+        
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{ 'l-comparative-item-production-real-standard' | i18n }}</breadcrumb>
+        </totvs-page-breadcrumb>
+    </totvs-page-navbar>
+    
+    
+    <totvs-page-content>
+        <totvs-page-form>
+            <totvs-row>
+                <!-- ESTABELECIMENTO -->
+                <field type="select2" 
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    data-ng-model="controller.model.site"
+                    select-conector="{{i18n('l-site', [], 'dts/mcs')}}"
+                    select-id="cod-estabel"
+                    select-description="nome"
+                    select-service="mpd.estabelec.zoom"
+                    ng-disabled="!controller.isMultiSites"
+                    ng-change="controller.onChangeSite()"
+                    canclean
+                    required>
+                    <zoom zoom-service="mpd.estabelec.zoom"
+                          required></zoom>
+                    <label>{{i18n('l-site', [], 'dts/mcs')}}</label>
+                    <include>
+                        <ui-select-match>
+                        {{$select.selected['cod-estabel'] + ' - ' + $select.selected['nome']}}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="site in controller.serviceSiteZoom.siteList track by $index"
+                            refresh="controller.serviceSiteZoom.getSite($select.search)"
+                            refresh-delay="1000">
+                            <span ng-bind-html="site['cod-estabel'] + ' - ' + site['nome'] | highlight: $select.search">
+                            </span>
+                        </ui-select-choices>
+                    </include>
+
+                </field>
+
+                <!-- DATA INICIAL -->
+                <field type="date"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                        ng-model="controller.model.initialPeriod"
+                        required>
+                    <label>{{i18n('l-initial-date', [], 'dts/mcc')}}</label>
+                </field>
+        
+                <!-- DATA FINAL -->
+                <field type="date"
+                        class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                        ng-model="controller.model.finalPeriod"
+                        required>
+                    <label>{{i18n('l-final-date', [], 'dts/mcc')}}</label>
+                </field>
+                
+                <!-- ITEM -->
+                <field type="select2"
+                       class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                       data-ng-model="controller.model.item"
+                       select-conector="{{i18n('l-item', [], 'dts/mcs')}}"
+                       select-id="it-codigo"
+                       select-description="desc-item"
+                       select-service="men.item.zoom"
+                       ng-change="controller.onChangeItem()"
+                       required
+                       canclean>
+                    <label>{{i18n('l-item', [], 'dts/mcs')}}</label>
+                    <zoom zoom-service="men.item.zoom">
+                    </zoom>
+                    <include>
+                        <ui-select-match>
+                            {{$select.selected['it-codigo'] + ' - ' + $select.selected['desc-item']}}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="item in controller.serviceItemZoom.listOfItems track by $index"
+                            refresh="controller.serviceItemZoom.getItems($select.search)"
+                            refresh-delay="1000">
+                            <span ng-bind-html="item['it-codigo'] + ' - ' + item['desc-item'] | highlight: $select.search">
+                            </span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+
+                <!-- REFERENCIA -->
+                <field type="select"
+                       class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                       ng-disabled="!controller.model.itemHasReference"
+                       ng-model="controller.model.reference"
+                       ng-change="controller.onChangeReference()"
+                       canclean>
+                    <label>{{ 'l-reference' | i18n }}</label>
+                    <zoom zoom-service="men.referenciaitem.zoom"
+                          zoom-init="{'property': 'it-codigo',
+                                      'value': {'start': controller.model.item['it-codigo'],
+                                                'end': controller.model.item['it-codigo']}}">
+                    </zoom>
+                    <include>
+                        <ui-select-match placeholder="" >
+                            {{$select.selected['cod-refer']}}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="reference in controller.serviceItemReferenceZoom.referenceList track by $index"
+                            refresh="controller.serviceItemReferenceZoom.getReference(
+                                        {'search': $select.search,
+                                         'init': {'property': 'it-codigo',
+                                                  'value': controller.model.item['it-codigo'],
+                                                  'type': 'integer'}})"
+                            refresh-delay="1000">
+                            <span ng-bind-html="reference['cod-refer'] | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+            </totvs-row>
+            <totvs-row>
+                <!-- Botão Aplicar -->
+                <totvs-button style="padding-top: 25px"
+                            t-click="controller.openParameters()"
+                            t-label="{{ i18n('l-parameters', [], 'dts/mcs') }}"
+                            class="col-lg-2 col-md-2 col-sm-6 col-xs-6">                                
+                </totvs-button>                
+                <!-- Botão Parâmetros -->
+                <totvs-button style="padding-top: 25px"
+                              t-click="controller.refreshComparative()"
+                              t-label="{{i18n('l-apply', [], 'dts/mce')}}"                              
+                              ng-class="controller.alertsModel.length > 0 ? 'col-md-2 col-xs-5' : 'col-md-2 col-xs-6'">
+                </totvs-button>
+
+                <span ng-if="controller.alertsModel.length != 0" 
+                    class="glyphicon glyphicon-alert"
+                    style="padding-top: 35px; color:#ffca00; cursor:pointer"
+                    ng-click="controller.openAlerts()">
+                </span>
+
+            </totvs-row>
+        </totvs-page-form>
+        
+        <totvs-page-detail>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <!-- Quantidade Produzida -->
+                <div class=" col-lg-6 col-md-6 col-sm-6 col-xs-6" 
+                     style="text-align: center;vertical-align: middle">
+                    <a ng-click="controller.openDetail(3)"
+                       href='#/dts/mcs/comparativeRealStandard/'>
+                        <div class="label label-primary col-lg-12 col-md-12 col-sm-12 col-xs-12" 
+                            style="display: block;margin-top: 8px"
+                            title="{{ i18n('l-sum-finished-product', [], 'dts/mcs') }}">
+                            <h6 style="font-weight: bold;margin-top: 6px;margin-bottom: 3px;">{{i18n('l-quantity-produced', [], 'dts/mcp')}}</h6>
+                            <h2 style="font-weight: bold;margin-top: 0px;margin-bottom: 3px;">{{controller.comparative.produced | number:2}}</h2>
+                        </div>
+                    </a>
+                </div>
+                <!-- Refugo -->
+                <div class=" col-lg-6 col-md-6 col-sm-6 col-xs-6" 
+                    style="text-align: center;vertical-align: middle">
+                    <a ng-click="controller.openDetail(3)"
+                       href='#/dts/mcs/comparativeRealStandard/'>
+                        <div class="label label-primary col-lg-12 col-md-12 col-sm-12 col-xs-12" 
+                            style="display: block;margin-top: 8px"
+                            title="{{ i18n('l-sum-movements-ref-rop', [], 'dts/mcs') }}">
+                            <h6 style="font-weight: bold;margin-top: 6px;margin-bottom: 3px;">{{i18n('l-refugo', [], 'dts/mcs')}}</h6>
+                            <h2 style="font-weight: bold;margin-top: 0px;margin-bottom: 3px;">{{controller.comparative.scrap | number:2}}</h2>
+                        </div>
+                    </a>
+                </div>
+                <!-- Botão Detalhar Material -->
+                <totvs-button style="padding-top: 25px"
+                              t-click="controller.openDetail(0)"
+                              t-label="{{ controller.labelMat }}"
+                              data-toggle="tooltip"
+                              title="{{ 'l-movto-mat-order' | i18n }}"
+                              class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                </totvs-button>
+                <!-- Botão Detalhar GGF -->
+                <totvs-button style="padding-top: 25px"
+                              t-click="controller.openDetail(1)"
+                              t-label="{{ controller.labelGgf }}"
+                              data-toggle="tooltip"
+                              title="{{ 'l-movto-ggf-order' | i18n }}"
+                              class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                </totvs-button>
+                <!-- Botão Detalhar MOB -->
+                <totvs-button style="padding-top: 25px"
+                              t-click="controller.openDetail(2)"
+                              t-label="{{ controller.labelMob }}"
+                              data-toggle="tooltip"
+                              title="{{ 'l-movto-mob-order' | i18n }}"
+                              class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                </totvs-button>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="row" style="padding-left: 15px; padding-top: 5px;">
+                    <!-- Valor Material Real -->
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                        title="{{ 'l-value-real-material' | i18n }}"
+                        value="{{controller.comparative.realMaterialValue | number:2}}">
+                    </totvs-page-detail-info>
+                    <!-- Valor Material Padrão -->
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                        title="{{ 'l-standard-material-value' | i18n }}"
+                        value="{{controller.comparative.standardMaterialValue | number:2}}">
+                    </totvs-page-detail-info>
+                    <!-- % Variação Material -->
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                        title="{{ 'l-percentage-material-variation' | i18n }}"
+                        value="{{controller.comparative.variationMaterialPercentage | number:2}}">
+                    </totvs-page-detail-info>
+                </div>
+                <div class="row" style="padding-left: 15px; padding-top: 5px;">
+                    <!-- Valor GGF Real -->
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                        title="{{ 'l-real-ggf-value' | i18n }}"
+                        value="{{controller.comparative.realGGFValue | number:2}}">
+                    </totvs-page-detail-info>
+                    <!-- Valor GGF Padrão -->
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                        title="{{ 'l-standard-ggf-value' | i18n }}">
+                        <a href='#/dts/mcs/comparativeRealStandard/'
+                           data-toggle="popover"
+                           title="<b>{{ 'l-ggf-detail' | i18n }}</b>"
+                           data-placement="auto"
+                           data-content="{{controller.comparative.ggfDetailHtml}}"
+                           data-html="true"><b>{{controller.comparative.standardGGFValue | number:2}}</b></a>
+                    </totvs-page-detail-info>
+                    <!-- % Variação GGF -->
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                        title="{{ 'l-percentage-variation-ggf' | i18n }}"
+                        value="{{controller.comparative.variationGGFPercentage | number:2}}">
+                    </totvs-page-detail-info>
+                </div>
+                <div class="row" style="padding-left: 15px; padding-top: 5px;">
+                    <!-- Valor MOB Real -->
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                        title="{{ 'l-real-labor-value' | i18n }}"
+                        value="{{controller.comparative.realLaborValue | number:2}}">
+                    </totvs-page-detail-info>
+                    <!-- Valor MOB Padrão -->
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                        title="{{ 'l-standard-mob-value' | i18n }}"
+                        value="{{controller.comparative.standardLaborValue | number:2}}">
+                    </totvs-page-detail-info>
+                    <!-- % Variação MOB -->
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-4"
+                        title="{{ 'l-percentage-change-mob' | i18n }}"
+                        value="{{controller.comparative.variationLaborPercentage | number:2}}">
+                    </totvs-page-detail-info>
+                </div>
+            </div>
+      
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left: 7.5px; padding-right: 0px">
+                <div class="panel panel-default">
+                    <div class="panel-body" style="text-align:center;">
+                        <!-- Gráfico comparação valores Real x Padrão -->
+                        <totvs-chart
+                            t-title-position="top"
+                            t-type-chart="column"
+                            t-series="controller.series"
+                            t-categories="controller.categories"
+                            t-height="300">
+                        </totvs-chart>
+                    </div>
+                </div>
+            </div>
+        </totvs-page-detail>
+    </totvs-page-content>
+</totvs-page>
+
+<style>
+    .modal-lg {
+        width: 95%;
+    }
+    .modal-content {
+        width: 100%;
+        font-family:'Arial';
+        font-size:13px;
+    }
+
+</style>

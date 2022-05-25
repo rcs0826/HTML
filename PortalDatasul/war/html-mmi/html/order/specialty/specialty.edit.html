@@ -1,0 +1,142 @@
+<totvs-modal-header>
+    {{specialtyEditCtrl.headerTitle}}
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<totvs-page-content style="border:0px">           	              
+    	<totvs-page-detail style="padding-top:0px">
+      		<div class="row">
+        		<div class="col-xs-12">
+		            <totvs-field
+						totvs-select
+						class="col-lg-9 col-md-9 col-sm-12 col-xs-12"
+						ng-model="specialtyEditCtrl.specialty['cd-tarefa']"
+						select-id="cd-tarefa"
+                 		id="cd-tarefa"
+		                select-description="descricao"
+		                select-service="mmi.ord-taref.zoom"
+		                zoom-service="mmi.ord-taref.zoom"
+		                return-object="select-id"
+		                label="{{ 'l-task' | i18n }}"		                
+		                required
+		                canclean
+		                ng-change="specialtyEditCtrl.setTime()"
+		                ng-disabled="!specialtyEditCtrl.specialty.isNew">
+	              	</totvs-field>
+        		</div>
+        		<div class="col-xs-12">
+            		<totvs-field
+						totvs-select
+						class="col-lg-9 col-md-9 col-sm-12 col-xs-12"
+						ng-model="specialtyEditCtrl.specialty['tp-especial']"
+						select-id="tp-especial"
+						id="tp=especial"
+						select-description="descricao"
+						select-service="mmi.mi-espec.zoom"
+						zoom-service="mmi.mi-espec.zoom"
+						min-length="2"
+						label="{{ 'l-specialty' | i18n }}"
+		                required
+						ng-disabled="!specialtyEditCtrl.specialty.isNew"
+					canclean>
+          			</totvs-field>              	            
+            	</div>
+            	<div class="col-xs-12 row"> 
+	            	<div class="col-xs-4">
+				  		<field 
+				  			type="input"
+							name-id="nr-homens"
+     						id="nr-homens"
+							class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+							maxlength="3"
+							focus
+							data-ng-model="specialtyEditCtrl.specialty['nr-homens']"
+							numbers-only>
+				        	<label>{{ 'l-men' | i18n }}</label>
+				        </field>
+		            </div>
+	            	<div class="col-xs-4">
+				  		<totvs-field totvs-decimal
+							name-id="tempo"
+							class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+							ng-maxlength="14"
+							data-ng-model="specialtyEditCtrl.specialty['tempo']"
+					     	value="1"
+		                   	m-dec="4"	                   	
+							label="{{ 'l-time-2' | i18n }}" >
+							<validator key="maxlength">{{ 'l-invalid-value' | i18n }}</validator>
+				        </totvs-field>
+	            	</div>	            
+            	</div>
+            	<div class="col-xs-12 row">
+		            <div class="col-xs-4">
+			            <totvs-field totvs-decimal
+			                   name-id="aloc-minima"
+			                   class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+			                   value="1"
+			                   m-dec="4"
+			                   data-ng-model="specialtyEditCtrl.specialty['aloc-minima']"
+			                   label="{{ 'l-min-allocation' | i18n }}"
+			                   ng-maxlength="14">
+			                   <validator key="maxlength">{{ 'l-invalid-value' | i18n }}</validator>
+			            </totvs-field>
+		            </div>
+		            <div class="col-xs-4">
+			            <totvs-field totvs-decimal
+			                   name-id="aloc-maxima"
+			                   class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+			                   value="1"
+			                   m-dec="4"
+			                   data-ng-model="specialtyEditCtrl.specialty['aloc-maxima']"
+			                   label="{{ 'l-max-allocation' | i18n }}"
+			                   ng-maxlength="14">
+			                   <validator key="maxlength">{{ 'l-invalid-value' | i18n }}</validator>
+			            </totvs-field>
+		            </div>
+	            </div>
+	            <div class="col-xs-4 form-box">
+					<totvs-field totvs-radio
+						class="col-md-12"
+				   		label="{{ 'l-specialty-type' | i18n }}"
+				   		t-options="specialtyEditCtrl.optionsRadioTipoSpec"
+				   		ng-model="specialtyEditCtrl.specialty['tipo-espec']">
+					</totvs-field>
+	            </div>           
+	            <div class="col-xs-4">         
+					<totvs-field totvs-radio
+						class="col-md-12"
+					   	label="{{ 'l-time-type' | i18n }}"
+					   	t-options="specialtyEditCtrl.optionsRadioTipoTempo"
+					   	ng-model="specialtyEditCtrl.specialty['tipo-tempo']">
+					</totvs-field>
+		        </div>
+      		</div>
+      		<br>
+	      	<accordion close-others="specialtyEditCtrl.closeOther">
+	        	<accordion-group is-open="specialtyEditCtrl.accord.narrative">
+              		<accordion-heading>
+                  		{{'l-narrative' | i18n }} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': specialtyEditCtrl.accord.narrative, 'glyphicon-chevron-right': !specialtyEditCtrl.accord.narrative}"></i>
+              		</accordion-heading>
+	            </saccordion-group>
+	            <field type="textarea" class="no-padding col-sm-12"
+	                   ng-model="specialtyEditCtrl.specialty['msg-exp']">
+	            </field>
+          	</accordion>
+		</totvs-page-detail>
+	</totvs-page-content>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="specialtyEditCtrl.close()">{{ 'l-cancel' | i18n }}</button>
+    <button ng-if="specialtyEditCtrl.specialty.isNew" type="button" class="btn btn-default" data-ng-click="specialtyEditCtrl.save(true);">{{ 'l-save-new' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="specialtyEditCtrl.save(false)">{{ 'l-save' | i18n }}</button>        
+</totvs-modal-footer>		
+<style>
+	.page-content .item-container {
+		padding: 0 10px !important;
+	}
+
+	.form-box {
+		margin: 5px 0;
+	}
+	
+</style>

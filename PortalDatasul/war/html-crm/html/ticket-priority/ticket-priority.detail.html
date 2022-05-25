@@ -1,0 +1,58 @@
+<totvs-page type="detail">
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/ticket-priority/">{{ 'nav-ticket-priority' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ controller.model.nom_priorid_ocor }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action on-back-link="#/dts/crm/ticket-priority/"
+													on-edit="controller.onEdit"
+													on-remove="controller.onRemove"
+													hide-actions="true">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+    
+    <totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.model">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-show="controller.model">
+            
+            <div class="col-xs-12 no-gutter">
+
+                <totvs-page-detail-info class="col-xs-12 col-sm-3"
+										title="{{ 'l-suspended-a' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+					{{ (controller.model.log_suspenso === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</totvs-page-detail-info>
+
+            </div>
+            
+             <totvs-tabset class="no-border">
+				<tabset>
+					<tab heading="{{ 'l-resource-level' | i18n: []: 'dts/crm' }}">
+                        <div ng-controller="crm.crm_priorid_ocor_niv_recur.list.control as levelResourceController" ng-include="'/dts/crm/html/ticket-priority/resource-level/resource-level.list.html'"></div>
+					</tab>
+				</tabset>
+                 
+            </totvs-tabset>
+        </totvs-page-detail>
+        
+        
+    </totvs-page-content>
+
+</totvs-page>

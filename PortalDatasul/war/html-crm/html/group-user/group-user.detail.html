@@ -1,0 +1,76 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/group-user/">{{ 'nav-group-user' | i18n: []: 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-group-user' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ controller.model.nom_grp_usuar }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation ng-show="controller.model | isDefined">
+				<totvs-page-header-operation-action on-back-link="#/dts/crm/group-user/"
+													on-edit="controller.onEdit"
+													on-remove="controller.onRemove"
+													hide-actions="true">
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}"
+						  ng-if="(controller.model | isUndefined)">
+		</totvs-page-alert>
+
+		<totvs-page-detail ng-show="controller.model | isDefined">
+
+			<div class="col-xs-12 no-gutter">
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-only-responsible-execute-task' | i18n: []: 'dts/crm' }}">
+					{{ (controller.model.log_usuar_respons_tar === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</totvs-list-item-info>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-restrict-delete-Attachments' | i18n: []: 'dts/crm' }}">
+					{{ (controller.model.log_livre_1 === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</totvs-list-item-info>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-supervisor-privilege' | i18n: []: 'dts/crm' }}">
+					{{ (controller.model.isSupervisor === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</totvs-list-item-info>	
+				
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-6 col-md-3"
+					title="{{ 'l-consult-any-ticket-gp' | i18n: []: 'dts/crm' }}">
+					{{ (controller.model.log_permis_especial_con === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</totvs-list-item-info>	
+
+			</div>
+
+			<totvs-tabset class="no-border">
+				<tabset>
+					<tab heading="{{ 'l-users' | i18n: []: 'dts/crm' }}">
+						<ng-include src="'/dts/crm/html/group-user/user/user.list.html'"></ng-include>
+					</tab>
+				</tabset>
+			</totvs-tabset>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

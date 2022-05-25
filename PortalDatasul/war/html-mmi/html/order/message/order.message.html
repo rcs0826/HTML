@@ -1,0 +1,46 @@
+<totvs-modal-header>
+    {{ messageCtrl.model.title }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-page-content style="border:0px">           
+        <totvs-page-detail style="padding-top:0px">
+			
+			<totvs-page-content>
+				<totvs-grid id="myGrid"
+							grid-data="messageCtrl.model.messages"
+				            grid-height="450"
+				            navigatable="true" 
+				            editable="false" 
+				            auto-resize-content="true"
+				            selectable="row"
+				            scrollable="true"
+				            resizable="true">
+				    <totvs-grid-column width="32">
+						<template>
+							<a class="glyphicon glyphicon-remove btn-errors" 
+							   ng-if="dataItem.msgNumber != 0" style="cursor: default"></a>
+							<a class="glyphicon glyphicon-ok btn-ok"
+							   ng-if="dataItem.msgNumber == 0" style="cursor: default"></a>
+						</template>
+				    </totvs-grid-column>
+				    <totvs-grid-column field="nrOrdProdu" width="100" style="text-align: right">{{ 'l-ord' | i18n }}</totvs-grid-column>                    
+				    <totvs-grid-column field="msgNumber" width="100" style="text-align: right">{{ 'l-message' | i18n }}</totvs-grid-column>
+				    <totvs-grid-column field="msgDescription" width="420">{{ 'l-description' | i18n }}</totvs-grid-column>	    
+				    <totvs-grid-column field="msgHelp" width="750">{{ 'l-help' | i18n }}</totvs-grid-column>
+				</totvs-grid>
+			</totvs-page-content>
+
+		</totvs-page-detail>
+	</totvs-page-content>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-primary" data-ng-click="messageCtrl.cancel()">{{ 'l-close' | i18n }}</button>
+</totvs-modal-footer>
+
+<style>
+	.btn-ok { color: green !important; }
+	.btn-errors { color: red !important; }
+</style>

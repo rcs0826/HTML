@@ -1,0 +1,36 @@
+<link type="text/css" rel="stylesheet" href="/dts/mmi/html/sprint/especialidade/especialidade.css"></link>
+<div class="row" style="margin: 0px" ng-style="especialidadeCtrl.obterAltura()">
+	<div class="div-arvore col-md-12" 
+		 style="padding-bottom:10px; 
+				padding-left:10px; 
+				padding-right:10px; 
+				border-top-left-radius: 4px; 
+				border-top-right-radius: 4px;">
+		<div class="row col-md-11">{{ 'l-specialtys' | i18n }}</div>
+		<div>
+			<button class="btn btn-secondary dropdown-toggle" 
+							type="button" 
+							id="dropdownMenu1" 
+							data-toggle="dropdown" 
+							position="relative" 
+							aria-haspopup="true" 
+							aria-expanded="true">
+				<span class="glyphicon glyphicon-export" style="color: black"/> 
+				<span class="caret" style="color: black"></span>
+			</button>
+			<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+				<li><a style="cursor:pointer" ng-click="especialidadeCtrl.exportaHorasTotaisEspecialidadesCsv()">{{ 'l-export-speciality-view' | i18n }}</a></li>				
+			</ul>
+		</div>
+	</div>
+
+	<div style="padding-left: 0px; padding-right: 0px">
+		<div ng-repeat="especialidade in especialidadeCtrl.lista">
+			<div id="div-{{especialidade['tp-especial']}}"
+			 	 class="div-nivel-especialidade"
+				 ng-click="especialidadeCtrl.selecionaEspecialidade($event, especialidade)">
+				{{especialidade['tp-especial']}} - {{especialidade.descricao}} ({{especialidade.desAtividade}})
+			</div>
+		</div>	
+	</div>
+</div>

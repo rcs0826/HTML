@@ -1,0 +1,502 @@
+<totvs-page>
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+
+			<breadcrumb link="#/">{{ 'l-home' | i18n: []: 'dts/acr' }}</breadcrumb>
+			<breadcrumb>{{ 'l-inquire-doc-detail' | i18n: []: 'dts/acr' }}</breadcrumb>
+
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			{{ 'l-document' | i18n: []: 'dts/acr' }} / {{ 'l-parcel' | i18n | i18n: []: 'dts/acr' }}:
+
+			<totvs-page-header-title 
+				title="{{controller.detailResult.documentCode}} / {{controller.detailResult.documentParcel}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<totvs-page-header-operation-action on-back-link="#/dts/acr/inquirecustdocs">
+					<action icon="glyphicon-menu-left" ng-click="controller.previousDocument()">
+					</action>
+					<action icon="glyphicon-menu-right" ng-click="controller.nextDocument()">
+					</action>
+					<action icon="glyphicon-search" ng-submit="controller.load()" ng-click="controller.openSelectDocs()">
+						{{'l-select-document' | i18n: []: 'dts/acr' }}
+					</action>
+				</totvs-page-header-operation-action>
+
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-detail>
+
+			<div class="col-lg-12">
+
+				<totvs-page-detail-info 
+					class="col-xs-12 col-sm-3 text-center" 
+					title="{{ 'l-site' | i18n }}">
+					{{ controller.detailResult.site }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info 
+					class="col-xs-12 col-sm-3 text-center" 
+					title="{{ 'l-invoice-series' | i18n }}">
+					{{ controller.detailResult.documentSeries }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info 
+					class="col-xs-12 col-sm-3 text-center" 
+					title="{{ 'l-class' | i18n }}">
+					{{ controller.detailResult.documentClass }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info 
+					class="col-xs-12 col-sm-3 text-center" 
+					title="{{ 'l-customer' | i18n }}">
+					{{ controller.detailResult.shortName }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info 
+					class="col-xs-12 col-sm-3 text-center" 
+					title="{{ 'l-due-date' | i18n }}">
+					{{ controller.detailResult.dueDate | date: ('l-date-format' | i18n: []: 'dts/acr') }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info 
+					class="col-xs-12 col-sm-3 text-center" 
+					title="{{ 'l-original-value' | i18n }}">
+					{{ controller.detailResult.origAmount | currency: ('l-currency-format' | i18n: []: 'dts/acr') }}
+				</totvs-page-detail-info>
+
+				<totvs-page-detail-info 
+					class="col-xs-12 col-sm-3 text-center" 
+					title="{{ 'l-balance' | i18n }}">
+					{{ controller.detailResult.balance | currency: ('l-currency-format' | i18n: []: 'dts/acr') }}
+				</totvs-page-detail-info>
+
+			</div>
+
+			<totvs-divider></totvs-divider>
+
+			<div class="col-md-6" style="height:210px;">
+
+				<totvs-widget style="height:195px;">
+
+					<strong>
+						<totvs-widget-header class="text-center">
+							{{ 'l-dates' | i18n }}
+						</totvs-widget-header>
+					</strong>
+
+					<totvs-widget-body>
+
+						<totvs-page-detail-info 
+							class="col-xs-12 col-sm-6 text-center" 
+							title="{{ 'l-print-date' | i18n }}" 
+							value="{{ controller.detailResult.printDate | date: ('l-date-format' | i18n: []: 'dts/acr') }}">
+						</totvs-page-detail-info>
+
+						<totvs-page-detail-info 
+							class="col-xs-12 col-sm-6 text-center" 
+							title="{{ 'l-transaction' | i18n }}" 
+							value="{{ controller.detailResult.transactionDate | date: ('l-date-format' | i18n: []: 'dts/acr') }}">
+						</totvs-page-detail-info>
+
+						<totvs-page-detail-info 
+							class="col-xs-12 col-sm-6 text-center" 
+							title="{{ 'l-original-due-date' | i18n }}" 
+							value="{{ controller.detailResult.dueDate | date: ('l-date-format' | i18n: []: 'dts/acr') }}">
+						</totvs-page-detail-info>
+
+						<totvs-page-detail-info 
+							class="col-xs-12 col-sm-6 text-center" 
+							title="{{ 'l-settlement-forecast' | i18n }}" 
+							value="{{ controller.detailResult.settleFcstDate | date: ('l-date-format' | i18n: []: 'dts/acr') }}">
+						</totvs-page-detail-info>
+
+					</totvs-widget-body>
+				</totvs-widget>
+			</div>
+
+			<div class="col-md-6" style="height:210px;">
+
+				<totvs-widget style="height:195px;">
+
+					<strong>
+						<totvs-widget-header class="text-center">
+							{{ 'l-financial-credit' | i18n }}
+						</totvs-widget-header>
+					</strong>
+
+					<totvs-widget-body>
+
+						<div class="col-md-12">
+
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-4 text-center" 
+								title="% {{ 'l-interest' | i18n }}" 
+								value="{{ controller.detailResult.intrsDayPercent | number: 6 }}%">
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-4 text-center" 
+								title="{{ 'l-interest-grace-days' | i18n }}"
+							 	value="{{ controller.detailResult.intrsGraceDays }}">
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-4 text-center" 
+								title="{{ 'l-interest-calc-type' | i18n }}" 
+								value="{{ controller.detailResult.intrsCalcType }}">
+							</totvs-page-detail-info>
+
+						</div>
+
+						<div class="col-md-12">
+
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-4 text-center" 
+								title="{{ 'l-penaulty-by-delay' | i18n }}" 
+								value="{{ controller.detailResult.pnltyPercent | number: 2}}%">
+							</totvs-page-detail-info>
+
+							<div class="col-md-4"></div>
+
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-4 text-center" 
+								title="{{ 'l-penaulty-grace-days' | i18n }}"
+							 	value="{{ controller.detailResult.pnltyGraceDays }}">
+							</totvs-page-detail-info>
+
+						</div>
+
+					</totvs-widget-body>
+
+				</totvs-widget>
+
+			</div>
+
+			<div class="col-md-6">
+				<totvs-widget style="height:290px;">
+
+					<strong>
+						<totvs-widget-header class="text-center">
+							{{ 'l-amounts' | i18n }}
+						</totvs-widget-header>
+					</strong>
+
+					<totvs-widget-body>
+
+						<totvs-page-detail-info 
+							class="text-center" 
+							title="{{ 'l-net-amount' | i18n }}" 
+							value="{{ controller.detailResult.netAmount | currency: ('l-currency-format' | i18n: []: 'dts/acr') }}">
+						</totvs-page-detail-info>
+
+						<div class="col-md-12">
+
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-6 text-center" 
+								title="{{ 'l-banking-expense' | i18n }}" 
+								value="{{ controller.detailResult.bankExpenditures | currency: ('l-currency-format' | i18n: []: 'dts/acr') }}">
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-6 text-center"
+								title=" {{ 'l-write-off-amount' | i18n }}" 
+								value="{{ controller.detailResult.writeOffValue | currency: ('l-currency-format' | i18n: []: 'dts/acr') }}">
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-6 text-center" 
+								title=" {{ 'l-penaulty-amount' | i18n }}" 
+								value="{{ controller.detailResult.pnltyValue | currency: ('l-currency-format' | i18n: []: 'dts/acr') }}">
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-6 text-center" 
+								title=" {{ 'l-interest-amount' | i18n }}" 
+								value="{{ controller.detailResult.intrsValue | currency: ('l-currency-format' | i18n: []: 'dts/acr') }}">
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-6 text-center" 
+								title=" {{ 'l-restatement' | i18n }}"
+								value="{{ controller.detailResult.restValue | currency: ('l-currency-format' | i18n: []: 'dts/acr') }}">
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-6 text-center" 
+								title=" {{ 'l-discount-amount' | i18n }}" 
+								value="{{ controller.detailResult.discountValue | currency: ('l-currency-format' | i18n: []: 'dts/acr') }}">
+							</totvs-page-detail-info>
+
+						</div>
+
+					</totvs-widget-body>
+				</totvs-widget>
+			</div>
+
+			<div class="col-md-6">
+				<totvs-widget style="height:290px;">
+
+					<strong>
+						<totvs-widget-header class="text-center">
+							{{ 'l-discount-write-off' | i18n }}
+						</totvs-widget-header>
+					</strong>
+
+					<totvs-widget-body>
+
+						<div class="col-xs-6">
+
+							<totvs-widget style="height:180px;">
+
+								<totvs-page-detail-info class="text-center">
+									<strong>{{ 'l-calculated-discount' | i18n }}</strong>
+								</totvs-page-detail-info>
+
+								<totvs-widget-body>
+									<totvs-page-detail-info 
+										class="col-xs-12 col-sm-12 text-center" 
+										title="{{ 'l-discount-date' | i18n }}" 
+										value="{{ controller.detailResult.discountDate | date: ('l-date-format' | i18n: []: 'dts/acr') }}">
+									</totvs-page-detail-info>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-sm-12 text-center" 
+										title="{{ 'l-discount-amount' | i18n }}" 
+										value="{{ controller.detailResult.discountCalcValue | currency: ('l-currency-format' | i18n: []: 'dts/acr') }}">
+									</totvs-page-detail-info>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-sm-12 text-center" 
+										title="{{ 'l-discount-percentage' | i18n }}"
+										value="{{ controller.detailResult.discountPercent | number: 4 }}%">
+									</totvs-page-detail-info>
+
+								</totvs-widget-body>
+
+							</totvs-widget>
+
+						</div>
+						<div class="col-xs-6">
+
+							<totvs-widget style="height:180px;">
+
+								<totvs-page-detail-info class="text-center">
+									<strong>{{ 'l-calculated-write-off' | i18n }}</strong>
+								</totvs-page-detail-info>
+
+								<totvs-widget-body>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-sm-12 text-center" 
+										title="{{ 'l-write-off-date' | i18n }}" 
+										value="{{ controller.detailResult.writeOffDate | date: ('l-date-format' | i18n: []: 'dts/acr') }}">
+									</totvs-page-detail-info>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-sm-12 text-center" 
+										title="{{ 'l-write-off-amount' | i18n }}" 
+										value="{{ controller.detailResult.writeOffCalcValue | currency: ('l-currency-format' | i18n: []: 'dts/acr') }}">
+									</totvs-page-detail-info>
+
+									<totvs-page-detail-info 
+										class="col-xs-12 col-sm-12 text-center" 
+										title="{{ 'l-write-off-percentage' | i18n }}"
+										value="{{ controller.detailResult.writeOffPercent | number: 4}}%">
+									</totvs-page-detail-info>
+
+								</totvs-widget-body>
+
+							</totvs-widget>
+						</div>
+
+					</totvs-widget-body>
+
+				</totvs-widget>
+
+			</div>
+
+			<div class="col-md-12">
+				<totvs-widget>
+
+					<strong>
+						<totvs-widget-header class="text-center">
+							{{ 'l-contact-info' | i18n }}
+						</totvs-widget-header>
+					</strong>
+
+					<totvs-widget-body>
+
+						<div class="col-md-12">
+
+							<div class="col-md-12">
+
+								<totvs-widget class="col-md-12">
+
+									<totvs-page-detail-info class="text-center">
+										<strong>{{ 'l-collection-address' | i18n }}</strong>
+									</totvs-page-detail-info>
+
+									<totvs-widget-body>
+
+										<totvs-page-detail-info 
+											class="col-xs-12 col-sm-12 text-center" 
+											value="{{ controller.detailResult.collectAddress }}">
+										</totvs-page-detail-info>
+
+									</totvs-widget-body>
+
+								</totvs-widget>
+
+							</div>
+
+							<div class="col-md-12" ng-if="controller.hasContact">
+
+								<totvs-widget class="col-md-12">
+
+									<totvs-page-detail-info class="text-center">
+										<strong>{{ 'l-contact' | i18n }}</strong>
+									</totvs-page-detail-info>
+
+									<totvs-widget-body>
+
+										<div class="col-md-12" ng-if="!controller.hasFax">
+
+											<totvs-page-detail-info 
+												class="col-md-6 text-center" 
+												title="{{ 'l-name' | i18n }}" 
+												value="{{ controller.detailResult.contactName }}">
+											</totvs-page-detail-info>
+				
+											<totvs-page-detail-info 
+												class="col-md-6 text-center" 
+												title="{{ 'l-phone' | i18n }}" 
+												value="{{ controller.detailResult.contactPhone }}">
+											</totvs-page-detail-info>
+
+										</div>
+
+										<div class="col-md-12" ng-if="controller.hasFax">
+
+											<totvs-page-detail-info 
+												class="col-md-4 text-center" 
+												title="{{ 'l-name' | i18n }}" 
+												value="{{ controller.detailResult.contactName }}">
+											</totvs-page-detail-info>
+				
+											<totvs-page-detail-info 
+												class="col-md-4 text-center" 
+												title="{{ 'l-phone' | i18n }}" 
+												value="{{ controller.detailResult.contactPhone }}">
+											</totvs-page-detail-info>
+
+											<totvs-page-detail-info 
+												class="col-md-4 text-center" 
+												ng-if="controller.hasFax" 
+												title="{{ 'l-fax' | i18n }}" 
+												value="{{ controller.detailResult.contactFax }}">
+											</totvs-page-detail-info>
+
+										</div>
+		
+										<totvs-page-detail-info 
+											class="col-md-12 text-center" 
+											title="{{ 'l-email' | i18n }}" 
+											value="{{ controller.detailResult.contactEmail }}">
+										</totvs-page-detail-info>
+
+									</totvs-widget-body>
+
+								</totvs-widget>
+
+							</div>
+
+						</div>
+
+					</totvs-widget-body>
+				</totvs-widget>
+			</div>
+
+			<div class="col-md-12" ng-if="controller.representativeRole == true">
+
+				<totvs-widget>
+
+					<strong>
+						<totvs-widget-header class="text-center">
+							{{ 'l-comission-representative' | i18n }}
+						</totvs-widget-header>
+					</strong>
+
+					<totvs-widget-body>
+
+						<div class="col-md-12">
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-4 text-center" 
+								title="{{ 'l-calculation-basis' | i18n }}" 
+								value="{{ controller.detailResult.commCalcBasis | currency: ('l-currency-format' | i18n: []: 'dts/acr') }}">
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-4 text-center" 
+								title="{{ 'l-comission-percentage' | i18n }}" 
+								value="{{ controller.detailResult.commPercent | number: 4}}%">
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-4 text-center" 
+								title="{{ 'l-proportional' | i18n }}">
+								{{ (controller.detailResult.proRataComm !== undefined ? (controller.detailResult.proRataComm === true ? 'l-yes' : 'l-no' | i18n: []: 'dts/acr') : '' ) }}
+							</totvs-page-detail-info>
+						</div>
+
+						<div class="col-md-12">
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-4 text-center" 
+								title="{{ 'l-commision-perc-print' | i18n }}" 
+								value="{{ controller.detailResult.commPercentPrint | number: 4 }}%">
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-4 text-center"
+								title="{{ 'l-write-off-percentage' | i18n }}"
+								value="{{ controller.detailResult.commPercentWriteOff | number: 4 }}%">
+							</totvs-page-detail-info>
+
+							<totvs-page-detail-info 
+								class="col-xs-12 col-md-4 text-center" 
+								title="{{ 'l-discount-percentage' | i18n }}" 
+								value="{{ controller.detailResult.commPercentDisc | number: 4 }}%">
+							</totvs-page-detail-info>
+
+						</div>
+
+					</totvs-widget-body>
+
+				</totvs-widget>
+
+				<totvs-tabset>
+
+					<totvs-tab heading="{{ 'l-comission-movements' | i18n }}" active="true">
+						<ng-include src="'/dts/acr/html/inquiredocdetail/inquiredocdetail-comission-grid.html'">
+					</totvs-tab>
+				</totvs-tabset>
+
+			</div>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

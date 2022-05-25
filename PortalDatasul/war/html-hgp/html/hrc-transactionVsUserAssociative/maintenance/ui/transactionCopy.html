@@ -1,0 +1,45 @@
+<totvs-modal-header>
+    Copiar Transação para Usuários
+</totvs-modal-header>
+<totvs-modal-body id="modalTransactionsCopy" style="height: 250px; overflow-y: auto;">
+    <fieldset>
+        <totvs-page-detail>            
+
+            <totvs-field  totvs-select name-id="deTransacaoZoom"
+                    ng-model="controller.fromTransaction.cdTransacao"
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    label="Transação Origem"
+                    required 
+                    canclean
+                    select-service="hrc.transactionZoomController"
+                    zoom-service="hrc.transactionZoomController"
+                    select-id="cdTransacao" 
+                    select-description="dsTransacao"> 
+            </totvs-field>  
+
+            <totvs-field  totvs-select name-id="paraTransacaoZoom"
+                    ng-model="controller.toTransaction.cdTransacao"
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                    label="Transação Destino"
+                    required 
+                    canclean
+                    select-service="hrc.transactionZoomController"
+                    zoom-service="hrc.transactionZoomController"
+                    select-id="cdTransacao" 
+                    select-description="dsTransacao"> 
+            </totvs-field>                         
+
+            <field  type="checkbox"
+                    label="Remover da transação destino os usuários não existentes na transação origem"                        
+                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12"                        
+                    data-ng-model="controller.excludeUsers">
+            </field>
+
+        </totvs-page-detail>
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn" ng-click="controller.cancel()">Fechar</button>
+    <button class="btn btn-primary" ng-click="controller.transactionCopy()">Copiar</button>
+</totvs-modal-footer>

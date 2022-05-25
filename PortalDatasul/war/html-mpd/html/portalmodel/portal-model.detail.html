@@ -1,0 +1,48 @@
+<totvs-page type="detail">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">
+                {{ 'l-initial-page' | i18n }}
+            </breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalconfigpdp/">
+                {{ 'l-portal-config-clien-rep' | i18n }}
+            </breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalmodel/{{ controller.model['idi-seq'] }}/{{ controller.model['idi-model'] }}">
+                {{ 'l-portal-model' | i18n }}
+            </breadcrumb>
+            <breadcrumb>
+                {{ 'l-detail' | i18n }}
+            </breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            <totvs-page-header-title>
+                {{ controller.model['idi-model'] }} - {{ controller.model['nom-model'] }}
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action
+                    on-back-link="#/dts/mpd/portalmodel/{{ controller.model['idi-seq'] }}/{{ controller.model['idi-model'] }}"
+                    on-edit-link="#/dts/mpd/portalmodel/edit/{{ controller.model['idi-seq'] }}/{{ controller.model['idi-model'] }}"
+                    on-remove="controller.onRemove"
+                >
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+        <totvs-page-detail>
+            <totvs-page-detail-info class="col-md-12" title="{{ 'l-descricao' | i18n }}" value="{{ controller.model['nom-descr'] }}">
+            </totvs-page-detail-info>
+
+            <totvs-page-detail-info class="col-md-4 col-xs-12" title="{{ 'l-model-type' | i18n }}">
+                <p ng-if="controller.model['cdn-tipo-model'] == 1">{{ 'l-order-model-type' | i18n }}</p>
+                <p ng-if="controller.model['cdn-tipo-model'] == 2">{{ 'l-quotation-model-type' | i18n }}</p>
+            </totvs-page-detail-info>
+
+            <totvs-page-detail-info class="col-md-4 col-xs-12" title="{{ 'l-ativo' | i18n }}">
+                {{ controller.model['log-ativo'] | booleanI18N }}
+            </totvs-page-detail-info>
+        </totvs-page-detail>
+    </totvs-page-content>
+</totvs-page>

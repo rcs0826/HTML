@@ -1,0 +1,146 @@
+<totvs-modal-header>
+	{{ 'l-advanced-search' | i18n }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <totvs-page-form>
+        <legend>{{ 'l-parameters' | i18n }}</legend>
+        <fieldset class="form-horizontal" role="form">
+            <field type="daterange"
+                   class="col-md-12"
+                   ng-model="controller.model.transactionDateRange"                   
+                   required>
+                <label>{{'l-transaction-date' | i18n}}</label>
+            </field>            
+        </fieldset>
+        <fieldset>
+            <field type="select2" 
+                class="col-lg-12 col-md-5 col-sm-4 col-xs-12"   
+                data-ng-model="controller.model.site"                     
+                select-conector="{{'l-site' | i18n}}"
+                select-id="cod-estabel"
+                select-description="nome"
+                select-service="mpd.estabelecSE.zoom">
+                <zoom zoom-service="mpd.estabelecSE.zoom"
+                required></zoom>
+                <label>{{ 'l-site' | i18n }}</label>
+            </field>
+        </fieldset>
+        <fieldset>
+            <field	type="select"
+                data-ng-model="controller.model.currency"
+                label="{{'l-currency' | i18n }}"
+                class="col-md-12"                >
+                <include>
+                    <ui-select-match placeholder="{{'l-currency' | i18n }}">{{$select.selected.display}}</ui-select-match>
+                    <ui-select-choices repeat="moeda in controller.ttCurrency | filter: $select.search track by $index">
+                        <span data-ng-bind-html="moeda.display | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </include>
+            </field>
+        </fieldset>
+        <fieldset>
+            <field
+                type="radio"
+                ng-model="controller.model.medio.value"
+                label="{{ 'l-cost-type' | i18n }}"
+                class="col-md-12">
+                <totvs-options>
+                    <totvs-option value="1">{{ 'l-monthly' | i18n }}</totvs-option>
+                    <totvs-option value="2">{{ 'l-online' | i18n }}</totvs-option>                    
+                </totvs-options>
+            </field>
+        </fieldset>
+        <fieldset class="form-horizontal" role="form">
+        <h4 class="col-md-12">            
+			<a class="clickable"
+			   ng-click="type.show = !type.show">
+				<span class="glyphicon" 
+					  ng-class="{true:'glyphicon-chevron-right', false: 'glyphicon-chevron-down'}[!type.show]" >
+				</span>
+				{{ 'l-range' | i18n }}
+			</a>
+        </h4>
+        </fieldset>
+        <div class="well on-show col-md-12" ng-if="type.show">
+            <fieldset class="form-horizontal" role="form">
+                <field type="inputrange"
+                       class="col-md-12"
+                       ng-model="controller.model.documentRange">
+                    <label>{{'l-document' | i18n}}</label>
+                </field>            
+            </fieldset>
+            <fieldset class="form-horizontal" role="form">
+                <field type="inputrange"
+                       class="col-md-12"
+                       ng-model="controller.model.serieRange">
+                    <label>{{'l-series' | i18n}}</label>
+                </field>            
+            </fieldset>             
+            <fieldset class="form-horizontal" role="form">
+                <field type="inputrange"
+                       class="col-md-12"
+                       ng-model="controller.model.warehouseRange">
+                    <label>{{'l-warehouse' | i18n}}</label>
+                </field>            
+            </fieldset>
+            <fieldset class="form-horizontal" role="form">
+                <field type="inputrange"
+                       class="col-md-12"
+                       ng-model="controller.model.lotRange">
+                    <label>{{'l-lot' | i18n}}</label>
+                </field>            
+            </fieldset>
+            <fieldset class="form-horizontal" role="form">
+                <field type="inputrange"
+                       class="col-md-12"
+                       ng-model="controller.model.locationRange">
+                    <label>{{'l-localization' | i18n}}</label>
+                </field>            
+            </fieldset>
+            <fieldset class="form-horizontal" role="form">
+                <field type="inputrange"
+                       class="col-md-12"
+                       ng-model="controller.model.referenceRange"
+                       >
+                    <label>{{'l-reference' | i18n}}</label>
+                </field>            
+            </fieldset>
+            <fieldset class="form-horizontal" role="form">
+                <div>
+                    <field type="select"                       
+                        data-ng-model="controller.model.documentClass.start"
+                        label="{{'l-species' | i18n }}"
+                        class="col-md-5">
+                        <include>
+                            <ui-select-match placeholder="{{'l-species' | i18n }}">{{$select.selected.docClassDescription}}</ui-select-match>
+                            <ui-select-choices repeat="documentClass in controller.ttDocumentClasses | filter: $select.search track by $index">
+                                <span data-ng-bind-html="documentClass.docClassDescription | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </include>                   
+                    </field>
+                    <div style="float:left">
+                        <br><br>
+                        <div>{{'l-to' | i18n}}</div>
+                    </div>
+                    <field type="select"                       
+                        data-ng-model="controller.model.documentClass.end"
+                        label="{{'l-species' | i18n }}"
+                        class="col-md-5">
+                        <include>
+                            <ui-select-match placeholder="{{'l-species' | i18n }}">{{$select.selected.docClassDescription}}</ui-select-match>
+                            <ui-select-choices repeat="documentClass in controller.ttDocumentClasses | filter: $select.search track by $index">
+                                <span data-ng-bind-html="documentClass.docClassDescription | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </include>
+                    </field>
+                </div>  
+            </fieldset>
+        </div>
+    </totvs-page-form>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply()">{{ 'btn-apply' | i18n }}</button>
+</totvs-modal-footer>

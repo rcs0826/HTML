@@ -1,0 +1,130 @@
+<totvs-page-detail-info-group>{{ 'l-order-item-identification' | i18n }}</totvs-page-detail-info-group>
+
+<totvs-page-detail>
+
+<%		
+    _.forEach(data, function(pedItemCadastroVisibleFields) {
+        
+        if (pedItemCadastroVisibleFields.fieldName == "nr-sequencia") {
+
+            %>
+            <totvs-page-detail-info title="{{ 'l-sequencia' | i18n }}" class="col-xs col-sm-12 col-md-3">
+                {{controller.item['nr-sequencia']}}
+            </totvs-page-detail-info>
+            <%
+        }
+        
+        if (pedItemCadastroVisibleFields.fieldName == "it-codigo") {
+
+            %>
+            <totvs-page-detail-info title="{{ 'l-cod-item' | i18n }}" class="col-xs col-sm-12 col-md-9">
+                {{controller.item['it-codigo']}} - {{controller.item.itemDesc}}
+            </totvs-page-detail-info>
+            <%
+        }
+                
+        if (pedItemCadastroVisibleFields.fieldName == "cod-refer") {
+
+            %>
+            <totvs-page-detail-info title="{{ 'l-cod-refer' | i18n }}" class="col-xs col-sm-6 col-md-6">
+                {{item['cod-refer']}}
+            </totvs-page-detail-info>
+            <%
+        }
+
+    });
+%>
+
+</totvs-page-detail>
+
+<totvs-page-detail-info-group>{{ 'l-quantities' | i18n }}</totvs-page-detail-info-group>
+
+<%		
+    _.forEach(data, function(pedItemCadastroVisibleFields) {
+        
+        if (pedItemCadastroVisibleFields.fieldName == "qt-un-fat") {
+
+            %>
+            <field type="decimal" ng-model="controller.item['qt-un-fat']"
+                ng-disabled=
+                <% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+                    "true"
+                <% }else{ %>
+                    "controller.itemDisabled"
+                <% } %>
+                ng-model-options="{ updateOn: 'blur' }"
+                ng-change="controller.applyLeaveItem('qt-un-fat',true)"
+                data-m-dec="4">
+                <label>{{ 'l-invoice-UM-quantity' | i18n }}</label>
+            </field>
+            <%
+        }
+        
+        if (pedItemCadastroVisibleFields.fieldName == "des-un-medida") {
+
+            %>
+            <field  type="select2"
+                    ng-model="controller.item['des-un-medida']"
+                    ng-disabled=
+                    <% if (!pedItemCadastroVisibleFields.fieldEnabled) { %> 
+                        "true"
+                    <% }else{ %>
+                        "controller.itemDisabled"							
+                    <% } %>
+                    select-conector="{{ 'l-invoicing-UM' | i18n }}"
+                    select-id="un"
+                    select-description="descricao"
+                    select-service="salesorder.zoomUnidadeMedida.Service">
+                <zoom zoom-service="salesorder.zoomUnidadeMedida.Service"></zoom>
+                <label>{{ 'l-invoicing-UM' | i18n }}</label>
+            </field>
+            <%
+        }
+        
+        if (pedItemCadastroVisibleFields.fieldName == "qt-pedida") {
+
+            %>
+            <field type="decimal" ng-model="controller.item['qt-pedida']" disabled="true"
+                data-m-dec="4">
+                <label>{{ 'l-requested-quantity' | i18n }}</label>
+            </field>
+            <%
+        }
+                
+        if (pedItemCadastroVisibleFields.fieldName == "cod-un") {
+
+            %>
+            <field type="select2" ng-model="controller.item['cod-un']" disabled="true"
+                    select-conector="{{ 'l-unidade-medida' | i18n }}"
+                    select-id="un"
+                    select-description="descricao"
+                    select-service="salesorder.zoomUnidadeMedida.Service">
+                <zoom zoom-service="salesorder.zoomUnidadeMedida.Service"></zoom>
+                <label>{{ 'l-unidade-medida' | i18n }}</label>
+            </field>
+            <%
+        }
+
+
+    });
+%>
+
+
+<totvs-page-detail-info-group>{{ 'l-prices' | i18n }}</totvs-page-detail-info-group>
+
+<%		
+    _.forEach(data, function(pedItemCadastroVisibleFields) {
+        
+        if (pedItemCadastroVisibleFields.fieldName == "vl-preori") {
+
+            %>
+            <field type="decimal" ng-model="controller.item['vl-preori']" ng-disabled="true"
+                data-m-dec="4">
+                <label>{{ 'l-original-price' | i18n }}</label>
+            </field>
+            <%
+        }
+
+    });
+%>
+    

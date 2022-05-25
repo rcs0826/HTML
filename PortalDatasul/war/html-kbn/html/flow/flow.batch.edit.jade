@@ -1,0 +1,174 @@
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+totvs-page
+    totvs-page-navbar
+
+        totvs-page-breadcrumb( ng-if="controller.stateParams.flowId" )
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb(link="#/dts/kbn/mapping") {{ 'l-mapping' | i18n }}
+            breadcrumb(link="#/dts/kbn/mapping/{{controller.stateParams.mappingId}}") {{ 'l-nav-flows' | i18n }}
+            breadcrumb(link="#/dts/kbn/mapping/flow/view/{{controller.stateParams.flowId}}") {{ 'l-flow' | i18n }}
+            breadcrumb {{ 'l-flow-batch-edit' | i18n }}
+        totvs-page-breadcrumb( ng-if="!controller.stateParams.flowId" )
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb(link="#/dts/kbn/mapping") {{ 'l-mapping' | i18n }}
+            breadcrumb(link="#/dts/kbn/mapping/{{controller.stateParams.mappingId}}") {{ 'l-nav-flows' | i18n }}
+            breadcrumb {{ 'l-flow-batch-edit' | i18n }}
+
+        totvs-page-header
+            totvs-page-header-title {{ 'l-flow-batch-edit' | i18n }}
+            totvs-page-header-operation
+                totvs-page-header-operation-action(limit-primary-action="2")
+                    action.btn-warning(
+                        icon="glyphicon-floppy-save",
+                        ng-click="controller.batchSave()"
+                    ) {{ 'l-effect-changes' | i18n }}
+    totvs-page-content
+        totvs-page-detail
+            totvs-tabset
+                totvs-tab(heading="{{'l-cells' | i18n}}")
+                    .row(style="margin-top: 15px;")
+                        .col-xs-12
+                            .col-xs-12
+                                span.glyphicon.glyphicon-triangle-right(ng-if="!controller.ShowBatchEditCell" ng-click="controller.changeShowBatchEditCell()" style="cursor: pointer;")
+                                span.glyphicon.glyphicon-triangle-bottom(ng-if="controller.ShowBatchEditCell" ng-click="controller.changeShowBatchEditCell()" style="cursor: pointer;")
+
+                                label.field-label.ng-binding.parametersIntegrationLabel(style="cursor: pointer;" ng-click="controller.changeShowBatchEditCell()") 
+                                    u {{controller.cellGridSelected.length}} {{ 'l-selected-cells' | i18n }}
+                    .row(style="margin-bottom: 15px;" ng-if="controller.ShowBatchEditCell")
+                        .col-xs-4
+
+                            field.col-xs-12(
+                                type="select",
+                                ng-model="controller.cellSelectedColumn",
+                                label="{{'l-column' | i18n : [] : 'dts/kbn'}}"
+                            )
+                                include
+                                    ui-select-match
+                                        {{$select.selected.title}}
+                                    ui-select-choices.truncate(repeat="column in controller.cellGridColumns | filter: { typeValidation : '!!'} | filter:{title:$select.search} | orderBy: 'title' track by $index" )
+                                        span(ng-bind-html="column.title | highlight: $select.search")
+
+                        .col-xs-4
+                            
+                            field.col-xs-12(
+                                ng-model="controller.cellSelectedColumn.model",
+                                label="{{'l-value' | i18n}}",
+                                ng-if="controller.cellSelectedColumn.typeValidation == 'time'"
+                            )
+
+                            field.col-xs-12(
+                                ng-model="controller.cellSelectedColumn.model",
+                                label="{{'l-value' | i18n}}",
+                                ng-if="['integer', 'text'].indexOf(controller.cellSelectedColumn.typeValidation) != -1"
+                            )
+
+                            field.col-xs-12(
+                                ng-model="controller.cellSelectedColumn.model",
+                                type='number',
+                                min='0',
+                                label="{{'l-value' | i18n}}",
+                                ng-if="controller.cellSelectedColumn.typeValidation == 'number'"
+                            )                            
+
+                            field.col-xs-12(
+                                type="select",
+                                ng-model="controller.cellSelectedColumn.model"
+                                label="{{'l-value' | i18n : [] : 'dts/kbn'}}",
+                                ng-if="controller.cellSelectedColumn.typeValidation == 'boolean'"
+                            )
+                                include
+                                    ui-select-match
+                                        {{$select.selected.label}}
+                                    ui-select-choices.truncate(repeat="column in (controller.booleansValues|filter:{label:$select.search}) track by $index")
+                                        span(ng-bind-html="column.label | highlight: $select.search")
+
+                        .col-xs-4
+                            button.btn.btn-primary(ng-if="controller.cellSelectedColumn.typeValidation !== undefined", ng-click="controller.batchEdit(controller.cellSelectedColumn, controller.cellGridSelected)", style="margin-top: 30px;") {{ 'l-apply' | i18n }}
+                    .row
+                        .col-xs-12.cursebreaker
+                            totvs-grid(
+                                grid-options="controller.cellGridOptions",
+                                grid-data="controller.cellGrid._data",
+                                grid-selected-items="controller.cellGridSelected",
+                                grid="controller.cellGrid",
+                                editable="true",
+                                navigatable="true",
+                                selectable="multiple,row",
+                                on-save="controller.beforeSave(event, column, value, currentIndex, original)"
+                                show-header-edit-icon="false"
+                            )
+                totvs-tab(heading="{{ 'l-items' | i18n }}" ng-click="controller.carregaItens()")
+
+                    .row(style="margin-top: 15px;")
+                        .col-xs-12
+                            .col-xs-12
+                                span.glyphicon.glyphicon-triangle-right(ng-if="!controller.ShowBatchEditItem" ng-click="controller.changeShowBatchEditItem()" style="cursor: pointer;")
+                                span.glyphicon.glyphicon-triangle-bottom(ng-if="controller.ShowBatchEditItem" ng-click="controller.changeShowBatchEditItem()" style="cursor: pointer;")
+
+                                label.field-label.ng-binding.parametersIntegrationLabel(style="cursor: pointer;" ng-click="controller.changeShowBatchEditItem()") 
+                                    u {{controller.itemGridSelected.length}} {{ 'l-selected-itens' | i18n }}
+
+                    .row(style="margin-bottom: 15px;" ng-if="controller.ShowBatchEditItem")
+                        .col-xs-4
+
+                            field.col-xs-12(
+                                type="select",
+                                ng-model="controller.itemSelectedColumn",
+                                label="{{'l-column' | i18n : [] : 'dts/kbn'}}"
+                            )
+                                include
+                                    ui-select-match
+                                        {{$select.selected.title}}
+                                    ui-select-choices.truncate(repeat="column in controller.itemGridColumns | filter: { typeValidation : '!!'} |filter:{title:$select.search} | orderBy: 'title' track by $index")
+                                        span(ng-bind-html="column.title | highlight: $select.search")
+
+                        .col-xs-4
+
+                            field.col-xs-12(
+                                ng-model="controller.itemSelectedColumn.model",
+                                label="{{'l-value' | i18n}}",
+                                ng-if="controller.itemSelectedColumn.typeValidation == 'time'"
+                            )
+
+                            field.col-xs-12(
+                                ng-model="controller.itemSelectedColumn.model",
+                                label="{{'l-value' | i18n}}",
+                                ng-if="['integer', 'text'].indexOf(controller.itemSelectedColumn.typeValidation) != -1"
+                            )
+
+                            field.col-xs-12(
+                                ng-model="controller.itemSelectedColumn.model",
+                                type='number',
+                                min='0',
+                                label="{{'l-value' | i18n}}",
+                                ng-if="controller.itemSelectedColumn.typeValidation == 'number'"
+                            )
+
+                            field.col-xs-12(
+                                type="select",
+                                ng-model="controller.itemSelectedColumn.model"
+                                label="{{'l-value' | i18n : [] : 'dts/kbn'}}",
+                                ng-if="controller.itemSelectedColumn.typeValidation == 'boolean'"
+                            )
+                                include
+                                    ui-select-match
+                                        {{$select.selected.label}}
+                                    ui-select-choices.truncate(repeat="column in (controller.booleansValues|filter:{label:$select.search}) track by $index")
+                                        span(ng-bind-html="column.label | highlight: $select.search")
+
+                        .col-xs-4
+                            button.btn.btn-primary(ng-if="controller.itemSelectedColumn.typeValidation !== undefined", ng-click="controller.batchEdit(controller.itemSelectedColumn, controller.itemGridSelected)", style="margin-top: 30px;") {{ 'l-apply' | i18n }}
+
+                    .row
+                        .col-xs-12.cursebreaker
+                            totvs-grid(
+                                grid-options="controller.itemGridOptions",
+                                grid-data="controller.itemGrid._data",
+                                grid-selected-items="controller.itemGridSelected",
+                                grid="controller.itemGrid",
+                                editable="true",
+                                navigatable="true",
+                                selectable="multiple,row",
+                                on-save="controller.beforeSave(event, column, value, currentIndex, original)"
+                                show-header-edit-icon="false"
+                            )

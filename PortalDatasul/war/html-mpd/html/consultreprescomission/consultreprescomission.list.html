@@ -1,0 +1,62 @@
+<totvs-page type="list" totvs-custom-element="customPage">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">Home</breadcrumb>
+            <breadcrumb>{{'l-consult-repres-comiss' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form>
+            <totvs-row>
+                <field type="date" class="col-lg-3 col-md-3 col-sm-3 col-xs-3" ng-model="controller.dtImplantInitial">
+                    <label>{{i18n('Dt Implantação Inicial', [], 'dts/mpd')}}</label>
+                </field>
+                <field type="date" class="col-lg-3 col-md-3 col-sm-3 col-xs-3" ng-model="controller.dtImplantFinal">
+                    <label>{{i18n('Dt Implantação Final', [], 'dts/mpd')}}</label>
+                </field>
+                <field type="date" class="col-lg-3 col-md-3 col-sm-3 col-xs-3" ng-model="controller.dtEmissInitial">
+                    <label>{{i18n('Dt Emissão Inicial', [], 'dts/mpd')}}</label>
+                </field>
+                <field type="date" class="col-lg-3 col-md-3 col-sm-3 col-xs-3" ng-model="controller.dtEmissFinal">
+                    <label>{{i18n('Dt Emissão Final', [], 'dts/mpd')}}</label>
+                </field>
+            </totvs-row>
+            <totvs-row>
+                <field type="date" class="col-lg-3 col-md-3 col-sm-3 col-xs-3" ng-model="controller.dtDeliveryInitial">
+                    <label>{{i18n('Dt Entrega Inicial', [], 'dts/mpd')}}</label>
+                </field>
+                <field type="date" class="col-lg-3 col-md-3 col-sm-3 col-xs-3" ng-model="controller.dtDeliveryFinal">
+                    <label>{{i18n('Dt Entrega Final', [], 'dts/mpd')}}</label>
+                </field>
+                <totvs-field totvs-select return-object canclean class="col-lg-3 col-md-3 col-sm-3 col-xs-3" label="{{:: 'Representante' | i18n : [] : 'dts/mpd'}}"
+                    ng-model="controller.repres" select-id="cod-rep" select-description="nome-abrev" select-service="mpd.repres.zoom"
+                    zoom-service="mpd.repres.zoom">
+                </totvs-field>
+                <totvs-button class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="padding-top: 25px" t-click="controller.loadData()" t-label="{{i18n('btn-search', [], 'dts/mpd')}}">
+                </totvs-button>
+            </totvs-row>
+        </totvs-page-form>
+        <totvs-list-item ng-repeat="obj in controller.listResult">
+            <totvs-list-item-content>
+                <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-4" title="{{ 'l-repres' | i18n }}" value="{{obj['tta_cod_repres']}} - {{obj['tta_nom_repres']}}"></totvs-list-item-info>
+                <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-4" title="{{ 'l-value-comiss' | i18n }}" value="{{obj['tta_val_comissao'] | currency:''}}"></totvs-list-item-info>
+                <totvs-list-item-info class="col-lg-4 col-md-4 col-sm-4 col-xs-4" title="{{ 'l-value-comiss-emiss' | i18n }}" value="{{obj['tta_val_comis_emissao'] | currency:''}}"></totvs-list-item-info>
+            </totvs-list-item-content>
+            <totvs-list-item-content-detail open="controller.loadDetailData(obj)">
+                <totvs-grid grid-data="obj.listDetailResult" grid-height="250" resizable="true" sortable="true" reorderable="true">
+                    <totvs-grid-column field="['tta_nr_pedido']" editable="true" width="100">{{:: 'l-title-pedido' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="['tta_cod_sit_ped']" editable="true" width="100">{{:: 'l-status' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="['tta_it_codigo']" editable="true" width="100">{{:: 'l-cod-item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="['tta_cod_refer']" editable="true" width="100">{{:: 'l-cod-refer' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="['tta_val_base_comis']" filter="currency" editable="true" width="160">{{:: 'l-base-value' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="['tta_perc_comis']" filter="number" editable="true" width="100">{{:: 'l-commision-perc' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="['tta_val_comis']" filter="currency" editable="true" width="160">{{:: 'l-value-comiss' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="['tta_val_perc_comis_emis']" filter="number" editable="true" width="100">{{:: 'l-commision-perc-print' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    <totvs-grid-column field="['tta_val_comis_emis']" filter="currency" editable="true" width="160">{{:: 'l-value-comiss-emiss' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                </totvs-grid>
+            </totvs-list-item-content-detail>
+        </totvs-list-item>
+        <totvs-list-pagination ng-if="controller.page !== 0" ng-click="controller.loadData(true);">
+        </totvs-list-pagination>
+    </totvs-page-content>
+</totvs-page>

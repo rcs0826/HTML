@@ -1,0 +1,184 @@
+<totvs-list-item-header>    
+
+    <totvs-list-item-title
+        title="{{item['numero-ordem']}}" link="#/dts/mcc/purchaseorderline/detail/{{item['numero-ordem']}}" class="legend col-xs-9 col-sm-6" ng-class="item.legendClass">
+    </totvs-list-item-title>
+
+    <totvs-list-item-action 
+    	limit-primary-action="2" 
+    	class="col-xs-3 col-sm-6"
+    	ng-if="!controller.isJustForView">
+        
+        <action  link="#/dts/mcc/purchaseorderline/edit/{{item['numero-ordem']}}" icon="glyphicon-pencil" 
+		ng-if="(item['situacao'] == 1 || item['situacao'] == 5)">{{ 'btn-edit' | i18n: []: 'dts/mcc' }}</action>
+
+        <action ng-click="controller.onRemoveOrderline(item)" ng-if="(item['situacao'] == 1 || item['situacao'] == 5)" icon="glyphicon-trash">{{ 'btn-remove' | i18n: []: 'dts/mcc' }}</action>
+
+        <action ng-if="!controller.isJustForView" link="#/dts/mcc/purchaseorderline/copy/{{item['numero-ordem']}}">{{ 'l-copy' | i18n: []: 'dts/mcc' }}</action>
+
+        <action ng-click="controller.transferAndSetBuyer(item,'setBuyer')" ng-if="item['cod-comprado'] == ''">{{ 'l-set-buyer' | i18n: []: 'dts/mcc' }}</action>
+
+        <action ng-click="controller.transferAndSetBuyer(item, 'transfer');" ng-if="(item['cod-comprado'] != '' && (item['situacao'] == 1 || item['situacao'] == 3 || item['situacao'] == 5))">{{ 'l-to-transfer' | i18n: []: 'dts/mcc' }}</action>
+
+        <action ng-click="controller.followUp(4, item['numero-ordem'], '', 0, 0, 0);">{{ 'l-followup' | i18n: []: 'dts/mcc' }}</action>
+        
+        <action ng-click="controller.requestQuotation(item['numero-ordem']);" ng-if="((item['situacao'] == 1 ||  item['situacao'] == 5) && item['nr-processo'] == 0)">{{ 'l-request-quotation' | i18n: []: 'dts/mcc' }}</action>
+        
+        <action ng-click="controller.onQuotationAnswers(item['numero-ordem']);" ng-if="item['situacao'] != 1">{{ 'l-quotations' | i18n: []: 'dts/mcc' }}</action>
+        
+        <action ng-click="controller.onAddQuotation(item['numero-ordem'])" ng-if="item['situacao'] == 1">{{ 'l-add-quotation' | i18n: []: 'dts/mcc' }}</action>
+
+    </totvs-list-item-action>
+    <totvs-list-item-action 
+    	class="col-xs-4"
+    	ng-if="controller.isJustForView">
+    	<action ng-click="controller.followUp(4, item['numero-ordem'], '', 0, 0, 0);" icon="glyphicon glyphicon-list">{{ 'l-followup' | i18n: []: 'dts/mcc' }}</action>
+        
+        <action ng-click="controller.onQuotationAnswers(item['numero-ordem']);" ng-if="item['situacao'] != 1" icon="glyphicon glyphicon-usd">{{ 'l-quotations' | i18n: []: 'dts/mcc' }}</action>
+	</totvs-list-item-action>
+</totvs-list-item-header>
+
+<totvs-list-item-content>
+	<totvs-list-item-info
+        title="{{ 'l-item' | i18n: []: 'dts/mcc' }}"
+        class="col-md-6 col-sm-6 col-xs-12"
+        value="{{item['it-codigo']}} - {{item['desc-item']}}">
+    </totvs-list-item-info>
+
+    <totvs-list-item-info
+        title="{{ 'l-priority' | i18n: []: 'dts/mcc' }}"
+        class="col-md-6 col-sm-6 col-xs-12"
+        value="{{item['desc-prioridade-aprov']}}">
+    </totvs-list-item-info>
+
+    <totvs-list-item-info
+        title="{{ 'l-quantity' | i18n: []: 'dts/mcc' }}"
+        class="col-md-3 col-sm-6 col-xs-12"
+        value="{{item['qt-solic'] | number : 4}}">
+    </totvs-list-item-info>
+
+    <totvs-list-item-info
+        title="{{ 'l-delivery-date' | i18n: []: 'dts/mcc' }}"
+        class="col-md-3 col-sm-6 col-xs-12"
+        value="{{item['desc-data-entrega']}}">
+    </totvs-list-item-info>
+
+    <totvs-list-item-info
+        title="{{ 'l-um' | i18n: []: 'dts/mcc' }}"
+        class="col-md-3 col-sm-6 col-xs-12"
+         value="{{item['un']}}">
+        
+    </totvs-list-item-info>
+
+    <totvs-list-item-info
+        title="{{ 'l-site-short' | i18n: []: 'dts/mcc' }}"
+        class="col-md-3 col-sm-6 col-xs-12"
+        value="{{item['cod-estabel']}}">
+    </totvs-list-item-info>
+
+    <totvs-list-item-info
+        title="{{ 'l-requester' | i18n: []: 'dts/mcc' }}"
+        class="col-md-3 col-sm-6 col-xs-12"
+        value="{{item['requisitante']}}">
+    </totvs-list-item-info>
+
+    <totvs-list-item-info
+        title="{{ 'l-buyer' | i18n: []: 'dts/mcc' }}"
+        class="col-md-3 col-sm-6 col-xs-12"
+        value="{{item['cod-comprado']}}">
+    </totvs-list-item-info>
+
+    <totvs-list-item-info
+        ng-if="item['nr-processo'] != 0"                          
+        title="{{ 'l-purchase-package' | i18n: []: 'dts/mcc' }}"
+        class="col-md-3 col-sm-6 col-xs-12"
+        value="{{item['nr-processo']}}">
+    </totvs-list-item-info>
+    
+    <totvs-list-item-info
+        ng-if="item['nr-processo'] == 0"  
+        title="{{ 'l-quotation-process' | i18n: []: 'dts/mcc' }}"
+        class="col-md-3 col-sm-6 col-xs-12"
+        value="{{item['cdd-solicit']}}">
+    </totvs-list-item-info>
+
+    <totvs-list-item-info
+        title="{{ 'l-request' | i18n: []: 'dts/mcc' }}"
+        class="col-md-3 col-sm-6 col-xs-12">
+        <a ng-if="item['nr-requisicao'] != 0" href="#/dts/mcc/request/detail/{{item['nr-requisicao']}}">{{item['nr-requisicao']}}</a>
+        <span ng-if="item['nr-requisicao'] == 0">{{item['nr-requisicao']}}</span>
+    </totvs-list-item-info>
+
+    <totvs-list-item-info
+        title="{{ 'l-quote-to' | i18n: []: 'dts/mcc' }}"
+        class="col-md-3 col-sm-6 col-xs-12"
+        value="{{item['dat-fim-leilao-rfq'] | date :'dd/MM/yyyy'}} {{item['hra-fim-leilao-rfq'] | date : 'hh:mm:ss'}}">
+    </totvs-list-item-info>
+
+    <totvs-list-item-info
+	 	ng-if="item['aprovac-cotac'] && item['situacao'] == 5"
+        title="{{ 'l-pending-approval' | i18n: []: 'dts/mcc' }}"
+        class="col-md-3 col-sm-6 col-xs-12">
+        <span ng-if="item['pend-aprov'] == true">{{ 'l-yes' | i18n: []: 'dts/mcc' }}</span>
+        <span ng-if="item['pend-aprov'] != true">{{ 'l-no' | i18n: []: 'dts/mcc' }}</span>
+    </totvs-list-item-info>
+
+    <totvs-list-item-info
+	 	ng-if="item['aprovac-cotac'] && item['situacao'] == 5"
+        title="{{ 'l-rejected' | i18n: []: 'dts/mcc' }}"
+        class="col-md-3 col-sm-6 col-xs-12">
+        <span ng-if="item['rejeitada'] == true">{{ 'l-yes' | i18n: []: 'dts/mcc' }}</span>
+        <span ng-if="item['rejeitada'] != true">{{ 'l-no' | i18n: []: 'dts/mcc' }}</span>
+    </totvs-list-item-info>
+
+    <totvs-list-item-info
+	 	ng-if="(item['situacao'] == 2 || item['situacao'] == 4 || item['situacao'] == 6)"
+        title="{{ 'l-order' | i18n: []: 'dts/mcc' }}"
+        class="col-md-3 col-sm-6 col-xs-12">
+        <a ng-if="item['num-pedido'] != 0" href="#/dts/mcc/purchaseorder/detail/{{item['num-pedido']}}">{{item['num-pedido']}}</a>
+        <span ng-if="item['num-pedido'] == 0">{{item['num-pedido']}}</span>
+    </totvs-list-item-info>
+
+    <totvs-list-item-info
+	 	ng-if="(item['situacao'] == 2 || item['situacao'] == 3 || item['situacao'] == 4 || item['situacao'] == 6)"
+        title="{{ 'l-vendor' | i18n: []: 'dts/mcc' }}"
+        class="col-md-3 col-sm-6 col-xs-12"
+        value="{{item['cod-emitente']}} - {{item['nome-abrev']}}">
+    </totvs-list-item-info>
+
+    <totvs-list-item-info
+	 	ng-if="(item['situacao'] == 2 || item['situacao'] == 4 || item['situacao'] == 6)"
+        title="{{'l-contract' | i18n: []: 'dts/mcc' }}"
+        class="col-md-3 col-sm-6 col-xs-12"
+        value="{{item['nr-contrato']}}">
+
+</totvs-list-item-content>
+
+<totvs-list-item-content-detail>
+	<totvs-list-item-info
+        title="{{'l-supplementary-description' | i18n: []: 'dts/mcc' }}"
+        class="col-md-12 col-sm-12 col-xs-12"
+        value="{{item['narrativa']}}">
+    </totvs-list-item-info>
+
+	<totvs-list-item-info
+        title="{{'l-item-text' | i18n: []: 'dts/mcc' }}"
+        class="col-md-12 col-sm-12 col-xs-12"
+        value="{{item['narrativa-item']}}">
+    </totvs-list-item-info>
+    
+    <totvs-list-item-info
+    	ng-if="((item['situacao'] == 2 && item['qt-acum-rec'] > 0) || item['situacao'] == 6)"
+        title="{{'l-quantity-received' | i18n: []: 'dts/mcc' }}"
+        class="col-md-6 col-sm-6 col-xs-12"
+        value="{{item['qt-acum-rec'] | number : 4}}">
+    </totvs-list-item-info>
+
+    <totvs-list-item-info
+    	ng-if="item['cod-comprado-orig'] != ''"
+        title="{{'l-original-buyer' | i18n: []: 'dts/mcc' }}"
+        class="col-md-6 col-sm-6 col-xs-12"
+        value="{{item['cod-comprado-orig']}}">
+    </totvs-list-item-info>
+
+</totvs-list-item-content-detail>

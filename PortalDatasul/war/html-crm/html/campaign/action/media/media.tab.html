@@ -1,0 +1,90 @@
+<totvs-page-child type="list">
+
+	<br/>
+
+	<totvs-page-content class="crm-tab">
+
+		<div class="row">
+
+			<div class="col-xs-10">
+				<h3 style="margin-top: 0px;">
+					{{ 'nav-media' | i18n: []: 'dts/crm' }} ({{ controller.selectedAction.ttMidia.length || 0 }})
+				</h3>
+			</div>
+
+			<div class="col-xs-2">
+				<div class="pull-right">
+					<button type="button"
+							class="btn btn-primary"
+							ng-click="controller.selectMedias(controller.selectedAction);">
+						<span class="glyphicon glyphicon-plus"></span>
+						<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+					</button>
+				</div>
+			</div>
+
+			<div class="col-xs-12">
+				<totvs-divider></totvs-divider>
+			</div>
+
+		</div>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-campaign-action-media' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.selectedAction.ttMidia || controller.selectedAction.ttMidia.length <= 0">
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.selectMedias(controller.selectedAction);">
+				<span class="glyphicon glyphicon-plus"></span>
+				<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+			</button>
+		</totvs-page-alert>
+
+		<div class="crm-tab"
+			 ng-if="controller.selectedAction.ttMidia.length">
+
+			<div class="row crm-tab-item header hidden-xs">
+				<strong>
+					<div class="col-xs-1">
+						{{ 'l-default' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-xs-9">
+						{{ 'l-name' | i18n: []: 'dts/crm' }}
+					</div>
+				</strong>
+			</div>
+
+			<div class="row crm-tab-item hover"
+				 ng-repeat="media in controller.selectedAction.ttMidia">
+
+				<div class="col-xs-1">
+					<span class="glyphicon glyphicon-star crm-starred-default"
+						  ng-if="media.log_mid_default === true">
+					</span>
+					<span class="glyphicon glyphicon-star-empty clickable"
+						  ng-if="media.log_mid_default === false"
+						  ng-click="controller.setAsActionMediaDefault(controller.selectedAction, media);">
+					</span>
+				</div>
+
+				<div class="col-xs-9 overflow-ellipsis">
+					{{ media.nom_mid_relacto }}
+				</div>
+
+				<div class="col-xs-2 text-right">
+					<a class="clickable"
+					   ng-click="controller.removeActionMedia(controller.selectedAction, media, $index);">
+						<span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+						<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+					</a>
+				</div>
+			</div>
+
+			<br/>
+
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

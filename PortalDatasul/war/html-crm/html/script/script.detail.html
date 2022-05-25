@@ -1,0 +1,136 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb link="#/dts/crm/script/">{{ 'nav-script' | i18n : [] : 'dts/crm' }}</breadcrumb>
+			<breadcrumb>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ controller.model.nom_script }}"></totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<totvs-page-header-operation-action limit-primary-action="4"
+													on-back-link="#/dts/crm/script/"
+													on-edit="controller.onEdit"
+													hide-remove="{{controller.model.log_edit_remove === false}}"
+													on-remove="controller.onRemove">
+
+					<action ng-click="controller.openView(controller.model)">
+						{{ 'btn-script-view' | i18n: []: 'dts/crm' }}
+					</action>
+
+					<action ng-click="controller.duplicate()">
+						{{ 'btn-duplicate' | i18n: []: 'dts/crm' }}
+					</action>
+
+					<action ng-if="controller.model.ttQuestionarioPagina.length > 1"
+							icon="glyphicon-log-in"
+							ng-click="controller.openDetourModal(controller.model)">
+						{{ 'l-detour-page' | i18n : [] : 'dts/crm' }}
+					</action>
+
+					<action icon="glyphicon-ok"
+							ng-if="controller.model.num_livre_1 === 1"
+							ng-click="controller.updateStatus('published')">
+						{{ 'btn-publish' | i18n: []: 'dts/crm' }}
+					</action>
+
+					<action icon="glyphicon-backward"
+							ng-if="controller.model.num_livre_1 === 2 && controller.model.log_edit_remove === true"
+							ng-click="controller.updateStatus('development')">
+						{{ 'btn-return-development' | i18n: []: 'dts/crm' }}
+					</action>
+
+					<action icon="glyphicon-retweet"
+							ng-if="controller.model.num_livre_1 === 2"
+							ng-click="controller.updateStatus('postpone')">
+						{{ 'btn-postpone' | i18n: []: 'dts/crm' }}
+					</action>
+
+					<action icon="glyphicon-off"
+							ng-if="controller.model.num_livre_1 === 2"
+							ng-click="controller.updateStatus('closed')">
+						{{ 'btn-script-close' | i18n: []: 'dts/crm' }}
+					</action>
+
+					<action icon="glyphicon-retweet"
+							ng-if="controller.model.num_livre_1 === 3"
+							ng-click="controller.updateStatus('reopen')">
+						{{ 'btn-reopen' | i18n: []: 'dts/crm' }}
+					</action>
+
+					<action icon="glyphicon-print"
+							ng-click="controller.print(controller.model)">
+						{{ 'btn-print' | i18n : [] : 'dts/crm' }}
+					</action>
+
+					<action icon="glyphicon-stats"
+							ng-click="controller.openAnalyzer()">
+						{{ 'btn-script-analyzer' | i18n: []: 'dts/crm' }}
+					</action>
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-detail>
+
+			<totvs-page-alert type="info"
+							  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}"
+							  ng-if="(controller.model | isUndefined)">
+			</totvs-page-alert>
+
+			<totvs-page-detail ng-show="controller.model | isDefined">
+
+				<div class="col-xs-12 no-gutter">
+
+					<totvs-page-detail-info class="col-xs-12 col-sm-4"
+											title="{{ 'l-type' | i18n: []: 'dts/crm' }}"
+											value-break="false">
+						{{ controller.model.nom_tip_script }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info class="col-xs-12 col-sm-4"
+										ng-if="(controller.model.val_fim_valid && controller.model.val_fim_valid > 86400000)"
+										title="{{ 'l-expiration-date' | i18n: []: 'dts/crm' }}"
+										value-break="false">
+						{{ controller.model.val_inic_valid | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+						<span ng-if="(controller.model.val_fim_valid && controller.model.val_fim_valid > 86400000)">
+							- {{ controller.model.val_fim_valid  | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+						</span>
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info class="col-xs-12 col-sm-4"
+											title="{{ 'l-status' | i18n: []: 'dts/crm' }}"
+											value-break="false">
+						{{ controller.model.nom_status }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info class="col-xs-12 col-sm-3"
+											title="{{ 'l-have-answers' | i18n: []: 'dts/crm' }}"
+											value-break="false">
+						{{ (controller.model.log_answer === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+					</totvs-page-detail-info>
+
+				</div>
+
+				<totvs-divider></totvs-divider>
+
+				<ng-include src="'/dts/crm/html/script/page/page.tab.html'"></ng-include>
+
+			</totvs-page-detail>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

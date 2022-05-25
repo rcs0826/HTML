@@ -1,0 +1,131 @@
+<totvs-modal-header>
+	{{ 'nav-expense' | i18n }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-page-alert
+		ng-if="controller.types.length <= 0"
+		type="info"
+		message="{{ 'msg-not-found-expense-type' | i18n: []: 'dts/crm' }}">
+	</totvs-page-alert>
+	<div ng-if="controller.types.length > 0">
+	<fieldset class="row">
+		<field type="select"
+			   class="col-xs-6"
+			   ng-change="controller.onChangeType()"
+			   ng-model="controller.model.ttTipo"
+			   required>
+
+			<label>{{ 'l-type' | i18n : [] : 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-type' | i18n : [] : 'dts/crm' }}">
+					{{ $select.selected.nom_tip_despes }} {{$select.selected.log_previsto_acao === true ? ' (' + ('l-action' | i18n: []: 'dts/crm') + ')' : '' }} {{$select.selected.log_previsto_campanha === true ? ' (' + ('l-campaign' | i18n: []: 'dts/crm') + ')' : '' }}
+				</ui-select-match>
+				<ui-select-choices repeat="type in controller.types | filter: $select.search track by $index">
+					<span ng-bind-html="(type.nom_tip_despes + (type.log_previsto_campanha === true ? ' (' + ('l-campaign' | i18n: []: 'dts/crm') + ')' : '') + (type.log_previsto_acao === true ? ' (' + ('l-action' | i18n: []: 'dts/crm') + ')' : '')) | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   class="col-xs-6"
+			   canclean="undefined"
+			   ng-disabled="!controller.canOverrideUmd"
+			   ng-model="controller.model.ttUnidadeMedida"
+			   ng-required="controller.model.ttTipo && controller.model.ttTipo.log_avulsa !== true">
+
+			<label>{{ 'l-unit-of-measurement' | i18n : [] : 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-unit-of-measurement' | i18n : [] : 'dts/crm' }}">
+					{{ $select.selected.nom_unid_medid }} {{ $select.selected.nom_sig_umd ? '(' + $select.selected.nom_sig_umd + ')' : '' }}
+				</ui-select-match>
+				<ui-select-choices repeat="un in controller.ttUnitMeasurement | filter: $select.search track by $index">
+					<span ng-bind-html="(un.nom_unid_medid + ' (' + un.nom_sig_umd + ')') | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+	</fieldset>
+
+	<fieldset class="row">
+		<field type="date"
+			   required="true"
+			   class="col-xs-6"
+			   canclean="undefined"
+			   ng-animate="'animate-if'"
+			   start-date="controller.period.startDate"
+			   end-date="controller.period.endDate"
+			   ng-model="controller.model.dat_livre_1"
+			   placeholder="{{ 'l-expense-date' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-expense-date' | i18n: []: 'dts/crm' }}</label>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+    </fieldset>
+        
+    <fieldset class="row">
+		<totvs-field totvs-decimal
+					 class="col-xs-4"
+					 ng-model="controller.model.qtd_itens_despes_realzdo"
+					 m-dec="2"
+					 ng-maxlength="10"
+					 ng-minlength="1"
+					 ng-required="true"
+                     ng-blur="controller.onChangeQuantityUnitValue()"
+					 label="{{ 'l-quantity' | i18n: []: 'dts/crm' }}"
+					 placeholder="{{ 'l-quantity' | i18n: []: 'dts/crm' }}"
+					 canclean="0">
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+			<validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 8</validator>
+		</totvs-field>
+        
+        <totvs-field totvs-decimal
+ 					 class="col-xs-4"
+ 					 ng-model="controller.model.val_despes_realzdo_unit"
+					 m-dec="2"
+					 ng-minlength="1"
+					 ng-disabled="(controller.model.ttTipo && controller.model.ttTipo.log_valor_limite === true)"
+					 ng-required="true"
+                     ng-blur="controller.onChangeQuantityUnitValue()"
+					 label="{{ 'l-unit-value' | i18n: []: 'dts/crm' }}"
+					 placeholder="{{ 'l-unit-value' | i18n: []: 'dts/crm' }}"
+					 canclean="0">
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</totvs-field>    
+        
+        <totvs-field totvs-decimal
+ 					 class="col-xs-4"
+ 					 ng-model="controller.model.val_despes_realzdo"
+					 m-dec="2"
+					 ng-minlength="1"
+					 ng-disabled="(controller.model.ttTipo && controller.model.ttTipo.log_valor_limite === true)"
+                     ng-blur="controller.onChangeTotalValue()"
+					 ng-required="true"
+					 label="{{ 'l-total-value' | i18n: []: 'dts/crm' }}"
+					 placeholder="{{ 'l-total-value' | i18n: []: 'dts/crm' }}"
+					 canclean="0">
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</totvs-field>
+
+	</fieldset>
+
+	<fieldset class="row">
+		<field type="textarea"
+			   class="col-md-12"
+			   ng-model="controller.model.dsl_tip_despes"
+			   maxlength="1000">
+			<label>{{'l-description' | i18n: []: 'dts/crm'}}</label>
+			<validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 1000</validator>
+		</field>
+	</fieldset>
+	</div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n }}</button>
+	<button class="btn btn-default" ng-click="controller.save(true)"ng-if="controller.editMode === false && controller.types.length > 0;">
+		{{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+	</button>
+	<button ng-if="controller.types.length > 0" class="btn btn-primary" ng-click="controller.save();">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

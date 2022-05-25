@@ -1,0 +1,157 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_configur : ('btn-new-generic-action-setting' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="input"
+			   class="col-md-12"
+			   ng-required="true"
+			   ng-model="controller.model.nom_configur"
+			   canclean="undefined"
+			   placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+			   focus>
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+		</field>
+
+
+		<field type="select"
+			   ng-required="true"
+			   ng-model="controller.model.ttOperation"
+			   canclean="undefined">
+			<label>{{ 'l-operation-type' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-operation-type' | i18n: []: 'dts/crm' }}">{{$select.selected.name}}</ui-select-match>
+				<ui-select-choices repeat="item in controller.operations | filter: $select.search track by $index">
+					<span ng-bind-html="item.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   ng-required="true"
+			   ng-model="controller.model.ttModel"
+			   canclean="undefined">
+			<label>{{ 'l-model' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-model' | i18n: []: 'dts/crm' }}">{{$select.selected.name}}</ui-select-match>
+				<ui-select-choices repeat="item in controller.models | filter: $select.search track by $index">
+					<span ng-bind-html="item.name | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="checkbox"
+			   class="col-xs-6"
+			   ng-model="controller.model.log_mov_ocor"
+			   label="{{ 'l-movement-ticket' | i18n: []: 'dts/crm' }}">
+		</field>
+
+	</fieldset>
+
+	<div class="row" ng-if="controller.model.ttModel && controller.model.ttModel.id !== 1">
+        <br/>
+
+        <div class="crm-group-accordion">
+            <accordion close-others="false">
+
+                <accordion-group is-open="controller.isOpen" class="crm-panel">
+                    <accordion-heading>
+                        <div class="row">
+                            <div class="col-xs-12">
+                            {{ 'l-values-to-history' | i18n: []: 'dts/crm' }}
+                            <i class="pull-right glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  controller.isOpen,
+                                'glyphicon-chevron-right': !controller.isOpen}">
+                            </i>
+                            </div>
+                        </div>
+                    </accordion-heading>
+
+                        <fieldset class="row">
+
+                            <field type="select"
+                                ng-required="true"
+                                ng-model="controller.model.ttCampaign"
+                                ng-change="controller.onChangeCampaign(controller.model.ttCampaign)"
+                                canclean="undefined">
+                                <label>{{ 'l-campaign' | i18n: []: 'dts/crm' }}</label>
+                                <zoom zoom-service="crm.crm_campanha.zoom"
+                                    zoom-selected="controller.onChangeCampaign(selected)"></zoom>
+                                <include>
+                                    <ui-select-match placeholder="{{ 'l-campaign' | i18n: []: 'dts/crm' }}">
+                                        {{ $select.selected.nom_campanha }} {{ $select.selected.num_id ? ' (' + $select.selected.num_id + ')' : '' }}
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="campaign in controller.campaigns track by $index"
+                                                    refresh="controller.getCampaigns($select.search)"
+                                                    refresh-delay="500">
+                                        <span ng-bind-html="campaign.nom_campanha | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </include>
+                            </field>
+
+                            <field type="select"
+                                ng-required="true"
+                                ng-model="controller.model.ttAction"
+                                ng-change="controller.onChangeAction(controller.model.ttAction)"
+                                canclean="undefined">
+                                <label>{{ 'l-action' | i18n: []: 'dts/crm' }}</label>
+                                <include>
+                                    <ui-select-match placeholder="{{ 'l-action' | i18n: []: 'dts/crm' }}">{{$select.selected.nom_acao}}</ui-select-match>
+                                    <ui-select-choices repeat="action in controller.actions | filter: $select.search track by $index">
+                                        <span ng-bind-html="action.nom_acao | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </include>
+                            </field>
+
+                            <field type="select"
+                                ng-required="true"
+                                ng-model="controller.model.ttResult"
+                                canclean="undefined">
+                                <label>{{ 'l-result' | i18n: []: 'dts/crm' }}</label>
+                                <include>
+                                    <ui-select-match placeholder="{{ 'l-result' | i18n: []: 'dts/crm' }}">{{$select.selected.nom_restdo}}</ui-select-match>
+                                    <ui-select-choices repeat="result in controller.results | filter: $select.search track by $index">
+                                        <span ng-bind-html="result.nom_restdo | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </include>
+                            </field>
+
+                            <field type="select"
+                                ng-required="true"
+                                ng-model="controller.model.ttMedia"
+                                canclean="undefined">
+                                <label>{{ 'l-media' | i18n: []: 'dts/crm' }}</label>
+                                <include>
+                                    <ui-select-match placeholder="{{ 'l-media' | i18n: []: 'dts/crm' }}">{{$select.selected.nom_mid_relacto}}</ui-select-match>
+                                    <ui-select-choices repeat="media in controller.medias | filter: $select.search track by $index">
+                                        <span ng-bind-html="media.nom_mid_relacto | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </include>
+                            </field>
+
+                        </fieldset>
+
+                        <fieldset class="row">
+
+                            <field type="textarea"
+                                class="col-md-12"
+                                ng-model="controller.model.dsl_histor_acao">
+                                <label>{{ 'l-description' | i18n: []: 'dts/crm' }}</label>
+                            </field>
+
+                        </fieldset>
+
+                </accordion-group>
+            </accordion>
+        </div>
+	</div>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

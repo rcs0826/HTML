@@ -1,0 +1,93 @@
+
+<totvs-page type="list">
+
+    <totvs-page-navbar>
+        
+        <totvs-page-breadcrumb id="breadcrumb">
+                <breadcrumb>Lotação do Beneficiário</breadcrumb>
+        </totvs-page-breadcrumb>
+        
+        <totvs-page-header>
+
+            <totvs-page-header-title title="Lotação do Beneficiário" 
+                                     total="{{controller.listOfBeneficiaryLotationCount}}"
+                                     settings="controller.openConfigWindow()">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+
+                <totvs-page-header-operation-action on-new="controller.onNew"
+                                                    limit-primary-action="1">
+                    <action class="glyphicon-plus"
+                            link="#/dts/hgp/hvp-beneficiaryLotation/new">
+                            Incluir 
+                    </action>
+
+                </totvs-page-header-operation-action>
+
+                <totvs-page-header-operation-filter placeholder="Código ou Descrição da Lotação"
+                                                    ng-submit="controller.search()"
+                                                    ng-model="controller.searchInputText">
+                </totvs-page-header-operation-filter>
+
+            </totvs-page-header-operation>
+
+            <totvs-page-disclaimers
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+            
+        </totvs-page-header>
+    </totvs-page-navbar>
+    
+    <totvs-page-content>
+
+        <totvs-page-alert ng-if="controller.listOfBeneficiaryLotation.length <= 0"
+                    type="info"
+                    message="Nenhum registro encontrado">
+        </totvs-page-alert>
+
+        <totvs-list-item ng-repeat="beneficiaryLotation in controller.listOfBeneficiaryLotation">
+
+            <totvs-list-item-header>
+
+                <totvs-list-item-title>
+                    <span> 
+                        <a href="#/dts/hgp/hvp-beneficiaryLotation/detail/{{beneficiaryLotation.urlChave}}"> 
+                            <b>Código</b> {{beneficiaryLotation.rotulo}}                              
+                        </a>
+                    </span>                    
+                </totvs-list-item-title>
+
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/hgp/hvp-beneficiaryLotation/edit/{{beneficiaryLotation.urlChave}}" icon="glyphicon-pencil">Editar</action>
+                    
+                    <action ng-click="controller.removeBeneficiaryLotation(beneficiaryLotation)" 
+                            icon="glyphicon-trash">Remover</action>                          
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+
+            <totvs-list-item-content>
+
+                 <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Descrição"
+                                      value="{{beneficiaryLotation.desLotac}}">
+                </totvs-list-item-info>
+
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Demitido/Aposentado"
+                                      value="{{beneficiaryLotation.logDemitApos == true ? 'Sim' : 'Não'}}">
+                </totvs-list-item-info>
+
+            </totvs-list-item-content>
+        </totvs-list-item>
+
+        <totvs-list-pagination
+            ng-if="controller.listOfBeneficiaryLotation.length < controller.listOfBeneficiaryLotationCount && controller.listOfBeneficiaryLotation.length"
+            ng-click="controller.search(true);">
+        </totvs-list-pagination>
+
+    </totvs-page-content>
+</totvs-page>
+
+

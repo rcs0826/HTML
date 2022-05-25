@@ -1,0 +1,96 @@
+<totvs-page type="execution">
+
+    <totvs-page-navbar>
+
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n: []: 'dts/cmg'}}</breadcrumb>
+            <breadcrumb>{{ 'l-calculate-exchange-variation' | i18n: []: 'dts/cmg'}}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            
+            <totvs-page-header-title title="{{ 'l-calculate-exchange-variation' | i18n: []: 'dts/cmg' }}">
+            </totvs-page-header-title>
+            
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action></totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+
+        <totvs-execution hide-repeat="true" required-filename="true">
+
+            <totvs-execution-item title="{{'l-selection' | i18n:[] : 'dts/cmg'}}">
+                
+                <!-- DATA INÍCIO CÁLCULO -->
+                <field type="date"
+                       ng-model="controller.ttExchangeVarInitParams.lastDatePos"
+                       ng-disabled="true"
+                       >
+                    <label title="{{'l-calc-start-date-tooltip' | i18n: []: 'dts/cmg'}}">
+                        {{'l-calc-start-date' | i18n: []: 'dts/cmg'}}
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </label>
+                </field>
+
+                <!-- DATA FIM CÁLCULO -->
+                <field type="date"
+                       ng-model="controller.params.calcDate"
+                       required>
+                    <label>{{'l-end-date-calculating' | i18n: []: 'dts/cmg'}}</label>
+                </field>
+
+            </totvs-execution-item>
+            
+            <totvs-execution-item title="{{'l-parameters' | i18n:[] : 'dts/cmg'}}">
+                
+                <!-- TIPO TRANSAÇÃO CAIXA -->
+                <field type="combo"
+                       ng-model="controller.params.cashTransTypeCode"
+                       ng-options="transTypesDTO.cashTransTypeCode as 
+                                  (transTypesDTO.cashTransTypeCode + ' - ' + transTypesDTO.cashTransTypeDesc) 
+                                   for transTypesDTO in controller.ttExchangeVarTransTypesDTO"
+                       required>
+                    <label>{{'l-cash-trans-type' | i18n: []: 'dts/cmg'}}</label>
+                </field>
+                
+                <!-- UNIDADE FECHAMENTO DE CAIXA -->
+                <field type="select"
+                       ng-model="controller.params.listCashClosingUnit"
+                       canclean
+                       ng-required="controller.ttExchangeVarInitParams.isReqCashClosUnit">
+                    <label>{{'l-cash-closing-unit' | i18n: []: 'dts/cmg'}}</label>
+                    <zoom zoom-service="cmg.unid-fechto-cx.zoom"
+                          zoom-multiple></zoom>
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-cash-closing-unit' | i18n: []: 'dts/cmg'}}">
+                            {{$select.selected.objSelected ? $select.selected.toString() : 
+                              ($select.selected.cod_unid_fechto_cx + ' - ' +
+                               $select.selected.des_unid_fechto_cx)}}
+                        </ui-select-match>
+                        <ui-select-choices repeat="cashClosingUnit in
+                                                   controller.serviceCashClosingUnit.selectResultList 
+                                                   track by $index"
+                                           refresh="controller.serviceCashClosingUnit.getSelectResultList(
+                                                    $select.search, undefined)"
+                                           refresh-delay="500">
+                            <span ng-bind-html="cashClosingUnit.cod_unid_fechto_cx + ' - ' + 
+                                                cashClosingUnit.des_unid_fechto_cx | highlight: $select.search">
+                            </span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+
+            </totvs-execution-item>
+
+            <totvs-execution-item type="execution">
+                
+                <totvs-datasul-execution-rpw></totvs-datasul-execution-rpw>
+
+            </totvs-execution-item>
+        </totvs-execution>
+    </totvs-page-content>
+</totvs-page>

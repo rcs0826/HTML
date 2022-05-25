@@ -1,0 +1,44 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? (controller.model.num_id + ' - ' + controller.model.ttAcao.nom_acao) : ('btn-new-history' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    
+    <div ng-if="controller.model.num_id && controller.model.num_id > 0">
+        <totvs-lodash-template src="/dts/crm/html/history/history.edit.text.html" 
+                           template-data="controller.accessRestriction" />
+    </div>
+    
+    <div ng-if="!controller.model.num_id || controller.model.num_id < 1">
+        <totvs-lodash-template src="/dts/crm/html/history/history.edit.content.html" 
+                           template-data="controller.accessRestriction"/>
+    </div>
+        
+	<% if ((!data["panel-expense"] || data["panel-expense"].log_visivel === true)) { %>
+	<div class="row"
+		ng-if="(controller.canOverrideTicket == true && controller.model.ttCampanha && controller.model.ttAcao) && (!controller.model.num_id || controller.model.num_id < 1)">
+        <br/>
+        <div class="crm-group-accordion">
+            <accordion close-others="false">
+
+                <% if ((!data["panel-expense"] || data["panel-expense"].log_visivel === true)) { %>
+                <accordion-group is-open="controller.group.expenses.open"
+                                class="crm-panel"
+                                id="panel-expense">
+
+                    <div ng-include="'/dts/crm/html/history/history.edit.content.expense.html'"></div>
+
+                </accordion-group>
+                <% } %>
+
+            </accordion>
+        </div>
+	</div>
+	<% } %>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

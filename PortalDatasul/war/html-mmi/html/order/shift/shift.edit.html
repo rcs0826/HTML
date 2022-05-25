@@ -1,0 +1,52 @@
+<totvs-modal-header>
+    {{ 'l-add' | i18n }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-page-content style="border:0px">           
+	              
+        <totvs-page-detail style="padding-top:0px">
+          <div class="row">
+            <div class="col-sm-12">	           
+	            <totvs-field totvs-select
+			                 class="col-sm-12"
+			                 ng-model="shiftEditControl.shift['cd-tarefa']"
+			                 select-id="cd-tarefa"
+			                 id="cd-tarefa"
+			                 select-description="descricao"
+			                 select-service="mmi.ord-taref.zoom"
+			                 zoom-service="mmi.ord-taref.zoom"
+			                 label="{{ 'l-task' | i18n }}"
+			                 focus
+			                 required
+			                 canclean>
+              	</totvs-field>               
+            </div>
+            <div class="col-sm-12">
+	            <totvs-field totvs-select
+			                 class="col-sm-12"
+			                 ng-model="shiftEditControl.shift.turno"
+			                 select-id="cd-turno"
+			                 id="cd-turno"
+			                 select-description="descricao"
+			                 select-service="mmi.mi-turno.zoom"
+			                 zoom-service="mmi.mi-turno.zoom"
+			                 return-object="select-id"
+			                 label="{{ 'l-shift' | i18n }}"
+			                 required
+			                 canclean>
+              </totvs-field>              
+            </div>                        
+          </div>          
+		</totvs-page-detail>
+				
+	</totvs-page-content>
+	
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button type="button" class="btn btn-default" data-ng-click="shiftEditControl.close()">{{ 'l-cancel' | i18n }}</button>
+    <button type="button" class="btn btn-default" data-ng-click="shiftEditControl.save(shiftEditControl.shift, true)">{{ 'l-save-new' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="shiftEditControl.save(shiftEditControl.shift, false)">{{ 'l-save' | i18n }}</button>        
+</totvs-modal-footer>

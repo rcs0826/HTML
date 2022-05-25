@@ -1,0 +1,62 @@
+<div ng-controller="salesorder.dashboard.lastinvoices.Controller as lastInvoicesCtrl">
+	<totvs-widget>
+		<totvs-widget-header title="{{ 'l-last-invoices' | i18n : [] : 'dts/mpd/' }}" settings="lastInvoicesCtrl.listShow = false">
+		</totvs-widget-header>
+		<totvs-widget-body>
+
+			<div style="height:300px" ng-show="lastInvoicesCtrl.listShow">
+
+				<div ng-if="!lastInvoicesCtrl.gridOptions.rowData"> {{ 'l-loading-portlet' | i18n : [] : 'dts/mpd'}} </div>
+
+				<totvs-grid ng-show="lastInvoicesCtrl.gridOptions.rowData"
+							grid-options="lastInvoicesCtrl.gridOptions"
+							navigatable="true"
+							resizable="true"
+							selectable="row"							
+							reorderable="true"
+							sortable="true"
+							grid-height="300"
+							
+						<%
+							if (data.indexOf("representative") > -1) {
+						%>
+							ng-init="lastInvoicesCtrl.addCustomerColumn()"
+						<%
+							}
+						%>							
+
+							>
+				</totvs-grid>
+
+			</div>
+
+
+			<div style="height:300px;" ng-hide="lastInvoicesCtrl.listShow">
+				<form>
+					<p>{{'l-num-records-to-view' | i18n : [] : 'dts/mpd/'}}</p>
+
+					<div class="row">
+
+						<field type="number" ng-model="lastInvoicesCtrl.invoiceListSize" min="1" required class="col-md-12">
+							<label>{{ 'l-numero' | i18n : [] : 'dts/mpd/' }}</label>
+							<validator key="required">{{$fieldLabel}} {{ 'l-required' | i18n : [] : 'dts/mpd/' }}</validator>
+							<validator key="min">{{$fieldLabel}} {{ 'l-should-be-at-least' | i18n : [] : 'dts/mpd/' }} 1</validator>
+						</field>
+					</div>
+					<hr>
+					<a role="button" class="btn btn-default pull-right" ng-click="lastInvoicesCtrl.applyConfig()">&nbsp; {{ 'btn-apply' | i18n : [] : 'dts/mpd/' }} &nbsp; </a>
+				</form>
+			</div>
+
+
+		</totvs-widget-body>
+
+		<totvs-widget-footer>
+			<totvs-widget-footer-body>
+			</totvs-widget-footer-body>
+			<totvs-widget-footer-actions>
+				<action link="#/dts/mpd/invoices/">{{ 'l-detail' | i18n : [] : 'dts/mpd/' }}</action>
+			</totvs-widget-footer-actions>
+		</totvs-widget-footer>
+	</totvs-widget>
+</div>

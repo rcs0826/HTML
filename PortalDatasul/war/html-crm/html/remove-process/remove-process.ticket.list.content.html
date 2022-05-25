@@ -1,0 +1,111 @@
+<totvs-page-content style="border-top: 1px dotted #e4e4e4;">
+
+	<totvs-page-content-header style="border-bottom: 0px;">
+		<fieldset>
+			<field type="input"
+				canclean="undefined"
+				maxlength="8"
+				numbers-only
+			    class="col-xs-12 col-sm-4 col-md-4"
+				ng-model="controllerRemoveProcess.basicFilter.ticket.cod_livre_1"
+				placeholder="{{ 'l-code' | i18n: []: 'dts/crm' }}">
+				<label>{{ 'l-code' | i18n: []: 'dts/crm' }}</label>
+			</field>
+			<field type="daterange"
+				canclean="undefined"
+				class="col-xs-12 col-sm-6 col-md-7"
+				ng-model="controllerRemoveProcess.basicFilter.ticket.dat_abert"
+				start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+				end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+				<label>{{ 'l-date-opening' | i18n: []: 'dts/crm' }}</label>
+			</field>
+			<div class="col-xs-12 col-sm-2 col-md-1" style="margin-top: 27px;">
+				<button class="btn btn-default pull-right"
+						ng-click="controllerRemoveProcess.search(false, true);">{{ 'btn-apply' | i18n: []: 'dts/crm' }}
+				</button>
+			</div>
+		</fieldset>
+	</totvs-page-content-header>
+
+	<totvs-page-content-header>
+		<totvs-page-quick-select
+			title="{{ 'l-select-all' | i18n: []: 'dts/crm' }} (Selecionados {{(controllerRemoveProcess.listOfTickets | filter:{$selected:'true'}).length}} de {{controllerRemoveProcess.listOfTicketsCount}})"
+			list="controllerRemoveProcess.listOfTickets">
+		</totvs-page-quick-select>
+	</totvs-page-content-header>
+
+	<totvs-page-alert
+		ng-if="controllerRemoveProcess.listOfTickets.length <= 0"
+		type="info"
+		message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+	</totvs-page-alert>
+
+	<totvs-list-item
+		id="ticket{{ticket.cod_livre_1}}"
+		class="crm-default {{ticket.nom_cor}}"
+		ng-repeat="ticket in controllerRemoveProcess.listOfTickets"
+		selected="ticket">
+
+		<totvs-list-item-header>
+			<totvs-list-item-title class="legend overflow-ellipsis"
+				ng-class="[ticket.nom_cor, (ticket.log_anexo ? 'crm-attachment' : '')]">
+				{{ ticket.cod_livre_1 }} - {{ticket.nom_ocor}}
+			</totvs-list-item-title>
+		</totvs-list-item-header>
+
+		<totvs-list-item-content>
+			<totvs-list-item-info
+				value-break="false"
+				class="col-xs-12 col-sm-4">
+				<span class="label {{ticket.nom_cor}}">{{ ticket.ttStatus ? ticket.ttStatus.nom_status_ocor.toUpperCase() : '' }}</span>
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-4"
+				title="{{ 'l-account' | i18n: []: 'dts/crm' }}"
+				value="{{ ticket.ttConta.nom_razao_social }}">
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-4"
+				title="{{ 'l-date-opening' | i18n: []: 'dts/crm' }}"
+				value="{{ ticket.dat_abert | date : ('l-date-format' | i18n: []: 'dts/crm')  }}">
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-4"
+				title="{{ 'l-priority' | i18n: []: 'dts/crm' }}"
+				value="{{ ticket.ttPrioridade.nom_priorid_ocor }}">
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				value-break="false"
+				class="col-xs-12 col-sm-4"
+				title="{{ 'l-type' | i18n: []: 'dts/crm' }}"
+				value="{{ ticket.ttTipo.nom_tip_ocor }}">
+			</totvs-list-item-info>
+
+			<totvs-list-item-info
+				class="col-xs-12 col-sm-4"
+				title="{{ 'l-user-responsible' | i18n: []: 'dts/crm' }}"
+				value="{{ ticket.ttRecurso.nom_usuar }}">
+			</totvs-list-item-info>
+
+		</totvs-list-item-content>
+
+		<totvs-list-item-content-detail ng-if="ticket.ttConta.log_acesso"
+			ng-click="controllerRemoveProcess.loadItemDetail(ticket);">
+			<totvs-list-item-info
+				class="col-xs-12 description"
+				title="{{ 'l-situation' | i18n: []: 'dts/crm' }}"
+				value="{{ ticket.dsl_sit }}">
+			</totvs-list-item-info>
+		</totvs-list-item-content-detail>
+
+	</totvs-list-item>
+
+	<totvs-list-pagination
+		ng-if="controllerRemoveProcess.listOfTickets.length < controllerRemoveProcess.listOfTicketCount && controllerRemoveProcess.listOfTickets.length"
+		ng-click="controllerRemoveProcess.search(true);">
+	</totvs-list-pagination>
+</totvs-page-content>

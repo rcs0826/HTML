@@ -1,0 +1,179 @@
+<link type="text/css" rel="stylesheet" href="/dts/mmi/html/sprint/especialidade/especialidade.css"></link>
+
+<div class="row div-backlog" style="margin: 0px" ng-style="hhCtrl.obterAltura()">
+
+	<div class="col-xs-10" style="padding-left:0px; padding-bottom: 10px; padding-top: 5px; color:#777; font-weight:bold">
+		{{ hhCtrl.titulo }}
+	</div>
+	
+	<div class="col-xs-2 text-right" style="padding-right: 0px !important; padding-bottom: 5px;">
+		<button
+			type="button"
+			class="btn btn-warning"
+			data-ng-click="hhCtrl.abrirConfTipoHora()">
+			{{'l-hours-type' | i18n}}
+		</button> 
+	</div>
+
+	<div class="col-xs-12" style="border: 1px solid lightgray; padding-right:5px; padding-left:5px; background-color:white">
+			
+			<div class="col-xs-5 table-content no-padding-hh">
+			<table class="col-xs-12 no-padding-hh">
+				<tr>
+					<th style="padding-right:23px; font-weight:normal"><div class="div-tabela-backlog">{{ 'l-capacity' | i18n }}</div></th>
+					<th style="padding-right:23px; font-weight:normal"><div class="div-tabela-backlog">{{ 'l-type-value' | i18n }}</div></th>
+					<th style="padding-right:23px; font-weight:normal"><div class="div-tabela-backlog">{{ 'l-replicate' | i18n }}</div></th>
+				</tr>				
+				<tr ng-repeat="capacidade in hhCtrl.horasCapacidade">
+					<td data-toggle="tooltip" title="{{capacidade.descricao}}">
+						{{ capacidade.codigo }}
+					</td>
+					<td>
+						{{ capacidade.tipoValor }}
+					</td>
+					<td>
+						<a style="cursor:{{hhCtrl.cursor}}" ng-click="hhCtrl.alteraValor(capacidade)"
+						   data-toggle="tooltip" title="{{ 'l-report-period-value' | i18n }}"
+						   ng-if="capacidade.canEdit">
+						   <span class="glyphicon glyphicon-duplicate"/>
+						</a>
+					</td>
+                </tr>
+				<tr>
+					<td colspan="3" style="padding-bottom:15px; color:blue">
+						{{ 'l-total-competence' | i18n }}
+					</td>
+				</tr>
+				
+				<tr>
+					<th style="padding-right:23px; font-weight:normal"><div class="div-tabela-backlog">{{ 'l-loads' | i18n }}</div></th>
+					<th style="padding-right:23px; font-weight:normal"><div class="div-tabela-backlog">{{ 'l-type-value' | i18n }}</div></th>
+					<th style="padding-right:23px; font-weight:normal"><div class="div-tabela-backlog">{{ 'l-replicate' | i18n }}</div></th>
+				</tr>
+				<tr ng-repeat="carga in hhCtrl.horasCarga">
+					<td data-toggle="tooltip" title="{{carga.descricao}}">
+						{{ carga.codigo }}
+					</td>
+					<td>
+						{{ carga.tipoValor }}
+					</td>
+					<td>
+						<a style="cursor:{{hhCtrl.cursor}}" ng-click="hhCtrl.alteraValor(carga)"
+							data-toggle="tooltip" title="{{ 'l-report-period-value' | i18n }}"
+							ng-if="carga.canEdit">
+							<span class="glyphicon glyphicon-duplicate"/>
+						</a>						
+					</td>
+                </tr>
+				<tr>
+					<td colspan="3" style="padding-bottom:15px; color:red">
+						{{ 'l-total-load' | i18n }}
+					</td>
+				</tr>
+				
+				<tr>
+					<td colspan="3" style="font-weight:bold">
+						{{ 'l-balance' | i18n }}
+					</td>
+				</tr>
+				
+				<tr>
+					<td colspan="3" style="font-weight:bold">
+						{{ 'l-accumulated-balance' | i18n }}
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="col-xs-7 table-content no-padding-hh" style="overflow:auto">
+			<table class="col-xs-12 no-padding-hh">
+				<tr>
+					<th ng-repeat="periodo in hhCtrl.colunasPeriodo" style="padding-right:23px; font-weight:normal">
+						<div class="div-tabela-backlog" align="right">{{ periodo.data }}</div>
+					</th>
+				</tr>				
+				
+				<tr ng-repeat="capacidade in hhCtrl.horasCapacidade">
+					<td ng-repeat="data in hhCtrl.datasPeriodo | filter: {numId: capacidade.numId}" 
+						style="padding-right:23px; font-weight:normal">
+						
+						<div align="right" ng-if="!capacidade.canEdit || !hhCtrl.especialidade">{{ data.valorPrevisto | number:2 }}</div>
+						
+						<div align="right" ng-if="capacidade.canEdit && hhCtrl.especialidade">
+							<totvs-editable value="{{data.valorPrevisto | number:2}}"
+								 			on-complete="hhCtrl.aplicarValorHora(data)">
+						        <totvs-field
+						            totvs-decimal
+						            class="col-md-12"
+						            m-dec="2"
+												ng-model="data.valorPrevisto">
+						            <label>{{ 'l-value' | i18n }}</label>
+						        </totvs-field>
+						    </totvs-editable>
+						</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<td ng-repeat="data in hhCtrl.totalCapacidade" style="padding-right:23px; padding-bottom:15px; font-weight:normal; color:blue">
+						<div align="right">{{ data.totalPrevisto | number:2 }}</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<th ng-repeat="periodo in hhCtrl.colunasPeriodo" style="padding-right:23px">
+						<div class="div-tabela-backlog" style="color:transparent">{{ periodo.data }}</div>
+					</th>
+				</tr>
+				
+				<tr ng-repeat="carga in hhCtrl.horasCarga">
+					<td ng-repeat="data in hhCtrl.datasPeriodo | filter: {codigo: carga.codigo}" 
+						style="padding-right:23px; font-weight:normal">
+						
+						<div align="right" ng-if="!carga.canEdit || !hhCtrl.especialidade">{{ data.valorPrevisto | number:2 }}</div>
+						
+						<div align="right" ng-if="carga.canEdit && hhCtrl.especialidade">
+							<totvs-editable value="{{data.valorPrevisto | number:2}}"
+								 							on-complete="hhCtrl.aplicarValorHora(data)">
+						        <totvs-field
+						            totvs-decimal
+						            class="col-md-12"
+						            m-dec="2"
+												ng-model="data.valorPrevisto">
+						            <label>{{ 'l-value' | i18n }}</label>
+						        </totvs-field>
+						    </totvs-editable>
+						</div>
+
+					</td>
+				</tr>
+				
+				<tr>
+					<td ng-repeat="data in hhCtrl.totalCarga" style="padding-right:23px; padding-bottom:15px; font-weight:normal; color:red">
+						<div align="right">{{ data.totalPrevisto | number:2 }}</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<td ng-repeat="data in hhCtrl.saldo" style="padding-right:23px; font-weight:bold">
+						<div align="right">{{ data.saldo | number:2 }}</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<td ng-repeat="data in hhCtrl.saldoAcumulado" style="padding-right:23px; font-weight:bold">
+						<div align="right">{{ data.saldo | number:2 }}</div>
+					</td>
+				</tr>
+				
+			</table>
+		</div>
+			
+	</div>
+</div>
+
+<style>
+	.inline-edit:after {
+		content: none !important;
+	}
+</style>

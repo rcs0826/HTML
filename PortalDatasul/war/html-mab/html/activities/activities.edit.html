@@ -1,0 +1,46 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>  
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mab/activities">{{'l-activities' | i18n}}</breadcrumb>
+            <breadcrumb>{{ controller.breadcrumbTitle }}</breadcrumb>
+        </totvs-page-breadcrumb>   
+        <totvs-page-header>
+            <totvs-page-header-title title="{{controller.headerTitle}}"></totvs-page-header-title>       
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new="{{controller.idDisabled}}">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>   
+    </totvs-page-navbar>
+    <totvs-page-content>     
+        <totvs-page-form>
+            <fieldset>               
+                <field type="input"
+                	   name-id="cod-ativid"
+                       data-ng-disabled="controller.idDisabled"
+                       class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                       data-ng-model="controller.model['cod-ativid']"
+                       maxlength="8"
+                       required
+                       focus>
+                    <label>{{ 'l-activity' | i18n }}</label>
+                </field>
+                <field type="input"
+                	   name-id="des-ativid"
+                       class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                       data-ng-model="controller.model['des-ativid']"
+                       maxlength="40"
+                       required>
+                    <label>{{ 'l-description' | i18n }}</label>
+                </field>                             
+                <field ng-show="{{controller.atividadeAgricola}}"
+                       type="checkbox"
+                       class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                       ng-model="controller.model['log-area-agro']">
+                    <label>{{ 'l-activity-agro' | i18n }}</label>
+                </field>
+            </fieldset>
+        </totvs-page-form>       
+    </totvs-page-content>
+</totvs-page>

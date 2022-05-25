@@ -1,0 +1,133 @@
+<div class="col-xs-12 crm-tab"
+	 ng-init="controller.fcInit(result);">
+
+	<div class="row">
+		<div class="col-xs-10">
+			<strong>
+				{{ 'nav-next-actions' | i18n: []: 'dts/crm' }} ({{ result.ttProximaAcao.length || 0 }})
+			</strong>
+		</div>
+		<div class="col-xs-2 text-right"
+			 ng-if="controller.model.ttAcao.length !== result.ttProximaAcao.length">
+			<a class="clickable"
+			   ng-click="controller.addEditActionResultNextAction(result, controller.model.ttAcao);">
+				{{ 'btn-add' | i18n: []: 'dts/crm' }}
+			</a>
+		</div>
+	</div>
+
+	<totvs-page-alert type="info"
+					  style="margin-top: 10px; margin-bottom: 10px;"
+					  message="{{ 'msg-not-found-next-action' | i18n: []: 'dts/crm' }}"
+					  ng-if="!result.ttProximaAcao || result.ttProximaAcao.length <= 0">
+	</totvs-page-alert>
+
+	<div ng-if="result.ttProximaAcao.length">
+
+		<div class="row crm-tab-item header hidden-xs">
+			<strong>
+				<div class="col-xs-6 col-sm-5">
+					{{ 'l-name' | i18n: []: 'dts/crm' }}
+				</div>
+				<div class="col-sm-2">
+					{{ 'l-required' | i18n: []: 'dts/crm' }}
+				</div>
+				<div class="col-sm-2">
+					{{ 'l-automatic' | i18n: []: 'dts/crm' }}
+				</div>
+			</strong>
+		</div>
+
+		<div class="row crm-tab-item"
+			 ng-repeat="nextAction in result.ttProximaAcao"
+			 ng-drag="true"
+			 ng-drag-data="nextAction"
+			 ng-drop="true"
+			 ng-drop-success="controller.onCampaignActionResultNextActionDropComplete(result, $index, $data, $event)">
+
+			<div class="col-xs-8 col-sm-5 clickable">
+				<span class="hidden-xs glyphicon glyphicon-resize-vertical"
+					  style="margin-right: 5px;">
+				</span>
+				{{ nextAction.nom_acao }}
+			</div>
+
+			<div class="col-sm-2 hidden-xs">
+				<input type="checkbox"
+					   ng-value="{{ nextAction.num_id }}"
+					   ng-model="nextAction.log_livre_1"
+					   ng-change="controller.setActionResultNextActionAsRequired(nextAction);"
+					   bsswitch>
+			</div>
+
+			<div class="col-sm-2 hidden-xs">
+				<input type="checkbox"
+					   ng-value="{{ nextAction.num_id }}"
+					   ng-model="nextAction.log_livre_2"
+					   ng-change="controller.setNextActionAsAutomatic(nextAction);"
+					   bsswitch>
+			</div>
+
+			<div class="col-xs-4 col-sm-3 text-right">
+
+				<a class="clickable "
+				   ng-click="controller.addEditActionResultNextAction(result, controller.model.ttAcao, nextAction, $index);">
+					<span class="visible-xs-inline glyphicon glyphicon-pencil"></span>
+					<span class="hidden-xs">{{ 'btn-edit' | i18n: []: 'dts/crm' }} &nbsp;</span>
+				</a>		
+				&nbsp;
+				<a class="clickable"
+				   ng-click="controller.removeActionResultNextAction(result, nextAction, $index);">
+					<span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+					<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }} &nbsp;</span>
+				</a>			
+				&nbsp;		
+				<i class="clickable glyphicon"
+				   ng-class="{'glyphicon-chevron-down' :  nextAction.isOpen,
+							  'glyphicon-chevron-right': !nextAction.isOpen}"
+				   ng-click="nextAction.isOpen = !nextAction.isOpen;">
+				</i>
+			</div>
+			
+			<div ng-if="nextAction.isOpen">
+
+				<totvs-divider></totvs-divider>
+
+				<div class="col-xs-12 crm-tab">					
+
+					<totvs-list-item-content>
+
+						<totvs-list-item-info
+							class="col-xs-12 col-sm-6 visible-xs-inline"
+							title="{{ 'l-required' | i18n: []: 'dts/crm' }}">
+							{{ (nextAction.log_livre_1 === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+						</totvs-list-item-info>	
+
+						<totvs-list-item-info
+							class="col-xs-12 col-sm-6 visible-xs-inline"
+							title="{{ 'l-automatic' | i18n: []: 'dts/crm' }}">
+							{{ (nextAction.log_livre_2 === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+						</totvs-list-item-info>							
+
+						<totvs-list-item-info
+							class="col-xs-12 col-sm-6"
+							title="{{ 'l-start-after' | i18n: []: 'dts/crm' }}">
+							{{ nextAction.val_tempo_apos }} {{ nextAction.startAfterName}}
+						</totvs-list-item-info>	
+						
+						<totvs-list-item-info
+							class="col-xs-12 col-sm-6"
+							title="{{ 'l-duration' | i18n: []: 'dts/crm' }}">
+							{{ nextAction.val_tempo_durac }} {{ nextAction.durationName}}
+						</totvs-list-item-info>							
+					</totvs-list-item-content>
+
+				</div>
+
+			</div>			
+
+		</div>
+
+	</div>
+
+</div>

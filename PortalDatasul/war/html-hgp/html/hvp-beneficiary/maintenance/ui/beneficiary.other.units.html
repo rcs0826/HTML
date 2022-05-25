@@ -1,0 +1,211 @@
+<totvs-page type="edit"> 
+        
+<!--        ng-controller="hrc.documentMaintenance.Control as controller"-->
+
+        <totvs-page-navbar id="navBar">
+
+            <totvs-page-breadcrumb>
+                    <breadcrumb link="#/dts/hgp/hrc-document">Central Guias TISS</breadcrumb>
+                    <breadcrumb>Beneficiário de Outra Unidade</breadcrumb>
+            </totvs-page-breadcrumb>
+            
+            <totvs-page-header>
+
+                <totvs-page-header-title 
+                    title="{{(controller.action === 'INSERT' ? 'Incluir' : 'Editar')}} Beneficiário de Outra Unidade" >
+                </totvs-page-header-title>
+
+                <totvs-page-header-operation>
+                    <totvs-page-header-operation-action on-back-link="#/dts/hgp/hrc-document/"
+                                                        on-cancel="controller.onCancel"
+                                                        hide-edit="true"
+                                                        hide-save-new="true"
+                                                        hide-remove="true">
+                    </totvs-page-header-operation-action>
+                </totvs-page-header-operation>
+
+            </totvs-page-header>
+
+        </totvs-page-navbar>
+
+        <totvs-page-content id="pageContent">
+
+            <totvs-page-form>
+                <fieldset>
+                    
+                    <field type="input"
+                           name-id="cdCarteiraUsuario"
+                           canclean
+                           required
+                           maxlength="17"
+                           class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                           data-ng-model="controller.beneficiary.cdCarteiraUsuario"
+                           label="Código Beneficiário">
+                    </field>
+                    
+                    <field type="input"
+                           name-id="nmUsuario"
+                           canclean
+                           required
+                           maxlength="40"
+                           class="col-lg-9 col-md-9 col-sm-9 col-xs-12"
+                           data-ng-model="controller.beneficiary.nmUsuario"
+                           label="Nome Completo">
+                    </field>
+
+                    <field type="date"
+                           required
+                           name-id="dtValidadeCart"
+                           class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                           data-ng-model="controller.beneficiary.dtValidadeCart"
+                           label="Validade da Carteira">
+                    </field>
+                    
+                    
+                    <field type="combo"
+                           required
+                           class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                           data-ng-model="controller.beneficiary.lgSexo"
+                           ng-options="v.value as v.label for v in controller.genderValues"
+                           label="Sexo">
+                    </field>  
+                    
+                    <field type="input"
+                           canclean
+                           maxlength="14"
+                           ui-mask="999.999.999-99"
+                           class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                           data-ng-model="controller.beneficiary.cdCpf"
+                           label="CPF">
+                    </field>
+                    
+                    <field type="date"
+                           required
+                           name-id="dtNascimento"
+                           class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                           data-ng-model="controller.beneficiary.dtNascimento"
+                           label="Data Nascimento">
+                    </field>
+                    
+                    
+                    <field type="input"
+                           canclean
+                           maxlength="40"
+                           class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                           data-ng-model="controller.beneficiary.enRua"
+                           label="Endereço">
+                    </field>
+                    
+                    <field type="input"
+                           canclean
+                           maxlength="6"
+                           class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                           data-ng-model="controller.beneficiary.enNumero"
+                           label="Número">
+                    </field>
+                    
+                    <field type="input"
+                           canclean
+                           maxlength="30"
+                           class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                           data-ng-model="controller.beneficiary.enBairro"
+                           label="Bairro">
+                    </field>
+                    <!--keyup-->
+                    <totvs-field totvs-select canclean
+                           ng-model="controller.beneficiary.cdCidade"
+                           class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                           ng-change="controller.onCitySelect()"
+                           label="Código da Cidade"
+                           select-service="hcg.cityZoomController"
+                           zoom-service="hcg.cityZoomController"
+                           select-id="cdCidade"
+                           select-description="nmCidade">
+                    </totvs-field>
+                    
+                    <field type="input"
+                           disabled
+                           class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                           data-ng-model="controller.beneficiary.enUf"
+                           label="UF">
+                    </field>
+                    
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    </field>
+                    
+                    <field type="input"
+                           canclean
+                           maxlength="15"
+                           class="col-lg-3 col-md-3 col-sm-3 col-xs-12"     
+                           data-ng-model="controller.beneficiary.enTelefone"
+                           label="Telefone">
+                    </field>
+                    
+                    <field type="input"
+                           canclean
+                           maxlength="40"
+                           class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                           data-ng-model="controller.beneficiary.nmResponsavelPlano"
+                           label="Responsável">
+                    </field>
+                    
+                    <field type="input"
+                           canclean
+                           maxlength="40"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.beneficiary.nmContratante"
+                           label="Contratante">
+                    </field>
+                    
+                    <field type="input"
+                           canclean
+                           maxlength="5"
+                           class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                           data-ng-model="controller.beneficiary.cdPlanoOut"
+                           label="Código Plano">
+                    </field>
+                    
+                    <field type="input"
+                           canclean
+                           maxlength="60"
+                           class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                           data-ng-model="controller.beneficiary.nmPlano"
+                           label="Descrição Plano">
+                    </field>
+                    
+                    <field type="date"
+                           ng-disabled="true"
+                           class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                           data-ng-model="controller.beneficiary.dtCadastro"
+                           label="Data de Cadastro">
+                    </field>
+                    
+                    <field type="combo"
+                           class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                           data-ng-model="controller.beneficiary.inNaturezaContrato"
+                           ng-options="v.value as v.label for v in controller.contractNatureValues"
+                           label="Natureza Contrato">
+                    </field>
+                    
+                    <field type="input"
+                           canclean
+                           maxlength="30"
+                           class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                           data-ng-model="controller.beneficiary.nmClaHos"
+                           label="Classe Hospitalar">
+                    </field>
+                    
+                    <field type="input"
+                           canclean
+                           maxlength="30"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                           data-ng-model="controller.beneficiary.nmFormaPagto"
+                           label="Forma Pagamento">
+                    </field>
+                    
+                </fieldset>
+            </totvs-page-form>
+        </totvs-page-content>	
+    </totvs-page>

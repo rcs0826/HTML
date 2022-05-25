@@ -1,0 +1,11 @@
+totvs-modal-header
+    | {{"l-publish-mapping" | i18n}}
+totvs-modal-body
+    .alert.alert-warning {{ "msg-check-publish" | i18n }}
+    form(name="controller.form")
+        totvs-list-item(ng-repeat="item in controller.checklist")
+            input(type="checkbox" ng-model="item.checked" required)
+            | &nbsp; {{item.des_item_checklist}}
+totvs-modal-footer
+    button.btn.btn-primary(ng-click="controller.save()" ng-disabled="controller.form.$invalid") {{ "l-publish" | i18n }}
+    button.btn.btn-default(ng-click="controller.close()") {{ "l-cancel" | i18n }}

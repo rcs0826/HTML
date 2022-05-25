@@ -1,0 +1,81 @@
+<style type="text/css" scoped="true">
+	.radio input{
+		margin:2px 5px 2px 10px;
+	}
+	.radio label{
+		margin-left:15px;
+	}
+</style>
+<totvs-modal-header>
+	<span ng-show="controller.approval">{{ 'l-quote-approval' | i18n: []: 'dts/mcc' }}</span>
+	<span ng-hide="controller.approval">{{ 'l-quote-reproval' | i18n: []: 'dts/mcc' }}</span>
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<div class="row">
+		<form class="form-inline" role="form">
+			<totvs-page-detail-info 
+				class="col-xs-12" 
+				title="{{:: 'l-vendor' | i18n: []: 'dts/mcc' }}" 
+				value="{{controller.model.vendorId}} - {{controller.model.vendorName}}">
+			</totvs-page-detail-info>
+
+			<totvs-tabset style="margin-top:10px">
+				<totvs-tab heading="{{:: 'l-comments' | i18n: []: 'dts/mcc' }}" active="true">
+					<field type="textarea" ng-model="controller.model.comments" class="col-xs-12" rows="7">
+					</field>
+				</totvs-tab>
+
+				<totvs-tab heading="{{:: 'l-update-deliveries' | i18n: []: 'dts/mcc' }}" ng-show="controller.approval">
+					<div class="row">
+						<totvs-field totvs-radio
+							label="{{:: 'l-update-deliveries-dates' | i18n: []: 'dts/mcc' }}"
+							t-options="controller.updateDeliveriesOptions"
+							ng-model="controller.model.updateDeliveriesDate"
+							class="col-xs-12"
+							ng-change="controller.updateDeliverySchedule()">
+						</totvs-field>
+					</div>
+					<div class="row" style="margin:10px 0; padding: 0 15px;" id="divDeliveryGrid">
+						<totvs-grid id="griddelivery"
+                            grid-data="controller.model.parts"
+							editable="true"
+							reorderable="true"
+							resizable="true"
+							grid-selected-items="controller.selected"
+							grid-dirty-items="controller.dirty"
+							on-edit="controller.onEdit(event, column)"
+							grid="controller.partGrid"
+							grid-height="130"
+							auto-resize-content="true"
+							on-data="controller.onData(data)">
+							<totvs-grid-column field="parcela">
+								{{:: 'l-part' | i18n: []: 'dts/mcc' }}
+							</totvs-grid-column>
+
+							<totvs-grid-column field="data-entrega" filter="date:dd/MM/yyyy" editable="true">
+								{{:: 'l-delivery-date' | i18n: []: 'dts/mcc' }}
+							</totvs-grid-column>
+
+							<totvs-grid-column field="quantidade" class="text-right" filter="number" editable="true">
+								{{:: 'l-quantity' | i18n: []: 'dts/mcc' }}
+							</totvs-grid-column>
+
+							<totvs-grid-column field="cod-refer">
+								{{:: 'l-reference' | i18n: []: 'dts/mcc' }}
+							</totvs-grid-column>
+						</totvs-grid>
+					</div>
+				</totvs-tab>
+			</totvs-tabset>
+		</form> 
+	</div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n: []: 'dts/mcc' }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply()">
+		<span ng-show="controller.approval">{{ 'l-approve' | i18n: []: 'dts/mcc' }}</span>
+		<span ng-hide="controller.approval">{{ 'l-reprove' | i18n: []: 'dts/mcc' }}</span>
+	</button>
+</totvs-modal-footer>

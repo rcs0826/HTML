@@ -1,0 +1,45 @@
+<totvs-page-header-operation>
+
+	<totvs-page-header-operation-action>
+		<% if ((!data["btn-new-history"] || data["btn-new-history"].log_visivel === true)) { %>
+		<action icon="glyphicon-plus"
+				ng-click="controllerHistroyList.addEdit();"
+				ng-if="controllerHistroyList.isEnabled">
+			{{ 'btn-new-history' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+		<% if ((!data["btn-report"] || data["btn-report"].log_visivel === true)) { %>
+		<action icon="glyphicon-list-alt" ng-if="!controllerHistroyList.isPortal"
+				ng-click="controllerHistroyList.showReports();"
+				ng-if="controllerHistroyList.parent === undefined">
+			{{ 'btn-report' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+		<% if ((!data["btn-export"] || data["btn-export"].log_visivel === true)) { %>
+		<action icon="glyphicon-print"
+			ng-click="controllerHistroyList.exportSearch();"
+			ng-if="controllerHistroyList.parent === undefined">
+			{{ 'btn-export' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+	</totvs-page-header-operation-action>
+
+	<totvs-page-header-operation-filter
+		<% if ((!data["l-quick-search"] || data["l-quick-search"].log_visivel === true)) { %>
+		placeholder="{{ 'l-search-history' | i18n: []: 'dts/crm' }}"
+		ng-submit="controllerHistroyList.search()"
+		ng-model="controllerHistroyList.quickSearchText"
+		<% } %>
+		<% if ((!data["btn-advanced-search"] || data["btn-advanced-search"].log_visivel === true)) { %>
+		advanced-search="controllerHistroyList.openAdvancedSearch"
+		<% } %>
+		>
+	</totvs-page-header-operation-filter>
+
+</totvs-page-header-operation>
+
+<totvs-page-disclaimers
+	ng-if="controllerHistroyList.disclaimers.length > 0"
+	disclaimer-list="controllerHistroyList.disclaimers"
+	ng-click="controllerHistroyList.removeDisclaimer">
+</totvs-page-disclaimers>

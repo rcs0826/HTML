@@ -1,0 +1,45 @@
+
+<totvs-page-child type="list">
+
+	<totvs-page-content class="crm-tab">
+
+		<totvs-page-navbar>
+			<totvs-page-header>
+				<totvs-page-header-title title="{{ 'l-add-widgets' | i18n }}"></totvs-page-header-title>
+
+				<totvs-page-header-operation>
+					<totvs-page-header-operation-action>
+						<action ng-click="controller.back()">{{ 'l-back' | i18n }}</action>
+					</totvs-page-header-operation-action>
+
+					<totvs-page-header-operation-filter placeholder="{{ 'l-search' | i18n }}"
+														ng-submit="controller.loadData()"
+														ng-model="controller.quickSearchText">
+					</totvs-page-header-operation-filter>
+				</totvs-page-header-operation>
+
+			</totvs-page-header>
+		</totvs-page-navbar>
+
+		<totvs-page-alert
+			ng-if="!controller.widgets || !controller.widgets.length"
+			type="info"
+			message="{{ 'msg-not-found-widget' | i18n }}">
+		</totvs-page-alert>
+
+		<totvs-list-item ng-repeat="widget in controller.widgets">
+			<totvs-list-item-header>
+				<totvs-list-item-title>{{widget.widgetName}}
+				</totvs-list-item-title>
+				<totvs-list-item-action limit-primary-action="1">
+					<action icon="glyphicon-plus" ng-click="controller.add(widget)">{{ 'btn-add' | i18n }}</action>
+				</totvs-list-item-action>
+				<totvs-list-item-info title="{{ 'l-module' | i18n }}"
+									  value="{{ widget.widgetModule }}">
+				</totvs-list-item-info>
+			</totvs-list-item-header>
+		</totvs-list-item>
+
+	</totvs-page-content>
+
+</totvs-page-child>

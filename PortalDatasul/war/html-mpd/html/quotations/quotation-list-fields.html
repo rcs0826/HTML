@@ -1,0 +1,150 @@
+<%
+	_.forEach(data.fields, function(quotationVisibleFields) {
+
+		if (quotationVisibleFields.fieldName == "nome-abrev") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{((quotation['log-cotacao'] && quotation['cod-id-prosp']) ? 'l-lead' : 'l-customer') | i18n}}">
+				<span ng-if="!quotation['cod-id-prosp']">{{quotation['nome-abrev']}}</span>
+				<span ng-if="quotation['log-cotacao'] == true && quotation['cod-id-prosp']" style="background-color:#FCF6AB">
+					{{quotation['crmAccountName']}}
+					{{quotation['crmAccountShortName'] ? '(' + quotation['crmAccountShortName'] + ')' : ''}}
+				</span>
+			</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "nr-pedcli") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-quotation-client' | i18n}}">{{quotation['nr-pedcli']}}</totvs-list-item-info>
+			<%
+		}
+		
+		if (quotationVisibleFields.fieldName == "cod-estabel") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-cod-estabel' | i18n}}">{{quotation['cod-estabel']}} - {{quotation['desc-cod-estabel']}}</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "cod-canal-venda") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-cod-canal-venda' | i18n}}">{{quotation['cod-canal-venda']}} - {{quotation['desc-cod-canal-venda']}}</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "cod-cond-pag") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-cod-cond-pag' | i18n}}">{{quotation['cod-cond-pag']}} - {{quotation['desc-cod-cond-pag']}}</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "tp-preco") {
+			%>
+
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-tp-preco' | i18n}}">{{quotation['tp-preco']}} - {{quotation['desc-tp-preco']}}</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "nr-tabpre") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-price-table' | i18n}}">{{quotation['nr-tabpre']}}</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "mo-fatur") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-mo-fatur' | i18n}}">{{quotation['mo-fatur']}} - {{quotation['desc-mo-fatur']}}</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "perc-descol") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-perc-desco1' | i18n}}">{{quotation['perc-descol']}}</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "dt-implant") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-dt-implant' | i18n}}">{{quotation['dt-implant'] | date : ('l-date-format' | i18n) : 'UTC': 'dd/MM/yyyy' : 'UTC'}}</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "dt-emissao") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-dt-emissao' | i18n}}">{{quotation['dt-emissao'] | date : ('l-date-format' | i18n) : 'UTC' }}</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "no-ab-reppri") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-no-ab-reppri' | i18n}}">{{quotation['no-ab-reppri']}}</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "nome-abrev-tri") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-nome-abrev-tri' | i18n}}">{{quotation['nome-abrev-tri']}}</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "dt-entrega") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-dt-entrega' | i18n}}" totvs-custom-element="customDtEntrega">{{quotation['dt-entrega'] | date : ('l-date-format' | i18n) : 'UTC' }}</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "local-entreg") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-local-entreg' | i18n}}">{{quotation['local-entreg']}}</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "cidade-cif") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-cidade-cif' | i18n}}">{{quotation['cidade-cif']}}</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "cod-modalid-frete") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-modalidade-frete' | i18n}}">{{quotation['cod-modalid-frete']}} - {{quotation['desc-modalid-frete']}}</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "observacoes") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-12" title="{{'l-observacoes' | i18n}}">{{quotation.observacoes}}</totvs-list-item-info>
+			<%
+		}
+
+		if (quotationVisibleFields.fieldName == "tp-operacao") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-tp-oper' | i18n}}">{{quotation['tp-operacao']}} - {{quotation['desc-tp-operacao']}}</totvs-list-item-info>
+			<%
+		}
+				
+		if (quotationVisibleFields.fieldName == "val-desconto-total") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-val-desconto-total' | i18n}}">{{quotation['val-desconto-total'] | currency:''}}</totvs-list-item-info>
+			<%
+		}
+		
+		if (quotationVisibleFields.fieldName == "vl-liq-abe") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-vl-liq-abe' | i18n}}">{{quotation['vl-liq-abe'] | currency:''}}</totvs-list-item-info>
+			<%
+		}
+		
+		if (quotationVisibleFields.fieldName == "vl-tot-ped") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-vl-tot-cotac' | i18n}}">{{quotation['vl-tot-ped'] | currency:''}}</totvs-list-item-info>
+			<%
+		}
+		
+		if (quotationVisibleFields.fieldName == "vl-liq-ped") {
+			%>
+			<totvs-list-item-info class="col-xs-6 col-lg-4" title="{{'l-vl-liq-cotac' | i18n}}">{{quotation['vl-liq-ped'] | currency:''}}</totvs-list-item-info>
+			<%
+		}
+
+	});
+%>

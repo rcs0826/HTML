@@ -1,0 +1,311 @@
+	<div ng-if="controller.listResult4.length > 0"
+		 class="table-responsive table-content table-portal-order"
+		 style="height: 100%; width: inherit; overflow-y: auto; margin-top:10px">
+
+		<table class="table table-hover table-condensed" style="margin-bottom: 0px;">
+
+		<thead>
+			<tr>
+	<%
+			_.forEach(data.fields, function(pesquisaVisibleFields) {
+
+					if (pesquisaVisibleFields.fieldName == "it-codigo") {
+
+						%>
+							<th style="min-width:120px"> {{'l-cod-item' | i18n}} </th>
+							<%
+					}
+
+					if (pesquisaVisibleFields.fieldName == "cod-refer") {
+							%>
+							<th style="min-width:120px"> {{'l-cod-refer' | i18n}} </th>
+							<%
+					}
+
+					if (pesquisaVisibleFields.fieldName == "desc-item") {
+							%>
+							<th style="min-width:120px"> {{'l-descricao' | i18n}} </th>
+							<%
+					}
+
+					if (pesquisaVisibleFields.fieldName == "preco-venda") {
+							%>
+							<th style="min-width:120px"> {{'l-vl-preuni' | i18n}} </th>
+							<%
+					}
+
+					if (pesquisaVisibleFields.fieldName == "ind-estoque") {
+
+							%>
+							<th style="min-width:120px"> {{'l-inventory' | i18n}} </th>
+							<%
+					}
+
+					if (pesquisaVisibleFields.fieldName == "qt-um-fat") {
+							%>
+							<th style="min-width:120px"> {{'l-quantity' | i18n}} </th>
+							<%
+					}
+
+					if (pesquisaVisibleFields.fieldName == "cod-unid-med") {
+							%>
+							<th style="min-width:140px"> {{'l-unidade-medida' | i18n}} </th>
+							<%
+					}
+
+					if (pesquisaVisibleFields.fieldName == "des-pct-desconto-inform") {
+							%>
+							<th style="min-width:160px"> {{'l-des-pct-desconto-inform' | i18n}} </th>
+							<%
+					}
+
+			});
+
+	%>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr ng-repeat="item in controller.listResult4" totvs-custom-element="customListItem" ng-class="item['qt-un-fat'] > 0 ? 'selectedtoadd' : ''" class="clickable">
+	<%
+			_.forEach(data.fields, function(pesquisaVisibleFields) {
+
+					if (pesquisaVisibleFields.fieldName == "it-codigo") {
+							%>
+							<td style="min-width:120px">
+								<a class="btn btn-default" ng-if="item.hasEquivalent || item.hasRelated" ng-click="controller.getItemsRelated(item);"
+									template-popover="/dts/mpd/html/order/relateditems.html"  container="false"
+									placement="bottom" large="true" title="{{ 'l-related-products' | i18n }}"
+									popover-data="item" promise="item.itemsRelatedRequire" class="clickable">{{item['it-codigo']}} <span class="glyphicon glyphicon-search" style="font-size: 12px;"> </span>
+								</a>
+								<span ng-if="!item.hasEquivalent && !item.hasRelated">{{item['it-codigo']}}</span>
+							</td>
+
+							<%
+					}
+
+					if (pesquisaVisibleFields.fieldName == "cod-refer") {
+							%>
+							<td style="min-width:120px" ng-if="item['cod-refer'] != ''">{{item['cod-refer']}} - {{item['desc-refer']}}</td>
+							<td style="min-width:120px" ng-if="item['cod-refer'] == ''"></td>
+							<%
+					}
+
+					if (pesquisaVisibleFields.fieldName == "desc-item") {
+							%>
+							<td style="min-width:120px">{{item['itemDesc']}}</td>
+							<%
+					}
+
+					if (pesquisaVisibleFields.fieldName == "preco-venda") {
+							%>
+
+							<%
+								if (data.isRepresentative) {
+							%>
+
+								<%
+									if (data.editablePrice && data.tpPreco == 1) {
+								%>
+
+								<td style="min-width:220px">
+
+									<span class="pull-right">
+
+									<div class="input-group" ng-if="item.isLoadingPrice == true">
+										<input ng-disabled="true" type="text"
+											class="form-control ng-pristine ng-valid ng-touched"
+											ng-model="controller.isLoading"/>
+
+										<span class="input-group-btn">
+											<a role="button"
+											   ng-disabled="true"
+											class="btn btn-default clickable"
+											placement="bottom" large="true" title="{{ 'l-related-prices' | i18n }}">
+												<span class="glyphicon glyphicon-usd" style="width: 25px;"></span>
+											</a>
+										</span>
+									</div>
+
+									<div class="input-group" ng-if="!item.isLoadingPrice">
+										<input onClick="this.setSelectionRange(0, this.value.length)"
+											data-v-max="999999999.9999"
+											type="text"
+											data-a-sep="."
+											data-a-dec=","
+											autonumeric=""
+											bind=""
+											data-m-dec="4"
+											ng-keyup="controller.setKeyUp($event, item)"
+											class="form-control ng-pristine ng-valid ng-touched"
+											ng-model="item['vl-preuni']"
+											ng-model-options="{ updateOn: 'blur' }"
+											ng-change="controller.checkChange(item)"
+											name="item[vl-preuni]"
+											id="item[vl-preuni]"/>
+
+										<span class="input-group-btn">
+											<a role="button"
+											class="btn btn-default clickable"
+											ng-click="controller.getRelatedPrices(item, false);"
+											template-popover="/dts/mpd/html/order/relatedprices.html" container="body"
+											placement="bottom" large="true" title="{{ 'l-related-prices' | i18n }}"
+											popover-data="item" promise="item.priceRelatedResult">
+												<span class="glyphicon glyphicon-usd" style="width: 25px;"></span>
+											</a>
+										</span>
+									</div>
+									<p ng-if="item.manuallyEdited">{{'l-manually-edited' | i18n}}.</p>
+								<%
+									 }else{
+								%>
+
+								<td style="min-width:120px">
+
+									<span class="pull-right">
+
+									<a class="btn btn-default "
+									   ng-if="item.hasRelatedPrice"
+									   ng-click="controller.getRelatedPrices(item, false);"
+									   ng-disabled="item.isLoadingPrice"
+									   template-popover="/dts/mpd/html/order/relatedprices.html"
+									   container="false"
+									   placement="bottom"
+									   large="true"
+									   title="{{ 'l-related-prices' | i18n }}"
+									   popover-data="item"
+									   promise="item.priceRelatedResult"
+									   class="clickable">{{!item.isLoadingPrice ? (item['vl-preuni'] | number : 4) : controller.isLoading}}
+										<span class="glyphicon glyphicon-search" style="font-size: 12px;"> </span>
+									</a>
+
+									<span ng-if="!item.hasRelatedPrice">
+										{{item['vl-preuni'] | number : 4}}
+									</span>
+
+								<%
+									}
+								%>
+							<%
+								} else {
+							%>
+							<td style="min-width:120px">
+								{{!item.isLoadingPrice ? (item['vl-preuni'] | number : 4) : controller.isLoading}}
+							</td>
+							<%
+								}
+							%>
+							</td>
+								</span>
+							<%
+					}
+
+					if (pesquisaVisibleFields.fieldName == "ind-estoque") {
+							%>
+							<td style="min-width:120px">
+									<span ng-if="!item.balanceLoaded">{{'l-loading' | i18n}}</span>
+				<a class="btn btn-default" ng-if="item.hasEquivalent" ng-click="controller.getEquivalentItems(item);"
+									template-popover="/dts/mpd/html/order/equivalentitems.html" container="false"
+									placement="bottom" large="true" title="{{ 'l-equivalent-products' | i18n }}"
+									popover-data="item" promise="item.itemsEquivalent" class="clickable">
+							<%
+					if (data.isRepresentative) {
+							%>
+									{{item['vl-saldo'] | number : 4}} <span class="glyphicon glyphicon-search" style="font-size: 12px;"> </span>
+							<%
+				} else {
+							%>
+									<span ng-if="item.hasBalance && item.balanceLoaded">{{ 'l-inventory-avail' | i18n }} <span class="glyphicon glyphicon-search" style="font-size: 12px;"> </span></span>
+									<span ng-if="!item.hasBalance && item.balanceLoaded">{{ 'l-inventory-not-avail' | i18n }} <span class="glyphicon glyphicon-search" style="font-size: 12px;"> </span></span>
+							<%
+								}
+							%>
+								</a>
+
+								<span ng-if="!item.hasEquivalent">
+							<%
+					if (data.isRepresentative) {
+							%>
+
+									<span ng-if="item.balanceLoaded">{{item['vl-saldo'] | number : 4}}</span>
+
+							<%
+				} else {
+							%>
+									<span ng-if="item.hasBalance && item.balanceLoaded">{{ 'l-inventory-avail' | i18n }}</span>
+									<span ng-if="!item.hasBalance && item.balanceLoaded">{{ 'l-inventory-not-avail' | i18n }}</span>
+							<%
+								}
+							%>
+								</span>
+							</td>
+
+							<%
+					}
+
+					if (pesquisaVisibleFields.fieldName == "qt-um-fat") {
+							%>
+							<td style="min-width:220px">
+
+								<div class="input-group">
+									<input onClick="this.setSelectionRange(0, this.value.length)"
+										   data-v-max="9999999.9999"
+										   type="text"
+										   data-a-sep="."
+										   data-a-dec=","
+										   autonumeric=""
+										   bind=""
+										   data-m-dec="4"
+										   ng-keyup="controller.setKeyUp($event, item)"
+										   class="form-control ng-pristine ng-valid ng-touched"
+										   ng-model="item['qt-un-fat']"
+										   ng-model-options="{ updateOn: 'blur' }"
+										   name="item[qt-un-fat]"
+										   id="item[qt-un-fat]"
+										   ng-change="controller.searchPrice(item)"/>
+									<span class="input-group-btn">
+										<a role="button"
+										   class="btn btn-default clickable"
+										   ng-class="item.itemsToAfterDrawAttention == true ? 'btn-success' : 'btn-default'"
+										   ng-click="controller.addItemsToAfter(item)">
+											<span class="glyphicon glyphicon-shopping-cart" style="width: 25px;">
+												<span ng-show="item.itemsToAfterDrawAttention" class="glyphicon glyphicon-ok small-icon-plus"></span>
+												<span ng-show="!item.itemsToAfterDrawAttention" class="glyphicon glyphicon glyphicon-plus small-icon-plus"></span>
+											</span>
+										</a>
+									</span>
+								</div>
+
+							</td>
+
+							<%
+					}
+
+					if (pesquisaVisibleFields.fieldName == "cod-unid-med") {
+							%>
+							<td style="min-width:140px">
+								<p ng-if="controller.keys(item.precosUnidade).length < 2" ng-repeat="(key,val) in item.precosUnidade"> {{key}}</p>
+
+								<select class="form-control" ng-change="controller.changeUn(item)" ng-model="item['cod-un']" ng-if="controller.keys(item.precosUnidade).length > 1" >
+									<option value="{{key}}" ng-repeat="(key,val) in item.precosUnidade">{{key}}</option>
+								</select>
+							</td>
+							<%
+					}
+
+					if (pesquisaVisibleFields.fieldName == "des-pct-desconto-inform") {
+							%>
+							<td style="min-width:160px">
+								<input class="form-control" type="text" ng-model="item['des-pct-desconto-inform']">
+							</td>
+
+							<%
+					}
+
+			});
+
+	%>
+				</tr>
+			</tbody>
+		</table>
+	</div>

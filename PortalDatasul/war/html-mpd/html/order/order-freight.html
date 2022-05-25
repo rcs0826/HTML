@@ -1,0 +1,58 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{:: 'Simulação de Frete' | i18n : [] : 'dts/mpd' }}</h3>
+</div>
+<div class="modal-body">
+    
+    <div class="row" style="padding-bottom:10 px">
+
+        <field type="input" ng-model="controller.vehicleType" class="col-xs col-sm-6 col-md-4">
+			<label>{{:: 'Tipo Veículo' | i18n : [] : 'dts/mpd' }}</label>
+		</field>
+        
+        <field type="input" ng-model="controller.freightClass" class="col-xs col-sm-6 col-md-4">
+			<label>{{:: 'Classificação Frete' | i18n : [] : 'dts/mpd' }}</label>
+		</field>
+        
+        <field type="input" ng-model="controller.operationType" class="col-xs col-sm-6 col-md-4">
+			<label>{{:: 'Tipo Operação' | i18n : [] : 'dts/mpd' }}</label>
+        </field>
+        <!--<field ng-model="controller.considNegoc" class="col-xs -12 col-sm-12 col-md-4" style="margin-bottom: 5px;" type="checkbox">
+			<label>{{:: 'Considera Negociações?' | i18n : [] : 'dts/mpd' }}</label>
+        </field>-->
+        <field ng-model="controller.mantemSimul" class="col-xs -12 col-sm-12 col-md-4" style="margin-bottom: 5px;" type="checkbox">
+			<label>{{:: 'Mantém Simulação Anterior?' | i18n : [] : 'dts/mpd' }}</label>
+        </field>
+        <div class="col-md-2 col-sm-6 col-xs-12 pull-right" style="padding-left: 15px; padding-right: 15px;">
+            <button class="btn btn-primary btn-block" ng-click="controller.getSimulationResult()" style="margin-top: 15px;">
+                {{:: 'Simular' | i18n : [] : 'dts/mpd' }}
+            </button>
+        </div>
+    </div>
+    <div class="row" style="padding-left: 15px; padding-right: 15px;">
+        <totvs-grid grid-data="controller.listResult"
+                    grid-height="500"
+                    auto-resize-content="true"
+                    navigatable="true"
+                    resizable="true"
+                    sortable="true"
+                    groupable="false"
+                    reorderable="true"
+                    selectable="row"
+                    grid-selected-item="controller.gridSelectedSimulation"
+                    add-select-column >
+            <totvs-grid-column field="codTransp" width="100">{{:: 'Código Transportadora' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            <totvs-grid-column field="nomeTransp" width="300">{{:: 'Nome Transportadora' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            <totvs-grid-column field="codRota" width="100">{{:: 'Código Rota' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            <totvs-grid-column field="nomeRota" width="300">{{:: 'Descrição' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            <totvs-grid-column field="tipoCapac" width="150">{{:: 'Tipo Capacidade' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            <totvs-grid-column field="vlFrete" filter="number : 5" width="200">{{:: 'Valor Frete' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            <totvs-grid-column field="vlFreteImp" filter="number : 5" width="200">{{:: 'Imposto do Valor de Frete' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            <totvs-grid-column field="dtEntrega" width="150">{{:: 'Prazo de Entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+            <totvs-grid-column field="hraEntrega" width="150">{{:: 'Horário de Entrega' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+        </totvs-grid>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="controller.confirm()">{{:: 'Confirmar' | i18n : [] : 'dts/mpd' }}</button>
+    <button class="btn btn-warning" ng-click="controller.close()">{{:: 'Fechar' | i18n : [] : 'dts/mpd' }}</button>
+</div>

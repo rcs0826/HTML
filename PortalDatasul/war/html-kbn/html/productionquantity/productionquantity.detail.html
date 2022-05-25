@@ -1,0 +1,15 @@
+
+<totvs-modal-header><span class="initialwrap title link">{{controller.item | descGeneric:"{sku} - {desc} {ref} ({exp})"}}</span></totvs-modal-header>
+<totvs-modal-body>
+  <totvs-page-content>
+    <totvs-page-alert ng-if="controller.detailItems.length == 0" type="info" message="{{ 'msg-not-found' | i18n }}"></totvs-page-alert>
+    <totvs-table ng-if="controller.detailItems.length &gt; 0" items="controller.detailItems" items-as="detItem" type-select="off">
+      <column title="{{'l-date-movement' | i18n}}">{{detItem.dtm_movto | date:'dd-MM-yyyy HH:mm:ss'}}</column>
+      <column title="{{'l-cards' | i18n}}">{{detItem.qtdCartoes}}</column>
+      <column title="{{'l-quantity' | i18n}}">{{detItem.qtdProduzidaMovto}} {{controller.item.cod_un_med_erp}} </column>
+    </totvs-table>
+  </totvs-page-content>
+</totvs-modal-body>
+<totvs-modal-footer>
+  <button ng-click="controller.close()" class="btn btn-default">{{ 'l-close' | i18n }}</button>
+</totvs-modal-footer>

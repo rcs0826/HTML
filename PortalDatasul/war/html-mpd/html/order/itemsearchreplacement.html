@@ -1,0 +1,309 @@
+<div style   = "margin-top: 10px;">
+<div ng-show = "controller.listResult3.length > 0" class = "alert alert-success fade in alert-dismissable" style = "margin-top: 15px">
+<a   href    = "/#" class                                = "close" data-dismiss                                  = "alert" aria-label = "close" title = "close">x</a>
+		<span ng-if="controller.totalRecords3 < 999999999">{{controller.totalRecords3}} </span>
+        <span ng-if="controller.totalRecords3 == 999999999">{{'l-more-of' | i18n }} {{controller.listResult3.length}} </span>
+		<span ng-if = "controller.shoppingPeriod == 1"><span ng-show = "controller.listResult3.length <= 1">{{'l-item-shopped-in-last' | i18n }} </span> <span ng-show      = "controller.listResult3.length > 1">{{'l-items-shopped-in-last' | i18n }} </span> 30 {{ 'l-days' | i18n }}</span>
+		<span ng-if = "controller.shoppingPeriod == 2"><span ng-show = "controller.listResult3.length <= 1">{{'l-item-shopped-in-last' | i18n }} </span> <span ng-show      = "controller.listResult3.length > 1">{{'l-items-shopped-in-last' | i18n }} </span> 60 {{ 'l-days' | i18n }}</span>
+		<span ng-if = "controller.shoppingPeriod == 3"><span ng-show = "controller.listResult3.length <= 1">{{'l-item-shopped-in-last' | i18n }} </span> <span ng-show      = "controller.listResult3.length > 1">{{'l-items-shopped-in-last' | i18n }} </span> 90 {{ 'l-days' | i18n }}</span>
+		<span ng-if = "controller.shoppingPeriod == 4"><span ng-show = "controller.listResult3.length <= 1">{{'l-item-shopped-in-last' | i18n }} </span> <span ng-show      = "controller.listResult3.length > 1">{{'l-items-shopped-in-last' | i18n }} </span> 6 {{ 'l-months' | i18n }}</span>
+		<span ng-if = "controller.shoppingPeriod == 5"><span ng-show = "controller.listResult3.length <= 1">{{'l-item-shopped-in-last-year' | i18n }} </span> <span ng-show = "controller.listResult3.length > 1"> {{'l-items-shopped-in-last-year' | i18n }}</span></span>
+		<%
+			if (data.isRepresentative) {
+		%>
+			<span>{{'l-this-customer' | i18n }}</span>
+		<%
+			}
+		%>
+		<span ng-if = "controller.showNumberReplacement == true"> {{ 'l-last-qtd-informed' | i18n }}.</span>
+	</div>
+
+	<totvs-list-item ng-repeat            = "item in controller.listResult3"
+	                 totvs-custom-element = "customListItem">
+		<totvs-list-item-content>
+
+			<totvs-list-item-info ng-if = "controller.showItemImage && item['nom-imagem']" class = "col-xs-6 col-sm-6 col-md-3">
+			<img                  class = "focus-img-mpd" style                                  = "min-width: 50px; max-width: 50px" alt = "{{ 'l-image-not-found' | i18n }}"  ng-src = "/dts/datasul-rest/resources/api/fch/fchdis/fchdis0038/imagem?imagem={{item['nom-imagem']}}" data-toggle = "modal" data-target = "#imageModalReplacement{{$index}}">
+
+				<div    class  = "modal modal-img-mpd fade" id                                                                      = "imageModalReplacement{{$index}}" role = "dialog">
+				<div    class  = "modal-dialog">
+				<div    class  = "modal-content modal-img-mpd-content">
+				<img    ng-src = "/dts/datasul-rest/resources/api/fch/fchdis/fchdis0038/imagem?imagem={{item['nom-imagem']}}" width = "100%"/>
+				<div    class  = "modal-footer">
+				<button type   = "button" class                                                                                     = "btn btn-default" data-dismiss         = "modal">{{'l-close' | i18n }}</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</totvs-list-item-info>
+
+			<%	
+	
+			_.forEach(data.fields, function(pesquisaVisibleFields) {
+					  
+				if (pesquisaVisibleFields.fieldName == "it-codigo") {
+			
+			%>
+
+					<totvs-list-item-info title            = "{{ 'l-cod-item' | i18n }}" class                = "col-xs-6 col-sm-6 col-md-3">
+					<a                    ng-if            = "item.hasEquivalent || item.hasRelated" ng-click = "controller.getItemsRelated(item);"
+					                      template-popover = "/dts/mpd/html/order/relateditems.html" container = "body"
+					                      placement        = "bottom" large                                   = "true" title                     = "{{ 'l-related-products' | i18n }}"
+					                      popover-data     = "item" promise                                   = "item.itemsRelatedRequire" class = "clickable">{{item['it-codigo']}}</a>
+					<span                 ng-if            = "!item.hasEquivalent && !item.hasRelated">{{item['it-codigo']}}</span>
+					</totvs-list-item-info>
+		<%
+			}
+			if (pesquisaVisibleFields.fieldName == "cod-refer") {
+		%>
+					<totvs-list-item-info title = "{{ 'l-cod-refer' | i18n }}" class = "col-xs-6 col-sm-6 col-md-3">{{item['cod-refer']}}</totvs-list-item-info>
+		<%
+			}
+			if (pesquisaVisibleFields.fieldName == "desc-item") {				
+		%>
+					<totvs-list-item-info title = "{{ 'l-descricao' | i18n }}" class = "col-xs-6 col-sm-6 col-md-6">{{item.itemDesc}}</totvs-list-item-info>
+		<%
+			}
+
+			if (pesquisaVisibleFields.fieldName == "preco-venda") {		
+		%>					
+					<%
+						if (data.isRepresentative) {
+					%>
+						<%
+							if (!data.editablePrice || data.tpPreco > 1){
+						%>
+						<totvs-list-item-info title            = "{{ 'l-vl-preuni' | i18n }}" class                 = "col-xs-6 col-sm-6 col-md-3">
+						<a                    ng-if            = "item.hasRelatedPrice" ng-click                    = "controller.getRelatedPrices(item);"
+						                      template-popover = "/dts/mpd/html/order/relatedprices.html" container = "body"
+						                      placement        = "bottom" large                                     = "true" title                    = "{{ 'l-related-prices' | i18n }}"
+						                      popover-data     = "item" promise                                     = "item.priceRelatedResult" class = "clickable"> {{item['vl-preuni'] | number : 4}} </a>
+						<span                 ng-if            = "!item.hasRelatedPrice">{{item['vl-preuni'] | number : 4}}</span>
+						</totvs-list-item-info>
+
+						<%
+							}
+						%>
+
+					<%
+						} else {
+					%>
+						<totvs-list-item-info title = "{{ 'l-vl-preuni' | i18n }}" class = "col-xs-6 col-sm-6 col-md-3">
+							
+							{{item['vl-preuni'] | number : 4}}
+
+						</totvs-list-item-info>
+					<%
+						}
+					%>					
+		<%
+			}
+			if (pesquisaVisibleFields.fieldName == "ind-estoque") {	
+		%>
+					<totvs-list-item-info title            = "{{ 'l-inventory' | i18n }}" class                  = "col-xs-6 col-sm-6 col-md-3">
+					<span                 ng-if            = "!item.balanceLoaded">{{'l-loading' | i18n}}</span>
+					<a                    ng-if            = "item.hasEquivalent" ng-click                       = "controller.getEquivalentItems(item);"
+					                      template-popover = "/dts/mpd/html/order/equivalentitems.html" container = "body"
+					                      placement        = "bottom" large                                      = "true" title                 = "{{ 'l-equivalent-products' | i18n }}"
+					                      popover-data     = "item" promise                                      = "item.itemsEquivalent" class = "clickable">
+					<%
+							if (data.isRepresentative) {
+					%>
+							
+							<span ng-if = "item.balanceLoaded">{{item['vl-saldo'] | number : 4}}</span>
+					<%
+						} else {
+					%>
+							<span ng-if = "item.hasBalance">{{ 'l-inventory-avail' | i18n }}</span>
+							<span ng-if = "!item.hasBalance">{{ 'l-inventory-not-avail' | i18n }}</span>
+					<%
+						}
+					%>
+						</a>
+						<span ng-if = "!item.hasEquivalent">
+					<%
+						if (data.isRepresentative) {
+					%>
+					<span ng-if = "item.balanceLoaded">{{item['vl-saldo'] | number : 4}}</span>
+					<%
+						} else {
+					%>
+							<span ng-if = "item.hasBalance">{{ 'l-inventory-avail' | i18n }}</span>
+							<span ng-if = "!item.hasBalance">{{ 'l-inventory-not-avail' | i18n }}</span>
+					<%
+						}
+					%>
+						</span>
+
+					</totvs-list-item-info>
+				<%
+				}
+			});
+		%>
+		</totvs-list-item-content>
+		<totvs-page-form style = "padding: 5px 0 20px;">
+			<%
+			_.forEach(data.fields, function(pesquisaVisibleFields1) {
+
+				if (pesquisaVisibleFields1.fieldName == "qt-um-fat") {		
+			   %>
+					<div   class            = "col-xs-12 col-sm-6 col-md-3">
+					<label class            = "custom-field-label" for = "item['qt-un-fat']" tooltip = "{{ 'l-quantity' | i18n }}" tooltip-placement = "top">{{ 'l-quantity' | i18n }}</label>
+					<div   class            = "input-group">
+					<input onClick          = "this.setSelectionRange(0, this.value.length)"
+					       data-v-max       = "9999999.9999"
+					       type             = "text"
+					       data-a-sep       = "."
+					       data-a-dec       = ","
+					       autonumeric      = ""
+					       bind             = ""
+					       data-m-dec       = "4"
+					       ng-keyup         = "controller.setKeyUp($event, item)"
+					       class            = "form-control ng-pristine ng-valid ng-touched"
+					       ng-model         = "item['qt-un-fat']"
+					       ng-model-options = "{ updateOn: 'blur' }"
+					       name             = "item[qt-un-fat]"
+					       id               = "item[qt-un-fat]"
+					       ng-change        = "controller.searchPrice(item)"></input>
+
+
+							<span class    = "input-group-btn">
+							<a    role     = "button" ng-if = "controller.showNumberReplacement == true"
+							      class    = "btn btn-default"
+							      ng-click = "item['qt-un-fat'] = 0">
+							<span class    = "glyphicon glyphicon-remove"></span>
+								</a>
+								<a    role     = "button"
+								      class    = "btn btn-default"
+								      ng-class = "item.itemsToAfterDrawAttention == true ? 'btn-success' : 'btn-default'"
+								      ng-click = "controller.addItemsToAfter(item)">
+								<span class    = "glyphicon glyphicon-shopping-cart" style = "width: 25px;">
+								<span ng-show  = "item.itemsToAfterDrawAttention" class    = "glyphicon glyphicon-ok small-icon-plus"></span>
+								<span ng-show  = "!item.itemsToAfterDrawAttention" class   = "glyphicon glyphicon glyphicon-plus small-icon-plus"></span>
+									</span>
+								</a>
+							</span>
+						</div>
+					</div>
+
+			<%
+				}
+				if (pesquisaVisibleFields1.fieldName == "cod-unid-med") {		
+			%>
+				<field type        = "combo"
+				       ng-disabled = "controller.keys(item.precosUnidade).length < 2"
+				       ng-model    = "item['cod-un']"
+				       class       = "col-xs col-sm-6 col-md-3"
+				       ng-change   = "controller.changeUn(item)"
+				       ng-options  = "k as k for (k, v) in item.precosUnidade">
+					<label>{{ 'l-unidade-medida' | i18n }}</label>
+				</field>
+			<%
+				}
+
+				if (pesquisaVisibleFields1.fieldName == "des-pct-desconto-inform") {	
+			%>
+				<field maxlength = "50" type = "input" ng-model = "item['des-pct-desconto-inform']" class = "col-xs col-sm-6 col-md-3">
+					<label>{{ 'l-des-pct-desconto-inform' | i18n }}</label>
+				</field>
+			<%
+				}
+
+				if (pesquisaVisibleFields1.fieldName == "preco-venda") {		
+			%>					
+					<%
+							if (data.isRepresentative) {
+					%>
+						<%
+								if (data.editablePrice){
+						%>					
+
+							<div   class            = "col-xs-12 col-sm-6 col-md-3">
+								<label class            = "custom-field-label" for = "item['vl-preuni']" tooltip = "{{ 'l-original-price' | i18n }}" tooltip-placement = "top">{{ 'l-original-price' | i18n }}</label>
+								<div   class            = "input-group">
+									<input onClick          = "this.setSelectionRange(0, this.value.length)"
+									data-v-max       = "999999999.9999"
+									type             = "text"
+									data-a-sep       = "."
+									data-a-dec       = ","
+									autonumeric      = ""
+									bind             = ""
+									data-m-dec       = "4"
+									ng-keyup         = "controller.setKeyUp($event, item)"
+									class            = "form-control ng-pristine ng-valid ng-touched"
+									ng-model         = "item['vl-preuni']"
+									ng-model-options = "{ updateOn: 'blur' }"
+									ng-change        = "controller.checkChange(item)"
+									name             = "item[vl-preuni]"
+									id               = "item[vl-preuni]"></input>
+			
+									<span class            = "input-group-btn">
+									<a    role             = "button"
+									      class            = "btn btn-default clickable"
+									      ng-click         = "controller.getRelatedPrices(item);"
+									      template-popover = "/dts/mpd/html/order/relatedprices.html" container = "body"
+									      placement        = "bottom" large                                     = "true" title = "{{ 'l-related-prices' | i18n }}"
+									      popover-data     = "item" promise                                     = "item.priceRelatedResult">
+									<span class            = "glyphicon glyphicon-usd" style                    = "width: 25px;"></span>
+										</a>
+									</span>
+								</div>
+								<p ng-if="item.manuallyEdited">{{'l-manually-edited' | i18n}}.</p>
+							</div>
+						<%
+								}
+							}	
+						%>
+						
+			<%
+				}
+			});
+			%>
+
+		</totvs-page-form>
+
+		<div class = "col-md-12" style = "background-color: #f3f3f3; padding-top: 5px; padding-bottom: 5px; margin-bottom: 15px">
+			{{item.replacementtext}}
+		</div>
+
+	</totvs-list-item>
+</div>
+
+<div class = "col-md-12" style = "padding-top: 15px; padding-bottom: 15px; padding-left: 0px !important; padding-right: 0px !important;">
+	<totvs-divider></totvs-divider>
+	<div    class    = "col-md-3 col-sm-4 col-xs-12">
+	<div    class    = "form-group">
+	<label  for      = "sel1">{{'l-shopping-period' | i18n}}</label>
+	<select name     = "sel1" class = "form-control" ng-change = "controller.setPeriodShopping(controller.shoppingPeriod)"
+	        ng-model = "controller.shoppingPeriod" >
+	<option value    = "1" >30 {{'l-days' | i18n}}</option>
+	<option value    = "2" >60 {{'l-days' | i18n}}</option>
+	<option value    = "3" >90 {{'l-days' | i18n}}</option>
+	<option value    = "4" >6 {{'l-months' | i18n}}</option>
+	<option value    = "5" >1 {{'l-year' | i18n}}</option>
+			</select>
+		</div>
+	</div>
+	<div    class = "col-md-3 col-sm-4 col-xs-12">
+	<div    class = "form-group">
+	<label  for   = "sel2">{{'l-show-qtd-last-shopping' | i18n}}</label>
+	<div    name  = "sel2">
+	<div    class = "btn-group">
+	<button class = "btn btn-default" ng-class = "{active: controller.showNumberReplacement == true}"  ng-click = "controller.setShowNumberReplacement(true);">{{'l-yes' | i18n}}</button>
+	<button class = "btn btn-default" ng-class = "{active: controller.showNumberReplacement == false}" ng-click = "controller.setShowNumberReplacement(false);">{{'l-no' | i18n}}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div    class = "col-md-3 col-sm-4 col-xs-12">
+	<div    class = "form-group">
+	<label  for   = "sel2">{{'l-show-item-image' | i18n}}?</label>
+	<div    name  = "sel2">
+	<div    class = "btn-group">
+	<button class = "btn btn-default" ng-class = "{active: controller.showItemImage == true}"  ng-click = "controller.setShowItemImage(true);">{{'l-yes' | i18n}}</button>
+	<button class = "btn btn-default" ng-class = "{active: controller.showItemImage == false}" ng-click = "controller.setShowItemImage(false);">{{'l-no' | i18n}}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

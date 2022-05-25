@@ -1,0 +1,346 @@
+<totvs-modal-header>
+	{{taskDetailController.task['cd-tarefa']}} - {{taskDetailController.task['descricao']}}
+</totvs-modal-header >
+<totvs-modal-body>
+
+    <totvs-page-content style="border:0px">
+        <totvs-page-detail>
+        	<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 detail-field">
+				    <div class="field-label ng-binding">{{ 'l-state' | i18n }}</div>
+				    <span class="label tag-{{taskDetailController.task['estado-taref']}} ng-binding ng-scope">{{taskDetailController.task['_']['des-estado']}}</span>
+				</div>
+
+        		<totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+	                                    title="{{ 'l-total-time' | i18n }}"
+	                                    value="{{taskDetailController.task['tempo'] | number:4}}">
+	            </totvs-page-detail-info>
+	        </div>
+
+			<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+	                                    title="{{ 'l-task-approval' | i18n }}"
+	                                    value="{{taskDetailController.task['_']['aceite']}}">
+	            </totvs-page-detail-info>
+	            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+	                                    title="{{ 'l-accept-status' | i18n }}"
+	                                    value="{{taskDetailController.task['_']['sit-aceite']}}">
+	            </totvs-page-detail-info>
+	        </div>
+
+	        <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        		<totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+	                                    title="{{ 'l-owner' | i18n }}"
+	                                    value="{{taskDetailController.task['nome-abrev']}} - {{taskDetailController.task['_']['des-nome-abrev']}}">
+        	    </totvs-page-detail-info>
+	            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+	                                    title="{{ 'l-concurrent-exec' | i18n }}"
+	                                    value="{{taskDetailController.task['_']['exec-simul']}}">
+	            </totvs-page-detail-info>
+	        </div>
+
+	        <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+	        	<totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+	                                    title="{{ 'l-inmate' | i18n }}"
+	                                    value="{{taskDetailController.task['_']['encerrada']}}">
+	            </totvs-page-detail-info>
+	            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+	                                    title="{{ 'l-mandatory-task' | i18n }}"
+	                                    value="{{taskDetailController.task['_']['tar-obrigatoria']}}">
+	            </totvs-page-detail-info>
+	        </div>
+
+	        <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12"
+	             ng-if="taskDetailController.task['nr-ord-princ'] !== 0">
+	        	<totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		        						title="{{ 'l-main-order' | i18n }}"
+	                                    value="{{taskDetailController.task['nr-ord-princ']}}">
+	            </totvs-page-detail-info>
+	            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+	            						title="{{ 'l-main-task' | i18n }}"
+	                                    value="{{taskDetailController.task['cd-tarefa-princ']}}">
+	            </totvs-page-detail-info>
+			</div>
+			
+			<!-- CALIBRACAO -->
+            <div ng-if="taskDetailController.task['tp-manut'] === 3">
+	            <div class="no-gutter ng-scope
+	        			col-lg-12 col-md-12 col-sm-12 col-xs-12"
+	        		  style="padding-top:5px; padding-bottom:5px">
+			        <a class="clickable"
+				 	   ng-click="taskDetailController.openCalibration()">
+				 	   {{ 'l-calib' | i18n}}
+				 	   <span class="dropdown-menu-right glyphicon"
+						   ng-class="{'glyphicon-chevron-down': taskDetailController.showCalibration,
+								      'glyphicon-chevron-right': !taskDetailController.showCalibration}">
+				 		</span>
+					</a>
+				</div>
+
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12"
+				     ng-if="taskDetailController.showCalibration">
+		            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                                    title="{{ 'l-variable-checked' | i18n }}"
+		                                    value="{{taskDetailController.task['var-afer']}}">
+		            </totvs-page-detail-info>
+		            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                                    title="{{ 'l-variable-type' | i18n }}"
+		                                    value="{{taskDetailController.task['_']['tp-variavel']}}">
+		            </totvs-page-detail-info>
+		            </totvs-page-detail-info>
+		            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                                    title="{{ 'l-enter-standard' | i18n }}"
+		                                    value="{{taskDetailController.task['_']['inf-padrao']}}">
+		            </totvs-page-detail-info>
+		            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                                    title="{{ 'l-default' | i18n }}"
+		                                    value="{{taskDetailController.task['vl-padrao'] | number:4}}">
+		            </totvs-page-detail-info>
+		            </totvs-page-detail-info>
+		            </totvs-page-detail-info>
+		            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                                    title="{{ 'l-variation-lower' | i18n }}"
+		                                    value="{{taskDetailController.task['var-menor'] | number:4}}">
+		            </totvs-page-detail-info>
+		            </totvs-page-detail-info>
+		            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                                    title="{{ 'l-variation-greater' | i18n }}"
+		                                    value="{{taskDetailController.task['var-maior'] | number:4}}">
+		            </totvs-page-detail-info>
+		            </totvs-page-detail-info>
+		            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                                    title="{{ 'l-measure-unit' | i18n }}"
+		                                    value="{{taskDetailController.task['un-medida']}}">
+		            </totvs-page-detail-info>
+		        </div>
+			</div>
+
+            <!-- LUBRIFICACAO -->
+            <div ng-if="taskDetailController.task['tp-manut'] === 4">
+	            <div class="no-gutter ng-scope
+	        			col-lg-12 col-md-12 col-sm-12 col-xs-12"
+	        		  style="padding-top:5px; padding-bottom:5px">
+			        <a class="clickable"
+				 	   ng-click="taskDetailController.openLubrication()">
+				 	   {{ 'l-lubrification' | i18n}}
+				 	   <span class="dropdown-menu-right glyphicon"
+						   ng-class="{'glyphicon-chevron-down': taskDetailController.showLubrication,
+								      'glyphicon-chevron-right': !taskDetailController.showLubrication}">
+				 		</span>
+					</a>
+				</div>
+
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12"
+					 ng-if="taskDetailController.showLubrication">
+		            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                                    title="{{ 'l-maintenance-task' | i18n }}"
+		                                    value="{{taskDetailController.task['_']['local-taref']}}">
+		            </totvs-page-detail-info>
+		            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                                    title="{{ 'l-lubrication-points' | i18n }}"
+		                                    value="{{taskDetailController.task['nr-pontos']}}">
+		            </totvs-page-detail-info>
+		            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                                    title="{{ 'l-operation' | i18n }}"
+		                                    value="{{taskDetailController.task['_']['tipo-oper']}}">
+		            </totvs-page-detail-info>
+		        </div>
+		    </div>
+
+	        <!-- PREDITIVA -->
+	        <div ng-if="taskDetailController.task['tp-manut'] === 2">
+		        <div class="no-gutter ng-scope
+	        			col-lg-12 col-md-12 col-sm-12 col-xs-12"
+	        		  style="padding-top:5px; padding-bottom:5px">
+			        <a class="clickable"
+				 	   ng-click="taskDetailController.openPredictive()">
+				 	   {{ 'l-predictive' | i18n}}
+				 	   <span class="dropdown-menu-right glyphicon"
+						   ng-class="{'glyphicon-chevron-down': taskDetailController.showPredictive,
+								      'glyphicon-chevron-right': !taskDetailController.showPredictive}">
+				 		</span>
+					</a>
+				</div>
+
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12"
+					 ng-if="taskDetailController.showPredictive">
+
+		            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                                    title="{{ 'l-technique' | i18n }}"
+		                                    value="{{taskDetailController.task['_']['cod-tecnica']}} - {{taskDetailController.task['_']['des-tecnica']}}">
+		            </totvs-page-detail-info>
+		            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                                    title="{{ 'l-needs-maint-supp' | i18n }}"
+		                                    value="{{taskDetailController.task['_']['des-acao-apoio']}}">
+		            </totvs-page-detail-info>
+		            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                                    title="{{ 'l-maintenance' | i18n }}"
+		                                    value="{{taskDetailController.task['_']['cd-manut-apoio']}} - {{taskDetailController.task['_']['des-manut-apoio']}}">
+		            </totvs-page-detail-info>		            
+	            	<totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		            						ng-if="taskDetailController.task['_']['idi-acao-apoio'] === 2"
+		                                    title="{{ 'l-service-request' | i18n }}"
+		                                    value="{{taskDetailController.task['_']['nr-ord-apoio']}}">
+		            </totvs-page-detail-info>
+		            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		            						ng-if="taskDetailController.task['_']['idi-acao-apoio'] === 3"
+		                                    title="{{ 'l-maintenance-order' | i18n }}"
+		                                    value="{{taskDetailController.task['_']['nr-ord-apoio']}}">
+		            </totvs-page-detail-info>			        
+		        </div>
+			</div>
+			
+			<!-- AGLUTINACAO -->
+            <div ng-if="taskDetailController.task['cod-manut-orig'] !== ''">
+	            <div class="no-gutter ng-scope
+	        			col-lg-12 col-md-12 col-sm-12 col-xs-12"
+	        		  style="padding-top:5px; padding-bottom:5px">
+			        <a class="clickable"
+				 	   ng-click="taskDetailController.openAgglutination()">
+				 	   {{ 'l-agglutination-task' | i18n}}
+				 	   <span class="dropdown-menu-right glyphicon"
+						   ng-class="{'glyphicon-chevron-down': taskDetailController.showAgglutination,
+								      'glyphicon-chevron-right': !taskDetailController.showAgglutination}">
+				 		</span>
+					</a>
+				</div>
+
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12"
+					 ng-if="taskDetailController.showAgglutination">
+		            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                                    title="{{ 'l-source-maint' | i18n }}"
+		                                    value="{{taskDetailController.task['cod-manut-orig']}}">
+		            </totvs-page-detail-info>
+		            <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+		                                    title="{{ 'l-origin-task' | i18n }}"
+		                                    value="{{taskDetailController.task['num-tar-orig']}}">
+		            </totvs-page-detail-info>		            
+		        </div>
+		    </div>
+
+		    <!-- NARRATIVA -->
+	        <div class="no-gutter ng-scope
+        			col-lg-12 col-md-12 col-sm-12 col-xs-12"
+        		  style="padding-top:5px; padding-bottom:5px">
+		        <a class="clickable"
+			 	   ng-click="taskDetailController.openNarrative()">
+			 	   {{ 'l-documentation' | i18n}}
+			 	   <span class="dropdown-menu-right glyphicon"
+					   ng-class="{'glyphicon-chevron-down': taskDetailController.showNarrative,
+							      'glyphicon-chevron-right': !taskDetailController.showNarrative}">
+			 		</span>
+				</a>
+			</div>
+
+			<div ng-if="taskDetailController.showNarrative">
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="field-label ng-binding">{{ 'l-narrative' | i18n }}</div>
+					<totvs-page-detail-info class="brokeLine col-lg-12 col-md-12 col-sm-12 col-xs-12"
+		                                    value="{{taskDetailController.task['narrativa'] | enterLineTextArea}}">
+		            </totvs-page-detail-info>
+		        </div>
+	            
+	            <div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12" style="height:50px">
+					<div class="field-label ng-binding">{{ 'l-attached-document' | i18n }}</div>
+					<a ng-href="{{taskDetailController.downloadUrl}}" target="_blank">
+					{{taskDetailController.task['cod-docto-anexo']}}
+					</a>				
+				</div>
+			</div>
+
+            <!-- OBSERVAÇÃO DO ACEITE -->
+            <div ng-if="taskDetailController.task['aceite'] === true">
+	            <div class="no-gutter ng-scope
+	        			col-lg-12 col-md-12 col-sm-12 col-xs-12"
+	        		  style="padding-top:5px; padding-bottom:5px">
+			        <a class="clickable"
+				 	   ng-click="taskDetailController.openAcceptObservation()">
+				 	   {{ 'l-accept-observation' | i18n}}
+				 	   <span class="dropdown-menu-right glyphicon"
+						   ng-class="{'glyphicon-chevron-down': taskDetailController.showAcceptObservation,
+								      'glyphicon-chevron-right': !taskDetailController.showAcceptObservation}">
+				 		</span>
+					</a>
+				</div>
+				<div class="no-gutter ng-scope col-lg-12 col-md-12 col-sm-12 col-xs-12"
+					 ng-if="taskDetailController.showAcceptObservation">
+		            <totvs-page-detail-info class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+		                                    value="{{taskDetailController.task['obs-aceite']}}">
+		            </totvs-page-detail-info>
+		        </div>
+			</div>
+			
+            <div class="col-xs-12">
+				<totvs-divider style="margin-bottom: 10px;"></totvs-divider>
+			</div>
+            
+            <div class="col-xs-12 mmi-group-accordion">            
+            
+				<accordion close-others="taskDetailController.closeOthers">
+					<div>
+						<accordion-group is-open="taskDetailController.showLaborReport"
+										 class="mmi-panel">
+							<accordion-heading>
+								<div>
+									{{ 'l-relationships' | i18n}}
+									<i class="pull-right glyphicon"
+									   ng-class="{'glyphicon-chevron-down': taskDetailController.showLaborReport,
+									   			  'glyphicon-chevron-right': !taskDetailController.showLaborReport}">
+									</i>
+								</div>
+							</accordion-heading>												
+
+							<div class="row">
+								<totvs-page-child type="list">
+									<totvs-page-content class="mmi-tab">
+										<totvs-tabset class="no-padding col-xs-12">									
+											<totvs-tab ng-controller="mmi.order.task.tabs.reportListCtrl as reportCtrl"
+													heading="{{ 'l-reports-mpo' | i18n }}">
+													<div ng-include="'/dts/mmi/html/order/task/tabs/task.report.html'"></div>
+											</totvs-tab>
+											<totvs-tab ng-controller="mmi.order.task.tabs.historyListCtrl as historyCtrl"
+													heading="{{ 'l-susp-history' | i18n }}" 
+													ng-click="historyCtrl.openSupendHistory(taskDetailController.task)">
+												<div ng-include="'/dts/mmi/html/order/task/tabs/task.history.html'"></div>
+											</totvs-tab>
+										</totvs-tabset>
+									</totvs-page-content>
+								</totvs-page-child>
+							</div>
+
+						</accordion-group>
+					</div>
+				</accordion>
+			</div>
+
+	    </totvs-page-detail>
+	</totvs-page-content>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="taskDetailController.close();">{{ 'l-close' | i18n }}</button>
+</totvs-modal-footer>
+
+<style>
+	.tag-1 {
+		background-color: #f0ca38;
+	}
+
+	.tag-2 {
+		background-color: #5f9653;
+	}
+
+	.tag-3 {
+		background-color: #ff0000;
+	}
+
+	.tag-4 {
+		background-color: #1a1a1a;
+	}
+	
+	.brokeLine {
+        white-space: pre-line;
+    }	
+	
+</style>

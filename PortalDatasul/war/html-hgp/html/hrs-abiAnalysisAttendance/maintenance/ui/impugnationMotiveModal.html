@@ -1,0 +1,182 @@
+<div class="modal-header">
+    <h3 class="modal-title">Impugnação {{controller.attendance != undefined ? ' do Atendimento' : ' do Serviço'}}</h3>
+</div>
+<div class="modal-body">  
+    <totvs-page-form>
+		<totvs-row>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height" 
+            style="margin-bottom: 25px;"
+            ng-if="controller.attendance != undefined">
+
+           <totvs-field totvs-combo
+               class="row col-lg-6 col-md-6 col-sm-6 col-xs-12"
+               label="Tipo do Pedido"
+               ng-required="true"
+               t-options="controller.lstKindRequest"
+               ng-disabled="!controller.maintenancePermission"
+               ng-model="controller.idTipoPedido">
+               <validator key="required">Este campo é obrigatório!</validator>
+           </totvs-field>   
+           <field type="textarea"
+               style="min-height: 100px; min-width: 395px;"  
+               ng-disabled="!controller.maintenancePermission"              
+               ng-model="controller.desMemoCalc"
+               ng-disabled="controller.action == 'DETAIL'"
+               label="Memória de Cálculo">
+           </field>        
+        </div>
+        
+		</totvs-row>
+		<totvs-row>
+		<totvs-tabset type="tabs">
+			<totvs-tab heading="Motivos">
+					<div style="height: 375px; overflow-y: auto;"> 
+            <totvs-page-content ng-if="controller.attendance == undefined">
+                <totvs-table
+                    items="controller.impugnationListSelected"
+                    items-as="impugnation"
+                    t-selectable="OFF"
+                    t-resizable="true"
+                    t-reorderable="true"
+                    t-highlight-selected="true"
+                    t-table="controller.table"
+                    ng-blur="controller.mudaCor()">
+
+                    <column title="Motivo"
+                            width="500">    
+                        {{impugnation.rotuloMotivo}}
+                    </column> 
+                </totvs-table>
+            </totvs-page-content>
+
+            <totvs-page-content ng-if="controller.attendance != undefined">
+                <totvs-table
+                    items="controller.impugnationListSelected"
+                    items-as="impugnation"
+                    t-selectable="OFF"
+                    t-resizable="true"
+                    t-reorderable="true"
+                    t-highlight-selected="true"
+                    t-table="controller.table"
+                    ng-blur="controller.mudaCor()">
+
+                    <column title=""
+                            width="25" >
+                        <input type="checkbox"   
+                               ng-change="controller.orderImpugnationList('SELECTED', impugnation)"
+                               ng-disabled="!controller.maintenancePermission"                
+                               data-ng-model="impugnation.$selected">
+                    </column>
+
+                    <column title="Motivo"
+                            width="500">    
+                        {{impugnation.rotuloMotivo}}
+                    </column>    
+
+                    <column title="Serviços"
+                            width="65">                        
+                        
+                        <span style="margin-right: 10px;" 
+                              class="clickable glyphicon glyphicon-pencil"
+                              ng-click="controller.openServicesModal(impugnation,'EDIT')">
+                        </span>
+
+                        <a id="{{$index}}">
+                            {{impugnation.desQtdeServicos}}
+                        </a>
+                    </column>
+
+                    <column title="Justificativas"
+                            width="75">
+                        <span style="margin-left: 15px;" class="clickable glyphicon glyphicon-list"
+                              ng-click="controller.openJustificationModal(impugnation, 'EDIT')"></span>
+
+                        <span style="margin-left: 10px;" class="glyphicon glyphicon-ok"
+                              ng-if="impugnation.justificativas.length > 0"></span>   
+                    </column>
+                    
+                </totvs-table>                
+            </totvs-page-content>
+
+            <totvs-page-content style="margin-top: 25px;" ng-if="controller.attendance != undefined">
+                <totvs-table
+                    items="controller.impugnationListUnselected"
+                    items-as="impugnation"
+                    t-selectable="OFF"
+                    t-resizable="true"
+                    t-reorderable="true"
+                    t-highlight-selected="true"
+                    t-table="controller.table"
+                    ng-blur="controller.mudaCor()">
+
+                    <column title=""
+                            width="25" >
+                        <input type="checkbox"    
+                               ng-change="controller.orderImpugnationList('UNSELECTED', impugnation)"
+                               ng-disabled="!controller.maintenancePermission"
+                               data-ng-model="impugnation.$selected">
+                    </column>
+
+                    <column title="Motivo"
+                            width="500">
+                        {{impugnation.rotuloMotivo}}
+                    </column>
+
+                    <column title="Serviços"
+                            width="65">
+                        <span style="margin-right: 10px;" class="clickable glyphicon glyphicon-pencil"
+                              ng-click="controller.openServicesModal(impugnation, 'DETAIL')"></span>
+
+                        <a id="c{{$index}}">
+                            {{impugnation.desQtdeServicos}}
+                        </a>
+                    </column>
+
+                    <column title="Justificativas"
+                            width="75">
+                        <span style="margin-left: 15px;" class="clickable glyphicon glyphicon-list"
+                              ng-click="controller.openJustificationModal(impugnation, 'DETAIL')"></span>
+
+                        <span style="margin-left: 10px;" class="glyphicon glyphicon-ok"
+                              ng-if="impugnation.justificativas.length > 0"></span>
+                    </column>
+                    
+                </totvs-table>
+            </totvs-page-content>
+
+            <h5 ng-if="controller.impugnationListSelected.length == 0
+                    && controller.impugnationListUnselected.length == 0"> Não existem motivos de impugnação para serem mostrados</h5>
+					</div>
+		</totvs-tab>
+		<totvs-tab heading="Documentos Comprobatórios" ng-if="controller.attendance != undefined">
+			<div ng-controller="hrs.abiAnalysisAttendanceSupDoc.Control as sdController"
+						 ng-init="sdController.setParams(controller, controller.attendance.cddRessusAbiAtendim, controller.idPermissao, controller.disclaimers)"
+						 style="height: 375px; overflow-y: auto;">
+				<ng-include
+					src="'/dts/hgp/html/hrs-abiAnalysisAttendance/maintenance/ui/abiAnalysisAttendanceSupportingDocuments.html'">
+				</ng-include>
+			</div>
+		</totvs-tab>
+	</totvs-tabset>
+		</totvs-row>
+    </totvs-page-form>
+</div>
+<totvs-modal-footer>  
+    <button class="btn" 
+            ng-click="controller.cancel()">
+            {{controller.attendance != undefined ? 'Cancelar' : 'Voltar'}}
+    </button>
+    <button class="btn btn-primary" 
+            ng-click="controller.save()"
+            ng-if="controller.attendance != undefined">
+            {{controller.maintenancePermission ? 'Salvar' : 'Voltar para Análise'}}
+    </button>
+    <button class="btn btn-primary" 
+            ng-click="controller.saveAndConclude()" 
+            ng-disabled="!controller.maintenancePermission"
+            ng-if="   controller.attendance != undefined 
+                   && controller.attendance.idiStatus > controller.ATTENDANCE_STATUS_ENUM.IMPORTACAO_COM_ERRO
+                   && controller.maintenancePermission">
+            Salvar e Concluir
+    </button>
+</totvs-modal-footer>

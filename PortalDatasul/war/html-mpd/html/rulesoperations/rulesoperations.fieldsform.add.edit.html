@@ -1,0 +1,342 @@
+<style>
+	.mpd-group-button-label {
+		font-family: 'Arial';
+		margin-bottom: 10px;
+		margin-top: 10px;
+		font-weight: 200;
+		font-size: 12px;
+		color: gray;
+	}
+</style>
+
+<% _.forEach(data.fields, function(field, index1) { %>
+
+	<% if((data.checkContainsString(field['nom-campo'], "&tip-ped-cia&cdn-tip-ped") == true)){  %>
+
+		<% _.forEach(data.dataRules, function(dataRule, index2) { %>
+
+			<% if(field['nom-campo'] ==  (dataRule['nom-banco'] + "&" + dataRule['nom-tabela'] + "&" + dataRule['nom-campo'])){  %>
+
+					<div class="col-md-12">
+						<mpd-zoom
+							id="addrule&<%=field['nom-banco']%>&<%=field['nom-tabela']%>&<%=field['nom-campo']%>"
+							database="<%=field['nom-banco']%>"
+							table="<%=field['nom-tabela']%>"
+							fieldcode="<%=field['nom-campo']%>"
+							fieldcodelabel="<%=field['des-label-campo']%>"
+							fielddescription="<%=field['nom-campo-descr']%>"
+							ng-model="controller.dataRuleOrdered[<%=index2%>]['cod-valor']"
+							placeholder="{{ ' ' | i18n: []: 'dts/mpd' }}"
+							ng-blur="controller.leaveField(controller.dataRuleOrdered[<%=index2%>]);"
+							multiselectable="false"
+							disabled="false"
+							canclean="true"
+							label="<%=field['des-label-campo']%>"
+						></mpd-zoom>
+					</div>
+			<% } %>
+
+		<% } )%>
+
+	<% } %>
+<% } )%>
+
+
+<totvs-page-detail-info-group>{{ 'l-data-of-rules-operations' |  i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+
+<% _.forEach(data.fields, function(field, index1) { %>
+
+	<% if((field['nom-campo'] !=  (data.cddidregradatabase + "&val-sugest-nat&cdd-id-regra"))&&
+		  (data.checkContainsString(field['nom-campo'], "&tip-ped-cia&cdn-tip-ped") == false)&&
+		  (data.checkContainsString(field['nom-campo'], "&tip-ped-cia&descricao") == false)&&
+		  (data.checkContainsString(field['nom-campo'], "&regra-sugest-nat&nat-estadual") == false)&&
+		  (data.checkContainsString(field['nom-campo'], "&regra-sugest-nat&nat-interestadual") == false)&&
+		  (data.checkContainsString(field['nom-campo'], "&regra-sugest-nat&nat-export") == false)&&
+          (data.checkContainsString(field['nom-campo'], "&tot-peso&tot-peso") == false)&&
+          (data.checkContainsString(field['nom-campo'], "&tot-campo&tot-campo") == false)){  %>
+
+		<% _.forEach(data.dataRules, function(dataRule, index2) { %>
+
+			<% if(field['nom-campo'] ==  (dataRule['nom-banco'] + "&" + dataRule['nom-tabela'] + "&" + dataRule['nom-campo'])){  %>
+
+				<% if((field['nom-campo'] !=  (dataRule['nom-banco'] + "&emitente&natureza"))&&
+					  (field['nom-campo'] !=  (dataRule['nom-banco'] + "&emitente&categoria"))&&
+					  (field['nom-campo'] !=  (dataRule['nom-banco'] + "&emitente&cod-suframa"))&&
+					  (field['nom-campo'] !=  (dataRule['nom-banco'] + "&ped-venda&cod-des-merc"))&&
+					  (field['nom-campo'] !=  (dataRule['nom-banco'] + "&item&codigo-orig")) &&
+					  (field['nom-campo'] !=  (dataRule['nom-banco'] + "&item-uni-estab&char-1,133,1")) &&
+					  (field['nom-campo'] !=  (dataRule['nom-banco'] + "&item&compr-fabric")) && 
+					  (field['nom-campo'] !=  (dataRule['nom-banco'] + "&item&cd-trib-icm")) &&
+					  (field['nom-campo'] !=  (dataRule['nom-banco'] + "&note&note")) ){ %>
+
+					<% if((field['log-livre-1'] == true )){ %>
+
+						<% if(field['nom-campo'] ==  (dataRule['nom-banco'] + "&ref-item&cod-refer")){ %>
+
+							<div class="col-md-12">
+								<mpd-zoom
+									id="addrule&<%=field['nom-banco']%>&<%=field['nom-tabela']%>&<%=field['nom-campo']%>"
+									database="<%=field['nom-banco']%>"
+									table="<%=field['nom-tabela']%>"
+									fieldcode="<%=field['nom-campo']%>"
+									fieldcodelabel="<%=field['des-label-campo']%>"
+									fielddescription="<%=field['nom-campo-descr']%>"
+									ng-model="controller.dataRuleOrdered[<%=index2%>]['cod-valor']"
+									placeholder="{{ ' ' | i18n: []: 'dts/mpd' }}"
+									ng-blur="controller.leaveField(controller.dataRuleOrdered[<%=index2%>]);"
+									multiselectable="false"
+									disabled="false"
+									canclean="true"
+									zoominitfield="'it-codigo'"
+									zoominitvalue="controller.itemCodeToFilter"
+									label="<%=field['des-label-campo']%> (<%=field['prioridade']%>)"
+								></mpd-zoom>
+							</div>
+
+						<% } else { %>
+
+							<div class="col-md-12">
+								<mpd-zoom
+									id="addrule&<%=field['nom-banco']%>&<%=field['nom-tabela']%>&<%=field['nom-campo']%>"
+									database="<%=field['nom-banco']%>"
+									table="<%=field['nom-tabela']%>"
+									fieldcode="<%=field['nom-campo']%>"
+									fieldcodelabel="<%=field['des-label-campo']%>"
+									fielddescription="<%=field['nom-campo-descr']%>"
+									ng-model="controller.dataRuleOrdered[<%=index2%>]['cod-valor']"
+									placeholder="{{ ' ' | i18n: []: 'dts/mpd' }}"
+									<% if(field['nom-campo'] ==  (dataRule['nom-banco'] + "&item&it-codigo")){ %>
+										ng-blur="controller.leaveField(controller.dataRuleOrdered[<%=index2%>]); controller.filterToItemRef(controller.dataRuleOrdered[<%=index2%>]);"
+									<% }else{ %>
+										ng-blur="controller.leaveField(controller.dataRuleOrdered[<%=index2%>]);"
+									<% } %>
+									ng-change="controller.changeField(controller.dataRuleOrdered[<%=index2%>]);"
+									multiselectable="false"
+									disabled="false"
+									canclean="true"
+									label="<%=field['des-label-campo']%> (<%=field['prioridade']%>)"
+								></mpd-zoom>
+							</div>
+
+						<% } %>
+
+					<%  } else { %>
+						<% if(field['cod-tipo-format-campo'] == 'logical'){ %>
+							<div class="col-md-12">
+								<label class="mpd-group-button-label"
+										tooltip="<%=field['des-label-campo']%>"
+										tooltip-placement="top"><%=field['des-label-campo']%> (<%=field['prioridade']%>)</label>
+								<div>
+									<div class="btn-group btn-group">
+										<label class="btn btn-default"
+											ng-class="{active: controller.dataRuleOrdered[<%=index2%>]['cod-valor'] == true, 'select-visible' : controller.dataRuleOrdered[<%=index2%>]['cod-valor'] == true}"
+											ng-click="controller.dataRuleOrdered[<%=index2%>]['cod-valor'] = true">{{'l-yes' | i18n}}</label>
+										<label class="btn btn-default"
+											ng-class="{active: controller.dataRuleOrdered[<%=index2%>]['cod-valor'] == false, 'select-visible' : controller.dataRuleOrdered[<%=index2%>]['cod-valor'] == false}"
+											ng-click="controller.dataRuleOrdered[<%=index2%>]['cod-valor'] = false" >{{'l-no' | i18n}}</label>
+										<label class="btn btn-default"
+											ng-class="{active: (controller.dataRuleOrdered[<%=index2%>]['cod-valor'] != true && controller.dataRuleOrdered[<%=index2%>]['cod-valor'] != false), 'select-visible' : (controller.dataRuleOrdered[<%=index2%>]['cod-valor'] != true && controller.dataRuleOrdered[<%=index2%>]['cod-valor'] != false)}"
+											ng-click="controller.dataRuleOrdered[<%=index2%>]['cod-valor'] = '?'" > &nbsp; {{'?' | i18n}} &nbsp; </label>
+									</div>
+								</div>
+							</div>
+						<%  } else { %>
+							<field class="col-md-12" type="input"
+								id="addrule&<%=field['nom-banco']%>&<%=field['nom-tabela']%>&<%=field['nom-campo']%>"
+								ng-model="controller.dataRuleOrdered[<%=index2%>]['cod-valor']"
+								ng-blur="controller.leaveField(controller.dataRuleOrdered[<%=index2%>]);">
+								<label><%=field['des-label-campo']%> (<%=field['prioridade']%>)</label>
+							</field>
+						<%  } %>
+					<%  } %>
+				<%  } %>
+
+				<% if(field['nom-campo'] == (dataRule['nom-banco'] + "&emitente&natureza")){ %>
+					<div class="col-md-12">
+						<label class="mpd-zoom-label"
+							   for="addrule&<%=field['nom-banco']%>&<%=field['nom-tabela']%>&<%=field['nom-campo']%>"
+							   id="addrule&<%=field['nom-banco']%>&<%=field['nom-tabela']%>&<%=field['nom-campo']%>"
+							   tooltip="<%=field['des-label-campo']%>"
+							   tooltip-placement="top"><%=field['des-label-campo']%> (<%=field['prioridade']%>)</label>
+						<select ng-model="controller.dataRuleOrdered[<%=index2%>]['cod-valor']"
+								class="form-control">
+							<option value="?"> {{ '?' | i18n: []: 'dts/mpd' }} </option>
+							<option value="1">{{ 'l-pessoa-fisica' | i18n: []: 'dts/mpd' }} </option>
+							<option value="2">{{ 'l-pessoa-juridica' | i18n: []: 'dts/mpd' }} </option>
+							<option value="3">{{ 'l-foreign' | i18n: []: 'dts/mpd' }} </option>
+							<option value="4">{{ 'l-trading' | i18n: []: 'dts/mpd' }} </option>
+						</select>
+					</div>
+				<% } %>
+
+
+				<% if(field['nom-campo'] ==  (dataRule['nom-banco'] + "&emitente&categoria")){ %>
+					<field class="col-md-12" type="input" ng-model="controller.dataRuleOrdered[<%=index2%>]['cod-valor']">
+						<label><%=field['des-label-campo']%> (<%=field['prioridade']%>)</label>
+					</field>
+				<% } %>
+
+
+				<% if(field['nom-campo'] ==  (dataRule['nom-banco'] + "&emitente&cod-suframa")){ %>
+					<field class="col-md-12" type="input" ng-model="controller.dataRuleOrdered[<%=index2%>]['cod-valor']">
+						<label><%=field['des-label-campo']%> (<%=field['prioridade']%>)</label>
+					</field>
+				<% } %>
+
+				<% if(field['nom-campo'] ==  (dataRule['nom-banco'] + "&ped-venda&cod-des-merc")){ %>
+					<div class="col-md-12">
+						<label class="mpd-zoom-label"
+							   for="addrule&<%=field['nom-banco']%>&<%=field['nom-tabela']%>&<%=field['nom-campo']%>"
+							   id="addrule&<%=field['nom-banco']%>&<%=field['nom-tabela']%>&<%=field['nom-campo']%>"
+							   tooltip="<%=field['des-label-campo']%>"
+							   tooltip-placement="top"><%=field['des-label-campo']%> (<%=field['prioridade']%>)</label>
+						<select ng-model="controller.dataRuleOrdered[<%=index2%>]['cod-valor']"
+								class="form-control">
+							<option value="?"> {{ '?' | i18n: []: 'dts/mpd' }} </option>
+							<option value="1"> {{ 'l-business-industry' | i18n: []: 'dts/mpd' }} </option>
+							<option value="2"> {{ 'l-own-propertie' | i18n: []: 'dts/mpd' }} </option>
+						</select>
+					</div>
+				<% } %>
+
+
+				<% if(field['nom-campo'] ==  (dataRule['nom-banco'] + "&item-uni-estab&char-1,133,1")){ %>
+					<div class="col-md-12">
+						<label class="mpd-zoom-label"
+							   for="addrule&<%=field['nom-banco']%>&<%=field['nom-tabela']%>&<%=field['nom-campo']%>"
+							   id="addrule&<%=field['nom-banco']%>&<%=field['nom-tabela']%>&<%=field['nom-campo']%>"
+							   tooltip="<%=field['des-label-campo']%>"
+							   tooltip-placement="top"><%=field['des-label-campo']%> (<%=field['prioridade']%>)</label>
+						<select ng-model="controller.dataRuleOrdered[<%=index2%>]['cod-valor']"
+								class="form-control">
+							<option value="?"> {{ '?' | i18n: []: 'dts/mpd' }} </option>
+							<option value="0"> {{ 'l-mercoria-revenda' | i18n: []: 'dts/mpd' }} </option>
+							<option value="1"> {{ 'l-materia-prima' | i18n: []: 'dts/mpd' }} </option>
+							<option value="2"> {{ 'l-embalagem' | i18n: []: 'dts/mpd' }} </option>
+							<option value="3"> {{ 'l-produto-processo' | i18n: []: 'dts/mpd' }} </option>
+							<option value="4"> {{ 'l-produto-acabado' | i18n: []: 'dts/mpd' }} </option>
+							<option value="5"> {{ 'l-subproduto' | i18n: []: 'dts/mpd' }} </option>
+							<option value="6"> {{ 'l-produto-intermediario' | i18n: []: 'dts/mpd' }} </option>
+							<option value="7"> {{ 'l-material-uso-consumo' | i18n: []: 'dts/mpd' }} </option>
+							<option value="8"> {{ 'l-ativo-imobilizado' | i18n: []: 'dts/mpd' }} </option>
+							<option value="9"> {{ 'l-servicos' | i18n: []: 'dts/mpd' }} </option>
+							<option value="10"> {{ 'l-outros-insumos' | i18n: []: 'dts/mpd' }} </option>
+							<option value="99"> {{ 'l-outras' | i18n: []: 'dts/mpd' }} </option>
+						</select>
+					</div>
+				<% } %>
+
+
+				<% if(field['nom-campo'] ==  (dataRule['nom-banco'] + "&item&codigo-orig")){ %>
+					<field class="col-md-12" type="input" ng-model="controller.dataRuleOrdered[<%=index2%>]['cod-valor']">
+						<label><%=field['des-label-campo']%> (<%=field['prioridade']%>)</label>
+					</field>
+				<% } %>
+
+				<% if(field['nom-campo'] ==  (dataRule['nom-banco'] + "&item&compr-fabric")){ %>
+					<div class="col-md-12">
+						<label class="mpd-zoom-label"
+							   for="addrule&<%=field['nom-banco']%>&<%=field['nom-tabela']%>&<%=field['nom-campo']%>"
+							   id="addrule&<%=field['nom-banco']%>&<%=field['nom-tabela']%>&<%=field['nom-campo']%>"
+							   tooltip="<%=field['des-label-campo']%>"
+							   tooltip-placement="top"><%=field['des-label-campo']%> (<%=field['prioridade']%>)</label>
+						<select ng-model="controller.dataRuleOrdered[<%=index2%>]['cod-valor']"
+								class="form-control">
+							<option value="?"> {{ '?' | i18n: []: 'dts/mpd' }} </option>
+							<option value="1"> {{ 'l-comprado' | i18n: []: 'dts/mpd' }} </option>
+							<option value="2"> {{ 'l-fabricado' | i18n: []: 'dts/mpd' }} </option>
+						</select>
+					</div>
+				<% } %>
+
+				<% if(field['nom-campo'] ==  (dataRule['nom-banco'] + "&item&cd-trib-icm")){ %>
+					<div class="col-md-12">
+						<label class="mpd-zoom-label"
+							   for="addrule&<%=field['nom-banco']%>&<%=field['nom-tabela']%>&<%=field['nom-campo']%>"
+							   id="addrule&<%=field['nom-banco']%>&<%=field['nom-tabela']%>&<%=field['nom-campo']%>"
+							   tooltip="<%=field['des-label-campo']%>"
+							   tooltip-placement="top"><%=field['des-label-campo']%> (<%=field['prioridade']%>)</label>
+						<select ng-model="controller.dataRuleOrdered[<%=index2%>]['cod-valor']"
+								class="form-control">
+							<option value="?"> {{ '?' | i18n: []: 'dts/mpd' }} </option>
+							<option value="1"> {{ 'l-tributado' | i18n: []: 'dts/mpd'}} </option>
+							<option value="2"> {{ 'l-isento' | i18n: []: 'dts/mpd'}} </option>
+							<option value="3"> {{ 'l-outros' | i18n: []: 'dts/mpd'}} </option>
+							<option value="4"> {{ 'l-reduzido' | i18n: []: 'dts/mpd'}} </option>
+						</select>
+					</div>
+				<% } %>
+
+			<%  } %>
+
+		<% } )%>
+
+	<%  } %>
+
+<% } )%>
+
+
+<% if(data.operation != 'simulator') { %>
+	<totvs-page-detail-info-group>{{ 'l-transactions-type' |  i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+<% } %>
+
+<% _.forEach(data.fields, function(field, index1) { %>
+
+	<% if((data.operation != 'simulator') &&
+	   ((data.checkContainsString(field['nom-campo'], "&regra-sugest-nat&nat-estadual") == true)||
+		(data.checkContainsString(field['nom-campo'], "&regra-sugest-nat&nat-interestadual") == true)||
+		(data.checkContainsString(field['nom-campo'], "&regra-sugest-nat&nat-export") == true))){  %>
+
+		<% _.forEach(data.dataRules, function(dataRule, index2) { %>
+
+			<% if(field['nom-campo'] ==  (dataRule['nom-banco'] + "&" + dataRule['nom-tabela'] + "&" + dataRule['nom-campo'])){  %>
+
+					<div class="col-md-12">
+						<mpd-zoom
+							id="addrule&<%=field['nom-banco']%>&<%=field['nom-tabela']%>&<%=field['nom-campo']%>"
+							database="<%=field['nom-banco']%>"
+							table="<%=field['nom-tabela']%>"
+							fieldcode="<%=field['nom-campo']%>"
+							fieldcodelabel="<%=field['des-label-campo']%>"
+							fielddescription="<%=field['nom-campo-descr']%>"
+							ng-model="controller.dataRuleOrdered[<%=index2%>]['cod-valor']"
+							placeholder="{{ ' ' | i18n: []: 'dts/mpd' }}"
+							ng-blur="controller.leaveField(controller.dataRuleOrdered[<%=index2%>]);"
+							multiselectable="false"
+							disabled="false"
+							canclean="true"
+							label="<%=field['des-label-campo']%>"
+						></mpd-zoom>
+					</div>
+			<% } %>
+
+		<% } )%>
+
+	<% } %>
+<% } )%>
+
+<% if(data.operation != 'simulator') { %>
+	<totvs-page-detail-info-group>{{ 'l-obs-history' |  i18n : [] : 'dts/mpd' }}</totvs-page-detail-info-group>
+<% } %>
+
+<% _.forEach(data.fields, function(field, index1) { %>
+	
+	<% if((data.operation != 'simulator') &&
+		((data.checkContainsString(field['nom-campo'], "&note&note") == true))){  %>
+
+		<% _.forEach(data.dataRules, function(dataRule, index2) { %>
+
+			<% if(field['nom-campo'] == (dataRule['nom-banco'] + "&note&note")){ %>
+				<div class="col-md-12" style="padding-left: 0px; padding-right: 0px; ">
+					<field class="col-md-12" type="textarea" rows="5" maxlength="600" ng-model="controller.dataRuleOrdered[<%=index2%>]['cod-valor']">
+						<label>{{'l-typeit-obs-history' | i18n}}</label>						
+					</field>
+				</div>
+			<% } %>
+
+		<% } )%>
+
+	<% } %>
+<% } )%>
+
+

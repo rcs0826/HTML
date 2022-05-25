@@ -1,0 +1,70 @@
+<link rel="stylesheet" href="/dts/mmi/html/sprint/sprint-planning.css">
+
+<totvs-modal-header>
+    {{ 'l-attendance-priorities' | i18n }} - {{ prioridadeOmCtrl.titulo }}
+</totvs-modal-header >
+
+<totvs-modal-body>
+    <totvs-row style="padding-bottom: 10px;">
+        <totvs-field
+            totvs-input
+            label="{{ 'l-entered-priority' | i18n }}"
+            ng-model="prioridadeOmCtrl.prioridadeInformada"
+            class="col-xs-3 no-padding-esquerda"
+            numbers-only
+            ng-required="true"
+            t-maxlength=3
+            focus>        
+        </totvs-field>
+    </totvs-row>     
+
+    <totvs-row style="padding-bottom: 5px;">
+        <div class="col-lg-4">
+            <totvs-field 
+                class="col-lg-1 no-padding"                
+                totvs-checkbox 
+                ng-model="prioridadeOmCtrl.seleciona"
+                ng-click="prioridadeOmCtrl.selecionaTodos()">
+            </totvs-field>
+            <label class="col-lg-8 no-padding" style="margin-top: 6px; font-weight: normal; color: gray; font-size:14px;">
+                {{'l-select-all' | i18n}}</label>
+        </div>    
+    </totvs-row>
+       
+    <totvs-page-content class="alinha-totvs-grid">        							                                  		            
+        <totvs-grid
+            grid="prioridadeOmCtrl.myGrid"
+            grid-data="prioridadeOmCtrl.listaOrdens"
+            selectable="multiple, row" 
+            grid-height="350" 
+            navigatable="true" 
+            scrollable="true"
+            sortable="true"
+            resizable="true"
+            auto-resize-column="false"
+            add-select-column="separate">
+            <totvs-grid-column field="cdEquipto"     width="110" style="text-align: left">{{ 'l-equipment' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="modeloEquipto" width="110" style="text-align: left">{{ 'l-model-cf' | i18n }}</totvs-grid-column>   
+            <totvs-grid-column field="nrOrdProdu"  width="90" style="text-align: right">{{ 'l-ord' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="descricao" width="300">{{ 'l-description' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="prioridade" width="85" style="text-align: right">{{ 'l-priority' | i18n }}</totvs-grid-column>								
+            <totvs-grid-column field="dtManut" filter="date : dd/MM/yyyy" width="125">{{ 'l-entrance-date' | i18n }}</totvs-grid-column>				
+            <totvs-grid-column field="dtTermino" filter="date : dd/MM/yyyy" width="125">{{ 'l-end-date' | i18n }}</totvs-grid-column>											
+            <totvs-grid-column field="codPlanejador" width="115">{{ 'l-planner' | i18n }}</totvs-grid-column>
+            <totvs-grid-column field="codOficina" width="80">{{ 'l-workshop' | i18n }}</totvs-grid-column>								
+        </totvs-grid>            
+    </totvs-page-content>
+  
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" 
+            class="btn btn-default" 
+            data-ng-click="prioridadeOmCtrl.fechar()">{{ 'l-close' | i18n }}
+    </button>    
+    <button type="button" 
+            class="btn btn-primary"
+            ng-disabled="prioridadeOmCtrl.habilitaBotao()" 
+            data-ng-click="prioridadeOmCtrl.atualizaPrioridade()">{{ 'l-update-priority' | i18n }}
+    </button> 
+</totvs-modal-footer>

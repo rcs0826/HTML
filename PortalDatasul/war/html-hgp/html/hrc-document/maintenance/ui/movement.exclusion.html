@@ -1,0 +1,93 @@
+<style>
+    .tag-nao-validados:before {
+        background-color: #f15a22;
+        content: "1";
+        text-align: center;
+    }
+    
+    .tag-validados:before {
+        background-color: #6ace39;
+        content: "2";
+        text-align: center;
+    }
+    
+    .undo-page-head{
+        padding-top: 0px;
+        padding-bottom: 0px;
+        border: none;
+    }
+
+    .undo-page-tags{
+        border: none !important;
+        padding-top: 0px !important;
+        text-align: center;
+    }
+
+    .tag-column:before{
+        border-radius: 50%;
+        height: 15px;
+        width: 15px;
+        font-size: 10px;
+        text-align: center;
+        vertical-align: middle;
+        display: inline-block;
+        color: #fff;
+        margin-right: 10px;
+    }
+
+    tr td.tag-nao-validados {
+        text-align: center;
+    }
+
+    tr td.tag-validados {
+        text-align: center;
+    }
+
+</style>
+
+<totvs-modal-header>
+    Remover Movimentos
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+    <totvs-page-form id="modalForm">
+    
+        <totvs-page-detail class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-left: -5px" 
+                           ng-if="controller.model.documentKey !== null">
+
+            <h4>Confirma a exclusão dos movimentos selecionados?</h4>
+            <br>
+
+            <totvs-page-detail-info 
+                class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                title="Documento"
+                value="{{controller.model.documentKey}}">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Procedimentos"
+                value="{{controller.movementsNumbers.procedures}}"
+                ng-if="controller.movementsNumbers !== undefined">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Insumos"
+                value="{{controller.movementsNumbers.inputs}}"
+                ng-if="controller.movementsNumbers !== undefined">
+            </totvs-page-detail-info>
+            <totvs-page-detail-info 
+                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                title="Pacotes"
+                value="{{controller.movementsNumbers.packages}}"
+                ng-if="controller.movementsNumbers !== undefined">
+            </totvs-page-detail-info>
+        </totvs-page-detail>
+
+    </totvs-page-form>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button class="btn" ng-click="controller.cancel()">Cancelar</button>
+    <button class="btn btn-primary" 
+            ng-click="controller.save()">Salvar</button>
+</totvs-modal-footer>

@@ -1,0 +1,73 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{'l-begin' | i18n}}</breadcrumb>
+            <breadcrumb link="#/dts/mft/event-upc-control/">{{:: 'l-event-upc-control' | i18n : [] : 'dts/mft' }}</breadcrumb>
+            <breadcrumb>{{:: controller.state == 'new' ? 'l-add-program' : 'l-edit-program' | i18n : [] : 'dts/mft' }}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{:: controller.state == 'new' ? 'l-add-program' : 'l-edit-program' | i18n : [] : 'dts/mft' }}"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new="true">
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form>
+            <totvs-page-detail-info-group>{{'l-program'| i18n}}</totvs-page-detail-info-group>
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12" style="padding-left: 0px">
+                <totvs-field totvs-select 
+                    select-id="cod_prog_dtsul"
+                    select-description="des_prog_dtsul"
+                    select-service="mft.programa.zoom"
+                    zoom-service="mft.programa.zoom"                
+                    focus style="padding-right: 5px;" label="{{'l-code-program' | i18n: []: 'dts/mft'}}"
+                    ng-disabled="controller.state == 'edit'" ng-model="controller.program['cod-prog-dtsul']"></totvs-field>                    
+                <totvs-field totvs-checkbox t-bsswitch label="{{'l-control-event' | i18n: []: 'dts/mft'}}" ng-model="controller.program['log-ativo']"></totvs-field>
+            </div>
+            <totvs-page-detail-info-group style="padding-top: 30px">{{'l-events'| i18n}}</totvs-page-detail-info-group>
+            <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12" style="padding-top: 10px;">
+                <button type="button" class="btn btn-default" data-ng-click="controller.addEvent();">
+                    <span class="glyphicon glyphicon-plus">
+                    </span>&nbsp;{{'l-add-event' | i18n: []: 'dts/mft'}}
+                </button>
+            </div>
+            <div class="container col-lg-8 col-sm-8 col-md-8 col-xs-8" style="padding-top: 10px;">
+                <div class="table-content" ng-animate="'animate-if'">
+                    <div class="table-responsive">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-10" style="vertical-align: middle">{{ 'l-event' | i18n: []: 'dts/mft' }}</th>
+                                    <th class="col-xs-1" style="vertical-align: middle; min-width: 112px;">{{'l-execute-event' | i18n: []: 'dts/mft' }}</th>
+                                    <th class="col-xs-1" style="vertical-align: middle; min-width: 60px">{{'l-remove' | i18n: []: 'dts/mft' }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="event in controller.listEvent">
+                                    <td>
+                                        <field type="input" class="col-xs-12" style="text-indent: .8em;border-radius: 4px;; padding: 0px 0px 0px 0px"
+                                            ng-model="event['cod-evento']">
+                                        </field>
+                                    </td>
+                                    <td>
+                                        <totvs-field totvs-checkbox t-bsswitch class="col-xs-12" 
+                                            ng-model="event['log-ativo']">
+                                        </totvs-field>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-default btn-lg" class="col-xs-12" style="border: none;background: none;"
+                                            ng-click="controller.removeEvent(event)" icon="glyphicon-remove"><span
+                                                class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>            
+        </totvs-page-form>     
+    </totvs-page-content>
+</totvs-page>

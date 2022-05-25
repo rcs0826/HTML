@@ -1,0 +1,88 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-header>
+            <totvs-page-header-title title="Importação Beneficiários Compartilhamento de Risco">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="4">
+
+                    <action class="btn btn-primary" ng-click="controller.generate();" style="padding-right: 15px;">
+                        Enviar
+                    </action> 
+
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.filtersForm">
+
+            <a name="selecao" id="selecao" style="display: block;
+            position: relative;
+            top: -170px;
+            visibility: hidden;"></a>
+            <legend name="selecao" id="selecao">
+                Seleção
+            </legend>
+
+            <totvs-row>
+                <totvs-field totvs-checkbox
+                    ng-change="controller.changeReexporta()"
+                    label="Reexporta A200"
+                    ng-model="controller.dadosTela.lgReexporta">
+                </totvs-field>
+            </totvs-row>
+
+            <div ng-show="controller.dadosTela.lgReexporta">
+                <totvs-row>
+                        <!-- Contratante -->
+                        <totvs-field totvs-input 
+                                    numbers-only 
+                                    placeholder="99999999" 
+                                    maxlength="8" 
+                                    class="col-lg-2 col-md-3 col-sm-4 col-xs-5" 
+                                    label="Contratante" 
+                                    ng-required="controller.dadosTela.lgReexporta"
+                                    ng-model="controller.dadosTela.cdContratante">
+                                    <validator key="required">Este campo é obrigatório!</validator>
+                        </totvs-field>
+                </totvs-row>
+
+                <totvs-row>
+                        <totvs-field totvs-input 
+                                    numbers-only 
+                                    placeholder="99999999" 
+                                    maxlength="8" 
+                                    class="col-lg-2 col-md-3 col-sm-4 col-xs-5" 
+                                    label="Número do Lote" 
+                                    ng-required="controller.dadosTela.lgReexporta"
+                                    ng-model="controller.dadosTela.nrLote">
+                                    <validator key="required">Este campo é obrigatório!</validator>
+                        </totvs-field>
+                </totvs-row>
+            </div>
+
+            <a name="execucao" id="execucao" style="display: block;
+            position: relative;
+            visibility: hidden;"></a>
+
+            <totvs-execution hide-repeat="true" ng-model="controller.execution">
+                <totvs-execution-item type="execution">
+                    <gps-totvs-schedule program-name="importBenefCompartRisco" ng-model="controller.schedule">
+                    </gps-totvs-schedule>
+                    <totvs-field 
+                            totvs-select 
+                            ng-model="controller.dadosTela.servidor" 
+                            label="Servidor de Execução" 
+                            t-no-data="Sem dados" 
+                            placeholder="Selecione.."
+                            select-id="cdServidor" select-description="dsServidor" t-data-source="controller.options.servidores"
+                            canclean>
+                    </totvs-field>
+                </totvs-execution-item>
+            </totvs-execution>
+
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

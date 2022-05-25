@@ -1,0 +1,495 @@
+<style scoped>
+	.nolabel .field-container {
+		margin-top: 0;
+	}
+	.cancelled {
+		font-style: italic;
+		color: #BB0000;
+	}
+	.k-state-selected .cancelled {
+		color: #FFCCCC;
+	}
+	.k-state-selected .suspended {
+		color: #CCCC00;
+	}
+	.approved {
+		color: #009900;
+		font-weight: bold;
+	}
+	.k-state-selected .approved {
+		color: #77EE77;
+	}
+	.suspended {
+		color: #777700;
+		font-weight: bold;
+	}
+</style>
+
+<totvs-page type="detail" totvs-custom-element="pd4000" page-hotkeys="orderController.hotKeysPage">
+	<totvs-page-navbar ng-if="orderController.fullSize === false">
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{:: 'Início' | i18n : [] : 'dts/mpd' }}</breadcrumb>
+			<breadcrumb>{{:: 'Pedido de Venda' | i18n : [] : 'dts/mpd' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		<totvs-page-header>
+			<totvs-page-header-title>
+				{{ :: 'Pedido de Venda' | i18n : [] : 'dts/mpd' }} 
+				{{ orderController.orderId }} - 
+				{{ orderController.getCodSitPed() }}
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-lodash-template template-data="orderController.permissions['pd4000']">
+					<totvs-page-header-operation-action
+						hide-remove='true'
+						hide-back='true'
+						hide-edit='true'
+						limit-primary-action="3"
+						totvs-custom-element="pd4000operations"
+					>
+						<% _.forEach(data, function(field) { %>
+							<% if (field.fieldName == "calcular-pedido") { %>
+								<action
+									ng-click="orderController.recalculate()"
+									icon="glyphicon-usd"
+									ng-if="orderController.order['cod-sit-ped'] != 3"
+								>
+									{{ :: 'Calcular' | i18n : [] : 'dts/mpd' }}
+								</action>
+							<% } %>
+							<% if (field.fieldName == "completar-pedido") { %>
+								<action
+									ng-click="orderController.beforeCommit()"
+									ng-if="orderController.canOrderCommit && !orderController.order['log-cotacao']"
+									icon="glyphicon-ok"
+								>
+									{{ :: 'Completar' | i18n : [] : 'dts/mpd' }}
+								</action>
+							<% } %>
+							<% if (field.fieldName == "converter-cotacao") { %>
+								<action
+									ng-click="orderController.convertQuotation()"
+									ng-if="orderController.canOrderCommit && orderController.order['log-cotacao'] == true"
+									icon="glyphicon-ok"
+								>
+									{{ 'l-convert-quotation' | i18n : [] : 'dts/mpd' }}
+								</action>
+							<% } %>
+							<% if (field.fieldName == "imprimir-pedido") { %>
+								<action ng-click="orderController.print()" icon="glyphicon-print">
+									{{ :: 'Imprimir' | i18n : [] : 'dts/mpd' }}
+								</action>
+							<% } %>
+							<% if (field.fieldName == "adicionar-pedido") { %>
+								<action
+									ng-click="orderController.addOrder()"
+									ng-if="!orderController.order['log-cotacao']"
+									icon="glyphicon-plus"
+								>
+									{{ :: 'Adicionar Novo Pedido' | i18n : [] : 'dts/mpd' }}
+								</action>
+							<% } %>
+							<% if (field.fieldName == "copiar-pedido") { %>
+								<action
+									ng-click="orderController.copyOrder()"
+									ng-show="
+										(orderController.orderDisabled
+										&& orderController.order['log-cotacao'])
+										|| orderController.order['cod-sit-ped'] == 3
+									"
+									icon="glyphicon-duplicate"
+								>
+									{{ :: 'Copiar' | i18n : [] : 'dts/mpd' }}
+								</action>
+							<% } %>
+							<% if (field.fieldName == "remover-pedido") { %>
+								<action
+									ng-click="orderController.deleteOrder()"
+									icon="glyphicon-remove"
+									ng-if="orderController.order['cod-sit-ped'] != 3"
+								>
+									{{ :: 'Remover' | i18n : [] : 'dts/mpd' }}
+								</action>
+							<% } %>
+							<% if (field.fieldName == "suspender-pedido") { %>
+								<action
+									ng-click="orderController.openSuspendModal()"
+									ng-if="
+										!orderController.orderDisabled
+										&& !orderController.order['log-cotacao']
+										&& orderController.order['cod-sit-ped'] != 3
+									"
+									icon="glyphicon-save-file"
+								>
+									{{ :: 'Suspender' | i18n : [] : 'dts/mpd' }}
+								</action>
+							<% } %>
+							<% if (field.fieldName == "reativar-pedido") { %>
+								<action
+									ng-click="orderController.openReativarModal()"
+									ng-if="orderController.order['cod-sit-ped'] == 5 && !orderController.order['log-cotacao']"
+									icon="glyphicon-open-file"
+								>
+									{{ :: 'Reativar' | i18n : [] : 'dts/mpd' }}
+								</action>
+							<% } %>
+							<% if (field.fieldName == "cancelar-pedido") { %>
+								<action
+									ng-click="orderController.openCancelModal()"
+									ng-if="!orderController.orderDisabled && orderController.order['cod-sit-ped'] != 3"
+									icon="glyphicon-ban-circle"
+								>
+									{{ :: 'Cancelar' | i18n : [] : 'dts/mpd' }}
+								</action>
+							<% } %>
+							<% if (field.fieldName == "historico-pedido") { %>
+								<action
+									link="#/dts/mpd/internalorderhistory/{{ orderController.orderId }}"
+									ng-if="orderController.hasHistory()"
+									icon="glyphicon-calendar"
+								>
+									{{ :: 'Histórico' | i18n : [] : 'dts/mpd' }}
+								</action>
+							<% } %>
+							<% if (field.fieldName == "parametros-pedido") { %>
+								<action ng-click="orderController.openParamsModal()" icon="glyphicon-cog">
+									{{ :: 'Parâmetros' | i18n : [] : 'dts/mpd' }}
+								</action>
+							<% } %>
+							<% if (field.fieldName == "selecionar-pedido") { %>
+								<action
+								 	ng-click="orderController.openOtherOrder()"
+									ng-if="!orderController.order['log-cotacao']"
+								 	icon="glyphicon-folder-open"
+								>
+									{{ :: 'Selecionar Outro Pedido' | i18n : [] : 'dts/mpd' }}
+								</action>
+							<% } %>
+							<% if (field.fieldName == "simulacao-frete") { %>
+								<action
+									ng-click="orderController.freightSimulation()"
+									ng-if="!orderController.order['log-cotacao']"
+									icon="glyphicon-folder-open"
+								>
+									{{ :: 'Simulação de Frete' | i18n : [] : 'dts/mpd' }}
+								</action>
+						   <% } %>
+						<% } )%>
+					</totvs-page-header-operation-action>
+				</totvs-lodash-template>
+			</totvs-page-header-operation>
+		</totvs-page-header>
+	</totvs-page-navbar>
+	<totvs-page-content>
+		<totvs-page-detail>
+			<div class="row" ng-if="orderController.fullSize === false">
+				<div class="col-md-12">
+					<totvs-page-detail-info
+						title="{{ :: 'Nr Pedido Cliente' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-6 col-sm-2 col-md-2"
+					>
+						{{ orderController.order['nr-pedcli'] }}
+					</totvs-page-detail-info>
+					<totvs-page-detail-info
+						title="{{ (!orderController.order['cod-id-prosp'] ? 'Cliente' : 'l-lead') | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-6 col-sm-2 col-md-2"
+					>
+						<span ng-if="!orderController.order['cod-id-prosp']">
+							{{ orderController.order['nome-abrev'] }}
+						</span>
+
+						<!-- CRM LEAD -->
+						<span
+							ng-if="
+								orderController.order['log-cotacao'] == true
+								&& orderController.order['cod-id-prosp']
+							"
+						>
+							{{ orderController.order['crmAccountName'] }} 
+							{{
+								orderController.order['crmAccountShortName'] 
+								? '(' + orderController.order['crmAccountShortName'] + ')' 
+								: ''
+							}}
+						</span>
+						<!-- CRM LEAD -->
+					</totvs-page-detail-info>
+
+					<div class="detail-field col-xs-6 col-sm-2 col-md-2">
+						<div class="field-label">
+							{{ :: 'Valor Total Pedido' | i18n : [] : 'dts/mpd' }}
+							<i
+								ng-if="orderController.canOrderCommit"
+								style="color: #000000"
+								class="glyphicon glyphicon-info-sign"
+								tooltip-placement="right"
+								tooltip="Atenção este valor pode estar inválido após alterações no pedido, execute Calcular para confirmar este valor."
+							>
+							</i>
+						</div>
+						<div class="field-value">
+							<span>
+								<a h-ref="#">
+									<div
+										style="margin: 0"
+										popover-template="'/dts/mpd/html/pd4000/pd4000totais.html'"
+										popover-title="Totais do Pedido"
+										popover-placement="left"
+										popover-trigger="mouseenter"
+									>
+										{{ orderController.order['vl-tot-ped'] | number : 2 }}
+									</div>
+								</a>
+							</span>
+						</div>
+					</div>
+
+					<totvs-page-detail-info
+						title="{{ :: 'Rentabilidade' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-6 col-sm-4 col-md-3"
+						ng-if="orderController.showRentability && !orderController.order['log-cotacao']"
+					>
+						<div
+							ng-class="{'btn btn-link btn-block': orderController.pd4000['rentabilidade-detalhe-pedido']}"
+							style="padding: 6px;"
+							ng-click="orderController.openRentability()"
+						>
+							<div style="position: relative;">
+								<div ng-if="orderController.showRentability == 1">
+									<div
+										ng-attr-style="
+											background-color:#52C5FF;
+											height: 5px;
+											width: {{ orderController.ttOrderRentability.barsize }}%
+										"
+									>
+									</div>
+									<div
+										ng-attr-style="
+											background-color: {{ orderController.ttOrderRentability.barcolor }};
+											height: 20px;
+											width: 100%
+										"
+									>
+									</div>
+									<div
+										ng-attr-style="
+											background-color: #52C5FF;
+											height: 5px;
+											width: {{ orderController.ttOrderRentability.barsize }}%
+										"
+									>
+									</div>
+								</div>
+								<div ng-if="orderController.showRentability == 2">
+									<div style="background-color: #52C5FF; height: 30px; width: 100%; padding-top: 5px;">
+										<div
+											ng-attr-style="
+												background-color: {{ orderController.ttOrderRentability.barcolor }};
+												height: 20px;
+												width: {{ orderController.ttOrderRentability.rentabilityPercent }}%;
+												top: 5px;
+												word-wrap: normal;
+											"
+										>
+										</div>
+									</div>
+								</div>
+								<div ng-if="orderController.showRentability == 3">
+									<div
+										ng-attr-style="
+											background-color: {{ orderController.ttOrderRentability.barcolor }};
+											height: 20px;
+											width: {{ 100 - orderController.ttOrderRentability.barsize }}%;
+											float: left;
+											margin-top: 5px;
+											word-wrap: normal;
+										"
+									>
+									</div>
+									<div
+										ng-attr-style="
+											background-color: #52C5FF;
+											height: 30px;
+											width: {{ orderController.ttOrderRentability.barsize }}%;
+											float: left;
+										"
+									>
+									</div>
+								</div>
+								<div
+									style="
+										position: absolute;
+										top: 5px;
+										left: 0;
+										right: 0;
+										text-align: center
+									"
+								>
+									{{ orderController.ttOrderRentability.rentabilityPercent | number : 2 }}%
+								</div>
+							</div>
+						</div>
+					</totvs-page-detail-info>
+					<totvs-page-detail-info
+						ng-if="orderController.pd4000['peso-pedido']"
+						title="{{ :: 'Peso Estimado Total' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-6 col-sm-2 col-md-2"
+					>
+						{{ orderController.ttOrderPeso['pesoTotal'] | number : 4 }}
+					</totvs-page-detail-info>
+					<totvs-page-detail-info
+						ng-if="orderController.pd4000['peso-atendido-pedido']"
+						title="{{ :: 'Peso Est Atendido' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-6 col-sm-2 col-md-2"
+					>
+						{{ orderController.ttOrderPeso['pesoAtendido'] | number : 4 }}
+					</totvs-page-detail-info>
+					<totvs-page-detail-info
+						ng-if="orderController.pd4000['peso-aberto-pedido']"
+						title="{{ :: 'Peso Est Em Aberto' | i18n : [] : 'dts/mpd' }}"
+						class="col-xs-6 col-sm-2 col-md-2"
+					>
+						{{ orderController.ttOrderPeso['pesoAberto'] | number : 4 }}
+					</totvs-page-detail-info>
+				</div>
+			</div>
+			<totvs-tabset>
+				<totvs-tab
+					active="orderController.activeTab.pd4000a"
+					heading="{{ :: 'Itens' | i18n : [] : 'dts/mpd' }}"
+					select="orderController.select('pd4000a')"
+				>
+					<totvs-lodash-template
+						src="/dts/mpd/html/pd4000/pd4000a.html"
+						template-data="orderController.permissions['ped-item-grid']"
+					/>
+				</totvs-tab>
+				<totvs-tab
+					active="orderController.activeTab.pd4000b"
+					heading="{{ :: 'Pesquisa de Produtos' | i18n : [] : 'dts/mpd' }}"
+					disabled="orderController.orderDisabled"
+					ng-if="orderController.pd4000['aba-pesquisar']"
+					select="orderController.select('pd4000b')"
+				>
+					<totvs-lodash-template
+						src="/dts/mpd/html/pd4000/pd4000b.html"
+						template-data="orderController.permissions['ped-item-search']"
+					/>
+				</totvs-tab>
+				<totvs-tab
+					active="orderController.activeTab.pd4000c"
+					heading="{{ :: 'Cabeçalho' | i18n : [] : 'dts/mpd' }}"
+					ng-if="orderController.pd4000['aba-cabecalho']"
+					select="orderController.select('pd4000c')"
+				>
+					<div class="row">
+						<totvs-lodash-template
+							src="/dts/mpd/html/pd4000/pd4000c.html"
+							template-data="orderController.permissions['ped-venda-edit']"
+						/>
+					</div>
+				</totvs-tab>
+				<totvs-tab
+					active="orderController.activeTab.pd4000d"
+					heading="{{ :: 'Pagamento' | i18n : [] : 'dts/mpd' }}"
+					ng-if="orderController.pd4000['aba-pagamento']"
+					select="orderController.select('pd4000d')"
+				>
+					<ng-include src="'/dts/mpd/html/pd4000/pd4000d.html'"/>
+				</totvs-tab>
+				<totvs-tab
+					active="orderController.activeTab.pd4000e"
+					heading="{{ :: 'Financiamento' | i18n : [] : 'dts/mpd' }}"
+					ng-if="orderController.pd4000['aba-financiamento']"
+					select="orderController.select('pd4000e')"
+				>
+					<ng-include src="'/dts/mpd/html/pd4000/pd4000e.html'" />
+				</totvs-tab>
+				<totvs-tab-dropdown
+					heading="{{ :: 'Mais Informações' | i18n : [] : 'dts/mpd' }}"
+					ng-if="
+						(orderController.pd4000['aba-antecipacoes']
+						|| orderController.pd4000['aba-exportacao']
+						|| orderController.pd4000['aba-entregas']
+						|| orderController.pd4000['aba-representantes-item']
+						|| orderController.pd4000['aba-representantes-pedido']
+						|| orderController.pd4000['aba-alocacao'])
+					"
+					showcurrent="true"
+					totvs-custom-element="pd4000TabDropDown"
+				>
+					<totvs-tab-dropdown-item
+						active="orderController.activeTab.pd4000f"
+						heading="{{ :: 'Antecipações' | i18n : [] : 'dts/mpd' }}"
+						ng-if="orderController.pd4000['aba-antecipacoes']"
+						select="orderController.select('pd4000f')"
+						disabled="orderController.order['log-cotacao']"
+					>
+						<ng-include src="'/dts/mpd/html/pd4000/pd4000f.html'" />
+					</totvs-tab-dropdown-item>
+					<totvs-tab-dropdown-item
+						active="orderController.activeTab.pd4000g"
+						heading="{{ :: 'Exportação' | i18n : [] : 'dts/mpd' }}"
+						ng-if="orderController.pd4000['aba-exportacao']"
+						select="orderController.select('pd4000g')"
+						disabled="!orderController.enableExportTab || orderController.order['log-cotacao']"
+					>
+						<ng-include src="'/dts/mpd/html/pd4000/pd4000g.html'" />
+					</totvs-tab-dropdown-item>
+					<totvs-tab-dropdown-item
+						active="orderController.activeTab.pd4000h"
+						heading="{{ :: 'Entregas' | i18n : [] : 'dts/mpd' }}"
+						ng-if="orderController.pd4000['aba-entregas']"
+						select="orderController.select('pd4000h')"
+						disabled="orderController.order['log-cotacao']"
+					>
+						<ng-include src="'/dts/mpd/html/pd4000/pd4000h.html'" />
+					</totvs-tab-dropdown-item>
+					<totvs-tab-dropdown-item
+						active="orderController.activeTab.pd4000i"
+						heading="{{ :: 'Representantes' | i18n : [] : 'dts/mpd' }}"
+						ng-if="
+							orderController.pd4000['aba-representantes-item']
+							|| orderController.pd4000['aba-representantes-pedido']
+						"
+						select="orderController.select('pd4000i')"
+						disabled="orderController.order['log-cotacao']"
+					>
+						<totvs-lodash-template
+							src="/dts/mpd/html/pd4000/pd4000i.html"
+							template-data="orderController.comissaoItem"
+						/>
+					</totvs-tab-dropdown-item>
+					<totvs-tab-dropdown-item
+						active="orderController.activeTab.pd4000j"
+						heading="{{ :: 'Alocação' | i18n : [] : 'dts/mpd' }}"
+						ng-if="orderController.pd4000['aba-alocacao']"
+						select="orderController.select('pd4000j')"
+						disabled="orderController.order['log-cotacao']"
+					>
+						<totvs-lodash-template
+							src="/dts/mpd/html/pd4000/pd4000j.html"
+							template-data="orderController.alocacaoItem"
+						/>
+					</totvs-tab-dropdown-item>
+				</totvs-tab-dropdown>
+
+				<a
+					class="pull-right"
+					style="font-size:16px; margin-top:10px"
+					title="Expandir/Retrair"
+					ng-click="orderController.changeSize()"
+				>
+					<span
+						ng-class="
+							orderController.fullSize
+							? 'glyphicon glyphicon-resize-small'
+							: 'glyphicon glyphicon-resize-full'"
+						>
+					</span>
+				</a>
+			</totvs-tabset>
+		</totvs-page-detail>
+	</totvs-page-content>
+</totvs-page>

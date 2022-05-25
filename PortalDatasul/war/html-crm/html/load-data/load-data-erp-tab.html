@@ -1,0 +1,38 @@
+<div>
+	<br>
+	<div class="crm-tab">
+		<div class="col-xs-12">
+			<fieldset class="row">
+				<div class="col-xs-6 col-sm-3">
+					<totvs-field class="col-xs-12"
+						totvs-checkbox
+						ng-model="controller.erpSelectAll"
+						label="{{ 'l-select-all' | i18n: []: 'dts/crm' }}"
+						ng-disabled="false"
+						ng-change="controller.onChangeERPSelectAll(controller.erpSelectAll)"
+						t-bsswitch>
+					</totvs-field>
+				</div>
+			</fieldset>
+			<br>
+			<br>
+			<fieldset class="row">
+				<div class="col-xs-6 col-sm-3"
+					ng-repeat="item in controller.model.erp">
+					<totvs-field class="col-xs-12"
+						totvs-checkbox
+						ng-model="item.valor"
+						label="{{ item.processo | i18n: []: 'dts/crm' }}"
+						ng-disabled="false"
+						t-bsswitch>
+					</totvs-field>
+				</div>
+			</fieldset>
+		</div>
+		<div class="pull-right">
+			<br>
+			<button class="btn btn-primary" ng-click="controller.executeSchedule()">{{ 'btn-execute' | i18n: []: 'dts/crm' }}</button>
+		</div>
+
+	</div>
+</div>

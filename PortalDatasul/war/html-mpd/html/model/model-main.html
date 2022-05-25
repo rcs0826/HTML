@@ -1,0 +1,163 @@
+
+
+<totvs-page type="edit" totvs-custom-element="customPage">
+
+<style type="text/css" scoped>
+
+	/*.model-field{
+		float: left;
+		width: 95%;
+		word-wrap: break-word;
+	}
+
+	.model-cb{
+		float: left;
+		width: 5%;
+	}*/
+
+@media only screen and (max-width: 769px) {
+
+	.top-favorite-xs {
+		padding-top:15px
+	}
+
+	.btn-block-on-xs{
+		display: block;
+		width: 100%;
+	}
+
+	.padding-models-tible{
+		padding-left: 5px; padding-right: 5px
+	}
+
+	.page-navbar .breadcrumb {
+		padding-left: 0px; !important
+	}
+
+	.totvs-style-guide .row {
+		margin-right: 0px !important;
+		margin-left: 0px !important;
+	}
+
+}
+
+@media only screen and (min-width: 770px) {
+	.padding-models-tible{
+		padding-left: 15px; padding-right: 15px
+	}
+
+	.padding-models{
+		padding-left: 15px; padding-right: 15px
+	}
+}
+
+</style>
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#{{defaultPageHome}}">{{ "l-initial-page" | i18n : [] : 'dts/mpd' }}</breadcrumb>
+			<breadcrumb>{{ "l-select-model" | i18n : [] : 'dts/mpd' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		<totvs-page-header>
+			<totvs-page-header-title>
+				{{currentuser['user-entity']}}
+			</totvs-page-header-title>
+			<div class="row">
+				<totvs-page-detail-info-group>{{"l-new-salesorder" | i18n : [] : 'dts/mpd'}}</totvs-page-detail-info-group>
+			</div>
+
+			<totvs-page-form style="padding: 0px 0px 0px 0px;">
+				<div  class="col-md-12" style="padding-left: 0px; padding-right: 0px">
+
+					<field 	type="input"
+							class="col-md-4 col-sm-4"
+							ng-if="controller.nrPedCliModelo"
+							ng-model="controller.newCustOrderNo"
+							canclean
+							ng-change="controller.validatorNrPedCli()"
+							required
+							ng-required="true">
+						<label>{{ 'l-nr-pedcli' | i18n : [] : 'dts/mpd' }}</label>
+					</field>
+					<div class="col-md-2 col-sm-4 col-xs-12">
+						<button class="btn btn-primary btn-block-on-xs"
+								ng-if="controller.btnNovoPedido"
+								ng-click="controller.valNewOrderNo(0)" style="margin-top: 27px;">
+							<span class="glyphicon glyphicon-plus"></span>
+							{{"btn-new-order" | i18n : [] : 'dts/mpd' }}
+						</button>
+					</div>
+
+					<div class="col-xs-12">
+						<br>
+						<totvs-page-alert
+							ng-if="controller.isLead == true"
+							type="info"
+							message="{{ 'msg-info-initial-order-status-for-lead' | i18n : [controller.newCustOrderNo] : 'dts/mpd' }}">
+						</totvs-page-alert>
+					</div>
+
+				</div>
+			</totvs-page-form>
+		</totvs-page-header>
+	</totvs-page-navbar>
+	<div>
+		<totvs-page-content style="padding-left: 0px; padding-right: 0px; padding-bottom: 15px">
+				<totvs-page-header-operation ng-if="controller.models.length > 0">
+
+					<br/>
+					<div class="col-md-12">
+						<h4 style="margin-top: 15px" class="padding-models-tible">
+							{{:: 'l-order-models' | i18n : [] : 'dts/mpd' }}
+							</h4>
+					</div>
+
+					<div class="col-md-12" style="padding-left: 15px; padding-right: 15px">
+						<totvs-page-header-operation-filter id="search-model"
+															style="padding-bottom: 10px important"
+															ng-init="controller.initSearchModel()"
+															placeholder="{{ 'l-fast-search-model' | i18n : [] : 'dts/mpd' }}"
+															ng-submit="controller.search();"
+															ng-model="controller.quickSearchText">
+						</totvs-page-header-operation-filter>
+
+						<div class="col-md-2 col-sm-3 col-xs-12 top-favorite-xs">
+							<span class="btn btn-default btn-block-on-xs"
+								ng-click="controller.setQuickFilter(!controller.quickFilter['log-favorito'])">
+								<span class="glyphicon"
+									  aria-hidden="true"
+									  ng-class="{'glyphicon-star': controller.quickFilter['log-favorito'], 'glyphicon-star-empty':controller.quickFilter['log-favorito'] == undefined}">
+								</span>
+								{{:: 'l-favorite-models' | i18n : [] : 'dts/mpd' }}
+							</span>
+						</div>
+					</div>
+
+				</totvs-page-header-operation>
+				<br/>
+
+				<totvs-page-header-operation ng-if="controller.models.length <= 0">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<h4 style="margin-top: 15px;">
+							{{"l-model-not-available" | i18n : [] : 'dts/mpd'}}
+						</h4>
+					</div>
+				</totvs-page-header-operation>
+
+				<div class="padding-models">
+					<totvs-list-item ng-repeat="model in controller.models | filter:controller.quickFilter:strict"
+									 totvs-custom-element="customListItem">
+						<totvs-list-item-header>
+							<totvs-list-item-title>{{model['nom-model']}}</totvs-list-item-title>
+							<totvs-list-item-action limit-primary-action="2">
+								<action ng-click="controller.valNewOrderNo(model['idi-model'])" icon="glyphicon-plus">{{:: 'l-use-template' | i18n : [] : 'dts/mpd' }}</action>
+								<action ng-click="controller.setFavoriteModel(model['idi-model'], model['log-favorito']);" icon="{{ model['log-favorito'] ? 'glyphicon-star' : 'glyphicon-star-empty' }}">{{"btn-favorite" | i18n : [] : 'dts/mpd'}}</action>
+							</totvs-list-item-action>
+						</totvs-list-item-header>
+						<totvs-list-item-content>
+							<totvs-list-item-info class="col-xs-12">{{model['nom-desc']}}</totvs-list-item-info>
+						</totvs-list-item-content>
+					</totvs-list-item>
+				</div>
+		</totvs-page-content>
+	</div>
+</totvs-page>

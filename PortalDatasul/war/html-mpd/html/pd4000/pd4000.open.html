@@ -1,0 +1,39 @@
+<form ng-submit="modalOpenController.open()">
+	<div class="modal-header">
+		<h3 class="modal-title">{{:: 'l-order-select' | i18n : [] : 'dts/mpd' }}</h3>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+
+			<totvs-field totvs-select
+					label="{{:: 'l-short-name-client' | i18n : [] : 'dts/mpd' }}"
+					ng-model="modalOpenController.customerId"
+					class="col-xs-12"
+					select-id="nome-abrev"
+					select-match='[{"field":"nome-abrev", "separator": " - "},{"field":"cod-emitente", "separator": ""}]'
+					select-service="mpd.emitente.zoom"
+					zoom-init="{setDefaultValue: false} "
+					zoom-service="mpd.emitente.zoom"
+					focus>
+			</totvs-field>
+
+
+			<totvs-field totvs-select
+					label="{{:: 'nr-pedcli' | i18n : [] : 'dts/mpd' }}"
+					ng-model="modalOpenController.selectedOrder"
+					class="col-xs-12"
+					select-init="{property: 'nome-abrev', value: { start:modalOpenController.customerId, end:modalOpenController.customerId}}"
+					select-id="nr-pedcli"
+					select-match='[{"field":"nr-pedcli", "separator": ""}]'
+					select-service="mpd.ped-venda.zoom"
+					return-object
+					ng-change="modalOpenController.selectOrder()"
+					zoom-service="mpd.ped-venda.zoom">
+			</totvs-field>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button role="button" class="btn btn-primary">{{:: 'l-open-order-select' | i18n : [] : 'dts/mpd' }}</button>
+		<a class="btn btn-default" ng-click="modalOpenController.close()">{{:: 'l-close' | i18n : [] : 'dts/mpd' }}</a>
+	</div>
+</form>

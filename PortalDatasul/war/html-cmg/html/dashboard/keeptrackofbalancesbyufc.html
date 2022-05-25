@@ -1,0 +1,117 @@
+<div id="keeptrackofbalancesbyufc_div"
+    ng-controller="cmg.dashboard.keeptrackofbalancesbyufc.Controller as dashKeepTrackOfBalancesByUFCCtrl">
+    <totvs-widget>
+        <cmg-totvs-widget-header list="dashKeepTrackOfBalancesByUFCCtrl.showList()"
+                                 charts="dashKeepTrackOfBalancesByUFCCtrl.showCharts()"
+                                 settings="dashKeepTrackOfBalancesByUFCCtrl.showConfig()"
+								 title="{{'l-balances-by-ufc' | i18n : [] : 'dts/cmg/' }}">
+			<i class="glyphicon glyphicon-info-sign hidden-xs"
+			   tooltip-placement="bottom"
+			   tooltip-html="dashKeepTrackOfBalancesByUFCCtrl.tooltipHelp">
+			</i>
+		</cmg-totvs-widget-header>
+        <totvs-widget-body>
+
+            <div>			
+                <div ng-show="dashKeepTrackOfBalancesByUFCCtrl.listShow">
+		        <br>
+                    <div class="col-md-12">
+                        <totvs-grid 
+                            grid-data="dashKeepTrackOfBalancesByUFCCtrl.listResult" 
+                            grid-height="400" 
+                            selectable="false" 
+                            auto-resize-content="true" 
+                            sortable="true" 
+                            resizable="true">
+                            <totvs-grid-column 
+                                field="ufcDescription"
+                                title="{{ 'l-ufc' | i18n: []: 'dts/cmg' }}">
+                                <template>
+                                    <a style="color: black">{{ dataItem.ufcDescription }}</a>
+                                </template>
+                            </totvs-grid-column>
+                            <totvs-grid-column 
+                                field="companyAmt" 
+                                title="{{ 'l-company-value' | i18n: []: 'dts/cmg' }}">
+                                <template>
+                                    <a ng-if="dataItem.companyAmt < 0" ng-click="dashKeepTrackOfBalancesByUFCCtrl.openCMG707();" style="color: red; cursor:pointer;"><u>{{ dataItem.shortCurrency }}{{ dataItem.companyAmt | number : 2}}</u></a>
+                                    <a ng-if="dataItem.companyAmt >= 0" ng-click="dashKeepTrackOfBalancesByUFCCtrl.openCMG707();" style="color: blue; cursor:pointer;"><u>{{ dataItem.shortCurrency }}{{ dataItem.companyAmt | number : 2}}</u></a>
+                                </template>
+                            </totvs-grid-column>
+                            <totvs-grid-column 
+                                field="bankAmt"
+                                title="{{'l-bank-value' | i18n: []: 'dts/cmg' }}">
+                                <template>
+                                    <a ng-if="dataItem.bankAmt < 0" ng-click="dashKeepTrackOfBalancesByUFCCtrl.openCMG203();" style="color: red; cursor:pointer;"><u>{{ dataItem.shortCurrency }}{{ dataItem.bankAmt | number : 2}}</u></a>
+                                    <a ng-if="dataItem.bankAmt >= 0" ng-click="dashKeepTrackOfBalancesByUFCCtrl.openCMG203();" style="color: blue; cursor:pointer;"><u>{{ dataItem.shortCurrency }}{{ dataItem.bankAmt | number : 2}}</u></a>
+                                </template>
+                            </totvs-grid-column>
+                            <totvs-grid-column 
+                                field="companyAmt - bankAmt"
+                                title="{{'l-difference' | i18n: []: 'dts/cmg' }}">
+                                <template>
+                                    <a ng-if="(dataItem.companyAmt - dataItem.bankAmt) < 0" style="color: red">{{ dataItem.shortCurrency }}{{ dataItem.companyAmt - dataItem.bankAmt | number : 2}} </a>
+                                    <a ng-if="(dataItem.companyAmt - dataItem.bankAmt) >= 0" style="color: blue">{{ dataItem.shortCurrency }}{{ dataItem.companyAmt - dataItem.bankAmt | number : 2}} </a>
+                                </template>
+                            </totvs-grid-column>
+                        </totvs-grid>
+                    </div>	        
+                </div>
+                <div ng-show="dashKeepTrackOfBalancesByUFCCtrl.chartsShow">
+                    <div class="col-md-12">
+                        <totvs-field totvs-radio
+                            label="{{ 'l-balances' | i18n : [] : 'dts/cmg' }}"
+                            t-options="dashKeepTrackOfBalancesByUFCCtrl.options"
+                            ng-model="dashKeepTrackOfBalancesByUFCCtrl.typeChart">
+                        </totvs-field>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="col-md-12">
+                        <cmg-totvs-chart 
+                            ng-show="dashKeepTrackOfBalancesByUFCCtrl.typeChart == 1"
+                            t-type-chart="column"
+                            t-on-click="dashKeepTrackOfBalancesByUFCCtrl.onClick"
+                            t-series="dashKeepTrackOfBalancesByUFCCtrl.seriesCompany"
+                            t-categories="dashKeepTrackOfBalancesByUFCCtrl.categories"
+                            t-width="dashKeepTrackOfBalancesByUFCCtrl.tamGrafico">
+                        </cmg-totvs-chart>
+                    </div>
+                    <div class="col-md-12">
+                        <cmg-totvs-chart 
+                            ng-hide="dashKeepTrackOfBalancesByUFCCtrl.typeChart == 1"
+                            t-type-chart="column"
+                            t-on-click="dashKeepTrackOfBalancesByUFCCtrl.onClick"
+                            t-series="dashKeepTrackOfBalancesByUFCCtrl.seriesBank"
+                            t-categories="dashKeepTrackOfBalancesByUFCCtrl.categories"
+                            t-width="dashKeepTrackOfBalancesByUFCCtrl.tamGrafico">
+                        </cmg-totvs-chart>
+                    </div>
+                <br />
+                </div>
+                <div ng-hide="dashKeepTrackOfBalancesByUFCCtrl.listShow == true || dashKeepTrackOfBalancesByUFCCtrl.chartsShow == true">
+                    <form>
+                        <totvs-table t-items="dashKeepTrackOfBalancesByUFCCtrl.listOfUFCs"
+                            t-items-as="ufc"
+                            t-table="dashKeepTrackOfBalancesByUFCCtrl.selectedItems">
+                            <column title="{{'l-ufc' | i18n : [] : 'dts/cmg'}}">
+                                {{ufc.ufcDescription}}
+                            </column>
+                        </totvs-table>
+                    </form>
+                    <a role="button" class="btn btn-default pull-right" ng-click="dashKeepTrackOfBalancesByUFCCtrl.applyConfig()">&nbsp; {{ 'btn-apply' | i18n : [] : 'dts/cmg/' }} &nbsp; </a>	                                
+                </div>			
+            </div>
+			
+        </totvs-widget-body>
+
+        <totvs-widget-footer>
+            <totvs-widget-footer-body>
+            </totvs-widget-footer-body>
+            <totvs-widget-footer-actions>
+                <action class="clickable btn-link" ng-click="dashKeepTrackOfBalancesByUFCCtrl.openCMG707();">{{ 'l-detail' | i18n : [] : 'dts/cmg/' }}</action>
+            </totvs-widget-footer-actions>            
+        </totvs-widget-footer>
+    </totvs-widget>
+</div>       
+        

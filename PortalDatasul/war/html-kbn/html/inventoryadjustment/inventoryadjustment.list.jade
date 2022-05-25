@@ -1,0 +1,93 @@
+
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+link(rel="stylesheet" href="/dts/kbn/css/font-awesome.css")
+
+totvs-page(type='list')
+    totvs-page-navbar
+        totvs-page-breadcrumb
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb {{ 'l-balance-adjust' | i18n }}
+        totvs-page-header
+            totvs-page-header-title(title="{{ 'l-balance-adjust' | i18n }}", total="{{controller.totalRecords}}")
+            totvs-page-header-operation
+                div.col-md-7.col-sm-7
+                totvs-page-header-operation-filter(placeholder="{{ 'l-code-description' | i18n}}", ng-submit="controller.quickSearch()", ng-model="controller.quickSearchText", advanced-search="controller.openAdvancedSearch")
+            totvs-page-disclaimers(disclaimer-list="controller.filtersApplied", ng-click="controller.removeFilter")
+    totvs-page-content
+        totvs-page-alert(ng-if="!controller.hasEstab()" type="info" message="{{ 'msg-estab-not-selected' | i18n }}")        
+        totvs-page-alert(ng-if="controller.hasEstab() && controller.listBalance.length === 0" type="info" message="{{ 'msg-not-found' | i18n }}")
+        
+        totvs-list-item(data-ng-repeat="balance in controller.listBalance"
+                                        class="{{controller.colorTag(balance.colorKanban)}}")
+            totvs-list-item-header
+                totvs-list-item-title(title='{{balance | descGeneric:"{sku} - {desc} {ref} ({exp})"}}')
+            totvs-list-item-content
+                .row
+                    .col-xs-12
+                        totvs-list-item-info.col-md-4(title="{{'l-cell' | i18n}}", value='{{balance.cell | descGeneric:"{codeErpCell} {descCell}"}}')
+                ng-form(name="balanceForm",role="form")
+                    .row
+                        .col-xs-12.col-sm-12
+                            .col-xs-12.col-sm-2(tooltip="{{'l-into-board' | i18n}}")
+                                .input-group(ng-class="{'has-error': balanceForm.board.$invalid}")
+                                    input.form-control(name="board", type="number", min="0", ng-model="balance.qtdBoard", required, integer, ng-change="controller.validNumbers(balance,'qtdBoard') && controller.validfields(balanceForm,false)")
+                                    span.input-group-addon
+                                        span.fa.fa-desktop.fa-lg
+                                .tooltip.bottom.in(ng-if="balanceForm.board.$invalid")
+                                    .tooltip-inner.btn-danger
+                                        .help-inline.ng-binding.ng-scope {{'l-board-validation' | i18n}}
+                                    .tooltip-arrow.arrow-danger
+                            .col-xs-12.col-sm-2(tooltip="{{'l-into-production' | i18n}}")
+                                .input-group
+                                    input.form-control(name="production", type="number", min="0", ng-model="balance.qtdProduc", ng-disabled = "true")
+                                    span.input-group-addon
+                                        span.fa.fa-gears.fa-lg
+                            .col-xs-12.col-sm-2(tooltip="{{'l-into-transport' | i18n}}")
+                                .input-group
+                                    input.form-control(name="transport", type="number", min="0", ng-model="balance.qtdTransport", ng-disabled = "true")
+                                    span.input-group-addon
+                                        span.fa.fa-truck.fa-lg
+                            .col-xs-12.col-sm-2(tooltip="{{'l-locked' | i18n}}")
+                                .input-group
+                                    input.form-control(name="locked", type="number", min="0", ng-model="balance.qtdBlock", ng-disabled = "true")
+                                    span.input-group-addon
+                                        span.fa.fa-lock.fa-lg
+                            .col-xs-12.col-sm-2(tooltip="{{'l-into-supermarket' | i18n}}")
+                                .input-group(ng-class="{'has-error': balanceForm.supermarket.$invalid}")
+                                    input.form-control(name="supermarket", type="number", min="0", ng-model="balance.qtdSupermarket", required, integer, ng-change="controller.validNumbers(balance,'qtdSupermarket') && controller.validfields(balanceForm,false)")
+                                    span.input-group-addon
+                                        span.fa.fa-shopping-cart.fa-lg
+                                .tooltip.bottom.in(ng-if="balanceForm.supermarket.$invalid")
+                                    .tooltip-inner.btn-danger
+                                        .help-inline.ng-binding.ng-scope {{'l-supermarket-validation' | i18n}}
+                                    .tooltip-arrow.arrow-danger
+
+                            .col-xs-12.col-sm-2(tooltip="{{'l-total-balance-cards' | i18n}}")
+                                .input-group
+                                    span
+                                        input.form-control(name="total", type="number", ng-model="balance.qtdPilha", ng-disabled = "true")
+                                    span.input-group-addon
+                                        span.fa.fa-bars.fa-lg
+                    .row(ng-show="balanceForm.$dirty")
+                        .col-xs-12.col-sm-12
+                            .col-xs-12.col-sm-2
+                                h6
+                                    b {{'l-select-reason'| i18n}}:
+                    .row(ng-show="balanceForm.$dirty")
+                        .col-xs-12.col-sm-12
+                            .col-xs-12.col-sm-4
+                                .input-group.col-xs12.col-sm-12(ng-class="{'has-error': balanceForm.justification.$invalid}")
+                                    select.form-control(name="justification", ng-options="just.des_justif for just in controller.listJustification", ng-model="justification")
+                                        option(value="")
+                                            {{'l-select-reason'| i18n}}
+                                .tooltip.bottom.in(ng-if="balanceForm.justification.$invalid")
+                                    .tooltip-inner.btn-danger
+                                        .help-inline.ng-binding.ng-scope {{'l-select-reason'| i18n}}
+                                    .tooltip-arrow.arrow-danger
+                            .col-xs-12.col-sm-2
+                                button.btn.btn-primary(type="submit", ng-click="controller.saveAdjusting(balance, justification, balanceForm)", ng-disabled="(!justification) || balanceForm.supermarket.$invalid || balanceForm.board.$invalid") {{'l-adjust' | i18n}}
+                                button.btn.btn-default(ng-click="controller.resetValues(balance, balanceForm)") {{'l-cancel' | i18n}}
+
+                totvs-divider
+        .container(align="center")
+                pagination.pagination-sm(total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages", items-per-page="controller.pageSize", previous-text="{{'l-previous' | i18n}}", next-text="{{'l-next' | i18n}}")

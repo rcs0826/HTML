@@ -1,0 +1,130 @@
+<totvs-modal-header> 
+    Documento {{dcmController.tipoModal == 'C' ? 'por Contratante' : 'Padrão'}}    
+</totvs-modal-header>
+<totvs-modal-body style="height: 520px; overflow-y: auto;"  id="modalDocuments" ng-form="dcmController.form">
+    <style>
+        .margem {
+            margin: 7px 0 0 0;
+        }
+    </style>
+        <totvs-row> 
+                <totvs-field totvs-select
+                        class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                        ng-model="dcmController.incDoctoContrat.cdnModalidade"
+                        label="Modalidade" canclean
+                        select-service="hpr.modalityZoomController"
+                        zoom-service="hpr.modalityZoomController"
+                        select-id="cdModalidade" 
+                        select-description="dsModalidade"
+                        ng-change="dcmController.onModalidChanged()"
+                        ng-if="dcmController.tipoModal!='P'"
+                        required>
+                </totvs-field>
+                <totvs-field totvs-select
+                        class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                        ng-model="dcmController.incDoctoContrat.cdnPlano"
+                        label="Plano" canclean
+                        select-service="hpr.planZoomController"
+                        zoom-service="hpr.planZoomController"
+                        select-id="cdPlano" 
+                        min="0"
+                        select-description="nmPlano"
+                        select-init ="{filters: dcmController.planFixedFilters}"
+                        zoom-init = "{filters: dcmController.planFixedFilters}"
+                        ng-change="dcmController.onPlanChanged()"
+                        ng-disabled="
+                                dcmController.incDoctoContrat.cdnModalidade == 0 || 
+                                dcmController.incDoctoContrat.cdnModalidade == undefined"
+                                ng-if="dcmController.tipoModal!='P'"
+                        ng-required="dcmController.incDoctoContrat.cdnTerAdesao == null">
+                </totvs-field>
+                <totvs-field totvs-select
+                        class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                        ng-model="dcmController.incDoctoContrat.cdnTipPlano"
+                        label="Tipo plano" canclean
+                        select-service="hpr.planTypeZoomController"
+                        zoom-service="hpr.planTypeZoomController"
+                        select-id="cdTipoPlano" 
+                        min="0"
+                        select-description="nmTipoPlano"
+                        select-init ="{filters: dcmController.planTypeFixedFilters}"
+                        zoom-init = "{filters: dcmController.planTypeFixedFilters}"
+                        ng-disabled="
+                                dcmController.incDoctoContrat.cdnPlano == 0 || 
+                                dcmController.incDoctoContrat.cdnPlano == undefined"
+                                ng-if="dcmController.tipoModal!='P'"
+                        ng-required="dcmController.incDoctoContrat.cdnPlano != null">
+                </totvs-field>
+                <totvs-field totvs-select
+                        ng-model="dcmController.incDoctoContrat.cdnContrnte"
+                        class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                        label="Contratante" canclean
+                        select-service="hvp.contractingPartyCodeZoomController"
+                        zoom-service="hvp.contractingPartyCodeZoomController"
+                        select-id="cdContratante" 
+                        select-description="nmContratante"
+                        ng-if="dcmController.tipoModal!='P'"
+                        ng-required="dcmController.incDoctoContrat.cdnPlano != null">
+                </totvs-field>
+
+                <totvs-field totvs-input
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        label="Termo"
+                        ng-model="dcmController.incDoctoContrat.cdnTerAdesao"                        
+                        ng-if="dcmController.tipoModal!='P'"
+                        ng-required="dcmController.incDoctoContrat.cdnPlano == null"
+                        numbers-only
+                        maxlength="6">
+                </totvs-field>
+
+                <div class="col-md-4"
+                    ng-if="dcmController.tipoModal!='P'">&nbsp;</div>
+
+                <field type="date"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    data-ng-model="dcmController.incDoctoContrat.datVigencInic"
+                    label="Data de Vigência Inicial">
+                </field>
+
+                <field type="date"
+                    class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                    data-ng-model="dcmController.incDoctoContrat.datVigencFim"
+                    label="Data de Vigência Final">
+                </field>
+
+                <totvs-field totvs-input
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        label="Descrição do arquivo"
+                        ng-model="dcmController.incDoctoContrat.desDescr"
+                        ng-required="true">
+                </totvs-field>
+                <div class="col-sm-1 hidden-xs">&nbsp;</div>
+                <totvs-field
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col"
+                        totvs-upload
+                        ng-model="dcmController.documentoPadrao"
+                        t-show-drag-drop="false"
+                        t-remove="Remover"
+                        t-multiple="false"
+                        t-with-credentials="false"
+                        t-select="Selecione o documento padrão"
+                        t-drop-files-here=""
+                        t-show-file-list="true"
+                        t-save-field="Importar"
+                        t-status-uploaded="Upload realizado com sucesso"
+                        t-status-uploading="Realizando upload do arquivo"
+                        t-on-success="dcmController.onUploadSuccess"
+                        t-on-select="dcmController.onUploadSelect"
+                        t-Auto-Upload="true"
+                        t-save-url="dcmController.uploadURL"
+                        value="teste"
+                        id="uploadDocPadrao"
+                        ng-required="true">                        
+                </totvs-field>
+        </totvs-row>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn" ng-click="dcmController.close()">Cancelar</button>
+    <button class="btn btn-primary" ng-click="dcmController.addDoctoContrat()">Salvar</button>    
+</totvs-modal-footer>

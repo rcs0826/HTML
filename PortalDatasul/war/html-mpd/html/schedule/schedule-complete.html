@@ -1,0 +1,22 @@
+<div class="modal-header">
+	<h3 class="modal-title">Alterar agendamento</h3>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<form name="scheduleAddForm" class="form-horizontal" role="form" novalidate>
+			<totvs-list-item-info title="Cliente">{{controller.item['cdn-emitente']}}</totvs-list-item-info>
+			<totvs-list-item-info title="Data">{{controller.item['dat-agenda'] | date : ('l-date-format' | i18n) : 'UTC'}}</totvs-list-item-info>
+			<totvs-list-item-info title="Hor&aacute;rio">{{controller.item.hora}}</totvs-list-item-info>
+			<field class="col-md-12" type="date" ng-model="controller.item['dat-visita']">
+				<label>Data Visita</label>
+			</field>
+			<field class="col-md-12" type="textarea" ng-model="controller.item['des-obs']">
+				<label>Observa&ccedil;&atilde;o</label>
+			</field>
+		</form>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" ng-click="controller.confirm()">Confirmar</button>    
+	<button class="btn btn-warning" ng-click="controller.close()">{{"btn-close"| i18n}}</button>
+</div>

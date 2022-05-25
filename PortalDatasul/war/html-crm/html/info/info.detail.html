@@ -1,0 +1,217 @@
+<totvs-page type="detail">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb>{{ 'nav-config-info' | i18n: []: 'dts/crm' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+			<totvs-page-header-title title="{{ 'nav-config-info' | i18n: []: 'dts/crm' }}"></totvs-page-header-title>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-detail>
+
+
+			<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-4"
+									title="{{ 'l-user-rpw-server' | i18n: []: 'dts/crm' }}">
+				{{ controller.basicInfo.rpwServer }}
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-4"
+									title="{{ 'l-temp-directory' | i18n: []: 'dts/crm' }}">
+				{{ controller.basicInfo.temp }}
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-4"
+									title="{{ 'l-app-server-log-level' | i18n: []: 'dts/crm' }}">
+				{{ controller.basicInfo.appServerLogLevel }}
+			</totvs-page-detail-info>
+
+			<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-12"
+									title="{{ 'l-app-server-log' | i18n: []: 'dts/crm' }}">
+				{{ controller.basicInfo.appServerLog }}
+			</totvs-page-detail-info>
+
+
+			<div class="col-xs-12">
+
+				<totvs-divider></totvs-divider>
+
+				<fieldset class="row">
+
+					<field type="select"
+						   ng-model="controller.selectedOption"
+						   ng-change="controller.getExtraInfo()"
+						   ng-required="true"
+						   canclean="undefined">
+
+						<label>{{ 'l-aux-information' | i18n: []: 'dts/crm' }}</label>
+
+						<include>
+							<ui-select-match placeholder="{{ 'l-aux-information' | i18n: []: 'dts/crm' }}">
+								{{ $select.selected.label }}
+							</ui-select-match>
+							<ui-select-choices repeat="option in controller.options track by $index">
+								<span ng-bind-html="option.label | highlight: $select.search"></span>
+							</ui-select-choices>
+						</include>
+					</field>
+
+					<field type="input"
+						   ng-model="controller.searchText"
+						   ng-if="controller.selectedOption.id === 2 || controller.selectedOption.id === 3"
+						   ng-required="true"
+						   ng-change="controller.getExtraInfo()"
+						   ng-model-options="{ debounce: 1500 }"
+						   placeholder="crmbo/boCrmPessoa.r"
+						   canclean="undefined">
+
+						<label ng-if="controller.selectedOption.id === 2">
+							{{ 'l-program' | i18n: []: 'dts/crm' }}
+						</label>
+
+						<label ng-if="controller.selectedOption.id === 3">
+							{{ 'l-file' | i18n: []: 'dts/crm' }}
+						</label>
+					</field>
+
+				</fieldset>
+
+			</div>
+
+			<div class="col-xs-12"
+				 ng-if="controller.selectedOption.id === 1">
+
+				<totvs-divider style="margin-top: 5px;"></totvs-divider>
+
+				<totvs-page-alert type="info"
+								  ng-if="controller.appServerPropath.length <= 0"
+								  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}">
+				</totvs-page-alert>
+
+				<div class="crm-tab"
+					 ng-if="controller.appServerPropath.length > 0">
+
+					<div class="row crm-tab-item header">
+						<strong>
+							<div class="col-xs-12">{{ 'l-path' | i18n: []: 'dts/crm' }}</div>
+						</strong>
+					</div>
+
+					<div class="row crm-tab-item"
+						 ng-animate="'animate-if'"
+						 ng-repeat="propath in controller.appServerPropath">
+
+						<div class="col-xs-12">{{ propath.path }}</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xs-12"
+				 ng-if="controller.selectedOption.id === 2">
+
+				<totvs-divider style="margin-top: 5px;"></totvs-divider>
+
+				<totvs-page-alert type="info"
+								  ng-if="!controller.programPath.length"
+								  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}">
+				</totvs-page-alert>
+
+				<div class="row"
+					 style="margin-top: 5px;"
+					 ng-if="controller.programPath.length">
+					<totvs-page-detail-info class="col-xs-12"
+											title="{{ 'l-path' | i18n: []: 'dts/crm' }}">
+						{{ controller.programPath }}
+					</totvs-page-detail-info>
+				</div>
+
+			</div>
+
+			<div class="col-xs-12"
+				 ng-if="controller.selectedOption.id === 3">
+
+				<totvs-divider style="margin-top: 5px;"></totvs-divider>
+
+				<totvs-page-alert type="info"
+								  ng-if="!controller.file"
+								  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}">
+				</totvs-page-alert>
+
+				<div class="row"
+					 style="margin-top: 5px;"
+					 ng-if="controller.file">
+
+					<totvs-page-detail-info class="col-sm-3"
+											title="{{ 'l-name' | i18n: []: 'dts/crm' }}">
+						{{ controller.file.file_name }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info class="col-sm-3"
+											title="{{ 'l-modified-date' | i18n: []: 'dts/crm' }}">
+						{{ controller.file.mod_date }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info class="col-sm-3"
+											title="{{ 'l-modified-time' | i18n: []: 'dts/crm' }}">
+						{{ controller.file.mod_time }}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info class="col-sm-3"
+											title="{{ 'l-size' | i18n: []: 'dts/crm' }}">
+						{{ controller.file.file_size }}
+					</totvs-page-detail-info>
+				</div>
+
+			</div>
+
+			<div class="col-xs-12"
+				 ng-if="controller.selectedOption.id === 4">
+
+				<totvs-divider style="margin-top: 5px;"></totvs-divider>
+
+				<totvs-page-alert type="info"
+								  ng-if="controller.databases.length <= 0"
+								  message="{{ 'msg-not-found' | i18n: []: 'dts/crm' }}">
+				</totvs-page-alert>
+
+				<div class="row" style="margin-top: 5px;">
+					<totvs-page-detail-info class="col-xs-12"
+											title="{{ 'l-dataservers' | i18n: []: 'dts/crm' }}">
+						{{ controller.dataservers }}
+					</totvs-page-detail-info>
+				</div>
+
+				<div class="crm-tab"
+					 ng-if="controller.databases.length > 0">
+
+					<div class="row crm-tab-item header hidden-xs">
+						<strong>
+							<div class="col-sm-3">{{ 'l-db-type' | i18n: []: 'dts/crm' }}</div>
+							<div class="col-sm-3">{{ 'l-physical' | i18n: []: 'dts/crm' }}</div>
+							<div class="col-sm-3">{{ 'l-logical' | i18n: []: 'dts/crm' }}</div>
+							<div class="col-sm-3">{{ 'l-format' | i18n: []: 'dts/crm' }}</div>
+						</strong>
+					</div>
+
+					<div class="row crm-tab-item"
+						 ng-animate="'animate-if'"
+						 ng-repeat="db in controller.databases">
+
+						<div class="col-sm-3">{{ db.tipo }}</div>
+						<div class="col-sm-3">{{ db.fisico }}</div>
+						<div class="col-sm-3">{{ db.logico }}</div>
+						<div class="col-sm-3">{{ db.formato }}</div>
+					</div>
+				</div>
+
+			</div>
+
+		</totvs-page-detail>
+	</totvs-page-content>
+
+</totvs-page>

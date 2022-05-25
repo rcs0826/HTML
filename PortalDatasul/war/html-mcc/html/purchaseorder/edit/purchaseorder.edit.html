@@ -1,0 +1,591 @@
+<style type="text/css">
+
+    .btn-default {
+        height: 35px;
+    }
+
+    .k-input {
+        height: 28px !important;
+    }
+
+    .col-xs-12 {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+    
+    #menu-view > ui-view > totvs-page > div > div.page-content.ng-scope > div > form > fieldset > form > div > div:nth-child(3) > totvs-field > div > label {
+        margin-bottom: 0px !important;
+    }
+
+    #controller_model\5b data-pedido\5d > input {
+        height: 35px !important;
+    }
+
+    .totvs-style-guide .panel-group {
+        margin-bottom: 5px;
+    }    
+
+    .radio {
+        padding-top: 0px !important;
+    }
+
+</style>
+<totvs-page totvs-custom-element="customPurchaseOrder_edit">
+    <totvs-page-navbar>
+        <!-- Se for uma edição -->
+        <totvs-page-breadcrumb ng-if="!controller.isPurchaseCreate">
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb ng-click="controller.onBreadcrumbEvent()">{{'l-orders' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb>{{'l-edit' | i18n: []: 'dts/mcc'}}</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <!-- Se for uma inclusão -->
+        <totvs-page-breadcrumb ng-if="controller.isPurchaseCreate">
+            <breadcrumb link="#/">{{'l-home' | i18n: []: 'dts/mcc'}}</breadcrumb>
+            <breadcrumb ng-click="controller.onBreadcrumbEvent()">{{'l-orders' | i18n: []: 'dts/mcc'}}</breadcrumb>
+
+            <breadcrumb>
+                <span class="hidden-sm hidden-lg hidden-md">{{'l-new' | i18n: []: 'dts/mcc'}}</span>
+                <span class="hidden-xs">{{'l-new-purchase-order' | i18n: []: 'dts/mcc'}}</span>
+            </breadcrumb>
+        </totvs-page-breadcrumb> 
+
+        <totvs-page-header>
+
+            <totvs-page-header-title title="{{'l-purchase-order' | i18n: []: 'dts/mcc'}} {{controller.purchaseOrderNumber }}" ng-if="!controller.isPurchaseCreate"></totvs-page-header-title>
+            <totvs-page-header-title title="{{'l-new-purchase-order' | i18n: []: 'dts/mcc'}}" ng-if="controller.isPurchaseCreate"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action class="hidden-xs">
+                    <action ng-click="controller.onCancel();">{{ 'l-cancel' | i18n: []: 'dts/mcc' }}</action>
+
+                    <action ng-click="controller.save(true)" ng-if="controller.isPurchaseCreate">{{ 'l-save-new' | i18n: []: 'dts/mcc' }}</action>
+
+                    <action ng-click="controller.save(false)" 
+                            class="btn-primary">{{ 'l-save' | i18n: []: 'dts/mcc' }}</action>
+                </totvs-page-header-operation-action>
+    
+                <div class="btn-group hidden-md hidden-lg hidden-sm col-xs-12">
+                    <a class="btn btn-default dropdown-toggle pull-right" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top: 5px">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                        <span class="caret"></span>
+                    </a>
+                    
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li><a href="#" ng-click="controller.onCancel()">{{ 'l-cancel' | i18n: []: 'dts/mcc' }}</a></li>
+                        <li><a href="#" ng-if="controller.isPurchaseCreate" ng-click="controller.save(true)">{{ 'l-save-new' | i18n: []: 'dts/mcc' }}</a></li>
+                        <li><a href="#" ng-click="controller.save(false)">{{ 'l-save' | i18n: []: 'dts/mcc' }}</a></li>
+                    </ul>
+                </div>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+        
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form>
+            <fieldset>
+                <form>
+                    <div class="col-xs-12 col-sm-12">
+<!-- Primeira linha -->
+                        <div class="row">
+
+                            <totvs-field totvs-number
+                                        ng-model="controller.model['num-pedido']"
+                                        label="{{ 'l-order' | i18n }}"
+                                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                        ng-required="true"
+                                        ng-disabled="controller.enableFields('num-pedido')">
+                            </totvs-field>
+
+                            <field type="date"
+                                   data-ng-model="controller.model['data-pedido']"
+                                   label="{{ 'l-date' | i18n }}"
+                                   class="col-lg-2 col-md-offset-1 col-md-2 col-sm-2 col-xs-12"
+                                   ng-disabled="controller.enableFields('data-pedido')"
+                                   ng-required="true">
+                            </field>
+
+                            <totvs-field totvs-checkbox
+                                         t-bsswitch
+                                         ng-model="controller.model['emergencial']"
+                                         label="{{ 'l-emergency' | i18n }}"
+                                         class="col-lg-2 col-md-offset-1 col-md-2 col-sm-2 col-xs-12"
+                                         canclean
+                                         ng-disabled="controller.enableFields('emergencial')">
+                            </totvs-field>
+                
+                            <totvs-field totvs-checkbox
+                                        ng-model="controller.model['impr-pedido']"
+                                        label="{{ 'l-print-order' | i18n }}"
+                                        canclean
+                                        class="col-lg-2 col-md-offset-1 col-md-2 col-sm-2 col-xs-12"
+                                        t-bsswitch>
+                            </totvs-field>
+                        </div>
+
+            <!-- Segunda linha -->
+                        <div class="row">
+                            <totvs-field totvs-select
+                                        ng-model="controller.documentNumberVendor"
+                                        label="{{ 'l-vendor' | i18n }}"
+                                        canclean
+                                        select-service="mpd.emitente.zoom"
+                                        zoom-service="mpd.emitente.zoom"
+                                        zoom-init="{filter:{'identific': '2|3'}}"
+                                        select-id="cod-emitente"
+                                        select-match='[{"field":"cod-emitente", "separator":" - "}, {"field":"nome-emit"}]'
+                                        select-description="nome-emit"
+                                        return-object="true"
+                                        ng-change="controller.getDocumentNumberVendor()"
+                                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                        ng-required="true"
+                                        ng-disabled="controller.enableFields('cod-emitente')">
+                            </totvs-field>
+                            <totvs-page-detail>
+                                <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                                        title="{{ 'l-cnpj-cpf' | i18n }}"
+                                                        value="{{ controller.documentVendor | mask: controller.documentNumberVendorFormat }}"
+                                                        ng-show="controller.documentNumberVendor != null">
+                                </totvs-page-detail-info>
+                            </totvs-page-detail>
+                        </div>
+
+            <!-- Terceira linha -->
+                        <div class="row">
+                            <totvs-field totvs-radio
+                                        label="{{ 'l-nature' | i18n }}"
+                                        t-options="controller.options"
+                                        ng-model="controller.model['natureza']"
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                        ng-required="true">
+                            </totvs-field>
+                        </div>
+
+            <!-- Quarta linha -->
+                        <div class="row">
+                            <totvs-field totvs-select
+                                        ng-model="controller.documentNumberIssuer"
+                                        label="{{ 'l-issuer-delivery' | i18n }}"
+                                        canclean
+                                        select-id="cod-emitente"
+                                        select-service="mpd.emitente.zoom"
+                                        select-match='[{"field":"cod-emitente", "separator":" - "}, {"field":"nome-emit"}]'
+                                        select-description="nome-emit"
+                                        zoom-service="mpd.emitente.zoom"
+                                        zoom-init="{filter:{'identific': '2|3'}}"
+                                        return-object="true"
+                                        ng-change="controller.getDocumentNumberIssuer()"
+                                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            </totvs-field>
+                            <totvs-page-detail>
+                                <totvs-page-detail-info class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                                        title="{{ 'l-cnpj' | i18n }}"
+                                                        value="{{ controller.documentIssuer | mask: controller.documentNumberIssuerFormat}}"
+                                                        ng-show="controller.documentNumberIssuer != null">
+                                </totvs-page-detail-info>
+                            </totvs-page-detail>
+                        </div>
+
+            <!-- Quinta linha -->
+                        <div class="row">
+                            <totvs-field totvs-select
+                                        ng-model="controller.model['end-entrega']"
+                                        label="{{ 'l-delivery-establishment' | i18n }}"
+                                        canclean
+                                        select-id="cod-estabel"
+                                        select-description="nome"
+                                        select-service="mpd.estabelecSE.zoom"
+                                        zoom-service="mpd.estabelecSE.zoom"
+                                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                        ng-required="true">
+                            </totvs-field>
+                        </div>
+
+            <!-- Sexta linha -->
+                        <div class="row">
+                            <totvs-field totvs-select
+                                        ng-model="controller.model['end-cobranca']"
+                                        label="{{ 'l-collect-establishment' | i18n }}"
+                                        canclean
+                                        select-id="cod-estabel"
+                                        select-description="nome"
+                                        select-service="mpd.estabelecSE.zoom"
+                                        zoom-service="mpd.estabelecSE.zoom"
+                                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                        ng-required="true">
+                            </totvs-field>
+                        </div>
+
+            <!-- Sétima linha -->
+                        <div class="row">
+                            <totvs-field totvs-select
+                                        ng-model="controller.model['cod-estab-gestor']"
+                                        label="{{ 'l-manager-site' | i18n }}"
+                                        canclean
+                                        select-id="cod-estabel"
+                                        select-description="nome"
+                                        select-service="mpd.estabelecSE.zoom"
+                                        zoom-service="mpd.estabelecSE.zoom"
+                                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            </totvs-field>
+                        </div>
+                        <div class="col-xs-12 text-right" style="margin:20px 0 5px">
+                            <a class="clickable" ng-click="controller.expandAll()">{{:: 'l-expand-contract-all' | i18n }}</a>
+                        </div>
+            <!-- Condição de Pagamento -->
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <accordion>
+                                <accordion-group>
+                                    <accordion-heading>
+                                        <div class="row">
+                                            <a ng-click="controller.paymentTermsPanel=!controller.paymentTermsPanel">
+                                                <div class="col-xs-10">{{:: 'l-payment-term' | i18n}} / {{:: 'l-transport' | i18n}}</div>
+                                                <div class="col-xs-2 text-right">
+                                                    <i class="pull-right glyphicon"
+                                                    ng-class="{'glyphicon-chevron-right' : controller.paymentTermsPanel,'glyphicon-chevron-down': !controller.paymentTermsPanel}">
+                                                    </i>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </accordion-heading>
+
+                                    <div class="row">
+                                        <totvs-field totvs-select
+                                                    ng-model="controller.model['cod-cond-pag']"
+                                                    label="{{ 'l-payment-term' | i18n }}"
+                                                    select-id="cod-cond-pag"
+                                                    select-description="descricao"
+                                                    select-service="mcc.cond-pagto-2.zoom"
+                                                    zoom-service="mcc.cond-pagto-2.zoom"
+                                                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                                    ng-required="true"
+                                                    ng-disabled="controller.conditionPaymentField"
+                                                    ng-change="controller.onActiveComments()">
+                                        </totvs-field>
+                                        <totvs-field totvs-checkbox
+                                                    ng-model="controller.specificCondition"
+                                                    label="{{ 'l-specific' | i18n }}"
+                                                    canclean
+                                                    class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                    t-bsswitch
+                                                    ng-change="controller.enableSpecificCondition()">
+                                        </totvs-field>
+                                    </div>
+
+            <!-- Condição Específica-->
+                                    <div class="row" ng-if="controller.specificCondition">
+                                        <h3 class="col-md-12">
+                                            <span>{{ 'l-condition-specific' | i18n }}</span>
+                                        </h3>
+                                    </div>
+                                    <hr style="margin-top: 0px !important; margin-bottom: 10px !important;"
+                                        ng-if="controller.specificCondition"/>
+                                    <div class="row" ng-if="controller.specificCondition">
+                                        <a ng-click="controller.addPaymentCondition()"
+                                        class="btn btn-default btn-primary"
+                                        style="margin-left: 15px;">
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                        {{ 'l-add' | i18n }}
+                                        </a>
+                                    </div>
+
+                                    <div class="row" 
+                                        style="margin-left: 0px; margin-top: 10px;" 
+                                        ng-if="controller.specificCondition">
+                                        <totvs-list-item
+                                        id="id"
+                                        class="tag-7 col-md-12"
+                                        ng-repeat="item in controller.listOfSpecificCondition">
+
+                                            <totvs-list-item-content>
+
+                                                <div class="row">
+                                                    
+                                                    <totvs-field totvs-datepicker
+                                                                ng-model="item['data-cond']"
+                                                                label="{{ 'l-date' | i18n }}"
+                                                                class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                                                ng-required="true"
+                                                                ng-change="controller.validateDatePayment($index)">
+                                                    </totvs-field>
+
+                                                    <totvs-field totvs-decimal
+                                                                ng-model="item.percent"
+                                                                min="0"
+                                                                max="100"
+                                                                m-dec="3"
+                                                                class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                                                label="{{ 'l-percentage' | i18n }}"
+                                                                ng-blur="controller.onBlurPaymentCondition()"
+                                                                ng-required="true">
+                                                    </totvs-field>
+
+                                                    <totvs-field totvs-input
+                                                                label="{{ 'l-commentary' | i18n }}"
+                                                                class="col-lg-7 col-md-7 col-sm-7 col-xs-12"
+                                                                ng-model="item.comentario">
+                                                    </totvs-field>
+
+                                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                                                        <a ng-click="controller.removePaymentCondition($index)"
+                                                        class="btn btn-default"
+                                                        style="margin-top: 30px;">
+                                                            <i class="glyphicon glyphicon-trash"></i>
+                                                        </a>
+                                                    </div>
+
+                                                </div>
+
+                                            </totvs-list-item-content>
+
+                                        </totvs-list-item>
+                                    </div>
+                                    <div class="row" ng-if="controller.specificCondition">
+                                        <div class="col-md-12 text-right">
+                                            <h4>{{ 'l-total' | i18n }}: {{controller.totalPaymentCondition | number: 3}}%</h4>
+                                        </div>
+                                    </div>
+            <!-- Condição Específica-->
+
+                                    <div class="row">
+                                        <totvs-field totvs-select
+                                                    ng-model="controller.model['cod-transp']"
+                                                    label="{{ 'l-carrier' | i18n }}"
+                                                    select-id="cod-transp"
+                                                    select-description="nome"
+                                                    select-service="mpd.transporte.zoom"
+                                                    zoom-service="mpd.transporte.zoom"
+                                                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                                    ng-required="true"
+                                                    ng-disabled="controller.enableFields('cod-transp')"
+                                                    ng-change="controller.leaveFields('cod-transp', controller.model)">
+                                        </totvs-field>
+                                    </div>
+
+                                    <div class="row">
+                                        <totvs-field totvs-checkbox
+                                                    ng-model="controller.isFreightPaid"
+                                                    label="{{ 'l-freight-paid' | i18n }}"
+                                                    canclean
+                                                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                                                    t-bsswitch>
+                                        </totvs-field>
+                                        <totvs-field totvs-combo
+                                                     t-options="controller.routeTransport"
+                                                     ng-model="controller.model['via-transp']"
+                                                     label="{{ 'l-transport-via' | i18n }}"
+                                                     class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                        </totvs-field>
+                                    </div>
+                                </accordion-group>
+                            </accordion>
+            <!-- Complementos -->
+                            <accordion>
+                                <accordion-group>
+                                    <accordion-heading>
+                                        <div class="row">
+                                            <a ng-click="controller.supplementsPanel=!controller.supplementsPanel">
+                                                <div class="col-xs-10">{{:: 'l-supplements' | i18n}}</div>
+                                                <div class="col-xs-2 text-right">
+                                                    <i class="pull-right glyphicon"
+                                                        ng-class="{'glyphicon-chevron-right' : controller.supplementsPanel,'glyphicon-chevron-down': !controller.supplementsPanel}">
+                                                    </i>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </accordion-heading>
+
+                                    <div class="row">
+                                        <totvs-field totvs-select
+                                                    ng-model="controller.model['cod-mensagem']"
+                                                    label="{{ 'l-message' | i18n }}"
+                                                    select-id="cod-mensagem"
+                                                    select-description="descricao"
+                                                    select-service="mpd.mensagem.zoom"
+                                                    zoom-service="mpd.mensagem.zoom"
+                                                    class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                                                    ng-required="true">
+                                        </totvs-field>
+                                    </div>
+
+                                    <div class="row">
+                                        <totvs-field totvs-select
+                                                    ng-model="controller.model['responsavel']"
+                                                    label="{{ 'l-owner' | i18n }}"
+                                                    select-id="cod-comprado"
+                                                    select-description="nome"
+                                                    select-service="mcc.comprador.zoom"
+                                                    zoom-service="mcc.comprador.zoom"
+                                                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                                                    ng-required="true"
+                                                    ng-disabled="controller.enableFields('responsavel')">
+                                        </totvs-field>
+                                    </div>
+
+                                    <div class="row" ng-if="!controller.isPurchaseCreate">
+                                        <totvs-page-detail class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <totvs-page-detail-info title="{{ 'l-creation-user' | i18n }}"
+                                                                    value="{{ controller.model['cod-usuar-criac'] }}">
+                                            </totvs-page-detail-info>
+                                        </totvs-page-detail>
+
+                                        <totvs-page-detail class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <totvs-page-detail-info title="{{ 'l-date-time-create' | i18n }}"
+                                                                    value="{{ controller.model['dtm-criac'] | date: 'dd/MM/yyyy HH:mm:ss'}}">
+                                            </totvs-page-detail-info>
+                                        </totvs-page-detail>
+                                    </div>
+
+                                    <div class="row" ng-if="!controller.isPurchaseCreate">
+                                        <totvs-page-detail class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <totvs-page-detail-info title="{{ 'l-last-modified-by' | i18n }}"
+                                                                    value="{{ controller.model['cod-usuar-alter'] }}">
+                                            </totvs-page-detail-info>
+                                        </totvs-page-detail>
+
+                                        <totvs-page-detail class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                            <totvs-page-detail-info title="{{ 'l-date-time-lastmodified' | i18n }}"
+                                                                    value="{{ controller.model['dtm-alter'] | date: 'dd/MM/yyyy HH:mm:ss'}}">
+                                            </totvs-page-detail-info>
+                                        </totvs-page-detail>
+                                    </div>
+
+                                    <div class="row">
+                                        <field
+                                            type="textarea"
+                                            ng-model="controller.model['comentarios']"
+                                            class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                                            label="{{ 'l-comments' | i18n }}">
+                                        </field>
+                                    </div>
+                                </accordion-group>
+                            </accordion>
+<!-- Ordens de Compras -->
+                            <accordion ng-if="!controller.isPurchaseCreate">
+                                <accordion-group is-open="controller.isOpenPurchaseOrder">
+                                    <accordion-heading>
+                                        <div class="row">
+                                            <a ng-click="controller.purchaseOrderPanel=!controller.purchaseOrderPanel">
+                                                <div class="col-xs-10">{{:: 'l-purchase-orderlines' | i18n}}</div>
+                                                <div class="col-xs-2 text-right">
+                                                    <i class="pull-right glyphicon"
+                                                        ng-class="{'glyphicon-chevron-right' : controller.purchaseOrderPanel,'glyphicon-chevron-down': !controller.purchaseOrderPanel}">
+                                                    </i>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </accordion-heading>
+
+                                    <div class="row">
+                                        <a class="btn btn-primary"
+                                            style="margin-left: 15px;"
+                                            ng-click="!controller.model['emergencial'] || controller.addNewPurchaseOrder()"
+                                            ng-if="!controller.isPurchaseCreate && controller.model['nr-contrato'] == 0"
+                                            ng-disabled="!controller.model['emergencial']">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                            {{:: 'l-add' | i18n }}
+                                         </a>
+                                        
+                                        <a class="btn btn-default"
+                                           style="margin-left: 5px;"
+                                           ng-click="controller.model['situacao'] == 3 || controller.linkPurchaseOrder()"
+                                           ng-if="!controller.isPurchaseCreate && controller.model['nr-contrato'] == 0"
+                                           ng-disabled="controller.model['situacao'] == 3">
+                                           <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
+                                           {{:: 'l-link' | i18n }}
+                                        </a>
+
+                                        <a class="btn btn-default"
+                                           style="margin-left: 5px;"
+                                           ng-click="(!controller.isPurchaseSelected() || controller.model['nr-contrato'] > 0 || controller.model['situacao'] == 4) || controller.onUnlinkOrders()"
+                                           ng-disabled="!controller.isPurchaseSelected() || controller.model['nr-contrato'] > 0 || controller.model['situacao'] == 4">
+                                           <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                           {{:: 'l-unlink' | i18n }}
+                                        </a>
+                                    </div>
+                                    <div class="row">
+                                        <totvs-page-quick-select title="{{ 'l-selected-all' | i18n }}"
+                                                                 list="controller.listOfPurchaseOrderline"
+                                                                 class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                                                                 style="margin: 15px;">
+                                        </totvs-page-quick-select>
+                                    </div>
+                                    <div class="row" style="margin-left: 0px; margin-bottom: 15px;">
+
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <totvs-page-alert ng-if="controller.listOfPurchaseOrderline <= 0"
+                                                              type="info"
+                                                              message="{{ 'l-orderline-not-found' | i18n }}">
+                                            </totvs-page-alert>
+                                        </div>
+
+                                        <totvs-list-item id="purchaseOrderListId"
+                                                         ng-repeat="item in controller.listOfPurchaseOrderline"
+                                                         selected="item">
+
+                                            <totvs-list-item-header>
+                                                <totvs-list-item-title
+                                                    title="{{:: item['numero-ordem'] | number}}"
+                                                    link="#"
+                                                    class="legend tag-{{ item['situacao'] }} col-xs-3 col-sm-6">
+                                                </totvs-list-item-title>
+                                                <totvs-list-item-action class="col-xs-3 col-sm-6 col-md-6 col-lg-6">
+                                                    <action icon="glyphicon-trash"
+                                                            ng-click="(controller.model['nr-contrato'] > 0 || item['situacao'] == 4) || controller.onUnlinkOrder(item)"
+                                                            ng-disabled="controller.model['nr-contrato'] > 0 || item['situacao'] == 4"
+                                                            style="padding-top: 8px;">{{ 'l-unlink' | i18n }}</action>
+                                                </totvs-list-item-action>
+                                            </totvs-list-item-header>
+                                            <totvs-list-item-content>
+                                                <div class="row" style="margin-left: 1px;">
+                                                    <totvs-list-item-info title="{{:: 'l-item' | i18n }}" 
+                                                                          value="{{ item['it-codigo'] }} - {{ item['it-codigo-desc'] }}"
+                                                                          class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                    </totvs-list-item-info>
+
+                                                    <totvs-list-item-info title="{{:: 'l-quantity' | i18n }}" 
+                                                                          value="{{ item['qt-solic'] | number: 4 }}"
+                                                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                    </totvs-list-item-info>
+
+                                                    <totvs-list-item-info title="{{:: 'l-um' | i18n }}" 
+                                                                          value="{{ item['un'] }}"
+                                                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                    </totvs-list-item-info>
+                                                </div>
+
+                                                <div class="row" style="margin-left: 1px;">
+
+                                                    <totvs-list-item-info title="{{:: 'l-delivery' | i18n }}" 
+                                                                          value="{{ item['data-entrega'] | date: 'dd/MM/yyyy'}}"
+                                                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                    </totvs-list-item-info>
+
+                                                    <totvs-list-item-info title="{{:: 'l-status' | i18n }}" 
+                                                                          value="{{ item['situacao-desc'] }}"
+                                                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                    </totvs-list-item-info>
+
+                                                    <totvs-list-item-info title="{{:: 'l-request' | i18n }}" 
+                                                                          value="{{ item['nr-requisicao'] }}"
+                                                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                    </totvs-list-item-info>
+
+                                                    <totvs-list-item-info title="{{:: 'l-approved-gen' | i18n }}" 
+                                                                          value="{{ item['approved'] ? 'l-yes': 'l-no' | i18n }}"
+                                                                          class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                    </totvs-list-item-info>
+                                                </div>
+
+                                            </totvs-list-item-content>
+                                        </totvs-list-item>
+                                    </div>
+                                </accordion-group>
+                            </accordion>
+                        </div>
+                    </div>
+                </form>
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

@@ -1,0 +1,81 @@
+<div ng-controller="crm.dashboard.account-birthday.controller as controller">
+	<totvs-widget>
+		<crm-totvs-widget-header refresh="controller.loadData()"
+							 settings="controller.showConfig()"
+							 title="{{ 'l-summary-account-birthday' | i18n : [] : 'dts/crm/' }}">
+			<i class="glyphicon glyphicon-info-sign hidden-xs" tooltip-placement="bottom" tooltip-html="controller.tooltipLegend"></i>
+		</crm-totvs-widget-header>
+
+		<totvs-widget-body style="max-height:330px;">
+
+			<totvs-page-content class="crm-tab" style="max-height: 330px; border: none; padding-left: -10px !important">
+
+				<div class="row"
+					 ng-if="!controller.selectedAccount">
+					<div ng-include="'/dts/crm/html/dashboard/quick-search-text.html'"
+						 ng-submit="controller.quickSearch()">
+					</div>
+				</div>
+				<totvs-divider ng-if="!controller.selectedAccount"></totvs-divider>
+				<totvs-page-alert
+					ng-if="controller.listOfAccountsCount <= 0"
+					type="info"
+					message="{{ 'msg-not-found-search' | i18n: []: 'dts/crm' }}">
+				</totvs-page-alert>
+
+				<div style="height: 240px; overflow-y: auto; margin-right: 0px;"
+					 class="row"
+					 id="selected-account-infinity-scroll">
+
+					<div class="col-xs-12"
+						 ng-if="controller.listOfAccountsCount > 0">
+
+						<div class="row crm-tab-item"
+							 style="padding-top: 5px; padding-bottom: 5px; border-bottom: 1px solid #e4e4e4 !important; border-right: 1px solid #e4e4e4 !important; border-top: 1px solid #e4e4e4 !important;"
+							 ng-class="act.nom_cor"
+							 ng-repeat="act in controller.listOfAccounts track by $index">
+
+							<div class="col-xs-7 overflow-ellipsis"
+								 style="padding: 0px !important;">
+
+								<a href="#/dts/crm/account/detail/{{act.num_id}}">
+									{{ act.nom_razao_social }}
+									<span>
+										{{ (act.cod_pessoa_erp ? '(' + act.cod_pessoa_erp + ')' : '') }}
+									</span>
+								</a>
+
+							</div>
+							<div class="col-xs-3 overflow-ellipsis">
+								{{ act.dat_nascimento | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+							</div>
+							<div class="col-xs-1 overflow-ellipsis">
+								<span ng-if="controller.isBirthday(act.dat_nascimento)" class="glyphicon glyphicon glyphicon-gift pull-right" aria-hidden="true"></span>
+							</div>
+							<div class="col-xs-1 overflow-ellipsis">
+								<a class="clickable"
+								   ng-disabled="true"
+								   href="mailto:{{ (act.nom_email_1 ? act.nom_email_1 : act.nom_email_2) }}" target="_blank">
+									<span class="glyphicon glyphicon-envelope pull-right" aria-hidden="true"></span>
+								</a>
+							</div>
+							<totvs-list-item-content>
+								<totvs-list-item-info
+									title="{{ 'l-type-account' | i18n: []: 'dts/crm' }}">
+									{{ act.nom_tip_cta }}
+								</totvs-list-item-info>
+							</totvs-list-item-content>
+						</div>
+					</div>
+				</div>
+			</totvs-page-content>
+
+		</totvs-widget-body>
+
+		<totvs-widget-footer>
+			<crm-totvs-widget-footer-actions>
+			</crm-totvs-widget-footer-actions>
+		</totvs-widget-footer>
+
+	</totvs-widget>
+</div>

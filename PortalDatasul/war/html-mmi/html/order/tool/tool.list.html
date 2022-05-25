@@ -1,0 +1,53 @@
+<br/>
+<div ng-if="!toolCtrl.hideAdd && toolCtrl.showButton">
+	<div>
+		<button class="btn btn-primary"
+				ng-disabled="toolCtrl.isDisabled"
+				ng-click="toolCtrl.addTool()">
+			<span class="glyphicon glyphicon-plus"></span>
+			{{ 'l-add' | i18n }}
+		</button>
+	</div>
+	
+	<totvs-divider style="margin-top: 10px; margin-bottom: 10px;"></totvs-divider>
+</div>		
+<totvs-page-content>
+	<totvs-grid 
+	        grid="toolCtrl.gridtool" 
+			grid-data="listOfTools" 
+			grid-selected-item="toolCtrl.selectedItem"
+	        grid-height="300" 
+	        navigatable="true" 
+	        selectable="row"
+	        scrollable="true"
+        	resizable="true"
+        	sortable="true"        	
+        	auto-resize-column="false">
+        <totvs-grid-column width="32" field="edit" style="text-align: center">
+	        <template>
+				<a ng-click="toolCtrl.toolEdit(dataItem)" 
+				   ng-if="!toolCtrl.hideAdd && toolCtrl.showButton" 
+				   class="glyphicon glyphicon-pencil btn-default" 
+				   style="cursor: pointer" 
+				   data-toggle="tooltip" 
+				   title="{{ 'l-edit' | i18n }}"></a>
+				<a class="glyphicon glyphicon-pencil btn-default" style="cursor: not-allowed"
+				   ng-if="toolCtrl.hideAdd && toolCtrl.showButton" disabled></a>   
+	        </template>
+       	</totvs-grid-column>
+       	<totvs-grid-column width="32" field="remover" style="text-align: center">
+	        <template>
+				<a class="glyphicon glyphicon-trash btn-default" style="cursor: pointer"
+				   ng-if="!toolCtrl.hideAdd && toolCtrl.showButton" 
+				   data-toggle="tooltip" title="{{ 'l-remove' | i18n }}"
+				   ng-click="toolCtrl.remove(dataItem)"></a>
+				<a class="glyphicon glyphicon-trash btn-default" style="cursor: not-allowed"
+				   ng-if="toolCtrl.hideAdd && toolCtrl.showButton" disabled></a>   
+	        </template>
+       	</totvs-grid-column>         
+		<totvs-grid-column field="cd-tarefa"  width="60" style="text-align:  right;">{{ 'l-task' | i18n }}</totvs-grid-column>       
+		<totvs-grid-column field="cd-tp-ferr" width="130" style="text-align:  left">{{ 'l-tool-type' | i18n }}</totvs-grid-column>
+		<totvs-grid-column field="desc-ferr"  width="680" style="text-align: left">{{ 'l-description' | i18n }}</totvs-grid-column>
+		<totvs-grid-column field="tempo"      width="130" style="text-align: right;">{{ 'l-time-2' | i18n }}</totvs-grid-column>
+	</totvs-grid>
+</totvs-page-content>

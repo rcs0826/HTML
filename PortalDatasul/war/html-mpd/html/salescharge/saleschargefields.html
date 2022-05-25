@@ -1,0 +1,197 @@
+<totvs-page type="list" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#{{defaultPageHome}}">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{'l-commissions' | i18n}}</breadcrumb>
+		</totvs-page-breadcrumb>
+		
+		<totvs-page-header>
+     
+            <totvs-page-header-title title="{{currentuser['user-entity']}} ({{controller.totalRecords}} {{'l-customer-bills' | i18n}})"></totvs-page-header-title>
+									 
+			<totvs-page-header-operation>
+			
+				<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12"></div>
+                <totvs-page-header-operation-filter placeholder="{{ 'l-fast-search-bill' | i18n }}"
+                                                    ng-submit="controller.search();"
+                                                    ng-model="controller.quickSearchText"
+													advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+			<totvs-page-disclaimers disclaimer-list="controller.filterBy"
+								    ng-click="controller.removeSelectedFilter"></totvs-page-disclaimers>
+
+			<totvs-page-tags>
+				<tag class="tag-1 btn btn-link" ng-click="controller.setQuickFilter('PREVISTOS');">{{'l-forecast' | i18n}}</tag>
+				<tag class="tag-2 btn btn-link" ng-click="controller.setQuickFilter('REALIZADOS');">{{'l-accomp' | i18n}}</tag>
+			</totvs-page-tags>		
+
+		</totvs-page-header>	
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+			<totvs-list-item ng-class="{'tag-1':salescharge['ind-tip-movto'] != controller.realizados, 'tag-2':salescharge['ind-tip-movto'] == controller.realizados}"
+							 ng-repeat="salescharge in controller.listResult"
+							 totvs-custom-element="customListItem">
+				<%
+				_.forEach(data, function(comissaoRepresDetalheVisibleField) {
+					if (comissaoRepresDetalheVisibleField.fieldName == "cod_tit_acr") {
+				%>
+					<totvs-list-item-header>
+						 <totvs-list-item-title>{{'l-commissions-bill' | i18n}}: {{salescharge['cod-tit-acr']}}</totvs-list-item-title>							
+					</totvs-list-item-header>						
+				<%
+					}
+				});
+				%>
+				    
+				<totvs-list-item-content>
+
+					<totvs-list-item-info ng-if="currentuser['user-hiearchy']" class="col-xs-12 col-sm-6 col-md-3" title="{{'l-repres' | i18n}}">{{salescharge['cod-nome-repres']}}</totvs-list-item-info>
+				<%
+				_.forEach(data, function(comissaoRepresDetalheVisibleField) {
+					if (comissaoRepresDetalheVisibleField.fieldName == "val_base_calc_comis") {
+				   			%>
+							<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3" title="{{'l-base-value' | i18n}}">{{salescharge['val-base-calc-indic-econ'] | currency:''}}</totvs-list-item-info>
+							<%
+					}
+				%>
+							
+				<%
+					if (comissaoRepresDetalheVisibleField.fieldName == "cod_estab") {
+						%>
+						<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3" title="{{'l-estabel' | i18n}}">{{salescharge['cod-estab-acr']}}</totvs-list-item-info>
+						<%
+					}
+				%>	
+					
+				<%		
+					if (comissaoRepresDetalheVisibleField.fieldName == "dat_transacao") {			
+						%>
+						<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3" title="{{'l-transaction-date' | i18n}}">{{salescharge['dat-transacao'] | date : ('l-date-format' | i18n) : 'UTC'}}</totvs-list-item-info>
+						<%
+					}
+			   	%>
+							
+				<%
+					if (comissaoRepresDetalheVisibleField.fieldName == "cdn_cliente") {
+						%>
+						<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3" title="{{'l-customer' | i18n}}">{{salescharge['cdn-cliente']}}</totvs-list-item-info>
+						<%
+					}
+				%>				
+
+				<%
+					if (comissaoRepresDetalheVisibleField.fieldName == "cod_indic_econ") {
+						%>
+						<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3" title="{{'l-mo-codigo' | i18n}}">{{salescharge['cod-indic-econ']}}</totvs-list-item-info>
+						<%
+					}
+				%>
+							
+				<%
+					if (comissaoRepresDetalheVisibleField.fieldName == "ind_natur_lancto_ctbl") {
+						%>
+						<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3" title="{{'l-account-nature' | i18n}}">{{salescharge['ind-natur-lancto-ctbl']}}</totvs-list-item-info>
+						<%
+					}				
+				%>
+							
+				<%
+					if (comissaoRepresDetalheVisibleField.fieldName == "nom_abrev") {
+						%>
+						<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3" title="{{'l-nome-abrev' | i18n}}">{{salescharge['nom-abrev-clien']}}</totvs-list-item-info>
+						<%
+					}
+				%>			
+							
+				<%
+					if (comissaoRepresDetalheVisibleField.fieldName == "num_proces_integr_comis") {
+						%>
+						<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3" title="{{'l-nro-proc-integr' | i18n}}">{{salescharge['num-proces-integr-comis']}}</totvs-list-item-info>
+						<%
+					}
+				%>							
+
+				<%
+					if (comissaoRepresDetalheVisibleField.fieldName == "ind_orig_movto_comis") {
+						%>
+						<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3" title="{{'l-movement-origin' | i18n}}">{{salescharge['ind-orig-movto-comis']}} </totvs-list-item-info>
+						<%
+					}
+				%>	
+							
+				<%
+					if (comissaoRepresDetalheVisibleField.fieldName == "cod_parcela") {
+						%>
+						<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3" title="{{'l-parcela-ACR' | i18n}}">{{salescharge['cod-parcela-acr']}}</totvs-list-item-info>
+						<%
+					}
+				%>
+							
+				<%
+					if (comissaoRepresDetalheVisibleField.fieldName == "cdn_motiv_movto_comis") {
+						%>
+						<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3" title="{{'l-cod-motivo' | i18n}}">{{salescharge['cdn-motiv-movto-comis']}}</totvs-list-item-info>
+						<%
+					}
+				%>
+							
+				<%
+					if (comissaoRepresDetalheVisibleField.fieldName == "cod_ser_docto") {
+						%>
+						<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3" title="{{'l-serie-ACR' | i18n}}">{{salescharge['cod-ser-docto-acr']}}</totvs-list-item-info>
+						<%
+					}
+				%>				
+
+				<%
+					if (comissaoRepresDetalheVisibleField.fieldName == "ind_sit_movto_comis") {
+						%>
+						<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3" title="{{'l-status' | i18n}}">{{salescharge['ind-sit-movto-comis']}}</totvs-list-item-info>
+						<%
+					}
+				%>	
+
+				<%
+					if (comissaoRepresDetalheVisibleField.fieldName == "ind_tip_movto") {
+						%>
+						<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3" title="{{'l-movement-type' | i18n}}">{{salescharge['ind-tip-movto']}}</totvs-list-item-info>
+						<%
+					}
+				%>										
+							
+				<%
+					if (comissaoRepresDetalheVisibleField.fieldName == "ind_trans_comis") {
+						%>
+						<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3" title="{{'l-commissions-transaction' | i18n}}">{{salescharge['ind-trans-comis']}}</totvs-list-item-info>
+						<%
+					}
+				%>						
+
+				<%
+					if (comissaoRepresDetalheVisibleField.fieldName == "val_movto_comis") {
+						%>
+						<totvs-list-item-info class="col-xs-12 col-sm-6 col-md-3" title="{{'l-movement-value' | i18n}}">{{salescharge['val-movto-comis'] | currency:''}}</totvs-list-item-info>
+						<%
+					}
+				});
+				%>					
+				
+			</totvs-list-item-content>
+		</totvs-list-item>	
+	</totvs-page-content>
+	<totvs-list-pagination ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+							   ng-click="controller.loadMore()">
+	</totvs-list-pagination>		
+</totvs-page>
+
+
+
+
+
+
+
+
+
+

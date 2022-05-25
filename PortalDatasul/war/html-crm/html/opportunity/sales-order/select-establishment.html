@@ -1,0 +1,61 @@
+<totvs-modal-header>{{ controller.modalTitle | i18n: []: 'dts/crm' }}</totvs-modal-header>
+
+<totvs-modal-body>
+	<p ng-if="controller.isCifFobMode">{{ controller.modalCifFobMessage }}</p>
+	<p>{{ controller.modalMessage }}</p>
+
+	<fieldset class="row">
+		<field type="select"
+			   ng-model="controller.opportunity.ttEstabelecimento"
+			   canclean="undefined"
+			   ng-disabled="controller.readOnlyMode">
+			<label>{{ 'l-establishment' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_estab.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-establishment' | i18n: []: 'dts/crm' }}">
+					{{$select.selected.nom_estab}} {{$select.selected.log_integrad_erp ? ' (' + $select.selected.cod_estab_erp + ')' : '' }}
+				</ui-select-match>
+				<ui-select-choices repeat="estab in controller.establishments track by $index"
+								   refresh="controller.getEstablishments($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="estab.nom_estab + (estab.log_integrad_erp ? ' (' + estab.cod_estab_erp + ')' : '') | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+		
+		<field type="date"
+			class="col-md-6"
+			required
+			ng-required="true"
+			placeholder="{{ 'l-delivery-date' | i18n: []: 'dts/crm' }}"	
+			ng-model="controller.opportunity.delivery_date">
+			<label>{{ 'l-delivery-date' | i18n: []: 'dts/crm' }}</label>
+		</field>
+	
+		<field 	type="input"
+			class="col-md-6"
+			ng-model="controller.opportunity.order_number"
+			canclean			
+			ng-disabled="true">
+			<label>{{ controller.orderTitle | i18n : [] : 'dts/crm' }}</label>
+		</field>
+	
+		<field 	type="input"
+			class="col-md-6"
+			ng-model="controller.opportunity.order_cli_number"
+			canclean
+			placeholder="{{ controller.orderCliTitle | i18n: []: 'dts/crm' }}"
+			ng-change="controller.validatorNrPedCli()"
+			required
+			ng-required="true">
+			<label>{{ controller.orderCliTitle | i18n : []: 'dts/crm' }}</label>
+		</field>
+	
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-confirm' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

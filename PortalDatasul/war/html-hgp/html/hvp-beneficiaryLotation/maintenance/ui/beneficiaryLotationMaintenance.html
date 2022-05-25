@@ -1,0 +1,92 @@
+<totvs-page type="base"> 
+
+    <totvs-page-navbar >
+
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hvp-beneficiaryLotation/">Lotação do Beneficiário</breadcrumb>
+                <breadcrumb>Manutenção Lotação do Beneficiário</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Lotação do Beneficiário">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                     <action ng-click="controller.save();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar</action> 
+                    <action ng-click="controller.saveNew();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Novo</action>
+                     <action class="btn-primary"
+                            ng-click="controller.saveClose();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Fechar</action> 
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content>
+            
+        <totvs-page-form>
+
+                <legend>Lotação</legend>
+
+                <field  type="input"
+                        label="Código"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        ng-model="controller.beneficiaryLotation.cdnLotac"                         
+                        ng-disabled="true"
+                        ng-if="controller.action != 'INSERT'">
+                </field>
+                
+                <field type="input"
+                       label="fake" style="visibility: hidden"
+                       class="col-lg-10 col-md-10 col-sm-10 col-xs-12 col-sm-height"
+                       ng-if="controller.action != 'INSERT'">
+                </field>
+
+                <field type="input"
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-model="controller.beneficiaryLotation.desLotac"
+                    label="Descrição"
+                    required
+                    ng-disabled="controller.action == 'DETAIL'">
+                </field>
+
+                <field type="input"
+                       label="fake" style="visibility: hidden"
+                       class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-sm-height">
+                </field>
+
+                <field type="input"
+                    class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                    ng-model="controller.beneficiaryLotation.desReduzLotac"
+                    label="Descrição Reduzida"
+					maxlength="18"
+                    required
+                    ng-disabled="controller.action == 'DETAIL'">
+                </field>  
+
+                <field type="input"
+                       label="fake" style="visibility: hidden"
+                       class="col-lg-6 col-md-6 col-sm-6 col-xs-12 col-sm-height">
+                </field>
+
+                <field  type="checkbox"
+                        label="Demitidos e Aposentados"                        
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"                        
+                        ng-model="controller.beneficiaryLotation.logDemitApos"
+                        ng-disabled="controller.action == 'DETAIL'"
+                        >
+                </field>                
+        </totvs-page-form>   
+    </totvs-page-content>   
+</totvs-page>
+
+

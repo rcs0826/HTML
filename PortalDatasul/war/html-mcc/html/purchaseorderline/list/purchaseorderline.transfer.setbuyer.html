@@ -1,0 +1,42 @@
+<style type="text/css" scoped>
+.span-label{
+    font-family: 'Arial';
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-weight: 200;
+    font-size: 12px;
+    color: gray;
+}
+</style>
+<totvs-modal-header ng-if="controller.action == 'transfer'">
+    {{ 'l-purchase-orderline-transfer' | i18n: []: 'dts/mcc' }}
+</totvs-modal-header>
+
+<totvs-modal-header ng-if="controller.action == 'setBuyer'">
+    {{ 'l-set-buyer' | i18n: []: 'dts/mcc' }}
+</totvs-modal-header>
+
+
+<totvs-modal-body>
+  <form class="form-horizontal" role="form"> 
+  	<div class="row">
+		<totvs-field totvs-select
+            class="col-md-6"
+            ng-model="controller.model.buyerDestination"
+            label="{{ 'l-buyer' | i18n }}"
+            select-id="cod-comprado"
+            select-description="nome"
+            select-match='[{"field":"cod-comprado", "separator":" - "}, {"field":"nome"}]'
+            select-service="mcc.comprador.zoom"
+            zoom-service="mcc.comprador.zoom"
+            canclean>
+        </totvs-field>      
+    </div>
+  </form> 
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ 'l-cancel' | i18n: []: 'dts/mcc' }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()" ng-if="controller.action == 'transfer'">{{ 'l-to-transfer' | i18n: []: 'dts/mcc' }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()" ng-if="controller.action == 'setBuyer'">{{ 'l-to-define' | i18n: []: 'dts/mcc' }}</button>
+</totvs-modal-footer>

@@ -1,0 +1,67 @@
+<totvs-modal-header>{{ 'l-copy-model' | i18n }}</totvs-modal-header>
+
+<totvs-modal-body>
+    <div class="row">
+        <form class="form-horizontal" role="form">
+            <field
+                type="select2"
+                canclean="true"
+                data-ng-model="controller.idPortalConfigur"
+                select-conector="{{ 'l-portal-config-clien-rep-abrev' | i18n }}"
+                select-init="controller.myParams.idiTipConfig"
+                select-id="idi-seq"
+                select-description="descricao"
+                select-service="mpd.configClienRep.Zoom"
+                ng-change="controller.changeZoomConfigClienRep(controller.idPortalConfigur)"
+            >
+                <zoom
+                    zoom-service="mpd.configClienRep.Zoom"
+                    zoom-init="controller.myParams.idiTipConfig"
+                >
+                </zoom>
+                <label>{{ 'l-portal-config-clien-rep' | i18n }}</label>
+                <validator key="required">{{ $fieldLabel }} {{ 'l-required' | i18n }}</validator>
+            </field>
+        </form>
+        
+        <form class="form-horizontal" role="form">
+            <field
+                type="select2"
+                canclean="true"
+                ng-model="controller.idiModel"                   
+                select-conector="{{ 'l-portal-model' | i18n }}"
+                select-init="controller.idPortalConfigur"
+                select-id="idi-model"
+                select-description="nom-model"
+                select-service="mpd.portalModel.Zoom"                   
+                ng-change="controller.changeZoomPortalModel()"
+            >
+                <zoom
+                    zoom-service="mpd.portalModel.Zoom"
+                    zoom-init="controller.idPortalConfigur"
+                >
+                </zoom>
+                <label>{{ 'l-portal-model' | i18n }}</label>
+                <validator key="required">{{ $fieldLabel }} {{ 'l-required' | i18n }}</validator>
+            </field>
+        </form>
+    </div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button
+        type="button"
+        class="btn btn-primary"
+        data-ng-click="controller.confirm();"
+        data-ng-disabled="controller.idDisabledBtnCopy"
+    >
+        {{ 'l-copy' | i18n }}
+    </button>
+    <button
+        type="button"
+        class="btn btn-default"
+        data-ng-click="controller.close();"
+    >
+        {{ 'btn-cancel' | i18n }}
+    </button>
+</totvs-modal-footer>

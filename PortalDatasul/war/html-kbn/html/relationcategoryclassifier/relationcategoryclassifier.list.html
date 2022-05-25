@@ -1,0 +1,55 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<totvs-page type="list">
+  <totvs-page-navbar>
+    <totvs-page-breadcrumb>
+      <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+      <breadcrumb>{{'l-relation-category-classifier' | i18n}}</breadcrumb>
+    </totvs-page-breadcrumb>
+    <totvs-page-header>
+      <totvs-page-header-title title="{{ 'l-relation-category-classifier' | i18n }}" total="{{controller.validateSizeRecords(controller.listCategory || [])}}"></totvs-page-header-title>
+      <totvs-page-header-operation>
+        <totvs-page-header-operation-action limit-primary-action="2">
+          <action icon="glyphicon-plus" ng-click="controller.openCategoryModal('new');">{{ 'l-new-category' | i18n }}</action>
+        </totvs-page-header-operation-action>
+        <totvs-page-header-operation-filter placeholder="{{ 'l-description' | i18n}}" ng-submit="controller.fillDataQuickSearch(controller.quickSearchTextTemp)" ng-model="controller.quickSearchTextTemp"></totvs-page-header-operation-filter>
+      </totvs-page-header-operation>
+      <totvs-page-disclaimers disclaimer-list="controller.filtersApplied" ng-click="controller.removeFilter"></totvs-page-disclaimers>
+    </totvs-page-header>
+  </totvs-page-navbar>
+  <totvs-page-content>
+    <totvs-page-content-header></totvs-page-content-header>
+    <totvs-page-alert ng-if="controller.validateSizeRecords(controller.listCategory) === 0" type="info" message="{{ 'msg-not-found' | i18n }}"></totvs-page-alert>
+    <div data-ng-repeat="category in controller.listCategory | filter: controller.quickSearchFilter | orderBy: 'des_categoria'">
+      <div class="azul list-item">
+        <div class="item-container"><span class="pull-left item-content">
+            <div class="item-actions ng-scope">
+              <div class="row">
+                <div class="col-xs-10 col-sm-7 col-md-7 col-lg-7 ng-scope ng-isolate-scope"><span ng-class="{invisible: !category['tt-kbn_clasdor'].length &gt; 0}" ng-if="!category.display" ng-click="controller.displayClassifier(category)" style="cursor: pointer;" title="{{'l-expand' | i18n}}" class="glyphicon glyphicon-triangle-right"></span><span ng-class="{invisible: !category['tt-kbn_clasdor'].length &gt; 0}" ng-if="category.display" ng-click="controller.displayClassifier(category)" style="cursor: pointer;" title="{{'l-reduce' | i18n}}" class="glyphicon glyphicon-triangle-bottom"></span><a ng_if="category['tt-kbn_clasdor'].length &gt; 0" ng-click="controller.displayClassifier(category)" style="cursor: pointer;" class="title link ng-binding">
+                     
+                    &nbsp; {{category.des_categoria}}</a><a ng_if="!(category['tt-kbn_clasdor'].length &gt; 0)" class="title link ng-binding">
+                     
+                    &nbsp; {{category.des_categoria}}</a><span class="title"></span></div>
+                <totvs-list-item-action>
+                  <action icon="glyphicon-pencil" data-ng-click="controller.openCategoryModal('edit', category)">{{ 'l-edit' | i18n }}</action>
+                  <action icon="glyphicon-remove" data-ng-click="controller.deleteCategory(category.num_id_categoria)">{{ 'l-to-exclude' | i18n }}</action>
+                  <action icon="glyphicon-plus" data-ng-click="controller.openClassifierModal('new', {num_id_categoria : category.num_id_categoria})">{{ 'l-classifier' | i18n }}</action>
+                </totvs-list-item-action>
+              </div>
+            </div></span>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <totvs-list-item data-ng-repeat="classifier in category['tt-kbn_clasdor'] | orderBy: 'des_clasdor'" ng-if="category.display" style="margin-left: 30px;" class="tag-6">
+        <totvs-list-item-header>
+          <totvs-list-item-title title="{{classifier.des_clasdor}}" link="#/dts/kbn/relationcategoryclassifier/{{classifier.num_id_clasdor}}"></totvs-list-item-title>
+          <totvs-list-item-action>
+            <action icon="glyphicon-pencil" data-ng-click="controller.openClassifierModal('edit', classifier)">{{ 'l-edit' | i18n }}</action>
+            <action icon="glyphicon-remove" data-ng-click="controller.deleteClasdor(classifier.num_id_clasdor)">{{ 'l-to-exclude' | i18n }}</action>
+            <action icon="glyphicon-link" link="#/dts/kbn/relationcategoryclassifier/{{classifier.num_id_clasdor}}">{{ 'l-link' | i18n }}</action>
+          </totvs-list-item-action>
+        </totvs-list-item-header>
+      </totvs-list-item>
+    </div>
+  </totvs-page-content>
+</totvs-page>

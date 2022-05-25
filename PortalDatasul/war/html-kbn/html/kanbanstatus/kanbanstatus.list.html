@@ -1,0 +1,62 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/font-awesome.css"/>
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<totvs-page type="list">
+  <totvs-page-navbar>
+    <totvs-page-breadcrumb>
+      <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+      <breadcrumb>{{ 'l-kanbanstatus' | i18n }}</breadcrumb>
+    </totvs-page-breadcrumb>
+    <totvs-page-header>
+      <totvs-page-header-title title="{{ 'l-kanbanstatus' | i18n }}" total="{{controller.totalRecords}}"></totvs-page-header-title>
+      <totvs-page-header-operation>
+        <div class="col-md-7 col-sm-7"></div>
+        <totvs-page-header-operation-filter placeholder="{{ 'l-code-description' | i18n}}" ng-submit="controller.quickSearch()" advanced-search="controller.openAdvancedSearch" ng-model="controller.quickSearchText"></totvs-page-header-operation-filter>
+      </totvs-page-header-operation>
+      <totvs-page-disclaimers disclaimer-list="controller.filtersApplied" ng-click="controller.removeFilter"></totvs-page-disclaimers>
+    </totvs-page-header>
+  </totvs-page-navbar>
+  <totvs-page-content>
+    <totvs-page-content-header>
+      <div class="row">
+        <div class="col-md-6">
+          <div ng-if="controller.kanbans.length &gt; 0" class="col-lg-5 col-md-5 col-sm-5 col-xs-2 actions-group">
+            <div role="group" class="btn-group btn-group-sm actions">
+              <div role="group" class="btn-group btn-group-sm ng-scope"><a data-toggle="dropdown" role="button" style="margin-top: 10px;margin-bottom: 10px;" class="btn btn-primary dropdown-toggle"><span class="ng-binding">{{ 'l-export-data' | i18n }}  </span><span class="glyphicon glyphicon-triangle-bottom"></span></a>
+                <ul role="menu" class="dropdown-menu">
+                  <li><a data-ng-click="controller.exportaConsulta(&quot;xlsx&quot;)"><span class="fa fa-file-excel-o"></span>  {{ 'l-excel-xlsx' | i18n }}</a></li>
+                  <li><a data-ng-click="controller.exportaConsulta(&quot;pdf&quot;)"><span class="fa fa-file-pdf-o"></span>  {{ 'l-pdf' | i18n }}</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <totvs-page-quick-filter filters-list="controller.preSavedFilters" on-select-filter="controller.selectQuickFilter"></totvs-page-quick-filter>
+        </div>
+      </div>
+    </totvs-page-content-header>
+    <totvs-page-alert ng-if="!controller.hasEstab()" type="info" message="{{ 'msg-estab-not-selected' | i18n }}">       </totvs-page-alert>
+    <totvs-page-alert ng-if="controller.hasEstab() &amp;&amp; controller.totalRecords == 0" type="info" message="{{ 'msg-not-found' | i18n }}"></totvs-page-alert>
+    <totvs-list-item data-ng-repeat="kanbans in (controller.filteredItems = (controller.kanbans | filter : { categoria : true }))" class="{{controller.colorTag(kanbans.colorKanban)}}">
+      <totvs-list-item-header>
+        <totvs-list-item-title title="{{kanbans | descGeneric:&quot;{sku} - {desc} {ref} ({exp})&quot;}}" class="col-xs-12 col-lg-6 col-md-6 col-sm-6"></totvs-list-item-title>
+        <div class="col-xs-offset-6 col-xs-1"><span tooltip="{{'l-into-board' | i18n}}" class="span fa fa-desktop fa-lg">&nbsp;</span><span>{{kanbans.qtdBoard}}</span></div>
+        <div class="col-xs-1"><span tooltip="{{'l-extra-cards-on-queue' | i18n}}" class="span fa fa-tag fa-lg blue">&nbsp;</span><span>{{kanbans.qtdExtra}}</span></div>
+        <div class="col-xs-1"><span tooltip="{{'l-into-production' | i18n}}" class="span fa fa-cogs fa-lg">&nbsp;</span><span>{{kanbans.qtdProduc}}</span></div>
+        <div class="col-xs-1"><span tooltip="{{'l-into-transport' | i18n}}" class="span fa fa-truck fa-lg">&nbsp;</span><span>{{kanbans.qtdTransport}}</span></div>
+        <div class="col-xs-1"><span tooltip="{{'l-locked' | i18n}}" class="span fa fa-lock fa-lg">&nbsp;</span><span>{{kanbans.qtdBlock}}</span></div>
+        <div class="col-xs-1"><span tooltip="{{'l-into-supermarket' | i18n}}" class="span fa fa-shopping-cart fa-lg">&nbsp;</span><span>{{kanbans.qtdSupermarket}}</span></div>
+      </totvs-list-item-header>
+      <totvs-list-item-content-detail>
+        <totvs-divider></totvs-divider>
+        <totvs-list-item-info title="{{'l-cell' | i18n}}" value="{{kanbans.cell | descGeneric:&quot;{codeErpCell} {descCell}&quot;}}" class="col-md-4"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-kanban-size' | i18n}}" value="{{kanbans.sizeKanban}}" class="col-md-4"></totvs-list-item-info>
+        <totvs-list-item-info title="{{'l-un' | i18n}}" value="{{kanbans.unMed}}" class="col-md-4"></totvs-list-item-info>
+      </totvs-list-item-content-detail>
+    </totvs-list-item>
+    <div align="center" class="container">
+      <pagination total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages" items-per-page="controller.pageSize" previous-text="{{'l-previous' | i18n}}" next-text="{{'l-next' | i18n}}" class="pagination-sm"></pagination>
+    </div>
+  </totvs-page-content>
+</totvs-page>

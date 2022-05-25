@@ -1,0 +1,77 @@
+<totvs-modal-header>
+    {{ i18n('l-parameters', [], 'dts/mdb') }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <totvs-page-form>
+        <fieldset class="form-horizontal">
+            <!-- Períodos -->
+            <totvs-field totvs-radio
+                class="col-xs-12 col-lg-12"
+                label="{{ i18n('l-period-type', [], 'dts/mdb') }}"
+                t-options="controller.periods"                
+                ng-model="controller.model.selectedPeriod">
+            </totvs-field>
+
+            <!-- Range da data dos períodos -->
+            <totvs-field
+                class="col-xs-12"
+                totvs-date-range
+                label="{{i18n('l-period', [], 'dts/mdb')}}"
+                ng-model="controller.model.periodDate">                
+            </totvs-field>
+
+            <!-- Exibe CTs sem operações alocadas -->
+            <totvs-field totvs-checkbox 
+                t-bsswitch
+                class="col-xs-6"
+                label="{{i18n('l-show-wc-without-operations', [], 'dts/mdb')}}"
+                ng-model="controller.model.showWorkCentersWithoutOperation">
+            </totvs-field>
+
+            <!-- Exibe CTs com capacidade infinita -->
+            <totvs-field totvs-checkbox 
+                t-bsswitch
+                class="col-xs-6"
+                label="{{i18n('l-show-gm-without-ct-allocation', [], 'dts/mdb')}}"                               
+                ng-model="controller.model.showWorkCentersWithInfiniteCapacity">
+            </totvs-field>
+            
+            <!-- Exibe ordem/operação na barra de operação no gantt -->
+            <totvs-field totvs-checkbox 
+                t-bsswitch
+                class="col-xs-12"                
+                label="{{i18n('l-show-order-operation', [], 'dts/mdb')}}"
+                ng-model="controller.model.showOrderOperation">                
+            </totvs-field>
+
+            <!-- Seleção de Grupos de Máquina -->
+            <totvs-field 
+                totvs-input
+                class="col-xs-12 col-md-6 col-lg-6"
+                ng-if='controller.enableGridGm'
+                label="{{i18n('l-machine-group-selection', [], 'dts/mdb')}}"  
+                ng-model="controller.buscaGrid"
+                placeholder="{{i18n('l-code-description', [], 'dts/mdb')}}"
+                canclean="undefined">
+            </totvs-field>
+        </fieldset>
+        <totvs-table 
+            id="operationGanttTable"
+            style="padding-top: 8px"
+            ng-if="controller.enableGridGm" 
+            class="col-xs-12 col-md-12 col-lg-12"
+            t-items="controller.gridData" 
+            t-items-as="gmFilter"
+            t-items-filter="filter: {gmCodDesc: controller.buscaGrid}">
+            <column title="{{ 'l-machine-group' | i18n : [] : 'dts/mdb' }}">
+                {{gmFilter['gmCodDesc']}}
+            </column>
+        </totvs-table>
+    </totvs-page-form>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn btn-default" ng-click="controller.cancel()">{{ i18n('btn-cancel') }}</button>
+    <button class="btn btn-primary" ng-click="controller.apply()">{{ i18n('btn-apply') }}</button>
+</totvs-modal-footer>

@@ -1,0 +1,831 @@
+<totvs-page type="base"> 
+    <totvs-page-navbar >
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hrc-noticeBillingImport/">Avisos de Cobrança</breadcrumb>
+                <breadcrumb>Manutenção Aviso Cobrança Importados</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+            <totvs-page-header-title 
+                title="{{(controller.action === 'EDIT' ? 'Editar' : 'Detalhar')}} Aviso de Cobrança">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                    <action ng-click="controller.save();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar</action>
+                    <action class="btn-primary"
+                            ng-click="controller.saveClose();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Fechar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>            
+        <totvs-page-form t-name="controller.noticeBillingImportForm">
+            <fieldset>
+                <totvs-page-detail class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <legend>Aviso</legend>
+
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        title="Unidade Origem"
+                        value="{{controller.noticeBillingImport.rotuloUnidOrig}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        title="Data de Conhecimento"
+                        value="{{controller.noticeBillingImport.datConhecto | date : 'dd/MM/yyyy'}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        title="Prestador"
+                        value="{{controller.noticeBillingImport.rotuloPrestador}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        title="Lote Prestador"
+                        value="{{controller.noticeBillingImport.codLotePrestdor}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        title="Guia Prestador"
+                        value="{{controller.noticeBillingImport.codGuiaPrestdor}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info 
+                        class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                        title="Beneficiário"
+                        value="{{controller.noticeBillingImport.rotuloBenef}}">
+                    </totvs-page-detail-info>
+
+                    <legend>Documento</legend>
+
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        title="Unidade"
+                        value="{{controller.noticeBillingImport.rotuloUnid}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        title="Unidade Prestadora"
+                        value="{{controller.noticeBillingImport.rotuloUnidPrestdra}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        title="Transação"
+                        value="{{controller.noticeBillingImport.rotuloTrans}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        title="Série"
+                        value="{{controller.noticeBillingImport.codSerDoctoOrigin}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        title="Documento Original"
+                        value="{{controller.noticeBillingImport.numDoctoOrigin}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        title="Documento Sistema"
+                        value="{{controller.noticeBillingImport.numDoctoSist}}">
+                    </totvs-page-detail-info>
+
+                    <totvs-page-detail-info
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        title="Situação do Aviso"
+                        value="{{controller.noticeBillingImport.rotuloSit}}">
+                    </totvs-page-detail-info>
+
+                    <legend>Guia</legend>
+
+                    <div ng-if="controller.noticeBillingImport.tpGuia === 'CONSULTA'">
+                        
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.numeroGuiaOperadora !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Nr. Guia Operadora"
+                            value="{{controller.noticeBillingImport.numeroGuiaOperadora}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.nrCgcCpf !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="CPF/CNPJ"
+                            value="{{controller.noticeBillingImport.nrCgcCpf}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.nmPrestador !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Nome do Contratado"
+                            value="{{controller.noticeBillingImport.nmPrestador}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.cdCnes !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="CNES"
+                            value="{{controller.noticeBillingImport.cdCnes}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.nmProfExec !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Nome do Profissional Executante"
+                            value="{{controller.noticeBillingImport.nmProfExec}}">
+                        </totvs-page-detail-info>
+                                
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.codConsProfis !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Conselho Profissional"
+                            value="{{controller.noticeBillingImport.codConsProfis}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.nrConsProfisSolic !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Número Conselho Profissional"
+                            value="{{controller.noticeBillingImport.nrConsProfisSolic}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.codUfCons !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="UF"
+                            value="{{controller.noticeBillingImport.codUfCons}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.cdCbos !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="CBOS"
+                            value="{{controller.noticeBillingImport.cdCbos}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            ng-if="controller.noticeBillingImport.datEmis !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Data de Atendimento"
+                            value="{{controller.noticeBillingImport.datEmis | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+
+                    </div>                   
+
+                    <div ng-if="controller.noticeBillingImport.tpGuia === 'SADT'">  
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.nrGuiaPrincSolicInter !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Nr. Guia Principal"
+                            value="{{controller.noticeBillingImport.nrGuiaPrincSolicInter}}">
+                        </totvs-page-detail-info>  
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.numeroGuiaOperadora !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Nr. Guia Operadora"
+                            value="{{controller.noticeBillingImport.numeroGuiaOperadora}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.numGuiaAtendim !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Guia Atendimento"
+                            value="{{controller.noticeBillingImport.numGuiaAtendim}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.nrCgcCpf !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="CPF/CNPJ"
+                            value="{{controller.noticeBillingImport.nrCgcCpf}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.nmPrestador !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Nome do Contratado"
+                            value="{{controller.noticeBillingImport.nmPrestador}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.cdCnes !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="CNES"
+                            value="{{controller.noticeBillingImport.cdCnes}}">
+                        </totvs-page-detail-info>
+                    </div>
+
+                    <div ng-if="controller.noticeBillingImport.tpGuia === 'INTERNACAO'">   
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.nrGuiaPrincSolicInter !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Nr. Guia Solicitação Inter."
+                            value="{{controller.noticeBillingImport.nrGuiaPrincSolicInter}}">
+                        </totvs-page-detail-info>  
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.numeroGuiaOperadora !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Nr. Guia Operadora"
+                            value="{{controller.noticeBillingImport.numeroGuiaOperadora}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.numGuiaAtendim !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Guia Atendimento"
+                            value="{{controller.noticeBillingImport.numGuiaAtendim}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.nrCgcCpf !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="CPF/CNPJ"
+                            value="{{controller.noticeBillingImport.nrCgcCpf}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.nmPrestador !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Nome do Contratado"
+                            value="{{controller.noticeBillingImport.nmPrestador}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.cdCnes !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="CNES"
+                            value="{{controller.noticeBillingImport.cdCnes}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.caraterAtend !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Caráter de Atendimento"
+                            value="{{controller.noticeBillingImport.caraterAtend}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            ng-if="controller.noticeBillingImport.datIntrcao !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Data Início do Faturamento"
+                            value="{{controller.noticeBillingImport.datIntrcao | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.hraIntrcao !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Hora Início do Faturamento"
+                            value="{{controller.noticeBillingImport.hraIntrcao  | time}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            ng-if="controller.noticeBillingImport.datAlta !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Data Final do Faturamento"
+                            value="{{controller.noticeBillingImport.datAlta | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.hraAlta !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Hora Final do Faturamento"
+                            value="{{controller.noticeBillingImport.hraAlta  | time}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.codCid !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="CID"
+                            value="{{controller.noticeBillingImport.codCid}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.codCid1 !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="CID 1"
+                            value="{{controller.noticeBillingImport.codCid1}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.codCid2 !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="CID 2"
+                            value="{{controller.noticeBillingImport.codCid2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.codCid3 !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="CID 3"
+                            value="{{controller.noticeBillingImport.codCid3}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.codDeclaNascVivo !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Declaração Nasc. Vivo"
+                            value="{{controller.noticeBillingImport.codDeclaNascVivo}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.codDeclaNascVivo2 !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Declaração Nasc. Vivo 2"
+                            value="{{controller.noticeBillingImport.codDeclaNascVivo2}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.codDeclaNascVivo3 !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Declaração Nasc. Vivo 3"
+                            value="{{controller.noticeBillingImport.codDeclaNascVivo3}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.codDeclaNascVivo4 !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Declaração Nasc. Vivo 4"
+                            value="{{controller.noticeBillingImport.codDeclaNascVivo4}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.codDeclaNascVivo5 !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Declaração Nasc. Vivo 5"
+                            value="{{controller.noticeBillingImport.codDeclaNascVivo5}}">
+                        </totvs-page-detail-info>
+
+                    </div>
+
+                    <div ng-if="controller.noticeBillingImport.tpGuia === 'HONORARIOS'">  
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.nrGuiaPrincSolicInter !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Nr. Guia Solicitação Inter."
+                            value="{{controller.noticeBillingImport.nrGuiaPrincSolicInter}}">
+                        </totvs-page-detail-info>  
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.numeroGuiaOperadora !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Nr. Guia Operadora"
+                            value="{{controller.noticeBillingImport.numeroGuiaOperadora}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.numGuiaAtendim !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Guia Atendimento"
+                            value="{{controller.noticeBillingImport.numGuiaAtendim}}">
+                        </totvs-page-detail-info>
+    
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Atendimento RN"
+                            value="{{(controller.noticeBillingImport.logAtendimRn === true ? 'Sim' : 'Não')}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.nrCgcCpf !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="CPF/CNPJ"
+                            value="{{controller.noticeBillingImport.nrCgcCpf}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.nmPrestador !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Nome do Contratado"
+                            value="{{controller.noticeBillingImport.nmPrestador}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info
+                            ng-if="controller.noticeBillingImport.cdCnes !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="CNES"
+                            value="{{controller.noticeBillingImport.cdCnes}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            ng-if="controller.noticeBillingImport.datIntrcao !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Data Início do Faturamento"
+                            value="{{controller.noticeBillingImport.datIntrcao | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            ng-if="controller.noticeBillingImport.datAlta !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Data Final do Faturamento"
+                            value="{{controller.noticeBillingImport.datAlta | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>
+
+                        <totvs-page-detail-info 
+                            ng-if="controller.noticeBillingImport.datEmis !== ''"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Data Emissão da Guia"
+                            value="{{controller.noticeBillingImport.datEmis | date : 'dd/MM/yyyy'}}">
+                        </totvs-page-detail-info>                        
+                    </div>
+
+                    <totvs-page-detail-info
+                        ng-if="controller.noticeBillingImport.desObs !== ''"
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        title="Observação"
+                        value="{{controller.noticeBillingImport.desObs}}">
+                    </totvs-page-detail-info>
+                    
+                </totvs-page-detail>
+
+                <div ng-if="controller.noticeBillingImport.tpGuia === 'CONSULTA'">
+                    <field type="combo"
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        ng-model="controller.noticeBillingImport.indTipCon"
+                        ng-options="o.cdnTipCon as o.rotulo for o in controller.tissConsultationTypes"
+                        label="Tipo de Consulta"
+                        ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <field  type="combo"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            ng-model="controller.noticeBillingImport.idiAcid"
+                            ng-options="o.cdnAcid as o.rotulo for o in controller.tissAccidentIndications"
+                            label="Indicação de Acidente"
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                    
+                    <totvs-field totvs-checkbox
+                        class="col-lg-2 col-md-4 col-sm-6 col-xs-12"
+                        label="Atendimento RN" 
+                        ng-model="controller.noticeBillingImport.logAtendimRn"
+                        ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+                </div>
+
+                <div ng-if="controller.noticeBillingImport.tpGuia === 'SADT'">
+                    <field  type="combo"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            ng-model="controller.noticeBillingImport.idiTipAtendim"
+                            ng-options="o.cdnTipAtendim as o.rotulo for o in controller.tissAttendanceTypes"
+                            label="Tipo de Atendimento"
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <field type="combo"
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        ng-model="controller.noticeBillingImport.indTipCon"
+                        ng-options="o.cdnTipCon as o.rotulo for o in controller.tissConsultationTypes"
+                        label="Tipo de Consulta"
+                        ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                    
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    </field>
+
+                    <field  type="combo"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            ng-model="controller.noticeBillingImport.idiAcid"
+                            ng-options="o.cdnAcid as o.rotulo for o in controller.tissAccidentIndications"
+                            label="Indicação de Acidente"
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                    
+                    <totvs-field totvs-checkbox
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        label="Atendimento RN" 
+                        ng-model="controller.noticeBillingImport.logAtendimRn"
+                        ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+                    
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    </field>
+
+                    <totvs-field totvs-select canclean
+                            ng-model="controller.noticeBillingImport.cdnMotivEncerra"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            label="Motivo de Encerramento"
+                            select-service="hrc.leaveReasonZoomController"
+                            zoom-service="hrc.leaveReasonZoomController"
+                            select-id="cdMotivoAlta" 
+                            select-description="dsMotivo"
+                            ng-change="controller.onLeaveReasonSelect()"
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+
+                    <totvs-page-detail class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <totvs-page-detail-info 
+                            class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                            title="Motivo de Alta TISS"
+                            value="{{controller.tissLeaveReason.rotulo}}">
+                        </totvs-page-detail-info>
+                    </totvs-page-detail>
+
+                </div>
+
+                <div ng-if="controller.noticeBillingImport.tpGuia === 'INTERNACAO'">
+                    <field  type="combo"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            ng-model="controller.noticeBillingImport.idiTipInter"
+                            ng-options="o.cdnTipIntrcao as o.rotulo for o in controller.tissInternmentTypes"
+                            label="Tipo de Internação"
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+
+                    <field  type="combo"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            ng-model="controller.noticeBillingImport.regimeInternacao"
+                            ng-options="o.cdnMotivo as o.rotulo for o in controller.tissInternmentRegimes"
+                            label="Regime de Internação"
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                    
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    </field>
+
+                    <field  type="combo"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            ng-model="controller.noticeBillingImport.idiAcid"
+                            ng-options="o.cdnAcid as o.rotulo for o in controller.tissAccidentIndications"
+                            label="Indicação de Acidente"
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                    
+                    <field  type="combo"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            ng-model="controller.noticeBillingImport.codFaturam"
+                            ng-options="o.cdnTipFaturam as o.rotulo for o in controller.tissBillingTypes"
+                            label="Tipo de Faturamento"
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </field>
+                    
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    </field>
+
+                    <totvs-field totvs-select
+                        class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                        ng-model="controller.noticeBillingImport.codCidObit"
+                        label="CID Óbito" canclean
+                        select-service="hcg.cidZoomController"
+                        zoom-service="hcg.cidZoomController"
+                        select-id="cdCid" 
+                        select-description="dsDoenca"
+                        ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+
+                    <totvs-field totvs-checkbox
+                        class="col-lg-2 col-md-4 col-sm-6 col-xs-12"
+                        label="Declara Óbito" 
+                        ng-model="controller.noticeBillingImport.logDeclaObitRn"
+                        ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+
+                    <totvs-field totvs-number
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        label="Nr. Declaração de Óbito"
+                        ng-model="controller.noticeBillingImport.numDeclaObit"
+                        ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+                    
+                    <field type="input"
+                           label="fake" style="visibility: hidden"
+                           class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                    </field>
+                    
+                    <totvs-field totvs-checkbox
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        label="Atendimento RN" 
+                        ng-model="controller.noticeBillingImport.logAtendimRn"
+                        ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+
+                    <totvs-field totvs-select canclean
+                            ng-model="controller.noticeBillingImport.cdnMotivEncerra"
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            label="Motivo de Encerramento"
+                            select-service="hrc.leaveReasonZoomController"
+                            zoom-service="hrc.leaveReasonZoomController"
+                            select-id="cdMotivoAlta" 
+                            select-description="dsMotivo"
+                            ng-change="controller.onLeaveReasonSelect()"
+                            ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+
+                    <totvs-page-detail class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <totvs-page-detail-info 
+                            class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                            title="Motivo de Alta TISS"
+                            value="{{controller.tissLeaveReason.rotulo}}">
+                        </totvs-page-detail-info>
+                    </totvs-page-detail>
+                </div>
+
+                <totvs-tabset style="margin-top: 15px">                            
+                    <totvs-tab heading="Procedimentos"
+                                ng-if="controller.noticeBillingImport.procedures.length > 0">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height"
+                            ng-if="controller.noticeBillingImport.procedures.length <= 0">
+                            <totvs-page-alert 
+                                type="info"
+                                message="Nenhum Procedimento encontrado">
+                            </totvs-page-alert>
+                        </div>
+
+                        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height" 
+                            ng-if="controller.noticeBillingImport.procedures.length > 0">
+                            <totvs-page-form>
+                                <totvs-page-child type="list" style="margin-bottom: 3px"
+                                                ng-if="controller.noticeBillingImport.procedures.length > 0"
+                                                ng-repeat="procedure in controller.noticeBillingImport.procedures track by $index">
+                                    <totvs-list-item>
+                                        <totvs-list-item-header>
+                                            <totvs-list-item-title title="{{procedure.rotuloProced}}"></totvs-list-item-title>
+                                        </totvs-list-item-header>
+                                        <totvs-list-item-content>
+                                            <totvs-list-item-info
+                                                ng-if="controller.noticeBillingImport.tpGuia !== 'CONSULTA'"
+                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="Data de Realização"
+                                                value="{{procedure.datRealiz | date : 'dd/MM/yyyy'}}">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                ng-if="controller.noticeBillingImport.tpGuia !== 'CONSULTA'"
+                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                title="Hora de Realização Inicial"
+                                                value="{{procedure.hraRealizInicial | time}}">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                ng-if="controller.noticeBillingImport.tpGuia !== 'CONSULTA'"
+                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                title="Hora de Realização Final"
+                                                value="{{procedure.hraRealizFinal  | time}}">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                title="Quantidade"
+                                                value="{{procedure.qtiProced}}">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                title="Valor Unitário"
+                                                value="{{procedure.valUnitario | currency : 'R$'}}">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                title="Valor Total"
+                                                value="{{procedure.valTotal | currency : 'R$'}}">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                ng-if="controller.noticeBillingImport.tpGuia !== 'CONSULTA'"
+                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                title="Via de Acesso"
+                                                value="{{procedure.rotuloViaAces}}">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                ng-if="controller.noticeBillingImport.tpGuia !== 'CONSULTA'"
+                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                title="Técnica Utilizada"
+                                                value="{{procedure.rotuloTecUtlzad}}">
+                                            </totvs-list-item-info>
+                                        </totvs-list-item-content>
+
+                                        <totvs-page-child type="list" ng-repeat="provider in procedure.providers track by $index">
+                                            <totvs-list-item>
+                                                <totvs-list-item-header>
+                                                    <totvs-list-item-title title="Prestador: {{provider.rotulo}}"></totvs-list-item-title>
+                                                </totvs-list-item-header>
+                                                <totvs-list-item-content>
+                                                    <totvs-list-item-info
+                                                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                                        title="Conselho Profissional"
+                                                        value="{{provider.codConsProfis}}">
+                                                    </totvs-list-item-info>
+                                                    <totvs-list-item-info
+                                                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                                        title="Número no Conselho"
+                                                        value="{{provider.nrConsProfisSolic}}">
+                                                    </totvs-list-item-info>
+                                                    <totvs-list-item-info
+                                                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                                        title="UF"
+                                                        value="{{provider.codUf}}">
+                                                    </totvs-list-item-info>
+                                                    <totvs-list-item-info
+                                                        class="col-lg-3 col-md-3 col-sm-3 col-xs-12"
+                                                        title="CBOS"
+                                                        value="{{provider.cdCbos}}">
+                                                    </totvs-list-item-info>
+                                                </totvs-list-item-content>   
+                                            </totvs-list-item>    
+                                        </totvs-page-child>
+                                    </totvs-list-item>
+                                </totvs-page-child>
+                                <totvs-list-pagination ng-if="controller.hasLoadedAllProcedures != true"
+                                                    ng-click="controller.loadProcedures();">                                           
+                                </totvs-list-pagination>
+                            </totvs-page-form>
+                        </div>
+                    </totvs-tab>
+
+                    <totvs-tab heading="Insumos"
+                                ng-if="controller.noticeBillingImport.inputs.length > 0">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height"
+                            ng-if="controller.noticeBillingImport.inputs.length <= 0">
+                            <totvs-page-alert 
+                                type="info"
+                                message="Nenhum Insumo encontrado">
+                            </totvs-page-alert>
+                        </div>
+
+                        <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height" 
+                            ng-if="controller.noticeBillingImport.inputs.length > 0">
+                            <totvs-page-form>
+                                <totvs-page-child type="list" style="margin-bottom: 3px"
+                                                ng-if="controller.noticeBillingImport.inputs.length > 0"
+                                                ng-repeat="input in controller.noticeBillingImport.inputs track by $index">
+                                    <totvs-list-item>
+                                        <totvs-list-item-header>
+                                            <totvs-list-item-title title="{{input.rotuloInsumo}}"></totvs-list-item-title>
+                                        </totvs-list-item-header>
+                                        <totvs-list-item-content>
+                                            <totvs-list-item-info
+                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                                                title="Data de Realização"
+                                                value="{{input.datRealiz | date : 'dd/MM/yyyy'}}">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                title="Hora de Realização Inicial"
+                                                value="{{input.hraRealizInicial  | time}}">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                title="Hora de Realização Final"
+                                                value="{{input.hraRealizFinal  | time}}">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                title="Quantidade"
+                                                value="{{input.qtdInsumo}}">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                title="Valor Unitário"
+                                                value="{{input.valUnitario | currency : 'R$'}}">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                title="Valor Total"
+                                                value="{{input.valTotal | currency : 'R$'}}">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                title="Registro Anvisa"
+                                                value="{{input.regAnvisa}}">
+                                            </totvs-list-item-info>
+                                            <totvs-list-item-info
+                                                class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-sm-height"
+                                                title="Referencia Fabricante"
+                                                value="{{input.codRefFabricante}}">
+                                            </totvs-list-item-info>
+                                        </totvs-list-item-content>                                        
+                                    </totvs-list-item>
+                                </totvs-page-child>
+                                <totvs-list-pagination ng-if="controller.hasLoadedAllInputs != true"
+                                                    ng-click="controller.loadInputs();">                                           
+                                </totvs-list-pagination>
+                            </totvs-page-form>
+                        </div>
+                    </totvs-tab>
+                </totvs-tabset>            
+            </fieldset>
+        </totvs-page-form>        
+    </totvs-page-content>   
+</totvs-page>

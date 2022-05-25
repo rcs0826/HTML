@@ -1,0 +1,53 @@
+<totvs-modal-header>
+	{{ 'nav-attachment-type' | i18n: []: 'dts/crm' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+	<div class="crm-panel">
+		<div class="row crm-panel-item"
+			 ng-repeat="file in controller.selectedFiles track by $index">
+
+			<fieldset class="row">
+				<div class="col-xs-11">
+					<span class="glyphicon glyphicon-file"></span> {{ file.name }}
+				</div>
+
+				<div class="col-xs-1">
+					<a class="clickable"
+					   ng-click="controller.removeFile(file);">
+						<span class="glyphicon glyphicon-trash"></span>
+					</a>
+				</div>
+			</fieldset>
+			<fieldset class="row">
+				<field type="select"
+				   class="col-xs-12"
+				   canclean="undefined"
+				   ng-required="true"
+				   ng-model="file.ttTipAnexo">
+
+					<label>{{ 'l-attachment-type' | i18n: []: 'dts/crm' }}</label>
+
+					<include>
+						<ui-select-match placeholder="{{ 'l-attachment-type' | i18n: []: 'dts/crm' }}">
+							{{ $select.selected.nom_tip_anexo }}
+						</ui-select-match>
+						<ui-select-choices repeat="type in controller.ttAttachmentType | filter: $select.search track by $index">
+							<span ng-bind-html="type.nom_tip_anexo | highlight: $select.search"></span>
+						</ui-select-choices>
+					</include>
+
+					<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+				</field>
+			</fieldset>
+		</div>
+	</div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+<% if ((!data["btn-new-attachment-type"] || data["btn-new-attachment-type"].log_visivel === true)) { %>
+	<button class="btn btn-default" ng-click="controller.openNewAttachment()">{{ 'btn-new-attachment-type' | i18n: []: 'dts/crm' }}</button>
+	<% } %>
+	<button class="btn btn-default" ng-click="controller.close()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.confirm()">{{ 'btn-confirm' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

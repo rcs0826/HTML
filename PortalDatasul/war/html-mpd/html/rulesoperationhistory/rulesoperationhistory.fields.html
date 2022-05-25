@@ -1,0 +1,66 @@
+<% _.forEach(data, function(field, index1) { %>
+
+	<% if(field['nom-campo'] != 'cdd-id-regra-histor'){ %>
+
+		<totvs-list-item-info title="<%=field['des-label-campo']%>" class="col-xs col-sm-4 col-md-4 detail-span">
+			<% if(field['cod-tipo-format-campo'] == 'logical'){ %>
+
+				<% if(field['cod-valor'] != 'true' && field['cod-valor'] != 'false'){ %>
+					<%='?'%>
+				<% }else{ %>
+					{{<%=field['cod-valor']%> | booleanI18N}}
+				<% } %>
+
+			<% }else{ %>
+				<% if((field['nom-campo'] == 'char-1%2C133%2C1') && (field['nom-tabela'] == 'item-uni-estab')){ %>
+					<span ng-if="'<%=field['cod-valor'] %>' == '?'"> {{ '?' | i18n: []: 'dts/mpd' }}                         </span>
+					<span ng-if="'<%=field['cod-valor'] %>' == '0'"> {{ 'l-mercoria-revenda' | i18n: []: 'dts/mpd' }}        </span>
+					<span ng-if="'<%=field['cod-valor'] %>' == '1'"> {{ 'l-materia-prima' | i18n: []: 'dts/mpd' }}           </span>
+					<span ng-if="'<%=field['cod-valor'] %>' == '2'"> {{ 'l-embalagem' | i18n: []: 'dts/mpd' }}               </span>
+					<span ng-if="'<%=field['cod-valor'] %>' == '3'"> {{ 'l-produto-processo' | i18n: []: 'dts/mpd' }}        </span>
+					<span ng-if="'<%=field['cod-valor'] %>' == '4'"> {{ 'l-produto-acabado' | i18n: []: 'dts/mpd' }}         </span>
+					<span ng-if="'<%=field['cod-valor'] %>' == '5'"> {{ 'l-subproduto' | i18n: []: 'dts/mpd' }}              </span>
+					<span ng-if="'<%=field['cod-valor'] %>' == '6'"> {{ 'l-produto-intermediario' | i18n: []: 'dts/mpd' }}   </span>
+					<span ng-if="'<%=field['cod-valor'] %>' == '7'"> {{ 'l-material-uso-consumo' | i18n: []: 'dts/mpd' }}    </span>
+					<span ng-if="'<%=field['cod-valor'] %>' == '8'"> {{ 'l-ativo-imobilizado' | i18n: []: 'dts/mpd' }}       </span>
+					<span ng-if="'<%=field['cod-valor'] %>' == '9'"> {{ 'l-servicos' | i18n: []: 'dts/mpd' }}                </span>
+					<span ng-if="'<%=field['cod-valor'] %>' == '10'"> {{ 'l-outros-insumos' | i18n: []: 'dts/mpd' }}         </span>
+					<span ng-if="'<%=field['cod-valor'] %>' == '99'"> {{ 'l-outras' | i18n: []: 'dts/mpd' }}                 </span>
+				<% }else{ %>
+
+					<% if((field['nom-campo'] == 'natureza') && (field['nom-tabela'] == 'emitente')){ %>
+						<span ng-if="'<%=field['cod-valor'] %>' == '?'"> {{ '?' | i18n: []: 'dts/mpd' }} 				</span>
+						<span ng-if="'<%=field['cod-valor'] %>' == '1'"> {{ 'l-pessoa-fisica' | i18n: []: 'dts/mpd' }} 	</span>
+						<span ng-if="'<%=field['cod-valor'] %>' == '2'"> {{ 'l-pessoa-juridica' | i18n: []: 'dts/mpd' }} 	</span>
+						<span ng-if="'<%=field['cod-valor'] %>' == '3'"> {{ 'l-foreign' | i18n: []: 'dts/mpd' }} 			</span>
+						<span ng-if="'<%=field['cod-valor'] %>' == '4'"> {{ 'l-trading' | i18n: []: 'dts/mpd' }} 			</span>
+					<% }else{ %>
+						<% if((field['nom-campo'] == 'cod-des-merc') && (field['nom-tabela'] == 'ped-venda')){ %>
+							<span ng-if="'<%=field['cod-valor'] %>' == '?'"> {{ '?' | i18n: []: 'dts/mpd' }} 					</span>
+							<span ng-if="'<%=field['cod-valor'] %>' == '1'"> {{ 'l-business-industry' | i18n: []: 'dts/mpd' }}  </span>
+							<span ng-if="'<%=field['cod-valor'] %>' ==  '2'"> {{ 'l-own-propertie' | i18n: []: 'dts/mpd' }} 		</span>
+						<% }else{ %>
+							<% if((field['nom-campo'] == 'compr-fabric') && (field['nom-tabela'] == 'item')){ %>
+								<span ng-if="'<%=field['cod-valor'] %>' == '?'"> {{ '?' | i18n: []: 'dts/mpd' }} 					</span>
+								<span ng-if="'<%=field['cod-valor'] %>' == '1'"> {{ 'l-comprado' | i18n: []: 'dts/mpd' }}  </span>
+								<span ng-if="'<%=field['cod-valor'] %>' ==  '2'"> {{ 'l-fabricado' | i18n: []: 'dts/mpd' }} 		</span>							
+							<% }else{ %>
+								<% if((field['nom-campo'] == 'cd-trib-icm') && (field['nom-tabela'] == 'item')){ %>
+									<span ng-if="'<%=field['cod-valor'] %>' == '?'"> {{ '?' | i18n: []: 'dts/mpd' }} 		  </span>
+									<span ng-if="'<%=field['cod-valor'] %>' == '1'"> {{ 'l-tributado' | i18n: []: 'dts/mpd' }}  </span>
+									<span ng-if="'<%=field['cod-valor'] %>' == '2'"> {{ 'l-isento' | i18n: []: 'dts/mpd' }} 	  </span>
+									<span ng-if="'<%=field['cod-valor'] %>' == '3'"> {{ 'l-outros' | i18n: []: 'dts/mpd' }} 	  </span>
+									<span ng-if="'<%=field['cod-valor'] %>' == '4'"> {{ 'l-reduzido' | i18n: []: 'dts/mpd' }}  </span>
+								<% }else{ %>
+									<%=field['cod-valor']%>
+								<% } %>
+							<% } %>
+						<% } %>
+					<% } %>
+				<% } %>
+			<% } %>
+		</totvs-list-item-info>
+
+	<% } %>
+
+<% } )%>

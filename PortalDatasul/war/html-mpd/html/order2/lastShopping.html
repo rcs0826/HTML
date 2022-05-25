@@ -1,0 +1,504 @@
+<style>
+	.popover-large {
+		width: 90% !important;
+		max-width: 90% !important;
+	}
+
+	.panel-group {
+		margin-bottom: 0px !important;
+	}
+
+	.small-icon-plus {
+		font-size: 10px !important;
+		margin-left: -12px;
+	}
+
+	.opera #thingie,
+	.chrome #thingie .small-icon-plus {
+		font-size: 10px !important;
+		margin-left: 0px;
+	}
+
+	.chrome #thingie {
+		do: this;
+	}
+
+	@media screen and (max-width: 768px) {
+
+		.col-sm-1,
+		.col-sm-10,
+		.col-sm-11,
+		.col-sm-12,
+		.col-sm-2,
+		.col-sm-3,
+		.col-sm-4,
+		.col-sm-5,
+		.col-sm-6,
+		.col-sm-7,
+		.col-sm-8,
+		.col-sm-9,
+		.col-xs-1,
+		.col-xs-10,
+		.col-xs-11,
+		.col-xs-12,
+		.col-xs-2,
+		.col-xs-3,
+		.col-xs-4,
+		.col-xs-5,
+		.col-xs-6,
+		.col-xs-7,
+		.col-xs-8,
+		.col-xs-9 {
+			padding-left: 15px !important;
+			padding-right: 15px !important;
+		}
+
+		.responsive-accordion-mpd {
+			margin-top: 10px
+		}
+
+		.no-padding-right-mpd {
+			padding-right: 0px !important;
+		}
+	}
+
+	@media screen and (min-width: 769px) {
+		.responsive-accordion-mpd {
+			margin-top: 10px
+		}
+	}
+
+	@media screen and (min-width: 992px) {
+		.mpd-zoom-img img:hover {
+			width: 20%;
+			height: 20%;
+			-webkit-transition: width 2.5s;
+			/* Safari */
+			transition: width 2.5s;
+		}
+	}
+
+	.accordionDrawAttention {
+		background-color: #e0e5ea !important;
+	}
+
+	.field-label {
+		line-height: 1 !important;
+		color: #333 !important;
+		font-weight: bold !important;
+	}
+
+	.totvs-style-guide .nav-tabs>li>a {
+		margin-right: 0px;
+	}
+
+	.no-padding-search-produtcs {
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+
+	.field-label {
+		font-weight: 700 !important;
+		font-size: 12px !important;
+	}
+</style>
+<div totvs-custom-element="lastShopping">
+
+
+	<div style="border:0; padding: 15px;">
+
+		<div class="row">
+
+			<div class="col-lg-6 col-md-6 col-sm-7 col-xs-10" style="padding-right: 0px; margin-left: -15px">
+				<form ng-submit="lastShoppingController.searchButton()">
+
+					<div class="input-group">
+
+						<span class="input-group-btn" style="width: 120px">
+							<select class="form-control" style="border-radius: 4px 0px 0px 4px; border-right: 0px;"
+								ng-change="lastShoppingController.setPreference('salesorder.portal.simpleSearchTypeLastShopping', lastShoppingController.simpleSearchType)"
+								ng-model="lastShoppingController.simpleSearchType">
+								<option value="1">{{:: 'l-code' | i18n : [] : 'dts/mpd'}}</option>
+								<option value="2">{{:: 'l-descricao' | i18n : [] : 'dts/mpd'}}</option>
+								<option value="3">{{:: 'l-both' | i18n : [] : 'dts/mpd'}}</option>
+							</select>
+						</span>
+
+						<input autocomplete="off" ng-click="lastShoppingController.applySelectRange($event);"
+							type="text" placeholder="{{:: 'l-search-items-portal' | i18n : [] : 'dts/mpd'}}..."
+							class="form-control" ng-model="lastShoppingController.quickSearchText"
+							id="searchitemLastShoppingField">
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="button"
+								ng-click="lastShoppingController.quickSearchText = ''" tabindex="-1">
+								<span class="glyphicon glyphicon-remove"></span>
+							</button>
+							<button class="btn btn-default" type="submit" tabindex="-1">
+								<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+								{{:: 'l-search' | i18n : [] : 'dts/mpd'}}
+							</button>
+						</span>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<div ng-show="lastShoppingController.listResult.length <= 0 && !lastShoppingController.loadingItems"
+		class="alert alert-info fade in alert-dismissable" style="margin-top: 0px; margin-bottom: 10px">
+		<p>{{ 'l-for-search-msg' | i18n }}</p>
+	</div>
+
+	<div ng-show="lastShoppingController.listResult.length > 0" class="alert alert-success fade in alert-dismissable"
+		style="margin-top: 0px; margin-bottom: 10px">
+		<a href="/#" class="close" data-dismiss="alert" aria-label="close" title="close">x</a>
+		<span ng-if="lastShoppingController.shoppingPeriod == 1"><span
+				ng-show="lastShoppingController.listResult.length <= 1">{{'l-item-shopped-in-last' | i18n }} </span>
+			<span ng-show="lastShoppingController.listResult.length > 1">{{'l-items-shopped-in-last' | i18n }} </span>
+			30 {{ 'l-days' | i18n }}</span>
+		<span ng-if="lastShoppingController.shoppingPeriod == 2"><span
+				ng-show="lastShoppingController.listResult.length <= 1">{{'l-item-shopped-in-last' | i18n }} </span>
+			<span ng-show="lastShoppingController.listResult.length > 1">{{'l-items-shopped-in-last' | i18n }} </span>
+			60 {{ 'l-days' | i18n }}</span>
+		<span ng-if="lastShoppingController.shoppingPeriod == 3"><span
+				ng-show="lastShoppingController.listResult.length <= 1">{{'l-item-shopped-in-last' | i18n }} </span>
+			<span ng-show="lastShoppingController.listResult.length > 1">{{'l-items-shopped-in-last' | i18n }} </span>
+			90 {{ 'l-days' | i18n }}</span>
+		<span ng-if="lastShoppingController.shoppingPeriod == 4"><span
+				ng-show="lastShoppingController.listResult.length <= 1">{{'l-item-shopped-in-last' | i18n }} </span>
+			<span ng-show="lastShoppingController.listResult.length > 1">{{'l-items-shopped-in-last' | i18n }} </span>
+			6 {{ 'l-months' | i18n }}</span>
+		<span ng-if="lastShoppingController.shoppingPeriod == 5"><span
+				ng-show="lastShoppingController.listResult.length <= 1">{{'l-item-shopped-in-last-year' | i18n }}
+			</span> <span ng-show="lastShoppingController.listResult.length > 1">
+				{{'l-items-shopped-in-last-year' | i18n }}</span></span>
+
+		<span ng-if="lastShoppingController.isRepresentative">{{'l-this-customer' | i18n }}</span>
+
+		<span ng-if="lastShoppingController.showNumberReplacement == true">{{ 'l-last-qtd-informed' | i18n }}.</span>
+	</div>
+
+	<totvs-list-item ng-repeat="item in lastShoppingController.listResult" totvs-custom-element="customListItem">
+		<totvs-list-item-content>
+
+			<totvs-list-item-info ng-if="lastShoppingController.showItemImage && item['nom-imagem']"
+				class="col-xs-6 col-sm-6 col-md-3">
+				<img class="focus-img-mpd" style="min-width: 50px; max-width: 50px"
+					alt="{{ 'l-image-not-found' | i18n }}"
+					ng-src="/dts/datasul-rest/resources/api/fch/fchdis/fchdis0063/imagem?imagem={{item['nom-imagem']}}"
+					data-toggle="modal" data-target="#imageModalReplacement{{$index}}">
+
+				<div class="modal modal-img-mpd fade" id="imageModalReplacement{{$index}}" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content modal-img-mpd-content">
+							<img ng-src="/dts/datasul-rest/resources/api/fch/fchdis/fchdis0063/imagem?imagem={{item['nom-imagem']}}"
+								width="100%" />
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">{{'l-close' | i18n }}</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</totvs-list-item-info>
+
+			<%	
+	
+			_.forEach(data, function(field) {
+					  
+				if (field.fieldName == "it-codigo") {
+			
+			%>
+
+			<totvs-list-item-info title="{{ 'l-cod-item' | i18n }}" class="col-xs-6 col-sm-6 col-md-3">
+				<!-- TODO - DESENVOLVER PRODUTOS RELACIONADOS 
+					<a ng-if="item.hasEquivalent || item.hasRelated"
+					ng-click="lastShoppingController.getItemsRelated(item);"
+					template-popover="/dts/mpd/html/order/relateditems.html" container="body" placement="bottom"
+					large="true" title="{{ 'l-related-products' | i18n }}" popover-data="item"
+					promise="item.itemsRelatedRequire" class="clickable">{{item['it-codigo']}}</a>
+				<span ng-if="!item.hasEquivalent && !item.hasRelated">{{item['it-codigo']}}</span> 
+				-->
+				<span>{{item['it-codigo']}}</span>
+			</totvs-list-item-info>
+			<%
+			}
+
+			if (field.fieldName == "cod-refer") {
+
+			%>
+			<totvs-list-item-info title="{{ 'l-cod-refer' | i18n }}" class="col-xs-6 col-sm-6 col-md-3">
+				{{item['cod-refer']}}</totvs-list-item-info>
+			<%
+			}
+
+			if (field.fieldName == "desc-item") {				
+			%>
+			<totvs-list-item-info title="{{ 'l-descricao' | i18n }}" class="col-xs-6 col-sm-6 col-md-6">
+				{{item['desc-item']}}</totvs-list-item-info>
+			<%
+			}
+
+			if (field.fieldName == "nr-tabpre") {				
+				%>
+			<totvs-list-item-info title="{{ 'l-cod-tab-preco' | i18n }}" class="col-xs-6 col-sm-6 col-md-3">
+				{{item['nr-tabpre']}}</totvs-list-item-info>
+			<%
+			}
+		
+			if (field.fieldName == "vl-preori-un-fat") {				
+				%>
+			<totvs-list-item-info title="{{ 'l-original-price-invoice-UM' | i18n }}" class="col-xs-6 col-sm-6 col-md-3">
+				{{item['vl-preori-un-fat']  | number : 5}} </totvs-list-item-info>
+			<%
+			}
+
+			if (field.fieldName == "qt-pedida") {				
+				%>
+			<totvs-list-item-info title="{{ 'l-requested-quantity' | i18n }}" class="col-xs-6 col-sm-6 col-md-3">
+				{{item['qt-pedida']  | number : 4}}</totvs-list-item-info>
+			<%
+			
+			}	
+
+			if (field.fieldName == "cod-un") {				
+				%>
+			<totvs-list-item-info title="{{ 'l-unit-measure' | i18n }}" class="col-xs-6 col-sm-6 col-md-3">
+				{{item['cod-un']}}</totvs-list-item-info>
+			<%
+			
+			}
+			
+			if (field.fieldName == "qtd-disponivel") {	
+		%>
+			<totvs-list-item-info title="{{ 'l-inventory' | i18n }}" class="col-xs-6 col-sm-6 col-md-3">
+				<!-- TODO - DESENVOLVER PRODUTOS EQUIVALENTES
+				<span ng-if="!item.balanceLoaded">{{'l-loading' | i18n}}</span>
+				<a ng-if="item.hasEquivalent" ng-click="lastShoppingController.getEquivalentItems(item);"
+					template-popover="/dts/mpd/html/order/equivalentitems.html" container="body" placement="bottom"
+					large="true" title="{{ 'l-equivalent-products' | i18n }}" popover-data="item"
+					promise="item.itemsEquivalent" class="clickable">
+
+					<span ng-if="lastShoppingController.isRepresentative && item.balanceLoaded">{{item['vl-saldo'] | number : 4}}</span>
+					<span ng-if="!lastShoppingController.isRepresentative && item.hasBalance">{{ 'l-inventory-avail' | i18n }}</span>
+					<span ng-if="!lastShoppingController.isRepresentative && !item.hasBalance">{{ 'l-inventory-not-avail' | i18n }}</span>
+	
+				</a>
+				<span ng-if="!item.hasEquivalent">
+
+					<span ng-if="lastShoppingController.isRepresentative && item.balanceLoaded"> {{item['vl-saldo'] | number : 4}}</span>
+					<span ng-if="!lastShoppingController.isRepresentative && item.hasBalance">{{ 'l-inventory-avail' | i18n }}</span>
+					<span ng-if="!lastShoppingController.isRepresentative && !item.hasBalance">{{ 'l-inventory-not-avail' | i18n }}</span>
+
+				</span> -->
+
+				<span ng-if="lastShoppingController.isRepresentative && item.balanceLoaded">
+					{{item['qtd-disponivel'] | number : 4}}</span>
+				<span
+					ng-if="!lastShoppingController.isRepresentative && item.hasBalance">{{ 'l-inventory-avail' | i18n }}</span>
+				<span
+					ng-if="!lastShoppingController.isRepresentative && !item.hasBalance">{{ 'l-inventory-not-avail' | i18n }}</span>
+
+			</totvs-list-item-info>
+			<%
+				}
+			});
+		%>
+		</totvs-list-item-content>
+
+		<totvs-page-form style="padding: 5px 0 20px;">
+			<%
+
+
+			_.forEach(data, function(field) {
+					  
+				if (field.fieldName == "qt-um-fat") {	
+			
+			%>
+			<div class="col-xs-12 col-sm-6 col-md-3">
+				<label class="custom-field-label" for="item['qt-un-fat']" tooltip="{{ 'l-quantity' | i18n }}"
+					tooltip-placement="top">{{ 'l-quantity' | i18n }}</label>
+				<div class="input-group">
+					<input onClick="this.setSelectionRange(0, this.value.length)" data-v-max="9999999.9999" type="text"
+						data-a-sep="." data-a-dec="," autonumeric="" bind="" data-m-dec="4"
+						ng-keyup="lastShoppingController.setKeyUp($event, item)"
+						class="form-control ng-pristine ng-valid ng-touched" ng-model="item['qt-un-fat']"
+						ng-model-options="{ updateOn: 'blur' }" name="item[qt-un-fat]" id="item[qt-un-fat]"
+						ng-change="lastShoppingController.leaveItemField(item, 'qt-un-fat')"></input>
+					<span class="input-group-btn">
+						<a role="button" ng-if="lastShoppingController.showNumberReplacement == true"
+							class="btn btn-default"
+							ng-click="item['qt-un-fat'] = 0; lastShoppingController.leaveItemField(item, 'qt-un-fat')">
+							<span class="glyphicon glyphicon-remove"></span>
+						</a>
+						<a role="button" class="btn"
+							ng-class="item.itemsToAfterDrawAttention == true ? 'btn-success' : 'btn-default'"
+							title="{{ 'l-items-add-to-order' | i18n }}" ng-disabled="item.itemsToAfterDrawAttention"
+							ng-click="lastShoppingController.addItensWithTimeOut(item)">
+							<span ng-if="item.itemsToAfterDrawAttention != true">{{ 'l-add' | i18n }}</span>
+							<span ng-if="item.itemsToAfterDrawAttention == true">{{ 'l-adding' | i18n }}...</span>
+						</a>
+					</span>
+				</div>
+			</div>
+
+			<%
+				}
+				if (field.fieldName == "des-un-medida") {		
+			%>
+			<field type="combo" ng-disabled="lastShoppingController.keys(item.precosUnidade).length < 2"
+				ng-model="item['des-un-medida']" class="col-xs-12 col-sm-6 col-md-3"
+				ng-change="lastShoppingController.changeUn(item)" ng-options="k as k for (k, v) in item.precosUnidade">
+				<label>{{ 'l-UM-invoicing' | i18n }}</label>
+			</field>
+			<%
+				}
+
+				if (field.fieldName == "val-desconto-inform") {	
+			
+					%>
+			<div class="col-xs-12 col-sm-6 col-md-3">
+				<label class="custom-field-label" for="item['val-desconto-inform']"
+					tooltip="{{ 'Desc Informado' | i18n }}"
+					tooltip-placement="top">{{ 'l-val-pct-desconto-inform' | i18n }}</label>
+				<div class="input-group">
+					<input onClick="this.setSelectionRange(0, this.value.length)" data-v-max="9999999.9999" type="text"
+						data-a-sep="." data-a-dec="," autonumeric="" bind="" data-m-dec="4"
+						ng-keyup="lastShoppingController.setKeyUp($event, item)"
+						class="form-control ng-pristine ng-valid ng-touched" ng-model="item['val-desconto-inform']"
+						ng-model-options="{ updateOn: 'blur' }" name="item[val-desconto-inform]"
+						id="item[val-desconto-inform]"></input>
+
+					<span class="input-group-btn">
+						<a role="button" ng-if="lastShoppingController.showNumberReplacement == true"
+							class="btn btn-default" ng-click="item['val-desconto-inform'] = 0">
+							<span class="glyphicon glyphicon-remove"></span>
+						</a>
+					</span>
+				</div>
+			</div>
+
+			<%
+				}		
+
+				if (field.fieldName == "des-pct-desconto-inform") {	
+			%>
+
+			<div class="col-xs-12 col-sm-6 col-md-3">
+				<label class="custom-field-label" for="item['des-pct-desconto-inform']"
+					tooltip="{{ 'l-des-pct-desconto-inform' | i18n }}"
+					tooltip-placement="top">{{ 'l-des-pct-desconto-inform' | i18n }}</label>
+				<div class="input-group">
+					<input onClick="this.setSelectionRange(0, this.value.length)" type="text" maxlength="50"
+						ng-keyup="lastShoppingController.setKeyUp($event, item)"
+						class="form-control ng-pristine ng-valid ng-touched" ng-model="item['des-pct-desconto-inform']"
+						ng-model-options="{ updateOn: 'blur' }" name="item[des-pct-desconto-inform]"
+						id="item[des-pct-desconto-inform]"></input>
+
+					<span class="input-group-btn">
+						<a role="button" class="btn btn-default" ng-click="item['des-pct-desconto-inform'] = ''">
+							<span class="glyphicon glyphicon-remove"></span>
+						</a>
+					</span>
+				</div>
+			</div>
+
+			<%
+				}
+
+				if (field.fieldName == "vl-preori") {		
+			%>
+
+			<div ng-if="lastShoppingController.editablePrice && lastShoppingController.isRepresentative"
+				class="col-xs-12 col-sm-6 col-md-3">
+				<label class="custom-field-label" for="item['vl-preori']" tooltip="{{ 'l-original-price' | i18n }}"
+					tooltip-placement="top">{{ 'l-original-price' | i18n }}</label>
+				<div class="input-group">
+					<input onClick="this.setSelectionRange(0, this.value.length)" data-v-max="999999999.9999"
+						type="text" data-a-sep="." data-a-dec="," autonumeric="" bind="" data-m-dec="5"
+						ng-keyup="lastShoppingController.setKeyUp($event, item)"
+						class="form-control ng-pristine ng-valid ng-touched" ng-model="item['vl-preori']"
+						ng-model-options="{ updateOn: 'blur' }" name="item[vl-preori]" id="item[vl-preori]"></input>
+
+					<span class="input-group-btn">
+						<a role="button" class="btn btn-default clickable"
+							ng-click="lastShoppingController.getRelatedPrices(item);"
+							template-popover="/dts/mpd/html/order2/relatedPrices.html" container="body"
+							placement="bottom" large="true" title="{{ 'l-related-prices' | i18n }}"
+							popover-data="{'item': item, 'controller': lastShoppingController}"
+							promise="item.priceRelatedResult">
+							<span class="glyphicon glyphicon-usd" style="width: 25px;"></span>
+						</a>
+					</span>
+				</div>
+			</div>
+
+			<%
+				}
+			});
+			%>
+
+		</totvs-page-form>
+
+		<div class="col-md-12"
+			style="background-color: #f3f3f3; padding-top: 5px; padding-bottom: 5px; margin-bottom: 15px">
+			{{item.replacementtext}}
+		</div>
+
+	</totvs-list-item>
+
+	<div class="col-sm-12">
+		<totvs-list-pagination ng-if="lastShoppingController.hasMore" ng-click="lastShoppingController.loadMore();">
+		</totvs-list-pagination>
+	</div>
+
+</div>
+
+<div class="col-md-12"
+	style="padding-top: 15px; padding-bottom: 15px; padding-left: 0px !important; padding-right: 0px !important;">
+
+	<totvs-divider></totvs-divider>
+	<div class="col-md-3 col-sm-4 col-xs-12">
+		<div class="form-group">
+			<label for="sel1">{{'l-shopping-period' | i18n}}</label>
+			<select name="sel1" class="form-control"
+				ng-change="lastShoppingController.setPeriodShopping(lastShoppingController.shoppingPeriod)"
+				ng-model="lastShoppingController.shoppingPeriod">
+				<option value="1">30 {{'l-days' | i18n}}</option>
+				<option value="2">60 {{'l-days' | i18n}}</option>
+				<option value="3">90 {{'l-days' | i18n}}</option>
+				<option value="4">6 {{'l-months' | i18n}}</option>
+				<option value="5">1 {{'l-year' | i18n}}</option>
+			</select>
+		</div>
+	</div>
+	<div class="col-md-3 col-sm-4 col-xs-12">
+		<div class="form-group">
+			<label for="sel2">{{'l-show-qtd-last-shopping' | i18n}}</label>
+			<div name="sel2">
+				<div class="btn-group">
+					<button class="btn btn-default"
+						ng-class="{active: lastShoppingController.showNumberReplacement == true}"
+						ng-click="lastShoppingController.setShowNumberReplacement(true);">{{'l-yes' | i18n}}</button>
+					<button class="btn btn-default"
+						ng-class="{active: lastShoppingController.showNumberReplacement == false}"
+						ng-click="lastShoppingController.setShowNumberReplacement(false);">{{'l-no' | i18n}}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-3 col-sm-4 col-xs-12">
+		<div class="form-group">
+			<label for="sel2">{{'l-show-item-image' | i18n}}?</label>
+			<div name="sel2">
+				<div class="btn-group">
+					<button class="btn btn-default" ng-class="{active: lastShoppingController.showItemImage == true}"
+						ng-click="lastShoppingController.setShowItemImage(true);">{{'l-yes' | i18n}}</button>
+					<button class="btn btn-default" ng-class="{active: lastShoppingController.showItemImage == false}"
+						ng-click="lastShoppingController.setShowItemImage(false);">{{'l-no' | i18n}}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

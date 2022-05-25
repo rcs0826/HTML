@@ -1,0 +1,314 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+		<totvs-page-header>
+            <totvs-page-header-title title="Descálculo Pagamento Prestadores">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="4">
+                    <action class="btn btn-default" ng-click="controller.irPara('parametros');" style="color: #333; background-color: #fff; border-color: #ccc; padding-right: 15px;">
+                        Parâmetros
+                    </action>
+                    <action class="btn btn-default" ng-click="controller.irPara('selecao');" style="padding-right: 15px;">
+                        Seleção
+                    </action>
+                    <action class="btn btn-default" ng-click="controller.irPara('execucao');" style="padding-right: 15px;">
+                        Execução
+                    </action>
+                    <action class="btn btn-primary" ng-click="controller.generate();" style="padding-right: 15px;">
+                        Enviar
+                    </action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+	<totvs-page-content>
+        <totvs-page-form t-name="controller.filtersForm">
+            <a name="parametros" id="parametros" style="display: block;
+                position: relative;
+                top: -170px;
+                visibility: hidden;">
+            </a>
+            <legend>
+                Parâmetros
+            </legend>
+            <totvs-row>
+                <totvs-field totvs-radio
+                             t-options="[{value: 1, label: 'Por Período'},
+                                         {value: 2, label: 'Por Fatura'},
+                                         {value: 3, label: 'Reembolso'},
+                                         {value: 4, label: 'Adiantamento'}]"
+                             ng-model="controller.dadosTela.inParametro"
+                             ng-change="controller.changeInParametro()">
+                </totvs-field>
+            </totvs-row>
+            <br/>
+            <totvs-row>
+                <totvs-field totvs-checkbox
+                    class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                    label="Gerar arquivo .CSV"
+                    ng-model="controller.dadosTela.lgGerarCSV">
+                </totvs-field>
+                <totvs-field totvs-input
+                    class="col-lg-6 col-md-8 col-sm-12 col-xs-12" 
+                    label="Nome arquivo .CSV"
+                    ng-show="controller.dadosTela.lgGerarCSV"
+                    ng-model="controller.dadosTela.nmArquivoCSV">
+                </totvs-field>
+            </totvs-row>
+            
+
+            <a name="selecao" id="selecao" style="display: block;
+                position: relative;
+                top: -170px;
+                visibility: hidden;">
+            </a>
+            <legend name="selecao" id="selecao">
+                Seleção
+            </legend>
+            <totvs-row>
+                <totvs-field totvs-input numbers-only
+                       ng-required="true" 
+                       class="col-lg-6 col-md-8 col-sm-12 col-xs-12" 
+                       label="Unidade"                       
+                       ng-model="controller.dadosTela.unidade"
+                       ng-change="controller.onChangeParamTitleProvider()">                    
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-input numbers-only
+                       ng-required="true" 
+                       ng-model="controller.dadosTela.unidadePrest.start" 
+                       class="col-md-3" 
+                       label="Unidade da Prestadora Inicial"
+                       ng-change="controller.onChangeParamProvider()">                    
+                </totvs-field>
+                <totvs-field totvs-input numbers-only
+                       ng-required="true" 
+                       ng-model="controller.dadosTela.unidadePrest.end" 
+                       class="col-md-3" 
+                       label="Unidade da Prestadora Final"
+                       ng-change="controller.onChangeParamProvider()">                    
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-input numbers-only
+                       ng-required="true" 
+                       ng-model="controller.dadosTela.prestador.start" 
+                       class="col-md-3" 
+                       label="Código do Prestador Inicial"
+                       ng-change="controller.onChangeParamProvider()">                    
+                </totvs-field>
+                <totvs-field totvs-input numbers-only
+                       ng-required="true" 
+                       ng-model="controller.dadosTela.prestador.end" 
+                       class="col-md-3" 
+                       label="Código do Prestador Final"
+                       ng-change="controller.onChangeParamProvider()">                    
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-input numbers-only
+                       ng-required="true" 
+                       ng-model="controller.dadosTela.grupoPrest.start" 
+                       class="col-md-3" 
+                       label="Grupo do Prestador Inicial"
+                       ng-change="controller.onChangeParamProvider()">                    
+                </totvs-field>
+                <totvs-field totvs-input numbers-only
+                       ng-required="true" 
+                       ng-model="controller.dadosTela.grupoPrest.end" 
+                       class="col-md-3" 
+                       label="Grupo do Prestador Final"
+                       ng-change="controller.onChangeParamProvider()">                    
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-input numbers-only
+                       ng-required="true" 
+                       ng-model="controller.dadosTela.unidadeSec.start" 
+                       class="col-md-3" 
+                       label="Unidade da Seccional Inicial"
+                       ng-change="controller.onChangeParamProvider()">                    
+                </totvs-field>
+                <totvs-field totvs-input numbers-only
+                       ng-required="true" 
+                       ng-model="controller.dadosTela.unidadeSec.end" 
+                       class="col-md-3" 
+                       label="Unidade da Seccional Final"
+                       ng-change="controller.onChangeParamProvider()">                    
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field
+                    class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
+                    totvs-upload
+                    ng-model="controller.arqImportacao"
+                    t-show-drag-drop="true"
+                    t-drop-files-here="Arraste o arquivo aqui"
+                    t-remove="Remove"
+                    t-multiple="false"
+                    t-with-credentials="false"
+                    t-select="Carregar Prestadores CSV"
+                    t-show-file-list="false"
+                    t-save-field="Importar"
+                    t-status-uploaded="Upload realizado com sucesso"
+                    t-status-uploading="Realizando upload do arquivo"
+                    t-on-success="controller.onUploadSuccess"                    
+                    t-auto-upload="true"
+                    t-save-url="controller.uploadURL">
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>                
+                <field type="select"
+                        label="Prestadores"
+                        ng-model="controller.provider"
+                        canclean
+                        required>
+                    <zoom zoom-service="global.providerZoomController"
+                        zoom-init="{filters: controller.fixedFiltersProvider}"
+                        ng-change="controller.onChangeProvider()"
+                        ng-model="controller.provider"
+                        zoom-multiple return-object></zoom>
+                    <include>
+                        <ui-select-match placeholder="Código ou Nome do Prestador">
+                            {{$select.selected.objSelected ? $select.selected.objSelected.length + " - Selecionados" : 
+                                ($select.selected.cdUnidCdPrestador + ' - ' + $select.selected.nmPrestador)}}
+                            </ui-select-match>
+                        <ui-select-choices
+                                    repeat="item in $select.selected.objSelected"
+                                    refresh="controller.onChangeProvider($select.search)">
+                            <span ng-bind-html="item.cdUnidCdPrestador + ' - ' + item.nmPrestador| highlight: $select.search">
+                            </span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-input numbers-only
+                       ng-required="true"
+                       ng-model="controller.dadosTela.tpMedicina.start" 
+                       class="col-md-3" 
+                       label="Tipo de Medicina Inicial"
+                       zoom-service="hpr.medicineTypeZoomController"
+                       zoom-id="cdTipoMedicina"
+                       ng-change="controller.onChangeParamTitleProvider()">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+                <totvs-field totvs-input numbers-only
+                       ng-required="true"
+                       ng-model="controller.dadosTela.tpMedicina.end" 
+                       class="col-md-3" 
+                       label="Tipo de Medicina Final"
+                       zoom-service="hpr.medicineTypeZoomController"
+                       zoom-id="cdTipoMedicina"
+                       ng-change="controller.onChangeParamTitleProvider()">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-input numbers-only
+                       ng-required="true" 
+                       ng-disabled="controller.dadosTela.inParametro != 2"
+                       ng-model="controller.dadosTela.anoFatura.start"
+                       class="col-md-3" 
+                       label="Ano da Fatura Inicial">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+                <totvs-field totvs-input numbers-only
+                       ng-required="true" 
+                       ng-disabled="controller.dadosTela.inParametro != 2"
+                       ng-model="controller.dadosTela.anoFatura.end"
+                       class="col-md-3" 
+                       label="Ano da Fatura Final">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-input 
+                       ng-disabled="controller.dadosTela.inParametro != 2"
+                       ng-model="controller.dadosTela.serieFatura.start"
+                       class="col-md-3" 
+                       label="Série da Fatura Inicial">
+                </totvs-field>
+                <totvs-field totvs-input 
+                       ng-required="true" 
+                       ng-disabled="controller.dadosTela.inParametro != 2"
+                       ng-model="controller.dadosTela.serieFatura.end"
+                       class="col-md-3" 
+                       label="Série da Fatura Final">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-input 
+                       ng-disabled="controller.dadosTela.inParametro != 2"
+                       ng-model="controller.dadosTela.numeroFatura.start"
+                       class="col-md-3" 
+                       label="Número da Fatura Inicial">
+                </totvs-field>
+                <totvs-field totvs-input 
+                       ng-required="true" 
+                       ng-disabled="controller.dadosTela.inParametro != 2"
+                       ng-model="controller.dadosTela.numeroFatura.end"
+                       class="col-md-3" 
+                       label="Número da Fatura Final">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <totvs-field totvs-input 
+                       ng-required="true"
+                       class="col-lg-6 col-md-8 col-sm-12 col-xs-12" 
+                       label="Referência"
+                       ng-model="controller.dadosTela.referencia"
+                       zoom-service="hpp.tituPrestRefZoomController"
+                       zoom-init="{filters: controller.fixedFiltersTitleProviderRef}"
+                       zoom-id="referencia"
+                       ng-change="controller.onChangeParamTitleProvider()">
+                    <validator key="required">Este campo é obrigatório!</validator>
+                </totvs-field>
+            </totvs-row>
+            <totvs-row>
+                <field type="select"
+                        label="Títulos dos Prestadores"
+                        ng-model="controller.providerTitle"
+                        ng-show="controller.showTitle"
+                        ng-change="controller.onChangeTitleProvider()"
+                        canclean
+                        required>
+                    <zoom zoom-service="hpp.tituPrestZoomController"
+                        zoom-init="{filters: controller.fixedFiltersTitleProvider}"
+                        zoom-multiple return-object></zoom>
+                    <include>
+                        <ui-select-match placeholder="Código do Título"
+                                        ng-model="controller.providerTitle">
+                            {{$select.selected.objSelected ? $select.selected.toString() : 
+                                ('Prestador: ' + $select.selected.cdUnidCdPrestador + ' - Título: ' + $select.selected.codDoctoAp)}}
+                            </ui-select-match>
+                        <ui-select-choices
+                                    repeat="item in $select.selected.objSelected"
+                                    refresh="controller.onChangeTitleProvider($select.search)">
+                            <span ng-bind-html="'Prestador: ' + item.cdUnidCdPrestador + ' - Título: ' + item.codDoctoAp| highlight: $select.search">
+                            </span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+            </totvs-row>
+
+            <a name="execucao" id="execucao" style="display: block;
+                position: relative;
+                visibility: hidden;">
+            </a>
+            <totvs-execution hide-repeat="true" ng-model="controller.execution">
+                <totvs-execution-item type="execution">
+                    <gps-totvs-schedule program-name="hdtvwdescalcpagprest" ng-model="controller.schedule">
+                    </gps-totvs-schedule>
+                    <totvs-field totvs-select ng-model="controller.dadosTela.servidor" label="Servidor de Execução" t-no-data="Sem dados" placeholder="Selecione.."
+                        select-id="cdServidor" select-description="dsServidor" t-data-source="controller.options.servidores"
+                        canclean>
+                    </totvs-field>
+                </totvs-execution-item>
+            </totvs-execution>
+        </totvs-page-form>
+	</totvs-page-content>
+</totvs-page>

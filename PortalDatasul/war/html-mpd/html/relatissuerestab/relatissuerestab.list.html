@@ -1,0 +1,51 @@
+<totvs-page type="list" totvs-custom-element="customPage">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">Home</breadcrumb>
+            <breadcrumb>{{'l-relac-customer-establishment' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-relac-customer-establishment' | i18n}}" total="{{controller.totalRecords}}">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action>
+                    <action link="#/dts/mpd/relatissuerestab/new" icon="glyphicon-plus">{{ 'btn-add' | i18n }}</action>
+                </totvs-page-header-operation-action>
+                <totvs-page-header-operation-filter placeholder="{{ 'l-customer' | i18n }}" ng-submit="controller.quickSearch()"
+                    ng-model="controller.quickSearchText" advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers" ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-list-item ng-repeat="relatissuerestab in controller.listResult" totvs-custom-element="customListItem" class="tag-{{relatissuerestab.tag}}">
+            <totvs-list-item-header>
+                <totvs-list-item-title link="#/dts/mpd/relatissuerestab/detail/{{controller.getUrlEncode(relatissuerestab['cod-estabel'])}}/{{controller.getUrlEncode(relatissuerestab['cod-emitente'])}}"
+                    title="{{'l-emitente' | i18n}}: {{relatissuerestab['nome-abrev']}} - {{'l-estabel' | i18n}}: {{relatissuerestab['cod-estabel']}}">
+                </totvs-list-item-title>
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/mpd/relatissuerestab/edit/{{controller.getUrlEncode(relatissuerestab['cod-estabel'])}}/{{controller.getUrlEncode(relatissuerestab['cod-emitente'])}}"
+                        icon="glyphicon glyphicon-pencil">{{'btn-edit' | i18n }}</action>
+                    <action ng-click="controller.delete(relatissuerestab)" icon="glyphicon glyphicon-remove">{{'btn-remove' | i18n }}</action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+            <totvs-list-item-content>
+                <totvs-list-item-info title="{{ 'l-estabel' | i18n }}" value="{{relatissuerestab['cod-estabel']}} - {{relatissuerestab._['desc-cod-estabel']}}"></totvs-list-item-info>
+                <totvs-list-item-info title="{{ 'l-customer' | i18n }}" value="{{relatissuerestab['cod-emitente']}} - {{relatissuerestab['nome-abrev']}}"></totvs-list-item-info>
+                <totvs-list-item-info title="{{ 'l-natur-oper' | i18n }}" value="{{relatissuerestab['nat-operacao']}} - {{relatissuerestab._['desc-nat-operacao']}}"></totvs-list-item-info>
+                <totvs-list-item-info title="{{ 'l-nat-ope-ext' | i18n }}" value="{{relatissuerestab['nat-oper-ext']}} - {{relatissuerestab._['desc-nat-oper-ext']}}"></totvs-list-item-info>
+                <totvs-list-item-info title="{{ 'l-nr-tabpre' | i18n }}" value="{{relatissuerestab['nr-tabpre']}} - {{relatissuerestab._['desc-nr-tabpre']}}"></totvs-list-item-info>
+                <totvs-list-item-info title="{{ 'l-per-des-item' | i18n }}" value="{{relatissuerestab['val-perc-desc-clien'] | number }}"></totvs-list-item-info>
+                <totvs-list-item-info title="{{ 'l-pay-cond' | i18n }}" value="{{relatissuerestab['cod-cond-pag']}} - {{relatissuerestab._['desc-cod-cond-pagto']}}"></totvs-list-item-info>
+                <totvs-list-item-info title="{{ 'l-local-entrega' | i18n }}" value="{{relatissuerestab['cod-entrega']}}"></totvs-list-item-info>                
+                <totvs-list-item-info title="{{ 'l-nome-ab-rep' | i18n }}" value="{{relatissuerestab['cod-rep']}} - {{relatissuerestab._['desc-cod-rep']}}"></totvs-list-item-info>
+                <totvs-list-item-info title="{{ 'l-canal-venda' | i18n }}" value="{{relatissuerestab['cod-canal-venda']}} - {{relatissuerestab._['desc-cod-canal-venda']}}"></totvs-list-item-info>                
+            </totvs-list-item-content>
+        </totvs-list-item>
+        <totvs-list-pagination ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length" ng-click="controller.loadData(true);">
+        </totvs-list-pagination>
+    </totvs-page-content>
+
+</totvs-page>

@@ -1,0 +1,61 @@
+   <%
+   _.forEach(data.fields, function(pesquisaVisibleFields) {
+		if (pesquisaVisibleFields.fieldName == "preco-venda") {
+   %>
+
+
+   <totvs-page-detail-info title="{{ 'l-vl-preuni' | i18n }}" class="col-xs-12 col-sm-6 col-md-2">
+   	{{item['vl-preuni'] | number : 4}}
+   </totvs-page-detail-info>
+   <%
+   		}
+		if (pesquisaVisibleFields.fieldName == "ind-estoque") {		  
+   %>
+
+   <totvs-page-detail-info title="{{ 'l-inventory' | i18n }}" class="col-xs-12 col-sm-6 col-md-2">
+   	<%
+   		if (data.isRepresentative) {
+   	%>
+
+   		{{item['vl-saldo'] | number : 4}}
+
+   	<%
+   		}else{
+   	%>
+   		<span ng-if="item.hasBalance">{{ 'l-inventory-avail' | i18n }}</span>
+   		<span ng-if="!item.hasBalance">{{ 'l-inventory-not-avail' | i18n }}</span>
+   	<%
+   		}
+   	%>
+
+   </totvs-page-detail-info>
+
+   <%
+   		}
+		if (pesquisaVisibleFields.fieldName == "qt-um-fat") {					  
+   %>
+   <totvs-page-detail-info title="{{ 'l-quantity' | i18n }}" class="col-xs-12 col-sm-6 col-md-2">
+   	 {{item['qt-un-fat'] | number : 4}}
+   </totvs-page-detail-info>
+
+   <%
+   		}
+		if (pesquisaVisibleFields.fieldName == "cod-unid-med") {				  
+   %>
+
+   <totvs-page-detail-info title="{{ 'l-unidade-medida' | i18n }}" class="col-xs-12 col-sm-6 col-md-2">
+   	{{item['cod-un']}}
+   </totvs-page-detail-info>
+
+   <%
+   		}
+		if (pesquisaVisibleFields.fieldName == "des-pct-desconto-inform") {				  
+   %>
+   <totvs-page-detail-info title="{{ 'l-des-pct-desconto-inform' | i18n }}" class="col-xs-12 col-sm-6 col-md-3">
+   	{{item['des-pct-desconto-inform']}}
+   </totvs-page-detail-info>
+
+   <%
+   			}
+   		});
+   %>

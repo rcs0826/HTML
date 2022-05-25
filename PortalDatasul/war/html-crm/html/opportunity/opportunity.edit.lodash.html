@@ -1,0 +1,318 @@
+
+<totvs-modal-header>
+
+	{{ (controller.model.num_id > 0 ? controller.model.des_oportun_vda : ('btn-new-opportunity' | i18n: []: 'dts/crm' )) }}
+
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-lodash-template src="/dts/crm/html/opportunity/opportunity.edit.content.html"
+						   template-data="controller.accessRestriction"></totvs-lodash-template>
+
+	<div class="row">
+	<br>
+
+    <div class="crm-group-accordion">
+        <accordion close-others="false">
+            <accordion-group is-open="controller.group.custom.open"
+                            ng-if="controller.customFields.length > 0"
+                            class="crm-panel">
+                <accordion-heading>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            {{ 'l-custom-fields' | i18n: []: 'dts/crm' }}
+                            <i class="pull-right glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  controller.group.custom.open,
+                                'glyphicon-chevron-right': !controller.group.custom.open}">
+                            </i>
+                        </div>
+                    </div>
+                </accordion-heading>
+                <div ng-include="'/dts/crm/html/attribute/attribute-fields.content.html'"></div>
+            </accordion-group>
+
+
+                <% if ((!data["l-panel-gp"] || data["l-panel-gp"].log_visivel === true)
+                || (!data["l-panel-complement"] || data["l-panel-complement"].log_visivel === true)) { %>
+
+
+                <% if ((!data["l-panel-gp"] || data["l-panel-gp"].log_visivel === true)) { %>
+                <accordion-group is-open="controller.group.gpinformation.open"
+                                ng-if="controller.isIntegratedWithGP === true"
+                                class="crm-panel">
+
+                    <accordion-heading>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                {{ 'l-gp-information' | i18n: []: 'dts/crm' }}
+                                <i class="pull-right glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  controller.group.gpinformation.open,
+                                            'glyphicon-chevron-right': !controller.group.gpinformation.open}">
+                                </i>
+                            </div>
+                        </div>
+                    </accordion-heading>
+
+                    <% if ((!data["l-number-of-lifes"] || data["l-number-of-lifes"].log_visivel === true) ||
+                    (!data["l-value-simulation"] || data["l-value-simulation"].log_visivel === true) ||
+                    (!data["l-number-of-lifes-accomplished"] || data["l-number-of-lifes-accomplished"].log_visivel === true) ||
+                    (!data["l-average-life-value"] || data["l-average-life-value"].log_visivel === true)) { %>
+
+                    <fieldset class="row">
+                        <totvs-field
+                            totvs-decimal
+                            ng-model="controller.model.val_realzdo_simul"
+                            m-dec="2"
+                            placeholder="{{ 'l-value-simulation' | i18n: []: 'dts/crm' }}"
+                            label="{{ 'l-value-simulation' | i18n: []: 'dts/crm' }}"
+                            canclean="0"
+                            <% if ((!data["l-value-simulation"] || data["l-value-simulation"].log_editavel === true)) { %>
+                            ng-disabled="controller.isIntegratedWithGP === false"
+                            <% } else { %>
+                            ng-disabled="true"
+                            <% } %>>
+                        </totvs-field>
+
+                        <totvs-field
+                            totvs-decimal
+                            ng-model="controller.model.val_med_vida"
+                            m-dec="2"
+                            placeholder="{{ 'l-average-life-value' | i18n: []: 'dts/crm' }}"
+                            label="{{ 'l-average-life-value' | i18n: []: 'dts/crm' }}"
+                            canclean="0"
+                            <% if ((!data["l-average-life-value"] || data["l-average-life-value"].log_editavel === true)) { %>
+                            ng-disabled="controller.isIntegratedWithGP === false"
+                            <% } else { %>
+                            ng-disabled="true"
+                            <% } %>>
+                        </totvs-field>
+
+                        <totvs-field
+                            totvs-decimal
+                            ng-model="controller.model.qti_nume_vida_realzdo"
+                            m-dec="0"
+                            v-max="6"
+                            placeholder="{{ 'l-number-of-lifes-accomplished' | i18n: []: 'dts/crm' }}"
+                            label="{{ 'l-number-of-lifes-accomplished' | i18n: []: 'dts/crm' }}"
+                            canclean="0"
+                            <% if ((!data["l-number-of-lifes-accomplished"] || data["l-number-of-lifes-accomplished"].log_editavel === true)) { %>
+                            ng-disabled="controller.isIntegratedWithGP === false"
+                            <% } else { %>
+                            ng-disabled="true"
+                            <% } %>>
+                        </totvs-field>
+
+                        <totvs-field
+                            totvs-decimal
+                            ng-model="controller.model.qti_nume_vida"
+                            m-dec="0"
+                            v-max="6"
+                            placeholder="{{ 'l-number-of-lifes' | i18n: []: 'dts/crm' }}"
+                            label="{{ 'l-number-of-lifes' | i18n: []: 'dts/crm' }}"
+                            canclean="0"
+                            <% if ((!data["l-number-of-lifes"] || data["l-number-of-lifes"].log_editavel === true)) { %>
+                            ng-disabled="controller.isIntegratedWithGP === false"
+                            <% } else { %>
+                            ng-disabled="true"
+                            <% } %>>
+                        </totvs-field>
+
+                    </fieldset>
+                    <% } %>
+
+                </accordion-group>
+                <% } %>
+
+                <% if ((!data["l-panel-complement"] || data["l-panel-complement"].log_visivel === true)) { %>
+                <accordion-group is-open="controller.group.complement.open"
+                                ng-click="controller.onOpenComplementPanel()"
+                                class="crm-panel">
+
+                    <accordion-heading>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                {{ 'l-complement' | i18n: []: 'dts/crm' }}
+                                <i class="pull-right glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  controller.group.complement.open,
+                                            'glyphicon-chevron-right': !controller.group.complement.open}">
+                                </i>
+                            </div>
+                        </div>
+                    </accordion-heading>
+
+                    <fieldset class="row">
+
+                        <% if ((!data["l-campaign"] || data["l-campaign"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.model.ttCampanha"
+                            ng-animate="'animate-if'"
+                            <% if (!(!data["l-campaign"] || data["l-campaign"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            canclean="undefined">
+
+                            <label>{{ 'l-campaign' | i18n: []: 'dts/crm' }}</label>
+
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-campaign' | i18n: []: 'dts/crm' }}">
+                                    {{ $select.selected.nom_campanha }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="campaign in controller.campaigns | filter: $select.search track by $index">
+                                    <span ng-bind-html="campaign.nom_campanha | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-budget"] || data["l-budget"].log_visivel === true)) { %>
+                        <totvs-field
+                            totvs-decimal
+                            ng-model="controller.model.val_bgc"
+                            m-dec="2"
+                            placeholder="{{ 'l-budget' | i18n: []: 'dts/crm' }}"
+                            label="{{ 'l-budget' | i18n: []: 'dts/crm' }}"
+                            canclean="undefined"
+                            <% if (!(!data["l-budget"] || data["l-budget"].log_editavel === true)) { %>
+                            ng-disabled="true">
+                            <% } %>>
+                        </totvs-field>
+                        <% } %>
+
+                        <% if ((!data["l-date-close-forecast"] || data["l-date-close-forecast"].log_visivel === true)) { %>
+                        <field type="date"
+                            class="col-md-6"
+                            placeholder="{{ 'l-date-close-forecast' | i18n: []: 'dts/crm' }}"
+                            <% if (!(!data["l-date-close-forecast"] || data["l-date-close-forecast"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            ng-model="controller.model.dat_prev_fechto">
+                            <label>{{ 'l-date-close-forecast' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-date-close"] || data["l-date-close"].log_visivel === true)) { %>
+                        <field type="date"
+                            class="col-md-6"
+                            <% if ((!data["l-date-close"] || data["l-date-close"].log_editavel === true)) { %>
+                            ng-disabled="!controller.isClosedPhase"
+                            <% } else { %>
+                            ng-disabled="true"
+                            <% } %>
+
+                            placeholder="{{ 'l-date-close' | i18n: []: 'dts/crm' }}"
+                            ng-model="controller.model.dat_fechto_oportun">
+                            <label>{{ 'l-date-close' | i18n: []: 'dts/crm' }}</label>
+                        </field>
+                        <% } %>
+
+                        <% if ((!data["l-quantity-items"] || data["l-quantity-items"].log_visivel === true)) { %>
+                        <totvs-field
+                            totvs-decimal
+                            class="col-xs-6 col-sm-6"
+                            ng-if="controller.isIntegratedWithGP !== true"
+                            label="{{ 'l-quantity-items' | i18n: []: 'dts/crm' }}"
+                            placeholder="{{ 'l-quantity-items' | i18n: []: 'dts/crm' }}"
+                            ng-model="controller.model.qti_nume_vida"
+                            m-dec="0"
+                            v-max="6"
+                            canclean="undefined"
+                            <% if (!(!data["l-quantity-items"] || data["l-quantity-items"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>>
+                        </totvs-field>
+                        <% } %>
+
+                        <% if ((!data["l-suspended"] || data["l-suspended"].log_visivel === true)) { %>
+                        <field type="checkbox"
+                            class="col-xs-6 col-sm-6"
+                            ng-model="controller.model.log_suspenso"
+                            <% if (!(!data["l-suspended"] || data["l-suspended"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            label="{{ 'l-suspended' | i18n: []: 'dts/crm' }}">
+                        </field>
+                        <% } %>
+
+                    </fieldset>
+
+                </accordion-group>
+                <% } %>
+                <% if ((!data["l-panel-sales"] || data["l-panel-sales"].log_visivel === true)) { %>
+                <accordion-group is-open="controller.group.sales.open"
+                                ng-if="controller.isIntegratedWithEMS === true && controller.isControlCifFobEnable"
+                                class="crm-panel">
+
+                    <accordion-heading>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                {{ 'l-sales' | i18n: []: 'dts/crm' }}
+                                <i class="pull-right glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  controller.group.sales.open,
+                                            'glyphicon-chevron-right': !controller.group.sales.open}">
+                                </i>
+                            </div>
+                        </div>
+                    </accordion-heading>
+
+                    <fieldset class="row">
+
+                        <% if ((!data["l-cif-city"] || data["l-cif-city"].log_visivel === true)) { %>
+                        <field type="input"
+                            ng-model="controller.model.nom_cidad_cif"
+                            ng-animate="'animate-if'"
+                            placeholder="{{ 'l-cif-city' | i18n: []: 'dts/crm' }}"
+                            maxlength="50"
+                            canclean="undefined"
+                            <% if (!(!data["l-cif-city"] || data["l-cif-city"].log_editavel === true)) { %>
+                            ng-disabled="true"
+                            <% } %>
+                            >
+
+                            <label>{{ 'l-cif-city' | i18n: []: 'dts/crm' }}</label>
+
+                            <validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+                            <validator key="maxlength">{{ 'msg-maxlength' | i18n: []: 'dts/crm' }} 50</validator>
+                        </field>
+                        <% } %>
+                        <% if ((!data["l-establishment"] || data["l-establishment"].log_visivel === true)) { %>
+                        <field type="select"
+                            ng-model="controller.model.ttEstabelecimento"
+                            canclean="undefined"
+                            <% if (!(!data["l-establishment"] || data["l-establishment"].log_editavel === true)) { %>
+                                ng-disabled="true"
+                            <% } else { %>
+                                ng-disabled="controller.selectionEstablishmentType === 1 || controller.selectionEstablishmentType === 2"
+                            <% } %>
+                            >
+                            <label>{{ 'l-establishment' | i18n: []: 'dts/crm' }}</label>
+                            <zoom zoom-service="crm.crm_estab.zoom"></zoom>
+                            <include>
+                                <ui-select-match placeholder="{{ 'l-establishment' | i18n: []: 'dts/crm' }}">
+                                    {{$select.selected.nom_estab}} {{$select.selected.log_integrad_erp ? ' (' + $select.selected.cod_estab_erp + ')' : '' }}
+                                </ui-select-match>
+                                <ui-select-choices repeat="estab in controller.establishments track by $index"
+                                                refresh="controller.getEstablishments($select.search)"
+                                                refresh-delay="500">
+                                    <span ng-bind-html="estab.nom_estab + (estab.log_integrad_erp ? ' (' + estab.cod_estab_erp + ')' : '') | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </include>
+                        </field>
+                        <% } %>
+                    </fieldset>
+
+                </accordion-group>
+                <% } %>
+
+            </accordion>
+        </div>
+	</div>
+	<% } %>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>
+

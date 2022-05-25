@@ -1,0 +1,208 @@
+<div ng-controller="acr.dashboard.inquirecustdocs.Controller as dashInquireCustDocsCtrl">
+    <totvs-widget>
+        <acr-totvs-widget-header list="dashInquireCustDocsCtrl.showList()"
+                                 charts="dashInquireCustDocsCtrl.showCharts()"
+                                 settings="dashInquireCustDocsCtrl.showConfig()"
+								 title="{{'l-customer-docs' | i18n : [] : 'dts/acr/' }}">
+			<i class="glyphicon glyphicon-info-sign hidden-xs"
+			   tooltip-placement="bottom"
+			   tooltip-html="dashInquireCustDocsCtrl.tooltipHelp">
+			</i>
+		</acr-totvs-widget-header>
+        <totvs-widget-body>
+
+            <div>			
+                <div class="no-gutter" ng-show="dashInquireCustDocsCtrl.listShow">
+		        <br>
+                    <div class="col-md-6">
+
+                        <h5 class="col-md-6">
+                            <b>{{ 'l-expired' | i18n : [] : 'dts/acr/' }}</b>
+                        </h5>
+
+                        <h5 class="col-md-6 text-right"
+                            ng-if="dashInquireCustDocsCtrl.vencidos == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/acr'}}
+                        </h5>
+
+                        <h5 ng-click="dashInquireCustDocsCtrl.openList(1,null);"
+                            class="col-md-6 text-right clickable btn-link" 
+                            ng-if="dashInquireCustDocsCtrl.vencidos != undefined">
+                            <b>{{ dashInquireCustDocsCtrl.vencidos | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/acr' )}}</b>
+                        </h5>
+
+                        <div ng-if="dashInquireCustDocsCtrl.listResult != undefined">
+
+                            <totvs-list-item 
+                                ng-repeat="titulo in dashInquireCustDocsCtrl.listResult" 
+                                ng-if="((titulo.numSituacao == 1) && ((dashInquireCustDocsCtrl.aVencer != 0) || (dashInquireCustDocsCtrl.vencidos != 0)))">
+
+                                <totvs-list-item-content>
+
+                                    <totvs-list-item-info
+                                        class="col-md-6"
+                                        value="{{dashInquireCustDocsCtrl.traduzFaixa(titulo['numFaixaVencto'])}}">
+                                    </totvs-list-item-info>
+
+                                    <totvs-list-item-info
+                                        ng-click="dashInquireCustDocsCtrl.openList(1,titulo['numFaixaVencto']);"
+                                        class="col-md-6 text-right clickable btn-link"
+                                        value="{{titulo['valSdoFaixaVencto'] | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/acr' )}}">
+                                    </totvs-list-item-info>
+
+                                </totvs-list-item-content>
+                            </totvs-list-item>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <h5 class="col-md-6">
+                            <b>{{ 'l-not-expired' | i18n : [] : 'dts/acr/' }}</b>
+                        </h5>
+
+                        <h5 class="col-md-6 text-right" 
+                            ng-if="dashInquireCustDocsCtrl.aVencer == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/acr'}}
+                        </h5>
+
+                        <h5 ng-click="dashInquireCustDocsCtrl.openList(2,null);"
+                            class="col-md-6 text-right clickable btn-link"
+                            ng-if="dashInquireCustDocsCtrl.aVencer != undefined">
+                            <b>{{ dashInquireCustDocsCtrl.aVencer | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/acr' ) }}</b>
+                        </h5>
+
+                        <div ng-if="dashInquireCustDocsCtrl.listResult != undefined">
+
+                            <totvs-list-item
+                            ng-repeat="titulo in dashInquireCustDocsCtrl.listResult"
+                            ng-if="((titulo.numSituacao == 2) && ((dashInquireCustDocsCtrl.aVencer != 0) || (dashInquireCustDocsCtrl.vencidos != 0)))">
+
+                                <totvs-list-item-content>
+
+                                    <totvs-list-item-info
+                                        class="col-md-6"
+                                        value="{{dashInquireCustDocsCtrl.traduzFaixa(titulo['numFaixaVencto'])}}">
+                                    </totvs-list-item-info>
+
+                                    <totvs-list-item-info
+                                        ng-click="dashInquireCustDocsCtrl.openList(2,titulo['numFaixaVencto']);"
+                                        class="col-md-6 text-right clickable btn-link"
+                                        value="{{titulo['valSdoFaixaVencto'] | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/acr' ) }}">
+                                    </totvs-list-item-info>
+
+                                </totvs-list-item-content>
+                            </totvs-list-item>
+                        </div>
+                    </div>
+                    <div ng-if="((dashInquireCustDocsCtrl.vencidos == 0) && (dashInquireCustDocsCtrl.aVencer == 0))">
+                        <div class="col-md-12">
+
+                            <totvs-divider></totvs-divider>
+
+                            <totvs-widget>
+                                <totvs-widget-header class="text-center">
+                                    {{ 'msg-no-documents' | i18n: []: 'dts/acr' }}
+                                </totvs-widget-header>
+                            </totvs-widget>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="no-gutter" ng-show="dashInquireCustDocsCtrl.chartsShow">
+                <br>
+
+                    <div class="col-md-6">
+
+                        <h5 class="col-md-6">
+                            <b>{{ 'l-expired' | i18n : [] : 'dts/acr/' }}</b>
+                        </h5>
+
+                        <h5 class="col-md-6 text-right"
+                            ng-if="dashInquireCustDocsCtrl.vencidos == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/acr'}}
+                        </h5>
+
+                        <h5 ng-click="dashInquireCustDocsCtrl.openList(1,null);"
+                            class="col-md-6  text-right clickable btn-link"
+                            ng-if="dashInquireCustDocsCtrl.vencidos != undefined">
+                            <b>{{dashInquireCustDocsCtrl.vencidos | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/acr' ) }}</b>
+                        </h5>
+
+                    </div>
+                    <div class="col-md-6">
+
+                        <h5 class="col-md-6">
+                            <b>{{ 'l-not-expired' | i18n : [] : 'dts/acr/' }}</b>
+                        </h5>
+
+                        <h5 class="col-md-6 text-right"
+                            ng-if="dashInquireCustDocsCtrl.aVencer == undefined">
+                            {{ 'l-loading-portlet' | i18n : [] : 'dts/acr'}}
+                        </h5>
+
+                        <h5 ng-click="dashInquireCustDocsCtrl.openList(2,null);"
+                            class="col-md-6 text-right clickable btn-link"
+                            ng-if="dashInquireCustDocsCtrl.aVencer != undefined">
+                            <b>{{dashInquireCustDocsCtrl.aVencer | currency: ( 'l-currency-format-wtout-space' | i18n: []: 'dts/acr' ) }}</b>
+                        </h5>
+
+                    </div>
+
+                    <div class="col-md-12 no-gutter">
+
+                        <acr-totvs-chart 
+                            t-type-chart="column"
+                            t-on-click="dashInquireCustDocsCtrl.onClick"
+                            t-series="dashInquireCustDocsCtrl.series"
+                            t-categories="dashInquireCustDocsCtrl.categories"
+                            t-width="dashInquireCustDocsCtrl.tamGrafico">
+                        </acr-totvs-chart>
+
+                    </div>		        
+                </div>
+                <div ng-hide="dashInquireCustDocsCtrl.listShow == true || dashInquireCustDocsCtrl.chartsShow == true">
+                    <form>
+                        <div class="row">
+
+                            <totvs-field 
+                                totvs-datepicker 
+                                class="col-md-12" 
+                                ng-model="dashInquireCustDocsCtrl.dataemis" 
+                                label="{{ 'l-after-issue-date' | i18n: []: 'dts/acr' }}"
+                                t-mask-date="00/00/0000" 
+                                required="true"
+                                canclean>
+                                <validator key="required">{{ 'l-required' | i18n }}</validator>
+                            </totvs-field>
+
+                            <totvs-field 
+                                totvs-datepicker 
+                                class="col-md-12" 
+                                ng-model="dashInquireCustDocsCtrl.datavenc" 
+                                label="{{ 'l-due-date-until' | i18n: []: 'dts/acr' }}"
+                                t-mask-date="00/00/0000"
+                                required="true"
+                                canclean>
+                                <validator key="required">{{ 'l-required' | i18n }}</validator>
+                            </totvs-field>
+
+                        </div>
+                    </form>
+                    <hr>            	                
+                    <a role="button" class="btn btn-default pull-right" ng-click="dashInquireCustDocsCtrl.applyConfig()">&nbsp; {{ 'btn-apply' | i18n : [] : 'dts/acr/' }} &nbsp; </a>
+                </div>			
+            </div>
+			
+        </totvs-widget-body>
+
+        <totvs-widget-footer>
+            <totvs-widget-footer-body>
+            </totvs-widget-footer-body>
+            <totvs-widget-footer-actions>
+                <action class="clickable btn-link" ng-click="dashInquireCustDocsCtrl.openList(null,null);">{{ 'l-detail' | i18n : [] : 'dts/acr/' }}</action>
+            </totvs-widget-footer-actions>            
+        </totvs-widget-footer>
+    </totvs-widget>
+</div>       
+        

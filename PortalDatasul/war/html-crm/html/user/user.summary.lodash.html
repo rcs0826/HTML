@@ -1,0 +1,117 @@
+<totvs-modal-header>
+	{{ controller.model.nom_usuar  }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-list-item-content>
+
+		<% if ((!data["l-user"] || data["l-user"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="controller.model.nom_usuar != ''"
+			class="col-xs-12"
+			title="{{ 'l-user' | i18n: []: 'dts/crm' }}">
+			{{ controller.model.nom_usuar }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-email"] || data["l-email"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="controller.model.nom_email != ''"
+			class="col-xs-12"
+			title="{{ 'l-email' | i18n: []: 'dts/crm' }}">
+			{{ controller.model.nom_email }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-group-access"] || data["l-group-access"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="controller.model.nom_grp_aces != ''"
+			class="col-xs-12"
+			title="{{ 'l-group-access' | i18n: []: 'dts/crm' }}">
+			{{ controller.model.nom_grp_aces }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-extension-line"] || data["l-extension-line"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="controller.model.num_ramal > 0"
+			class="col-xs-12"
+			title="{{ 'l-extension-line' | i18n: []: 'dts/crm' }}">
+			{{ controller.model.num_ramal }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-user-create"] || data["l-user-create"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="controller.model.cod_usuario != ''"
+			class="col-xs-12"
+			title="{{ 'l-user-open' | i18n: []: 'dts/crm' }}">
+			{{ controller.model.cod_usuario }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-access-level"] || data["l-access-level"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="controller.model.idi_niv_aces > 0"
+			class="col-xs-12"
+			title="{{ 'l-access-level' | i18n: []: 'dts/crm' }}">
+			{{ controller.model.nom_niv_aces }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-integrates-outlook"] || data["l-integrates-outlook"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12"
+			title="{{ 'l-integrates-outlook' | i18n: []: 'dts/crm' }}">
+			{{ controller.model.log_integrad_outlook ? 'l-yes' : 'l-no' | i18n: []: 'dts/crm' }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-suspended"] || data["l-suspended"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			class="col-xs-12"
+			title="{{ 'l-suspended' | i18n: []: 'dts/crm' }}">
+			{{ controller.model.log_suspenso ? 'l-yes' : 'l-no' | i18n: []: 'dts/crm' }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-hier-level"] || data["l-hier-level"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="(controller.model.num_id_hier > 0 && controller.model.ttHierTime)"
+			class="col-xs-12"
+			title="{{ 'l-hier-level' | i18n: []: 'dts/crm' }}">
+			{{ controller.model.ttHierTime.nom_niv_aces }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-establishment"] || data["l-establishment"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="(controller.model.num_id_estab > 0 && controller.model.ttEstabelecimento)"
+			class="col-xs-12"
+			title="{{ 'l-establishment' | i18n: []: 'dts/crm' }}">
+			{{ controller.model.ttEstabelecimento.nom_estab }}
+		</totvs-list-item-info>
+		<% } %>
+
+		<% if ((!data["l-group-user"] || data["l-group-user"].log_visivel === true)) { %>
+		<totvs-list-item-info
+			ng-if="(controller.model.num_id_grp_usuar > 0 && controller.model.ttGrupoUsuario)"
+			class="col-xs-12"
+			title="{{ 'l-group-user' | i18n: []: 'dts/crm' }}">
+			{{ controller.model.ttGrupoUsuario.nom_grp_usuar }}
+		</totvs-list-item-info>
+		<% } %>
+
+	</totvs-list-item-content>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+
+	<button class="btn btn-default"
+				ng-click="controller.close()">
+			{{ 'btn-close' | i18n: []: 'dts/crm' }}
+	</button>
+
+</totvs-modal-footer>

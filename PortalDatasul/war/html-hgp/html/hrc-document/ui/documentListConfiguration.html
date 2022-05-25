@@ -1,0 +1,95 @@
+<totvs-modal-header>
+    Configurações
+</totvs-modal-header>
+<totvs-modal-body style="overflow-y: auto; padding-left: 0px; padding-right: 0px;">
+    
+    <form ng-submit="controller.saveConfiguration()">
+        <fieldset>
+            <div class="field field-container ng-scope">
+                <label class="field-label col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                       style="font-size:15px !important">
+                    Quantidade de registros por busca
+                </label>
+                <label class="field-label col-lg-3 col-md-3 col-sm-3 col-xs-3"
+                       style="margin-top: 12px;">
+                    Documento:
+                </label>
+                <field type="decimal" required
+                    min="0" max="99"
+                    data-v-max="99"
+                    m-dec="0"
+                    class="col-lg-9 col-md-9 col-sm-9 col-xs-9"
+                    data-ng-model="controller.config.qtdRegistrosBusca">
+                </field>
+                <label class="field-label col-lg-3 col-md-3 col-sm-3 col-xs-3"
+                       style="margin-top: 12px;">
+                    Movimento:
+                </label>
+                <field type="decimal" required
+                        min="0" max="999"
+                        data-v-max="999"
+                        m-dec="0"
+                        class="col-lg-9 col-md-9 col-sm-9 col-xs-9"
+                        data-ng-model="controller.config.qtdRegistrosBuscaMovto">
+                </field>
+            </div>
+
+            <field type="decimal" required
+                   min="0" max="99"
+                   data-v-max="99"
+                   m-dec="0"
+                   class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                   data-ng-model="controller.config.minDoctosExecBatch"
+                   label="Quantidade mínima de documentos para exec. de processos em batch">
+            </field>
+
+            <field type="decimal" required
+                   min="0" max="99"
+                   data-v-max="99"
+                   m-dec="0"
+                   class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                   data-ng-model="controller.config.minMovtosSaveExecBatch"
+                   label="Quantidade mínima de movimentos para salvar o documento em batch">
+            </field>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 field field-container">
+              <div class="field-container">
+                <label class="field-label">Filtros</label>
+                <br>
+                <div ng-repeat="filters in controller.config.disclaimers">
+                    <span style="margin-left: 15px;">{{filters.title}}</span>
+                    <br>
+                </div>
+                <div ng-if="controller.config.disclaimers == undefined
+                         || controller.config.disclaimers.length == 0">
+                    <span>Não existem filtros selecionados</span>
+                    <br>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 10px;">
+                <button type="button" class="btn" ng-click="controller.setCurrentFilterAsDefault()">Definir filtro atual como padrão</button>
+            </div>
+
+            <field type="checkbox"
+                   class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                   data-ng-model="controller.config.lgBuscarAoAbrirTela"
+                   label="Realizar busca ao abrir a tela"
+                   ng-disabled="controller.config.disclaimers == undefined
+                             || controller.config.disclaimers.length == 0">
+            </field>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 10px;">
+                <button type="button" class="btn" ng-click="controller.openCSVColumnsConfiguration()">Definir colunas CSV</button>
+            </div>
+            
+        </fieldset> 
+        
+        <input type="submit" class="submitButton" style="display: none"/>
+    </form>    
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button type="button" class="btn" ng-click="controller.cancel()">Fechar</button>
+    <input type="button" value="Salvar" class="btn btn-primary" ng-click="controller.onSaveClick()"/>
+</totvs-modal-footer>

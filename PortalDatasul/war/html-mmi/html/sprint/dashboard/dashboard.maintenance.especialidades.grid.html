@@ -1,0 +1,79 @@
+<link type="text/css" rel="stylesheet" href="/dts/mmi/html/sprint/especialidade/especialidade.css"></link>
+<div class="row my-col-md-9" style="margin: 0px;" ng-style="especialidadeGridCtrl.obterAltura()">
+  <div class="row my-col-md-9" 
+       style="margin-left:2px;
+              padding-right: 2px; 
+              padding-left: 2px;
+              margin-right: 2px; 
+              border: 1px solid lightgray; 
+              border-radius: 4px;
+              padding-top: 2px;
+              padding-bottom: 10px;">
+    <label  class="my-col-md-12" 
+            style="padding-top: 7px; 
+                   padding-left: 7px; 
+                   padding-right: 0px;">
+                  {{especialidadeGridCtrl.tituloEspecialidade}} </label>
+    <div class="my-col-md-12" style="padding-left: 6px; padding-right: 2px;" 
+        style="padding-left: 6px;padding-right: 2px;">
+      <div class="my-col-md-12"  style="margin-bottom: 6px">
+        <totvs-grid 
+          grid="especialidadeGridCtrl.listaCapacidadePrev"
+          grid-data="especialidadeGridCtrl.capacidadePrev"
+          grid-height="205"
+          auto-resize-content="true"
+          class="k-header">
+          <totvs-grid-column field="codTipHora" width="400" >{{'l-capabilities-scheduled-hours' | i18n}}</totvs-grid-column>
+          <totvs-grid-column field="valPrevisAte"  width="100" class="text-right" filter="number: 2" header-template="especialidadeGridCtrl.dataAte"></totvs-grid-column>
+          <totvs-grid-column field="valPrevis" width="100" class="text-right" filter="number: 2">{{'l-period'| i18n}}</totvs-grid-column>
+        </totvs-grid>
+      </div>
+
+      <div class="my-col-md-12"  style="margin-bottom: 6px">
+        <totvs-grid 
+          grid="especialidadeGridCtrl.listaCargaPrev"
+          grid-data="especialidadeGridCtrl.cargaPrev"
+          grid-height="205"
+          auto-resize-content="true"
+          class="k-header">
+          <totvs-grid-column field="codTipHora" width="400">{{'l-charges-scheduled-hours' | i18n}}</totvs-grid-column>
+          <totvs-grid-column field="valPrevisAte" width="100" class="text-right" filter="number: 2" header-template="especialidadeGridCtrl.dataAte" ></totvs-grid-column>
+          <totvs-grid-column field="valPrevis" width="100" class="text-right" filter="number: 2">{{'l-period'| i18n}}</totvs-grid-column>
+        </totvs-grid>
+      </div>
+
+      <div class="my-col-md-12"  style="margin-bottom: 6px">
+        <totvs-grid 
+          grid="especialidadeGridCtrl.listaCargaProgramada"
+          grid-data="especialidadeGridCtrl.cargaProgramada"
+          grid-height="70"
+          auto-resize-content="true"
+          class="k-header">
+          <totvs-grid-column field="codTipHora" width="400">{{'l-scheduled-loads-hours' | i18n}}</totvs-grid-column>
+          <totvs-grid-column field="valProgramacAte" width="100" class="text-right" filter="number: 2" header-template="especialidadeGridCtrl.dataAte"></totvs-grid-column>
+          <totvs-grid-column field="valProgramac" width="100" class="text-right" filter="number: 2">{{'l-period'| i18n}}</totvs-grid-column>
+        </totvs-grid>
+      </div>
+
+      <div class="my-col-md-12"  style="margin-bottom: 6px">
+        <totvs-grid 
+          grid="especialidadeGridCtrl.listaResumo"
+          grid-data="especialidadeGridCtrl.resumo"
+          grid-height="205"
+          auto-resize-content="true"
+          class="k-header">
+          <totvs-grid-column field="codTipHora" width="400">{{'l-summary-hours' | i18n}}</totvs-grid-column>
+          <totvs-grid-column field="valRealizAte" width="100" class="text-right" filter="number: 2" header-template="especialidadeGridCtrl.dataAte" ></totvs-grid-column>
+          <totvs-grid-column field="valRealiz" width="100" class="text-right" filter="number: 2">{{'l-period'| i18n}}</totvs-grid-column>
+        </totvs-grid>
+      </div> 
+    </div>
+  </div>
+
+</div>
+
+<style>
+  .k-header {
+      background-color: #b6c8d8 !important }
+
+</style>

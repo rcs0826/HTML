@@ -1,0 +1,71 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/ekanban.css"/>
+<totvs-page type="list">
+  <totvs-page-navbar>
+    <totvs-page-breadcrumb>
+      <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+      <breadcrumb link="#/dts/kbn/extracard">{{ 'l-issue-extra-card' | i18n}}</breadcrumb>
+      <breadcrumb>{{'l-calc-extra-cards' | i18n}}</breadcrumb>
+    </totvs-page-breadcrumb>
+    <totvs-page-header>
+      <totvs-page-header-title title="{{controller.itemDetail[0] | descGeneric:'{sku} - {desc} {ref} ({exp})'}}" total="{{controller.itemDetailChildren.length}}"></totvs-page-header-title>
+      <totvs-page-header-operation>
+        <form name="controller.form">
+          <div>
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+              <div class="operations">
+                <div class="input-group"><span class="input-group-addon"> <span>{{ 'l-demand' | i18n }}</span></span>
+                  <input required="required" ng-model="controller.amount" ng-disabled="!controller.isActive" class="form-control"/><a class="input-group-addon hidden-xs">{{ controller.itemDetail.cod_un_med_erp }}</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+              <div class="operations"><a role="button" ng-disabled="controller.form.$invalid || controller.amount &lt;= 0" href="#/dts/kbn/extracard/{{controller.itemDetail.num_id_item_det}}?quantity={{controller.amount}}" class="btn btn-primary"><span>{{ 'l-calc' | i18n }}</span></a>
+                <button ng-if="!controller.isActive" ng-click="controller.clear()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span><span class="hidden-xs">&nbsp;&nbsp; {{ 'l-clear' | i18n }}</span></button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </totvs-page-header-operation>
+    </totvs-page-header>
+  </totvs-page-navbar>
+  <totvs-page-content ng-if="controller.itemDetailChildren.length &gt; 0">
+    <totvs-page-content-header>
+      <div class="row field-addon-padding">
+        <div class="col-md-12">
+          <div class="col-md-6">
+            <button ng-click="controller.checkChildren()" class="btn btn-primary">{{ 'l-select-all' | i18n }}</button>
+          </div>
+          <div class="col-md-6">
+            <button ng-click="controller.createExtraCards()" class="pull-right col-md-offset-1 btn btn-warning">{{ 'l-create-extra-cards' | i18n }}</button>
+            <div class="col-md-6 pull-right col-md-offset-1">
+              <div ng-class="{'has-error': controller.invalidJustificative}" class="input-group col-md-12">
+                <select name="justification" id="justification" ng-options="just.des_justif for just in controller.listJustification" required="required" ng-model="controller.justification" class="form-control">
+                  <option value="">{{'l-select-reason'| i18n}}</option>
+                </select>
+              </div>
+              <div ng-if="controller.invalidJustificative" class="tooltip bottom in">
+                <div class="tooltip-inner btn-danger">
+                  <div class="help-inline ng-binding ng-scope">{{'l-select-reason'| i18n}}</div>
+                </div>
+                <div class="tooltip-arrow arrow-danger"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </totvs-page-content-header>
+    <totvs-list-item ng-repeat="itemDetailChild in controller.itemDetailChildren | orderBy: 'itemUnique.codeErp'" class="{{controller.colorTag(itemDetailChild.idi_cor)}}">
+      <totvs-list-item-header>
+        <totvs-list-item-title>
+          <input type="checkbox" ng-model="itemDetailChild.selected"/><span class="title link">&nbsp; {{itemDetailChild.itemUnique | descGeneric:'{sku} - {desc} {ref} ({exp})'}}</span>
+        </totvs-list-item-title>
+      </totvs-list-item-header>
+      <totvs-list-item-content>
+        <totvs-list-item-info title="{{ 'l-extra-cards' | i18n }}" value="{{itemDetailChild.qtd_cartoes_extra}}" class="col-md-4"></totvs-list-item-info>
+        <totvs-list-item-info title="{{ 'l-quantity' | i18n }}" value="{{itemDetailChild.qtd_demand + itemDetailChild.itemUnique.unitOfMeasure}}" class="col-md-4"></totvs-list-item-info>
+        <totvs-list-item-info title="{{ 'l-kanban-size' | i18n }}" value="{{itemDetailChild.qti_tam_kanban + itemDetailChild.itemUnique.unitOfMeasure}}" class="col-md-4"></totvs-list-item-info>
+      </totvs-list-item-content>
+    </totvs-list-item>
+  </totvs-page-content>
+</totvs-page>

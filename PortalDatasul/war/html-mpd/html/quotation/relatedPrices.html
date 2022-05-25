@@ -1,0 +1,37 @@
+<div style="max-height: 300px; overflow-y : auto;">
+	<div class="table table-condensed">
+	   <table class="table">
+			<thead>
+				<tr>
+					<th style="min-width: 100px">{{ 'l-nr-tabpre' | i18n }}</th>
+					<th style="min-width: 150px">{{ 'l-preco-venda' | i18n }}</th>
+					<th style="min-width: 150px">{{ 'l-unidade-medida' | i18n }}</th>
+					<th style="min-width: 150px">{{ 'l-quant-min' | i18n }}</th>
+					<th style="min-width: 150px">{{ 'l-desconto-quantidade' | i18n }}</th> 
+				</tr>
+			</thead>
+			<tbody>
+				<!-- class="clickable" -->
+				<tr data-ng-repeat="priceTable in popoverData.item.priceRelatedResult track by $index"
+					class="clickable"
+					data-ng-click="selected = $index; 
+								popoverData.item['nr-tabpre'] = priceTable['nr-tabpre'];
+								popoverData.item['vl-preori'] = priceTable['preco-venda'];
+								popoverData.item['qt-un-fat'] = priceTable['quant-min'];
+								popoverData.item['cod-un'] = priceTable['cod-unid-med'];
+								popoverData.item['des-un-medida'] = priceTable['cod-unid-med'];
+								popoverData.controller.leaveItemField(popoverData.item, 'nr-tabpre')">
+
+					<td><button type="button" class="btn btn-primary btn-xs" template-popover-remove-all>{{ 'btn-select' | i18n }}</button> &nbsp;&nbsp; {{priceTable['nr-tabpre']}}</td>
+					<td>{{priceTable['preco-venda'] | number : 4}}</td>
+					<td>{{priceTable['cod-unid-med']}}</td>
+					<td>{{priceTable['quant-min']}}</td>
+					<td>{{priceTable['desco-quant'] | number : 2}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<hr style="margin-top: 10px; margin-bottom: 10px;">
+<button type="button" style="margin-bottom: 5px;" class="btn btn-default btn-xs pull-right" template-popover-remove-all>{{ 'close' | i18n }}</button>
+

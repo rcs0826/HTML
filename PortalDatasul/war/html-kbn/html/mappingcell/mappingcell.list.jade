@@ -1,0 +1,58 @@
+link(rel="stylesheet" href="/dts/kbn/css/ekanban.css")
+link(rel="stylesheet" href="/dts/kbn/css/font-awesome.css")
+totvs-page(type='list')
+    totvs-page-navbar
+        totvs-page-breadcrumb
+            breadcrumb(link="#/") {{ 'l-home' | i18n }}
+            breadcrumb(link="#/dts/kbn/mapping") {{ 'l-mapping' | i18n }}
+            breadcrumb {{ 'l-list-cell' | i18n }}
+        totvs-page-header
+            totvs-page-header-title(title="{{ 'l-mapping' | i18n }} {{controller.mapping.des_mapeamento}}" total="{{controller.totalRecords}}") 
+            totvs-page-header-operation
+                div.col-md-8.col-sm-8
+                totvs-page-header-operation-filter(placeholder="{{ 'l-code-description' | i18n}}",
+                                                   ng-submit="controller.quickSearch()",
+                                                   ng-model="controller.quickSearchText")
+            totvs-page-disclaimers(disclaimer-list="controller.filtersApplied", ng-click="controller.removeFilter")
+    totvs-page-content
+        totvs-page-alert(ng-if="controller.cellList.length === 0",
+                         type="info",
+                         message="{{ 'msg-not-found' | i18n }}")
+        totvs-list-item(data-ng-repeat="cell in controller.cellList")
+            totvs-list-item-header
+                .col-md-6.com-sm-6(ng-if="controller.mapping.idi_status != 4")
+                    totvs-list-item-title(title='{{cell | descGeneric:"{codeErpCell} {descCell}"}}', ng-click="controller.openModalCellListEdit(cell.num_id_cel)")
+                totvs-list-item-title(title='{{cell | descGeneric:"{codeErpCell} {descCell}"}}', ng-if="controller.mapping.idi_status === 4", ng-click="controller.openModalCellListEdit(cell.num_id_cel)")
+                totvs-list-item-action(limit-primary-action="3")
+                    action(data-ng-click="controller.openModalCellListEdit(cell.num_id_cel)")
+                        {{ 'l-cell-edit' | i18n }}
+                    action(data-ng-click="controller.openModalCellItem(cell.num_id_cel)")
+                        {{ 'l-produced-itens' | i18n }}
+                button.btn.btn-default.col-md-1.com-sm-1(
+                    zoom
+                    zoom-service="kbn.item-map.zoom"
+                    ng-model=""
+                    zoom-multiple
+                    zoom-init="{'filters':{'num-id-mapeamento': controller.mapping.num_id_mapeamento}}"
+                    zoom-selected="controller.retornoZoom(selected, cell)"
+                    ng-if="controller.mapping.idi_status != 4"
+                    style="position: relative;display: inline-block;font-style: normal;-webkit-font-smoothing: antialiased;font-size:12px") 
+                    .fa.fa-plus  &nbsp;
+                    {{'l-insert-items' | i18n}}
+            totvs-list-item-info.col-md-4(title="{{ 'l-id' | i18n }}" value="{{cell.num_id_cel}}")
+            totvs-list-item-info.col-md-4(title="{{ 'l-max-card-production' | i18n }}" value="{{cell.qtd_cartoes}}")
+            totvs-list-item-info.col-md-4(title="{{ 'l-programming-interval' | i18n }}" value="{{cell.qtd_horiz | prettyTime}}")
+            totvs-list-item-info.col-md-4(title="{{ 'l-fixed-range' | i18n }}" value="{{cell.qtd_faixa_fixa | prettyTime}}")
+            totvs-list-item-info.col-md-4(title="{{ 'l-simultaneous-card' | i18n }}" value="{{cell.log_multiplos_itens | yesOrNo}}")
+        .container(align="center")
+            pagination.pagination-sm(total-items="controller.totalRecords"
+                                    ng-model="controller.bigCurrentPage"
+                                    max-size="8"
+                                    boundary-links="false"
+                                    rotate="true"
+                                    ng-change="controller.changePage()"
+                                    num-pages="numPages",
+                                    items-per-page="controller.pageSize",
+                                    previous-text="{{'l-previous' | i18n}}",
+                                    next-text="{{'l-next' | i18n}}")
+                                    

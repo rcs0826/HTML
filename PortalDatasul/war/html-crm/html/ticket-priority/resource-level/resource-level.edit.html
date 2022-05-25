@@ -1,0 +1,66 @@
+<totvs-modal-header>
+    {{ (controller.model.num_id > 0 ? controller.model.nom_niv_recur : ('btn-new-resource-level' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+    <fieldset>
+        
+        <field 
+           type="select"
+           ng-model="controller.model.ttNivRecur"
+           ng-animate="'animate-if'"
+           ng-required="true"
+           ng-disabled="controller.editMode === true"
+           canclean="undefined">
+
+            <zoom zoom-service="crm.crm_niv_recur.zoom"></zoom>
+
+            <label>{{ 'l-resource-level' | i18n: []: 'dts/crm' }}</label>
+
+            <include>
+                <ui-select-match placeholder="{{ 'l-resource-level' | i18n: []: 'dts/crm' }}">
+                    <span>
+                        {{ $select.selected.nom_niv_recur }}
+                    </span>
+                </ui-select-match>
+
+                <ui-select-choices repeat="resource in controller.listOfResources track by $index"
+                                   refresh="controller.getResources($select.search)"
+                                   refresh-delay="500">
+                    <span ng-bind-html="resource.nom_niv_recur | highlight: $select.search">
+                    </span>
+                </ui-select-choices>
+            </include>
+
+            <validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+        </field>
+        
+        <totvs-field
+               ng-required="true"
+			   totvs-decimal
+			   ng-model="controller.model.val_respos"
+			   placeholder="{{ 'l-total-response' | i18n: []: 'dts/crm' }}"
+			   canclean="undefined"
+			   label="{{ 'l-total-response' | i18n: []: 'dts/crm' }}"
+			   m-dec="2"
+			   v-max="12">
+		</totvs-field>
+        
+        
+    </fieldset>
+    
+</totvs-modal-body>
+<totvs-modal-footer>
+	<button class="btn btn-default" 
+            ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+    </button>
+    
+    <button class="btn btn-default" 
+            ng-click="controller.save(true)" 
+            ng-if="controller.editMode === false;">{{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+    </button>
+    
+	<button class="btn btn-primary" 
+            ng-click="controller.save(false)">{{ 'btn-save' | i18n: []: 'dts/crm' }}
+    </button>
+</totvs-modal-footer>

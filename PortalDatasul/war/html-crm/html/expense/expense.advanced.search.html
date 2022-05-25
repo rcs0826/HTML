@@ -1,0 +1,54 @@
+<totvs-modal-header>
+	{{ 'l-search-advanced' | i18n: []: 'dts/crm' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="select"
+			   ng-model="controller.model.ttAcao"
+			   ng-change="controller.onActionChange()"
+			   canclean="undefined"
+			   ng-if="!controller.historyId > 0">
+			<label>{{ 'l-action' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-action' | i18n: []: 'dts/crm' }}">{{$select.selected.nom_acao}}</ui-select-match>
+				<ui-select-choices repeat="action in controller.actions | filter: $select.search track by $index">
+					<span ng-bind-html="action.nom_acao | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="select"
+			   class="col-xs-6"
+			   ng-change="controller.onChangeType()"
+			   ng-model="controller.model.ttTipo">
+
+			<label>{{ 'l-type' | i18n : [] : 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-type' | i18n : [] : 'dts/crm' }}">
+					{{ $select.selected.nom_tip_despes }}
+				</ui-select-match>
+				<ui-select-choices repeat="type in controller.types | filter: $select.search track by $index">
+					<span ng-bind-html="(type.nom_tip_despes + (type.log_previsto_campanha === true ? ' (' + ('l-campaign' | i18n: []: 'dts/crm') + ')' : '') + (type.log_previsto_acao === true ? ' (' + ('l-action' | i18n: []: 'dts/crm') + ')' : '')) | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<field type="daterange"
+			   ng-model="controller.model.data_despesa"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-date' | i18n: []: 'dts/crm' }}</label>
+		</field>
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cleanFilters()">{{ 'btn-clean-filters' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply()">{{ 'btn-apply' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

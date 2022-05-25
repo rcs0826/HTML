@@ -1,0 +1,46 @@
+<totvs-page-header-operation>
+
+	<totvs-page-header-operation-action>
+		<% if ((!data["btn-new-opportunity"] || data["btn-new-opportunity"].log_visivel === true)) { %>
+		<action icon="glyphicon-plus"
+				ng-click="controllerOpportunityList.addEdit();">
+			{{ 'btn-new-opportunity' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+		<% if ((!data["btn-report"] || data["btn-report"].log_visivel === true)) { %>
+		<action icon="glyphicon-list-alt" ng-if="!controllerOpportunityList.isPortal"
+				ng-click="controllerOpportunityList.showReports();"
+				ng-if="controllerOpportunityList.parent === undefined">
+			{{ 'btn-report' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+
+		<% if ((!data["btn-export"] || data["btn-export"].log_visivel === true)) { %>
+		<action icon="glyphicon-print"
+				ng-click="controllerOpportunityList.exportSearch();">
+			{{ 'btn-export' | i18n: []: 'dts/crm' }}
+		</action>
+		<% } %>
+
+	</totvs-page-header-operation-action>
+
+	<totvs-page-header-operation-filter
+		<% if ((!data["l-quick-search"] || data["l-quick-search"].log_visivel === true)) { %>
+		placeholder="{{ 'l-search-opportunity' | i18n: []: 'dts/crm' }}"
+		ng-submit="controllerOpportunityList.search()"
+		ng-model="controllerOpportunityList.quickSearchText"
+		<% } %>
+		<% if ((!data["btn-advanced-search"] || data["btn-advanced-search"].log_visivel === true)) { %>
+		advanced-search="controllerOpportunityList.openAdvancedSearch">
+		<% } %>
+	</totvs-page-header-operation-filter>
+
+</totvs-page-header-operation>
+
+<div ng-include="'/dts/crm/html/opportunity/opportunity.legend.html'"></div>
+
+<totvs-page-disclaimers
+	ng-if="controllerOpportunityList.disclaimers.length > 0"
+	disclaimer-list="controllerOpportunityList.disclaimers"
+	ng-click="controllerOpportunityList.removeDisclaimer">
+</totvs-page-disclaimers>

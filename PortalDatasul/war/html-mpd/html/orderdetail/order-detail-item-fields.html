@@ -1,0 +1,497 @@
+<%
+	if (data.itemShowHead) {
+ 
+		%>
+		<totvs-page-detail-info-group>{{ 'l-order-head' | i18n }}</totvs-page-detail-info-group>
+		<%
+
+		_.forEach(data.itemFields, function(pedItemDetalheVisibleField) {			
+
+			if (pedItemDetalheVisibleField.fieldName == "cod-refer") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-cod-refer' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span"
+				style="margin-top: 0 !important; margin-bottom: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important;">					
+					{{item['cod-refer']}} - {{item['desc-cod-refer']}} 
+					<a ng-if="item['cod-refer'] != '' &&
+					          item['prod-config'] == 1 &&
+							  item['cod-sit-item'] != 6"					
+					class="btn btn-default btn-sm" role="button" style="padding: 0px 10px;" ng-click="controller.openConfigNarrative(item['it-codigo'], item['cod-refer'])">
+						<span class="glyphicon glyphicon-list-alt"></span> </a>
+				</totvs-page-detail-info>
+
+				
+				<% 
+			}
+
+			if (pedItemDetalheVisibleField.fieldName == "cod-sit-item") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-status' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['cod-sit-item']}} - {{item['situacao']}} 
+				</totvs-page-detail-info>
+				<%
+			}
+
+			if (pedItemDetalheVisibleField.fieldName == "ind-componen") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-component-type' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['desc-ind-componen']}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "it-codigo") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-cod-item' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['it-codigo']}} - {{item['itemDesc']}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "nr-sequencia") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-sequencia' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['nr-sequencia']}}
+				</totvs-page-detail-info>
+				<%
+			}
+		});
+	}
+
+	if (data.itemShowQndy) {
+
+		%>
+		<totvs-page-detail-info-group>Quantidades</totvs-page-detail-info-group>
+		<%
+
+		_.forEach(data.itemFields, function(pedItemDetalheVisibleField) {	
+
+			if (pedItemDetalheVisibleField.fieldName == "cod-un") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-un' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['cod-un']}}
+				</totvs-page-detail-info>
+				<%
+			}
+
+			if (pedItemDetalheVisibleField.fieldName == "des-un-medida") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-invoicing-UM' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['des-un-medida']}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "qt-atendida") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-delivered-quantity' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['qt-atendida'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "qt-pedida") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-requested-quantity' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['qt-pedida'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "qt-un-fat") {
+				%>
+				<div totvs-custom-element="customOrderDetailListPage">
+					<totvs-page-detail-info title="{{ 'l-invoice-UM-quantity' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+						{{item['qt-un-fat'] | number:4}}
+					</totvs-page-detail-info>
+				</div>
+				<%				
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "qt-alocada") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-allocated-quantity' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['qt-alocada'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "qt-log-aloca") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-qty-to-allocate' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['qt-log-aloca'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+		});
+	}
+
+	if (data.itemShowTreatment) {
+
+		%>
+		<totvs-page-detail-info-group>{{ 'l-attend-information' | i18n }}</totvs-page-detail-info-group>
+		<%
+
+		_.forEach(data.itemFields, function(pedItemDetalheVisibleField) {	
+
+			if (pedItemDetalheVisibleField.fieldName == "ind-fat-qtfam") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-ind-fat-qtfam' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['desc-ind-fat-qtfam']}}
+				</totvs-page-detail-info>
+				<%
+			}
+
+			if (pedItemDetalheVisibleField.fieldName == "log-canc-saldo") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-log-canc-saldo' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['log-canc-saldo'] | booleanI18N}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "dt-entrega") {
+				%>
+				<totvs-page-detail-info totvs-custom-element="deliveryDate" title="{{ 'l-dt-entrega' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['dt-entrega'] | date : ('l-date-format' | i18n) : 'UTC'}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "dt-max-fat") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-dt-lim-fat' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['dt-max-fat'] | date : ('l-date-format' | i18n) : 'UTC'}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "dt-min-fat") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-dt-minfat' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['dt-min-fat'] | date : ('l-date-format' | i18n) : 'UTC'}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "per-minfat") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-per-minfat' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['per-minfat'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "tipo-atend") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-tipo-atend' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['desc-tipo-atend']}}
+				</totvs-page-detail-info>
+				<%
+			}
+		});
+	}
+
+	if (data.itemShowPrice) {
+
+		%>
+		<totvs-page-detail-info-group>{{ 'l-prices' | i18n }}</totvs-page-detail-info-group>
+		<%
+
+		_.forEach(data.itemFields, function(pedItemDetalheVisibleField) {	
+
+			if (pedItemDetalheVisibleField.fieldName == "per-des-item") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-per-des-item' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['per-des-item'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+
+			if (pedItemDetalheVisibleField.fieldName == "val-desconto-total") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-val-desconto-total' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['val-desconto-total'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+
+			if (pedItemDetalheVisibleField.fieldName == "val-desconto-inform") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-val-desconto-inform' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['val-desconto-inform'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}			
+
+			if (pedItemDetalheVisibleField.fieldName == "des-pct-desconto-inform") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-des-pct-desconto-inform' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['des-pct-desconto-inform']}}
+				</totvs-page-detail-info>
+				<%
+			}
+
+			if (pedItemDetalheVisibleField.fieldName == "val-embal") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-val-embal' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['val-embal'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "val-frete") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-val-frete' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['val-frete'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "val-pct-desconto-total") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-val-pct-desconto-total' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['val-pct-desconto-total'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "vl-preori") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-original-price' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['vl-preori'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "vl-preori-un-fat") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-original-price-invoice-UM' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['vl-preori-un-fat'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "vl-pretab") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-table-price' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['vl-pretab'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "vl-preuni") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-net-price' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['vl-preuni'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "vl-tot-it") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-vl-tot-it' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['vl-tot-it'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+		});
+	}
+
+	if (data.itemShowFiscal) {
+
+		%>
+		<totvs-page-detail-info-group>{{ 'l-fiscal-data' | i18n }}</totvs-page-detail-info-group>
+		<%
+
+		_.forEach(data.itemFields, function(pedItemDetalheVisibleField) {
+
+			if (pedItemDetalheVisibleField.fieldName == "aliquota-ipi") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-aliquota-ipi' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['aliquota-ipi'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+
+			if (pedItemDetalheVisibleField.fieldName == "cod-class-fis") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-classificacao-fiscal' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['cod-class-fis']}}
+				</totvs-page-detail-info>
+				<%
+			}
+
+			if (pedItemDetalheVisibleField.fieldName == "ind-icm-ret") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-ind-icm-ret' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['ind-icm-ret']  | booleanI18N}}
+				</totvs-page-detail-info>
+				<%
+			}
+
+			if (pedItemDetalheVisibleField.fieldName == "nat-operacao") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-nat-operacao' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['nat-operacao']}} - {{item['desc-nat-operacao']}}
+				</totvs-page-detail-info>
+				<%
+			}
+
+			if (pedItemDetalheVisibleField.fieldName == "per-des-icms") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-per-des-icms' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['per-des-icms'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+
+			if (pedItemDetalheVisibleField.fieldName == "val-aliq-iss") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-val-aliq-iss' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['val-aliq-iss'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+
+			if (pedItemDetalheVisibleField.fieldName == "val-ipi") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-val-ipi' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['val-ipi'] | number:4}}
+				</totvs-page-detail-info>
+				<%
+			}
+		});
+	}
+
+	if (data.itemShowOther) {
+
+		%>
+		<totvs-page-detail-info-group>{{ 'l-other-information' | i18n }}</totvs-page-detail-info-group>
+		<%
+
+		_.forEach(data.itemFields, function(pedItemDetalheVisibleField) {
+
+			if (pedItemDetalheVisibleField.fieldName == "cod-unid-negoc") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-unidade-negocio' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['cod-unid-negoc']}} - {{item['desc-cod-unid-negoc']}}
+				</totvs-page-detail-info>
+				<%
+			}
+
+			if (pedItemDetalheVisibleField.fieldName == "dt-canseq") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-dt-cancela' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['dt-canseq'] | date : ('l-date-format' | i18n) : 'UTC'}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "dt-reativ") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-dt-reativ' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['dt-reativ'] | date : ('l-date-format' | i18n) : 'UTC'}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "dt-suspensao") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-dt-suspensao' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['dt-suspensao'] | date : ('l-date-format' | i18n) : 'UTC'}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "nr-config") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-nr-config' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['nr-config']}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "nr-ord-produ") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-nr-ord-produ' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['nr-ord-produ']}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "cod-ord-compra") {
+				%>
+				<totvs-page-detail-info title="Nr Ordem Compra" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['cod-ord-compra']}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "nr-progcli") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-nr-progcli' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['nr-progcli']}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "nr-programa") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-nr-programa' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['nr-programa']}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "nr-versao") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-nr-versao' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['nr-versao']}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "num-id-campanha-crm") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-campanh-crm' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['num-id-campanha-crm']}} - {{item['desc-num-id-campanha-crm']}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "parcela") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-parcela' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['parcela']}}
+				</totvs-page-detail-info>
+				<%
+			}
+			
+			if (pedItemDetalheVisibleField.fieldName == "estab-atend-item") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-estabel-atend' | i18n }}" class="col-xs-6 col-sm-4 col-md-4 detail-span">
+					{{item['estab-atend-item']}} - {{item['desc-estab-atend-item']}} 
+				</totvs-page-detail-info>
+				<%
+			}
+		});
+	}
+
+	if (data.itemShowObs) {
+
+		%>
+		<totvs-page-detail-info-group>{{ 'l-observacoes' | i18n }}</totvs-page-detail-info-group>
+		<%
+
+		_.forEach(data.itemFields, function(pedItemDetalheVisibleField) {
+
+			if (pedItemDetalheVisibleField.fieldName == "observacao") {
+				%>
+				<totvs-page-detail-info title="{{ 'l-observacoes' | i18n }}" class="col-xs-12 col-sm-12 col-md-12 detail-span">
+					{{item['observacao']}}
+				</totvs-page-detail-info>
+				<%
+			}
+		});
+	}
+%>

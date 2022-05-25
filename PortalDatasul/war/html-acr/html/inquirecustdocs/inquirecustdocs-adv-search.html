@@ -1,0 +1,45 @@
+<totvs-page-form>
+    <totvs-modal-header>
+        {{ 'l-advanced-search' | i18n}}
+    </totvs-modal-header>
+
+    <totvs-modal-body>
+        <div class="row">
+            <form class="form-horizontal" role="form">
+
+                <totvs-field 
+                    totvs-datepicker 
+                    class="col-md-6" 
+                    ng-model="controller.advancedSearch.model.dtEmis" 
+                    label="{{ 'l-after-issue-date' | i18n }}"
+                    t-mask-date="00/00/0000" 
+                    canclean>
+                </totvs-field>
+
+                <totvs-field 
+                    totvs-datepicker 
+                    class="col-md-6" 
+                    ng-model="controller.advancedSearch.model.dtVenc" 
+                    label="{{ 'l-due-date-until' | i18n }}"
+                    t-mask-date="00/00/0000" 
+                    canclean>
+                </totvs-field>
+
+                <totvs-field 
+                    totvs-combo
+                    ng-model="controller.advancedSearch.model.periodoVenc"
+                    t-options="controller.advancedSearch.periodoVencimento"
+                    label="{{ 'l-due-date-range' | i18n }}"
+                    canclean>
+                </totvs-field>
+
+            </form>
+        </div>
+    </totvs-modal-body>
+
+    <totvs-modal-footer>
+        <button type="button" class="btn btn-primary" data-ng-click="controller.search();">{{ 'btn-search' | i18n }}</button>
+        <button type="button" class="btn btn-default" data-ng-click="controller.close();">{{ 'btn-cancel' | i18n }}</button>
+    </totvs-modal-footer>
+
+</totvs-page-form>

@@ -1,0 +1,161 @@
+<div ng-controller="mpd.portal-reg-incl-advan-item.Control as controller">
+    <totvs-page type="edit" totvs-custom-element="customPage">
+        <totvs-page-nav-bar>
+            <totvs-page-header>
+                <totvs-page-header-title title="{{'l-inclusao-itens' | i18n}}"></totvs-page-header-title>
+            </totvs-page-header>
+        </totvs-page-nav-bar>
+        <totvs-page-content>
+
+            <totvs-page-form>                
+                <field type="radio"
+                       ng-model="controller.inclAdvanItemFilter.typeFilter"
+                       label="{{'l-type-filter' | i18n}}"
+                       ng-change="controller.changeTypeFilter()"
+                       class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <totvs-options>
+                        <totvs-option value="1">{{'l-inclusao' | i18n}}</totvs-option>
+                        <totvs-option value="2">{{'l-exclusao' | i18n}}</totvs-option>
+                    </totvs-options>
+                </field>
+                
+                <div class="row group-content ng-scope ng-isolate-scope" initopen="true">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <h6 class="clickable">
+                            <a style="padding-left: 15px;" ng-click="controller.filterVisible = !controller.filterVisible; controller.changeIcon(controller.filterVisible)">
+                                <span class="{{controller.iconeFilter}}"></span>&nbsp;{{'l-simple-filter' | i18n}}
+                            </a>
+                        </h6>
+                    </div>
+                    
+                    <span class="content col-xs-12" ng-hide="controller.filterVisible">
+                        <field type="select2"
+                               class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                               data-ng-model="controller.inclAdvanItemFilter.tbPreco"
+                               select-conector="{{'l-cod-tab-preco' | i18n}}"
+                               select-id="nr-tabpre"
+							   select-init="controller.inclAdvanItemFilter.idiSeq"
+                               select-description="descricao"
+                               select-service="mpd.tb-preco-pv2.zoom"
+                               canclean
+                               ng-disabled="controller.disableFields"
+                               >
+                            <zoom zoom-init="controller.inclAdvanItemFilter.idiSeq" zoom-service="mpd.tb-preco-pv2.zoom"></zoom>
+                            <label>{{'l-cod-tab-preco' | i18n}}</label>
+                        </field>						
+
+                        <form class="form-horizontal" role="form">
+                            <field type="input" class="col-md-6" data-ng-model="controller.inclAdvanItemFilter.codItemIni" canclean>
+                                <label>{{'l-cod-item' | i18n}}</label>
+                            </field>                        
+                            <field type="input" class="col-md-6" data-ng-model="controller.inclAdvanItemFilter.codItemFin" canclean>
+                                <label>{{'l-to' | i18n}}</label>
+                            </field>            
+                        </form>
+                        <form class="form-horizontal" role="form">
+                            <field type="input" class="col-md-6" data-ng-model="controller.inclAdvanItemFilter.codReferIni" canclean>
+                                <label>{{'l-cod-refer' | i18n}}</label>
+                            </field>
+                            <field type="input" class="col-md-6" data-ng-model="controller.inclAdvanItemFilter.codReferFin" canclean>
+                                <label>{{'l-to' | i18n}}</label>
+                            </field>
+                        </form>
+                        <form class="form-horizontal" role="form">
+                            <field type="input" class="col-md-6" data-ng-model="controller.inclAdvanItemFilter.fmCodigoIni" canclean>
+                                <label>{{'l-fm-codigo' | i18n}}</label>
+                            </field>
+                            <field type="input" class="col-md-6" data-ng-model="controller.inclAdvanItemFilter.fmCodigoFin" canclean>
+                                <label>{{'l-to' | i18n}}</label>
+                            </field>            
+                        </form>
+                        <form class="form-horizontal" role="form">
+                            <field type="input" class="col-md-6" data-ng-model="controller.inclAdvanItemFilter.fmCodComIni" canclean>
+                                <label>{{'l-fm-cod-com' | i18n}}</label>
+                            </field>
+                            <field type="input" class="col-md-6" data-ng-model="controller.inclAdvanItemFilter.fmCodComFin" canclean>
+                                <label>{{'l-to' | i18n}}</label>
+                            </field>            
+                        </form>
+                        <form class="form-horizontal" role="form">
+                            <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                                   type="daterange"
+                                   ng-model="controller.dateIniFimVal"
+                                   ng-if="controller.inclAdvanItemFilter.typeFilter == 2">
+                                <label>{{'l-dat-valid-item' | i18n}}</label>
+                            </field>                    
+                        </form>
+                        
+                        <div class="{{controller.classBtApliFilter}}">
+                            <br>
+                            <br>
+                            <button type="button" 
+                                    class="btn btn-primary pull-right" 
+                                    ng-click="controller.filterVisible = !controller.filterVisible; controller.filter()">
+                                <span class="glyphicon glyphicon-filter">
+                                </span>&nbsp;{{ 'l-aplicar-filtro' | i18n }}
+                            </button>
+                        </div>                        
+                    </span>                    
+                </div>  
+            </totvs-page-form>        
+
+            <totvs-page-form>
+                <div style="height:100%; padding-left: 15px; padding-right: 15px;">
+                    
+                    <h2 style="padding-left:0px">{{controller.titleTable}} ({{controller.totalRecords}})</h2>
+                    
+                    <totvs-table items="controller.listResult" 
+                                 items-as="listItens" 
+                                 dblclick="controller.detail(portalReg)" 
+                                 ng-if="controller.totalRecords > 0">
+
+                        <column title="{{'l-cod-item' | i18n}}">
+                            <p tooltip="{{listItens.it_codigo}} - {{listItens.desc_item}}" tooltip-placement="bottom">{{listItens.it_codigo}} - {{listItens.desc_item}}</p>
+                        </column>
+                        <column title="{{'l-cod-refer' | i18n}}">
+                            {{listItens.codigo_refer}}
+                        </column>
+                        <column title="{{'l-fm-codigo' | i18n}}">
+                            {{listItens.fm_codigo}}
+                        </column>
+                        <column title="{{'l-fm-cod-com' | i18n}}">
+                            {{listItens.fm_cod_com}}                            
+                        </column>
+                        <column title="{{'l-dat-ini-val-item' | i18n}}">
+                            {{listItens.dt_val_ini | date : ('l-date-format' | i18n) : 'UTC'}}                            
+                        </column>
+                        <column title="{{'l-dat-fim-val-item' | i18n}}">
+                            {{listItens.dt_val_fim | date : ('l-date-format' | i18n) : 'UTC'}}
+                        </column>
+                        
+                    </totvs-table>                    
+                </div>
+
+                <div ng-animate="'animate-if'"
+                     ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length">
+                    <totvs-list-pagination ng-click="controller.filter(true);"></totvs-list-pagination>
+                </div>
+                
+                <div style="padding-right: 15px;" ng-if="controller.totalRecords > 0">
+                    <form class="form-horizontal" role="form">
+                        <field class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
+                               type="daterange"
+                               ng-model="controller.dateIniFimVal"
+                               ng-change="controller.changeDate(controller.listResult,controller.inclAdvanItemFilter.typeFilter)"
+                               ng-if="controller.inclAdvanItemFilter.typeFilter == 1">>
+                            <label>{{'l-dat-valid-item-selec' | i18n}}</label>
+                        </field>                    
+                    </form>
+                    
+                    <div class="{{controller.classBtIncItens}}" style="padding-right:0px">
+                        <br>
+                        <button type="button" class="btn btn-primary pull-right" ng-click="controller.exec()">
+                            <span class="{{controller.iconeIncExcl}}">
+                            </span>&nbsp;{{controller.labelButtonExec}}
+                        </button>
+                    </div>
+                </div>               
+            </totvs-page-form>
+        </totvs-page-content>
+    </totvs-page>
+</div>

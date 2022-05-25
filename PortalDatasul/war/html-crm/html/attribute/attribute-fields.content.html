@@ -1,0 +1,148 @@
+<style type="text/css" scoped="true">
+	.question-title {
+		font-size: 12px;
+		font-weight: bold;
+		color: gray;
+		margin-top: 5px;
+	}
+	.question-margin {
+		margin-top: 5px;
+	}
+	.question-required:after {
+		content: " *";
+		color: red !important;
+	}
+	.label-script {
+		font-weight: normal !important;
+	}
+</style>
+<fieldset class="row">
+	<div ng-repeat="cf in controller.customFields">
+
+		<totvs-field ng-if="cf.idi_tip_atrib === 1 && (cf.num_max_length && cf.num_max_length <= 100)"
+					 totvs-input
+					 label="{{cf.nom_atrib}}"
+					 placeholder="{{cf.nom_atrib}}"
+					 ng-model="cf.dsl_atrib"
+					 canclean="undefined"
+					 maxlength="{{cf.num_max_length}}"
+					 t-mask="{{cf.nom_mask}}"
+					 ng-required="{{cf.log_obrig}}">
+		</totvs-field>
+
+		<field ng-if="cf.idi_tip_atrib === 1 && (cf.num_max_length && cf.num_max_length > 100)"
+			   class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+			   type="textarea"
+			   label="{{cf.nom_atrib}}"
+			   placeholder="{{cf.nom_atrib}}"
+			   ng-model="cf.dsl_atrib"
+			   maxlength="{{cf.num_max_length}}"
+			   ng-required="{{cf.log_obrig}}">
+		</field>
+
+		<totvs-field ng-if="cf.idi_tip_atrib === 2"
+					 totvs-multi-select
+					 class="col-xs-12"
+					 label="{{cf.nom_atrib}}"
+					 placeholder="{{cf.nom_atrib}}"
+					 ng-model="cf.items"
+					 t-data="cf.data"
+					 t-multi-id="id"
+					 t-multi-description="name"
+					 ng-required="{{cf.log_obrig}}">
+		</totvs-field>
+
+		<totvs-field ng-if="cf.idi_tip_atrib === 3"
+					 totvs-combo
+					 label="{{cf.nom_atrib}}"
+					 placeholder="{{cf.nom_atrib}}"
+					 ng-model="cf.dsl_atrib"
+					 t-options="cf.options"
+					 canclean
+					 ng-required="{{cf.log_obrig}}">
+		</totvs-field>
+
+		<div class="col-xs-12 col-sm-6 question-title"
+			 ng-if="cf.idi_tip_atrib === 4">
+			<span class="overflow-ellipsis" ng-class="{'question-required': cf.log_obrig}">{{cf.nom_atrib}}</span>
+			<ul class="list-unstyled list-inline">
+				<li ng-repeat="atrib in cf.options">
+					<label class="label-script clickable">
+						<input type="radio"
+							   id="{{atrib.value}}"
+							   name="{{atrib.value}}"
+							   ng-model="cf.dsl_atrib"
+							   value="{{atrib.label}}">
+							{{atrib.label}}
+					</label>
+				</li>
+			</ul>
+		</div>
+
+		<div class="col-xs-12 col-sm-6 question-margin"
+			 ng-if="cf.idi_tip_atrib === 5">
+			<span class="overflow-ellipsis question-title" ng-class="{'question-required': cf.log_obrig}">{{cf.nom_atrib}}</span>
+			<ul class="list-unstyled list-inline">
+				<li ng-repeat="atrib in cf.dsl_atrib.itens">
+					<totvs-field
+							totvs-checkbox
+							ng-model="atrib.selected"
+							label="{{atrib.name}}"
+							ng-disabled="false"
+							t-bsswitch>
+					</totvs-field>
+				</li>
+			</ul>
+		</div>
+
+		<field ng-if="cf.idi_tip_atrib === 6"
+			   type="date"
+			   canclean="undefined"
+			   ng-animate="'animate-if'"
+			   start-date="controller.startDate"
+			   ng-model="cf.val_atrib"
+			   placeholder="{{cf.nom_atrib}}"
+			   ng-required="{{cf.log_obrig}}">
+			   <label>{{cf.nom_atrib}}</label>
+		</field>
+
+		<totvs-field
+				 ng-if="cf.idi_tip_atrib === 7"
+				 totvs-time
+				 ng-model="cf.hra_atrib"
+				 label="{{cf.nom_atrib}}"
+				 placeholder="{{cf.nom_atrib}}"
+				 t-default-time="false"
+				 ng-required="{{cf.log_obrig}}">
+		</totvs-field>
+
+		<totvs-field
+				ng-if="cf.idi_tip_atrib === 8"
+				totvs-decimal
+				ng-model="cf.num_atrib"
+				canclean="undefined"
+				label="{{cf.nom_atrib}}"
+				placeholder="{{cf.nom_atrib}}"
+				m-dec="0"
+				v-max="{{cf.num_max_length}}"
+				ng-required="{{cf.log_obrig}}">
+		</totvs-field>
+
+		<totvs-field
+				ng-if="cf.idi_tip_atrib === 9"
+				totvs-decimal
+				ng-model="cf.dsl_atrib"
+				canclean="undefined"
+				label="{{cf.nom_atrib}}"
+				placeholder="{{cf.nom_atrib}}"
+				m-dec="{{cf.m_dec}}"
+				v-max="{{cf.num_max_length}}"
+				ng-required="{{cf.log_obrig}}">
+		</totvs-field>
+
+		<div class="clearfix" ng-if="cf.isClearFix === true"></div>
+
+	</div>
+
+</fieldset>
+

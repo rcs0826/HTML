@@ -1,0 +1,75 @@
+<totvs-page type="list">
+
+    <totvs-page-navbar>
+        
+        <totvs-page-breadcrumb id="breadcrumb"> 
+            <breadcrumb>Permissões de Grupos de Usuário</breadcrumb>
+        </totvs-page-breadcrumb>
+        
+        <totvs-page-header>
+
+            <totvs-page-header-title title="Permissões de Grupos de Usuário" 
+                                     total="{{controller.listOfPermissionSituationCount}}"
+                                     settings="controller.openConfigWindow()">
+                </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+            
+                <totvs-page-header-operation-action limit-primary-action="1">
+                    <action class="glyphicon-plus"
+                            link="#/dts/hgp/hrs-permissionSituation/new">
+                        Incluir
+                    </action>
+
+                </totvs-page-header-operation-action>
+
+                <totvs-page-header-operation-filter placeholder="Nome do Grupo"
+                                                    ng-submit="controller.search()"
+                                                    ng-model="controller.searchInputText">
+                </totvs-page-header-operation-filter>
+
+            </totvs-page-header-operation>
+
+            <totvs-page-disclaimers
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+            
+        </totvs-page-header>
+    </totvs-page-navbar>
+    
+    <totvs-page-content>
+
+        <totvs-page-alert ng-if="controller.listOfPermissionSituation.length <= 0"
+                    type="info"
+                    message="Nenhum registro encontrado">
+        </totvs-page-alert>
+
+        <totvs-list-item ng-repeat="permissionSituation in controller.listOfPermissionSituation">
+
+            <totvs-list-item-header>
+
+                <totvs-list-item-title
+                    title="{{permissionSituation.codGrp}} - {{permissionSituation.desGrp}}"
+                    link="#/dts/hgp/hrs-permissionSituation/detail/{{permissionSituation.codGrp}}">
+                </totvs-list-item-title>
+
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/hgp/hrs-permissionSituation/edit/{{permissionSituation.codGrp}}" icon="glyphicon-pencil">Editar</action>
+                    
+                    <action ng-click="controller.removeSituation(permissionSituation)" 
+                            icon="glyphicon-trash">Remover</action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>            
+
+        </totvs-list-item>
+
+        <totvs-list-pagination
+            ng-if="controller.listOfPermissionSituation.length < controller.listOfPermissionSituationCount && controller.listOfPermissionSituation.length"
+            ng-click="controller.search(true);">
+        </totvs-list-pagination>
+
+    </totvs-page-content>
+</totvs-page>
+
+

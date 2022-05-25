@@ -1,0 +1,98 @@
+<totvs-page-child type="list">
+
+	<br/>
+
+	<totvs-page-content class="crm-tab">
+
+		<div class="row">
+			<div class="col-xs-10">
+				<h3 style="margin-top: 0px;">
+					{{ 'nav-status-resource' | i18n: []: 'dts/crm' }} ({{ controllerStatusResourceTab.listOfStatusResource.length || 0 }})
+				</h3>
+			</div>
+
+			<div class="col-xs-2">
+				<div class="pull-right">
+					<button type="button"
+							class="btn btn-primary"
+							ng-click="controllerStatusResourceTab.addEdit();">
+						<span class="glyphicon glyphicon-plus"></span>
+						&nbsp;&nbsp;{{ 'btn-new-resource' | i18n: []: 'dts/crm' }}
+					</button>
+				</div>
+			</div>
+
+			<div class="col-xs-12">
+				<totvs-divider></totvs-divider>
+			</div>
+		</div>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-ticket-flow-status-resources' | i18n: []: 'dts/crm' }}"
+						  ng-if="controllerStatusResourceTab.listOfStatusResource.length <= 0">
+			<br>
+		</totvs-page-alert>
+
+		<div class="crm-tab"
+			 ng-if="controllerStatusResourceTab.listOfStatusResource.length">
+
+			<div class="row crm-tab-item header hidden-xs">
+				<strong>
+					<div class="col-xs-1">
+						{{ 'l-default' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-xs-5 col-sm-4 col-md-5">
+						{{ 'l-user' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-xs-4 col-sm-3 col-md-4">
+						{{ 'l-resource-level' | i18n: []: 'dts/crm' }}
+					</div>
+				</strong>
+			</div>
+
+			<div class="row crm-tab-item hover"
+				 ng-repeat="resource in controllerStatusResourceTab.listOfStatusResource">
+
+				<div class="col-xs-1">
+					&nbsp;&nbsp;
+					<span class="glyphicon glyphicon-star crm-starred-default"
+						  ng-if="resource.log_padr === true">
+					</span>
+					<span class="glyphicon glyphicon-star-empty clickable"
+						  ng-if="resource.log_padr === false"
+						  ng-click="controllerStatusResourceTab.setDefault(resource);">
+					</span>
+				</div>
+
+				<div class="col-xs-5 col-sm-4 col-md-5 overflow-ellipsis">
+					{{ resource.nom_usuar }} ({{ resource.cod_usuario }})
+				</div>
+
+				<div class="col-xs-4 col-sm-3 col-md-4 overflow-ellipsis">
+					{{ resource.nom_niv_recur }}
+				</div>
+
+				<div class="col-xs-1 col-sm-2 col-md-1 text-left">
+					<a class="clickable"
+					   ng-click="controllerStatusResourceTab.addEdit(resource, $index);">
+						<span class="visible-xs-inline glyphicon glyphicon-edit"></span>
+						<span class="hidden-xs">{{ 'btn-edit' | i18n: []: 'dts/crm' }}</span>
+					</a>
+				</div>
+
+				<div class="col-xs-1 col-sm-2 col-md-1 text-right">
+					<a class="clickable"
+					   ng-click="controllerStatusResourceTab.remove(resource, $index);">
+						<span class="visible-xs-inline glyphicon glyphicon-trash"></span>
+						<span class="hidden-xs">{{ 'btn-remove' | i18n: []: 'dts/crm' }}</span>
+					</a>
+				</div>
+			</div>
+
+			<br/>
+
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

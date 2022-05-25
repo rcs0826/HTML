@@ -1,0 +1,86 @@
+<div ng-controller="apd.dashboard.selectedcustapd.Controller as controller">
+    <totvs-widget>
+	<totvs-widget-header  title="{{ 'l-selected-customer' | i18n : [] : 'dts/mpd/'}}"></totvs-widget-header>
+        
+        <totvs-widget-body style="padding-top: 0px;">       
+            <div style="height:315px;">  
+                <totvs-page-form style="padding: 0px 0px;">   
+
+                    <field  ng-if="!controller.isRepresentative && !controller.isCustomer"
+                            type="select2"
+                            canclean                          
+                            ng-change="controller.applySimpleFilter()"                                
+                            ng-model="controller.codEmitente"
+                            select-conector="{{ 'l-customer' | i18n : [] : 'dts/mpd/'}}"                                
+                            select-id="cod-emitente"
+                            select-description="nome-abrev"
+                            select-service="mpd.emitente.zoom"                                      
+                            class="col-md-12">
+                            <zoom zoom-service="mpd.emitente.zoom"></zoom>
+                            <label>{{ 'l-selection' | i18n : [] : 'dts/mpd/'}}</label>	
+                    </field>
+
+                    <field  ng-if="controller.isRepresentative"
+                            type="select2"
+                            canclean                          
+                            ng-change="controller.applySimpleFilter()"                                
+                            ng-model="controller.codEmitente"
+                            select-conector="{{ 'l-customer' | i18n : [] : 'dts/mpd/'}}"                                
+                            select-id="cod-emitente"
+                            select-description="nome-abrev"
+                            select-service="salesorder.zoomEmitente.Service"
+                            select-init="controller.repres"                                      
+                            class="col-md-12">
+                            <zoom zoom-init="controller.repres" zoom-service="salesorder.zoomEmitente.Service"></zoom>
+                            <label>{{ 'l-selection' | i18n : [] : 'dts/mpd/'}}</label>	
+                    </field>
+
+                </totvs-page-form>   
+                <div ng-show="controller.showCustomer"> 
+                    <totvs-page-detail  style="padding: 15px 0px;">      
+                        <totvs-page-detail-info class="col-xs-12 col-lg-12" title="{{'l-customer' | i18n : [] : 'dts/mpd/'}}">{{selectedcustomer['cod-emitente']}} - {{selectedcustomer['nome-abrev']}} </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-xs-12 col-lg-12" title="{{'l-nome' | i18n : [] : 'dts/mpd/'}}">{{selectedcustomer['nome-emit']}}</totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-xs-12 col-lg-12" title="{{'l-telefone' | i18n : [] : 'dts/mpd/'}}"> {{controller.phonelist}} </totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-xs-12 col-lg-12" title="{{'l-endereco' | i18n : [] : 'dts/mpd/'}}">{{selectedcustomer['endereco']}}</totvs-page-detail-info>
+                        <totvs-page-detail-info class="col-xs-12 col-lg-12" title="{{'l-cgc-zoom' | i18n : [] : 'dts/mpd/'}}">{{selectedcustomer['cgc']}}</totvs-page-detail-info>
+                    <totvs-page-detail> 
+                </div>
+                <div ng-show="!controller.showCustomer">  
+                    </br>
+                    <alert type="danger">{{ 'l-no-customer' | i18n : [] : 'dts/mpd/'}}</alert>
+                </div>                                     				    								                                                           
+            </div>
+	</totvs-widget-body>
+        
+        <totvs-widget-footer>
+            <totvs-widget-footer-body>
+            </totvs-widget-footer-body>
+
+            <div ng-if="!controller.isRepresentative && !controller.isCustomer" >
+                <totvs-widget-footer-actions ng-if="controller.codEmitente != '' && controller.codEmitente != undefined">
+                    <action link="#/dts/mpd/internalcustomerdetail/{{controller.codEmitente}}">{{ 'l-detail' | i18n : [] : 'dts/mpd/'}}</action>                
+                </totvs-widget-footer-actions> 
+
+                <totvs-widget-footer-actions ng-if="controller.codEmitente != '' && controller.codEmitente != undefined">
+                    <action link="#/dts/mpd/pd4000/model/{{controller.codEmitente}}" icon="glyphicon-file">{{ 'btn-new-order' | i18n : [] : 'dts/mpd/'}}</action>
+                </totvs-widget-footer-actions>
+            </div>
+
+            <div ng-if="controller.isRepresentative">
+                <totvs-widget-footer-actions ng-if="controller.codEmitente != '' && controller.codEmitente != undefined">
+                    <action link="#/dts/mpd/customer/{{controller.codEmitente}}">{{ 'l-detail' | i18n : [] : 'dts/mpd/'}}</action>                
+                </totvs-widget-footer-actions> 
+
+                <totvs-widget-footer-actions ng-if="controller.codEmitente != '' && controller.codEmitente != undefined && !controller.newOrderInclusionFlow">
+                    <action link="#/dts/mpd/model/{{controller.codEmitente}}" icon="glyphicon-file">{{ 'btn-new-order' | i18n : [] : 'dts/mpd/'}}</action>
+                </totvs-widget-footer-actions> 
+
+                <totvs-widget-footer-actions ng-if="controller.codEmitente != '' && controller.codEmitente != undefined && controller.newOrderInclusionFlow">
+                    <action link="#/dts/mpd/order2/new/{{controller.codEmitente}}" icon="glyphicon-file">{{ 'btn-new-order' | i18n : [] : 'dts/mpd/'}}</action>
+                </totvs-widget-footer-actions>
+
+            </div>
+
+        </totvs-widget-footer>
+    </totvs-widget>
+</div>

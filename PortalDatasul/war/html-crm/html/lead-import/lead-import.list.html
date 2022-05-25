@@ -1,0 +1,97 @@
+<style type="text/css" scoped="true">
+
+    table {
+        table-layout: auto !important;    
+    }
+
+</style>
+
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb>{{'nav-lead-import' | i18n: []: 'dts/crm'}}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title
+				title="{{'nav-lead-import' | i18n: []: 'dts/crm'}}">
+			</totvs-page-header-title>
+
+            <totvs-page-header-operation>
+				<totvs-page-header-operation-action limit-primary-action="2" style="margin-top: -15px;">
+                    <action target="_blank"
+                            icon="glyphicon-download-alt"
+                            ng-click="controller.download()">
+                        {{ 'btn-template' | i18n: []: 'dts/crm' }}
+                    </action>
+                    
+                    <action ng-click="controller.createLeads()"
+                            icon="glyphicon-play">
+                        {{ 'l-execute-import' | i18n: []: 'dts/crm' }}
+                    </action>
+
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+        <totvs-page-alert type="info"
+                          message="{{ 'msg-upload-leads' | i18n: []: 'dts/crm' }}">
+
+            <label class="btn btn-default"
+                   role="button"
+                   for="file-input">
+                    {{ 'l-select-file' | i18n: []: 'dts/crm' }}
+            </label>
+
+            <input id="file-input"
+                   type="file"
+                   style="position:fixed;top:-999px;"
+                   ngf-select
+                   ngf-change="controller.onSelectFile($files);"
+                   ngf-multiple="false"
+                   ngf-allow-dir="false"/>
+
+        </totvs-page-alert>
+            
+        <totvs-page-alert ng-if="controller.file" 
+                          type="warning" 
+                          message="{{ 'msg-lead-import-import' | i18n: []: 'dts/crm' }}">
+        </totvs-page-alert>
+
+        <totvs-table ng-if="controller.file" 
+                     t-items="controller.leads" 
+                     t-items-as="lead" 
+                     t-selectable="off"
+                     t-resizable="true">
+            
+            <column title="{{ 'l-type-person' | i18n: []: 'dts/crm' }}">{{lead.nom_tip_pessoa}}</column>
+            <column title="{{ 'l-sex' | i18n: []: 'dts/crm' }}">{{lead.nom_sexo}}</column>
+            <column title="{{ 'l-name' | i18n: []: 'dts/crm' }}">{{lead.nom_razao_social}}</column>
+            <column title="CPF/CNPJ">{{lead.nom_cpf_cnpj}}</column>
+            <column title="{{ 'l-phone' | i18n: []: 'dts/crm' }}">{{lead.nom_telefone}}</column>
+            <column title="{{ 'cellphone' | i18n: []: 'dts/crm' }}">{{lead.nom_celular}}</column>
+            <column title="{{ 'l-email' | i18n: []: 'dts/crm' }}">{{lead.nom_email}}</column>
+            <column title="{{ 'l-address-type' | i18n: []: 'dts/crm' }}">{{lead.nom_tip_ender}}</column>                
+            <column title="{{ 'l-zipcode' | i18n: []: 'dts/crm' }}">{{lead.nom_cep}}</column>
+            <column title="{{ 'l-street' | i18n: []: 'dts/crm' }}">{{lead.nom_rua}}</column>
+            <column title="{{ 'l-neighborhood' | i18n: []: 'dts/crm' }}">{{lead.nom_bairro}}</column>
+            <column title="{{ 'l-city' | i18n: []: 'dts/crm' }}">{{lead.nom_cidade}}</column>
+            <column title="{{ 'l-uf' | i18n: []: 'dts/crm' }}">{{lead.nom_estado}}</column>
+            <column title="{{ 'l-complement' | i18n: []: 'dts/crm' }}">{{lead.nom_compl}}</column>
+            <column title="{{ 'l-country' | i18n: []: 'dts/crm' }}">{{lead.nom_pais}}</column>
+            <column title="{{ 'l-contact' | i18n: []: 'dts/crm' }}">{{lead.nom_contato}}</column>
+            <column title="{{ 'l-phone-contact' | i18n: []: 'dts/crm' }}">{{lead.nom_telefone_contato}}</column>
+            <column title="{{ 'l-email-contact' | i18n: []: 'dts/crm' }}">{{lead.nom_email_contato}}</column>
+            
+        </totvs-table>
+        
+	</totvs-page-content>
+
+</totvs-page>

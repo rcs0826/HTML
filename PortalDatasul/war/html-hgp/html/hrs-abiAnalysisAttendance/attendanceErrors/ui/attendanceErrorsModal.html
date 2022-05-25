@@ -1,0 +1,49 @@
+<style> 
+    .quebra-linha{
+        white-space: normal !important;
+    };
+</style>
+
+<div class="modal-header">
+    <h3 class="modal-title">Lista de Erros</h3>
+</div>
+<div class="modal-body">  
+    <totvs-page-form>
+        <totvs-page-content>
+
+             <totvs-table
+                    items="controller.errorList"
+                    items-as="error"
+                    t-selectable="OFF"
+                    t-resizable="true"
+                    t-reorderable="true"
+                    t-highlight-selected="true"
+                    t-table="controller.table"
+                    ng-blur="controller.mudaCor()">
+
+
+                <column title="Código"
+                        width="100">    
+                    {{error.cdnErro}}
+                </column> 
+
+                <column title="Movimento"
+                        width="215"
+                        class="quebra-linha">    
+                    {{error.cddRessusAbiProced == 0 ? 'Não atrelado a movimento' : error.rotuloMovimento }}
+                </column>   
+                
+                <column title="Descrição"
+                        class="quebra-linha">   
+                         
+                    {{error.desErro}}
+                </column>   
+
+            </totvs-table>    
+        </totvs-page-content>
+        <h5 ng-if="controller.errorList.length == 0"> Não existem erros para serem mostrados</h5>
+    </totvs-page-form>
+</div>
+<totvs-modal-footer>  
+    <button class="btn" ng-click="controller.cancel()">Fechar</button>
+</totvs-modal-footer> 

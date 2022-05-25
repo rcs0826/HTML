@@ -1,0 +1,73 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb id="breadcrumb">
+            <breadcrumb>Motivos de Cancelamento Genéricos</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="Motivos de Cancelamento Genéricos"
+                                     total="{{controller.listOfcancellationMotiveCount}}"
+                                     settings="controller.openConfigWindow()">
+            </totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="1">
+                    <action class="glyphicon-plus"
+                            link="#/dts/hgp/hcg-cancellationMotive/new">
+                        Incluir Motivo
+                    </action>
+                </totvs-page-header-operation-action>
+                <totvs-page-header-operation-filter placeholder="Codigo ou Descriçao"
+                                                    ng-submit="controller.search()"
+                                                    ng-model="controller.searchInputText">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers disclaimer-list="controller.disclaimers"
+                                    ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-alert ng-if="controller.listOfcancellationMotive.length <= 0"
+                          type="info"
+                          message="Nenhum registro encontrado">
+        </totvs-page-alert>
+        <totvs-list-item ng-repeat="cancellationMotive in controller.listOfcancellationMotive">
+            <totvs-list-item-header>
+                <totvs-list-item-title title="{{cancellationMotive.rotulo}}"
+                                       link="#/dts/hgp/hcg-cancellationMotive/detail/{{cancellationMotive.inEntidade}}/{{cancellationMotive.cdMotivo}}">
+                </totvs-list-item-title>
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/hgp/hcg-cancellationMotive/edit/{{cancellationMotive.inEntidade}}/{{cancellationMotive.cdMotivo}}" icon="glyphicon-pencil">Editar</action>
+                    <action ng-click="controller.removeCancellationMotive(cancellationMotive)" icon="glyphicon-trash">Remover</action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+            <totvs-list-item-content>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Demitidos / Aposentados"
+                                      value="{{cancellationMotive.logDemitApos ? 'Sim' : 'Não'}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Alteração contratual SIB"
+                                      value="{{cancellationMotive.logAltContratSIB ? 'Sim' : 'Não'}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Considera Aprov. Carencias"
+                                      value="{{cancellationMotive.logConsidAprovCarenc ? 'Sim' : 'Não'}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Visivel Cliente"
+                                      value="{{cancellationMotive.logVisivelCliente ? 'Sim' : 'Não'}}">
+                </totvs-list-item-info>
+                </totvs-list-item-info>
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Dt Atualizacao"
+                                      value="{{cancellationMotive.dtAtualizacao | date : 'dd/MM/yyyy'}}">
+                </totvs-list-item-info>
+            </totvs-list-item-content>
+        </totvs-list-item>
+        <totvs-list-pagination ng-if="controller.listOfcancellationMotive.length < controller.listOfcancellationMotiveCount && controller.listOfcancellationMotive.length"
+                               ng-click="controller.search(true);">
+        </totvs-list-pagination>
+    </totvs-page-content>
+</totvs-page>
+
+

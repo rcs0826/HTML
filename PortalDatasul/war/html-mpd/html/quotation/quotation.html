@@ -1,0 +1,345 @@
+<style>
+	.set-primary-button {
+		color: #fff !important;
+		background-color: hsl(208, 56%, 46%) !important;
+		border-color: #2e6da4 !important;
+	}
+
+	.set-success-button {
+		color: #fff !important;
+		background-color: #5cb85c !important;
+		border-color: #4cae4c !important;
+	}
+
+	.remove-padding-tab {
+		padding-right: 0px;
+		padding-left: 0px;
+	}
+
+	.totvs-style-guide .alert {
+		margin-bottom: 0px;
+	}
+
+	.nolabel .field-container {
+		margin-top: 0;
+	}
+
+	.cancelled {
+		font-style: italic;
+		color: #BB0000;
+	}
+
+	.k-state-selected .cancelled {
+		color: #FFCCCC;
+	}
+
+	.k-state-selected .suspended {
+		color: #CCCC00;
+	}
+
+	.approved {
+		color: #009900;
+		font-weight: bold;
+	}
+
+	.k-state-selected .approved {
+		color: #77EE77;
+	}
+
+	.suspended {
+		color: #777700;
+		font-weight: bold;
+	}
+</style>
+
+<totvs-page type="detail" totvs-custom-element="customPage">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#{{defaultPageHome}}">{{ 'l-home-page' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-quotations' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title>
+				<p style="margin-bottom: -3px !important;">{{ 'l-quotations' | i18n }} {{controller.quotationId}}
+					<span class="label label-danger" ng-if="controller.order['cod-sit-ped-portal'] == 6"
+						style="font-size: 18px;">
+						{{ 'l-cancelled' | i18n }}
+					</span>
+				</p>
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action ng-if="!controller.changeProspectState" limit-primary-action="20" hide-edit="true" hide-back="true" hide-remove="true">
+
+					<action class="set-primary-button"
+						ng-if="!controller.orderDisabled && (controller.newQuotationHeader || (!controller.newQuotationHeader && controller.openHeader))"
+						ng-click="controller.saveOrderHeader();" icon="glyphicon-ok">{{ 'l-save-order-header' | i18n }}
+					</action>
+
+					<action class="set-success-button"
+						ng-if="!controller.order.isProspect && !controller.calculateRequired && !controller.orderDisabled && controller.canOrderCommit && !controller.newQuotationHeader && !controller.openHeader"
+						ng-click="controller.checkValidDateQuotation();" icon="glyphicon-ok">
+						{{  'l-complete-quotation' | i18n }}
+					</action>
+
+					<action ng-class="controller.calculateRequired == true ? 'set-success-button' : ''"
+						ng-if="!controller.orderDisabled && !controller.newQuotationHeader && !controller.openHeader"
+						ng-click="controller.calculateQuotation();" icon="glyphicon-usd">{{ 'l-calculate-order' | i18n }}
+					</action>
+
+					<action ng-class="controller.order.isProspect && !controller.calculateRequired ? 'set-success-button' : ''"
+						ng-if="controller.order.isProspect && !controller.changeProspectState"
+						ng-click="controller.changeProspect();" icon="glyphicon-refresh">
+						{{  'l-change-prospect' | i18n }}
+					</action>
+
+					<action class="set-default-button"
+						ng-if="!controller.orderDisabled && !controller.newQuotationHeader && !controller.openHeader"
+						ng-click="controller.edit();" icon="glyphicon-pencil">{{ 'l-edit-order-header' | i18n }}
+					</action>
+
+					<action class="set-default-button"
+						ng-if="!controller.orderDisabled && controller.showSelectModel && controller.openHeader"
+						ng-click="controller.openSelectModel();" icon="glyphicon-th-list">{{ 'l-quotation-models' | i18n }}
+					</action>
+
+					<action class="set-default-button"
+						ng-if="!controller.orderDisabled && !controller.newQuotationHeader && controller.order['data-1'] == null && (controller.order['can-cancel'] && order.showButtonCancel == true)"
+						ng-click="controller.openCancelModal()" icon="glyphicon-ban-circle">
+						{{:: 'l-cancel' | i18n : [] : 'dts/mpd' }}
+					</action>
+
+					<action class="set-default-button"
+						ng-if="!controller.orderDisabled && !controller.newQuotationHeader && controller.order['data-1'] != null && controller.order['can-cancel']"
+						ng-click="controller.openCancelModal()" icon="glyphicon-ban-circle">
+						{{:: 'l-cancel' | i18n : [] : 'dts/mpd' }}
+					</action>
+
+					<action class="set-default-button" ng-if="!controller.newQuotationHeader"
+						ng-click="controller.print()" icon="glyphicon-print">
+                        {{ 'l-print' | i18n }}
+					</action>
+
+					<action class="set-default-button"  ng-if="!controller.newQuotationHeader"
+						link="#/dts/mpd/salesorders/quotation/{{controller.order['nr-pedido']}}" icon="glyphicon-list">
+						{{ 'btn-view-orders'| i18n }}
+					</action>
+
+					<action class="set-default-button" 
+						ng-if="(controller.showBtnReopen) && (controller.order['cod-sit-ped-portal'] == 3 || controller.order['cod-sit-ped-portal'] == 6)" 
+						ng-click="controller.reopenQuotation()" icon="glyphicon-level-up">
+						{{ 'btn-reopen-quotation'| i18n }}
+					</action>
+
+				</totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-action ng-if="controller.changeProspectState" limit-primary-action="20" hide-edit="true" hide-back="true" hide-remove="true">
+
+					<action class="set-success-button"
+						ng-click="controller.saveChangeProspect();" icon="glyphicon-ok">
+						{{  'l-apply-customer' | i18n }}
+					</action>
+
+					<action
+						ng-click="controller.setChangeProspectState(false)" icon="glyphicon-arrow-left">
+						{{  'l-back' | i18n }}
+					</action>
+
+				</totvs-page-header-operation-action>
+
+			</totvs-page-header-operation>
+
+			<totvs-page-detail style="padding-bottom: 0;">
+
+
+				<field  ng-if="controller.isRepresentative && controller.changeProspectState"
+						type="select2"
+						canclean                                                         
+						ng-model="controller.codEmitenteToChange"
+						select-conector="{{ 'l-customer' | i18n : [] : 'dts/mpd/'}}"                                
+						select-id="cod-emitente"
+						select-description="nome-abrev"
+						select-service="salesorder.zoomEmitente.Service"
+						select-init="controller.repres"                                      
+						class="col-md-12"
+						style="padding-right: 0px; padding-left: 0px; margin-bottom: 20px;">
+						<zoom zoom-init="controller.repres" zoom-service="salesorder.zoomEmitente.Service"></zoom>
+						<label>{{ 'l-select-customer' | i18n : [] : 'dts/mpd/'}}</label>	
+				</field>
+
+				<div ng-if="!controller.changeProspectState">
+
+					<totvs-page-detail-info ng-if="controller.isRepresentative"
+						title="{{ controller.order.isProspect ? 'l-customer-prospect' : 'l-customer' | i18n : [] : 'dts/mpd' }}" style="padding-left: 0px;"
+						class="col-xs-4 col-sm-4 col-md-2">
+
+						<b style="font-weight: 100;" ng-if="controller.codEmit"> 
+							{{controller.codEmit}} 
+						</b>
+						<b style="font-weight: 100;" ng-if="controller.order['nome-abrev']"> -
+							{{controller.order['nome-abrev']}} 
+						</b>
+
+					</totvs-page-detail-info>
+
+
+					<totvs-page-detail-info ng-if="controller.showNrPedcli && controller.order['nr-pedcli']"
+						title="{{'l-quotation-client' | i18n : [] : 'dts/mpd' }}" class="col-xs-4 col-sm-4 col-md-2">
+						{{controller.order['nr-pedcli']}}
+					</totvs-page-detail-info>
+
+					<div class="detail-field col-xs-4 col-sm-4 col-md-2">
+						<div class="field-label">{{:: 'l-total-order' | i18n : [] : 'dts/mpd' }}
+							<i ng-if="controller.canOrderCommit" style="color: #000000"></i>
+						</div>
+						<div class="field-value">
+							<span>
+								<a h-ref="#">
+									<div ng-if="controller.order['vl-tot-ped'] > 0 " 
+									    popover-template="'/dts/mpd/html/quotation/quotationValues.html'"
+										popover-title="{{:: 'l-totals-quotation' | i18n }}" popover-placement="bottom"
+										popover-trigger="mouseenter">
+										{{controller.order['vl-tot-ped'] | number : 2}}&nbsp;&nbsp;
+										<i class="glyphicon glyphicon-info-sign" tooltip-placement="bottom"
+											tooltip-html="infoMessage">
+										</i>
+									</div>
+								</a>
+							</span>
+						</div>
+					</div>
+
+					<totvs-page-detail-info ng-if="controller.showEstimatedWeightMet && !controller.newQuotationHeader"
+						title="{{:: 'l-peso-atendido' | i18n : [] : 'dts/mpd' }}" class="col-xs-4 col-sm-4 col-md-2">
+						{{controller.order['pesoTotalAtendido']}}
+					</totvs-page-detail-info>
+
+					<totvs-page-detail-info ng-if="controller.showTotalWeight && !controller.newQuotationHeader"
+						title="{{:: 'l-total-peso' | i18n : [] : 'dts/mpd' }}" class="col-xs-4 col-sm-4 col-md-2">
+						{{controller.order['pesoTotal']}}
+					</totvs-page-detail-info>
+
+				</div>
+
+			</totvs-page-detail>
+
+
+			<div ng-if="controller.isCustomer"></br></div>
+
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content ng-show="!controller.changeProspectState && controller.order">
+
+		<div class="newOrderHeaderForm" style="overflow-y: auto; min-height: 250px; padding-bottom: 15px;">
+			<accordion close-others="false" class="col-md-12">
+
+				<accordion-group is-open="controller.openHeader">
+					<accordion-heading>
+
+						<div class="row">
+							<div class="col-xs-12">
+								<span>
+									{{ 'l-quotation-header' | i18n: []:  'dts/mpd' }}
+								</span>
+								<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down' :  controller.openHeader,
+							        'glyphicon-chevron-right': !controller.openHeader}">
+								</i>
+							</div>
+						</div>
+
+					</accordion-heading>
+
+					<div>
+						<totvs-page-form>
+
+							<field type="input" class="col-md-4 col-sm-4" ng-model="controller.order['nr-pedcli']"
+								ng-if="controller.showNrPedcli"
+								ng-disabled="controller.disabledNrPedcli || !controller.newQuotationHeader" canclean
+								ng-change="controller.validatorNrPedCli()" required ng-required="true">
+								<label>{{ 'l-nr-pedcli' | i18n : [] : 'dts/mpd' }}</label>
+							</field>
+
+							<totvs-lodash-template src="/dts/mpd/html/quotation/quotationFields.html"
+								template-data="controller.pedVendaCadastroVisibleFields" />
+						</totvs-page-form>
+					</div>
+				</accordion-group>
+
+				<accordion-group is-open="controller.openSearchItems"
+					ng-if="!controller.newQuotationHeader && !controller.orderDisabled">
+					<accordion-heading ng-click="controller.openSearchItems = !controller.openSearchItems">
+						<div class="row">
+							<div class="col-xs-12">
+								<span>
+									{{ 'l-search-items' | i18n: []:  'dts/mpd' }}
+								</span>
+								<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down' :  controller.openSearchItems,
+								    'glyphicon-chevron-right': !controller.openSearchItems}">
+								</i>
+							</div>
+						</div>
+					</accordion-heading>
+
+					<totvs-tabset class="remove-padding-tab">
+						<totvs-tab active="controller.activeTab.searchAllItems"
+							heading="{{:: 'l-all-items' | i18n : [] : 'dts/mpd' }}" disabled="false"
+							select="controller.selectSearchItemsTab('searchAllItems')">
+
+							<totvs-lodash-template src="/dts/mpd/html/quotation/itemSearch.html"
+								template-data="controller.pesquisaVisibleFields" />
+
+						</totvs-tab>
+
+						<totvs-tab active="controller.activeTab.recentShopping"
+							heading="{{:: 'l-recent-purchases' | i18n : [] : 'dts/mpd' }}" disabled="false"
+							select="controller.selectSearchItemsTab('recentShopping')">
+
+							<div
+								ng-controller="salesorder.quotation.searchItemLastShopping.Controller as lastShoppingController">
+								<totvs-lodash-template src="/dts/mpd/html/quotation/lastShopping.html"
+									template-data="controller.pesquisaVisibleFields" />
+							</div>
+
+						</totvs-tab>
+
+						<totvs-tab active="controller.activeTab.templateItems"
+							ng-if="controller.selectedOrderModelId > 0 && controller.modelItems.length > 0"
+							heading="{{:: 'l-template-items' | i18n : [] : 'dts/mpd' }}" disabled="false"
+							select="controller.selectSearchItemsTab('templateItems')">
+
+							<totvs-lodash-template src="/dts/mpd/html/order2/templateItems.html"
+								template-data="controller.modelItems" />
+
+						</totvs-tab>
+
+					</totvs-tabset>
+
+				</accordion-group>
+
+				<accordion-group is-open="controller.openOrderItems" ng-if="!controller.newQuotationHeader">
+					<accordion-heading>
+						<div class="row">
+							<div class="col-xs-12">
+								<span>
+									{{ 'l-quotation-items' | i18n: []:  'dts/mpd' }} ({{controller.orderItens.length}})
+								</span>
+								<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down' :  controller.openOrderItems,
+							        'glyphicon-chevron-right': !controller.openOrderItems}">
+								</i>
+							</div>
+						</div>
+					</accordion-heading>
+
+					<totvs-lodash-template src="/dts/mpd/html/quotation/quotationItems.html" template-data="controller.pedItemListaVisibleFields" />
+				
+				</accordion-group>
+
+			</accordion>
+
+		</div>
+
+	</totvs-page-content>
+</totvs-page>

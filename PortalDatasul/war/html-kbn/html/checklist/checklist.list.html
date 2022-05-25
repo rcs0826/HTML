@@ -1,0 +1,34 @@
+
+<totvs-page type="list">
+  <totvs-page-navbar> 
+    <totvs-page-breadcrumb>
+      <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+      <breadcrumb>{{ 'l-checklist' | i18n }}</breadcrumb>
+    </totvs-page-breadcrumb>
+    <totvs-page-header>
+      <totvs-page-header-title title="{{ 'l-checklist' | i18n }}" total="{{controller.totalRecords}}"></totvs-page-header-title>
+      <totvs-page-header-operation>
+        <totvs-page-header-operation-action limit-primary-action="2">
+          <action icon="glyphicon-plus" ng-click="controller.openModalChecklistNew(checklist);">{{ 'l-new-checklist' | i18n }}</action>
+        </totvs-page-header-operation-action>
+        <totvs-page-header-operation-filter placeholder="{{ 'l-checklist-search' | i18n}}" ng-submit="controller.quickSearch()" ng-model="controller.quickSearchText"></totvs-page-header-operation-filter>
+      </totvs-page-header-operation>
+      <totvs-page-disclaimers disclaimer-list="controller.filtersApplied" ng-click="controller.removeFilter"></totvs-page-disclaimers>
+    </totvs-page-header>
+  </totvs-page-navbar>
+  <totvs-page-content>
+    <totvs-page-alert ng-if="controller.listChecklist.length === 0" type="info" message="{{ 'msg-not-found' | i18n }}"></totvs-page-alert>
+    <totvs-list-item data-ng-repeat="checklist in controller.listChecklist">
+      <totvs-list-item-header>
+        <totvs-list-item-title title="{{checklist.des_item_checklist}}"></totvs-list-item-title>
+        <totvs-list-item-action limit-primary-action="1">
+          <action icon="glyphicon-pencil" data-ng-click="controller.openModalChecklistEdit(checklist)">{{ 'l-edit' | i18n }}</action>
+          <action icon="glyphicon-remove" data-ng-click="controller.remove(checklist)">{{ 'l-to-exclude' | i18n }}</action>
+        </totvs-list-item-action>
+      </totvs-list-item-header>
+    </totvs-list-item>
+    <div align="center" class="container">
+      <pagination total-items="controller.totalRecords" ng-model="controller.bigCurrentPage" max-size="8" boundary-links="false" rotate="true" ng-change="controller.changePage()" num-pages="numPages" items-per-page="controller.pageSize" previous-text="{{'l-previous' | i18n}}" next-text="{{'l-next' | i18n}}" class="pagination-sm"></pagination>
+    </div>
+  </totvs-page-content>
+</totvs-page>

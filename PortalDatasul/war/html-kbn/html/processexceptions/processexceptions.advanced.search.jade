@@ -1,0 +1,57 @@
+totvs-modal-header
+    {{ 'l-advanced-search' | i18n}}
+totvs-modal-body
+    totvs-page-form    
+        accordion
+            accordion-group(is-open="controller.accordionEstab")
+                accordion-heading {{'l-general-parmeters' | i18n}}
+                    i(class="pull-right glyphicon", ng-class="{'glyphicon-chevron-down': controller.accordionEstab, 'glyphicon-chevron-right': !controller.accordionEstab}")
+                establishment-select-adv(ng-model="controller.establishmentChanged")
+                field.col-sm-12.col-md-12.col-xs-12(
+                    ng-class="{'has-error': controller.dateRange.$invalid}",
+                    type="daterange",
+                    ng-model="controller.dateRange",
+                    label="{{'l-initial-date' | i18n : [] : 'dts/kbn'}} - {{'l-final-date' | i18n : [] : 'dts/kbn'}}",
+                    required
+                )
+                .tooltip.bottom.in(
+                    ng-if="controller.dateRange.$invalid",
+                    style="left: 280px;top: 200px;"
+                )
+                    .tooltip-inner.btn-danger
+                        .help-inline.ng-binding.ng-scope {{controller.mensagem}}
+                    .tooltip-arrow.arrow-danger
+                field.col-xs-12.col-md-6(
+                    type="checkbox", 
+                    ng-model="controller.param.bloqFila",
+                    label="{{'l-lock-queue' | i18n}}"
+                )
+                field.col-xs-12.col-md-6(
+                    type="checkbox", 
+                    ng-model="controller.param.bloqProducao",
+                    label="{{'l-blocking-in-production' | i18n}}"
+                )
+                field.col-xs-12.col-md-6(
+                    type="checkbox", 
+                    ng-model="controller.param.bloqTransporte",
+                    label="{{'l-lock-on-transport' | i18n}}"
+                )
+                field.col-xs-12.col-md-6(
+                    type="checkbox", 
+                    ng-model="controller.param.ajusteSaldo",
+                    label="{{'l-inventory-balance-adjust' | i18n}}"
+                )
+                field.col-xs-12.col-md-6(
+                    type="checkbox", 
+                    ng-model="controller.param.emissaoExtra",
+                    label="{{'l-extra-card-emission' | i18n}}"
+                )
+        accordion.classifiers-panel
+            accordion-group(is-open="controller.accordionClassifier")
+                accordion-heading {{'l-relation-category-classifier' | i18n}}
+                    i(class="pull-right glyphicon", ng-class="{'glyphicon-chevron-down': controller.accordionClassifier, 'glyphicon-chevron-right': !controller.accordionClassifier}")
+                .row
+                    kanban-classifier-select-adv(ng-model="controller.classfierSelected")
+totvs-modal-footer
+    button.btn.btn-default(ng-click="controller.cancel()"){{ 'l-cancel' | i18n}}
+    button.btn.btn-primary(ng-click="controller.apply()"){{ 'l-apply' | i18n}}

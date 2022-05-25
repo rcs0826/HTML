@@ -1,0 +1,112 @@
+<totvs-page type="detail">
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{:: 'Início' | i18n : [] : 'dts/mpd' }}</breadcrumb>
+			<breadcrumb>{{:: 'Pedido de Venda' | i18n : [] : 'dts/mpd' }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		<totvs-page-header>
+			<totvs-page-header-title>
+				{{:: 'Pedido de Venda' | i18n : [] : 'dts/mpd' }} {{copyController.orderId}}
+			</totvs-page-header-title>
+			<totvs-page-header-operation>
+				<totvs-page-header-operation-action hide-remove='true' hide-back='true' hide-edit='true'>
+					<action ng-click="copyController.newCopy()"
+						icon="glyphicon-duplicate">{{:: 'Nova c&oacute;pia' | i18n : [] : 'dts/mpd' }}</action>
+					<action ng-click="copyController.updateItems()"
+						icon="glyphicon-th-list">{{:: 'Itens' | i18n : [] : 'dts/mpd' }}</action>
+					<action ng-click="copyController.parameters()"
+						icon="glyphicon-cog">{{:: 'Parâmetros' | i18n : [] : 'dts/mpd' }}</action>
+					<action ng-click="copyController.executeCopy()"
+						icon="glyphicon-ok">{{:: 'Copiar pedidos' | i18n : [] : 'dts/mpd' }}</action>
+				</totvs-page-header-operation-action>
+			</totvs-page-header-operation>
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+	<totvs-page-content>
+		<span ng-if="copyController.copyResult.length"><h3>{{:: 'Pedidos Gerados' | i18n : [] : 'dts/mpd' }}</h3></span>
+		<totvs-list-item ng-repeat="copy in copyController.copyResult">
+			<totvs-list-item-header>
+				<totvs-list-item-title title="{{copy.nrPedido}}"></totvs-list-item-title>
+				<totvs-list-item-action limit-primary-action="1">
+					<action link="#/dts/mpd/pd4000/{{copy.nrPedido}}" icon="glyphicon-folder-open">{{:: 'Abrir Pedido' | i18n : [] : 'dts/mpd' }}</action>
+				</totvs-list-item-action>
+			</totvs-list-item-header>
+		</totvs-list-item>
+		<totvs-list-item ng-repeat="copy in copyController.orderCopies">
+			<totvs-list-item-header>
+				<totvs-list-item-title title="{{copy['cod-emitente']}} - {{copy['nome-abrev']}}"></totvs-list-item-title>
+				<totvs-list-item-action limit-primary-action="1">
+					<action ng-click="copyController.removeCopy($index)" icon="glyphicon-minus">{{:: 'Remover' | i18n : [] : 'dts/mpd' }}</action>
+				</totvs-list-item-action>
+			</totvs-list-item-header>
+			<totvs-list-item-content style="margin-bottom: 15px;">
+
+				<totvs-field totvs-select
+						label="{{:: 'Cliente' | i18n : [] : 'dts/mpd' }}"
+						ng-model="copy['emitente']"
+						select-init="{gotomethod: 'gotocodemitente'}"
+						select-id="cod-emitente"
+						return-object
+						ng-change="copyController.selectEmitente(copy)"
+						select-description="nome-abrev"
+						select-service="mpd.emitente.zoom"
+						zoom-init="{setDefaultValue: false} "
+						zoom-service="mpd.emitente.zoom"
+						focus
+						required>
+				</totvs-field>
+
+				<field type="input" ng-model="copy['nr-pedcli']" class="col-md-2">
+					<label>{{:: 'Nr Pedido Cliente' | i18n : [] : 'dts/mpd'}}</label>
+				</field>
+				<totvs-field
+				     totvs-datepicker					  
+					  ng-model="copy['dt-entrega']"
+					  class="col-md-2"
+					  label="{{:: 'Data Entrega' | i18n : [] : 'dts/mpd' }}">
+				</totvs-field>
+				<totvs-field
+					  totvs-datepicker					 
+					   ng-model="copy['dt-emissao']"
+					   class="col-md-2"
+					   label="{{:: 'Data Emiss&atilde;o' | i18n : [] : 'dts/mpd' }}">					
+				</totvs-field>
+
+				<totvs-field totvs-select
+					ng-model="copy['nome-transp']"
+					canclean
+					label="{{:: 'Transportador' | i18n : [] : 'dts/mpd'}}"
+					select-id="nome-abrev"
+					select-description="nome"
+					select-init="{gotomethod: 'gotonomeabrev'}"
+					select-service="mpd.transporte.zoom"
+					zoom-service="mpd.transporte.zoom">
+				</totvs-field>
+
+				<totvs-field totvs-select
+						label="{{:: 'Condição de Pagamento' | i18n : [] : 'dts/mpd'}}"
+						ng-model="copy['cod-cond-pag']"
+						ng-disabled="true"
+						select-id="cod-cond-pag"
+						select-description="descricao"
+						select-service="mpd.cond-pagto-inter.zoom"
+						zoom-service="mpd.cond-pagto-inter.zoom">
+				</totvs-field>
+
+				<field type="input" ng-model="copy['nr-tab-finan']" class="col-md-4" disabled>
+					<label>{{:: 'Tabela Financiamento' | i18n : [] : 'dts/mpd'}}</label>
+				</field>
+
+				<field type="input" ng-model="copy['nr-ind-finan']" class="col-md-4" disabled>
+					<label>{{:: 'Índice Financiamento' | i18n : [] : 'dts/mpd'}}</label>
+				</field>
+
+				<field type="input" ng-model="copy['cod-entrega']" class="col-md-4" disabled>
+					<label>{{:: 'Entrega' | i18n : [] : 'dts/mpd'}}</label>
+				</field>
+
+			</totvs-list-item-content>
+		</totvs-list-item>
+	</totvs-page-content>
+</totvs-page>

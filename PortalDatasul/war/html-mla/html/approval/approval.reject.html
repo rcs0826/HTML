@@ -1,0 +1,24 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{ "l-reproval-document" | i18n }}</h3>
+</div>
+<div class="modal-body">	
+	<div class="row">
+		<form name="rejectForm" class="form-inline" role="form" novalidate>
+			<span style="margin:0 15px">{{ "l-reproval-document-text" | i18n }}</span>
+			
+			<field type="combo" ng-model="controller.rejectCode" required class="col-md-12" ng-options="item.iCodRejeita as item.cCodRejeita for item in controller.rejectCodes" name-id="rejectCode">
+				<label>{{ "l-reproval-code" | i18n }}</label>
+				<validator key="required">{{$fieldLabel}} {{ "l-is-required" | i18n }}</validator>
+			</field>
+			<br>
+			
+			<field type="textarea" ng-model="controller.rejectText" class="col-md-12" name-id="rejectText">
+				<label>{{ "l-reproval-text" | i18n }}</label>
+			</field>
+		</form>
+	</div>
+</div> 
+<div class="modal-footer">
+	<button class="btn btn-primary" ng-click="controller.reject()" ng-disabled="(controller.isRequired() && !controller.rejectText) || !controller.rejectCode">{{ "l-reprove" | i18n }}</button>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ "l-cancel" | i18n }}</button>
+</div>

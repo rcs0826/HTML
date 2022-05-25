@@ -1,0 +1,786 @@
+<!--<totvs-table items="controller.orderItens" items-as="item" resizable="true" t-selectable="single" t-auto-fit-columns="true" dblclick="">-->
+
+<div class="table-responsive table-content table-portal-order" style="overflow-y: hidden;">
+
+<table class="table table-hover table-condensed" style="margin-bottom: 0px;">
+
+	<thead>
+		<tr>
+            <th  style="min-width:30px"></th>
+
+                <%		
+	                _.forEach(data, function(pedItemListaField) {
+                        
+                        if (pedItemListaField.fieldName == "nr-sequencia") {
+                                        %>
+                                            <th style="min-width:120px"> {{'l-sequencia' | i18n}} </th>
+                                        <%
+                        }
+
+                        if (pedItemListaField.fieldName == "it-codigo") {
+							%>
+						    	<th style="min-width:120px"> {{'l-cod-item' | i18n}} </th>
+							<%
+                        }
+                                                
+                        if (pedItemListaField.fieldName == "cod-refer") {
+							%>
+							<th style="min-width:150px"> {{'l-cod-refer' | i18n}} </th>
+							<%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "qt-un-fat") {
+                                %>
+                                <th style="min-width:160px"> {{'l-invoice-UM-quantity' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "qt-pedida") {
+                                %>
+                                <th style="min-width:150px"> {{'l-requested-quantity' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "des-un-medida") {
+                                %>
+                                <th style="min-width:140px"> {{'l-invoicing-UM' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "cod-un") {
+                                %>
+                                <th style="min-width:140px"> {{'l-unidade-medida' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "vl-preori") {
+                                %>
+                                <th style="min-width:140px"> {{'l-original-price' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "vl-preori-un-fat") {
+                                %>
+                                <th style="min-width:200px"> {{'l-original-price-invoice-UM' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "vl-pretab") {
+                                %>
+                                <th style="min-width:120px"> {{'l-table-price' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "vl-preuni") {
+                                %>
+                                <th style="min-width:120px"> {{'l-net-price' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "nat-operacao") {
+                                %>
+                                <th style="min-width:160px"> {{'l-natur-oper' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "cod-class-fis") {
+                                %>
+                                <th style="min-width:140px"> {{'l-classificacao-fiscal' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "aliquota-ipi") {
+                                %>
+                                <th style="min-width:120px"> {{'l-aliquota-ipi' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "tipo-atend") {
+                                %>
+                                <th style="min-width:140px"> {{'l-tipo-atend' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "dt-min-fat") {
+                                %>
+                                <th style="min-width:170px"> {{'l-dt-minfat' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "ind-fat-qtfam") {
+                                %>
+                                <th style="min-width:190px"> {{'l-ind-fat-qtfam' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "dt-max-fat") {
+                                %>
+                                <th style="min-width:170px"> {{'l-dt-lim-fat' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "per-minfat") {
+                                %>
+                                <th style="min-width:180px"> {{'l-per-minfat' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "dt-entrega") {
+                                %>
+                                <th style="min-width:120px"> {{'l-dt-entrega' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "log-canc-saldo") {
+                                %>
+                                <th style="min-width:120px"> {{'l-log-canc-saldo' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "cod-ord-compra") {
+                                %>
+                                <th style="min-width:190px"> Nr Ordem Compra </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "parcela") {
+                                %>
+                                <th style="min-width:120px"> {{'l-parcela' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "cod-unid-negoc") {
+                                %>
+                                <th style="min-width:140px"> {{'l-unidade-negocio' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "nr-config") {
+                                %>
+                                <th style="min-width:120px"> {{'l-nr-config' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "nr-ord-produ") {
+                                %>
+                                <th style="min-width:140px"> {{'l-nr-ord-produ' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "nr-progcli") {
+                                %>
+                                <th style="min-width:140px"> {{'l-nr-progcli' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "nr-programa") {
+                                %>
+                                <th style="min-width:140px"> {{'l-nr-programa' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "nr-versao") {
+                                %>
+                                <th style="min-width:120px"> {{'l-nr-versao' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "num-id-campanha-crm") {
+                                %>
+                                <th style="min-width:120px"> {{'l-campanh-crm' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "observacao") {
+                                %>
+                                <th style="min-width:120px"> {{'l-observacoes' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "vl-tot-it") {
+                                %>
+                                <th style="min-width:140px"> {{'l-vl-tot-it' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-desconto-total") {
+                                %>
+                                <th style="min-width:120px"> {{'l-val-desconto-total' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-pct-desconto-total") {
+                                %>
+                                <th style="min-width:120px"> {{'l-val-pct-desconto-total' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "cod-sit-item") {
+                                %>
+                                <th style="min-width:120px"> {{'l-status' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-aliq-iss") {
+                                %>
+                                <th style="min-width:120px"> {{'l-val-aliq-iss' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "dt-canseq") {
+                                %>
+                                <th style="min-width:120px"> {{'l-dt-cancela' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "dt-reativ") {
+                                %>
+                                <th style="min-width:120px"> {{'l-dt-reativ' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "dt-suspensao") {
+                                %>
+                                <th style="min-width:120px"> {{'l-dt-suspensao' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "cod-entrega") {
+                                %>
+                                <th style="min-width:120px"> {{'l-cod-entrega' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "per-des-icms") {
+                                %>
+                                <th style="min-width:140px"> {{'l-per-des-icms' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "per-des-item") {
+                                %>
+                                <th style="min-width:160px"> {{'l-per-des-item' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "qt-atendida") {
+                                %>
+                                <th style="min-width:140px"> {{'l-delivered-quantity' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "ind-icm-ret") {
+                                %>
+                                <th style="min-width:160px"> {{'l-ind-icm-ret' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "ind-componen") {
+                                %>
+                                <th style="min-width:140px"> {{'l-component-type' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-embal") {
+                                %>
+                                <th style="min-width:120px"> {{'l-val-embal' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-frete") {
+                                %>
+                                <th style="min-width:120px"> {{'l-val-frete' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-ipi") {
+                                %>
+                                <th style="min-width:120px"> {{'l-val-ipi' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "nr-tabpre") {
+                                %>
+                                <th style="min-width:120px"> {{'l-nr-tabpre' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "log-usa-tabela-desconto") {
+                                %>
+                                <th style="min-width:120px"> {{'l-log-usa-tabela-desconto' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "log-concede-bonif-qtd") {
+                                %>
+                                <th style="min-width:140px"> {{'log-concede-bonif-qtd' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "des-pct-desconto-inform") {
+                                %>
+                                <th style="min-width:150px"> {{'l-des-pct-desconto-inform' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-pct-desconto-tab-preco") {
+                                %>
+                                <th style="min-width:200px"> {{'l-val-pct-desconto-tab-preco' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-pct-desconto-periodo") {
+                                %>
+                                <th style="min-width:140px"> {{'l-val-pct-desconto-periodo' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-pct-desconto-prazo") {
+                                %>
+                                <th style="min-width:140px"> {{'l-val-pct-desconto-prazo' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-desconto[1]") {
+                                %>
+                                <th style="min-width:120px"> {{'l-discount' | i18n}} 1</th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-desconto[2]") {
+                                %>
+                                <th style="min-width:120px"> {{'l-discount' | i18n}} 2</th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-desconto[3]") {
+                                %>
+                                <th style="min-width:120px"> {{'l-discount' | i18n}} 3</th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-desconto[4]") {
+                                %>
+                                <th style="min-width:120px"> {{'l-discount' | i18n}} 4</th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-desconto[5]") {
+                                %>
+                                <th style="min-width:120px"> {{'l-discount' | i18n}} 5</th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "estab-atend-item") {
+                                %>
+                                <th style="min-width:130px"> {{'l-estab-atend-item' | i18n}} </th>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-desconto-inform") {
+                                %>
+                                <th style="min-width:180px"> {{'l-val-pct-desconto-inform' | i18n}} </th>
+                                <%
+                        }
+
+                    });
+                %>            
+        </tr>
+    </thead>
+    
+    <tbody>
+            <tr ng-repeat="item in controller.orderItens | filter:{showChildren:true} | startFrom:controller.currentPage*controller.pageSize | limitTo:controller.pageSize" ng-class="item.selectedRow ? 'selected' : item['cod-sit-item'] == 6 ? 'canceled' : ''" class="clickable" ng-click="controller.selecteRowGridItem(item, controller.orderItens)" totvs-custom-element="OrderItemGridList">
+                <td style="min-width:30px"><input type="checkbox" ng-model="item.selectedRow" ng-click="controller.selecteRowGridItem(item, controller.orderItens)"></td>
+
+                <%		
+	                _.forEach(data, function(pedItemListaField) {
+
+                        if (pedItemListaField.fieldName == "nr-sequencia") {
+                                        %>
+                                        <td style="min-width:120px">{{item['nr-sequencia']}}</td>
+                                        <%
+                        }        
+                        
+                        if (pedItemListaField.fieldName == "it-codigo") {
+							%>
+							<td style="min-width:120px">{{item['it-codigo'] +  ' - ' + item['itemDesc']}}</td>
+							<%
+					    }
+                        
+                        if (pedItemListaField.fieldName == "cod-refer") {                            
+                                %>
+                                <td style="min-width:150px">{{item['cod-refer']}} - {{item['desc-cod-refer']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "qt-un-fat") {
+                                %>
+                                <td style="min-width:160px" > <span class="pull-right"> {{item['qt-un-fat'] | number : 4}} </span> </td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "qt-pedida") {
+                                %>
+                                <td style="min-width:150px"><span class="pull-right"> {{item['qt-pedida'] | number : 4}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "des-un-medida") {
+                                %>
+                                <td style="min-width:140px">{{item['des-un-medida']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "cod-un") {
+                                %>
+                                <td style="min-width:140px">{{item['cod-un']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "vl-preori") {
+                                %>
+                                <td style="min-width:140px"><span class="pull-right"> {{item['vl-preori'] | number : 4}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "vl-preori-un-fat") {
+                                %>
+                                <td style="min-width:200px"><span class="pull-right"> {{item['vl-preori-un-fat'] | number : 4}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "vl-pretab") {
+                                %>
+                                <td style="min-width:120px"><span class="pull-right"> {{item['vl-pretab'] | number : 4}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "vl-preuni") {
+                                %>
+                                <td style="min-width:120px"><span class="pull-right"> {{item['vl-preuni'] | number : 4}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "nat-operacao") {
+                                %>
+                                <td style="min-width:160px">{{item['nat-operacao']}} - {{item['desc-nat-operacao']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "cod-class-fis") {
+                                %>
+                                <td style="min-width:140px">{{item['cod-class-fis']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "aliquota-ipi") {
+                                %>
+                                <td style="min-width:120px"><span class="pull-right"> {{item['aliquota-ipi'] | number : 4}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "tipo-atend") {
+                                %>
+                                <td style="min-width:140px">{{item['desc-tipo-atend']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "dt-min-fat") {
+                                %>
+                                <td style="min-width:170px">{{item['dt-min-fat'] | date}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "ind-fat-qtfam") {
+                                %>
+                                <td style="min-width:120px">{{item['desc-ind-fat-qtfam']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "dt-max-fat") {
+                                %>
+                                <td style="min-width:170px">{{item['dt-max-fat'] | date}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "per-minfat") {
+                                %>
+                                <td style="min-width:180px"><span class="pull-right"> {{item['per-minfat'] | number : 2}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "dt-entrega") {
+                                %>
+                                <td style="min-width:120px">{{item['dt-entrega'] | date}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "log-canc-saldo") {
+                                %>
+                                <td style="min-width:120px">{{item['log-canc-saldo'] | booleanI18N}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "cod-ord-compra") {
+                                %>
+                                <td style="min-width:190px">{{item['cod-ord-compra']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "parcela") {
+                                %>
+                                <td style="min-width:120px"> {{item.parcela}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "cod-unid-negoc") {
+                                %>
+                                <td style="min-width:140px">{{item['cod-unid-negoc']}} - {{item['desc-cod-unid-negoc']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "nr-config") {
+                                %>
+                                <td style="min-width:120px">{{item['nr-config']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "nr-ord-produ") {
+                                %>
+                                <td style="min-width:140px">{{item['nr-ord-produ']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "nr-progcli") {
+                                %>
+                                <td style="min-width:140px">{{item['nr-progcli']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "nr-programa") {
+                                %>
+                                <td style="min-width:140px">{{item['nr-programa']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "nr-versao") {
+                                %>
+                                <td style="min-width:120px">{{item['nr-versao']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "num-id-campanha-crm") {
+                                %>
+                                <td style="min-width:120px">{{item['num-id-campanha-crm']}} - {{item['desc-num-id-campanha-crm']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "observacao") {
+                                %>
+                                <td style="min-width:120px">{{item.observacao}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "vl-tot-it") {
+                                %>
+                                <td style="min-width:140px"><span class="pull-right"> {{item['vl-tot-it'] | number : 4}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-desconto-total") {
+                                %>
+                                <td style="min-width:120px"><span class="pull-right"> {{item['val-desconto-total'] | number : 4}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-pct-desconto-total") {
+                                %>
+                                <td style="min-width:120px"><span class="pull-right"> {{item['val-pct-desconto-total'] | number : 2}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "cod-sit-item") {
+                                %>
+                                <td style="min-width:120px">
+                                    <p ng-if="item['cod-sit-item'] == 1"> {{ 'l-cod-sit-item-1' | i18n }} </p>
+                                    <p ng-if="item['cod-sit-item'] == 2"> {{ 'l-cod-sit-item-2' | i18n }} </p>
+                                    <p ng-if="item['cod-sit-item'] == 3"> {{ 'l-cod-sit-item-3' | i18n }} </p>
+                                    <p ng-if="item['cod-sit-item'] == 4"> {{ 'l-cod-sit-item-4' | i18n }} </p>
+                                    <p ng-if="item['cod-sit-item'] == 5"> {{ 'l-cod-sit-item-5' | i18n }} </p>
+                                    <p ng-if="item['cod-sit-item'] == 6"> {{ 'l-cod-sit-item-6' | i18n }} </p>
+                                    <p ng-if="item['cod-sit-item'] == 7"> {{ 'l-cod-sit-item-7' | i18n }} </p>
+                                </td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-aliq-iss") {
+                                %>
+                                <td style="min-width:120px"><span class="pull-right"> {{item['val-aliq-iss'] | number : 2}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "dt-canseq") {
+                                %>
+                                <td style="min-width:120px">{{item['dt-canseq'] | date}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "dt-reativ") {
+                                %>
+                                <td style="min-width:120px">{{item['dt-reativ'] | date}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "dt-suspensao") {
+                                %>
+                                <td style="min-width:120px">{{item['dt-suspensao'] | date}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "cod-entrega") {
+                                %>
+                                <td style="min-width:120px">{{item['cod-entrega']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "per-des-icms") {
+                                %>
+                                <td style="min-width:140px"><span class="pull-right"> {{item['per-des-icms'] | number : 2}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "per-des-item") {
+                                %>
+                                <td style="min-width:160px"><span class="pull-right"> {{item['per-des-item'] | number : 5}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "qt-atendida") {
+                                %>
+                                <td style="min-width:140px"><span class="pull-right"> {{item['qt-atendida'] | number : 4}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "ind-icm-ret") {
+                                %>
+                                <td style="min-width:160px">{{item['ind-icm-ret'] | booleanI18N}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "ind-componen") {
+                                %>
+                                <td style="min-width:140px">{{item['desc-ind-componen']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-embal") {
+                                %>
+                                <td style="min-width:120px"><span class="pull-right"> {{item['val-embal'] | number : 2}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-frete") {
+                                %>
+                                <td style="min-width:120px"><span class="pull-right"> {{item['val-frete'] | number : 2}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-ipi") {
+                                %>
+                                <td style="min-width:120px"><span class="pull-right"> {{item['val-ipi'] | number : 2}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "nr-tabpre") {
+                                %>
+                                <td style="min-width:120px">{{item['nr-tabpre']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "log-usa-tabela-desconto") {
+                                %>
+                                <td style="min-width:120px">{{item['log-usa-tabela-desconto'] | booleanI18N}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "log-concede-bonif-qtd") {
+                                %>
+                                <td style="min-width:140px">{{item['log-concede-bonif-qtd'] | booleanI18N}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "des-pct-desconto-inform") {
+                                %>
+                                <td style="min-width:150px">{{item['des-pct-desconto-inform']}}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-pct-desconto-tab-preco") {
+                                %>
+                                <td style="min-width:200px"><span class="pull-right"> {{item['val-pct-desconto-tab-preco'] | number : 2}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-pct-desconto-periodo") {
+                                %>
+                                <td style="min-width:140px"><span class="pull-right"> {{item['val-pct-desconto-periodo'] | number : 2}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-pct-desconto-prazo") {
+                                %>
+                                <td style="min-width:140px"><span class="pull-right"> {{item['val-pct-desconto-prazo'] | number : 2}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-desconto[1]") {
+                                %>
+                                <td style="min-width:120px"><span class="pull-right"> {{item['val-desconto-1'] | number : 2}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-desconto[2]") {
+                                %>
+                                <td style="min-width:120px"><span class="pull-right"> {{item['val-desconto-2'] | number : 2}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-desconto[3]") {
+                                %>
+                                <td style="min-width:120px"><span class="pull-right"> {{item['val-desconto-3'] | number : 2}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-desconto[4]") {
+                                %>
+                                <td style="min-width:120px"><span class="pull-right"> {{item['val-desconto-4'] | number : 2}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-desconto[5]") {
+                                %>
+                                <td style="min-width:120px"><span class="pull-right"> {{item['val-desconto-5'] | number : 2}}</span></td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "estab-atend-item") {
+                                %>
+                                <td style="min-width:120px">{{ item['estab-atend-item'] }} - {{ item['desc-estab-atend-item'] }}</td>
+                                <%
+                        }
+                        
+                        if (pedItemListaField.fieldName == "val-desconto-inform") {
+                                %>
+                                <td style="min-width:180px"><span class="pull-right"> {{item['val-desconto-inform'] | number : 2}} </span></td>
+                                <%
+                        }
+
+                    });
+                %>     
+
+            </tr>
+    </tbody>
+        
+</table>
+    
+</div>

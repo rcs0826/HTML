@@ -1,0 +1,138 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{i18n('l-real-forecasted-cost', [], 'dts/mcs')}}</breadcrumb>
+		</totvs-page-breadcrumb>
+	
+
+		<totvs-page-header>
+			<totvs-page-header-title 
+					title="{{i18n('l-real-forecasted-cost', [], 'dts/mcs')}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>	
+				
+				<field type="select2" 
+					class=" col-xs-7"
+					data-ng-model="controller.model.site"                     
+					select-conector="{{i18n('l-site', [], 'dts/mcs')}}"
+					select-id="cod-estabel"
+					select-description="nome"
+					select-service="mpd.estabelec.zoom"
+					ng-change="controller.onChangeSite()"
+					canclean
+					required>
+					<zoom zoom-service="mpd.estabelec.zoom"
+					required></zoom>
+					<label>{{i18n('l-site', [], 'dts/mcs')}}</label>
+					<include>
+						<ui-select-match>
+						{{$select.selected['cod-estabel'] + ' - ' + $select.selected['nome']}}
+						</ui-select-match>
+						<ui-select-choices
+							repeat="site in controller.serviceSiteZoom.siteList track by $index"
+							refresh="controller.serviceSiteZoom.getSite($select.search)"
+							refresh-delay="1000">
+							<span ng-bind-html="site['cod-estabel'] + ' - ' + site['nome'] | highlight: $select.search">
+							</span>
+						</ui-select-choices>
+					</include>
+				</field>
+
+			
+				<!-- DATA FINAL -->
+				<field type="date"
+						class="col-xs-5"
+						ng-model="controller.model.finalPeriod"                            
+						required>
+					<label>{{i18n('l-end-period-date', [], 'dts/mcs')}}</label>
+				</field>
+				
+				
+				<div class="col-xs-7">
+
+					<totvs-page-header-operation-action style="padding-top: 18px">
+								
+						<action class="col-xs-12 col-md-4" ng-click="controller.listItens()"> {{i18n('l-apply', [], 'dts/mcs')}}  </action>
+
+						<action class="col-xs-12 col-md-3" 
+						        icon="glyphicon-export"
+								ng-click="controller.listofitems.length == 0 || controller.exportListCsv()"
+								ng-disabled="controller.listofitems.length == 0"
+								title="{{i18n('l-gerar-csv', [], 'dts/mcs')}}" >{{i18n('l-export-flow', [], 'dts/mcs')}}</action>
+
+						<action class="col-xs-12 col-md-3" 
+						        icon="glyphicon-stats"
+								ng-click="controller.openComparative()"
+								ng-disabled="!controller.selectedItem" 
+							    title="{{i18n('l-comparative-item-production-real-standard', [], 'dts/mcs')}}">{{i18n('l-detail', [], 'dts/mcs')}}</action>
+
+					</totvs-page-header-operation-action>
+
+
+				</div>
+				
+				<totvs-page-header-operation-filter
+								placeholder="{{i18n('l-code-description-item', [], 'dts/mcs')}}"
+								ng-submit="controller.listItens()"
+								ng-model="controller.quickSearchTextItems"
+								advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+				
+			</totvs-page-header-operation>			
+			<totvs-page-disclaimers 
+				disclaimer-list="controller.disclaimers"
+				ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert
+			ng-if="controller.listofitems.length === 0"
+			type="info"
+			message="{{i18n('msg-record-not-found', [], 'dts/mcs')}}">
+		</totvs-page-alert>
+	
+		<totvs-page-detail ng-if="controller.listofitems.length != 0">
+
+			<totvs-grid grid="controller.gridItems"
+						grid-data="controller.listofitems" 
+						grid-selected-item="controller.selectedItem"
+						width="1600"
+						grid-height="560"
+						navigatable="true" 
+						selectable="row"
+						scrollable="true"
+						resizable="true"
+						sortable="true"
+						auto-resize-column="false">
+
+				<totvs-grid-column field="it-codigo" width="200" locked="true" title="{{i18n('l-item', [], 'dts/mcs')}}">  </totvs-grid-column>
+				<totvs-grid-column field="desc-item" width="400" title="{{i18n('l-description', [], 'dts/mcs')}}"> </totvs-grid-column>
+				<totvs-grid-column field="val-tot-padr" width="120" style="text-align: right" filter="number : 4" title="{{i18n('l-total-standard', [], 'dts/mcs')}}"> </totvs-grid-column>				
+				<totvs-grid-column field="val-tot-real" width="120" style="text-align: right" filter="number : 4" title="{{i18n('l-total-real', [], 'dts/mcs')}}"> </totvs-grid-column>								
+				<totvs-grid-column field="val-variacao" width="160" style="text-align: right" filter="number : 2" title="{{i18n('l-var-real-forecast', [], 'dts/mcs')}}"> </totvs-grid-column>
+				<totvs-grid-column field="qtd-produz" width="160" style="text-align: right" filter="number : 4" title="{{i18n('l-prodction-quantity', [], 'dts/mcs')}}">  </totvs-grid-column>
+				<totvs-grid-column field="val-mater-padr" width="120" style="text-align: right" filter="number : 4" title="{{i18n('l-val-mat-stand', [], 'dts/mcs')}}">  </totvs-grid-column>
+				<totvs-grid-column field="val-mater-real" width="120" style="text-align: right" filter="number : 4" title="{{i18n('l-real-mat-val', [], 'dts/mcs')}}">  </totvs-grid-column>				
+				<totvs-grid-column field="val-perc-mater" width="120" style="text-align: right" filter="number : 2" title="{{i18n('l-perc-mat-var', [], 'dts/mcs')}}">  </totvs-grid-column>				
+				<totvs-grid-column field="val-ggf-padr" width="120" style="text-align: right" filter="number : 4" title="{{i18n('l-ggf-stand', [], 'dts/mcs')}}"> </totvs-grid-column>
+				<totvs-grid-column field="val-ggf-real" width="120" style="text-align: right" filter="number : 4" title="{{i18n('l-real-ggf-val', [], 'dts/mcs')}}"> </totvs-grid-column>				
+				<totvs-grid-column field="val-perc-ggf" width="120" style="text-align: right" filter="number : 2" title="{{i18n('l-ggf-perc-var', [], 'dts/mcs')}}"> </totvs-grid-column>				
+				<totvs-grid-column field="val-mod-padr" width="120" style="text-align: right" filter="number : 4" title="{{i18n('l-lab-stand', [], 'dts/mcs')}}"> </totvs-grid-column>
+				<totvs-grid-column field="val-mod-real" width="120" style="text-align: right" filter="number : 4" title="{{i18n('l-lab-real', [], 'dts/mcs')}}"> </totvs-grid-column>				
+				<totvs-grid-column field="val-perc-mod" width="120" style="text-align: right" filter="number : 2" title="{{i18n('l-lab-perc-var', [], 'dts/mcs')}}"> </totvs-grid-column>						
+				<totvs-grid-column field="val-med-ant" width="120" style="text-align: right" filter="number : 4" title="{{i18n('l-previous-aver', [], 'dts/mcs')}}"> </totvs-grid-column>
+				<totvs-grid-column field="val-med-item" width="120" style="text-align: right" filter="number : 4" title="{{i18n('l-aver-item', [], 'dts/mcs')}}"> </totvs-grid-column>
+
+			</totvs-grid>
+
+		</totvs-page-detail>
+
+	</totvs-page-content>
+		
+</totvs-page>

@@ -1,0 +1,101 @@
+<totvs-page type="detail" totvs-custom-element="customPage">
+    <totvs-page-navbar>
+		<totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/dts-utils/configdatacharge">{{ 'l-integ-external-app' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/dts-utils/applicationdatacharge/{{controller.integrationId}}/{{controller.defaultIntegrationId}}/{{controller.integrationType}}">{{:: 'l-configuration-applications' | i18n : [] : 'dts/dts-utils' }}</breadcrumb>            
+            <breadcrumb>{{:: 'l-applications-entities' | i18n : [] : 'dts/dts-utils' }}</breadcrumb>            
+		</totvs-page-breadcrumb>
+		<totvs-page-header>
+            
+			<totvs-page-header-title title="{{'l-entities' | i18n : [] : 'dts/dts-utils/'}} - {{controller.applicationDetail.desc}} ">
+            </totvs-page-header-title>
+			<totvs-page-header-operation>                
+                <div class="col-xs-12">
+                    <div class="col-lg-8 col-md-8 col-ms-8 col-xs-12" style="margin-top: 10px; padding-left: 0px; ">
+                        <button class="btn btn-success" ng-click="controller.executeSingleEntity()">{{:: 'l-execute-entity' | i18n : [] : 'dts/dts-utils' }}</button>
+                        <button class="btn btn-primary" ng-click="controller.newEntity();">{{:: 'l-new-entity' | i18n : [] : 'dts/dts-utils' }}</button>
+                        <button ng-if="controller.entityListSelected.showUpdateOption" class="btn btn-default" ng-click="controller.updateEntity(controller.entityListSelected);">{{:: 'l-update' | i18n : [] : 'dts/dts-utils' }}</button>
+                        <button ng-if="controller.entityListSelected.showDeleteOption" class="btn btn-default" ng-click="controller.deleteEntity(controller.entityListSelected);">{{:: 'l-delete' | i18n : [] : 'dts/dts-utils' }}</button>
+                        <button ng-if="controller.entityListSelected.showCopyOption" class="btn btn-default" ng-click="controller.copyEntity(controller.entityListSelected)">{{:: 'l-copy' | i18n : [] : 'dts/dts-utils' }}</button>
+                        <button class="btn btn-default" ng-click="controller.executeIntegration();">{{:: 'l-execute' | i18n : [] : 'dts/dts-utils' }}</button>
+                    </div>
+                    <form ng-submit="controller.applySimpleFilter();">
+                        <div class="col-lg-4 col-md-4 col-ms-4 col-xs-12 pull-right" style="margin-top: 10px; padding-left: 0px; padding-right: 5px;">
+                            <div class="input-group">                                
+                                <input type="text" 
+                                       class="form-control"                                       
+                                       ng-model="controller.searchValue"
+                                       placeholder="{{:: 'l-fast-search' | i18n }}">
+                                <span class="input-group-btn">
+                                    <button ng-click="controller.removeSimpleFilter();" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+                                    <button ng-click="controller.applySimpleFilter();" class="btn btn-default" type="button"><span class="glyphicon glyphicon-filter"></span></button>
+                                </span>                                
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+        
+		</totvs-page-header>
+	</totvs-page-navbar>    
+    <totvs-page-content>                
+        <totvs-page-content-header>
+            <totvs-page-quick-filter filters-list="controller.quickFilters"
+                                     on-select-filter="controller.setQuickFilter"
+                                     filters-list-custom="controller.listOfCustomFilters"
+                                     on-remove-custom="controller.removeCustomFilter"
+                                     on-add-edit-custom="controller.addEditCustomFilters">
+           </totvs-page-quick-filter>
+        </totvs-page-content-header> 
+
+        <div class="row">
+            <div style="margin-left: 25px; margin-right: 25px;">
+                <p style="margin-top: 10px;" ng-if="controller.entities.length > 0"> {{:: 'l-displaying' | i18n : []}} {{controller.entities.length}}</p>
+                <totvs-grid grid-data="controller.entities"
+                            grid="controller.grid"                            
+                            navigatable="true"
+                            resizable="true"    
+                            selectable="row"                            
+                            resizable="true"
+                            reorderable="true"
+                            sortable="true"
+                            on-change="controller.lineSelected()"
+                            grid-selected-item="controller.entityListSelected"> 
+                    <totvs-grid-column field="entityEnabled" width="50">{{:: 'l-active' | i18n : [] : 'dts/dts-utils'}}
+                        <template>
+                            <input type="checkbox" ng-change="controller.enableActive(dataItem)" ng-model="dataItem.entityEnabled" class="ng-valid ng-dirty ng-valid-parse ng-touched">
+                        </template>
+                    </totvs-grid-column>                       
+                    <totvs-grid-column field="table" width="100">{{:: 'l-name' | i18n : [] : 'dts/dts-utils'}}</totvs-grid-column>
+                    <totvs-grid-column field="transaction" width="250">{{:: 'l-transaction' | i18n : [] : 'dts/dts-utils'}}</totvs-grid-column>
+                    <totvs-grid-column field="transactionVers" width="100">{{:: 'l-version-transaction' | i18n : [] : 'dts/dts-utils'}}</totvs-grid-column>                    
+                    <totvs-grid-column field="apiExec" width="250">{{:: 'l-api-exec' | i18n : [] : 'dts/dts-utils'}}</totvs-grid-column>
+                    <totvs-grid-column field="database" width="100">{{:: 'l-database' | i18n : [] : 'dts/dts-utils'}}</totvs-grid-column>
+                    <totvs-grid-column field="modeSupportedDesc" width="100">{{:: 'l-mode-supported' | i18n : [] : 'dts/dts-utils'}}</totvs-grid-column>
+                    <totvs-grid-column field="modeEnabledDesc" width="100">{{:: 'l-mode-enabled' | i18n : [] : 'dts/dts-utils'}}</totvs-grid-column>
+                    <totvs-grid-column field="idDefaultIntegration" width="100">{{:: 'l-default-entity' | i18n : [] : 'dts/dts-utils'}}
+                        <template>
+                            <p ng-if="dataItem.idDefaultIntegration > 0">{{:: 'l-yes' | i18n : [] : 'dts/dts-utils'}}</p>
+                            <p ng-if="dataItem.idDefaultIntegration == 0">{{:: 'l-no' | i18n : [] : 'dts/dts-utils'}}</p>
+                        </template>
+                    </totvs-grid-column>
+                    
+                </totvs-grid> 
+            </div>                        
+            <div class="more-results" style="margin-left: 15px; margin-right: 15px;" ng-show="controller.hasNext" >
+                <button ng-click="controller.search(true)"  
+                        class="btn btn-primary col-xs-12" 
+                        style="padd">
+                    {{'l-more' | i18n}}
+                </button>
+            </div> 
+        </div>
+        
+    </totvs-page-content>
+        
+</totvs-page>

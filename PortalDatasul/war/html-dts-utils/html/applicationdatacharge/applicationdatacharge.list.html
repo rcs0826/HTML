@@ -1,0 +1,108 @@
+<totvs-page type="detail" totvs-custom-element="customPage">
+    <totvs-page-navbar>
+		<totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{:: 'l-home' | i18n : [] : 'dts/dts-utils' }}</breadcrumb>
+            <breadcrumb link="#/dts/dts-utils/configdatacharge">{{ 'l-integ-external-app' | i18n }}</breadcrumb>
+            <breadcrumb>{{:: 'l-configuration-applications' | i18n : [] : 'dts/dts-utils' }}</breadcrumb>            
+		</totvs-page-breadcrumb>
+		<totvs-page-header>
+			<totvs-page-header-title title="{{'l-configuration-applications' | i18n : [] : 'dts/dts-utils/'}} - {{controller.integrationDetail.desc}}">
+            </totvs-page-header-title>
+			<totvs-page-header-operation>                
+                <div class="col-xs-12">
+                    <div class="col-lg-5 col-md-5 col-ms-5 col-xs-12" style="margin-top: 10px; padding-left: 0px; ">
+                        <button class="btn btn-primary" 
+                                ng-disabled="controller.applicationSettingDisabled.showAddOption"
+                                ng-if="!controller.applicationSettingHidden.showAddOption && controller.defaultIntegrationId < 1"
+                                ng-click="controller.addOrUpdateApplication(1);">
+                                {{:: 'l-new-application' | i18n : [] : 'dts/dts-utils' }}
+                        </button>                        
+                    </div>
+                    <form ng-submit="controller.applySimpleFilter();">
+                        <div class="col-lg-7 col-md-7 col-ms-7 col-xs-12 pull-right" style="margin-top: 10px; padding-left: 0px; padding-right: 5px;">
+                            <div class="input-group">                                
+                                <input type="text" 
+                                       class="form-control"                                       
+                                       ng-model="controller.searchValue"
+                                       placeholder="{{:: 'l-fast-search' | i18n }}">
+                                <span class="input-group-btn">
+                                    <button ng-click="controller.removeSimpleFilter();" class="btn btn-default" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+                                    <button ng-click="controller.applySimpleFilter();" class="btn btn-default" type="button"><span class="glyphicon glyphicon-filter"></span></button>
+                                </span>                                
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </totvs-page-header-operation>
+            <totvs-page-disclaimers
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+        
+		</totvs-page-header>
+	</totvs-page-navbar>    
+    <totvs-page-content>                
+        <totvs-page-content-header>
+            <totvs-page-quick-filter filters-list="controller.quickFilters"
+                                     on-select-filter="controller.setQuickFilter"
+                                     filters-list-custom="controller.listOfCustomFilters"
+                                     on-remove-custom="controller.removeCustomFilter"
+                                     on-add-edit-custom="controller.addEditCustomFilters">
+           </totvs-page-quick-filter>
+        </totvs-page-content-header> 
+
+        <div class="row">
+            <div class="col-md-12">
+                <totvs-list-item ng-repeat="application in controller.apps"
+                    totvs-custom-element="customListApplication">
+                    <totvs-list-item-header>             
+                        <totvs-list-item-title title="{{application.desc}}"> 
+                            <b ng-show="application.defaultApplication" style="font-weight: 500;">({{:: 'l-default' | i18n : [] : 'dts/dts-utils' }})</b>
+                            <span ng-show="application.executed" class="label label-default" style="margin-left: 5px; padding-top: 5px;"> {{:: 'l-executed' | i18n : [] : 'dts/dts-utils' }} {{application.executed}}</span>                        
+                        </totvs-list-item-title>             
+                        <totvs-list-item-action limit-primary-action="2">
+                            <action ng-click="controller.executeIntegration(application)"  icon="glyphicon-play">{{:: 'l-execute' | i18n : [] : 'dts/dts-utils' }} </action>                    
+                            <action ng-click="controller.entitiesApplication(application)"  icon="glyphicon-list">{{:: 'l-entities' | i18n : [] : 'dts/dts-utils' }} ({{application.entitiesQuantity}})</action>                    
+                            <action ng-click="controller.addOrUpdateApplication(2, application)" icon="glyphicon-pencil">{{ 'btn-edit' | i18n }}</action>
+                            <action ng-click="controller.addOrUpdateApplication(3, application)" icon="glyphicon-copy">{{ 'l-copy' | i18n }}</action>
+                            <action ng-if="!application.defaultApplication" ng-click="controller.deleteApplication(application)"  icon="glyphicon-remove">{{ 'l-delete' | i18n }}</action>                    
+                            <action ng-if="controller.defaultIntegrationId > 0" ng-click="controller.updateApplicationEntityAndExtraFields(application);"  icon="glyphicon-refresh">{{ 'l-reload-default-application' | i18n }}</action>                    
+                        </totvs-list-item-action>
+                    </totvs-list-item-header>
+                    <totvs-list-item-content-detail ng-click="controller.getExtraFieldsApplication(application)">
+                        <p ng-show="!controller.applicationSettingHidden.enabled" class="col-md-6"><b>{{:: 'l-enabled-application' | i18n : [] : 'dts/dts-utils'}}:</b> {{application.enabled | booleanI18N}}</p>
+                        <p ng-show="!controller.applicationSettingHidden.schedulerServer" class="col-md-6"><b>{{:: 'l-scheduler-server' | i18n : [] : 'dts/dts-utils'}}  (RPW):</b> {{application.schedulerServer}} </p>
+                        <p ng-show="!controller.applicationSettingHidden.host && controller.integrationType > 1" class="col-md-6"><b>{{:: 'l-host-application' | i18n : [] : 'dts/dts-utils'}} (Host):</b> {{application.host}} </p>
+                        <p ng-show="!controller.applicationSettingHidden.door && controller.integrationType > 1" class="col-md-6"><b> {{:: 'l-host-application-door' | i18n : [] : 'dts/dts-utils'}}:</b> {{application.door}} </p>
+                        <p ng-show="!controller.applicationSettingHidden.requestTimeout && controller.integrationType > 1" class="col-md-6"><b>{{:: 'l-request-timeout' | i18n : [] : 'dts/dts-utils'}}:</b> {{application.requestTimeout}} </p>
+                        <p ng-show="!controller.applicationSettingHidden.recordsByRequest && controller.integrationType > 1" class="col-md-6"><b>{{:: 'l-records-by-request' | i18n : [] : 'dts/dts-utils'}}:</b> {{application.recordsByRequest}} </p>
+                        <p ng-show="!controller.applicationSettingHidden.user && controller.integrationType > 1" class="col-md-6"><b>{{:: 'l-user-application' | i18n : [] : 'dts/dts-utils'}}:</b> {{application.user}} </p>
+
+                        <p ng-show="!controller.applicationSettingHidden.userPassword && controller.integrationType > 1" class="col-md-6">
+                            <b>{{:: 'l-password-user-application' | i18n : [] : 'dts/dts-utils'}}:</b> 
+                            <span ng-show="application.showPassword">{{application.userPassword}}</span> &nbsp;
+                            <span ng-click="controller.toggleShowPassword(application)" style="cursor: pointer;" ng-class="{'glyphicon-eye-open': application.showPassword,'glyphicon-eye-close': !application.showPassword}" class="glyphicon" aria-hidden="true"></span>
+                        </p>                         
+                        
+                        <p ng-show="!controller.applicationSettingHidden.token && controller.integrationType > 1" class="col-md-6"><b>Token ({{:: 'l-access-key' | i18n : [] : 'dts/dts-utils'}}):</b> {{application.token}} </p> 
+                        <div ng-repeat="extraField in application.applicationExtraFields | orderBy:'sequence'">		
+                            <p ng-if="extraField.fieldType != 5 && extraField.hidden == false" class="col-md-6"><b>{{extraField.label}}:</b> {{extraField.value}} </p> 
+                            <p ng-if="extraField.fieldType == 5 && extraField.hidden == false" class="col-md-6"><b>{{extraField.label}}:</b> {{extraField.value | booleanI18N}}</p> 
+                        </div>
+                        
+                    </totvs-list-item-content-detail>
+                </totvs-list-item>   
+                
+            </div>
+            <div class="more-results" style="margin-left: 15px; margin-right: 15px;" ng-show="controller.hasNext" >
+                <button ng-click="controller.nextPage()"  
+                        class="btn btn-primary col-xs-12" 
+                        style="padd">
+                    {{'l-more' | i18n}}
+                </button>
+            </div> 
+        </div>
+        
+    </totvs-page-content>
+        
+</totvs-page>

@@ -1,0 +1,145 @@
+<totvs-page-content style="border-top: 1px dotted #e4e4e4;">
+
+   <totvs-page-detail>
+
+		<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+								title="{{ 'l-user-responsible-source' | i18n }}">
+			{{ controller.model.num_id_usuar_respons.nom_usuar }}
+		</totvs-page-detail-info>
+
+		<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+								title="{{ 'l-user-responsible-destination' | i18n }}">
+			{{ controller.model.num_id_usuar_respons_destino.nom_usuar }}
+		</totvs-page-detail-info>
+
+		<totvs-page-detail-info class="col-xs-12 col-sm-6 col-md-3"
+								title="{{ 'l-expiration-date' | i18n: []: 'dts/crm' }}">
+			{{ controller.model.dat_valid.start | date : ('l-date-format' | i18n: []: 'dts/crm') }} -
+			{{ controller.model.dat_valid.end | date : ('l-date-format' | i18n: []: 'dts/crm') }}
+		</totvs-page-detail-info>
+
+		<totvs-page-detail-info class="col-xs-12 col-sm-12 col-md-12"
+								title="{{ 'l-reason-transference' | i18n }}">
+			{{ controller.model.motivo }}
+		</totvs-page-detail-info>
+
+	   <div class="col-xs-12 crm-group-accordion">
+
+			<totvs-divider style="margin-top: 0px; margin-bottom: 10px;"></totvs-divider>
+
+			<accordion close-others="false">
+				<div>
+
+					<accordion-group is-open="controller.group.account.open"
+									 class="crm-panel">
+						<accordion-heading>
+							<div class="row">
+								<div class="col-xs-12">
+									{{ 'nav-account' | i18n: []: 'dts/crm' }} ({{ controller.selectedAccounts.length }})
+									<i class="pull-right glyphicon"
+									   ng-class="{'glyphicon-chevron-down' :  controller.group.account.open,
+												  'glyphicon-chevron-right': !controller.group.account.open}">
+									</i>
+								</div>
+							</div>
+						</accordion-heading>
+
+						<totvs-list-item id="account{{account.num_id}}"
+										 ng-repeat="account in controller.selectedAccounts">
+
+							<totvs-list-item-content>
+								<totvs-list-item-info
+									class="col-xs-12 col-sm-12">
+									{{ account.num_id }} - {{ account.nom_razao_social }} {{ account.cod_pessoa_erp ? '(' + account.cod_pessoa_erp + ')' : '' }} {{ account.cod_pessoa_gpl ? '{' + account.cod_pessoa_gpl + '}' : '' }}
+								</totvs-list-item-info>
+							</totvs-list-item-content>
+						</totvs-list-item>
+					</accordion-group>
+
+					<accordion-group is-open="controller.group.ticket.open"
+									 class="crm-panel">
+						<accordion-heading>
+							<div class="row">
+								<div class="col-xs-12">
+									{{ 'nav-ticket' | i18n: []: 'dts/crm' }} ({{ controller.selectedTickets.length }})
+									<i class="pull-right glyphicon"
+									   ng-class="{'glyphicon-chevron-down' :  controller.group.ticket.open,
+												  'glyphicon-chevron-right': !controller.group.ticket.open}">
+									</i>
+								</div>
+							</div>
+						</accordion-heading>
+
+						<totvs-list-item id="ticket{{ticket.num_id}}"
+										 ng-repeat="ticket in controller.selectedTickets">
+							<totvs-list-item-content>
+								<totvs-list-item-info
+									class="col-xs-12 col-sm-12">
+									{{ ticket.cod_livre_1 }} - {{ ticket.nom_ocor }}
+								</totvs-list-item-info>
+							</totvs-list-item-content>
+						</totvs-list-item>
+
+					</accordion-group>
+
+					<accordion-group is-open="controller.group.opportunity.open"
+									 class="crm-panel">
+						<accordion-heading>
+							<div class="row">
+								<div class="col-xs-12">
+									{{ 'nav-opportunity' | i18n: []: 'dts/crm' }} ({{ controller.selectedOpportunities.length }})
+									<i class="pull-right glyphicon"
+									   ng-class="{'glyphicon-chevron-down' :  controller.group.opportunity.open,
+												  'glyphicon-chevron-right': !controller.group.opportunity.open}">
+									</i>
+								</div>
+							</div>
+						</accordion-heading>
+
+						<totvs-list-item id="opportunity{{opportunity.num_id}}"
+										 ng-repeat="opportunity in controller.selectedOpportunities">
+							<totvs-list-item-content>
+								<totvs-list-item-info
+									class="col-xs-12 col-sm-12">
+									{{ opportunity.num_id }} - {{ opportunity.des_oportun_vda }}
+								</totvs-list-item-info>
+							</totvs-list-item-content>
+						</totvs-list-item>
+
+					</accordion-group>
+
+					<accordion-group is-open="controller.group.task.open"
+									 class="crm-panel">
+						<accordion-heading>
+							<div class="row">
+								<div class="col-xs-12">
+									{{ 'nav-task' | i18n: []: 'dts/crm' }} ({{ controller.selectedTasks.length }})
+									<i class="pull-right glyphicon"
+									   ng-class="{'glyphicon-chevron-down' :  controller.group.task.open,
+												  'glyphicon-chevron-right': !controller.group.task.open}">
+									</i>
+								</div>
+							</div>
+						</accordion-heading>
+
+						<totvs-list-item id="task{{task.num_id}}"
+										 ng-repeat="task in controller.selectedTasks">
+							<totvs-list-item-content>
+								<totvs-list-item-info
+									class="col-xs-12 col-sm-12">
+									{{ task.num_id }} - {{task.ttAcao.nom_acao}}
+								</totvs-list-item-info>
+							</totvs-list-item-content>
+						</totvs-list-item>
+
+					</accordion-group>
+
+
+					<div style="padding-top: 10px;">
+						<button class="btn btn-primary pull-right" ng-click="controller.transfer()">{{ 'l-transfer' | i18n: []: 'dts/crm' }}</button>
+					</div>
+				</div>
+		   </accordion>
+	   </div>
+	</totvs-page-detail>
+</totvs-page-content>

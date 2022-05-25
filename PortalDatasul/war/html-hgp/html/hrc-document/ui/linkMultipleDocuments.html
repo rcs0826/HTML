@@ -1,0 +1,185 @@
+<totvs-page type="base"> 
+    <link type="text/css" rel="stylesheet" href="/dts/hgp/html/assets/css/hrc.css"/>
+
+    <totvs-page-navbar id="navBar">
+
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hrc-document/">Central Guias TISS</breadcrumb>
+                <breadcrumb>Vincular Documentos nas Internações</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title 
+                title="Vincular Documentos nas Internações ({{controller.listOfdocumentCount}})" >
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="2">
+                    <action class="btn-default" ng-click="controller.closeTab();">Cancelar</action>
+                    <action class="btn-primary"
+                            ng-click="controller.linkDocuments();">Vincular</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+
+    </totvs-page-navbar>
+
+    <totvs-page-content id="pageContent">
+
+        <totvs-page-form>
+            <div class="page-head undo-page-head" 
+                 style="border: none">
+              <div class="page-tags">
+                <div class="tag legend tag-{{$index + 1}}" 
+                     ng-repeat="item in DOCUMENT_STATUS_ENUM.ENUMERATION_VALUES">
+                     {{item.label}}
+                </div>
+              </div>
+            </div>
+
+            <div class="page-head undo-page-head">     
+                <totvs-page-disclaimers disclaimer-list="controller.disclaimers">
+                </totvs-page-disclaimers>
+            </div>
+        </totvs-page-form>
+
+        <totvs-page-alert 
+            ng-if="controller.hasDoneSearch == true && controller.listOfdocument.length <= 0"
+            type="info"
+            message="Nenhum registro encontrado">
+        </totvs-page-alert>
+
+        <totvs-list-item 
+            id="document{{$index}}"
+            class="tag-{{DOCUMENT_STATUS_ENUM.getIndexByKey(document.inStatus) + 1}}"
+            ng-repeat="document in controller.listOfdocument | filter:{ filterField: controller.searchInputText}">
+
+            <totvs-list-item-header>
+
+                 <totvs-list-item-title>
+                    <span> 
+                        <a href="#/dts/hgp/hrc-document/detail/{{document.urlChave}}"> 
+                            <b>Trans</b> {{(StringTools.fill(document.cdTransacao, "0", 4))}} 
+                            | <b>Série</b> {{document.nrSerieDocOriginal}} 
+                            | <b>Número</b> {{(StringTools.fill(document.nrDocOriginal, "0", 8))}} 
+                            | <b>Sequência</b> {{(StringTools.fill(document.nrDocSistema, "0", 9))}} 
+                            | <b>Período</b> {{document.rotuloPeriodo}} 
+                        </a>
+                    </span>
+                </totvs-list-item-title>
+            </totvs-list-item-header>
+
+            <totvs-list-item-content class="beneficiary-details">
+
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}" 
+                                      title="Beneficiário" value-break="false">
+
+                    <a ng-if="document.idPessoa != 0" 
+                        href="#/menu-html/program-html/hvp.personInformation/#/F/{{document.idPessoa}}">
+                        {{document.rotuloBenef}}
+                    </a>
+
+                    <a ng-if="document.idPessoa == 0"
+                        href="#/menu-html/program-html/hvp.personInformation/#/I/{{(StringTools.fill(document.cdUnidadeCarteira, '0', 4))}}{{(StringTools.fill(document.cdCarteiraUsuario, '0', 13))}}">
+                        {{document.rotuloBenef}}
+                    </a>  
+
+                </totvs-list-item-info>
+
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Prestador Principal" value-break="false">
+                    <a href="#/dts/hgp/global-provider/detail/{{(StringTools.fill(document.cdUnidadePrestadora, '0', 4))}}{{(StringTools.fill(document.cdPrestadorPrincipal, '0', 8))}}">
+                        {{document.rotuloPrestador}} 
+                    </a>
+                </totvs-list-item-info>
+
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Internação"
+                                      ng-if="document.dtInternacao != undefined"
+                                      value="{{document.rotuloInternacao}}">
+                </totvs-list-item-info>               
+            </totvs-list-item-content>
+
+            <totvs-list-item-content class="provider-details">
+
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Transação"
+                                      value="{{document.rotuloTransacao}}">
+                </totvs-list-item-info>
+                
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Guia do Prestador"
+                                      value="{{(document.nrGuiaPrestador == '' ? '-' : document.nrGuiaPrestador)}}">
+                </totvs-list-item-info>
+
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Autorização"
+                                      value="{{(document.nrGuiaAtendimento === 0 ? '-' : document.aaGuiaAtendimento + StringTools.fill(document.nrGuiaAtendimento, '0', 8))}}">
+                </totvs-list-item-info>
+
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Lote de Importação"              
+                                      value="{{(document.nrLoteImp == 0 ? '-' : StringTools.fill(document.nrLoteImp, '0', 8) + '/' + StringTools.fill(document.nrSequenciaImp, '0', 3))}}">
+                </totvs-list-item-info>
+
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Fatura"
+                                      value="{{document.urlFatura == '' ? '-' : document.urlFatura}}">
+                </totvs-list-item-info>
+
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="NDR"
+                                      value="{{document.urlNdr === '' ? '-' : document.urlNdr}}">
+                </totvs-list-item-info>
+            </totvs-list-item-content>
+
+            <totvs-page-content ng-if="document.listLinkDocuments.length > 0">
+                <totvs-table
+                    items="document.listLinkDocuments"
+                    items-as="doc"
+                    selected="true">
+
+                    <column title="Tipo">
+                        {{doc.tpDocumento}}
+                    </column>
+                    
+                    <column title="Unidade Prestadora">
+                        {{doc.cdUnidadePrestadora}}
+                    </column>
+
+                    <column title="Transação">
+                        {{doc.cdTransacao}}
+                    </column>
+
+                    <column title="Série">
+                        {{doc.nrSerieDocOriginal}}
+                    </column>
+
+                    <column title="Número">
+                        {{doc.nrDocOriginal}}
+                    </column>
+
+                    <column title="Sequência">
+                        {{doc.nrDocSistema}}
+                    </column>
+
+                    <column title="Data de Realização">
+                        {{doc.dtRealizacao | date : 'dd/MM/yyyy'}}
+                    </column>
+
+                    <column title="Hora de Realização">
+                        {{doc.hrRealizacao}}
+                    </column>
+
+                    <column title="Movimento">
+                        {{doc.rotuloMovimento}}
+                    </column>
+                </totvs-table>
+            </totvs-page-content>
+
+        </totvs-list-item>
+
+    </totvs-page-content>
+</totvs-page>

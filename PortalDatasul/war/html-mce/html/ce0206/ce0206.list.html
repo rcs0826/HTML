@@ -1,0 +1,100 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{'l-transfer-between-warehouses' | i18n}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{'l-transfer-between-warehouses' | i18n}}"></totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <div class="col-xs-12">
+                    <div class="operations page-detail-actions">
+                        <button class="btn btn-primary ng-binding ng-scope " ng-click="controller.createTransfer() ">
+                            {{ 'l-save' | i18n }}
+                        </button>
+                    </div>
+                </div>
+            </totvs-page-header-operation>
+
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form>
+            <div id="transferFormFields">
+                <fieldset>
+					
+					<field type="input" required canclean label="{{'l-item' | i18n}}" data-ng-model="controller.model['it-codigo']" zoom zoom-id="it-codigo" zoom-description="desc-item" zoom-service="men.item.zoom" class="col-md-6 col-sm-6 col-xs-12" ng-disabled="!controller.isFieldEnabled('it-codigo')" zoom-selected="controller.getDefaults('it-codigo')"  zoom-valid-search-values="['']" zoom-refresh-delay="1000"></field>
+					
+					<field type="input" required canclean data-ng-model="controller.model['cod-estabel']"  class="col-md-6 col-sm-6 col-xs-12" label="{{ 'l-site' | i18n }}" zoom-valid-search-values="['']" placeholderr="{{'l-site' | i18n}}" zoom zoom-id="cod-estabel" zoom-description="nome" zoom-service="mpd.estabelecSE.zoom" zoom-selected="controller.getDefaults('cod-estabel')" zoom-refresh-delay="1000" ></field>					
+					
+                    <field type="date" data-ng-model="controller.model['dt-trans']" label="{{ 'l-transaction-date' | i18n }}" class="col-md-4 col-sm-4 col-xs-12" ng-disabled="!controller.isFieldEnabled('dt-trans')" required>
+                    </field>
+                    <field type="input" canclean class="col-md-4 col-sm-4 col-xs-12" label="{{ 'l-document' | i18n }}" data-ng-model="controller.model['nro-docto']" ng-disabled="!controller.isFieldEnabled('nro-docto')">
+                        <label>{{ 'l-document' | i18n }}</label>
+                    </field>
+                    <field type="input" canclean class="col-md-4 col-sm-4 col-xs-12" label="{{ 'l-series' | i18n }}" data-ng-model="controller.model['serie-docto']" ng-disabled="!controller.isFieldEnabled('serie-docto')">
+                        <label>{{ 'l-series' | i18n }}</label>
+                    </field>
+                </fieldset>
+
+                <fieldset>
+                    <legend>{{ 'l-origin' | i18n }}</legend>
+                    <div class="col-md-12 col-xs-12 col-lg-12">
+                        <button id="btnOrigin" zoom zoom-service="mce.saldo-estoq-orig.zoom" zoom-init="{'filters': {'cod-estabel': controller.model['cod-estabel'], 
+														'it-codigo': controller.model['it-codigo']}
+											}" zoom-selected="controller.fillBalanceFields(selected, oldValue)" ng-model="controller.balanceObject" class="btn btn-primary">
+                            <label>{{ 'l-choose-balance' | i18n }}</label>
+                        </button>
+                    </div>
+                    <field type="input" label="{{ 'l-warehouse' | i18n }}" data-ng-model="controller.warehouseObj" ng-disabled="true" class="col-md-4 col-sm-4 col-xs-12">
+                    </field>
+                    <field type="input" label="{{ 'l-localization' | i18n }}" data-ng-model="controller.locationObj" ng-disabled="true" class="col-md-4 col-sm-4 col-xs-12">
+                    </field>
+                    <field type="input" label="{{ 'l-lot-serial' | i18n }}" data-ng-model="controller.model['lote-orig']" ng-disabled="true" class="col-md-4 col-sm-4 col-xs-12">
+                    </field>
+                    <field type="date" label="{{'l-dateValidLot' | i18n}}" class="col-md-4 col-sm-4 col-xs-12" data-ng-model="controller.model['dt-vali-lote-orig']" ng-disabled="true">
+                        <label>{{ 'l-dateValidLot' | i18n }}</label>
+                    </field>
+                    <field type="input" label="{{'l-reference' | i18n}}" class="col-md-4 col-sm-4 col-xs-4" data-ng-model="controller.model['cod-refer-orig']" ng-disabled="true">
+                        <label>{{ 'l-reference' | i18n }}</label>
+                    </field>
+                </fieldset>
+                <fieldset>
+                    <legend>{{ 'l-target' | i18n }}</legend>
+                    <field type="input" required canclean label="{{'l-warehouse' | i18n}}" data-ng-model="controller.model['cod-depos-dest']" zoom zoom-id="cod-depos" zoom-description="nome" zoom-service="mce.deposito-dest.zoom" class="col-md-6 col-sm-6 col-xs-12" ng-disabled="!controller.isFieldEnabled('cod-depos-dest')" ng-change="controller.getDefaults('cod-depos-dest')">
+                    </field>
+                    <field type="input" label="{{'l-localization' | i18n}}" canclean zoom zoom-id="cod-localiz" zoom-description="descricao" zoom-service="mce.localiz-dest.zoom" zoom-init="{'filters': {'cod-estabel': controller.model['cod-estabel'], 
+												   'cod-depos': controller.model['cod-depos-dest']}
+									  }" data-ng-model="controller.model['cod-localiz-dest']" ng-disabled="!controller.isFieldEnabled('cod-localiz-dest')" ng-change="controller.getDefaults('cod-localiz-dest')" class="col-md-6 col-sm-6 col-xs-12">
+                    </field>
+                    <field type="input" label="{{ 'l-lot-serial' | i18n }}" class="col-md-4 col-sm-4 col-xs-12" canclean data-ng-model="controller.model['lote-dest']" ng-disabled="!controller.isFieldEnabled('lote-dest')" ng-change="controller.getDefaults('lote-dest')" zoom zoom-service="mce.saldo-estoq-dest.zoom" zoom-id="lote" zoom-init="{'filters': {'cod-estabel': controller.model['cod-estabel'], 
+													   'cod-depos': controller.model['cod-depos-dest'],
+													   'cod-localiz': controller.model['cod-localiz-dest'],
+													   'cod-refer': controller.model['cod-refer-dest'], 										  
+													   'it-codigo': controller.model['it-codigo']}
+										  }">
+                    </field>
+                    <field type="date" class="col-md-4 col-sm-4 col-xs-12" data-ng-model="controller.model['dt-vali-lote-dest']" ng-disabled="!controller.isFieldEnabled('dt-vali-lote-dest')" ng-change="controller.getDefaults('dt-vali-lote-dest')">
+                        <label>{{ 'l-dateValidLot' | i18n }}</label>
+                    </field>
+                </fieldset>
+                <fieldset>
+                    <legend>{{ 'l-contents' | i18n }}</legend>
+                    <field type="decimal" canclean label="{{ 'l-quantity' | i18n }}" class="col-md-4 col-sm-4 col-xs-12" data-ng-model="controller.model['quantidade']" data-m-dec=4 ng-disabled="!controller.isFieldEnabled('quantidade')" required>
+                        <label>{{ 'l-quantity' | i18n }}</label>
+                    </field>
+					
+					<field type="input" required canclean data-ng-model="controller.model['un']" class="col-md-4 col-sm-4 col-xs-12" label="{{ 'l-unit-of-measure' | i18n }}" zoom-valid-search-values="['']" placeholderr="{{'l-unit-of-measure' | i18n}}" zoom zoom-id="un" zoom-description="descricao" zoom-service="mcc.tab-unidade.zoom" zoom-selected="controller.getDefaults('un')" ng-disabled="!controller.isFieldEnabled('un')" zoom-refresh-delay="1000" ></field>					
+					
+                    <field type="decimal" canclean label="{{ 'l-quantity-tags' | i18n }}" class="col-md-4 col-sm-4 col-xs-12" data-m-dec=4 data-ng-model="controller.model['nr-etiquetas']" ng-disabled="!controller.isFieldEnabled('nr-etiquetas')">
+                        <label>{{ 'l-quantity-tags' | i18n }}</label>
+                    </field>
+                    <field type="textarea" label="{{ 'l-observation' | i18n }}" class="col-md-12 col-sm-12 col-xs-12" data-ng-model="controller.model['descricao-db']">
+                        <label>{{ 'l-observation' | i18n }}</label>
+                    </field>
+                </fieldset>
+            </div>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

@@ -1,0 +1,87 @@
+<totvs-page type="list">
+
+    <totvs-page-navbar>
+        
+        <totvs-page-breadcrumb id="breadcrumb">
+                <breadcrumb>Manutenção Associativa Processos x Anexos</breadcrumb>
+
+                <breadcrumb></breadcrumb>
+        </totvs-page-breadcrumb>
+        
+        <totvs-page-header>
+
+            <totvs-page-header-title title="Manutenção Associativa Processos x Anexos" 
+                                     total="{{controller.listOfassociativeProcessAttachmentsCount}}"
+                                     settings="controller.openConfigWindow()">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+			
+				<totvs-page-header-operation-action on-new="controller.onNew"
+                                                    limit-primary-action="1">
+                    <action class="glyphicon-plus"
+                            link="#/dts/hgp/hcg-associativeProcessAttachments/new">
+                            Incluir 
+                    </action>
+
+                </totvs-page-header-operation-action>
+
+                <totvs-page-header-operation-filter placeholder="Descrição do Processo"
+                                                    ng-submit="controller.search()"
+                                                    ng-model="controller.searchInputText"
+                                                    advanced-search="controller.openAdvancedSearch">
+                </totvs-page-header-operation-filter>
+
+            </totvs-page-header-operation>
+
+            <totvs-page-disclaimers
+                disclaimer-list="controller.disclaimers"
+                ng-click="controller.removeDisclaimer">
+            </totvs-page-disclaimers>
+            
+        </totvs-page-header>
+    </totvs-page-navbar>
+    
+    <totvs-page-content>
+
+        <totvs-page-alert ng-if="controller.listOfassociativeProcessAttachments.length <= 0"
+                    type="info"
+                    message="Nenhum registro encontrado">
+        </totvs-page-alert>
+
+        <totvs-list-item
+            ng-repeat="associativeProcessAttachments in controller.listOfassociativeProcessAttachments">
+
+            <totvs-list-item-header>
+
+                <totvs-list-item-title
+                    title="{{associativeProcessAttachments.rotuloProcesso}}"
+                    link="#/dts/hgp/hcg-associativeProcessAttachments/detail/{{associativeProcessAttachments.idiGerenciaProcesAnexo}}">
+                </totvs-list-item-title>
+
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/hgp/hcg-associativeProcessAttachments/edit/{{associativeProcessAttachments.idiGerenciaProcesAnexo}}"
+							icon="glyphicon-pencil">Editar</action>
+                    
+                    <action ng-click="controller.removeAssociativeProcessAttachments(associativeProcessAttachments)" 
+                            icon="glyphicon-trash">Remover</action>
+                </totvs-list-item-action>
+            </totvs-list-item-header>
+
+            <!--<totvs-list-item-content>
+
+                <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                      title="Processo"
+                                      value="{{associativeProcessAttachments.rotuloProcesso}}">      
+                </totvs-list-item-info>             
+                
+            </totvs-list-item-content> -->
+        </totvs-list-item>
+
+        <totvs-list-pagination
+            ng-if="controller.listOfassociativeProcessAttachments.length < controller.listOfassociativeProcessAttachmentsCount && controller.listOfassociativeProcessAttachments.length"
+            ng-click="controller.search(true);">
+        </totvs-list-pagination>
+
+    </totvs-page-content>
+</totvs-page>

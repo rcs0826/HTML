@@ -1,0 +1,52 @@
+<style> 
+    .quebra-linha{
+        white-space: normal !important;
+    };
+</style>
+
+<div class="modal-header">
+    <h3 class="modal-title">Histórico do Atendimento</h3>
+</div>
+<div class="modal-body">  
+    <totvs-page-form>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 col-sm-height" 
+             style="overflow-y: auto;">
+            <totvs-page-content>
+                <totvs-table
+                    items="controller.historicAttendanceList"
+                    items-as="historic"
+                    t-selectable="OFF"
+                    t-resizable="true"
+                    t-reorderable="true"
+                    t-highlight-selected="true">
+
+                    <column title="Status"
+                            width="200"
+                            class="quebra-linha">    
+                        {{historic.rotuloStatus}}
+                    </column>
+                    <column title="Resultado"
+                            width="200"
+                            class="quebra-linha">    
+                        {{historic.rotuloResultado}}
+                    </column>            
+                    <column title="Usuário" 
+                            width="150">    
+                        {{historic.codUsuarUltAtualiz}}
+                    </column>
+                    <column title="Data de Alteração"
+                            width="120">
+                        {{historic.rotuloDatUltAtualiz}}
+                    </column>
+                    <column title="Hora de Alteração"
+                            width="120">    
+                        {{historic.rotuloHraUltAtualiz}}
+                    </column>            
+                </totvs-table>
+            </totvs-page-content>
+        </div>
+    </totvs-page-form>
+</div>
+<totvs-modal-footer>  
+    <button class="btn" ng-click="controller.cancel()">Voltar</button>
+</totvs-modal-footer>

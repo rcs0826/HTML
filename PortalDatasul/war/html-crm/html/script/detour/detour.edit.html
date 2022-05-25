@@ -1,0 +1,146 @@
+<totvs-modal-header>
+	{{ 'l-detour-page' | i18n : [] : 'dts/crm' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<div class="row" ng-if="controller.model.log_edit_remove === true">
+
+		<div class="col-xs-12 crm-no-gutter">
+
+			<field type="select"
+				   class="col-xs-5"
+				   ng-model="controller.selectedPageFrom"
+				   ng-change="controller.onChangePageFrom()"
+				   label="{{ 'l-page-source' | i18n : [] : 'dts/crm'}}">
+
+				<include>
+					<ui-select-match placeholder="{{ 'l-page-source' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_pag }}</ui-select-match>
+					<ui-select-choices repeat="page in controller.model.ttQuestionarioPagina | filter: $select.search track by $index">
+						<span ng-bind-html="page.nom_pag | highlight: $select.search"></span>
+					</ui-select-choices>
+				</include>
+				<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+			</field>
+
+			<field type="select"
+				   class="col-xs-5"
+				   ng-model="controller.selectedPageTo"
+				   label="{{ 'l-page-destination' | i18n : [] : 'dts/crm'}}">
+
+				<include>
+					<ui-select-match placeholder="{{ 'l-page-destination' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_pag }}</ui-select-match>
+					<ui-select-choices repeat="page in controller.model.ttQuestionarioPagina | filter: controller.allowedPages | filter: $select.search track by $index">
+						<span ng-bind-html="page.nom_pag | highlight: $select.search"></span>
+					</ui-select-choices>
+				</include>
+				<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+			</field>
+
+		</div>
+
+		<div class="col-xs-10 crm-no-gutter">
+
+			<field type="select"
+				   class="col-xs-6"
+				   ng-model="controller.selectedQuestion"
+				   ng-change="controller.onChangeQuestion()"
+				   label="{{ 'l-question' | i18n : [] : 'dts/crm'}}">
+
+				<include>
+					<ui-select-match  placeholder="{{ 'l-question' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_quest }}</ui-select-match>
+					<ui-select-choices repeat="quest in controller.selectedPageFrom.ttQuestionarioQuestao | filter: controller.allowedQuestion | filter: $select.search track by $index">
+						<span ng-bind-html="quest.nom_quest | highlight: $select.search"></span>
+					</ui-select-choices>
+				</include>
+				<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+			</field>
+
+			<field type="select"
+				   class="col-xs-6"
+				   ng-model="controller.selectedAttribute"
+				   label="{{ 'l-attribute' | i18n : [] : 'dts/crm'}}">
+
+				<include>
+					<ui-select-match  placeholder="{{ 'l-attribute' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_atrib }}</ui-select-match>
+					<ui-select-choices repeat="atrib in controller.selectedQuestion.ttQuestionarioQuestaoAtributo | filter: $select.search track by $index">
+						<span ng-bind-html="atrib.nom_atrib | highlight: $select.search"></span>
+					</ui-select-choices>
+				</include>
+				<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+			</field>
+
+		</div>
+
+		<div class="col-xs-2 crm-field-extra-button">
+
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addDetour();">
+				{{ 'btn-add' | i18n: []: 'dts/crm' }}
+			</button>
+
+		</div>
+
+	</div>
+
+	<totvs-divider class="crm-divider"></totvs-divider>
+
+	<div class="crm-tab"
+		 ng-animate="'animate-if'">
+
+		<div class="row crm-tab-item crm-no-gutter"
+			 ng-repeat="detour in controller.model.ttDesvio"
+			 ng-click="controller.select(script);">
+
+			<div class="col-xs-8 overflow-ellipsis">
+
+				<span class="glyphicon glyphicon-chevron-right"></span>
+				{{ detour.nom_pag_from }}
+				<span class="glyphicon glyphicon-chevron-right"></span>
+				{{ detour.nom_pag_to }}
+
+			</div>
+
+			<div class="col-xs-4 text-right">
+				<a class="clickable"
+				   ng-if="controller.model.log_edit_remove === true"
+				   ng-click="controller.removeDetour(detour, $index);">
+					{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+				</a>
+			</div>
+
+			<totvs-divider style="margin-top: 10px;margin-bottom: 10px;"
+						   ng-if="controller.model.log_edit_remove === true"></totvs-divider>
+
+			<div class="col-xs-12 crm-no-gutter">
+
+				<totvs-list-item-info class="col-xs-9"
+									  title="{{ 'l-question' | i18n: []: 'dts/crm' }}"
+									  value="{{ detour.nom_quest_from }}"
+									  value-break="false">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info class="col-xs-3"
+									  title="{{ 'l-attribute' | i18n: []: 'dts/crm' }}"
+									  value="{{ detour.nom_atrib_from }}"
+									  value-break="false">
+				</totvs-list-item-info>
+
+			</div>
+
+		</div>
+
+		<totvs-page-alert
+			ng-if="controller.model.ttDesvio.length === 0"
+			type="info"
+			message="{{ 'msg-not-found-detour' | i18n: []: 'dts/crm' }}">
+		</totvs-page-alert>
+
+	</div>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.close()">{{ 'btn-close' | i18n }}</button>
+</totvs-modal-footer>

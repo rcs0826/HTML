@@ -1,0 +1,388 @@
+<div class="col-md-12">
+    <accordion close-others="false">
+
+        <% _.forEach(data, function(group) { %>
+
+        <% if (group.item.codeGroup == 1 && group.item.visible == true) { %>
+        <accordion-group is-open="controller.listGroups[0].item.expanded">
+            <accordion-heading>
+                {{ 'l-dados-gerais' | i18n: []:  'dts/mpd' }}
+                {{<%group.item%>}}
+                <i class="pull-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down' :  controller.listGroups[0].item.expanded,
+                    'glyphicon-chevron-right': !controller.listGroups[0].item.expanded}">
+                </i>
+            </accordion-heading>
+            <div ng-if="controller.listGroups[0].item.expanded">
+                <totvs-page-detail-info title="{{'l-cod-gr-cli-emit' | i18n}}">{{controller.ttDetalheCliente['cod-gr-cli'] }} - {{controller.ttDetalheCliente['gr-cli-descricao'] }}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-data-implant' | i18n}}">{{controller.ttDetalheCliente['data-implant'] | date : ('l-date-format' | i18n) : 'UTC'}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-categoria' | i18n}}">{{controller.ttDetalheCliente['categoria'] }}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-des-atividade' | i18n}}">{{controller.ttDetalheCliente['atividade'] }}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-linha-produt' | i18n}}">{{controller.ttDetalheCliente['linha-produt'] }}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-canal-distribuicao' | i18n}}">{{controller.ttDetalheCliente['cod-canal-venda']}} - {{controller.ttDetalheCliente['canal-venda-descricao']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-nome-mic-reg' | i18n}}">{{controller.ttDetalheCliente['nome-mic-reg'] }}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-nr-mesina' | i18n}}">{{controller.ttDetalheCliente['nr-mesina'] }}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-data-ultima-venda' | i18n}}">{{controller.ttDetalheCliente['dt-ult-venda'] | date : ('l-date-format' | i18n) : 'UTC'}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-repres' | i18n}}">{{controller.ttDetalheCliente['repres-nome'] }}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-observacao' | i18n}}">{{controller.ttDetalheCliente['observacoes'] }}</totvs-page-detail-info>
+            </div>
+        </accordion-group>
+        <% } %>
+
+        <% if (group.item.codeGroup == 2 && group.item.visible == true) { %>
+        <accordion-group is-open="controller.listGroups[1].item.expanded">
+            <accordion-heading>
+                {{ 'l-endereco' | i18n: []:  'dts/mpd' }}
+                <i class="pull-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down' :  controller.listGroups[1].item.expanded,
+                    'glyphicon-chevron-right': !controller.listGroups[1].item.expanded}">
+                </i>
+            </accordion-heading>
+            <div ng-if="controller.listGroups[1].item.expanded">
+                <totvs-page-detail-info title="{{'l-endereco_text' | i18n}}">{{controller.ttDetalheCliente['endereco_text']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-endereco' | i18n}}">{{controller.ttDetalheCliente['endereco']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-bairro' | i18n}}">{{controller.ttDetalheCliente['bairro']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-cep' | i18n}}">{{controller.ttDetalheCliente['cep']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-cidade' | i18n}}">{{controller.ttDetalheCliente['cidade']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-estado' | i18n}}">{{controller.ttDetalheCliente['estado']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-caixa-postal' | i18n}}">{{controller.ttDetalheCliente['caixa-postal']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-pais' | i18n}}">{{controller.ttDetalheCliente['pais']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-emite-etiq' | i18n}}">{{controller.ttDetalheCliente['emite-etiq'] | booleanI18N}}</totvs-page-detail-info>
+            </div>
+        </accordion-group>
+        <% } %>
+
+        <% if (group.item.codeGroup == 3 && group.item.visible == true) { %>
+        <accordion-group is-open="controller.listGroups[2].item.expanded">
+            <accordion-heading>
+                {{ 'l-comunicacao' | i18n: []:  'dts/mpd' }}
+                <i class="pull-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down' :  controller.listGroups[2].item.expanded,
+                    'glyphicon-chevron-right': !controller.listGroups[2].item.expanded}">
+                </i>
+            </accordion-heading>
+            <div ng-if="controller.listGroups[2].item.expanded">
+                <totvs-page-detail-info title="{{'l-telefone-1' | i18n}}">{{controller.ttDetalheCliente['telefone'][0]}} {{controller.ttDetalheCliente['ramal'][0]}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-telefone-2' | i18n}}">{{controller.ttDetalheCliente['telefone'][1]}} {{controller.ttDetalheCliente['ramal'][1]}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-telefax' | i18n}}">{{controller.ttDetalheCliente['telefax']}} {{controller.ttDetalheCliente['ramal-fax']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-telef-modem' | i18n}}">{{controller.ttDetalheCliente['telef-modem']}} {{controller.ttDetalheCliente['ramal-modem']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-e-mail' | i18n}}">{{controller.ttDetalheCliente['e-mail']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-home-page' | i18n}}">{{controller.ttDetalheCliente['home-page']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-cod-parceiro-edi' | i18n}}">{{controller.ttDetalheCliente['cod-parceiro-edi']}}</totvs-page-detail-info>
+            </div>
+        </accordion-group>
+        <% } %>
+
+        <% if (group.item.codeGroup == 4 && group.item.visible == true) { %>
+        <accordion-group is-open="controller.listGroups[3].item.expanded">
+            <accordion-heading>
+                {{ 'l-fiscal-data' | i18n: []:  'dts/mpd' }}
+                <i class="pull-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down' :  controller.listGroups[3].item.expanded,
+                    'glyphicon-chevron-right': !controller.listGroups[3].item.expanded}">
+                </i>
+            </accordion-heading>
+            <div ng-if="controller.listGroups[3].item.expanded">
+                <totvs-page-detail-info title="{{'l-natureza' | i18n}}">{{controller.ttDetalheCliente['desc-natureza']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-cpf-cnpj' | i18n}}">{{controller.ttDetalheCliente['cgc']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-ins-estadual' | i18n}}">{{controller.ttDetalheCliente['ins-estadual']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-ins-municipal' | i18n}}">{{controller.ttDetalheCliente['ins-municipal']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-suframa' | i18n}}">{{controller.ttDetalheCliente['cod-suframa']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-cod-cacex' | i18n}}">{{controller.ttDetalheCliente['cod-cacex']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-cod-inscr-inss' | i18n}}">{{controller.ttDetalheCliente['cod-inscr-inss']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-insc-subs-trib' | i18n}}">{{controller.ttDetalheCliente['insc-subs-trib']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-agente-retencao' | i18n}}">{{controller.ttDetalheCliente['agente-retencao']  | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-contrib-icms' | i18n}}">{{controller.ttDetalheCliente['contrib-icms'] | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-log-optan-suspens-ipi' | i18n}}">{{controller.ttDetalheCliente['log-optan-suspens-ipi'] | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-log-calcula-pis-cofins-unid' | i18n}}">{{controller.ttDetalheCliente['log-calcula-pis-cofins-unid'] | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-nr-tb-pauta' | i18n}}">{{controller.ttDetalheCliente['dist-nr-tb-pauta']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-nat-operacao' | i18n}}">{{controller.ttDetalheCliente['natur-oper-nat-operacao']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-nat-ope-ext' | i18n}}">{{controller.ttDetalheCliente['natur-oper-ext-nat-operacao']}}</totvs-page-detail-info>
+            </div>
+        </accordion-group>
+        <% } %>
+
+        <% if (group.item.codeGroup == 5 && group.item.visible == true) { %>
+        <accordion-group is-open="controller.listGroups[4].item.expanded">
+            <accordion-heading>
+                {{ 'l-faturamento' | i18n: []:  'dts/mpd' }}
+                <i class="pull-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down' :  controller.listGroups[4].item.expanded,
+                    'glyphicon-chevron-right': !controller.listGroups[4].item.expanded}">
+                </i>
+            </accordion-heading>
+            <div ng-if="controller.listGroups[4].item.expanded">
+                <totvs-page-detail-info title="{{'l-cod-transp' | i18n}}">{{controller.ttDetalheCliente['cod-transp']}} - {{controller.ttDetalheCliente['transporte-nome']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-redespacho' | i18n}}">{{controller.ttDetalheCliente['nome-tr-red']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-tabela-precos' | i18n}}">{{controller.ttDetalheCliente['tb-preco-nr-tabpre']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-obriga-relac-item-cliente' | i18n}}">{{controller.ttDetalheCliente['dist-log-obriga-item-cli'] | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-mo-fatur' | i18n}}">{{controller.ttDetalheCliente['dist-mo-fatur']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-faturamento-maximo' | i18n}}">{{controller.ttDetalheCliente['perc-fat-ped'] | number: 2}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-cancel-saldo-maximo' | i18n}}">{{controller.ttDetalheCliente['per-max-canc'] | number: 2}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-ind-fat-par' | i18n}}">{{controller.ttDetalheCliente['ind-fat-par'] | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-faturamento-parcial-min' | i18n}}">{{controller.ttDetalheCliente['per-minfat'] | number: 2}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-tipo-pedido' | i18n}}">{{controller.ttDetalheCliente['esp-pd-venda']}} - {{controller.ttDetalheCliente['desc-esp-pd-venda']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-gera-difer-preco' | i18n}}">{{controller.ttDetalheCliente['gera-difer'] | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-cod-gr-cli' | i18n}}">{{controller.ttDetalheCliente['cod-gr-cli']}} - {{controller.ttDetalheCliente['gr-cli-descricao']}}</totvs-page-detail-info>
+            </div>
+        </accordion-group>
+        <% } %>
+
+        <% if (group.item.codeGroup == 6 && group.item.visible == true) { %>
+        <accordion-group is-open="controller.listGroups[5].item.expanded">
+            <accordion-heading>
+                {{ 'l-faturamento-retro' | i18n: []:  'dts/mpd' }}
+                <i class="pull-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down' :  controller.listGroups[5].item.expanded,
+                    'glyphicon-chevron-right': !controller.listGroups[5].item.expanded}">
+                </i>
+            </accordion-heading>
+            <div ng-if="controller.listGroups[5].item.expanded">
+                <totvs-page-detail-info title="{{'l-tipo-agrupamento-item' | i18n}}">{{controller.ttDetalheCliente['desc-idi-agrup-item']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-apenas-um-agrupamento-nf' | i18n}}">{{controller.ttDetalheCliente['dist-log-agrup-unico-nota'] | booleanI18N}}</totvs-page-detail-info>
+            </div>
+        </accordion-group>
+        <% } %>
+
+        <% if (group.item.codeGroup == 7 && group.item.visible == true) { %>
+        <accordion-group is-open="controller.listGroups[6].item.expanded">
+            <accordion-heading>
+                {{ 'l-pedido-programacao' | i18n: []:  'dts/mpd' }}
+                <i class="pull-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down' :  controller.listGroups[6].item.expanded,
+                    'glyphicon-chevron-right': !controller.listGroups[6].item.expanded}">
+                </i>
+            </accordion-heading>
+            <div ng-if="controller.listGroups[6].item.expanded">
+                <totvs-page-detail-info title="{{'l-ind-atraso' | i18n}}">{{controller.getDelayIndicatorDescription(controller.ttDetalheCliente['ind-atraso']) | i18n}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-tipo-quant-prog' | i18n}}">{{controller.getAmountType(controller.ttDetalheCliente['tp-qt-prg']) | i18n}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-conf-progr-entrega' | i18n}}">{{controller.getDeliveryConfirmation(controller.ttDetalheCliente['dist-idi-confir-programac-entreg']) | i18n}}</totvs-page-detail-info>
+            </div>
+        </accordion-group>
+        <% } %>
+
+        <% if (group.item.codeGroup == 8 && group.item.visible == true) { %>
+        <accordion-group is-open="controller.listGroups[7].item.expanded">
+            <accordion-heading>
+                {{ 'l-descontos-bonificacoes' | i18n: []:  'dts/mpd' }}
+                <i class="pull-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down' :  controller.listGroups[7].item.expanded,
+                    'glyphicon-chevron-right': !controller.listGroups[7].item.expanded}">
+                </i>
+            </accordion-heading>
+            <div ng-if="controller.listGroups[7].item.expanded">
+                <totvs-page-detail-info title="{{'l-desconto' | i18n}}">{{controller.ttDetalheCliente['bonificacao'] | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-fatura-pedido-bonus' | i18n}}">{{controller.ttDetalheCliente['dist-log-fatur-ped-bonif'] | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-permitir-venda-sem-desc' | i18n}}">{{controller.ttDetalheCliente['dist-log-libera-venda-sem-bonif'] | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-geracao-bonificacao' | i18n}}">{{controller.getBonusGeneration(controller.ttDetalheCliente['dist-ind-geracao-ped-bonif']) | i18n}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-atualiza-bonif-cancel-saldo' | i18n}}">{{controller.getBonusCancellation(controller.ttDetalheCliente['dist-ind-atua-bonif-canc-saldo']) | i18n}}</totvs-page-detail-info>
+            </div>
+        </accordion-group>
+        <% } %>
+
+        <% if (group.item.codeGroup == 9 && group.item.visible == true) { %>
+        <accordion-group is-open="controller.listGroups[8].item.expanded">
+            <accordion-heading>
+                {{ 'l-ind-cre-cli' | i18n: []:  'dts/mpd' }}
+                <i class="pull-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down' :  controller.listGroups[8].item.expanded,
+                    'glyphicon-chevron-right': !controller.listGroups[8].item.expanded}">
+                </i>
+            </accordion-heading>
+            <div ng-if="controller.listGroups[8].item.expanded">
+                <totvs-page-detail-info title="{{'l-ind-cre-cli' | i18n}}">{{controller.ttDetalheCliente['desc-ind-cre-cli']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-moeda-limite-credito' | i18n}}">{{controller.ttDetalheCliente['moeda-libcre']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-limite-credito' | i18n}}">{{controller.ttDetalheCliente['lim-credito'] | number: 2}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-limite-credito-adicional' | i18n}}">{{controller.ttDetalheCliente['lim-adicional'] | number: 2}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-data-limite-credito' | i18n}}">{{controller.ttDetalheCliente['dt-lim-cred'] | date : ('l-date-format' | i18n) : 'UTC'}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-dt-fim-cred' | i18n}}">{{controller.ttDetalheCliente['dt-fim-cred'] | date : ('l-date-format' | i18n) : 'UTC'}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-ind-aval' | i18n}}">{{controller.ttDetalheCliente['desc-ind-aval']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-ind-aval-embarque' | i18n}}">{{controller.ttDetalheCliente['ind-aval-embarque']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-libera-estoque-sem-aval' | i18n}}">{{controller.ttDetalheCliente['ind-lib-estoque'] | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-nr-peratr' | i18n}}">{{controller.ttDetalheCliente['nr-peratr']}}</totvs-page-detail-info>           
+            </div>
+        </accordion-group>
+        <% } %>
+
+
+        <% if (group.item.codeGroup == 15 && group.item.visible == true) { %>
+            <accordion-group is-open="controller.listGroups[14].item.expanded">
+                <accordion-heading>
+                    {{ 'l-risk' | i18n: []:  'dts/mpd' }}
+                    <i class="pull-right glyphicon"
+                        ng-class="{'glyphicon-chevron-down' :  controller.listGroups[14].item.expanded,
+                        'glyphicon-chevron-right': !controller.listGroups[14].item.expanded}">
+                    </i>
+                </accordion-heading>
+                <div ng-if="controller.listGroups[14].item.expanded">
+                    <totvs-page-detail-info class="col-xs-6 col-lg-3" title="{{'l-supplier-partner-status' | i18n}}">            {{controller.ttDetalheCliente.supplierCustomerCredit['idi-status-emit']}} - {{controller.ttDetalheCliente.supplierCustomerCredit['des-status-emit']}}</totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs-6 col-lg-3" title="{{'l-supplier-limit' | i18n}}">                     {{controller.ttDetalheCliente.supplierCustomerCredit['val-limit-compra-tot'] | number : 4}}</totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs-6 col-lg-3" title="{{'l-supplier-available-limit' | i18n}}">           {{controller.ttDetalheCliente.supplierCustomerCredit['val-limit-compra-dispon'] | number : 4}}</totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs-6 col-lg-3" title="{{'l-supplier-released-limit' | i18n}}">            {{controller.ttDetalheCliente.supplierCustomerCredit['val-limit-compra-liberd'] | number : 4}}</totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs-6 col-lg-3" title="{{'l-supplier-pre-authorized-limit' | i18n}}">      {{controller.ttDetalheCliente.supplierCustomerCredit['val-limit-compra-pre-autor'] | number : 4}}</totvs-page-detail-info>
+                    <totvs-page-detail-info class="col-xs-6 col-lg-3" title="{{'l-supplier-used-limit' | i18n}}">                {{controller.ttDetalheCliente.supplierCustomerCredit['val-limit-compra-utlzad'] | number : 4}}</totvs-page-detail-info>                    
+                    <totvs-page-detail-info class="col-xs-6 col-lg-3" title="{{'l-supplier-days-late' | i18n}}">                 {{controller.ttDetalheCliente.supplierCustomerCredit['num-dia-atraso']}}</totvs-page-detail-info>            
+                    <totvs-page-detail-info class="col-xs-6 col-lg-3" title="{{'l-supplier-partner-last-update' | i18n}}">       {{controller.ttDetalheCliente.supplierCustomerCredit['dtm-ultima-atualiz']}}</totvs-page-detail-info> 
+           
+                    <br>
+                    <div class="row" 
+                        style="padding-left: 15px; padding-right: 15px;">
+                        <totvs-page-detail-info-group>
+                            {{'l-supplier-granting-credit' | i18n}}
+                        </totvs-page-detail-info-group>
+                        <div class="col-sm-12">
+                            <totvs-grid grid-data="controller.ttDetalheCliente.supplierCustomerCreditConcessi"
+                                grid="controller.supplierCustomerCreditGrid"
+                                auto-resize-content="true"
+                                grid-height="200"
+                                selectable="row">
+                                <totvs-grid-column field="val-limit-cr-desej" width="40" filter="number : 4">{{ 'l-supplier-desired-credit-limit' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                <totvs-grid-column field="val-limit-cr-aprov" width="40" filter="number : 4">{{ 'l-supplier-approved-credit-limit' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                <totvs-grid-column field="dtm-solicitacao" width="40" >{{ 'l-supplier-request-date-time' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                <totvs-grid-column field="dtm-avaliac" width="40">{{ 'l-supplier-evaluation-date-time' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                <totvs-grid-column field="des-status-concess" width="40">{{ 'l-supplier-granting-credit-status' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                                <totvs-grid-column field="des-observacao" width="80">{{ 'l-supplier-obs-risk' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                            </totvs-grid>
+                        </div>
+                    </div>
+
+                    <div class="row"
+                         style="padding-top: 15px; padding-left: 15px; padding-right: 15px;">
+         
+                        <totvs-page-detail-info-group>
+                            {{'l-grant-new-credit-limit' | i18n}}
+                        </totvs-page-detail-info-group>
+                        <field type="decimal"
+                            ng-model="controller.newCreditLimit"
+                            data-m-dec="4"
+                            placeholder="0,0000"
+                            canclean>
+                            <label>{{ 'l-supplier-desired-credit-limit' | i18n }}</label>
+                        </field>
+                        <div class="pull-right" style="margin-top: 29px;">
+                            <button type="button" class="btn btn-primary" data-ng-click="controller.supplierGrantCredit();" data-ng-if="!controller.isQuickFilter">{{ 'btn-grant-credit' | i18n }}</button>
+                            <button class="btn btn-default btn-default" ng-click="controller.refreshSupplierCustomerCredit();"> {{'l-refresh' | i18n}} </button>
+                        </div>
+                    </div>
+                </div>
+            </accordion-group>
+        <% } %>
+
+
+        <% if (group.item.codeGroup == 10 && group.item.visible == true) { %>
+        <accordion-group is-open="controller.listGroups[9].item.expanded">
+            <accordion-heading>
+                {{ 'l-endereco-cobranca' | i18n: []:  'dts/mpd' }}
+                <i class="pull-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down' :  controller.listGroups[9].item.expanded,
+                    'glyphicon-chevron-right': !controller.listGroups[9].item.expanded}">
+                </i>
+            </accordion-heading>
+            <div ng-if="controller.listGroups[9].item.expanded">
+                <totvs-page-detail-info title="{{'l-customer' | i18n}}">{{controller.ttDetalheCliente['end-cobranca']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-endereco_text' | i18n}}">{{controller.ttDetalheCliente['endereco-cob-text']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-endereco' | i18n}}">{{controller.ttDetalheCliente['endereco-cob']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-bairro' | i18n}}">{{controller.ttDetalheCliente['bairro-cob']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-cep' | i18n}}">{{controller.ttDetalheCliente['cep-cob']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-cidade' | i18n}}">{{controller.ttDetalheCliente['cidade-cob']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-estado' | i18n}}">{{controller.ttDetalheCliente['estado-cob']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-caixa-postal' | i18n}}">{{controller.ttDetalheCliente['cx-post-cob']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-pais' | i18n}}">{{controller.ttDetalheCliente['pais-cob']}}</totvs-page-detail-info>
+            </div>
+        </accordion-group>
+        <% } %>
+
+        <% if (group.item.codeGroup == 11 && group.item.visible == true) { %>
+        <accordion-group is-open="controller.listGroups[10].item.expanded">
+            <accordion-heading>
+                {{ 'l-informacao-cobranca' | i18n: []:  'dts/mpd' }}
+                <i class="pull-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down' :  controller.listGroups[10].item.expanded,
+                    'glyphicon-chevron-right': !controller.listGroups[10].item.expanded}">
+                </i>
+            </accordion-heading>
+            <div ng-if="controller.listGroups[10].item.expanded">
+                <totvs-page-detail-info title="{{'l-portador' | i18n}}">{{controller.ttDetalheCliente['portador']}} - {{controller.ttDetalheCliente['desc-mod-portador']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-portador-preferencial' | i18n}}">{{controller.ttDetalheCliente['port-prefer']}} - {{controller.ttDetalheCliente['desc-mod-por-pref']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-cgc-cli' | i18n}}">{{controller.ttDetalheCliente['cgc-cob']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-ie-cobranca' | i18n}}">{{controller.ttDetalheCliente['ins-est-cob']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-condicao-pagamento' | i18n}}">{{controller.ttDetalheCliente['cod-cond-pag']}} - {{controller.ttDetalheCliente['cond-pagto-descricao']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-tipo-cobranca-desp' | i18n}}">{{controller.ttDetalheCliente['desc-tip-cob-desp']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-valor-minimo' | i18n}}">{{controller.ttDetalheCliente['valor-minimo'] | number: 2}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-nr-peratr' | i18n}}">{{controller.ttDetalheCliente['nr-peratr']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-tipo-receita-despesa' | i18n}}">{{controller.ttDetalheCliente['tp-rec-padrao']}} - {{controller.ttDetalheCliente['tipo-rec-desp-descricao']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-impressao-titulo' | i18n}}">{{controller.ttDetalheCliente['emite-etiq']  | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-gera-ad' | i18n}}">{{controller.ttDetalheCliente['gera-ad'] | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-calcula-multa' | i18n}}">{{controller.ttDetalheCliente['calcula-multa'] | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-recebe-inf-sci' | i18n}}">{{controller.ttDetalheCliente['recebe-inf-sci'] | booleanI18N}}</totvs-page-detail-info>
+            </div>
+        </accordion-group>
+        <% } %>
+
+        <% if (group.item.codeGroup == 12 && group.item.visible == true) { %>
+        <accordion-group is-open="controller.listGroups[11].item.expanded">
+            <accordion-heading>
+                {{ 'l-financial-data' | i18n: []:  'dts/mpd' }}
+                <i class="pull-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down' :  controller.listGroups[11].item.expanded,
+                    'glyphicon-chevron-right': !controller.listGroups[11].item.expanded}">
+                </i>
+            </accordion-heading>
+            <div ng-if="controller.listGroups[11].item.expanded">
+                <totvs-page-detail-info title="{{'l-banco' | i18n}}">{{controller.ttDetalheCliente['cod-banco']}} - {{controller.ttDetalheCliente['banco-nome-banco']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-agencia' | i18n}}">{{controller.ttDetalheCliente['agencia']}} - {{controller.ttDetalheCliente['agencia-nome']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-conta-corren' | i18n}}">{{controller.ttDetalheCliente['conta-corren']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-instrucao-banc-1' | i18n}}">{{controller.ttDetalheCliente['ins-banc'][0]}} - {{controller.ttDetalheCliente['instrucao1-descricao']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-instrucao-banc-2' | i18n}}">{{controller.ttDetalheCliente['ins-banc'][1]}} - {{controller.ttDetalheCliente['instrucao2-descricao']}}</totvs-page-detail-info>
+            </div>
+        </accordion-group>
+        <% } %>
+
+        <% if (group.item.codeGroup == 13 && group.item.visible == true) { %>
+        <accordion-group is-open="controller.listGroups[12].item.expanded">
+            <accordion-heading>
+                {{ 'l-order-summary' | i18n: []:  'dts/mpd' }}
+                <i class="pull-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down' :  controller.listGroups[12].item.expanded,
+                    'glyphicon-chevron-right': !controller.listGroups[12].item.expanded}">
+                </i>
+            </accordion-heading>
+            <div ng-if="controller.listGroups[12].item.expanded">
+                <div style="height:300px;">
+                    <chart dataset="controller.customerData" options="controller.summaryOptions"></chart>
+                </div>
+                <div style="text-align: right">
+                    <a role="button" class="btn btn-link" ng-click="controller.openOrders()">{{ 'l-detail' | i18n: []:  'dts/mpd' }}</a>
+                </div>
+            </div>
+        </accordion-group>
+        <% } %>
+
+        <% if (group.item.codeGroup == 14 && group.item.visible == true) { %>
+        <accordion-group is-open="controller.listGroups[13].item.expanded">
+            <accordion-heading>
+                {{ 'l-other-information' | i18n: []:  'dts/mpd' }}
+                <i class="pull-right glyphicon"
+                    ng-class="{'glyphicon-chevron-down' :  controller.listGroups[13].item.expanded,
+                    'glyphicon-chevron-right': !controller.listGroups[13].item.expanded}">
+                </i>
+            </accordion-heading>
+            <div ng-if="controller.listGroups[13].item.expanded">
+                <totvs-page-detail-info title="{{'l-codigo-crm' | i18n}}">{{controller.ttDetalheCliente['dist-cdn-emitente-crm']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-integra-b2b' | i18n}}">{{controller.ttDetalheCliente['dist-dsl-integr-b2b']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-portal-customers' | i18n}}">{{controller.ttDetalheCliente['dist-Ind-Portal']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-datasul-net' | i18n}}">{{controller.ttDetalheCliente['dist-log-datasulnet'] | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-parceiro-b2b' | i18n}}">{{controller.ttDetalheCliente['dist-parceiro-b2b'] | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-deposito-externo' | i18n}}">{{controller.ttDetalheCliente['deposito-ext-cod-depos']}} - {{controller.ttDetalheCliente['deposito-ext-nome']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-deposito-pad' | i18n}}">{{controller.ttDetalheCliente['deposito-padrao-cod-depos']}} - {{controller.ttDetalheCliente['deposito-padrao-nome']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-controle-desc-pedido' | i18n}}">{{controller.ttDetalheCliente['dist-log-bonif-junto-venda'] | booleanI18N}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-tipo-frete' | i18n}}">{{controller.ttDetalheCliente['desc-ind-tp-frete']}}</totvs-page-detail-info>
+                <totvs-page-detail-info title="{{'l-considera-ap-lim-cred' | i18n}}">{{controller.ttDetalheCliente['dist-log-consid-ap-lim-cr'] | booleanI18N}}</totvs-page-detail-info>
+            </div>
+        </accordion-group>
+        <% } %>
+
+        <% } )%>
+    </accordion>
+</div>
+

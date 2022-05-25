@@ -1,0 +1,41 @@
+<totvs-page-detail-info-group>{{'l-business-units' | i18n: []: 'dts/mcc'}}</totvs-page-detail-info-group>
+<div class="col-md-12">
+    <button class="btn btn-primary" ng-click="controller.addBusinessUnit()" ng-disabled="!controller.model.enableBusinessUnit" type="button">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;{{ 'btn-add' | i18n: []: 'dts/mcc' }}
+    </button>
+</div>
+
+<div class="col-md-12" style="margin-top:15px;">
+    <totvs-list-item ng-repeat="businessUnit in controller.model.ttGenericBusinessUnit">
+        <totvs-list-item-content style="padding-bottom: 15px;">
+            <field type="combo" 
+                class="col-sm-9 col-md-4" 
+                label="{{'l-business-unit' | i18n: []: 'dts/mcc'}}"
+                ng-disabled="controller.enableFields && !controller.enableFields['cod-unid-negoc']"
+                ng-model="businessUnit['cod_unid_negoc']"
+                ng-options="selectBusiness['cod_unid_negoc'] as (selectBusiness['cod_unid_negoc'] + ' - ' + selectBusiness['des-unid-negoc']) for selectBusiness in controller.model.ttBusinessUnit">
+            </field>            
+
+            <field type="number"
+                ng-disabled="!controller.model.enableBusinessUnit || (controller.enableFields && !controller.enableFields['cod-unid-negoc'])"
+                class="col-sm-2 col-xs-8"     
+                ng-change="controller.calculateTotalPercentageBusinessUnit(businessUnit)"
+                ng-model="businessUnit['perc-unid-neg']">
+                <label>{{'l-percentage' | i18n: []: 'dts/mcc'}}</label>
+                <validator>{{'l-the-value-must-be-between-0-100' | i18n: []: 'dts/mcc'}}</validator>
+            </field>
+
+            <button class="btn btn-default pull-right" ng-click="controller.removeBusinessUnit(businessUnit)" ng-disabled="!controller.model.enableBusinessUnit" type="button" style="margin-top:29px;">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
+                
+        </totvs-list-item-content>
+    </totvs-list-item>
+</div>
+
+<div class="col-md-12" style="margin-top:15px;">
+    <div class="col-md-2 col-md-offset-10 pull-right">
+        <label>{{'l-total' | i18n: []: 'dts/mcc'}}: </label>
+        <span>{{controller.totalPercentageBusinessUnit | number}}%</span>
+    </div>
+</div>

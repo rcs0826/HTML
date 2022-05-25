@@ -1,0 +1,192 @@
+<totvs-modal-header>
+    Busca Avançada
+</totvs-modal-header>
+<totvs-modal-body>
+    <fieldset ng-form="afController.modelForm">
+        <totvs-row>
+            <field type="combo"
+                   class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                   ng-model="afController.model.codTipAtendim"
+                   ng-options="v.data as v.label for v in ATTENDANCE_TYPES_ENUM.ENUMERATION_VALUES"
+                   label="Tipo de Atendimento"
+                   canclean>
+            </field>
+
+            <totvs-field canclean
+                         class="col-lg-8 col-md-8 col-sm-8 col-xs-12"
+                         label="Procedimento Principal"
+                         name-id="movementZoom"
+                         ng-model="afController.model.movementReturnObject"
+                         ng-change="afController.onMovementSelect()"
+                         return-object
+                         select-id="formattedCodeWithType"
+                         select-init="{filters: afController.movementFixedFilters}"
+                         select-description="dsMovimento"
+                         select-match='[{"field": "formattedCodeWithType", "separator": " - "}, {"field": "dsMovimento"}]'
+                         select-service="hrc.movementZoomController"
+                         totvs-select id="movementZoom"
+                         zoom-service="hrc.movementZoomController"
+                         zoom-init="{filters: afController.movementFixedFilters}">
+            </totvs-field>
+
+        </totvs-row>
+
+        <totvs-row>
+            <totvs-field totvs-select canclean
+               ng-model="afController.model.cdUnidCdCarteiraUsuario"
+               class="col-lg-6 col-md-6 col-sm-6 col-xs-6"
+               label="Beneficiário"
+               select-service="hvp.beneficiaryZoomController"
+               zoom-service="hvp.beneficiaryZoomController"
+               select-init ="{filters: afController.benefFixedFilters}"
+               zoom-init = "{filters: afController.benefFixedFilters}"
+               select-id="cdUnidCdCarteiraInteira" 
+               select-description="nmUsuario">
+            </totvs-field>
+
+            <totvs-field 
+                totvs-input
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-6"
+                label="Prestador"
+                ng-model="afController.model.nomPrestdor">
+            </totvs-field>
+        </totvs-row>
+
+        <totvs-row>
+            
+            <totvs-field 
+                totvs-input
+                class="col-lg-6 col-md-6 col-sm-6 col-xs-6"
+                label="Localidade"
+                ng-model="afController.model.nomCidade">
+            </totvs-field>
+            <totvs-field
+                totvs-datepicker
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                label='Data Inicial do Atendimento'
+                ng-model='afController.model.datInicAtendim'
+                canclean>
+            </totvs-field>
+            <totvs-field
+                totvs-datepicker
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                label='Data Final do Atendimento'
+                ng-model='afController.model.datFimAtendim'
+                canclean>
+            </totvs-field>
+        
+        </totvs-row>
+        <totvs-row>
+            <field class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                   data-ng-model="afController.model.cdnMotiv"
+                   label="Motivo de Impugnação"
+                   ng-options="o.idMotivo as (o.idMotivo + ' - ' + o.dsMotivo) for o in afController.impugnationMotives"
+                   type="combo"
+                   canclean>
+            </field>
+
+        </totvs-row>
+        <totvs-row>
+            <field type="combo"
+                   class="col-lg-6 col-md-6 col-sm-6 col-xs-6"
+                   ng-model="afController.model.idiStatus"
+                   ng-options="v.data as v.label for v in ATTENDANCE_STATUS_ENUM.DETAILED_ENUMERATION_VALUES"
+                   label="Status do Atendimento"
+                   canclean>
+            </field>
+            
+            <totvs-field canclean
+                         class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                         label="Status da Análise"
+                         name-id="situationZoom"
+                         ng-model="afController.model.situationReturnObject"
+                         ng-change="afController.onSituationSelect()"
+                         return-object
+                         select-id="idSituacao"
+                         select-description="nmSituacao"
+                         select-service="hrs.situationZoomController"
+                         totvs-select id="situationZoom"
+                         zoom-service="hrs.situationZoomController">
+            </totvs-field>
+        </totvs-row>
+        <totvs-row>
+            <totvs-field 
+                totvs-decimal
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                label="Valor Cobrado Inicial"
+                ng-model="afController.model.valCobradoInicial"
+                m-dec="2"
+                canclean>
+            </totvs-field>
+            <totvs-field 
+                totvs-decimal
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                label="Valor Cobrado Final"
+                ng-model="afController.model.valCobradoFinal"
+                m-dec="2"
+                canclean>
+            </totvs-field>
+
+            <totvs-field 
+                totvs-decimal
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                label="Valor Reconhecido Inicial"
+                ng-model="afController.model.valReconhecidoInicial"
+                m-dec="2"
+                canclean>
+            </totvs-field>
+            <totvs-field 
+                totvs-decimal
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                label="Valor Reconhecido Final"
+                ng-model="afController.model.valReconhecidoFinal"
+                m-dec="2"
+                canclean>
+            </totvs-field>
+
+        </totvs-row>
+
+        <totvs-row>
+            <totvs-field 
+                totvs-decimal
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                label="Valor Glosado Inicial"
+                ng-model="afController.model.valGlosadoInicial"
+                m-dec="2"
+                canclean>
+            </totvs-field>
+            <totvs-field 
+                totvs-decimal
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                label="Valor Glosado Final"
+                ng-model="afController.model.valGlosadoFinal"
+                m-dec="2"
+                canclean>
+            </totvs-field>
+
+            <totvs-field 
+                totvs-decimal
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                label="Valor Participação Inicial"
+                ng-model="afController.model.valParticipacaoInicial"
+                m-dec="2"
+                canclean>
+            </totvs-field>
+            <totvs-field 
+                totvs-decimal
+                class="col-lg-3 col-md-3 col-sm-3 col-xs-6"
+                label="Valor Participação Final"
+                ng-model="afController.model.valParticipacaoFinal"
+                m-dec="2"
+                canclean>
+            </totvs-field>
+        </totvs-row>
+
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button class="btn" ng-click="afController.cleanFields()">Limpar Campos</button>
+    <button class="btn" ng-click="afController.cancel()">Cancelar</button>
+    <button class="btn btn-primary" ng-click="afController.search()">Buscar</button>
+</totvs-modal-footer>

@@ -1,0 +1,148 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb>CRM</breadcrumb>
+			<breadcrumb>{{'nav-ticket-type' | i18n}}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+
+			<totvs-page-header-title
+				title="{{'nav-ticket-type' | i18n}}"
+				total="{{controller.listOfTicketTypeCount}}"
+				settings="controller.userSettings();">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<totvs-page-header-operation-action>
+					<% if ((!data["btn-new-type"] || data["btn-new-type"].log_visivel === true)) { %>
+					<action icon="glyphicon-plus"
+							ng-click="controller.addEdit();">
+						{{ 'btn-new-type' | i18n }}
+					</action>
+					<% } %>
+					<action icon="glyphicon-print"
+						ng-click="controller.exportSearch();">
+						{{ 'btn-export' | i18n: []: 'dts/crm' }}
+					</action>
+				</totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter
+					placeholder="{{ 'l-description' | i18n }}"
+					ng-submit="controller.search()"
+					ng-model="controller.quickSearchText"
+					> <!-- advanced-search="controller.openAdvancedSearch" -->
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+			<totvs-page-disclaimers
+				ng-if="controller.disclaimers.length > 0"
+				disclaimer-list="controller.disclaimers"
+				ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+
+			<div ng-include="'/dts/crm/html/ticket-type/ticket-type.legend.html'"></div>
+
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+
+		<totvs-page-alert
+			ng-if="controller.listOfTicketType.length <= 0"
+			type="info"
+			message="{{ 'msg-not-found-search' | i18n }}">
+			<% if ((!data["btn-new-type"] || data["btn-new-type"].log_visivel === true)) { %>
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addEdit();">
+				<span class="glyphicon glyphicon-plus"></span>
+				&nbsp;&nbsp;{{ 'btn-new-type' | i18n }}
+			</button>
+			<% } %>
+		</totvs-page-alert>
+
+		<totvs-list-item
+			 id="ticketType{{ticketType.num_id}}"
+			 ng-class="ticketType.nom_cor"
+			 ng-repeat="ticketType in controller.listOfTicketType">
+
+			<totvs-list-item-header>
+
+				<totvs-list-item-title
+					class="legend"
+					ng-class="ticketType.nom_cor">
+					<a href="#/dts/crm/ticket-type/detail/{{ticketType.num_id}}">
+						{{ ticketType.nom_tip_ocor }}
+					</a>
+				</totvs-list-item-title>
+
+				<% if ( (!data["btn-edit"] || data["btn-edit"].log_visivel === true) ||
+						(!data["btn-remove"] || data["btn-remove"].log_visivel === true) ||
+						(!data["btn-suspend"] || data["btn-suspend"].log_visivel === true) ) { %>
+
+				<totvs-list-item-action limit-primary-action="2">
+
+					<% if ((!data["btn-edit"] || data["btn-edit"].log_visivel === true)) { %>
+					<action icon="glyphicon-pencil"
+							ng-if="!ticketType.log_suspenso"
+							ng-click="controller.addEdit(ticketType)">
+						{{ 'btn-edit' | i18n }}
+					</action>
+					<% } %>
+
+					<% if ((!data["btn-remove"] || data["btn-remove"].log_visivel === true)) { %>
+					<action icon="glyphicon-trash"
+							ng-click="controller.remove(ticketType)">
+						{{ 'btn-remove' | i18n }}
+					</action>
+					<% } %>
+
+					<% if ((!data["btn-suspend"] || data["btn-suspend"].log_visivel === true)) { %>
+					<action icon="glyphicon-ok"
+							ng-click="controller.onReactivate(ticketType, ticketType.log_suspenso)">
+						{{ ticketType.log_suspenso ? ('btn-reactivate' | i18n) : ('btn-suspend' | i18n) }}
+					</action>
+					<% } %>
+
+				</totvs-list-item-action>
+				<% } %>
+
+			</totvs-list-item-header>
+
+			<% if ((!data["l-register-action"] || data["l-register-action"].log_visivel === true)) { %>
+			<totvs-list-item-content >
+
+				<!--totvs-list-item-info
+					class="col-xs-12 col-sm-3"
+					title="{{ 'l-suspended' | i18n }}">
+					{{ ticketType.log_suspenso ? ('l-yes' | i18n) : ('l-no' | i18n) }}
+				</totvs-list-item-info -->
+
+				<% if ((!data["l-register-action"] || data["l-register-action"].log_visivel === true)) { %>
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-3"
+					title="{{ 'l-register-action' | i18n }}">
+					{{ ticketType.log_reg_acao ? ('l-yes' | i18n) : ('l-no' | i18n) }}
+				</totvs-list-item-info>
+				<% } %>
+
+			</totvs-list-item-content>
+			<% } %>
+
+		</totvs-list-item>
+
+		<totvs-list-pagination
+			ng-if="controller.listOfTicketType.length < controller.listOfTicketTypeCount && controller.listOfTicketType.length"
+			ng-click="controller.search(true);">
+		</totvs-list-pagination>
+
+	</totvs-page-content>
+
+</totvs-page>

@@ -1,0 +1,66 @@
+
+<link rel="stylesheet" href="/dts/kbn/css/font-awesome.css"/>
+<totvs-modal-header>{{ "l-produce-items-manuals" | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+  <totvs-page-content>
+    <totvs-list-item ng-repeat="item in controller.items | filter: {itemManual: true}" class="{{controller.colorTag(item)}}">
+      <totvs-list-item-header>
+        <div class="col-xs-12"><span class="initialwrap title link">{{item | descGeneric:'{sku} - {desc} {ref} ({exp})'}}</span></div>
+      </totvs-list-item-header>
+      <totvs-list-item-content style="padding-bottom: 5px;">
+        <totvs-divider></totvs-divider>
+        <div class="col-xs-2">
+          <label class="input-label">{{ 'l-board' | i18n }}</label>
+          <div class="input-group">
+            <input ng-disabled="true" ng-model="item.totalKanbans" class="form-control"/>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <label class="input-label">{{ 'l-to-produce' | i18n }}</label>
+          <div ng-class="{'has-error': controller.quantityValidationError(item)}" class="input-group">
+            <input ng-model="item.quantity" ng-change="controller.validNumbers(item,'quantity') &amp;&amp; controller.updateItemTotal(item)" integer="integer" class="form-control"/>
+          </div>
+          <div ng-if="item.quantity == null" class="tooltip bottom in">
+            <div class="tooltip-inner btn-danger">
+              <div class="help-inline ng-binding ng-scope">{{'l-invalid-quantity' | i18n}}</div>
+            </div>
+            <div class="tooltip-arrow arrow-danger"></div>
+          </div>
+          <div ng-if="item.quantity &gt; item.totalKanbans" class="tooltip bottom in">
+            <div class="tooltip-inner btn-danger">
+              <div class="help-inline ng-binding ng-scope">{{'l-to-produce-validation' | i18n}}</div>
+            </div>
+            <div class="tooltip-arrow arrow-danger"></div>
+          </div>
+        </div>
+        <div class="col-xs-3">
+          <label class="input-label">{{ 'l-quantity' | i18n }}</label>
+          <div class="input-group">
+            <input ng-disabled="true" ng-model="item.total" class="form-control"/><span class="input-group-addon">{{item.unitOfMeasure}}</span>
+          </div>
+        </div>
+        <div class="col-xs-4">
+          <label class="input-label">{{ 'l-cell-workcenters' | i18n }}</label>
+          <div style="margin-top: -5px" class="row">
+            <field type="select" ng-model="item.workcenter" required="required" class="col-md-12">
+              <include>
+                <ui-select-match>{{$select.selected.cod_chave_erp}} </ui-select-match>
+                <ui-select-choices repeat="state in controller.workcenters track by $index"><span data-ng-bind-html="state.cod_chave_erp | highlight: $select.search"></span></ui-select-choices>
+              </include>
+            </field>
+          </div>
+          <div ng-if="controller.workCenterValidationError(item)" class="tooltip bottom in">
+            <div class="tooltip-inner btn-danger">
+              <div class="help-inline ng-binding ng-scope">{{'l-work-center-must-be-selected' | i18n}}</div>
+            </div>
+            <div class="tooltip-arrow arrow-danger"></div>
+          </div>
+        </div>
+      </totvs-list-item-content>
+    </totvs-list-item>
+  </totvs-page-content>
+</totvs-modal-body>
+<totvs-modal-footer>
+  <button ng-click="controller.close()" class="btn btn-default">{{ 'l-cancel' | i18n }}</button>
+  <button ng-disabled="controller.validateInfo(controller.items)" ng-click="controller.save(controller.items)" class="btn btn-primary">{{ 'l-apply' | i18n }}</button>
+</totvs-modal-footer>

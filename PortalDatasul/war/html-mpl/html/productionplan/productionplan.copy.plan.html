@@ -1,0 +1,150 @@
+<totvs-modal-header>{{ 'l-copy-quantity' | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+    <totvs-page-content>
+        <totvs-page-detail>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                 style="margin-top: 0px;">
+                <div class="btn-group" 
+                     data-toggle="buttons"
+                     style="padding-right: 15px;">
+                    <label class="btn btn-primary active"
+                           ng-click="controller.onChangeCopyType(1)">
+                      <input type="radio"
+                             id="btnPeriod"
+                             checked>{{ 'l-plan' | i18n }}
+                    </label>
+                    <label class="btn btn-primary"
+                           ng-click="controller.onChangeCopyType(2)">
+                      <input type="radio"
+                             id="btnDate">{{ 'l-quantity' | i18n }}
+                    </label>
+                </div>
+            </div>
+
+            <!-- PLANO ORIGEM -->
+            <field type="select"
+                   class="col-lg-6"
+                   ng-model="controller.model.sourcePlan"
+                   ng-change="controller.onChangeSourcePlan()"
+                   required
+                   canclean>
+                <label>{{ 'l-origin-plan' | i18n }}</label>
+                <zoom zoom-service="mpl.pl-prod.zoom"
+                      ng-change="controller.onChangeSourcePlan()">
+                </zoom>
+                <include>
+                    <ui-select-match placeholder="{{ 'l-origin-plan' | i18n }}">
+                        {{$select.selected['cd-plano'] + " - " + $select.selected['descricao'] }}
+                    </ui-select-match>
+                    <ui-select-choices
+                        repeat="plan in controller.servicePlanoProducaoZoom.productionPlanList track by $index"
+                        refresh="controller.servicePlanoProducaoZoom.getPlan($select.search)"
+                        refresh-delay="1000">
+                        <span 
+                            ng-bind-html="plan['cd-plano'] + ' - ' + plan['descricao'] | highlight: $select.search">
+                        </span>
+                    </ui-select-choices>
+                </include>
+            </field>
+
+            <!-- PLANO DESTINO -->
+            <field type="input"
+                   class="col-lg-6 col-md-6"
+                   ng-model="controller.model.targetPlan"
+                   ng-change="controller.onChangeTargetPlan()"
+                   ng-show="controller.model.copyType != 2"
+                   required
+                   canclean>
+                <label>{{ 'l-target-plan' | i18n }}</label>
+            </field>
+            
+            <field type="select"
+                   class="col-lg-6"
+                   ng-model="controller.model.targetPlan"
+                   ng-change="controller.onChangeTargetPlan()"
+                   ng-show="controller.model.copyType == 2"
+                   required
+                   canclean>
+                <label>{{ 'l-target-plan' | i18n }}</label>
+                <zoom zoom-service="mpl.pl-prod.zoom"
+                      ng-change="controller.onChangeTargetPlan()">
+                </zoom>
+                <include>
+                    <ui-select-match placeholder="{{ 'l-target-plan' | i18n }}" >
+                        {{$select.selected['cd-plano'] + " - " + $select.selected['descricao'] }}
+                    </ui-select-match>
+                    <ui-select-choices 	
+                        repeat="plan in controller.servicePlanoProducaoZoom.productionPlanList track by $index"
+                        refresh="controller.servicePlanoProducaoZoom.getPlan($select.search)"
+                        refresh-delay="1000">
+                        <span 
+                            ng-bind-html="plan['cd-plano'] + ' - ' + plan['descricao'] | highlight: $select.search">
+                        </span>
+                    </ui-select-choices>
+                </include>
+            </field>
+
+            <!-- PERIODO INICIAL -->
+            <field type="input"
+                   class="col-lg-6 col-md-6"
+                   ng-model="controller.model.initialPeriodString"
+                   ng-blur="controller.onLeaveInitialPeriod()"
+                   required
+                   canclean>
+                <label>{{ 'l-initial-period' | i18n }}</label>
+            </field>
+
+            <!-- DATA INICIAL -->
+            <field type="date"
+                   class="col-lg-6"
+                   ng-model="controller.model.initialDate"
+                   ng-change="controller.onChangeInitialDate()"
+                   ng-show="controller.model.copyType == 2"
+                   required>
+                <label>{{ 'l-initial-date' | i18n }}</label>
+            </field>
+
+            <!-- PERIODO FINAL -->
+            <field type="input"
+                   class="col-lg-6 col-md-6"
+                   ng-model="controller.model.finalPeriodString"
+                   ng-blur="controller.onLeaveFinalPeriod()"
+                   ng-show="controller.model.copyType == 2"
+                   required
+                   canclean>
+                <label>{{ 'l-end-period' | i18n }}</label>
+            </field>
+
+            <!-- DATA FINAL -->
+            <field type="date"
+                   class="col-lg-6"
+                   ng-model="controller.model.finalDate"
+                   ng-change="controller.onChangeDataFinal()"
+                   ng-show="controller.model.copyType == 2"
+                   required>
+                <label>{{ 'l-final-date' | i18n }}</label>
+            </field>
+            
+            <!-- COPIAR QUANTIDADES -->
+            <label style="margin-top: 12px; padding-right: 15px; padding-left: 15px;"
+                   ng-show="controller.model.copyType == 2"
+                   class="col-lg-12">
+                <span>{{ 'l-copy-quantity' | i18n }}</span>
+                <input type="checkbox"
+                       ng-model="controller.model.copyQuantity"
+                       bsswitch>
+                </input>
+            </label>
+        </totvs-page-detail>
+  	</totvs-page-content>
+</totvs-modal-body>
+<totvs-modal-footer>
+    <button type="button" 
+            class="btn btn-primary" 
+            data-ng-click="controller.confirm();">{{ 'l-confirm' | i18n }}
+    </button>
+	<button type="button" 
+            class="btn btn-default" 
+            data-ng-click="controller.close();">{{ 'btn-close' | i18n }}
+    </button>
+</totvs-modal-footer>

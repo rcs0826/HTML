@@ -1,0 +1,200 @@
+<totvs-page type="base">  
+    <link type="text/css" rel="stylesheet" href="/dts/hgp/html/assets/css/hrs.css"/>
+    <link type="text/css"  rel="stylesheet" href="/dts/hgp/html/assets/css/mention.css" />
+
+    <totvs-page-navbar >
+
+        <totvs-page-breadcrumb>
+                <breadcrumb link="#/dts/hgp/hrs-documents/">Documentos Comprobatórios</breadcrumb>
+                <breadcrumb>Manutenção de Documentos Comprobatórios</breadcrumb>
+        </totvs-page-breadcrumb>
+
+        <totvs-page-header>
+
+            <totvs-page-header-title 
+                title="{{(controller.action === 'INSERT' ? 'Incluir' : (controller.action === 'EDIT' ? 'Editar' : 'Detalhar'))}} Documentos Comprobatórios">
+            </totvs-page-header-title>
+
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action limit-primary-action="5">
+                    <action ng-click="controller.onCancel();">
+                            {{controller.action == 'DETAIL' ? 'Fechar': 'Cancelar'}}</action>
+                    <action ng-click="controller.save();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar</action>
+                    <action ng-click="controller.saveNew();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Novo</action>
+                    <action class="btn-primary"
+                            ng-click="controller.saveClose();" 
+                            ng-if="controller.action != 'DETAIL'">Salvar e Fechar</action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form t-name="controller.documentsForm">
+            <fieldset>
+                <totvs-row>
+                 	<totvs-field totvs-input
+                            class="col-lg-9 col-md-9 col-sm-7 col-xs-12"
+                            label="Nome do Documento"
+                            ng-model="controller.documents.nmDocumento"
+                            ng-required="true"
+                            ng-maxlength="300"
+                            ng-disabled="controller.action == 'DETAIL'">
+                        <validator key="required">Este campo é obrigatório!</validator>
+                        <validator key="maxlength">Digite no máximo 300 caracteres!</validator>
+                    </totvs-field>
+                </totvs-row>                     
+                <totvs-row>  
+                    <totvs-field totvs-checkbox
+                                 class="col-lg-2 col-md-2 col-sm-4 col-xs-12"
+                                 label="Documento obrigatório"
+                                 ng-model="controller.documents.lgPadrao"
+                                 ng-disabled="controller.action == 'DETAIL'">
+                    </totvs-field>
+                 	<totvs-field totvs-number
+                                 class="col-lg-2 col-md-4 col-sm-4 col-xs-12"
+                                 label="Sequência de Impressão"
+                 			     ng-model="controller.documents.nrImpressaoSeq"
+                                 ng-required="true"      
+                                 min="1"           			
+                 	  		     ng-disabled="controller.action == 'DETAIL'">
+                     	<validator key="required">Este campo é obrigatório!</validator>
+               	        <validator key="min">Insira um valor maior que zero</validator>
+                    </totvs-field>
+                    <totvs-field totvs-input
+                                 class="col-lg-8 col-md-6 col-sm-12 col-xs-12 mentions"
+                                 label="Máscara para nome do arquivo"
+                                 ng-model="controller.documents.nmMascaraNomeArquivo"
+                                 ng-maxlength="200"
+                 	   		     ng-disabled="controller.action == 'DETAIL'">
+                        <span style="color: gray; 
+                                     position: absolute;
+                                     margin-left: 173px;
+                                     margin-top: 10px;
+                                     font-size: 11px;"
+                              class="glyphicon glyphicon-tags"
+                              ng-mouseover="controller.openVariableFields()" id="variablefields" tabindex="0"
+                              data-html="true" data-toggle="popover" data-trigger="focus" 
+                              title="<b>Campos Variáveis</b> " 
+                              data-content="{{controller.dsCamposVariaveis}}" data-placement="right">
+                        </span>
+                    </totvs-field>
+                </totvs-row>                     
+                <totvs-row>  
+                    <field  type="combo"
+                            label="Tipo anexo"
+                            class="col-lg-4 col-md-6 col-sm-8 col-xs-12"
+                            data-ng-model="controller.documents.tpAnexo"            
+                            ng-options="u.data as u.label for u in TP_ANEXO_ENUM.ENUMERATION_VALUES">                            
+                    </field> 
+                </totvs-row> 
+                <totvs-divider></totvs-divider>
+                <totvs-tabset>
+                    <totvs-tab heading="Motivos">
+                        <totvs-row ng-repeat="item in controller.listReason">
+                            <div ng-if="item.idNatureza > 0" class="col-xs-12">
+                                <h5 class="col-xs-12">
+                                    {{item.dsNatureza}}
+                                </h5>
+                                <div class="col-xs-12">
+                                    <div ng-repeat="itemReason in item.motivos">                            
+                                    <totvs-field totvs-checkbox
+                                                            class="col-lg-4 col-md-6 col-sm-12 col-xs-12 umaLinha"
+                                                            label="{{itemReason.dsMotivo}}"
+                                                            id="reason_{{item.idNatureza}}_{{itemReason.idMotivo}}"
+                                                            ng-model="controller.listDocReason[item.idNatureza][itemReason.idMotivo]">
+                                    </totvs-field>
+                                    </div>
+                                </div>
+                                <totvs-divider></totvs-divider>
+                            </div>
+                        </totvs-row>
+                    </totvs-tab>
+                    <totvs-tab heading="Documento padrão" ng-if="controller.documents.tpAnexo==1">
+                        <br />
+                        <totvs-row ng-if="controller.action != 'DETAIL'">
+                            <button type="submit" 
+                                    class="col-sm-offset-11 col-sm-1 col btn btn-primary" 
+                                    ng-click="controller.openDocumentContratMaintenance(null,'P')">
+                                    <span class="ng-binding">Adicionar</span>
+                            </button>
+                        </totvs-row>
+                        <br />
+                        <totvs-table
+                           t-items="controller.listDoctoContrat"
+                           t-items-as="item"
+                           t-selectable="off"
+                           t-sortable="allowMultiple"
+                           t-items-filter="filter: filtroDocumento('P')">
+                           <column title="Descrição" width="54">
+                                {{item.desDescr}} 
+                           </column>
+                            <column title="Vigência" width="28">
+                                {{item.datVigencInic | date : 'dd/MM/yyyy'}} à
+                                {{item.datVigencFim  | date : 'dd/MM/yyyy'}} 
+                           </column>
+                           <column title=""  width="18"></column>                           
+                           <column title=""  width="18">
+                                <totvs-list-item-action limit-primary-action="1" class="columnActionList col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                    <action ng-click="controller.openDocumentContratMaintenance(item,'P')"
+                                            icon="glyphicon-pencil">Editar</action>
+                                    <action ng-click="controller.removeDocuments(item)" 
+                                            icon="glyphicon-trash">Remover</action>
+                                </totvs-list-item-action>
+                           </column>
+                        </totvs-table>
+                    </totvs-tab>
+                    <totvs-tab heading="Documento vinculado ao Contratante" ng-if="controller.documents.tpAnexo==2">
+                        <br />
+                        <totvs-row ng-if="controller.action != 'DETAIL'">
+                            <button type="submit" 
+                                    class="col-sm-offset-11 col-sm-1 col btn btn-primary" 
+                                    ng-click="controller.openDocumentContratMaintenance(null,'C')" >
+                                    <span class="ng-binding">Adicionar</span>
+                            </button>
+                        </totvs-row>
+                        <br />
+                        <totvs-table
+                           t-items="controller.listDoctoContrat"
+                           t-items-filter="filter: filtroDocumento('C')"
+                           t-items-as="item"
+                           t-selectable="off"
+                           t-sortable="allowMultiple">
+                           <column title="Contratante" width="10">
+                               {{item.cdnContrnte}}
+                           </column>
+                           <column title="Modalidade" width="10">
+                                {{item.cdnModalidade}}
+                           </column>
+                           <column title="Plano" width="10">
+                                {{item.cdnPlano}}
+                           </column>
+                           <column title="Tipo Plano" width="10">
+                                {{item.cdnTipPlano}}
+                           </column>
+                           <column title="Termo" width="10">
+                                {{item.cdnTerAdesao}}
+                           </column>
+                           <column title="Descrição" width="32">
+                                {{item.desDescr}} 
+                           </column>
+                           <column title=""  width="18">
+                                <totvs-list-item-action 
+                                    limit-primary-action="1" 
+                                    class="columnActionList col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                    <action ng-click="controller.openDocumentContratMaintenance(item,'C')"
+                                            icon="glyphicon-pencil">Editar</action>
+                                    <action ng-click="controller.removeDocuments(item)" 
+                                            icon="glyphicon-trash">Remover</action>
+                                </totvs-list-item-action>
+                           </column>
+                        </totvs-table>
+                    </totvs-tab>
+                </totvs-tabset>
+            </fieldset>
+        </totvs-page-form>        
+    </totvs-page-content>   
+</totvs-page>
+
+

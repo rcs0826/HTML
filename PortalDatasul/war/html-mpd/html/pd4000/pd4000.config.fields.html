@@ -1,0 +1,122 @@
+<totvs-page type="list">
+    <totvs-page-navbar>
+	<totvs-page-breadcrumb>
+		<breadcrumb link="#/">{{:: 'Início' | i18n : [] : 'dts/mpd' }}</breadcrumb>
+		<breadcrumb link="#/dts/mpd/pd4000/config">{{:: 'Configuração do Pedido de Venda' | i18n : [] : 'dts/mpd' }}</breadcrumb>
+		<breadcrumb>{{:: 'Campos' | i18n : [] : 'dts/mpd' }}</breadcrumb>
+	</totvs-page-breadcrumb>
+	<totvs-page-header>
+            <totvs-page-header-title title="{{:: 'Configuração - Campos' | i18n : [] : 'dts/mpd' }} - {{configFieldsController.registro}}"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action>
+					<action icon="glyphicon-ok"     
+                        ng-click="configFieldsController.save()">{{:: 'Salvar Alterações' | i18n : [] : 'dts/mpd' }}</action>
+					<action icon="glyphicon-remove" 
+                        ng-click="configFieldsController.loadData()">{{:: 'Cancelar Alterações' | i18n : [] : 'dts/mpd' }}</action>
+                </totvs-page-header-operation-action>
+                <totvs-page-header-operation-filter placeholder="{{:: 'Pesquisar Campos' | i18n : [] : 'dts/mpd' }}"
+                                                    ng-submit="configFieldsController.search()"
+                                                    ng-model="configFieldsController.quickSearchText">
+                </totvs-page-header-operation-filter>
+            </totvs-page-header-operation>    
+		</totvs-page-header>	
+	</totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-detail>   
+            <div class="row" style="margin-bottom: 15px;">
+                <field type="combo" ng-model="configFieldsController.screen" class="col-sm-3"
+                    ng-change="configFieldsController.filtraTela()"
+                    ng-options="item.id as item.desc for item in configFieldsController.telas">
+                    <label>{{:: 'Filtrar Tela' | i18n : [] : 'dts/mpd' }}</label>
+                </field>                    
+                <field type="combo" ng-model="configFieldsController.grupo" class="col-sm-3"
+                    ng-change="configFieldsController.search()"
+                    ng-options="item.id as item.desc for item in configFieldsController.grupos">
+                    <label>{{:: 'Filtrar Grupo' | i18n : [] : 'dts/mpd' }}</label>
+                </field>                    
+                <field type="checkbox" ng-model="configFieldsController.configurado" class="col-sm-3"
+                    ng-change="configFieldsController.search()">
+                    <label>{{:: 'Filtrar Configurados' | i18n : [] : 'dts/mpd' }}</label>
+                </field>                    
+                <div class="btn-group col-sm-3" style="padding-top: 30px;">
+                    <button type="button" class="btn btn-default dropdown-toggle pull-right" 
+                        data-toggle="dropdown" 
+                        aria-haspopup="true" aria-expanded="false"
+                        ng-disabled="!configFieldsController.fieldGridSelectedItems.length">
+                        {{:: 'Itens selecionados' | i18n : [] : 'dts/mpd' }} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a ng-click="configFieldsController.removeSelected()">{{:: 'Remover Configurações' | i18n : [] : 'dts/mpd' }}</a></li>
+                        <li><a ng-click="configFieldsController.toogleVisible(true)">{{:: 'Mostrar' | i18n : [] : 'dts/mpd' }}</a></li>
+                        <li><a ng-click="configFieldsController.toogleVisible(false)">{{:: 'Esconder' | i18n : [] : 'dts/mpd' }}</a></li>
+                        <li><a ng-click="configFieldsController.toogleEditable(1)">{{:: 'Editáveis pela regra' | i18n : [] : 'dts/mpd' }}</a></li>
+                        <li><a ng-click="configFieldsController.toogleEditable(2)">{{:: 'Desabilitar' | i18n : [] : 'dts/mpd' }}</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <totvs-grid grid-data="configFieldsController.orderFields"
+                                grid="configFieldsController.orderFieldsGrid" 
+                                grid-options="configFieldsController.gridoptions"
+                                height="400" navigatable="true" editable="true" selectable="multiple,row"
+                                grid-selected-items="configFieldsController.fieldGridSelectedItems"
+                                grid-dirty-items="configFieldsController.fieldGridDirtyItems"
+                                on-edit="configFieldsController.itemsGridEdit(event, column)">
+                        <totvs-grid-column field="tabela" width="190">{{:: 'Tela' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="grupo" width="190">{{:: 'Grupo' | i18n : [] : 'dts/mpd'}}
+                            <option id="0">{{:: 'Sem Grupo' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="1">{{:: 'Informações Básicas' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="2">{{:: 'Informações de Preço' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="3">{{:: 'Informações de Entrega' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="4">{{:: 'Informações de Atendimento' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="5">{{:: 'Informações Complementares' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="6">{{:: 'Informações de Vendor' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="7">{{:: 'Observações' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="8">{{:: 'Identificação do Item' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="9">{{:: 'Quantidade' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="10">{{:: 'Preço' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="11">{{:: 'Dados Fiscais' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="12">{{:: 'Atendimento' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="13">{{:: 'Outros Dados' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="14">{{:: 'Descontos' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="15">{{:: 'Ações do Pedido' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="16">{{:: 'Informações do Pedido' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="17">{{:: 'Ações de Item' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="18">{{:: 'Abas do Pedido' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="19">{{:: 'Ações do Pedido' | i18n : [] : 'dts/mpd'}}</option>
+                        </totvs-grid-column>
+                        <totvs-grid-column field="campo" width="220">{{:: 'Campo' | i18n : [] : 'dts/mpd'}}
+                            <template>
+                                <span ng-if="dataItem.dirty" class="k-dirty"></span>
+                                {{ dataItem.campo }}
+                            </template>
+                        </totvs-grid-column>
+                        <totvs-grid-column field="seq" width="60" editable="true" filter="number">{{:: 'Seq' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="configurado" width="80">{{:: 'Configurado' | i18n : [] : 'dts/mpd'}}
+                            <template>
+                                {{ dataItem.configurado }}
+                                <button ng-if="dataItem.configurado == configFieldsController.sim" 
+                                    type="button" class="btn btn-default btn-xs" 
+                                    ng-click="configFieldsController.remover(dataItem)">{{:: 'Remover' | i18n : [] : 'dts/mpd' }}</button>
+                            </template>
+                        </totvs-grid-column>
+                        <totvs-grid-column field="visivel" editable="true" filter="booleanI18N" width="60">{{:: 'Visível' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="editavel" editable="true" width="80">{{:: 'Editável' | i18n : [] : 'dts/mpd'}}
+                            <template>
+                                <span ng-if="dataItem.editavel == 0">{{:: 'Não Configurável' | i18n : [] : 'dts/mpd'}}</span>
+                                <span ng-if="dataItem.editavel == 1">{{:: 'Regra' | i18n : [] : 'dts/mpd'}}</span>
+                                <span ng-if="dataItem.editavel == 2">{{:: 'Desabilitado' | i18n : [] : 'dts/mpd'}}</span>
+                            </template>
+                            <option id="1">{{:: 'Regra' | i18n : [] : 'dts/mpd'}}</option>
+                            <option id="2">{{:: 'Desabilitado' | i18n : [] : 'dts/mpd'}}</option>
+                        </totvs-grid-column>
+                        <totvs-grid-group field="tabela"></totvs-grid-group>
+                        <totvs-grid-group field="grupo"></totvs-grid-group>
+                    </totvs-grid>
+                </div>
+            </div>
+        </totvs-page-detail>
+    </totvs-page-content>	
+</totvs-page>
+

@@ -1,0 +1,277 @@
+<totvs-page type="list" style="height: 100%;">
+    <totvs-page-navbar>
+        
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb>{{ 'l-cockpit' | i18n }}</breadcrumb>
+        </totvs-page-breadcrumb>
+    </totvs-page-navbar>
+    
+    
+    <totvs-page-content style="height: calc(100% - 35px); border-top-left-radius: 0; border-bottom-left-radius: 0; border-radius: 4px; background-color: rgb(224, 229, 234);">
+        <div class="col-md-3 col-sm-3 col-xs-12" style="margin-top: 5px; padding-left: 0px; padding-right: 0px; padding-bottom: 5px; height: 100%; border-top-left-radius: 0; border-bottom-left-radius: 0; border-radius: 4px; background-color: rgb(255, 255, 255);">
+            <div style="height: calc(100% - 35px); overflow-y: auto; overflow-x: hidden;">
+                <ul class="list-group" ng-repeat="(key, programPerGroup) in controller.programsToFilter() | filter:controller.filterProgramGroups" style="margin: 0px; padding-bottom: 0px;">
+                    <li class="list-group-item active">{{programPerGroup.group}}</li>
+                    <button ng-style="{{program.newProgram}}" class="list-group-item" style="padding-left: 30px; height: 25px; padding-top: 0px;padding-bottom: 0px; cursor: default; white-space: nowrap;" ng-repeat="(key, program) in controller.programs | filter:{group: programPerGroup.group} : true | orderBy:'seq'" ng-dblclick="controller.openProgress(program)" ng-click="controller.setSelectedProgram(program)" ng-blur="controller.setSelectedProgram()">
+                        {{program.name}}
+                    </button>
+                </ul>
+            </div>
+            <div class="list-group" style="padding-left: 5px; padding-right: 5px; padding-bottom: 5px;">
+                <button class="col-md-8 btn btn-primary"
+                        ng-click="controller.openProgress(controller.selectedProgram)">
+                    {{ 'l-to-execute' | i18n }}
+                </button>
+                <button class="col-md-2 btn btn-default glyphicon glyphicon-plus"
+                        ng-click="controller.addProgram()"
+                        tooltip="{{ 'l-add-custom-program' | i18n }}">
+                </button>
+                <button class="col-md-2 btn btn-default glyphicon glyphicon-minus"
+                        ng-click="controller.removeProgram()"
+                        tooltip="{{ 'l-remove-custom-program' | i18n }}">
+                </button>
+            </div>
+        </div>
+        
+        <totvs-page-form class="col-md-9 col-sm-9 col-xs-12" style="height: 100%; margin-top: 5px; padding-left: 30px; padding-right: 15px; padding-top: 0px;">
+            <totvs-row style="background-color: rgb(255, 255, 255); margin-left: 0px; margin-right: 0px; padding-bottom: 15px; border-radius: 4px;">
+                <!-- TIPO FECHAMENTO . Somente será apresentado se o fechamento não for por empresa-->
+
+                <div class="col-md-12 col-sm-12 col-xs-12" ng-if="!controller.companyAgroup">
+                    <label class="col-md-2 col-sm-3 hidden-xs" style="padding-top: 11px; text-align: left; padding-left: 0px; padding-right: 0px;">{{ 'l-fechamento' | i18n }}:</label>
+                    <label class="col-xs-12 hidden-lg hidden-md hidden-sm" style="padding-top: 11px; padding-left: 0px; padding-right: 0px;">{{ 'l-fechamento' | i18n }}:</label>
+                    <label class="radio col-md-2 col-sm-2 col-xs-6" style="padding-top: 11px; padding-left: 25px;">
+                        <input ng-value="1"
+                                name="closingType"
+                                ng-checked="(controller.costclosinginfo.closingType == 1)"
+                                ng-disabled="true"
+                                type="radio">{{ 'l-single' | i18n }}
+                    </label>
+                    <label class="radio col-md-2 col-sm-2 col-xs-6" style="padding-top: 11px; padding-left: 25px;">
+                        <input ng-value="2"
+                                name="closingType"
+                                ng-checked="(controller.costclosinginfo.closingType == 2)"
+                                ng-disabled="true"
+                                type="radio">{{ 'l-site' | i18n }}
+                    </label>
+                </div>
+                <!--TIPO DE PERIODO-->
+                <div class="col-md-12 col-sm-12 col-xs-12" ng-if="!controller.companyAgroup && controller.funcAtiva">
+                    <label class="col-md-2 col-sm-3 hidden-xs" style="padding-top: 11px; text-align: left; padding-left: 0px; padding-right: 0px;">{{ 'l-type-period' | i18n }}:</label>
+                    <label class="col-xs-12 hidden-lg hidden-md hidden-sm" style="padding-top: 11px; padding-left: 0px; padding-right: 0px;">{{ 'l-type-period' | i18n }}:</label>
+                    <label class="radio col-md-2 col-sm-2 col-xs-6" style="padding-top: 11px; padding-left: 25px;">
+                        <input ng-value="1"
+                                name="periodType"
+                                data-ng-model="controller.periodType"
+                                ng-disabled="false"
+                                type="radio"
+                                ng-click="controller.clickPeriodType()">{{ 'l-fiscal' | i18n }}
+                    </label>
+                    <label class="radio col-md-2 col-sm-2 col-xs-6" style="padding-top: 11px; padding-left: 25px;">
+                        <input ng-value="2"
+                                name="periodType"
+                                data-ng-model="controller.periodType"
+                                ng-disabled="false"
+                                type="radio"
+                                ng-click="controller.clickPeriodType()">{{ 'l-managerial' | i18n }}
+                    </label>
+                </div>
+                <!-- EMPRESA -->
+                <div class="col-md-12 col-sm-12 col-xs-12" ng-if="controller.companyAgroup">
+                    <label class="col-md-2 col-sm-3 hidden-xs" style="float: left; padding-top: 11px; padding-left: 0px; padding-right: 0px; text-align: left;">{{ 'l-company' | i18n }}:</label>
+                    <label class="col-xs-12 hidden-lg hidden-md hidden-sm" style="float: left; padding-top: 11px; padding-left: 0px; padding-right: 0px;">{{ 'l-company' | i18n }}:</label>
+					
+                    <field type="select2" 
+                            class="col-md-8 col-sm-10 col-xs-12"
+                            style="padding-left: 5px; padding-right: 5px;"
+                            data-ng-model="controller.companyCode"
+                            select-conector="{{'l-company' | i18n}}"
+                            select-id="ep-codigo"
+                            select-description="nome"
+                            canclean
+                            select-service="mab.empresa.zoom"
+                            ng-change="controller.changeCompany()">
+                            <zoom zoom-service="mab.empresa.zoom"></zoom>                           
+                    </field>
+                </div>
+                <!-- ESTABELECIMENTO -->
+                <div class="col-md-12">
+                    <label class="col-md-2 col-sm-3 hidden-xs" style="float: left; padding-top: 11px; padding-left: 0px; padding-right: 0px; text-align: left;">{{ 'l-site' | i18n }}:</label>
+                    <label class="col-xs-12 hidden-lg hidden-md hidden-sm" style="float: left; padding-top: 11px; padding-left: 0px; padding-right: 0px;">{{ 'l-site' | i18n }}:</label>
+
+                    <totvs-field 
+                        totvs-select
+                        ng-model="controller.siteCode"
+                        class="col-md-8 col-sm-10 col-xs-12"
+                        style="padding-left: 5px; padding-right: 5px;"                           
+                        select-id="cod-estabel"
+                        select-description="nome"
+                        canclean="undefined"                        
+                        select-service="mpd.estabelecSE.select"
+                        zoom-service="mpd.estabelecSE.zoom"
+                        select-init="{filter : {'ep-codigo' : controller.companyCode}}"
+                        zoom-init="{filter : {'ep-codigo' : controller.companyCode}}"                        
+                        ng-change="controller.leaveSite()"
+                        >
+                    </totvs-field>
+                </div>
+                <!-- DATA PERÍODO -->
+                <div class="col-md-12">
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left: 0px; padding-right: 0px;">
+                        <label class="col-md-4 col-sm-4 hidden-xs" style="float: left; padding-top: 11px; text-align: left; padding-left: 0px; padding-right: 0px;">{{ 'l-init-period-date' | i18n }}:</label>
+                        <label class="col-xs-12 hidden-lg hidden-md hidden-sm" style="float: left; padding-top: 11px; padding-left: 0px; padding-right: 0px;">{{ 'l-init-period-date' | i18n }}:</label>
+                        <totvs-field
+                            totvs-input
+                            class="col-md-8 col-sm-8 col-xs-12"
+                            style="padding-left: 5px; padding-right: 5px; border-left: 10px;"
+                            ng-disabled="true"
+                            ng-model="controller.costclosinginfo.dtIniPeriod">
+                        </totvs-field>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left: 0px; padding-right: 0px;">
+                        <label class="col-md-4 col-sm-4 hidden-xs" style="float: left; padding-top: 11px; text-align: right; padding-left: 0px; padding-right: 0px;">{{ 'l-end-period-date' | i18n }}:</label>
+                        <label class="col-xs-12 hidden-lg hidden-md hidden-sm" style="float: left; padding-top: 11px; padding-left: 0px; padding-right: 0px;">{{ 'l-end-period-date' | i18n }}:</label>
+                        <totvs-field
+                            totvs-input
+                            class="col-md-8 col-sm-8 col-xs-12"
+                            style="padding-left: 5px; padding-right: 0px; border-left: 10px;"
+                            ng-disabled="true"
+                            ng-model="controller.costclosinginfo.dtEndPeriod">
+                        </totvs-field>
+                    </div>
+                </div>
+                <!-- SITUAÇÃO -->
+                <div class="col-md-12">
+                    <div class="col-md-4 col-sm-12 col-xs-12">
+                        <totvs-field
+                            style="width: 25px; padding-left: 5px; padding-top: 11px; padding-right: 5px;"
+                            totvs-checkbox
+                            ng-disabled="true"
+                            ng-change="controller.change()"
+                            ng-model="controller.costclosinginfo.calculatedAverage">
+                        </totvs-field>
+                        <label style="float: left; padding-top: 15px;">{{ 'l-calculated-average' | i18n }}</label>
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-xs-12">
+                        <totvs-field
+                            style="width: 25px; padding-left: 5px; padding-top: 11px; padding-right: 5px;"
+                            totvs-checkbox
+                            ng-disabled="true"
+                            ng-model="controller.costclosinginfo.calculatedSummary">
+                        </totvs-field>
+                        <label style="float: left; padding-top: 15px;">{{ 'l-calculated-summary' | i18n }}</label>
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-xs-12">
+                        <totvs-field
+                            style="width: 25px; padding-left: 5px; padding-top: 11px; padding-right: 5px;"
+                            totvs-checkbox
+                            ng-disabled="true"
+                            ng-model="controller.costclosinginfo.accounted">
+                        </totvs-field>
+                        <label style="float: left; padding-top: 15px;">{{ 'l-accounted' | i18n }}</label>
+                    </div>
+                </div> 
+            </totvs-row>
+                
+            <totvs-row style="padding-top: 15px;">
+                <div class="col-md-6 col-sm-6 col-xs-12" style="padding-left: 0px; padding-right: 7.5px;"
+                     ng-if="!controller.costclosinginfo.calculatedAverage">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="text-align: center;">
+                            <strong>{{ 'l-calculated-itens' | i18n }}</strong>
+                            <span ng-click="controller.updateGauge()" class="pull-right glyphicon glyphicon-refresh" style="cursor: pointer;">
+                        </div>
+                        <div class="panel-body">
+                            <div class="col-xs-12" id="gauge-container">
+                                <span id="radial-gauge"
+                                    kendo-radialgauge
+                                    k-scale="controller.gaugeScale"
+                                    ng-model="controller.selectedNumber">
+                                </span>
+                            </div>
+                            <strong class="col-xs-12" style="text-align: center;">{{controller.selectedNumber}}%</strong>
+                        </div>
+                        <div class="panel-footer">
+                            <div>
+                                <strong>{{ 'l-total' | i18n }}:</strong>
+                                <span>{{controller.totalItens | number:0}}</span>
+                                <strong>{{ 'l-calculated' | i18n }}:</strong>
+                                <span>{{controller.alreadyCalcItens | number:0}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Grid -->
+                <div class="col-md-6 col-sm-6 col-xs-12" style="padding-left: 0px; padding-right: 7.5px;"
+                    ng-if="controller.costclosinginfo.calculatedAverage">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="text-align: center;">
+                            <strong>{{'l-middle-calculation-occurrences' | i18n}}</strong>                            
+                        </div>
+                        <div class="panel-body" style="text-align:center; height: 310px; 
+                                                    padding-right: 0px; 
+                                                    padding-left: 0px;
+                                                    padding-bottom: 0px;
+                                                    padding-top: 0px;">
+                            <totvs-grid grid-data="controller.occurrences"
+                                        grid-selected-item="controller.selectedOccurren"
+                                        resizable="true"
+                                        grid-options="controller.gridOptions"
+                                        sortable="{ allowUnsort: true, mode: 'single'}"
+                                        grid="controller.myGrid">
+                            </totvs-grid>
+                        </div>
+                        <div class="panel-footer" style="height: 41px;padding-top: 0px;padding-bottom: 0px;">
+                            <button type="button" class="btn btn-default " style="float: right;margin-top: 3px;" 
+                                    aria-label="Left Align"
+                                    ng-click="controller.exportCSV(4)">
+                                <span aria-hidden="true">{{ 'l-export-all' | i18n }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Gráfico -->
+                <div class="col-md-6 col-sm-6 col-xs-12" style="padding-left: 7.5px; padding-right: 0px; ">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="text-align: center;">
+                            <strong>{{ 'l-acts' | i18n }}</strong>
+                            <div class="pull-right">
+                                <span ng-click="controller.openHelp()" class="glyphicon glyphicon-question-sign" style="cursor: pointer; padding-right: 10px;" title="Ajuda"></span>
+                                <span ng-click="controller.openChartParameters()" class="glyphicon glyphicon-cog" style="cursor: pointer; padding-right: 10px;" title="Parâmetros"></span>
+                            </div>
+                        </div>
+                        <div class="panel-body" style="text-align:center;">
+                            <totvs-chart
+                                    style="padding: 0px;"
+                                    class="col-md-12 col-sm-12 col-xs-12"
+                                    t-height="280"
+                                    t-type-chart="pie"
+                                    t-series="controller.series"
+                                    t-on-click="controller.onClickChart"
+                                    t-chart-tooltip="false">
+                            </totvs-chart>
+                        </div>
+                        <div class="panel-footer" style="height: 41px;">
+                            <strong>{{ 'l-transaction-date' | i18n }}: </strong>
+                            <span>{{controller.dtTrans | date: 'dd/MM/yyyy'}}</span>
+                        </div>
+                    </div>
+                </div>
+            </totvs-row>
+        </totvs-page-form>
+</totvs-page>
+
+<style>
+    #gauge-container {
+        padding: 0px;
+        text-align: center;
+    }
+    
+    #gauge-container > span {
+        display: block;
+        height: 260px;
+        width: 300px;
+        margin: 0 auto;
+    }
+</style>

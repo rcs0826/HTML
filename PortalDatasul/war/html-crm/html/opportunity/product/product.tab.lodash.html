@@ -1,0 +1,140 @@
+<totvs-page-child type="list">
+
+	<br />
+
+	<totvs-page-content class="crm-tab">
+
+		<div class="row">
+			<div class="col-xs-6">
+				<h3 style="margin-top: 0px;">
+					{{ 'nav-product' | i18n: []: 'dts/crm' }} ({{ productController.listOfProductCount }})
+				</h3>
+			</div>
+			<% if ((!data["btn-add"] || data["btn-add"].log_visivel === true)) { %>
+			<div class="col-xs-6"
+				 ng-animate="'animate-if'">
+				<button class="btn btn-primary pull-right"
+						ng-click="productController.addEdit();">
+					<span class="glyphicon glyphicon-plus"></span>
+					{{ 'btn-add' | i18n: []: 'dts/crm' }}
+				</button>
+			</div>
+			<% } %>
+
+		</div>
+
+		<totvs-divider ng-animate="'animate-if'"></totvs-divider>
+
+		<br />
+
+		<totvs-page-alert
+			ng-if="productController.listOfProduct.length <= 0"
+			type="info"
+			message="{{ 'msg-not-found-product' | i18n: []: 'dts/crm' }}">
+		</totvs-page-alert>
+
+		<totvs-list-item
+			id="product{{product.num_id}}"
+			ng-repeat="product in productController.listOfProduct track by $index">
+
+			<totvs-list-item-header>
+
+				<totvs-list-item-title
+					class="legend">
+					<span>
+						{{ product.cod_item_erp }} - {{product.nom_produt}}
+						<span class="label label-warning" ng-if="product.log_loss === true">
+							{{ 'l-lost-product' | i18n: []: 'dts/crm' }}
+						</span>
+					</span>
+				</totvs-list-item-title>
+
+				<totvs-list-item-action limit-primary-action="3">
+
+					<% if ((!data["btn-edit"] || data["btn-edit"].log_visivel === true)) { %>
+					<action icon="glyphicon-pencil"
+							ng-if="productController.isEnabled"
+							ng-click="productController.addEdit(product);">
+						{{ 'btn-edit' | i18n: []: 'dts/crm' }}
+					</action>
+					<% } %>
+
+					<% if ((!data["btn-remove"] || data["btn-remove"].log_visivel === true)) { %>
+					<action icon="glyphicon-trash"
+							ng-if="productController.isEnabled"
+							ng-click="productController.remove(product, $index);">
+						{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+					</action>
+					<% } %>
+
+				</totvs-list-item-action>
+
+			</totvs-list-item-header>
+
+			<totvs-list-item-content>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-3"
+					title="{{ 'l-price-table' | i18n: []: 'dts/crm' }}"
+					value="{{ product.nom_tab_preco }}">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-3"
+					title="{{ 'l-quantity' | i18n: []: 'dts/crm' }}"
+					value="{{ product.qtd_item | number : 4 }} {{product.nom_unid_medid}}(s)">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-3"
+					title="{{ 'l-price-value' | i18n: []: 'dts/crm' }}"
+					value="{{ product.val_preco_unit | number : 2 }}">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-3"
+					title="{{ 'l-total-value' | i18n: []: 'dts/crm' }}"
+					value="{{ product.val_tot_itens | number : 2 }}">
+				</totvs-list-item-info>
+
+			</totvs-list-item-content>
+
+			<totvs-list-item-content-detail ng-click="productController.loadItemDetail(product);">
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-3 "
+					title="{{ 'l-reference' | i18n: []: 'dts/crm' }}"
+					value="{{ product.nom_refer }}">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-3 "
+					title="{{ 'l-customer-value' | i18n: []: 'dts/crm' }}"
+					value="{{ product.val_item_clien | number : 2 }}">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-3 "
+					title="{{ 'l-repres-value' | i18n: []: 'dts/crm' }}"
+					value="{{ product.val_item_repres | number : 2 }}">
+				</totvs-list-item-info>
+
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-3 "
+					title="{{ 'l-purchase-order' | i18n: []: 'dts/crm' }}"
+					value="{{ product.purchase_order}}">
+				</totvs-list-item-info>
+				
+				<totvs-list-item-info
+					class="col-xs-12 col-sm-12 description"
+					title="{{ 'l-observation' | i18n: []: 'dts/crm' }}"
+					value="{{ product.dsl_observacao}}">
+				</totvs-list-item-info>
+
+			</totvs-list-item-content-detail>
+
+		</totvs-list-item>
+
+	</totvs-page-content>
+
+</totvs-page-child>

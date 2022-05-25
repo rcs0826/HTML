@@ -1,0 +1,51 @@
+<div ng-controller="salesorder.dashboard.customerSummary.Controller as customerSummaryController">
+    <totvs-widget>
+  
+        <totvs-widget-header title="{{ 'l-customer-summary-rep' | i18n : [] : 'dts/mpd/' }}" settings="customerSummaryController.summaryShow = false">             	
+        </totvs-widget-header>
+	    <totvs-widget-body>
+
+
+            <div ng-if="customerSummaryController.customerData" style="height:300px;" ng-show="customerSummaryController.summaryShow">
+                <chart dataset="customerSummaryController.customerData" options="customerSummaryController.customerOptions"></chart>
+            </div>
+            <div  style="height:300px;" ng-if="!customerSummaryController.customerData"> {{ 'l-loading-portlet' | i18n : [] : 'dts/mpd'}} </div>
+            <div style="height:300px;" ng-hide="customerSummaryController.summaryShow" ng-if="customerSummaryController.customerData">
+                <form>
+                    <p>{{ 'l-select-filter-by-group' | i18n : [] : 'dts/mpd/'}}</p>                                                                                                                              
+                    <button class="btn btn-default"
+                            ng-model="customerSummaryController.selectedUsersOrGroups"
+                            ng-change="customerSummaryController.onZoomSelectUsersOrGroups();"
+                            zoom
+                            zoom-multiple
+                            zoom-service="mpd.grupo-cli.zoom">
+                        <span class="glyphicon glyphicon-plus"></span>
+                        {{ 'l-bt-gp-usuar' | i18n: []: 'dts/mpd/' }}
+                    </button>                                            
+                    <totvs-page-disclaimers                                                                                 
+                       disclaimer-list="customerSummaryController.disclaimers"
+                       ng-click="customerSummaryController.removeDisclaimer">
+                    </totvs-page-disclaimers>                                                                                                                                                                                             
+                    <hr>                                        
+                    <a role="button" class="btn btn-default pull-right" ng-click="customerSummaryController.applyConfig()">&nbsp; {{ 'btn-apply' | i18n : [] : 'dts/mpd/' }} &nbsp; </a>                                            
+                    <div ng-show="customerSummaryController.noResults">
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                            <alert type="danger">{{ 'l-no-data-to-show' | i18n : [] : 'dts/mpd/'}}</alert>
+                        </div>					
+                    </div>
+    
+                </form>
+            </div>
+		</totvs-widget-body>
+        
+        <totvs-widget-footer>
+            <totvs-widget-footer-body>
+            </totvs-widget-footer-body>
+            <totvs-widget-footer-actions>
+                <action link="#/dts/mpd/customers">{{ 'l-detail' | i18n : [] : 'dts/mpd/' }}</action>
+            </totvs-widget-footer-actions>            
+        </totvs-widget-footer>
+	</totvs-widget>
+</div>        
+        
+       

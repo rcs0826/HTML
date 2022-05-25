@@ -1,0 +1,117 @@
+<style type="text/css" scoped>
+.page-head .page-tags .tag-7:before {
+    background-color: #703593;
+    content: "7";
+}
+.page-head .page-tags .tag-8:before {
+    background-color: #582A1A;
+    content: "8";
+}
+.page-content .list-item.tag-7 {
+    border-left: 5px solid #703593;
+}
+.page-content .list-item.tag-8 {
+    border-left: 5px solid #582A1A;
+}
+
+.k-grid-header:first-child{
+    border-radius: 0px 0px 0 0;
+}
+
+.k-grid{
+    border-radius: 0px;
+}
+
+.page-content .page-content-header {
+    border-bottom: 0px solid #e4e4e4 !important;
+}
+
+</style>
+
+<totvs-page type="list" totvs-custom-element="customPage">
+
+	<totvs-page-navbar>
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{:: 'l-home' | i18n}}</breadcrumb>
+			<breadcrumb>{{'l-customer-portfolio' | i18n : [] : 'dts/mpd/'}}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header style="height: 140px">
+
+			<totvs-page-header-title title="{{'l-customer-portfolio' | i18n : [] : 'dts/mpd/'}}"
+				total="{{controller.orderList.length}}/{{controller.orderListCount}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+
+				<totvs-page-header-operation-action limit-primary-action="2">
+
+					<action icon="glyphicon-plus"
+							ng-click="controller.customerButton('btneworder');"
+							ng-disabled="controller.customerSuspended">
+						{{:: 'btn-new-order' | i18n: []: 'dts/mpd' }}
+					</action>
+
+					<action icon="glyphicon-file"
+							ng-click="controller.customerButton('btcustomerdetail');">
+						{{:: 'l-customer-detail' | i18n: []: 'dts/mpd' }}
+					</action>
+
+					<action icon="glyphicon-folder-open"
+							ng-click="controller.customerButton('btcustomerorders');">
+						{{:: 'l-orders-customer' | i18n: []: 'dts/mpd' }}
+					</action>
+
+					<action ng-click="controller.customerButton('btselectcustomer');">
+						{{:: 'l-add-select-customer' | i18n: []: 'dts/mpd' }}
+					</action>
+
+					<action ng-if="controller.useRisk" ng-click="controller.openSupplierMaisNegocios(controller.customerListSelectedCust);">
+						{{:: 'l-risk' | i18n: []: 'dts/mpd' }}
+					</action>
+
+				</totvs-page-header-operation-action>
+
+			   <totvs-page-header-operation-filter
+					placeholder="{{:: 'l-fast-search-cust' | i18n }}"
+					ng-submit="controller.applySimpleFilter();"
+					ng-model="controller.quickSearch"
+					advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+
+			<totvs-page-disclaimers
+				disclaimer-list="controller.disclaimers"
+				ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+		</totvs-page-header>
+	</totvs-page-navbar>
+
+	<totvs-page-content>
+		<totvs-page-content-header style="height: 50px">
+			<totvs-page-quick-filter filters-list="controller.quickFilters"
+									 on-select-filter="controller.setQuickFilter"
+									 filters-list-custom="controller.listOfCustomFilters"
+									 on-remove-custom="controller.removeCustomFilter"
+									 on-add-edit-custom="controller.addEditCustomFilters">
+		   </totvs-page-quick-filter>
+		</totvs-page-content-header>
+
+		
+		<div ng-if="controller.initialStart" style="margin-left: 10px; margin-right: 10px;" >
+			<totvs-lodash-template totvs-custom-element="internalCustomersGrid" src="/dts/mpd/html/internalcustomers/internal-customers-grid.html" template-data="controller.customGridLodashData"/></totvs-lodash-template>
+		</div>
+		<div class="more-results" style="margin-left: 10px; margin-right: 10px; height: 50px">
+			<button ng-show="controller.orderList.length && controller.orderList.length < controller.orderListCount"
+					ng-click="controller.search(true)"
+					class="btn btn-primary col-xs-12"
+					style="padd">
+				{{'l-more' | i18n}}
+			</button>
+		</div>
+	
+
+	</totvs-page-content>
+
+</totvs-page>

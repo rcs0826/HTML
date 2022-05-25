@@ -1,0 +1,102 @@
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_status_ocor : ('btn-new-ticket-flow-status' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="select"
+			   class="col-xs-5 col-sm-5 col-md-5"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-model="controller.model.ttStatus"
+			   ng-disabled="controller.editMode">
+
+			<label>{{ 'l-status' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-status' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.nom_status_ocor }}
+				</ui-select-match>
+				<ui-select-choices repeat="status in controller.statusList | filter: $select.search track by $index">
+					<span ng-bind-html="status.nom_status_ocor | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<div class="col-xs-1 col-sm-1 col-md-1 crm-field-extra-button">
+			<button class="btn btn-default"
+					ng-click="controller.addStatus();"
+					ng-disabled="controller.editMode">
+				<span class="glyphicon glyphicon-plus"></span>
+			</button>
+		</div>
+
+		<field type="select"
+			   class="col-xs-6 col-sm-5 col-md-5"
+			   canclean="undefined"
+			   ng-required="true"
+			   ng-model="controller.model.ttChangePermission">
+
+			<label>{{ 'l-change-permissions' | i18n: []: 'dts/crm' }}</label>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-change-permissions' | i18n: []: 'dts/crm' }}">
+					{{ $select.selected.name | i18n: []: 'dts/crm' }}
+				</ui-select-match>
+				<ui-select-choices repeat="perm in controller.changePermissionList | filter: $select.search track by $index">
+					<span ng-bind-html="perm.name | i18n: []: 'dts/crm' | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+		<totvs-field class="col-xs-3"
+					 totvs-checkbox
+					 ng-model="controller.model.log_encerra_ocor"
+					 label="{{ 'l-close-ticket' | i18n: []: 'dts/crm' }}"
+					 ng-disabled="false"
+					 t-bsswitch>
+		</totvs-field>
+
+		<totvs-field class="col-xs-3"
+					 totvs-checkbox
+					 ng-model="controller.model.log_status_reaber"
+					 label="{{ 'l-reopening-status' | i18n: []: 'dts/crm' }}"
+					 t-bsswitch>
+		</totvs-field>
+
+		<totvs-field class="col-xs-3"
+					 totvs-checkbox
+					 ng-model="controller.model.log_todas_regra_status"
+					 label="{{ 'l-all-rules-required' | i18n: []: 'dts/crm' }}"
+					 t-bsswitch>
+		</totvs-field>
+
+		<totvs-field class="col-xs-3"
+					 totvs-checkbox
+					 ng-model="controller.model.log_suspenso"
+					 label="{{ 'l-suspended' | i18n: []: 'dts/crm' }}"
+					 t-bsswitch>
+		</totvs-field>
+
+
+	</fieldset>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default"
+			ng-click="controller.close()">
+		{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-default"
+			ng-click="controller.save(true)"
+			ng-if="controller.editMode === false;">
+		{{ 'btn-save-new' | i18n: []: 'dts/crm' }}
+	</button>
+	<button class="btn btn-primary"
+			ng-click="controller.save()">
+		{{ 'btn-save' | i18n: []: 'dts/crm' }}
+	</button>
+</totvs-modal-footer>

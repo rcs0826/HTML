@@ -1,0 +1,225 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>  
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+            <breadcrumb link="#/dts/mpl/productionplanitem">{{'l-production-plan-item' | i18n}}</breadcrumb>
+            <breadcrumb>{{ controller.breadcrumbTitle }}</breadcrumb>
+        </totvs-page-breadcrumb>   
+        <totvs-page-header>
+            <totvs-page-header-title title="{{controller.headerTitle}}"></totvs-page-header-title>       
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action>
+                </totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>   
+    </totvs-page-navbar>
+    <totvs-page-content>     
+        <totvs-page-form>
+            <fieldset>
+                
+                <!-- CODIGO ESTABELECIMENTO -->
+                <field type="select"
+                       class="col-lg-12"
+                       ng-model="controller.model.siteCode"
+                       ng-disabled="!controller.isMultiSites"
+                       canclean>
+                    <label>{{ 'l-site' | i18n }}</label>
+                    <zoom zoom-service="mpd.estabelec.zoom"
+                          ng-change="controller.onChangeSite()">
+                    </zoom>
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-initial-site' | i18n }}" >
+                            {{$select.selected['cod-estabel'] + ' - ' + $select.selected['nome']}}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="site in controller.serviceSiteZoom.siteList track by $index"
+                            refresh="controller.serviceSiteZoom.getSite($select.search)"
+                            refresh-delay="1000">
+                            <span ng-bind-html="site['cod-estabel'] + ' - ' + site['nome'] | highlight: $select.search">
+                            </span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+                
+                <!-- ITEM -->
+                <field type="select"
+                       class="col-lg-6"
+                       ng-model="controller.model.item"
+                       ng-change="controller.onChangeItem()"
+                       required
+                       canclean>
+                    <label>{{ 'l-item' | i18n }}</label>
+                    <zoom zoom-service="men.item.zoom"
+                          ng-change="controller.onChangeItem()">
+                    </zoom>
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-initial-item' | i18n }}" >
+                            {{$select.selected['it-codigo'] + ' - ' + $select.selected['desc-item']}}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="item in controller.serviceItemZoom.listOfItems track by $index"
+                            refresh="controller.serviceItemZoom.getItems($select.search)"
+                            refresh-delay="1000">
+                            <span ng-bind-html="item['it-codigo'] + ' - ' + item['desc-item'] | highlight: $select.search">
+                            </span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+                
+                <!-- REFERENCIA -->
+                <field type="select"
+                       class="col-lg-6"
+                       ng-disabled="!controller.itemHasReference"
+                       ng-model="controller.model.reference"
+                       canclean>
+                    <label>{{ 'l-reference' | i18n }}</label>
+                    <zoom zoom-service="men.referenciaitem.zoom"
+                          zoom-init="{'property': 'it-codigo',
+                                      'value': {'start': controller.model.item['it-codigo'],
+                                                'end': controller.model.item['it-codigo']}}">
+                    </zoom>
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-initial-reference' | i18n }}" >
+                            {{$select.selected['cod-refer']}}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="reference in controller.serviceItemReferenceZoom.referenceList track by $index"
+                            refresh="controller.serviceItemReferenceZoom.getReference(
+                                        {'search': $select.search,
+                                         'init': {'property': 'it-codigo',
+                                                  'value': controller.model.item['it-codigo'],
+                                                  'type': 'integer'}})"
+                            refresh-delay="1000">
+                            <span ng-bind-html="reference['cod-refer'] | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+                
+                <!-- SEQUENCIA -->
+                <field type="input"
+                       class="col-lg-6"
+                       ng-model="controller.model.sequence">
+                    <label>{{ 'l-sequence' | i18n }}</label>
+                </field>
+                
+                <!-- NOME ABREVIADO -->
+                <field type="select"
+                       class="col-lg-6"
+                       ng-model="controller.model.shortName"
+                       ng-change="controller.onChangeShortName()"
+                       canclean>
+                    <label>{{ 'l-short-name' | i18n }}</label>
+                    <zoom zoom-service="mpd.emitente.zoom"
+                          ng-change="controller.onChangeShortName()">
+                    </zoom>
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-initial-short-name' | i18n }}" >
+                            {{$select.selected['nome-abrev'] + ' - ' + $select.selected['cod-emitente']}}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="emitente in controller.serviceEmitenteZoom.emitenteList track by $index"
+                            refresh="controller.serviceEmitenteZoom.getEmitente($select.search)"
+                            refresh-delay="1000">
+                            <span ng-bind-html="emitente['nome-abrev'] + ' - ' + emitente['cod-emitente'] | highlight: $select.search">
+                            </span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+                
+                <!-- GRUPO CLIENTE -->
+                <field type="select"
+                       class="col-lg-6"
+                       ng-model="controller.model.customerGroup"
+                       ng-disabled="controller.isSetShortName"
+                       canclean>
+                    <label>{{ 'l-customer-group' | i18n }}</label>
+                    <zoom zoom-service="mpd.gr-cli.zoom">
+                    </zoom>
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-initial-customer-group' | i18n }}" >
+                            {{$select.selected['cod-gr-cli'] + ' - ' + $select.selected['descricao']}}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="group in controller.serviceCustomerGroupZoom.groupList track by $index"
+                            refresh="controller.serviceCustomerGroupZoom.getGroup($select.search)"
+                            refresh-delay="1000">
+                            <span ng-bind-html="group['cod-gr-cli'] + ' - ' + group['descricao'] | highlight: $select.search">
+                            </span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+                
+                <!-- PEDIDO CLIENTE -->
+                <field type="select"
+                       class="col-lg-6"
+                       ng-model="controller.model.customerRequest"
+                       canclean>
+                    <label>{{ 'l-customer-request' | i18n }}</label>
+                    <zoom zoom-service="mpd.ped-venda.zoom"
+                          zoom-init="{'property': 'nome-abrev',
+                                      'value': {'start': controller.model.shortName['nome-abrev'],
+                                                'end': controller.model.shortName['nome-abrev']}}">
+                    </zoom>
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-initial-customer-request' | i18n }}" >
+                            {{$select.selected['nr-pedcli'] + ' - ' + $select.selected['cod-sit-ped']}}
+                        </ui-select-match>
+                        <ui-select-choices
+                            repeat="request in controller.serviceCustomerRequestZoom.requestList track by $index"
+                            refresh="controller.serviceCustomerRequestZoom.getRequest({'pedido':$select.search, 'nomeAbrev':controller.model.shortName['nome-abrev']})"
+                            refresh-delay="1000">
+                            <span ng-bind-html="request['nr-pedcli'] + ' - ' + request['cod-sit-ped'] | highlight: $select.search">
+                            </span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+                
+                <!-- PERIODO INICIAL -->
+                <field type="select"
+                       class="col-lg-4"
+                       ng-model="controller.model.initialPeriodString"
+                       ng-change="controller.onChangePeriodo()"
+                       required
+                       canclean>
+                    <label>{{ 'l-period' | i18n }}</label>
+                    <zoom zoom-service="mpl.periodo.zoom"
+                          ng-change="controller.onChangePeriodoZoom()"
+                          zoom-init="{'property': 'cd-tipo',
+                                      'value': {'start': controller.periodType['cd-tipo'],
+                                                'end': controller.periodType['cd-tipo']}}">
+                    </zoom>
+                    <include>
+                        <ui-select-match placeholder="{{ 'l-initial-period' | i18n }}" >
+                            {{$select.selected['nr-periodo'] + "/" + $select.selected['ano'] }}
+                        </ui-select-match>
+                        <ui-select-choices 	
+                            repeat="iniPeriod in controller.servicePeriodZoom.periodList track by $index"
+                            refresh="controller.servicePeriodZoom.getPeriod({'periodo':$select.search,'tipo':controller.periodType['cd-tipo']})"
+                            refresh-delay="1000">
+                            <span 
+                                ng-bind-html="iniPeriod['nr-periodo'] + '/' + iniPeriod['ano'] | highlight: $select.search">
+                            </span>
+                        </ui-select-choices>
+                    </include>
+                </field>
+                
+                <!-- DATA -->
+                <field type="date"
+                       class="col-lg-4"
+                       ng-model="controller.model.date"
+                       ng-change="controller.onChangeDataFinal()"
+                       required>
+                    <label>{{ 'l-final-date' | i18n }}</label>
+                </field>
+                
+                <!-- QUANTIDADE -->
+                <field type="input"
+                       class="col-lg-4"
+                       ng-model="controller.model.quantity"
+                       required>
+                    <label>{{ 'l-quantity' | i18n }}</label>
+                </field>
+            </fieldset>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

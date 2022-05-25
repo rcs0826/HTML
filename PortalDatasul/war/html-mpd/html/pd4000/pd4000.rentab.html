@@ -1,0 +1,63 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{:: 'Rentabilidade' | i18n : [] : 'dts/mpd' }}</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <totvs-page-detail-info title="{{:: '% Rentabilidade' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-6 col-md-6 detail-span">
+            {{modalRentabController.ttOrderRentability['rentabilityPercent'] | number : 4}}
+        </totvs-page-detail-info>
+        <totvs-page-detail-info title="{{:: 'Rentabilidade Mínima' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-6 col-md-6 detail-span">
+            {{modalRentabController.ttOrderRentability['rentabilityMinPercent'] | number : 4}}
+        </totvs-page-detail-info>
+        <totvs-page-detail-info title="{{:: 'ROB' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-6 col-md-6 detail-span">
+            {{modalRentabController.ttOrderRentability['operatingGrossRevenue'] | number : 4}}
+        </totvs-page-detail-info>
+        <totvs-page-detail-info title="{{:: 'Margen' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-6 col-md-6 detail-span">
+            {{modalRentabController.ttOrderRentability['marginValue'] | number : 4}}
+        </totvs-page-detail-info>
+        <totvs-page-detail-info title="{{:: 'ROL' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-6 col-md-6 detail-span">
+            {{modalRentabController.ttOrderRentability['operatingNetRevenue'] | number : 4}}
+        </totvs-page-detail-info>
+        <totvs-page-detail-info title="{{:: '% Margem' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-6 col-md-6 detail-span">
+            {{modalRentabController.ttOrderRentability['marginPercent'] | number : 4}}
+        </totvs-page-detail-info>
+        <totvs-page-detail-info title="{{:: '% Deducao' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-6 col-md-6 detail-span">
+            {{modalRentabController.ttOrderRentability['deductionPercent'] | number : 4}}
+        </totvs-page-detail-info>
+        <totvs-page-detail-info title="{{:: 'Lucro' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-6 col-md-6 detail-span">
+            {{modalRentabController.ttOrderRentability['profitValue'] | number : 4}}
+        </totvs-page-detail-info>
+        <totvs-page-detail-info title="{{:: 'Impostos' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-6 col-md-6 detail-span">
+            {{modalRentabController.ttOrderRentability['taxes'] | number : 4}}
+        </totvs-page-detail-info>
+        <totvs-page-detail-info title="{{:: 'Total Custos' | i18n : [] : 'dts/mpd' }}" class="col-xs-6 col-sm-6 col-md-6 detail-span">
+            {{modalRentabController.ttOrderRentability['costTotal'] | number : 4}}
+        </totvs-page-detail-info>
+    </div> 
+    <div class="row" ng-if="modalRentabController.idiCalcRentab == 2">
+        <div class="col-xs-12" style="padding-top: 10px;">
+            <div class="row" style="margin: 0;">
+                <div class="col-xs-12">
+                    <totvs-grid grid-data="modalRentabController.ttOrderRentabilityItems"
+                        grid-height="300" 
+                        navigatable="true">
+                        <totvs-grid-column field="sequencenumeric" class="#= data.color #" width="40">{{:: 'Sequência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="itcodigo" class="#= data.color #" width="120">{{:: 'Item' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="codrefer" class="#= data.color #" width="120">{{:: 'Referência' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="descitem" class="#= data.color #" width="300">{{:: 'Descrição' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="codun" class="#= data.color #" width="40">{{:: 'UM' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="percrentab" class="#= data.color #" width="60" filter="number : 2" style="text-align: right;">{{:: '% Rentabilidade' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="percrentabmin" class="#= data.color #" width="60" filter="number : 2" style="text-align: right;">{{:: '% Rentab Mínima' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="sitpreco" class="#= data.color #" width="110">{{:: 'Sit Preço' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="lucrototal" class="#= data.color #" width="180" filter="number : 2" style="text-align: right;">{{:: 'Lucro Total' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                        <totvs-grid-column field="recliqtotal" class="#= data.color #" width="180" filter="number : 2" style="text-align: right;">{{:: 'Receita Líquida' | i18n : [] : 'dts/mpd'}}</totvs-grid-column>
+                    </totvs-grid>
+                </div>
+            </div>
+        </div>
+    </div>       
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="modalRentabController.close()">{{:: 'Fechar' | i18n : [] : 'dts/mpd' }}</button>
+</div>
+

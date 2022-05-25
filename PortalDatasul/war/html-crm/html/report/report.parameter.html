@@ -1,0 +1,207 @@
+<style scoped="true">
+	.btn-legend-portal {
+		margin-top: 3px;
+	}
+	.btn-legend-menu {
+		margin-top: 5px;
+	}
+</style>
+
+<totvs-modal-header>
+	{{ (controller.model.num_id > 0 ? controller.model.nom_apel_campo : ('btn-add-parameter' | i18n: []: 'dts/crm' )) }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<fieldset class="row">
+
+		<field type="input"
+			   class="col-md-6"
+			   maxlength="50"
+			   canclean="undefined"
+			   ng-model="controller.model.nom_param"
+			   placeholder="{{ 'l-name' | i18n: []: 'dts/crm' }}"
+			   required>
+			<label>{{ 'l-name' | i18n: []: 'dts/crm' }}</label>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="input"
+			   class="col-md-6"
+			   maxlength="40"
+			   canclean="undefined"
+			   ng-model="controller.model.nom_apel_campo"
+			   placeholder="{{ 'l-label' | i18n: []: 'dts/crm' }}"
+			   required>
+			<label>{{ 'l-label' | i18n: []: 'dts/crm' }}</label>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   class="col-md-6"
+			   ng-model="controller.model.ttTipo"
+			   canclean="undefined"
+			   required>
+			<label>{{ 'l-type' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-type' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_tipo }}</ui-select-match>
+				<ui-select-choices repeat="type in controller.types | filter: $select.search track by $index">
+					<span ng-bind-html="type.nom_tipo | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="select"
+			   class="col-md-6"
+			   ng-if="controller.model.ttTipo.num_id === 3"
+			   canclean="undefined"
+			   ng-model="controller.model.ttProperty"
+			   required>
+
+			<label>{{ 'l-zoom' | i18n: []: 'dts/crm' }}</label>
+
+			<zoom zoom-service="crm.crm_propried.zoom"></zoom>
+
+			<include>
+				<ui-select-match placeholder="{{ 'l-zoom' | i18n: []: 'dts/crm' }}">
+					<span>{{ $select.selected.nom_tab_crm }}</span>
+				</ui-select-match>
+				<ui-select-choices repeat="property in controller.properties track by $index"
+								   refresh="controller.getProperties($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="property.nom_tab_crm | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+
+			<validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+		</field>
+
+		<field type="checkbox"
+			   class="col-xs-12"
+			   ng-model="controller.model.log_livre_1"
+			   label="{{ 'l-required' | i18n: []: 'dts/crm' }}">
+		</field>
+
+	</fieldset>
+
+	<div class="row">
+        <br/>
+        <div class="crm-group-accordion">
+            <accordion close-others="false">
+
+                <accordion-group is-open="controller.openAttributes"
+                                class="crm-panel"
+                                id="panel-properties"
+                                ng-if="controller.model.ttTipo && controller.model.ttTipo.num_id === 6">
+
+                    <div>
+                        <accordion-heading>
+                            {{ 'l-attributes' | i18n: []: 'dts/crm' }}
+
+                            <i class="pull-right glyphicon"
+                            ng-class="{'glyphicon-chevron-down' :  controller.openAttributes,
+                                        'glyphicon-chevron-right': !controller.openAttributes}">
+                            </i>
+                        </accordion-heading>
+
+                        <fieldset class="row" >
+
+                            <field type="input"
+                                class="col-xs-6"
+                                canclean="undefined"
+                                ng-model="controller.model.attribute.nom_atrib"
+                                placeholder="{{ 'l-attribute' | i18n: []: 'dts/crm' }}"
+                                on-key-enter="controller.addAttributes(controller.model.attribute, false);">
+                                <!--label>{{ 'l-attribute' | i18n: []: 'dts/crm' }}</label-->
+                            </field>
+
+                            <field type="input"
+                                class="col-xs-4"
+                                canclean="undefined"
+                                ng-model="controller.model.attribute.cod_atrib"
+                                placeholder="{{ 'l-value' | i18n: []: 'dts/crm' }}"
+                                on-key-enter="controller.addAttributes(controller.model.attribute, false);">
+                            </field>
+
+                            <div class="col-xs-2 text-right"
+                                ng-class="{'btn-legend-portal': controller.isPortal === true,
+                                            'btn-legend-menu': !controller.isPortal}">
+
+                                <button class="btn btn-primary"
+                                        ng-click="controller.addAttributes(controller.model.attribute, false);">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                </button>
+
+                                <button class="btn btn-default"
+                                        ng-click="controller.openAddAttributes();">
+                                    <i class="glyphicon glyphicon-flash"></i>
+                                </button>
+                            </div>
+
+                        </fieldset>
+
+                        <div class="crm-tab">
+                            <div class="row crm-tab-item header"
+                                    ng-if="controller.model.ttParametroAtributo && controller.model.ttParametroAtributo.length > 0">
+                                <strong>
+                                    <div class="col-xs-5">
+                                        {{ 'l-attribute' | i18n: []: 'dts/crm' }}
+                                    </div>
+
+                                    <div class="col-xs-5">
+                                        {{ 'l-value' | i18n: []: 'dts/crm' }}
+                                    </div>
+
+                                    <div class="col-xs-2 text-right">
+                                        <a class="clickable" ng-click="controller.removeAllItens();">
+                                            {{ 'btn-remove-all' | i18n : [] : 'dts/crm' }}
+                                        </a>
+                                    </div>
+                                </strong>
+                            </div>
+
+                            <div class="row crm-tab-item hover"
+                                ng-repeat="attribute in controller.model.ttParametroAtributo track by $index">
+
+                                <div class="col-xs-5">
+                                    {{ attribute.nom_atrib }}
+                                </div>
+
+                                <div class="col-xs-3">
+                                    {{ attribute.cod_atrib }}
+                                </div>
+
+                                <div class="col-xs-2 text-right">
+                                    <span class="glyphicon glyphicon-star crm-starred-default clickable"
+                                        ng-if="attribute.log_padr === true"
+                                        ng-click="attribute.log_padr = false;">
+                                    </span>
+                                    <span class="glyphicon glyphicon-star-empty clickable"
+                                        ng-if="!attribute.log_padr"
+                                        ng-click="controller.setAsDefaultAttribute(attribute)">
+                                    </span>
+                                </div>
+
+                                <div class="col-xs-2 text-right">
+                                    <a class="clickable"
+                                    ng-click="controller.removeAttribute($index, true);">
+                                        {{ 'btn-remove' | i18n: []: 'dts/crm' }}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </accordion-group>
+
+            </accordion>
+        </div>
+	</div>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.save()">{{ 'btn-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

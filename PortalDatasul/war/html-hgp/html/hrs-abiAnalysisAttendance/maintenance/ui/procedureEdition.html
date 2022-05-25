@@ -1,0 +1,97 @@
+<totvs-modal-header>
+    Editar Procedimentos
+</totvs-modal-header>
+<totvs-modal-body style="overflow-y: auto;">
+    <fieldset ng-form="controller.modelForm">                    
+        <totvs-row>
+                                   
+                <field  label="Procedimento"
+                        ng-model="controller.procedure.cddServRessus"
+                        type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"                                                
+                        disabled>
+                </field>
+            
+                <field  label="Descrição"
+                        ng-model="controller.procedure.desProcedimento"
+                        type="input"
+                        class="col-lg-10 col-md-10 col-sm-10 col-xs-12"                                                
+                        disabled>
+                </field>
+
+        </totvs-row>
+        
+        <totvs-row>
+                
+                <field  label="Tipo"
+                        ng-model="controller.procedure.indTipServRessus"
+                        type="input"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"                                
+                        disabled>
+                </field>
+
+                <field  label="Valor"
+                        ng-model="controller.procedure.valProcedimento"                
+                        type="number"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        disabled>
+                </field>
+
+                <field  label="Valor Indeferido"                
+                        ng-model="controller.procedure.vlDismissed"                        
+                        type="number"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        disabled>
+                </field>
+                
+        </totvs-row>
+
+        <totvs-row>
+
+                <field  label="Quantidade"
+                        ng-model="controller.procedure.qtdProcedimento"                    
+                        ng-disabled="controller.idPermissao != 2"                                     
+                        type="number"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"                        
+                        canclean>
+                </field>                
+                                                  
+                
+                <field  label="Valor Pago"
+                        ng-model="controller.procedure.valPago"
+                        ng-disabled="controller.idPermissao != 2"
+                        type="number"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"                          
+                        canclean>
+                </field>
+
+                <field  label="Valor Deferido"
+                        ng-model="controller.procedure.valDeferido"
+                        ng-disabled="controller.idPermissao != 2"
+                        type="number"
+                        class="col-lg-2 col-md-2 col-sm-2 col-xs-12"
+                        canclean>
+                </field>                                                    
+
+        </totvs-row>
+        
+        <totvs-row>
+
+                <field  label="Observação"
+                        ng-model="controller.procedure.dsObservation"
+                        ng-disabled="controller.idPermissao != 2"
+                        type="textarea"
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"                
+                        maxlength="2000"
+                        rows="4">
+                </field>
+
+        </totvs-row>
+            
+    </fieldset>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button ng-click="controller.cancel()" class="btn">Cancelar</button>
+    <button ng-click="controller.save()" ng-if="controller.idPermissao == 2" class="btn btn-primary">Salvar</button>
+</totvs-modal-footer>

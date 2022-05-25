@@ -1,0 +1,151 @@
+<totvs-page type="edit">
+    <totvs-page-navbar>
+        <totvs-page-breadcrumb>
+            <breadcrumb link="#/">{{'l-initial-page' | i18n}}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalconfigpdp">{{'l-portal-config-clien-rep' | i18n}}</breadcrumb>
+            <breadcrumb link="#/dts/mpd/portalreg/{{controller.father}}/{{controller.idiTipConfig}}">{{'l-portal-reg' | i18n}}</breadcrumb>
+            <breadcrumb>{{controller.title}}</breadcrumb>
+        </totvs-page-breadcrumb>
+        <totvs-page-header>
+            <totvs-page-header-title title="{{controller.title}}"></totvs-page-header-title>
+            <totvs-page-header-operation>
+                <totvs-page-header-operation-action hide-save-new="true"
+                                                    hide-actions="true"></totvs-page-header-operation-action>
+            </totvs-page-header-operation>
+        </totvs-page-header>
+    </totvs-page-navbar>
+    <totvs-page-content>
+        <totvs-page-form>                        
+            <tabset>
+                <tab heading="{{'l-inclusao-simples' | i18n}}" ng-click="controller.disableSave(1)">
+                    <fieldset>
+                        <div class="container col-lg-12 col-sm-12 col-md-12 col-xs-12">
+
+                            <form class="form-horizontal" role="form">
+                                <field type="select2"
+                                       class="col-lg-8 col-md-8 col-sm-8 col-xs-8"
+                                       data-ng-model="controller.model['cod-item']"
+                                       select-conector="{{'l-cod-item' | i18n}}"                               
+                                       select-id="it-codigo"
+                                       select-description="desc-item"
+                                       select-service="men.item.zoom"
+                                       ng-change="controller.onChangeItem(controller.model['cod-item'])"
+                                       ng-hide="controller.itemHide"
+                                       canclean>
+                                    <zoom zoom-service="men.item.zoom"></zoom>
+                                    <label>{{'l-cod-item' | i18n}}</label>
+                                    <validator key="required">{{$fieldLabel}} {{'l-required' | i18n}}</validator>
+                                </field>
+                            </form>
+
+                            <form class="form-horizontal" role="form">
+                                <field type="select2"
+                                       class = "col-lg-8 col-md-8 col-sm-8 col-xs-8"                               
+                                       ng-hide="controller.referHide"
+                                       ng-model="controller.model['cod-refer']"
+                                       select-conector="{{'l-cod-refer' | i18n}}"
+                                       select-init="controller.model['cod-item']"
+                                       select-id="cod-refer"
+                                       select-service="mpd.referencia.Zoom"
+                                       canclean
+                                       >
+                                    <zoom zoom-service="mpd.referencia.Zoom"
+                                          zoom-init="controller.model['cod-item']"></zoom>
+                                    <label>{{'l-cod-refer' | i18n}}</label>
+                                </field>
+                            </form>
+
+                            <field class="col-lg-6 col-md-6 col-sm-8 col-xs-8"
+                                   ng-hide="controller.itemHide"
+                                   type="daterange"
+                                   ng-model="controller.model.dateIniFimVal">
+                                <label>{{'l-dat-valid-item' | i18n}}</label>
+                            </field>  
+
+                            <form class="form-horizontal" role="form">
+                                <field type="select2"
+                                       class="col-lg-8 col-md-8 col-sm-8 col-xs-8"
+                                       data-ng-model="controller.model['cdn-cond-pag']"
+                                       select-conector="{{'l-cdn-cond-pag' | i18n}}"                               
+                                       select-id="cod-cond-pag"
+                                       select-description="descricao"
+                                       select-service="mpd.cond-pagto-inter.zoom"
+                                       ng-hide="controller.condPagHide"
+                                       canclean>
+                                    <zoom zoom-service="mpd.cond-pagto-inter.zoom"></zoom>
+                                    <label>{{'l-cdn-cond-pag' | i18n}}</label>                            
+                                </field>
+                            </form>
+
+                            <form class="form-horizontal" role="form">
+                                <field type="select2"
+                                       class="col-lg-8 col-md-8 col-sm-8 col-xs-8"
+                                       data-ng-model="controller.model['cod-tab-preco']"
+                                       select-conector="{{'l-cod-tab-preco' | i18n}}"                               
+                                       select-id="nr-tabpre"
+                                       select-description="descricao"
+                                       select-service="mpd.tb-preco.zoom"
+                                       ng-hide="controller.tbPrecoHide"
+                                       canclean>
+                                    <zoom zoom-service="mpd.tb-preco.zoom"></zoom>
+                                    <label>{{'l-cod-tab-preco' | i18n}}</label>                            
+                                </field>
+                            </form>
+
+                            <form class="form-horizontal" role="form">
+                                <field type="select2"
+                                       class="col-lg-8 col-md-8 col-sm-8 col-xs-8"
+                                       data-ng-model="controller.model['cdn-tip-ped']"
+                                       select-conector="{{'l-tp-oper' | i18n}}"                               
+                                       select-id="cdn-tip-ped"
+                                       select-description="descricao"
+                                       select-service="mpd.tp-operacao.zoom"
+                                       ng-hide="controller.tpOperacaoHide"
+                                       canclean>
+                                    <zoom zoom-service="mpd.tp-operacao.zoom"></zoom>
+                                    <label>{{'l-tp-oper' | i18n}}</label>                            
+                                </field>
+                            </form>
+							
+							<form class="form-horizontal" role="form">
+                                <field type="select2"
+                                       class="col-lg-8 col-md-8 col-sm-8 col-xs-8"
+                                       data-ng-model="controller.model['cdn-canal-vendas']"
+                                       select-conector="{{'l-canal-venda' | i18n}}"                               
+                                       select-id="cod-canal-venda"
+                                       select-description="descricao"
+                                       select-service="mpd.canal-venda.zoom"
+                                       ng-hide="controller.canalVendaHide"
+                                       canclean>
+                                    <zoom zoom-service="mpd.canal-venda.zoom"></zoom>
+                                    <label>{{'l-canal-venda' | i18n}}</label>                            
+                                </field>
+                            </form>
+                        </div>
+                    </fieldset>
+                </tab>
+
+                <tab heading="{{'l-inclusao-avancada' | i18n}}" 
+                     ng-hide="controller.hideTab" 
+                     ng-click="controller.disableSave(2)">
+                    
+                    <div ng-include="'/dts/mpd/html/portalreg/portal-reg.inclAdvanItem.html'"
+                         ng-if="controller.itemHide == false">
+                    </div>
+                    <div ng-include="'/dts/mpd/html/portalreg/portal-reg.inclAdvanCondPagto.html'"
+                         ng-if="controller.condPagHide == false">
+                    </div>
+                    <div ng-include="'/dts/mpd/html/portalreg/portal-reg.inclAdvanTbPreco.html'"
+                         ng-if="controller.tbPrecoHide == false">
+                    </div>
+                    <div ng-include="'/dts/mpd/html/portalreg/portal-reg.inclAdvanTpOperacao.html'"
+                         ng-if="controller.tpOperacaoHide == false">
+                    </div>
+					<div ng-include="'/dts/mpd/html/portalreg/portal-reg.inclAdvanCanalVenda.html'"
+                         ng-if="controller.canalVendaHide == false">
+                    </div>
+                </tab>
+            </tabset>
+        </totvs-page-form>
+    </totvs-page-content>
+</totvs-page>

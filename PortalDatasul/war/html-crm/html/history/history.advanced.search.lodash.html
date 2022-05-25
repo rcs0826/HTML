@@ -1,0 +1,222 @@
+<totvs-modal-header>
+	{{ 'l-search-advanced' | i18n: []: 'dts/crm' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<div class="row" ng-if="controller.isAddEditMode">
+		<field type="input"
+			   ng-model="controller.customFilter.title"
+			   ng-disabled="controller.isEdit === true"
+			   maxlength="50"
+			   class="col-md-12">
+			<label>{{ 'l-description' | i18n: []: 'dts/crm' }}</label>
+		</field>
+		<totvs-divider></totvs-divider>
+	</div>
+
+	<fieldset class="row">
+
+		<% if ((!data["l-account"] || data["l-account"].log_visivel === true)) { %>
+		<field type="select"
+			   ng-if="!controller.isHideAccount"
+			   ng-model="controller.model.num_id_pessoa"
+			   ng-change="controller.onAccountChange()"
+			   canclean="undefined">
+			<label>{{ 'l-account' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-selected="controller.onAccountChange(selected)" zoom-service="crm.crm_pessoa.conta.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-account' | i18n: []: 'dts/crm' }}">
+					<span>
+						<span ng-class="{'glyphicon glyphicon-lock': !$select.selected.log_acesso}"></span>
+						<span ng-class="{'glyphicon glyphicon-globe': $select.selected.log_matriz}"></span>
+						{{ $select.selected.nom_razao_social }} {{ $select.selected.cod_pessoa_erp ? ' (' + $select.selected.cod_pessoa_erp + ')' : '' }}
+					</span>
+				</ui-select-match>
+				<ui-select-choices repeat="account in controller.accounts track by $index"
+								   refresh="controller.getAccounts($select.search)"
+								   refresh-delay="500">
+					<span ng-if="!account.log_acesso"
+						  class="glyphicon glyphicon-lock">
+					</span>
+					<span ng-if="account.log_matriz"
+						  class="glyphicon glyphicon-globe">
+					</span>
+					<span ng-bind-html="account.nom_razao_social + (account.cod_pessoa_erp ? ' (' + account.cod_pessoa_erp + ')' : '') | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+		<% } %>
+
+		<% if ((!data["l-contact"] || data["l-contact"].log_visivel === true)) { %>
+		<field type="select"
+			   ng-model="controller.model.num_id_contat"
+			   canclean="undefined">
+			<label>{{ 'l-contact' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_pessoa.contato.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-contact' | i18n: []: 'dts/crm' }}">
+					<span>
+						<span ng-class="{'glyphicon glyphicon-lock': !$select.selected.log_acesso}"></span>
+						&nbsp;{{ $select.selected.nom_razao_social }}
+					</span>
+				</ui-select-match>
+				<ui-select-choices repeat="contact in controller.contacts track by $index"
+								   refresh="controller.getContacts($select.search)"
+								   refresh-delay="500">
+					<span ng-if="!contact.log_acesso" class="glyphicon glyphicon-lock">&nbsp;</span>
+					<span ng-bind-html="contact.nom_razao_social + (contact.cod_pessoa_erp ? ' (' + contact.cod_pessoa_erp + ')' : '') | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+		<% } %>
+
+	</fieldset>
+
+	<% if ((!data["l-user-open"] || data["l-user-open"].log_visivel === true)) { %>
+	<totvs-divider></totvs-divider>
+
+	<fieldset class="row">
+
+		<field type="select"
+			   ng-model="controller.model.num_id_usuar"
+			   canclean="undefined">
+			<label>{{ 'l-user-open' | i18n: []: 'dts/crm' }}</label>
+			<zoom zoom-service="crm.crm_usuar.zoom"></zoom>
+			<include>
+				<ui-select-match placeholder="{{ 'l-user-open' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_usuar }}</ui-select-match>
+				<ui-select-choices repeat="user in controller.users track by $index"
+								   refresh="controller.getUsers($select.search)"
+								   refresh-delay="500">
+					<span ng-bind-html="user.nom_usuar | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+
+	</fieldset>
+	<% } %>
+
+	<totvs-divider></totvs-divider>
+
+	<fieldset class="row">
+
+		<% if ((!data["l-campaign"] || data["l-campaign"].log_visivel === true)) { %>
+		<field type="select"
+			   ng-model="controller.model.num_id_campanha"
+			   ng-change="controller.onCampaignChange()"
+			   canclean="undefined">
+			<label>{{ 'l-campaign' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-campaign' | i18n: []: 'dts/crm' }}">{{ $select.selected.nom_campanha }}</ui-select-match>
+				<ui-select-choices repeat="campaign in controller.campaigns | filter: $select.search track by $index">
+					<span ng-bind-html="campaign.nom_campanha | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+		<% } %>
+
+		<% if ((!data["l-action"] || data["l-action"].log_visivel === true)) { %>
+		<field type="select"
+			   ng-model="controller.model.num_id_acao"
+			   ng-change="controller.onActionChange()"
+			   canclean="undefined">
+			<label>{{ 'l-action' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-action' | i18n: []: 'dts/crm' }}">{{$select.selected.nom_acao}}</ui-select-match>
+				<ui-select-choices repeat="action in controller.actions | filter: $select.search track by $index">
+					<span ng-bind-html="action.nom_acao | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+		<% } %>
+
+		<% if ((!data["l-media"] || data["l-media"].log_visivel === true)) { %>
+		<field type="select"
+			   ng-model="controller.model.num_id_mid"
+			   canclean="undefined">
+			<label>{{ 'l-media' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-media' | i18n: []: 'dts/crm' }}">{{$select.selected.nom_mid_relacto}}</ui-select-match>
+				<ui-select-choices repeat="media in controller.medias | filter: $select.search track by $index">
+					<span ng-bind-html="media.nom_mid_relacto | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+		<% } %>
+
+		<% if ((!data["l-result"] || data["l-result"].log_visivel === true)) { %>
+		<field type="select"
+			   ng-model="controller.model.num_id_restdo"
+			   ng-change="controller.onResultChange()"
+			   canclean="undefined">
+			<label>{{ 'l-result' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-result' | i18n: []: 'dts/crm' }}">{{$select.selected.nom_restdo}}</ui-select-match>
+				<ui-select-choices repeat="result in controller.results | filter: $select.search track by $index">
+					<span ng-bind-html="result.nom_restdo | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+		<% } %>
+
+		<% if ((!data["l-detailing"] || data["l-detailing"].log_visivel === true)) { %>
+		<field type="select"
+			   ng-model="controller.model.num_id_detmnto"
+			   canclean="undefined">
+			<label>{{ 'l-detailing' | i18n: []: 'dts/crm' }}</label>
+			<include>
+				<ui-select-match placeholder="{{ 'l-detailing' | i18n: []: 'dts/crm' }}">{{$select.selected.nom_detmnto_restdo}}</ui-select-match>
+				<ui-select-choices repeat="detail in controller.details | filter: $select.search track by $index">
+					<span ng-bind-html="detail.nom_detmnto_restdo | highlight: $select.search"></span>
+				</ui-select-choices>
+			</include>
+		</field>
+		<% } %>
+
+	</fieldset>
+
+	<% if ( (!data["l-date-start"] || data["l-date-start"].log_visivel === true)
+		 || (!data["l-date-close"] || data["l-date-close"].log_visivel === true)
+		 || (!data["l-date-create"] || data["l-date-create"].log_visivel === true)) {
+	%>
+	<totvs-divider></totvs-divider>
+
+	<fieldset class="row">
+
+		<% if ((!data["l-date-start"] || data["l-date-start"].log_visivel === true)) { %>
+		<field type="daterange"
+			   ng-model="controller.model.dat_inic"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-date-start' | i18n: []: 'dts/crm' }}</label>
+		</field>
+		<% } %>
+
+		<% if ((!data["l-date-close"] || data["l-date-close"].log_visivel === true)) { %>
+		<field type="daterange"
+			   ng-model="controller.model.dat_fim"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-date-close' | i18n: []: 'dts/crm' }}</label>
+		</field>
+		<% } %>
+
+		<% if ((!data["l-date-create"] || data["l-date-create"].log_visivel === true)) { %>
+		<field type="daterange"
+			   ng-model="controller.model.dat_cadastro"
+			   start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+			   end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}">
+			<label>{{ 'l-date-create' | i18n: []: 'dts/crm' }}</label>
+		</field>
+		<% } %>
+
+	</fieldset>
+	<% } %>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-default" ng-click="controller.cancel()">{{ 'btn-cancel' | i18n: []: 'dts/crm' }}</button>
+	<button class="btn btn-primary" ng-click="controller.apply(false)">{{ controller.isAddEditMode ? 'btn-save' : 'btn-apply' | i18n: []: 'dts/crm' }}</button>
+	<button ng-if="controller.isAddEditMode === true" class="btn btn-primary" ng-click="controller.apply(true)">{{ 'btn-apply-save' | i18n: []: 'dts/crm' }}</button>
+</totvs-modal-footer>

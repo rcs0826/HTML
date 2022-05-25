@@ -1,0 +1,10 @@
+div.classifier-select(style="width: 350px;")
+    div(ng-repeat="category in kanbanClassifierSelect.listCategory | orderBy: 'des_categoria'" ng-if="category['tt-kbn_clasdor'].length > 0")
+        ul
+            li.category
+                input(type="checkbox" ng-model="category.checked" ng-click="kanbanClassifierSelect.checkAll(category)")
+                span(ng-click="kanbanClassifierSelect.toggle(category)" style="cursor: pointer;") &nbsp; {{category.des_categoria}}
+        ul(ng-if="category.show")
+            li.classifier(ng-repeat="classifier in category['tt-kbn_clasdor'] | orderBy: 'des_clasdor'")
+                input(type="checkbox" ng-model="classifier.checked" ng-click="kanbanClassifierSelect.callback()")
+                span(ng-click="kanbanClassifierSelect.check(classifier)" style="cursor: pointer;") &nbsp; {{classifier.des_clasdor}}

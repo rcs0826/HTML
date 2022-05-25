@@ -1,0 +1,135 @@
+<totvs-modal-header>
+	{{ 'l-related-prices' | i18n: []: 'dts/crm' }}
+</totvs-modal-header>
+
+<totvs-modal-body>
+
+	<totvs-page-child type="list">
+
+		<totvs-page-content class="crm-tab">
+
+			<br>
+
+			<totvs-page-alert
+				ng-if="priceSettingsController.priceSettings.length <= 0"
+				type="info"
+				message="{{ 'msg-not-found-price-settings' | i18n: []: 'dts/crm' }}">
+			</totvs-page-alert>
+
+			<div class="crm-tab">
+
+				<div class="col-xs-12 crm-tab-item header"
+					 ng-if="priceSettingsController.priceSettings.length > 0">
+
+					<strong ng-if="!priceSettingsController.isControlCifFobEnable">
+						<div class="col-xs-2 col-sm-2">
+							{{ 'l-price-value' | i18n: []: 'dts/crm' }}
+						</div>
+						<div class="col-xs-2 col-sm-2">
+							{{ 'l-minimum-quantity' | i18n: []: 'dts/crm' }}
+						</div>
+						<div class="col-xs-3 col-sm-3">
+							{{ 'l-unit-of-measurement' | i18n: []: 'dts/crm' }}
+						</div>
+						<div class="col-xs-3 col-sm-3">
+							{{ 'l-reference' | i18n: []: 'dts/crm' }}
+						</div>
+						<div class="col-xs-2 col-sm-2 text-right"></div>
+					</strong>
+
+					<strong ng-if="priceSettingsController.isControlCifFobEnable">
+						<div class="col-xs-2 col-sm-2">
+							{{ 'l-cif-price' | i18n: []: 'dts/crm' }}
+						</div>
+						<div class="col-xs-2 col-sm-2">
+							{{ 'l-fob-price' | i18n: []: 'dts/crm' }}
+						</div>
+						<div class="col-xs-2 col-sm-2">
+							{{ 'l-minimum-quantity' | i18n: []: 'dts/crm' }}
+						</div>
+						<div class="col-xs-2 col-sm-2">
+							{{ 'l-unit-of-measurement' | i18n: []: 'dts/crm' }}
+						</div>
+						<div class="col-xs-2 col-sm-2">
+							{{ 'l-reference' | i18n: []: 'dts/crm' }}
+						</div>
+						<div class="col-xs-2 col-sm-2 text-right"></div>
+					</strong>
+
+				</div>
+
+				<div class="col-xs-12 crm-tab-item"
+					 ng-animate="'animate-if'"
+					 ng-repeat="data in priceSettingsController.priceSettings track by $index">
+
+					<strong ng-if="!priceSettingsController.isControlCifFobEnable">
+                        
+						<div class="col-xs-2 col-sm-2">
+                            {{ data.val_preco_unit | currency: (priceSettingsController.currencyFormatTablePrice ? priceSettingsController.currencyFormatTablePrice : ('l-currency-format' | i18n: []: 'dts/crm') ) }}
+						</div>
+
+						<div class="col-xs-2 col-sm-2" tooltip="{{ 'l-product' | i18n: []: 'dts/crm' }}">
+							{{ data.qtd_min_item | number }}
+						</div>
+
+						<div class="col-xs-3 col-sm-3">
+							{{ data.nom_unid_medid }} {{ data.cod_unid_medid_erp ? '(' + data.cod_unid_medid_erp + ')' : '' }}
+						</div>
+
+						<div class="col-xs-3 col-sm-3">
+							{{ data.nom_refer }} {{ data.cod_refer_erp ? '(' + data.cod_refer_erp + ')' : '' }}
+						</div>
+
+						<div class="col-xs-2 col-sm-2 text-right">
+							<a class="clickable"
+							   ng-click="priceSettingsController.selectPrice(data);">
+								{{ 'btn-select' | i18n: []: 'dts/crm' }}
+							</a>
+						</div>
+					</strong>
+
+					<strong ng-if="priceSettingsController.isControlCifFobEnable">
+                        
+						<div class="col-xs-2 col-sm-2">
+                            {{ data.val_preco_unit | currency: (priceSettingsController.currencyFormatTablePrice ? priceSettingsController.currencyFormatTablePrice : ('l-currency-format' | i18n: []: 'dts/crm') ) }}
+						</div>                        
+
+						<div class="col-xs-2 col-sm-2">
+                            {{ data.val_preco_fob | currency: (priceSettingsController.currencyFormatTablePrice ? priceSettingsController.currencyFormatTablePrice : ('l-currency-format' | i18n: []: 'dts/crm') ) }}
+						</div>                          
+
+						<div class="col-xs-2 col-sm-2" tooltip="{{ 'l-product' | i18n: []: 'dts/crm' }}">
+							{{ data.qtd_min_item | number }}
+						</div>
+
+						<div class="col-xs-2 col-sm-2">
+							{{ data.nom_unid_medid }} {{ data.cod_unid_medid_erp ? '(' + data.cod_unid_medid_erp + ')' : '' }}
+						</div>
+
+						<div class="col-xs-2 col-sm-2">
+							{{ data.nom_refer }} {{ data.cod_refer_erp ? '(' + data.cod_refer_erp + ')' : '' }}
+						</div>
+
+						<div class="col-xs-2 col-sm-2 text-right">
+							<a class="clickable"
+							   ng-click="priceSettingsController.selectPrice(data);">
+								{{ 'btn-select' | i18n: []: 'dts/crm' }}
+							</a>
+						</div>
+					</strong>
+
+				</div>
+
+			</div>
+
+		</totvs-page-content>
+
+	</totvs-page-child>
+
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button class="btn btn-primary" ng-click="priceSettingsController.cancel()">
+		{{ 'btn-cancel' | i18n: []: 'dts/crm' }}
+	</button>
+</totvs-modal-footer>

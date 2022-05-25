@@ -1,0 +1,165 @@
+<totvs-page-child type="list">
+
+	<br/>
+
+	<totvs-page-content class="crm-tab">
+
+		<div class="row">
+
+			<div class="col-xs-10">
+				<h3 style="margin-top: 0px;">
+					{{ 'nav-result' | i18n: []: 'dts/crm' }} ({{ controller.selectedAction.ttResultado.length || 0 }})
+				</h3>
+			</div>
+
+			<div class="col-xs-2">
+				<div class="pull-right">
+
+					<button type="button"
+							class="btn btn-primary"
+							ng-click="controller.addEditActionResult(controller.selectedAction);">
+						<span class="glyphicon glyphicon-plus"></span>
+						<span class="hidden-xs">{{ 'btn-add' | i18n: []: 'dts/crm' }}</span>
+					</button>
+
+				</div>
+			</div>
+
+			<div class="col-xs-12">
+				<totvs-divider></totvs-divider>
+			</div>
+
+		</div>
+
+		<totvs-page-alert type="info"
+						  message="{{ 'msg-not-found-campaign-action-result' | i18n: []: 'dts/crm' }}"
+						  ng-if="!controller.selectedAction.ttResultado || controller.selectedAction.ttResultado.length <= 0">
+			<br>
+			<button type="button"
+					class="btn btn-primary"
+					ng-click="controller.addEditActionResult(controller.selectedAction);">
+				<span class="glyphicon glyphicon-plus"></span>
+				&nbsp;&nbsp;{{ 'btn-add' | i18n: []: 'dts/crm' }}
+			</button>
+		</totvs-page-alert>
+
+		<div class="crm-tab"
+			 ng-if="controller.selectedAction.ttResultado.length">
+
+			<div class="row crm-tab-item header hidden-xs">
+				<strong>
+					<div class="col-xs-1">
+						{{ 'l-default' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="col-xs-10 col-sm-4">
+						{{ 'l-name' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="hidden-xs col-sm-2 overflow-ellipsis">
+						{{ 'l-finished' | i18n: []: 'dts/crm' }}
+					</div>
+					<div class="hidden-xs col-sm-2 overflow-ellipsis">
+						{{ 'l-accumulate-result' | i18n: []: 'dts/crm' }}
+					</div>
+				</strong>
+			</div>
+
+			<div class="row crm-tab-item hover"
+				 ng-init="(result.isOpen === undefined ? false : result.isOpen)"
+				 ng-repeat="result in controller.selectedAction.ttResultado">
+
+				<div class="col-xs-1">
+					<span class="glyphicon glyphicon-star crm-starred-default"
+						  ng-if="result.log_restdo_default === true">
+					</span>
+					<span class="glyphicon glyphicon-star-empty clickable"
+						  ng-if="result.log_restdo_default === false"
+						  ng-click="controller.setAsActionResultDefault(controller.selectedAction, result);">
+					</span>
+				</div>
+
+				<div class="col-xs-9 col-sm-4 overflow-ellipsis">
+					{{ result.nom_restdo }}
+				</div>
+
+				<div class="hidden-xs col-sm-2">
+					{{ (result.log_finaliza === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</div>
+
+				<div class="hidden-xs col-sm-2">
+					{{ (result.log_acumul_restdo === true ? 'l-yes' : 'l-no') | i18n: []: 'dts/crm' }}
+				</div>
+
+				<div class="col-xs-2 col-sm-3 text-right">
+					<a class="hidden-xs clickable"
+					   ng-click="controller.addEditActionResult(controller.selectedAction, result, $index);">
+						{{ 'l-edit' | i18n: []: 'dts/crm' }}
+					</a>
+					&nbsp;&nbsp;
+					<a class="hidden-xs clickable"
+					   ng-click="controller.removeActionResult(controller.selectedAction, result, $index);">
+						{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+					</a>
+					<button type="button"
+							class="btn btn-default dropdown-toggle visible-xs-inline"
+							data-toggle="dropdown"
+							aria-haspopup="true"
+							aria-expanded="false">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li>
+							<a class="clickable"
+							   ng-click="controller.addEditActionResult(controller.selectedAction, result, $index);">
+								{{ 'l-edit' | i18n: []: 'dts/crm' }}
+							</a>
+						</li>
+						<li>
+							<a class="clickable"
+							   ng-click="controller.removeActionResult(controller.selectedAction, result, $index);">
+								{{ 'btn-remove' | i18n: []: 'dts/crm' }}
+							</a>
+						</li>
+					</ul>
+
+					&nbsp;&nbsp;
+					<i class="clickable glyphicon"
+					   ng-class="{'glyphicon-chevron-down' :  result.isOpen,
+								  'glyphicon-chevron-right': !result.isOpen}"
+					   ng-click="result.isOpen = !result.isOpen;">
+					</i>
+
+				</div>
+
+				<div ng-if="result.isOpen">
+
+					<totvs-divider></totvs-divider>
+
+					<ng-include src="'/dts/crm/html/campaign/action/result/action/action.item.content.html'"
+								ng-if="!controller.model.log_padr_gpls"></ng-include>
+
+					<div class="col-xs-12 crm-tab"
+						 ng-if="result.ttDetalhamento.length">
+
+						<totvs-divider ng-if="!controller.model.log_padr_gpls"></totvs-divider>
+
+						<strong>{{ 'l-detailing' | i18n: []: 'dts/crm' }} ({{ result.ttDetalhamento.length || 0 }})</strong>
+
+						<div class="row crm-tab-item"
+							 ng-repeat="detail in result.ttDetalhamento">
+							<div class="col-xs-12">
+								{{ detail.nom_detmnto_restdo }}
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+			<br/>
+
+		</div>
+
+	</totvs-page-content>
+
+</totvs-page-child>

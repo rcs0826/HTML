@@ -1,0 +1,58 @@
+<totvs-page-content style="border-top: 1px dotted #e4e4e4;">
+    <totvs-page-content-header style="border-bottom: 0px; padding-bottom: 15px;">
+        <field type="select"
+               ng-model="controller.model.num_id_usuar_respons"
+               ng-change="controller.onChangeResponsible()"
+               canclean="undefined"
+               ng-required="true">
+            <label>{{ 'l-user-responsible-source' | i18n: []: 'dts/crm' }}</label>
+            <zoom zoom-service="crm.crm_usuar.zoom" 
+                  zoom-selected="controller.onChangeResponsible(selected)"></zoom>
+            <include>
+                <ui-select-match placeholder="{{ 'l-user-responsible-source' | i18n: []: 'dts/crm' }}">
+                    {{ $select.selected.nom_usuar }}
+                </ui-select-match>
+                <ui-select-choices repeat="user in controller.users track by $index"
+                                   refresh="controller.getUsers($select.search, false)"
+                                   refresh-delay="500">
+                    <span ng-bind-html="user.nom_usuar | highlight: $select.search"></span>
+                </ui-select-choices>
+            </include>
+        </field>
+
+        <field type="select"
+               ng-model="controller.model.num_id_usuar_respons_destino"
+               canclean="undefined"
+               ng-required="true">
+            <label>{{ 'l-user-responsible-destination' | i18n: []: 'dts/crm' }}</label>
+            <zoom zoom-service="crm.crm_usuar.zoom"></zoom>
+            <include>
+                <ui-select-match placeholder="{{ 'l-user-responsible-destination' | i18n: []: 'dts/crm' }}">
+                    {{ $select.selected.nom_usuar }}
+                </ui-select-match>
+                <ui-select-choices repeat="user in controller.usersDestination track by $index"
+                                   refresh="controller.getUsers($select.search, true)"
+                                   refresh-delay="500">
+                    <span ng-bind-html="user.nom_usuar | highlight: $select.search"></span>
+                </ui-select-choices>
+            </include>
+        </field>
+
+        <field type="daterange"
+               ng-required="true"
+               ng-model="controller.model.dat_valid"
+               start-placeholder="{{ 'l-start' | i18n: []: 'dts/crm' }}"
+               end-placeholder="{{ 'l-end' | i18n: []: 'dts/crm' }}"
+               start-date="controller.dateTimeBase">
+            <label>{{ 'l-expiration-date' | i18n: []: 'dts/crm' }}</label>
+        </field>
+
+        <field type="textarea"
+               maxlength="400"
+               ng-required="true"
+               class="col-xs-12 col-sm-12"
+               ng-model="controller.model.motivo"                   
+               label="{{ 'l-reason-transference' | i18n: []: 'dts/crm' }}">
+        </field>
+    </totvs-page-content-header>
+</totvs-page-content>

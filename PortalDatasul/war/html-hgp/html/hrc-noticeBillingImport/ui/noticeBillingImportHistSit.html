@@ -1,0 +1,49 @@
+<totvs-page type="base">             
+        <totvs-page-navbar id="navBar">
+            <totvs-page-header>
+    
+                <totvs-page-header-title 
+                    title="Situação do aviso de cobrança ({{controller.listAvisosCobHistSitCount}})" >
+                </totvs-page-header-title>
+    
+                <totvs-page-header-operation>
+                    <totvs-page-header-operation-action limit-primary-action="2">
+                        <action class="btn-default" ng-click="controller.cancel();">Fechar</action>
+                    </totvs-page-header-operation-action>
+                </totvs-page-header-operation>
+    
+            </totvs-page-header>
+    
+        </totvs-page-navbar>
+    
+        <totvs-page-content id="pageContent">
+            
+            <totvs-page-alert 
+                ng-if="controller.hasDoneSearch == true &&  controller.listAvisosCobHistSit.length <= 0"
+                type="info"
+                message="Nenhum registro encontrado">
+            </totvs-page-alert>
+            <totvs-list-item 
+                id="docSituation{{$index}}"                
+                ng-repeat="docSituation in controller.listAvisosCobHistSit">
+    
+            <totvs-list-item-header>
+                </totvs-list-item-header>
+    
+                <totvs-list-item-content>
+    
+                    <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                          title="Situação"
+                                          value="{{docSituation.dsSituacao}}">
+                    </totvs-list-item-info>
+                    
+                    <totvs-list-item-info class="{{controller.listItemInfoClasses}}"
+                                          title="Data Alteração"
+                                          value="{{docSituation.dsAlteracao}}">
+                    </totvs-list-item-info>
+    
+                </totvs-list-item-content>
+            </totvs-list-item>
+    
+        </totvs-page-content>
+    </totvs-page>

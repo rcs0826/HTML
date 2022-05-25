@@ -1,0 +1,169 @@
+<div class="row"
+	 ng-if="controller.isModal === true">
+
+	<field type="input"
+		   class="col-xs-12 col-sm-6"
+		   maxlength="50"
+		   canclean="undefined"
+		   ng-model="controller.filterReport"
+		   placeholder="{{ 'l-report' | i18n: []: 'dts/crm' }}">
+		<label>{{ 'l-report' | i18n: []: 'dts/crm' }}</label>
+	</field>
+
+</div>
+
+<totvs-divider ng-if="controller.isModal === true"
+			   style="margin-top: 10px; margin-bottom: 10px;">
+</totvs-divider>
+
+<totvs-page-alert
+		ng-if="controller.listOfModuleReport.length <= 0"
+		type="info"
+		message="{{ 'msg-not-found-reports' | i18n: []: 'dts/crm' }}">
+</totvs-page-alert>
+
+<div class="crm-group-accordion">
+    <accordion close-others="false"
+            ng-if="controller.listOfModuleReport.length > 0">
+
+        <accordion-group ng-repeat="reportModule in controller.listOfModuleReport track by $index"
+                        ng-if="(reportModule.ttRelatorio | filter: controller.filterReport).length > 0"
+                        is-open="reportModule.isOpen"
+                        class="crm-panel">
+
+            <accordion-heading>
+                <div class="row">
+                    <div class="col-xs-10 overflow-ellipsis">
+                        <span>{{ reportModule.nom_modul_crm }} ({{ reportModule.ttRelatorio.length }})</span>
+                    </div>
+                    <div class="col-xs-2 text-right">
+                        <i class="pull-right glyphicon"
+                        ng-class="{'glyphicon-chevron-down' :  reportModule.isOpen,
+                                    'glyphicon-chevron-right': !reportModule.isOpen}">
+                        </i>
+                    </div>
+                </div>
+            </accordion-heading>
+
+            <div class="row crm-tab"
+                ng-animate="'animate-if'">
+
+                <div class="col-xs-12 crm-tab-item"
+                    ng-repeat="report in reportModule.ttRelatorio | filter: controller.filterReport track by $index"
+                    ng-click="controller.select(report);"
+                    ng-init="report.isOpen = false;">
+
+                    <div class="clickable"
+                        ng-click="report.isOpen = !report.isOpen">
+
+                        <div class="col-xs-10 overflow-ellipsis crm-no-gutter">
+                            {{ report.nom_relat }}
+                        </div>
+
+                        <div class="col-xs-2 text-right">
+                            <a class="clickable">
+                            <i class="glyphicon"
+                                ng-class="{'glyphicon-chevron-down' :  report.isOpen,
+                                            'glyphicon-chevron-right': !report.isOpen}">
+                                </i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div ng-if="report.isOpen"
+                        ng-animate="'animate-if'">
+
+                        <totvs-divider ng-if="report.ttParametro.length > 0"
+                                    ng-animate="'animate-if'">
+                        </totvs-divider>
+
+                        <div class="row"
+                            ng-if="report.ttParametro.length > 0"
+                            ng-animate="'animate-if'">
+
+                            <div ng-repeat="parameter in report.ttParametro track by $index">
+
+                                <field type="input"
+                                    ng-if="parameter.idi_tip_campo === 1"
+                                    canclean="undefined"
+                                    ng-model="parameter.value"
+                                    ng-required="parameter.log_livre_1"
+                                    placeholder="{{ parameter.nom_apel_campo }}">
+                                    <label>{{ parameter.nom_apel_campo }}</label>
+                                    <validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+                                </field>
+
+                                <field type="input"
+                                    numbers-only
+                                    ng-if="parameter.idi_tip_campo === 2"
+                                    canclean="undefined"
+                                    ng-model="parameter.value"
+                                    ng-required="parameter.log_livre_1"
+                                    placeholder="{{ parameter.nom_apel_campo }}">
+                                    <label>{{ parameter.nom_apel_campo }}</label>
+                                    <validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+                                </field>
+
+                                <field type="typeahead"
+                                    ng-if="parameter.idi_tip_campo === 3"
+                                    canclean="undefined"
+                                    ng-model="parameter.value"
+                                    ng-required="parameter.log_livre_1"
+                                    placeholder="{{ parameter.nom_apel_campo }}"
+                                    typeahead="item as (item.nom_valor) for item in controller.getZoomData($viewValue, parameter)"
+                                    typeahead-wait-ms="500">
+                                    <label>{{ parameter.nom_apel_campo }}</label>
+                                    <validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+                                </field>
+
+                                <totvs-field ng-if="parameter.idi_tip_campo === 4"
+                                            totvs-time
+                                            ng-model="parameter.value"
+                                            label="{{parameter.nom_apel_campo}}"
+                                            placeholder="{{ parameter.nom_apel_campo }}"
+                                            t-default-time="false"
+                                            ng-required="parameter.log_livre_1">
+                                    <validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+                                </totvs-field>
+                                <field ng-if="parameter.idi_tip_campo === 5"
+                                    type="date"
+                                    canclean="undefined"
+                                    ng-animate="'animate-if'"
+                                    ng-model="parameter.value"
+                                    placeholder="{{ parameter.nom_apel_campo }}"
+                                    ng-required="parameter.log_livre_1">
+                                    <label>{{ parameter.nom_apel_campo }}</label>
+                                    <validator key="required">{{ 'l-required' | i18n: []: 'dts/crm' }}</validator>
+                                </field>
+                                <totvs-field ng-if="parameter.idi_tip_campo === 6"
+                                            totvs-combo
+                                            label="{{parameter.nom_apel_campo}}"
+                                            placeholder="{{parameter.nom_apel_campo}}"
+                                            ng-model="parameter.value"
+                                            t-options="parameter.options"
+                                            canclean
+                                            ng-required="parameter.log_livre_1">
+                                </totvs-field>
+                            </div>
+
+                        </div>
+
+                        <totvs-divider style="margin-top: 10px; margin-bottom: 5px;"></totvs-divider>
+
+                        <div class="col-xs-12 text-right">
+                            <a class="clickable"
+                            ng-click="controller.execute(report);">
+                                {{ 'l-execute' | i18n: []: 'dts/crm' }}
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </accordion-group>
+
+    </accordion>
+</div>

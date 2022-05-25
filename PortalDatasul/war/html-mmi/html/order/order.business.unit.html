@@ -1,0 +1,49 @@
+<totvs-modal-header>
+	{{ 'l-business-unit-matrix' | i18n }}
+</totvs-modal-header >
+<totvs-modal-body>
+
+    <totvs-page-content style="border:0px">            
+        <totvs-page-alert
+			ng-if="businessUnitCtrl.ttBusinesUnit.length <= 0"
+			type="info"
+			message="{{ 'msg-order-matrix-not-exist' | i18n }}">			
+		</totvs-page-alert>
+		
+       	<totvs-list-item id="businessUnit{{businessUnit['cod-unid-negoc']}}"
+			 ng-repeat="businessUnit in businessUnitCtrl.ttBusinesUnit track by $index">
+			 
+		    <totvs-list-item-title
+				class="col-lg-6 col-md-6 col-sm-6 col-xs-12"
+            	title="{{businessUnit['cod-unid-negoc']}} - {{businessUnit['des-unid-negoc']}}">            	
+           	</totvs-list-item-title>	         
+           	
+           	<totvs-list-item-info title="{{ 'l-percentage' | i18n }}"
+            					  ng-if="businessUnitCtrl.canEdit">
+			    <totvs-editable value="{{businessUnit['val-perc-unid-negoc'] | number:4}} %">
+			        <totvs-field
+			            totvs-decimal
+			            class="col-md-12"
+			            m-dec="4"
+			            ng-model="businessUnit['val-perc-unid-negoc']">
+			            <label>{{ 'l-percentage' | i18n }}</label>
+			        </totvs-field>
+			    </totvs-editable>
+			</totvs-list-item-info>
+			
+			<totvs-list-item-info
+				ng-if="!businessUnitCtrl.canEdit"
+            	class=" col-lg-6 col-md-6 col-sm-6 col-xs-12"
+                title="{{ 'l-percentage' | i18n }}"
+                value="{{businessUnit['val-perc-unid-negoc'] | number:4}} %">
+            </totvs-list-item-info>            	                       
+             
+       	</totvs-list-item>
+       	                    
+    </totvs-page-content>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+    <button type="button" class="btn btn-default" data-ng-click="businessUnitCtrl.cancel()">{{ 'l-close' | i18n }}</button>
+    <button type="button" class="btn btn-primary" data-ng-click="businessUnitCtrl.save()" ng-if="businessUnitCtrl.canEdit">{{ 'l-save' | i18n }}</button>
+</totvs-modal-footer>

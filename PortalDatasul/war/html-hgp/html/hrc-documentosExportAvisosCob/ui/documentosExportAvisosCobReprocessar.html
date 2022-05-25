@@ -1,0 +1,91 @@
+<style>
+        .tag-success:before {
+            background-color: #6ace39;
+            content: "S";
+        }
+        
+        .tag-failure:before {
+            background-color: #f15a22;
+            content: "F";
+        }
+        
+        .success-list-item{
+            border-left-color: #6ace39 !important;
+        }
+        
+        .failure-list-item{
+            border-left-color: #f15a22 !important;
+        }
+    
+    </style>
+<totvs-page type="base" >             
+        <totvs-page-navbar id="navBar">
+            <totvs-page-header>
+    
+                <totvs-page-header-title 
+                    title="Reprocessamento de Avisos de Cobrança - Resultado" >
+                </totvs-page-header-title>
+    
+                <totvs-page-header-operation>
+                    <totvs-page-header-operation-action limit-primary-action="2">
+                        <action class="btn-default" ng-click="controller.cancel();">Fechar</action>
+                    </totvs-page-header-operation-action>
+                </totvs-page-header-operation>
+    
+            </totvs-page-header>
+    
+        </totvs-page-navbar>
+    
+        <totvs-page-content id="pageContent">
+       
+                <totvs-page-detail>
+            
+                        <totvs-page-detail-info 
+                            class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                            title="Numero Total de avisos de cobrança"
+                            value="{{controller.stats[0].nrDocumentos}}">
+                        </totvs-page-detail-info>
+                        
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Avisos reprocessados com sucesso"
+                            value="{{controller.stats[0].nrSucesso}}">
+                        </totvs-page-detail-info>                                                
+                        
+                        <totvs-page-detail-info 
+                            class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                            title="Avisos com erros"
+                            value="{{controller.stats[0].nrFalhas}}">
+                        </totvs-page-detail-info>
+                    </totvs-page-detail>
+                
+                    <div class="page-head undo-page-head">
+                        <div class="page-tags">
+                            <div class="tag legend tag-failure">Falha</div>                            
+                            <div class="tag legend tag-success">Sucesso</div>
+                        </div>
+                    </div>                        
+                    <totvs-page-detail>
+
+            
+            <totvs-list-item style="margin-bottom: 10px"
+                ng-repeat="docto in controller.reprocessDoctList track by $index"
+                ng-class="{'success-list-item': docto.situacao==controller.SUCCESS_CONST,                           
+                           'failure-list-item': docto.situacao==controller.ERROR_CONST}">                        
+
+                    <totvs-list-item-header>
+                        <totvs-list-item-title
+                                title="{{docto.rotuloDocumento}}">
+                        </totvs-list-item-title>   
+                    </totvs-list-item-header>    
+                    <totvs-list-item-info
+                        ng-if="docto.dsError != ''" 
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                        title="Mensagem"
+                        value="{{docto.dsError}}">
+                    </totvs-list-item-info>
+                </totvs-list-item-content>
+            </totvs-list-item>
+    
+        </totvs-page-content>
+    </totvs-page>

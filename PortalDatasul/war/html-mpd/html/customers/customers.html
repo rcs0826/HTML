@@ -1,0 +1,72 @@
+<style>
+
+@media only screen and (max-width: 769px) {
+
+	.page-navbar .breadcrumb {
+		padding-left: 0px; !important
+	}
+
+	.totvs-style-guide .row {
+		margin-right: 0px !important;
+		margin-left: 0px !important;
+	}
+
+}
+
+</style>
+
+<totvs-page type="list" totvs-custom-element="customPage">
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#{{defaultPageHome}}">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-customer-portfolio' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+
+		<totvs-page-header>
+			<totvs-page-header-title ng-if="controller.isCRMActive !== true"
+				 title="{{ 'l-customer-portfolio' | i18n }}"
+				 total="{{controller.totalRecords}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-title ng-if="controller.isCRMActive === true"
+				 title="{{ 'l-customer-portfolio' | i18n }}">
+			</totvs-page-header-title>
+
+			<totvs-lodash-template src="/dts/mpd/html/customers/customers-list-header.html"
+								   template-data="controller.customerListProfileConfig"></totvs-lodash-template>
+		</totvs-page-header>
+
+	</totvs-page-navbar>
+
+	<totvs-page-content ng-if="controller.isCRMActive !== true">
+
+		  <totvs-lodash-template src="/dts/mpd/html/customers/customers-list.html"
+								 template-data="controller.customerListProfileConfig"></totvs-lodash-template>
+
+	</totvs-page-content>
+
+	<totvs-page-content>
+
+		<totvs-page-detail ng-if="controller.isCRMActive === true">
+
+			<totvs-tabset>
+
+				<totvs-tab heading="{{ 'l-customers' | i18n: []: 'dts/mpd' }} ({{ controller.totalRecords }})"
+						   active="controller.pageCustomer">
+					<div ng-include="'/dts/mpd/html/customers/customers-tab.html'"/>
+				</totvs-tab>
+                    
+				<totvs-tab heading="{{ 'l-leads' | i18n: []: 'dts/mpd' }} ({{ (controller.listLeads.length && controller.listLeads.length < controller.totalLeadRecords) ? controller.listLeads.length + '+' : controller.listLeads.length }})"
+						   active="controller.pageLead"
+                           ng-if="controller.showTabLead">
+					<div ng-include="'/dts/mpd/html/customers/customers-leads-tab.html'"/>
+				</totvs-tab>
+                
+			</totvs-tabset>
+		</totvs-page-detail>
+
+	</totvs-page-content>
+
+</totvs-page>

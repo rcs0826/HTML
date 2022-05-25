@@ -1,0 +1,83 @@
+<totvs-page type="list">
+
+	<totvs-page-navbar>
+	
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-event' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+			
+		<totvs-page-header>
+
+			<totvs-page-header-title title="{{ 'l-events' | i18n }}" 
+									 total="{{controller.totalRecords}}">
+			</totvs-page-header-title>
+
+			<totvs-page-header-operation>
+			
+				<totvs-page-header-operation-action>
+                    <action link="#/dts/mmi/event/new" class="glyphicon-plus">{{ 'l-add' | i18n }}</action>
+                </totvs-page-header-operation-action>
+
+				<totvs-page-header-operation-filter placeholder="{{ 'l-code-description' | i18n }}"
+													ng-submit="controller.search()"
+													ng-model="controller.quickSearchText"
+													advanced-search="controller.openAdvancedSearch">
+				</totvs-page-header-operation-filter>
+								
+			</totvs-page-header-operation>
+			
+			<totvs-page-disclaimers
+					disclaimer-list="controller.disclaimers"
+					ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+
+		</totvs-page-header>
+						
+	</totvs-page-navbar>
+	
+	<totvs-page-content>
+
+		<totvs-page-alert
+			ng-if="controller.listResult.length <= 0"
+			type="info"
+			message="{{ 'msg-search-not-found' | i18n }}">			
+		</totvs-page-alert>
+ 
+        <totvs-list-item id="evento{{evento['cod-evento']}}"
+						 ng-repeat="evento in controller.listResult">
+						 
+			<totvs-list-item-header>
+                <totvs-list-item-title
+                	title="{{evento['cod-evento']}} - {{evento['des-evento']}}"
+                	link="#/dts/mmi/event/detail/{{ evento['cod-evento'] }}">
+                </totvs-list-item-title>
+                <totvs-list-item-action limit-primary-action="1">
+                    <action link="#/dts/mmi/event/edit/{{evento['cod-evento']}}" icon="glyphicon-pencil">{{ 'l-edit' | i18n }}</action>
+                    <action ng-click="controller.delete(evento)" icon="glyphicon-trash">{{ 'l-remove' | i18n }}</action>
+               	</totvs-list-item-action>               											
+			</totvs-list-item-header>
+			
+			<totvs-list-item-content-detail>
+                <totvs-list-item-info
+                	class="col-xs-4"
+                    title="{{ 'l-event-type' | i18n }}"
+                    value="{{controller.getEventType(evento['idi-evento'])}}">
+                </totvs-list-item-info>
+                <totvs-list-item-info
+                	class="col-xs-4"
+                    title="{{ 'l-value-type' | i18n }}"
+                    value="{{controller.getValueType(evento['idi-valor'])}}">
+                </totvs-list-item-info>
+			</totvs-list-item-content-detail>
+			           
+        </totvs-list-item>
+		
+		<totvs-list-pagination
+            ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+            ng-click="controller.loadData(true);">
+        </totvs-list-pagination>
+ 
+    </totvs-page-content>	
+		
+</totvs-page>

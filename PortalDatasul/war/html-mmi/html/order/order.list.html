@@ -1,0 +1,223 @@
+<totvs-page type="list" >
+
+	<totvs-page-navbar>
+
+		<totvs-page-breadcrumb>
+			<breadcrumb link="#/">{{ 'l-home' | i18n }}</breadcrumb>
+			<breadcrumb>{{ 'l-maintenance-order' | i18n }}</breadcrumb>
+		</totvs-page-breadcrumb>
+		
+		<totvs-page-header>
+			<totvs-page-header-operation>
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-title">
+					<totvs-page-header-title title="{{ 'l-work-orders' | i18n }} ({{ controller.quantidadeOrdens }})">
+					</totvs-page-header-title>
+				</div>
+				
+				<totvs-page-header-operation-action>
+                    <action ng-click="controller.openOrderEdit('new')" icon="glyphicon-plus">{{ 'l-add' | i18n }}</action>
+                    <action ng-click="controller.liberaOrdensSelecionadas()"
+                    	 	ng-disabled="controller.listResult.length == 0" 
+                    		tooltip="{{ 'l-release-selected-orders' | i18n }}" 
+                    		icon="glyphicon-play">
+                    	{{ 'l-release' | i18n }}
+                    </action>
+                    <action ng-click="controller.bloqueiaOrdensSelecionadas()"
+                    	 	ng-disabled="controller.listResult.length == 0" 
+                    		tooltip="{{ 'l-block-selected-orders' | i18n }}" 
+                    		icon="glyphicon-stop">
+                    	{{ 'l-block' | i18n }}
+                    </action>
+                </totvs-page-header-operation-action>
+				<totvs-page-header-operation-filter placeholder="{{ 'l-orderline-number' | i18n }}"
+													ng-submit="controller.search()"
+													ng-model="controller.quickSearchText"
+													advanced-search="controller.openAdvancedSearch">
+
+				</totvs-page-header-operation-filter>
+
+			</totvs-page-header-operation>
+			
+			<totvs-page-tags>
+				<tag ng-click="controller.addFilter(1)" class="tag-1 legend">{{ 'l-not-started' | i18n }}</tag>
+				<tag ng-click="controller.addFilter(2)" class="tag-2 legend">{{ 'l-inprogress' | i18n }}</tag>
+				<tag ng-click="controller.addFilter(3)" class="tag-3 legend">{{ 'l-suspended' | i18n }}</tag>
+				<tag ng-click="controller.addFilter(4)" class="tag-4 legend">{{ 'l-finished' | i18n }}</tag>				
+			</totvs-page-tags>
+			
+			<totvs-page-disclaimers
+					ng-if="controller.disclaimers"
+					disclaimer-list="controller.disclaimers"
+					ng-click="controller.removeDisclaimer">
+			</totvs-page-disclaimers>
+
+		</totvs-page-header>
+						
+	</totvs-page-navbar>
+	
+	<totvs-page-content>
+	
+		<totvs-page-content-header>
+			<totvs-page-quick-select
+			    ng-if="controller.listResult.length > 0" 
+				list="controller.listResult"
+				title="{{ 'l-selected-all' | i18n }}"
+				ng-click="controller.habilitaLiberarOrdens()">
+			</totvs-page-quick-select>
+		</totvs-page-content-header>
+
+		<totvs-page-alert
+			ng-if="controller.listResult.length <= 0"
+			type="info"
+			message="{{ 'msg-search-not-found' | i18n }}">
+		</totvs-page-alert>
+
+        <totvs-list-item id="order{{order['nr-ord-produ']}}"
+						 ng-repeat="order in controller.listResult"
+						 selected="order">
+			<totvs-list-item-header>
+                
+                <totvs-list-item-title
+                	title="{{order['nr-ord-produ'] | orderNumberMask}} - {{order['des-man-corr']}}"
+                	ng-click="controller.openDetail(order)"
+                	link="#/dts/mmi/order/detail/{{ order['nr-ord-produ'] }}">
+                </totvs-list-item-title>
+                
+                <totvs-list-item-action limit-primary-action="3">
+                    <action ng-if="order.estado == 1" ng-click="controller.release(order)" icon="glyphicon-play">{{ 'l-release' | i18n }}</action>
+                    <action ng-if="order.estado == 2 || order.estado == 3" ng-click="controller.block(order)" icon="glyphicon-stop">{{ 'l-block' | i18n }}</action>
+                    <action ng-click="controller.openOrderEdit(order)" icon="glyphicon-pencil">{{ 'l-edit' | i18n }}</action>
+                    <action ng-click="controller.delete(order)" icon="glyphicon-trash">{{ 'l-remove' | i18n }}</action>
+                    <action ng-click="controller.openOrderCopy(order)" icon="glyphicon-duplicate">{{ 'l-copy' | i18n }}</action>
+                    <action ng-if="order['estado-om'] != 3 && (order.estado <= 6 && order['estado-om'] != 3)" ng-click="controller.openOrderSuspend(order)" icon="glyphicon-remove">{{ 'l-suspend' | i18n }}</action>
+                    <action ng-if="order['estado-om'] == 3" ng-click="controller.openOrderSuspend(order)" icon="glyphicon-ok">{{ 'l-reactivate' | i18n }}</action>
+                    <action ng-if="order['estado-om'] < 3" ng-click="controller.openOrderClose(order)" icon="glyphicon-off">{{ 'l-shut' | i18n }}</action>
+               	</totvs-list-item-action>
+               	
+               	<totvs-list-item-info
+                	class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <span ng-if="order.situacao == 1" class="page-tags situacao situacao-1">{{order.situacao}}</span>
+                    <span ng-if="order.situacao == 2" class="page-tags situacao situacao-2">{{order.situacao}}</span>
+                    <span ng-if="order.situacao == 3" class="page-tags situacao situacao-3">{{order.situacao}}</span>
+                    <span ng-if="order.situacao == 4" class="page-tags situacao situacao-4">{{order.situacao}}</span>
+                    <span class="label situacao-{{order.situacao}}">{{order['des-estado'].toUpperCase()}}</span>
+                </totvs-list-item-info>
+                
+                <totvs-list-item-info
+                	class="col-lg-5 col-md-5 col-sm-5 col-xs-12"
+                    title="{{ 'l-equipment' | i18n }}"
+                    value="{{order['cd-equipto']}} - {{order['des-equipto']}}">
+                </totvs-list-item-info>
+                
+                <totvs-list-item-info
+                	class="col-lg-4 col-md-4 col-sm-4 col-xs-12"
+                    title="{{ 'l-tag' | i18n }}"
+                    value="{{order['cd-tag']}} - {{order['des-tag']}}">
+                </totvs-list-item-info>
+                
+                <totvs-list-item-info
+                	class="col-lg-3 col-md-3 col-sm-3 col-xs-12 lg-font"
+                    title="{{ 'l-maintenance-date' | i18n }}"
+                    value="{{order['dtManutStr']}}">
+                </totvs-list-item-info>
+                
+              	<totvs-list-item-info
+                	class="col-lg-5 col-md-5 col-sm-5 col-sm-5 col-xs-12"
+                    title="{{ 'l-maintenance' | i18n }}"
+                    value="{{order['cd-manut']}} - {{order['des-manut']}}">
+                </totvs-list-item-info>
+                
+                <totvs-list-item-info
+                	class="col-lg-4 col-md-4 col-sm-4 col-sm-4 col-xs-12"
+                    title="{{ 'l-equipe' | i18n }}"
+                    value="{{order['cd-equip-res']}} - {{order['des-equipe']}}">
+                </totvs-list-item-info>
+                
+			</totvs-list-item-header>
+		</totvs-list-item>
+	
+        <div class="more-results ng-scope" ng-if="controller.paginate && controller.listResult.length > 1" ng-click="controller.loadData(true)" >
+        	<a class="btn btn-primary col-xs-12 ng-binding">{{ 'l-displaying' | i18n }} {{ controller.totalRecords }} {{ 'l-results' | i18n }}. {{ 'msg-click-to-get-more' | i18n }}.</a>
+      	</div>
+        <div class="more-results ng-scope" ng-if="controller.paginate && controller.listResult.length === 1" ng-click="controller.loadData(true)" >
+        	<a class="btn btn-primary col-xs-12 ng-binding">{{ 'l-displaying' | i18n }} {{ controller.totalRecords }} {{ 'l-result-lower' | i18n }}. {{ 'msg-click-to-get-more' | i18n }}.</a>
+        </div>
+		<div class="more-results ng-scope" ng-if="controller.totalRecords > 0 && !controller.paginate && controller.listResult.length > 0 && controller.totalRecords > 1" ng-href="#" >
+      		<a ng-disabled="true" class="btn btn-primary col-xs-12 ng-binding">{{ 'l-total-of' | i18n }} {{ controller.totalRecords }} {{ 'l-results-found' | i18n }}.</a>
+      	</div>
+      	<div class="more-results ng-scope" ng-if="controller.totalRecords > 0 && !controller.paginate && controller.listResult.length > 0 && controller.totalRecords == 1" ng-href="#" >
+      		<a ng-disabled="true" class="btn btn-primary col-xs-12 ng-binding">{{ 'l-total-of' | i18n }} {{ controller.totalRecords }} {{ 'l-result-found' | i18n }}.</a>
+      	</div>
+		
+		<totvs-list-pagination
+            ng-if="controller.listResult.length < controller.totalRecords && controller.listResult.length"
+            ng-click="controller.loadData(true);">
+        </totvs-list-pagination>
+ 
+    </totvs-page-content>
+	
+</totvs-page>
+
+<style>
+	.page-tags{ width: 15px; }
+
+	.p-title { padding-left: 15px !important; }
+
+	.page-tags.situacao{
+	    border-radius: 50%;
+	    height: 15px;
+	    width: 15px;
+	    font-size: 10px;
+	    text-align: center;
+	    vertical-align: middle;
+	    display: inline-block;
+	    color: #fff;
+	    margin-right: 10px;
+	}
+	.page-head .page-tags .tag-1:before {
+		background-color: #f0ca38;
+	}
+	.page-content .list-item.tag-1 {
+    	border-left: 5px solid #f0ca38;
+	}
+	.page-head .page-tags .tag-2:before {
+		background-color: #5f9653 ;
+	}
+	.page-content .list-item.tag-2 {
+    	border-left: 5px solid #5f9653 ;
+	}
+	.page-head .page-tags .tag-3:before {
+		background-color: #ff0000;
+	}
+	.page-content .list-item.tag-3 {
+    	border-left: 5px solid #ff0000;
+	}
+	.page-head .page-tags .tag-4:before {
+		background-color: #1a1a1a;
+	}
+	.page-content .list-item.tag-4 {
+    	border-left: 5px solid #1a1a1a;
+	}
+	
+	.situacao-1 {
+		background-color: #f0ca38;
+	}
+
+	.situacao-2 {
+		background-color: #5f9653;
+	}
+
+	.situacao-3 {
+		background-color: #ff0000;
+	}
+
+	.situacao-4 {
+		background-color: #1a1a1a;
+	}
+
+	.page-tags > .tag {
+		cursor: pointer;
+	}
+	
+	.item-actions a { cursor: pointer; } 
+</style>

@@ -1,0 +1,253 @@
+<div class="modal-header">
+	<h3 class="modal-title" ng-if="controller.modeOperation == 1"><p>{{:: 'l-add-new-application' | i18n : [] : 'dts/dts-utils' }} <span ng-if="controller.integrationType == 1">(EAI)</span> <span ng-if="controller.integrationType == 2">(Web Service)</span></p></h3>
+	<h3 class="modal-title" ng-if="controller.modeOperation == 2"><p>{{:: 'l-add-update-application' | i18n : [] : 'dts/dts-utils' }} <span ng-if="controller.integrationType == 1">(EAI)</span> <span ng-if="controller.integrationType == 2">(Web Service)</span></p></h3>
+	<h3 class="modal-title" ng-if="controller.modeOperation == 3"><p>{{:: 'l-add-copy-application' | i18n : [] : 'dts/dts-utils' }} <span ng-if="controller.integrationType == 1">(EAI)</span> <span ng-if="controller.integrationType == 2">(Web Service)</span></p></h3>
+</div>
+
+<div class="modal-body">
+	
+	<div class="row" ng-show="!controller.applicationHidden.desc">	
+		<field type="textarea" 
+			   autocomplete="off"
+			   ng-required="true" 
+			   ng-disabled="controller.applicationDisabled.desc"
+			   ng-model="controller.applicationUpdate.desc" 
+			   ng-change="controller.maxValueLength(500)"
+			   class="col-xs-12">
+			<label>{{'l-application-description'| i18n : [] : 'dts/dts-utils' }}</label>
+			<validator key="required">{{ 'l-required' | i18n }}</validator>
+		</field>				
+	</div>
+
+	<div class="row" ng-show="!controller.applicationHidden.schedulerServer">		
+		<field class="col-lg-11 col-md-11 col-sm-11 col-xs-11"
+			   ng-model="controller.applicationUpdate.schedulerServer" 
+		       type="select2"
+		       select-conector="{{'l-scheduler-server'| i18n : [] : 'dts/dts-utils' }}"
+		       select-id="cod_servid_exec"
+		       select-description="des_servid_exec"
+		       select-service="dts-utils.servidexec.zoom"
+			   label="{{'l-scheduler-server'| i18n : [] : 'dts/dts-utils' }}"
+			   ng-disabled="controller.applicationDisabled.schedulerServer"
+		       required>
+		  <zoom zoom-service="dts-utils.servidexec.zoom">      
+		  </zoom>    
+		</field>		
+	</div>		
+
+	<div class="row" ng-show="!controller.applicationHidden.enabled">		
+		<div class="form-group col-lg-11 col-md-11 col-sm-11 col-xs-11">
+			<label for="selectEnabled" 
+				style="font-family: 'Arial';
+					   margin-bottom: 5px;
+					   font-weight: 200;
+					   font-size: 12px;
+					   padding-top: 20px;
+					   color: gray;">
+					   {{'l-enabled-application' | i18n}}</label>
+			<select ng-disabled="controller.applicationDisabled.enabled"
+					name="selectEnabled" 
+					class="form-control" 
+					ng-model="controller.applicationUpdate.enabled" >
+				<option value="true">{{'l-yes' | i18n}}</option>
+				<option value="false" >{{'l-no' | i18n}}</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="row" ng-show="!controller.applicationHidden.host && controller.integrationType > 1">		
+		<field class="col-lg-11 col-md-11 col-sm-11 col-xs-11" type="input" 
+			canclean 
+			required 
+			autocomplete="off"
+			ng-model="controller.applicationUpdate.host" 
+			ng-required="false" 
+			ng-disabled="controller.applicationDisabled.host">
+			<label>{{'l-host-application'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>		
+	</div>
+	<div class="row" ng-show="!controller.applicationHidden.door && controller.integrationType > 1">		
+		<field class="col-lg-11 col-md-11 col-sm-11 col-xs-11" type="input" 
+			canclean 
+			required 
+			autocomplete="off"
+			ng-model="controller.applicationUpdate.door" 
+			ng-required="false" 
+			numbers-only
+			ng-disabled="controller.applicationDisabled.door">
+			<label>{{'l-host-application-door'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>		
+	</div>
+	<div class="row" ng-show="!controller.applicationHidden.requestTimeout && controller.integrationType > 1">		
+		<field class="col-lg-11 col-md-11 col-sm-11 col-xs-11" type="input" 
+			canclean 
+			required 
+			autocomplete="off"
+			ng-model="controller.applicationUpdate.requestTimeout" 
+			ng-required="false" 
+			numbers-only
+			maxlength="6"
+			ng-disabled="controller.applicationDisabled.requestTimeout">
+			<label>{{'l-request-timeout'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>		
+	</div>
+	<div class="row" ng-show="!controller.applicationHidden.recordsByRequest && controller.integrationType > 1">		
+		<field class="col-lg-11 col-md-11 col-sm-11 col-xs-11" type="input" 
+			canclean 
+			required 
+			autocomplete="off"
+			ng-model="controller.applicationUpdate.recordsByRequest" 
+			ng-required="false" 
+			numbers-only
+			maxlength="6"
+			ng-disabled="controller.applicationDisabled.recordsByRequest">
+			<label>{{'l-records-by-request'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>		
+	</div>
+	<div class="row" ng-show="!controller.applicationHidden.user && controller.integrationType > 1">		
+		<field class="col-lg-11 col-md-11 col-sm-11 col-xs-11" type="input" 
+			canclean 
+			required 
+			autocomplete="off"
+			ng-model="controller.applicationUpdate.user" 
+			ng-required="false" 
+			ng-disabled="controller.applicationDisabled.user">
+			<label>{{'l-user-application'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>		
+	</div>
+	<div class="row" ng-show="!controller.applicationHidden.userPassword && controller.integrationType > 1">		
+		<field class="col-lg-11 col-md-11 col-sm-11 col-xs-11" 
+			ng-if="controller.showPassword"
+			type="input" 
+			canclean 
+			required 
+			autocomplete="off"
+			ng-model="controller.applicationUpdate.userPassword" 
+			ng-required="false" 
+			ng-disabled="controller.applicationDisabled.userPassword">
+			<label>{{'l-password-user-application'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>
+
+		<field class="col-lg-11 col-md-11 col-sm-11 col-xs-11" 
+			ng-if="!controller.showPassword"
+			type="password" 
+			canclean 
+			required 
+			autocomplete="off"
+			ng-model="controller.applicationUpdate.userPassword" 
+			ng-required="false" 
+			ng-disabled="controller.applicationDisabled.userPassword">
+			<label>{{'l-password-user-application'| i18n : [] : 'dts/dts-utils' }}</label>
+		</field>		
+
+		<button tabindex="-1"
+			style="margin-top: 30px; margin-left: -4px;" 
+			style="cursor: pointer;"
+			class="btn btn-default"
+			ng-click="controller.toggleShowPassword()">
+			<span ng-class="{'glyphicon-eye-open': controller.showPassword,'glyphicon-eye-close': !controller.showPassword}" class="glyphicon" aria-hidden="true"></span>
+		</button>		
+		
+	</div>
+	<div class="row" ng-show="!controller.applicationHidden.token && controller.integrationType > 1">		
+		<field class="col-lg-11 col-md-11 col-sm-11 col-xs-11" type="input" 
+			canclean 
+			required 
+			autocomplete="off"
+			ng-model="controller.applicationUpdate.token" 
+			ng-required="false" 
+			ng-disabled="controller.applicationDisabled.token">
+			<label>Token ({{'l-access-key'| i18n : [] : 'dts/dts-utils' }})</label>
+		</field>		
+	</div>		
+
+	<div ng-repeat="extraField in controller.applicationExtraFields | orderBy:'sequence'" class="row extra-fields-{{extraField.field}}">		
+		
+		<div ng-if="extraField.fieldType == 1">   
+			<field class="col-md-11" 
+				autocomplete="off"
+			    type="input"
+				id="application-extra-field-{{extraField.field}}"
+				canclean
+				ng-model="extraField.value">
+				<label>{{extraField.label}}</label>
+			</field>
+		</div>
+
+		<div class="col-md-11" ng-if="extraField.fieldType == 2">
+			<mpd-zoom 
+				style="margin-top: -2px;"
+				id="application-extra-field-{{extraField.zoomDataBase}}&{{extraField.zoomTable}}&{{extraField.field}}"
+				database="{{extraField.zoomDataBase}}"
+				table="{{extraField.zoomTable}}"
+				fieldcode="{{extraField.field}}"
+				fieldcodelabel="{{extraField.label}}"
+				fielddescription="{{extraField.zoomDescription}}"
+				ng-model="extraField.value"
+				placeholder="{{ ' ' | i18n: []: 'dts/mpd' }}"
+				multiselectable="false"
+				disabled="false"
+				canclean="true"
+				label="{{extraField.label}}"
+			></mpd-zoom> 
+		</div>
+
+		<div ng-if="extraField.fieldType == 3">   
+			<field class="col-md-11" 
+				numbers-only
+				autocomplete="off"
+				maxlength="30"			
+				canclean 				
+				id="application-extra-field-{{extraField.field}}"
+				ng-model="extraField.value">
+				<label>{{extraField.label}}</label>
+			</field>
+		</div>
+		
+		<div ng-if="extraField.fieldType == 4">   
+			<field class="col-md-11" 
+				autocomplete="off"
+			    type="date"
+				id="application-extra-field-{{extraField.field}}"
+				canclean
+				ng-model="extraField.value">
+				<label>{{extraField.label}}</label>
+			</field>
+		</div>
+		
+		<div ng-if="extraField.fieldType == 5">   
+			<div class="btn-group col-md-11" style="padding-top: 20px;">
+				<label class="btn btn-default">
+					<input type="checkbox" 
+						style="margin: 0px 0 0;" 
+						ng-model="extraField.value">
+					<span class="ng-binding"> &nbsp; {{extraField.label}}</span>
+				</label>
+		   </div>
+		</div>		
+			
+		<button ng-if="!controller.applicationUpdate.defaultApplication" 
+			tabindex="-1"
+			style="margin-top: 30px; margin-left: -4px;" 
+			class="btn btn-danger"
+			ng-click="controller.removeExtraField(extraField, $index)">
+			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+		</button>
+	</div>	
+
+	</br>
+
+	<div class="row" ng-show="!controller.applicationUpdate.defaultApplication">	
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">	
+			<button class="btn btn-success" ng-click="controller.addExtraField()">{{'l-add-extra-field'| i18n : [] : 'dts/dts-utils' }}</button>
+		</div>	
+	</div>	
+
+
+
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn btn-primary" ng-click="controller.save();">{{:: 'l-save' | i18n : [] : 'dts/mpd'}}</button>	
+	<button type="button" class="btn btn-default" ng-click="controller.close();">{{:: 'l-cancel' | i18n : [] : 'dts/mpd'}}</button>
+</div>

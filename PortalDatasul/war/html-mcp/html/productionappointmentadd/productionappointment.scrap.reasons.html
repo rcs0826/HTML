@@ -1,0 +1,77 @@
+<totvs-modal-header>{{ 'l-scrap-reasons' | i18n }}</totvs-modal-header>
+<totvs-modal-body>
+	<div class="row">
+		<form class="form-horizontal" role="form">
+			<div class="row col-xs-12">
+				<div class="row col-xs-6">
+					<field type="input" 
+						ng-model="controller.motivoRefugo" 
+						label="{{ 'l-scrap-reasons' | i18n }}" 
+						class="col-md-12"
+						zoom
+						zoom-service="mcp.motiv-refugo.zoom"
+						zoom-id="cod-motiv-refugo"
+						zoom-description="des-motiv-refugo"
+					/>
+				</div>
+				<div class="row col-xs-4">
+					<field type="decimal"
+						   class="col-md-12"
+                           m-dec="4"
+                           v-max="999999999.9999"
+						   ng-model="controller.quantidadeRefugo" 
+						   ng-model-options="{ updateOn: 'blur' }"
+                           ng-disabled="exportInfoController.orderDisabled">
+                        <label>{{ 'l-quantity' | i18n }}</label>
+                    </field>
+				</div>
+				<div class="row col-xs-2" style="padding-top: 30px">
+					<button class="btn btn-default" 
+						ng-click="controller.adicionaMotivos()"
+						ng-disabled="(controller.motivoRefugo == null)">
+					{{ 'l-add' | i18n }}
+				</button>
+				</div>
+			</div>
+		</form>
+
+		<div class="col-xs-12" 
+			 style="padding-top: 15px">
+
+			<totvs-grid 
+				grid-data="controller.ttRef"
+				grid="reasonsGrid"
+				grid-selected-item="controller.selectedItem"
+				grid-height="250">
+
+				<totvs-grid-column field="codMotivRefugo" width="25%">
+					{{ 'l-scrap-reasons' | i18n }}
+				</totvs-grid-column>
+				
+				<totvs-grid-column field="qtdOperacRefgdaFormated" width="25%">
+					{{ 'l-quantity' | i18n }}
+				</totvs-grid-column>
+			</totvs-grid>
+
+			<button class="btn btn-default" 
+					ng-click="controller.removeMotivo()"
+					ng-disabled="(controller.selectedItem == null)"
+					style="width: 100%">
+				{{ 'l-remove' | i18n }}
+			</button>
+		</div>
+	</div>
+</totvs-modal-body>
+
+<totvs-modal-footer>
+	<button type="button" 
+			class="btn btn-default" 
+			data-ng-click="controller.close();">
+		{{ 'l-cancel' | i18n }}
+	</button>
+	<button type="button" 
+			class="btn btn-primary" 
+			data-ng-click="controller.search();">
+		{{ 'l-confirm' | i18n }}
+	</button>
+</totvs-modal-footer>
