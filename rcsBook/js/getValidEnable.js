@@ -13,7 +13,7 @@
 * tp 3 = Captura os valores dos inputs e cria um script de insersão
 * */
 function codValidate(tp){
-    var obj = (tp == 1)?$('[required]'):$('[name]');
+    var obj = (tp == 1)?$('#formCreate  [required]'):$('#formCreate [name]');
     var retorno = "";
     var vetVerif = new Array();
   
@@ -34,12 +34,26 @@ function codValidate(tp){
         if(obj[i].name != undefined && obj[i].name != "form"){
             if(!isVet(vetVerif,obj[i].name)){
                 if(tp == 1){
-                      if(obj[i].type == "text" || obj[i].type == "textarea" || obj[i].type == "number"){
-                            retorno += "if( form.getValue(\""+obj[i].name+"\") == \"\" ){ msg += \"Campo '"+obj[i].title+"' não pode ser vazio.\" + txtBreak; } \n";
-                      }
-                      else{
-                            retorno += "if( form.getValue(\""+obj[i].name+"\") == \"\" ){ msg += \"Selecione uma alternativa no campo '"+obj[i].title+"'.\" + txtBreak; } \n";              
-                      }
+                    if (obj[i].id == "txtEmai") {
+                        retorno += "var rgxEmail = new RegExp(/\\S+@\\S+\\.\\S+/);";
+                    }
+                    else if (obj[i].id == "txtCNPJ") {
+                        retorno += "var rgxCNPJ = new RegExp(/^[0-9]{2}.[0-9]{3}.[0-9]{3}\/[0-9]{4}-[0-9]{2}$/ );";                        
+                    }
+
+                    if(obj[i].type == "text" || obj[i].type == "textarea" || obj[i].type == "number"){
+                          retorno += "if( form.getValue(\""+obj[i].name+"\") == \"\" ){ msg += \"Campo '"+obj[i].title+"' não pode ser vazio.\" + txtBreak; } \n";
+                    }
+                    else{
+                          retorno += "if( form.getValue(\""+obj[i].name+"\") == \"\" ){ msg += \"Selecione uma alternativa no campo '"+obj[i].title+"'.\" + txtBreak; } \n";              
+                    }
+                    
+                    if (obj[i].id == "txtEmai") {
+                        retorno += "else if( form.getValue(\"txtEmail\" ).match(rgxEmail) == null ){msg += \"Campo 'Email' com valor inválido; \" + txtBreak; }";
+                    }
+                    else if (obj[i].id == "txtCNPJ") {
+                        retorno += "else if( form.getValue(\"txtCNPJ\" ).match(rgxCNPJ) == null ){msg += \"Campo CNPJ com valor inválido; \" + txtBreak; }";
+                    }
                 }
                 else if(tp == 2){
                       retorno += "form.setEnabled(\""+obj[i].name+"\", ini); \n";

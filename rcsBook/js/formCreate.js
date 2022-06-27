@@ -230,7 +230,9 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                     table += getDivMensage(objIDName,objNome,objValue);
                 } 
                 else {
-                    nclass = objType == "button" ?(isBot? 'btn-fill ':'') + "btn btn-" : "form-control";
+                    nclass = objType == "button" ? "btn btn-block btn-" : "form-control";
+                    nclass = (objType == "switch")?"switch-input":nclass;
+
                     if(objType == "button"){
                         nclass += getMessageClass(objValue);
                     }
@@ -258,6 +260,10 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                         table += '<div class="input-group">';
                         typedef = 'text';
                     }
+                    else if (objType == "switch"){
+                        table += '<br /><div class="switch switch-'+getMessageClass(objPlaceholder)+'" >';
+                        typedef = 'checkbox';
+                    }
 
                     typedef = (typedef != '')?typedef:objType;
                     table += '<input type="' + typedef + '" class="' + nclass + '" id="' + idName + '" name="' + idName + '"' + attr + ' title="' + titName + '" />';
@@ -273,6 +279,9 @@ function createInputs(txt, divRet, txtRet, txtTitle) {
                     }
                     else if(objType == "email" || objType == "money" || objType == "kg"){
                         table += '</div>';   
+                    }
+                    else if (objType == "switch"){
+                        table += '<label class="switch-button" for="'+idName+'">Toggle</label> </div>';
                     }
                 }
                 if(objType != "table"){

@@ -572,8 +572,10 @@ var RCS = {
       clearWhiteLine:function(txt){
         var vet = txt.split("\n");
         txt = "";
+        let res = "";
         for (var i = 0; i < vet.length; i++) {
-            if ((vet[i]).replace(/\t/g,"").trim() != "") {
+            res = (vet[i]).replace(/\t/g,"").trim();
+            if (res != "" && res != "\n" ) {
                 if(i != 0){
                      txt += "\n"
                 }
@@ -674,26 +676,32 @@ var RCS = {
 * @return: Texto tratado;
 **************************************************************************/
     csvTOinsert:function(tabela,csv){
-        var vet = csv.replace(/[\;]/g, ",").split("\n");
+        var vet = csv.replaceAll("'"," ").split("\n");
         var insert = "insert into "+tabela+" ({col}) values ({val})";
         var code = "";
         
         if(vet.length > 1){
-          insert = insert.replace('{col}',vet[0]);
+          insert = insert.replace('{col}',(vet[0]).toString().replace(/[\;]/g, ","));
 
           for(var i=1; i<vet.length;i++){
-            var rows = (vet[i]).split(",");
+            var rows = (vet[i]).split(";");
             var val = "";
+
             for(var x=0; x<rows.length;x++){
-                if((!isNaN(rows[x]) &&  rows[x] != '') || (rows[x]).toUpperCase() == "NULL" ){
-                    val += rows[x] +",";
-                }
-                else{
-                    val += "'"+ rows[x] +"',";
-                }
+                //if((!isNaN(rows[x]) &&  rows[x] != '') || (rows[x]).toUpperCase() == "NULL" ){
+                //    val += rows[x] +",";
+                //}
+                //else{
+                    val += "'"+ (rows[x]).toString().trim() +"',";
+                //}
             }
+
             val = val.substring(0, val.length -1);
-            code += insert.replace('{val}',val) + "\r\n";                                                
+            code += insert.replace('{val}',val);
+
+            if (i<vet.length) {
+                code += "\n";
+            }                                         
           }
         }
 

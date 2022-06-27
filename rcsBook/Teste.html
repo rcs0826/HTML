@@ -3,203 +3,101 @@
         <title>Teste</title>
         <link rel="shortcut icon" href="./img/favicon.ico" />
         <link type="text/css" rel="stylesheet" href="./css/fluig-style-guide-flat.min.css" />
-        <link type="text/css" rel="stylesheet" href="./css/rcsBook.css" />
         <link type="text/css" rel="stylesheet" href="./css/menu.css" />
         <script type="text/javascript" src="./js/jquery-1.9.1.js"></script>
         <script type="text/javascript" src="./js/fluig-style-guide.min.js" charset="utf-8"></script>
-        <script type="text/javascript" src="./js/rcsBook.js" charset="utf-8"></script>
-        <script type="text/javascript" src="./js/menu.js" charset="utf-8"></script>
-        <style type="text/css">
-         .filtergroup > button{
-             border: 0px solid #ccc;
-             border-radius: 10px;
-             width: 20px;
-             height:20px;
-             float:right;
-             width: 100%;
-             text-align: right;
-        }
-         .form-filter{
-             border: 1px solid #ccc;
-             border-radius: 5px;
-             width: 100%;
-             background-color: #ffffff;
-        }
-         .filtergroupfixed, .filtergroup{
-             border: 1px solid #ccc;
-             border-radius: 5px;
-             padding:5px 1px;
-             margin: 2px;
-             background-color: #eeeeec;
-        }
+
+        <style type="text/css">@import url(&#39;https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap&#39;);
+            .body{padding:0; margin:0; box-sizing:border-box; font-family: &#39;Open Sans&#39;, sans-serif;background-color: #babdb6; }
+            .container{width:100% !important; max-width:900px !important; padding: 10px 50px !important; background-color: #ffffff;border-radius: 0px 0px 10px 10px; }
+            .title{text-align: center; !important;}
+            .imgBanner{border-radius: 3px;}
+            .btn-blue{background-color: #2e3192 !important;}
+            p{text-align: justify !important; margin-bottom:10px !important;}
+            .infoSug{
+                 border-radius: 10px;
+                 background-color: #d3d7cf;
+                 padding:15px;
+            }
 
         </style>
     </head>
-    <body >
-    
-<div class="fluig-style-guide" >
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <center>
-                <h2 class="fs-no-margin">
-                    <i class="flaticon flaticon-invoices-check icon-xl"></i> Envio de Nota Fiscal em Aberto
-                
-                </h2>
-            </center>
-        </div>
-        <div class="panel-body" >
-                <div class="form-group row ">
-                    <div class="col-md-2">
-                        <div class="dropdown">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-                            Adicionar Filtros 
-                                
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="#" getfilter="divAdiantamento">Adiantamento</a>
-                                </li>
-                                <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="#" getfilter="divDtVenc">Data Vencimento</a>
-                                </li>
-                                <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#" getfilter="">Data Solicitação</a></li><li role="presentation"><a role="menuitem" tabindex="-1" href="#" getfilter="">Estabelecimento</a></li>-->
-                                <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="#" getfilter="divIdentificador">Identificador</a>
-                                </li>
-                                <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="#" getfilter="divNumNota">Número das Notas</a>
-                                </li>
-                                <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="#" getfilter="divNumSolicitacao">Número solicitação</a>
-                                </li>
-                                <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="#" getfilter="divResponsavel">Solicitação parada com</a>
-                                </li>
-                                <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="#" getfilter="divSolicitante">Solicitante</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="btn-group">
-                            <input data-pesquisar class="btn btn-info" type="button" value="Pesquisar" />
-                            <input data-limpar class="btn btn-danger" type="button" value="Limpar" />
-                            <input data-downloadcsv class="btn btn-primary" type="button" value="Download CSV" />
-                        </div>
-                    </div>
-                </div>
-            <fieldset>
-                <legend>
-                    <i class="flaticon flaticon-filter icon-xl"></i> Filtros
-                
-                </legend>
-                <div  class="form-group row ">
-                    <div class="col-md-4 filtergroupfixed">
-                        <label for="slEsta" >Estabelecimento:</label>
-                        <select class="form-filter" id="slEsta" name="slEsta" title="Estabelecimento" dataset="frmCadastroAprovEstabelecimento" datasetkey="descritorForm" datasetvalue="descritorForm" addblankline="true"></select>
-                    </div>
-                    <div class="col-md-4 filtergroupfixed">
-                        <div class="col-md-6">
-                            <label for="dtDataInic">
-                                <small>Data Início: (Solicitação):</small>
-                            </label>
-                            <input type="date" class="form-filter" id="dtDataInic" name="dtDataInic" required="required" title="Data Início" />
-                        </div>
-                        <div class="col-md-6">
-                            <label for="dtDataFim">
-                                <small>Data Fim: (Solicitação)</small>
-                            </label>
-                            <input type="date" class="form-filter" id="dtDataFim" name="dtDataFim" required="required" title="Data Fim" />
-                        </div>
-                    </div>
-                    <div class="col-md-2 filtergroup" id="divAdiantamento" style="display: none;">
-                        <label for="cbAdia" >Adiantamento:</label>
-                            <input type="checkbox" id="cbAdia" name="cbAdia" value="Sim" title="Adiantamento" />
-                            Sim
-                        </div>
-                    </div>
-                    <div class="col-md-3 filtergroup" id="divIdentificador" style="display: none;">
-                        <label for="txtIden" >Identificador                            
-                            <small>(Detalhes)</small>:                        
-                        </label>
-                        <input type="text" class="form-filter" id="txtIden" name="txtIden" title="Identificador (chave)" />
-                    </div>
-                    <div class="col-md-4 filtergroup" id="divDtVenc" style="display: none;">
-                        <div class="col-md-6">
-                            <label for="dtDataVencInic">
-                                <small>Data Início: (Vencimento):</small>
-                            </label>
-                            <input type="date" class="form-filter" id="dtDataVencInic" name="dtDataVencInic" required="required" title="Data Início" />
-                        </div>
-                        <div class="col-md-6">
-                            <label for="dtDataVencFim">
-                                <small>Data Fim: (Vencimento)</small>
-                            </label>
-                            <input type="date" class="form-filter" id="dtDataVencFim" name="dtDataVencFim" required="required" title="Data Fim" />
-                        </div>
+    <body class="fluig-style-guide body">
+        <div class="container">
+            <p><img class="imgBanner" alt="Institucional-Intranet-1.jpg" data-units="px" src="file:///home/rogerio/Downloads/Santher/Projetos/Fluig/Imagens/Cabecalho-placeholder.png" style="max-width:100%" /></p>
 
+            <h1 class="title">PROGRAMA DE IDEIAS E SUGESTÕES DE MELHORIAS</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris at mattis diam, eu gravida dolor. Vivamus sodales, purus in maximus tempor, magna purus dictum elit, sit amet faucibus nisi odio ut magna. Fusce tincidunt, nibh non iaculis aliquam, nunc justo laoreet mauris, id tincidunt neque augue a eros. Curabitur dictum, orci ut ultricies accumsan, dolor velit tincidunt eros, vel hendrerit est ante quis mauris. Mauris cursus mi nisi, quis pretium neque viverra sit amet. Integer id faucibus velit. Aenean lacinia, magna ut iaculis eleifend, ex mauris imperdiet tellus, nec tempor tellus nunc at justo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Donec sit amet lorem a justo sollicitudin hendrerit. Proin sit amet justo et purus interdum volutpat. Maecenas finibus auctor metus sed pulvinar. Sed lorem massa, luctus in augue ac, lobortis imperdiet sem. Etiam ac tristique felis. Maecenas nulla sem, luctus eu dolor et, pretium bibendum sem. </p>
+
+            <br />
+            <div class="form-group row">
+                <div class="col-xs-2"></div>
+                <div class="col-xs-4">
+                    <input type="button" class="btn btn-success btn-block" id="btInscSuge" name="btInscSuge" value="Inscrever Sugestão" title="Inscrever Sugestão" />
+                </div>
+                <div class="col-xs-4">
+                    <input type="button" class="btn btn-danger btn-block" id="btRegu" name="btRegu" value="Regulamento" title="Regulamento" />
+                </div>
+                <div class="col-xs-2"></div>
+            </div>
+            <br />
+            
+            <h2 class="title">SUGESTÔES MAIS RESCENTES</h2>
+            <div id="divSugest">
+                
+
+
+                 
+            <div class="form-group row infoSug">
+                <div class="col-xs-9">
+                    <div class="col-md-12 ">
+                        <label>NOME DO PROJETO</label>
                     </div>
-                    <div class="col-md-4 filtergroup" id="divNumNota" style="display: none;">
-                        <div class="col-md-6">
-                            <label for="numNotaIni" >
-                                <small>Número das Notas - Início:</small>
-                            </label>
-                            <input type="number" class="form-filter" id="numNotaIni" name="numNotaIni" title="Número das Notas" />
-                        </div>
-                        <div class="col-md-6">
-                            <label for="numNotaFim" >
-                                <small>Número das Notas - Fim:</small>
-                            </label>
-                            <input type="number" class="form-filter" id="numNotaFim" name="numNotaFim" title="Número das Notas" />
-                        </div>
+                    <div class="col-md-12">
+                        <label>Autor:</label>
+                        <span>Vivamus ut sodales lectus</span>
                     </div>
-                    <div class="col-md-5 filtergroup" id="divNumSolicitacao" style="display: none;">
-                        <div class="col-md-6">
-                            <label for="txtNumeIni" >
-                                <small>Número solicitação - Início</small>
-                            </label>
-                            <input type="number" class="form-filter" id="txtNumeIni" name="txtNumeIni" title="Número solicitação" />
-                        </div>
-                        <div class="col-md-6">
-                            <label for="txtNumeFim" >
-                                <small>Número solicitação - Fim</small>
-                            </label>
-                            <input type="number" class="form-filter" id="txtNumeFim" name="txtNumeFim" title="Número solicitação" />
-                        </div>
-                    </div>
-                    <div class="col-md-3 filtergroup" id="divResponsavel" style="display: none;">
-                        <label for="slResp" >Solicitação parada com:</label>
-                        <select class="form-filter" id="slResp" name="slResp" title="Responsável" dataset="colleague" datasetkey="colleaguePK.colleagueId" datasetvalue="colleagueName" addblankline="true" ></select>
-                    </div>
-                    <div class="col-md-3 filtergroup" id="divSolicitante" style="display: none;">
-                        <label for="slSoli">Solicitante:</label>
-                        <select class="form-filter" id="slSoli" name="slSoli" title="Solicitante" dataset="colleague" datasetkey="colleaguePK.colleagueId" datasetvalue="colleagueName" addblankline="true" ></select>
+                    <div class="col-md-12">
+                        <label>Resumo:</label>
+                        <span> Nulla rhoncus ultrices laoreet. Nulla convallis, nibh id porta cursus, massa mi consectetur nisl, nec faucibus leo nisi sit amet leo. Morbi posuere massa in dui feugiat pulvinar. Mauris vulputate iaculis nunc, quis hendrerit enim pellentesque vel.</span>
                     </div>
                 </div>
-                <hr />
-                <div class="form-group row">
-                    <div class="col-md-12" id="result"></div>
+                <div class="col-xs-3">
+                    <img class="img-circle" src="file:///home/rogerio/Imagens/icones/_user_picture.png" />
                 </div>
-            </fieldset>
+            </div>
+
+            <div class="form-group row infoSug">
+                <div class="col-xs-9">
+                    <div class="col-md-12 ">
+                        <label>NOME DO PROJETO</label>
+                    </div>
+                    <div class="col-md-12">
+                        <label>Autor:</label>
+                        <span>Vivamus ut sodales lectus</span>
+                    </div>
+                    <div class="col-md-12">
+                        <label>Resumo:</label>
+                        <span> Nulla rhoncus ultrices laoreet. Nulla convallis, nibh id porta cursus, massa mi consectetur nisl, nec faucibus leo nisi sit amet leo. Morbi posuere massa in dui feugiat pulvinar. Mauris vulputate iaculis nunc, quis hendrerit enim pellentesque vel.</span>
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <img class="img-circle" src="file:///home/rogerio/Imagens/icones/_user_picture.png" />
+                </div>
+            </div>
+
+            </div>
+
+            <div class="form-group row">
+                <div class="col-xs-4"></div>
+                <div class="col-xs-4">
+                    <input type="button" class="btn btn-blue btn-block" id="btVer" name="btVer" value="Ver mais" title="Ver mais" />
+                </div>
+                <div class="col-xs-4"></div>
+            </div>
+
         </div>
-        <div id="divAnexo" ></div>
-    </div>
-</div>
-<script type="text/javascript">
-    $("[getfilter]").click(function(){
-        let id = "#" + this.getAttribute("getfilter");
-        $(id).show();
-    });
-    $(".filtergroup").prepend('<button>X</button>');
-    $(".filtergroup > button").click(function(){
-        if (this.parentElement.id != "") {
-            $("#"+this.parentElement.id+"  input").val("");
-            $("#"+this.parentElement.id+"  select").val("");
-            $("#"+this.parentElement.id).hide();
-        }
-    }); 
-</script>
     </body>
 </html>
+<!-- template -->
+<div class="fade" id="template"> <div class="form-group row infoSug"> <div class="col-xs-9"> <div class="col-md-12 "> <label>{{titulo}}</label> </div> <div class="col-md-12"> <label>Autor:</label> <span>{{autor}}</span> </div> <div class="col-md-12"> <label>Resumo:</label> <span>{{resumo}}</span> </div> </div> <div class="col-xs-3"> <img class="img-circle" src="/social/api/rest/social/image/profile/{{matricula}}/SMALL_PICTURE" /> </div> </div></div>

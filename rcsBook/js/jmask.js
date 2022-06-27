@@ -1,18 +1,10 @@
 $(document).ready(function(){
-    var obj = $("[mask]"); 
-    var obj2 = $("[maskMoney]");
-	
-	for(var i=0; i < obj.length; i++){
-        $("#"+obj[i].id).on("keyup",function(){mask(this.id, this.getAttribute("mask"));});
-        $("#"+obj[i].id).on("press",function(){mask(this.id, this.getAttribute("mask"));});
-	}
- 
-    for(var j=0; j < obj2.length; j++){
-        maskMoney(obj2[j].id);
-         $("#"+obj2[j].id).on("keyup",function(){maskMoney(this.id);});
-         $("#"+obj2[j].id).on("press",function(){maskMoney(this.id);});
-	}
-	
+    $("[mask]").on("input", function () {
+        lib.mask(this.id, this.getAttribute("mask"));
+    });
+    $("[maskMoney]").on("input", function () {
+        lib.maskMoney(this.id);
+    });
 });
 
 function mask(id, mask)

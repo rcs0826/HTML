@@ -348,3 +348,7 @@ function existDataset(nameDS){
 			alert("Atenção", "CSV inválido.");
 		}
 	}
+
+function copyCT(){
+	RCS.copyClipboard("txtCodigo");
+}	
